@@ -1,0 +1,205 @@
+<% if(post.subpostBuckets.length >= 1){ %>
+  <div class="dropctn mt-2">
+    <div class="pr-2">
+      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+    </div>
+    <div>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>
+      <% if(index-1 > 0){ %>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> <%= index-1 %> </a></span>
+      <% } %>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
+      <% if(index+1 < post.subpostBuckets.length){ %>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
+      <% } %>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="<%= post.subpostBuckets.length-1 %>"> >> </a></span>
+    </div>
+    <div>
+      <div class="dropdown ml-auto pr-2">
+        <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+        <div class="dropdown-menu dropdown-menu-right dropbox transparent">
+          <div class="container drop-shadow1 floatright page-index-back">
+            <div class="input-group input-group-sm px-2">
+              <input href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" type="number" id="page-index-input" class="form-control search text-xs px-1" placeholder="Page ..">
+              <div class="input-group-append">
+                <button id="page-index-button" class="btn btn-secondary text-sm btnxs" type="submit"> Go </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<% var subPosts = bucket.subPosts; var len2 = subPosts.length; var j; for(j=0;j<len2;j++){ %>
+  <div class="card indexcard2">
+    <div class="card-body">
+      <div>
+        <div class="mb-auto d-flex flex-column subpost-left">
+          <div>  
+            <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
+              <img class="subpostdp my-1" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+            </a>
+          </div>
+          <div><span class="text-xs">#</span><span class="boldtext blackcolor nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
+          <hr>
+          <div class="d-flex flex-row mx-auto">
+            <% if(0 <= rank && rank <= 4){ %>
+              <form action="/subposts/<%= bucket._id %>/<%= subPosts[j]._id %>/vote" method="POST">
+                <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
+                  <span> 
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn greencolor" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                  </span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs greencolor"><%= subPosts[j].likeCount %></span>
+                  <span>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                  </span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
+                <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
+                  <span> 
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                  </span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs"><%= subPosts[j].likeCount %></span>
+                  <span>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn blackcolor" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                  </span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+                <% } else{ %>
+                  <span> 
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                  </span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey text-xxs nopad"><%= subPosts[j].likeCount %></span>
+                  <span>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                  </span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
+                <% } %>
+              </form>
+            <% } else{ %>
+              <span class="mr-2"> 
+                <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+              </span>
+              <span class="ml-2">
+                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="dislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+              </span>
+            <% } %>
+          </div>
+        </div>
+        <div class="mobiletext">
+          <div class="valign lineheight2 mb-1">
+            <div>
+              <div>
+                <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>" class="darkgrey">
+                  <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
+                </a>
+              </div>
+              <div class="darkgrey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+            </div>
+            <div class="d-flex flex-column">
+              <div class="darkgrey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
+              <div class="dropdown ml-auto">
+                <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
+                <ul class="dropdown-menu dropdown-menu-right dropbox">
+                  <div class="container drop-shadow1">
+                    <% //if(currentUser && subPosts[j].subPostAuthor.id._id.equals(currentUser._id)){ %>
+                      <!-- <li>
+                        <a class="dropitems text-sm greyback grey" href="#">Edit 2</a>
+                      </li> -->
+                    <% //} %>
+                    <li>
+                      <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket._id %>" method="GET">
+                        <button class="dropitems2 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                      </form>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
+          <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
+            <span class="linewrap text-xs boldtext redcolor">Quote:</span>
+            <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
+            <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
+          </div>
+        <% } %>
+        <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<% if(post.subpostBuckets.length >= 1){ %>
+  <div class="valign mt-2">
+    <div>
+      <% if(index-1 > 0){ %>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> Prev </a></span>
+      <% } %>
+    </div>
+    <div>
+      <% if(index+1 < post.subpostBuckets.length){ %>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> Next </a></span>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<% if(index == post.subpostBuckets.length){ %>
+  <div class="card indexcard2">
+    <div class="card-body3">
+      <div class="valign">
+        <div class="mb-auto d-flex flex-column">
+          <div>
+            <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+          </div>
+          <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
+        </div>
+        <div class="commentdiv d-flex flex-column">
+          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
+            <div class="valign">
+              <div class="d-flex flex-column">
+                <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
+                <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
+              </div>
+              <div class="darkgrey boldtext text-xs subpostbtn py-2 mb-auto"><%= moment().format('lll'); %></div>
+            </div>
+            <% if(quote){ %>
+              <div class="quote px-1 pb-1 my-1 lineheight2">
+                <span class="mobiletext linewrap text-xs boldtext redcolor">Quote:</span>
+                <span class="mobiletext linewrap text-xs"><strong># <%= quoteNum %></strong></span>
+                <span class="mobiletext linewrap text-xs boldtext"><%= quoteText %></span>
+              </div>
+              <input type="hidden" name="quoteNum" value="<%= quoteNum %>">
+              <input type="hidden" name="quoteText" value="<%= quoteText %>">
+            <% } else{ %>
+              <input type="hidden" name="quoteNum" value="0">
+              <input type="hidden" name="quoteText" value="">
+            <% } %>
+            <div class="input-group">
+              <% if(quote){ %>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4" autofocus></textarea>
+              <% } else{ %>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4"></textarea>
+              <% } %>
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <div onclick="none_display('subpostbtn'); clear_subpost();" class="btn  btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs ml-2 mt-2">Cancel</div>
+              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2">Submit</button>
+              <div class="emoji-panel subpostbtn pt-2 px-2">
+                <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                  <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
+                    <% include ../partials/emoji_picker %>
+                  </div>
+                  <i class="far fa-laugh-wink"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>

@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+    
+<div class="row no-gutters">
+  <div class="col-lg-2 col-md-2 px-2 mobileNone">
+    <div class="list-group">
+      <li class="list-group-item bluecolor text-sm boldtext mt-3"><i class="fas fa-question-circle"></i> Did you..</li>
+      <li class="list-group-item text-sm darkgrey">... have a <a href="#comming_soon" class="black">question</a>?</li>
+      <li class="list-group-item text-sm darkgrey">... find a <a href="#comming_soon" class="black">bug</a>?</li>
+      <li class="list-group-item text-sm darkgrey">... have a <a href="#comming_soon" class="black">feature suggestion</a>?</li>
+    </div>
+  </div>
+  <div id="delegated-posts" class="col-lg-7 col-md-10">
+    <div id="server-posts">
+      <% include ../partials/posts_index %>
+    </div>
+    <div id="client-posts"></div>
+    <div class="text-center pt-2">
+      <button id="load-more-btn" class="btn btn-primary btn-sm" type="button" value="<%= foundPostIds %>">
+        <span id="load-more-span"></span>Load
+      </button>
+    </div>
+  </div>
+  <% if(currentUser){ %>
+    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone">
+      <% include ../partials/latest_updates %>
+    </div>
+  <% } %>
+</div>
+
+<% include ../partials/footer %>

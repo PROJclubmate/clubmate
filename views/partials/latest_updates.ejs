@@ -1,0 +1,62 @@
+<div class="card nothing">
+  <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#latestUpdates">
+    <div class="valign">
+      <div><span><i class="far fa-newspaper"></i></span><span class="boldtext">Latest updates</span></div>
+      <div><span class="grey text-sm nopad"><%= latestUpdates().length %></span></div>
+    </div>
+  </button>
+  <div id="latestUpdates" class="collapse show scroll moz-scroll">
+    <% var arr = latestUpdates();
+    for(i=0;i<arr.length;i++){ %>
+      <div class="searchcard d-flex flex-row" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
+        <div class="eventD text-md mx-2 my-1 lineheight">
+          <% if(arr[i].eventDate){ %>
+            <span><strong><%= moment(arr[i].eventDate).format('D') %></strong>
+            <br>
+            <%= moment(arr[i].eventDate).format('MMM') %>, 
+            <%= moment(arr[i].eventDate).format('YY') %></span>
+          <% } %>
+        </div>
+        <div class="mr-1 fullwidth">
+          <div class="boldtext text-sm valign">
+            <div><a class="black" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a></div>
+            <div id="clear_update<%= i %>" class="nounderline clear_update">
+              <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
+                <button class="grey red nothing link-button px-1" name="delUpdate" value="<%= arr[i]._id %>" type="submit">x</button>
+              </form>
+            </div>
+          </div>
+          <% if(arr[i].news == 'This update has been deleted.'){ %>
+            <div class="grey text-xs redcolor"><em><%= arr[i].news %></em></div>
+          <% } else{ %>
+            <div class="grey text-xs boldtext"><%= arr[i].news %></div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%
+  function latestUpdates(){
+    var upEventsArr=[];
+    for(i=userClubs.length-1;i>=0;i--){
+      if(userClubs[i].clubUpdates.length != 0){
+        for(j=userClubs[i].clubUpdates.length-1;j>=0;j--){
+          var obj={};
+          obj['clubId'] = userClubs[i].id;
+          obj['clubName'] = userClubs[i].clubName;
+          obj['_id'] = userClubs[i].clubUpdates[j]._id;
+          obj['eventDate'] = userClubs[i].clubUpdates[j].eventDate;
+          obj['news'] = userClubs[i].clubUpdates[j].news;
+          obj['pushedAt'] = userClubs[i].clubUpdates[j].pushedAt;
+          upEventsArr.push(obj);
+        }
+      }
+    };
+    var arr = upEventsArr.sort(function(a, b) {
+      return new Date(b.pushedAt) - new Date(a.pushedAt);
+    });
+    return arr;
+  }
+%>

@@ -1,0 +1,210 @@
+var express = require("express");
+var router  = express.Router({mergeParams: true});
+var Post = require("../models/post");
+var Comment = require("../models/comment");
+var middleware = require("../middleware");
+
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_ID, 
+  api_secret: process.env.API_SECRET,
+});
+
+//COMMENTS CREATE
+router.post("/posts/:post_id/comments", middleware.isLoggedIn, function(req, res){
+  Post.findById(req.params.post_id, function(err, foundPost){
+  if(err || !foundPost){
+    console.log(req.user._id+' => (comments-1)foundPost err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    Comment.findOneAndUpdate({postId: foundPost._id, bucket: foundPost.bucketNum},
+    {$inc: {count: 1},
+      $push: {comments: {commentAuthor: {id: req.user._id, authorName: req.user.fullName}, 
+        text: req.body.text}
+      }
+    }, {fields: {count:1} , upsert: true, new: true}, function(err, newCommentBucket){
+    if(err || !newCommentBucket){
+      console.log(req.user._id+' => (comments-2)newCommentBucket err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else{
+      if(newCommentBucket.count == 1){
+        foundPost.commentBuckets.push(newCommentBucket._id);
+        foundPost.commentsCount += 1;
+        foundPost.save();
+      } else if(newCommentBucket.count >= 10){
+        foundPost.bucketNum += 1;
+        foundPost.commentsCount += 1;
+        foundPost.save();
+      } else{
+        foundPost.commentsCount += 1;
+        foundPost.save();
+      }
+      req.flash('success', 'Comment posted successfuly');
+      return res.redirect('back');
+    }
+    });
+  }
+  });
+});
+
+// COMMENT EDIT ROUTE 
+router.get('/posts/:post_id/comments/:bucket_id/:comment_id/edit', middleware.checkCommentOwnership, function(req, res){
+  Comment.findOne({_id: req.params.bucket_id}, {comments: {$elemMatch: {_id: req.params.comment_id}}},
+  function(err, foundBucket){
+  if(err || !foundBucket){
+    console.log(req.user._id+' => (comments-3)foundBucket err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    var bucket = foundBucket;
+    var foundComment = foundBucket.comments[0];
+    res.render('comments/edit', {bucket: bucket, comment: foundComment});
+  }
+  });
+});
+
+// COMMENT UPDATE
+router.put('/comments/:bucket_id/:comment_id', middleware.checkCommentOwnership, function(req, res){
+  Comment.updateOne({_id: req.params.bucket_id, 'comments._id': req.params.comment_id}, 
+  {$set: {'comments.$.text': req.body.text}}, function(err, updateBucket){
+  if(err || !updateBucket){
+    console.log(req.user._id+' => (comments-4)updateBucket err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    req.flash('success', 'Comment edited successfuly');
+    return res.redirect('back');
+  }
+  });
+});
+
+// COMMENT DESTROY ROUTE
+router.delete('/posts/:post_id/comments/:bucket_id/:comment_id', middleware.checkCommentOwnership, function(req, res){
+  Post.findById(req.params.post_id, function(err, foundPost){
+  if(err || !foundPost){
+    console.log(req.user._id+' => (comments-5)foundPost err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    Comment.findOneAndUpdate({_id: req.params.bucket_id},
+    {$inc: {count: -1}, $pull: {comments: {_id: req.params.comment_id}}}, {fields: {count:1} , new: true}, 
+    function(err, deleteBucket){
+    if(err || !deleteBucket){
+      console.log(req.user._id+' => (comments-6)deleteBucket err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else{
+      if(deleteBucket.count == 0){
+        var index = foundPost.commentBuckets.indexOf(deleteBucket._id);
+        if (index > -1) {
+          foundPost.commentBuckets.splice(index, 1);
+          foundPost.commentsCount -= 1;
+          foundPost.save();
+        }
+        deleteBucket.remove();
+      } else{
+        foundPost.commentsCount -= 1;
+        foundPost.save();
+      }
+    req.flash('success', 'Comment deleted successfuly');
+    return res.redirect('back');
+    }
+    });
+  }
+  });
+});
+
+// LOAD MORE COMMENTS
+router.get('/moreComments/:post_id', function(req, res){
+  Post.findById(req.params.post_id).select({topic: 1, commentBuckets: 1})
+  .exec(function (err, foundPost){
+  if(err || !foundPost){
+    console.log('(comments-7)foundPost err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    if(foundPost.topic == '' && foundPost.commentBuckets != ''){
+      Comment.find({_id: foundPost.commentBuckets[req.query.newIndex]})
+      .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+      .exec(function(err, foundBucket){
+      if(err || !foundBucket){
+        console.log('(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else if(!err && foundBucket != ''){
+        var CA_50_profilePic = [];
+        for(var j=0;j<foundBucket[0].comments.length;j++){
+          CA_50_profilePic[j] = cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId,
+          {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        }
+        var index = req.query.newIndex-1;
+        if(req.user && foundBucket != ''){
+          var upComments = commentCheck(req.user._id,foundBucket);
+          var currentUser = req.user._id
+        } else{
+          var upComments = [], currentUser = null;
+        }
+        res.json({post: foundPost, upComments: upComments, buckets: foundBucket, index: index,
+        currentUser: currentUser, CA_50_profilePic: CA_50_profilePic});
+      }
+      });
+    } else{
+      res.redirect('back');
+    }
+  }
+  });
+});
+
+//Comments Vote route
+router.put('/comments/:bucket_id/:comment_id/vote', middleware.isLoggedIn, function(req, res){
+  Comment.findOneAndUpdate({_id: req.params.bucket_id, 
+    comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}},
+  {$push: {'comments.$.upvoteUserIds': req.user._id}, $inc: {'comments.$.upvotesCount': 1}},
+  {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}}, new: true},
+  function(err, notFoundComment){
+  if(err){
+    console.log(req.user._id+' => (comments-9)notFoundComment err:- '+JSON.stringify(err, null, 2));
+    req.flash('error', 'Something went wrong :(');
+    return res.redirect('back');
+  } else{
+    if(notFoundComment){
+      res.json(notFoundComment);
+    }else if(!notFoundComment){
+      Comment.findOneAndUpdate({_id: req.params.bucket_id, 
+        comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}},
+      {$pull: {'comments.$.upvoteUserIds': req.user._id}, $inc: {'comments.$.upvotesCount': -1}},
+      {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}}, new: true},
+      function(err, foundComment){
+      if(err){
+        console.log(req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        res.json(foundComment);
+      }
+      });
+    }
+  }
+  });
+});
+
+function commentCheck(userId,bucket){
+  if(userId){
+    var upComments = [];
+    for(var k=0;k<bucket.length;k++){
+      for(var i=0;i<bucket[k].count;i++){
+        for(var j=0;j<bucket[k].comments[i].upvotesCount;j++){
+          if(bucket[k].comments[i].upvoteUserIds[j].equals(userId)){
+            upComments.push(bucket[k].comments[i]._id);
+          }
+        }
+      }
+    }
+    return upComments;
+  } else{var upComments = []; return upComments;}
+};
+
+module.exports = router;

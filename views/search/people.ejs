@@ -1,0 +1,70 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters">
+	<div class="col-lg-9">
+		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+
+		<div id="server-search-people">
+			<% var len = users.length; var k=0; for(k;k<len;k++){ %>
+				<div class="card searchcard2">
+					<div class="d-flex flex-row">
+						<div>
+				      <a href="/users/<%= users[k]._id %>">
+	            	<img class="searchdp" src="<%= users[k].profilePic || '/images/noUser.png' %>">
+	          	</a>
+				    </div>
+				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+				    	<div class="valign">
+				    		<div>
+						    	<a href="/users/<%= users[k]._id %>">
+						      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+						      </a>
+						    </div>
+				    		<div>
+						    	<% if(currentUser && users[k]._id.equals(currentUser._id)){ %>
+						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+						    	<% } else if(currentUser && !users[k]._id.equals(currentUser._id)){ 
+						    		currentUser.friends.forEach(function(friend){ 
+						    			if(users[k]._id.equals(friend)){ %>
+							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				                <i class="fas fa-check"></i> Friends</button>
+						    	<% }})} %>
+						    </div>
+					    </div>
+				      <div class="grey text-xs"><%= users[k].note %></div>
+				      <br>
+				      <div class="valign">
+				      	<div>
+					      	<div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
+					      	<% if(users[k].userKeys){ %>
+							      <div class="grey text-xs"><%= users[k].userKeys.worksAt %></div>
+							      <div class="grey text-xs"><%= users[k].userKeys.college %></div>
+							      <div class="grey text-xs"><%= users[k].userKeys.school %></div>
+							    <% } %>
+						    </div>
+						    <% if(users[k].userKeys){ %>
+					      	<div class="darkgrey text-sm mt-auto"><%= users[k].userKeys.residence %></div>
+					      <% } %>
+					    </div>
+				    </div>
+				  </div>
+			  </div>
+			<% } %>
+		</div>
+		<div id="client-search-people"></div>
+		<div class="text-center mt-2">
+      <button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
+      	<span id="load-more-search-people-span"></span>Load More
+      </button>
+    </div>
+	</div>
+	<div class="col-lg-3 px-2 mobileNone">
+		<br>
+    <div class="list-group">
+      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

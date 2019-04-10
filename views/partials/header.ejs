@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="theme-color" content="#000">
+    <meta name="msapplication-navbutton-color" content="#000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GhosTwn</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+  </head>
+  <body>
+    <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top navback drop-shadow">
+      <a href="#" onclick="hidesidebar();" class="btn hidesidebar" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </a>
+      <a class="navbar-brand" href="/">
+        <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
+              <a href="/home" class="nav-link">Home</a>
+          </li>
+          <!--Search bar-->
+          <li class="nav-item">
+            <form action="/search" method="GET" class="form-inline">
+              <div class="input-group input-group-sm">
+                <input type="text" name="search" class="form-control search" placeholder="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-secondary search" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+          <% if(!currentUser){ %>
+            <li class="nav-item">
+              <span class="text-lg nav-link requests" data-toggle="tooltip" title="Help"><i class="fas fa-question-circle"></i></span>
+            </li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
+              <a href="/login" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">
+              <a href="/register" class="nav-link">Sign Up</a>
+            </li>
+          <% } else{ %>
+            <li class="nav-item">
+              <span class="text-lg nav-link requests" title="Help"><i class="fas fa-question-circle"></i></span>
+            </li>
+            <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
+              <span class="text-xl nav-link requests" title="Requests" onclick="toggle_display('pop_box');">
+                <i class="fas fa-user-friends"></i>
+              </span>
+              <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
+                <span class="badge text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% } %>
+            </li>
+            <li class="nav-item">
+              <div class="vr">
+                <a href="/users/<%= currentUser.id %>" class="nav-link img">
+                  <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
+                  <span id="navname"><%= currentUser.firstName %></span>
+                </a>
+              </div>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="nav-link">Logout</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+
+<!-- Popup box -->
+<div class="popup-box scroll moz-scroll" id="pop_box">
+  <% if (currentUser && currentUser.clubInvites.length != 0){ %>
+    <div class="pop-header valign">
+      <h6 class="nothing grey text-xs">Club Invites</h6>
+      <% if (currentUser.clubInvites.length != 0){ %>
+        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+      <% } %>
+    </div>
+    <hr>
+    <% for(var i=0;i<clubInviteRequests.length;i++){ %>
+      <div class="pop-container">
+        <div class="valign py-1 w-100">
+          <div class="d-inline-flex">
+            <span>
+              <a href="/clubs/<%= clubInviteRequests[i]._id %>">
+                <img class="navdp" src="<%= CI_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
+            </span>
+            <span>
+              <div class="d-flex flex-column lineheight2 mx-2">
+                <a href="/clubs/<%= clubInviteRequests[i]._id %>">
+                  <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
+                <span class="grey text-xs"><%= clubInviteRequests[i].banner %></span>
+              </div>
+            </span>
+          </div>
+          <div>
+            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+              <span>
+                <button class="btn btnxs btn-primary text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
+              </span>
+              <span>
+                <button class="btn btnxs btn-secondary text-sm" name="removeInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Decline</button>
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }; %>
+  <% } %>
+  <% if(currentUser && currentUser.friendRequests.length != 0){ %>
+    <div class="pop-header valign">
+      <h6 class="nothing grey text-xs">Friend Requests</h6>
+      <% if (currentUser.clubInvites.length == 0){ %>
+        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+      <% } %>
+    </div>
+    <hr>
+    <% for(var j=0;j<friendRequests.length;j++){ %>
+      <div class="pop-container">
+        <div class="valign py-1">
+          <div class="d-inline-flex">
+            <span>
+              <a href="/users/<%= friendRequests[j]._id %>">
+                <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUser.png' %>"></a>
+            </span>
+            <span>
+              <div class="d-flex flex-column lineheight2 mx-2">
+                <a href="/users/<%= friendRequests[j]._id %>">
+                  <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
+                <span class="grey text-xs"><%= friendRequests[j].note %></span>
+              </div>
+            </span>
+          </div>
+          <div>
+            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+              <span>
+                <button class="btn btnxs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
+              </span>
+              <span>
+                <button class="btn btnxs btn-secondary text-sm" name="removeReq" type="submit" value="<%= friendRequests[j]._id %>">Decline</button>
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }; %>
+  <% } else if(currentUser && (currentUser.friendRequests.length == 0 && currentUser.clubInvites.length == 0)){ %>
+    <div class="pop-container valign">
+      <span class="grey text-sm">No pending requests</span>
+      <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+    </div>
+  <% } %>
+</div>
+
+    <!-- The sidebar -->
+    <div id="sidebar" class="sidebar scroll moz-scroll">
+      <a class="hr2" id="side-home" href="/home"><i class="fas fa-home"></i> Home</a>
+    <% if(!currentUser){ %>
+      <a class="hr2" href="#clubs"><i class="fas fa-door-closed"></i> Clubs</a>
+    <% } else { %>
+    <a class="hr2 dropdown-sidebar" href="#clubs">
+      <div class="valign">
+        <div id="club-door"><i class="fas fa-door-closed"></i> Clubs</div>
+        <div id="side-drop" class="mx-1"><i class="fa fa-caret-down"></i></div>
+      </div>
+    </a>
+    <div id="sidebar-dropbox" class="scroll moz-scroll">
+      <% userClubs.forEach(function(club){ %>
+        <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
+      <% }); %>
+    </div>
+    <% } %>
+      <a class="hr2" id="side-friends" href="/friends-posts"><i class="fas fa-chalkboard-teacher"></i> Friends'</a>
+      <a class="hr2" id="side-discover" href="/discover"><i class="fas fa-compass"></i> Discover</a>
+    </div>
+
+    <!-- Page content -->
+    <div id="content" class="content">
+      <div class="container">
+        <% if(error && error.length>0){ %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= error %>
+          </div>
+        <% } %>
+      </div>
+      <div class="container">
+        <% if(success && success.length>0){ %>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <%= success %>
+          </div>
+        <% } %>
+      </div>

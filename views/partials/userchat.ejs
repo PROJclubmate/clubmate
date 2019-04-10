@@ -1,0 +1,34 @@
+<div class="card nothing">
+  <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left card-body3 valign" data-toggle="collapse" data-target="#chatbox">
+    <div class="text-sm boldtext">Direct chat</div>
+    <div class="boldtext text-xxxs greencolor ml-2"><i class="fas fa-circle"></i></div>
+  </div>
+  <div id="chatbox" class="yellowback collapse">
+    <div id="messages" class="card-body3 scroll moz-scroll"></div>
+    <div class="input-bottom valign px-1">
+      <div class="input-group">
+        <input id="user-message" onfocus="block_display('pushmsg');" class="emoji-input commentbox text-sm form-control form-control-sm" type="text" name="msgText" placeholder="Write a message">
+      </div>
+      <% if(currentUser){ %>
+        <div class="pushmsg"><button id="user-send" class="btn btn-sm btn-primary btn-round ml-1" title="Send club message"><i class="fab fa-telegram-plane"></i></button></div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<div class="pushmsg card nothing" style="border-top: none;">
+  <div class="text-sm darkgrey valign ml-1">
+    <div id="msg-status">Status: Idle</div>
+    <div class="text-xs darkgrey chat-input-tool">
+      <span class="emoji-panel">
+        <button id="emoji-picker" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+          <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover">
+            <% include ../partials/emoji_picker %>
+          </div>
+          <i class="far fa-laugh-wink"></i>
+        </button>
+      </span>
+      <span id="thumbstack" class="btn btn-sm chat-input-tool" title="Pin chatbox"><i class="fas fa-thumbtack"></i></span>
+      <span id="arrows-v" class="nopad btn btn-sm chat-input-tool" title="Expand chatbox"><i class="fas fa-arrows-alt-v"></i></span>
+    </div>
+  </div>
+</div>

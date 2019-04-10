@@ -1,0 +1,266 @@
+<% var len = posts.length; var k=0; for(k;k<len;k++){ %>
+  <div class="card">
+    <div class="card-body">
+      <div class="dropctn">
+        <div class="valign">
+          <div>
+            <% if(!friendsPostUrl){ %>
+              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+            <% } else{ %>
+              <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
+            <% } %>
+          </div>
+          <div>
+            <div>
+              <% if(!friendsPostUrl){ %>
+                <span class="mobiletext2">
+                  <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
+                </span>
+              <% } else{ %>
+                <span>
+                  <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
+                </span>
+              <% } %>
+              <em class="text-xs grey">. <%= moment(posts[k].createdAt).fromNow() %></em>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown">
+          <% if(currentUser){ %>
+          <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+          <% }; %>
+          <ul class="dropdown-menu dropdown-menu-right dropbox">
+            <div class="container drop-shadow1">
+              <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+              <% if(currentUser && currentUser._id.equals(posts[k].postAuthor.id._id)){ %>
+                <hr>
+                <li>
+                  <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
+                    <button class="dropitems link-button text-sm red" type="submit">Delete post</button>
+                  </form>
+                </li>
+              <% }; %>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% if(posts[k].topic == ''){ %>
+      <% if(posts[k].image){ %>
+        <% if(!friendsPostUrl){ %>
+          <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+        <% } else{ %>
+          <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+        <% } %>
+          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+        </a>
+        <div class="card-body">
+          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
+        </div>
+        <hr>
+      <% } else{ %>
+        <div class="card-body2 nounderline nothing">
+          <% if(!friendsPostUrl){ %>
+            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+          <% } else{ %>
+            <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+          <% } %>
+            <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+          </a>
+        </div>
+        <hr>
+      <% } %>
+      <div class="card-body3">
+        <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
+          <div class="valign">
+            <% if(currentUser){ %>
+              <% if(hasVote[k] == 1){ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn greencolor" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm greencolor"><%= posts[k].likeCount %></span>
+                <span class="d-flex ml-2 mr-1">
+                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
+                </span>
+                <span id="dislike-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].dislikeCount %></span>
+              <% } else if(hasVote[k] == -1){ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].likeCount %></span>
+                <span class="d-flex ml-2 mr-1">
+                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn blackcolor" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
+                </span>
+                <span id="dislike-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm blackcolor"><%= posts[k].dislikeCount %></span>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].likeCount %></span>
+                <span class="d-flex ml-2 mr-1">
+                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
+                </span>
+                <span id="dislike-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].dislikeCount %></span>
+              <% } %>
+            <% }else{ %>
+              <span class="d-flex mr-2"> 
+                <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+              </span>
+              <span class="d-flex ml-2">
+                <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
+              </span>
+            <% } %>
+          </div>
+        
+          <div class="valign">
+            <% if(currentUser){ %>
+              <% if(hasVote[k] == 3){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm redcolor"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn redcolor" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+                <% } %>
+            <% }else{ %>
+              <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+            <% } %>
+          </div>
+        </form>
+      </div>
+    <% } else{ %>
+      <!-- POSTS WITH TOPIC AND FURTHER DISCUSSION -->
+      <div class="nounderline nothing">
+        <div class="valign topic-head">
+          <div class="mx-2 mb-auto">
+            <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
+          </div>
+          <!-- UP/DOWN VOTE -->
+          <div class="mx-2 mb-auto d-flex flex-column">
+            <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
+              <% if(hasModVote[k] == 1){%>
+                <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                <span id="modVote-count<%= posts[k]._id %>" class="boldtext nothing text-xs text-center bluecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+              <% } else if(hasModVote[k] == -1){ %>
+                <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                <span id="modVote-count<%= posts[k]._id %>" class="boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+              <% } else if(hasModVote[k] == 0){ %>
+                <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                <span id="modVote-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+              <% } %>
+            </form>
+          </div>
+        </div>
+        <% if(posts[k].image){ %>
+          <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+          <% if(!friendsPostUrl){ %>
+            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+          <% } else{ %>
+            <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+          <% } %>
+            <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+          </a>
+        <% } else{ %>
+          <% if(!friendsPostUrl){ %>
+            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+          <% } else{ %>
+            <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+          <% } %>
+            <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+          </a>
+        <% } %>
+      </div>
+      <hr>
+      <!-- Vote bar -->
+      <div class="card-body3">
+        <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
+          <div class="valign">
+            <span class="grey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+          </div>
+          <div class="valign">
+            <% if(currentUser){ %>
+              <% if(hasVote[k] == 3){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm redcolor"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn redcolor" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+                <% } %>
+                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+            <% } else{ %>
+              <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+            <% } %>
+          </div>
+        </form>
+      </div>
+    <% } %>
+  </div>
+  <!-- COMMENTS -->
+  <% if(posts[k].topic == ''){ %>
+    <div class="card indexcard2">
+      <% if(posts[k].commentsCount != 0){ %>
+        <div class="card-body3">
+          <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
+            <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
+            <% if(z<=2){ %>
+              <div class="valign">
+                <div class="wordwrap">
+                  <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  </span>
+                  <span class="mobiletext"><%= comments[j].text %></span>
+                </div>
+                <div class="d-flex flex-row-reverse valign mb-auto pt-2">
+                  <span class="text-xs text-center boldtext grey"><%= comments[j].upvotesCount %></span>
+                <% if(currentUser && comments[j].commentAuthor.id._id.equals(currentUser._id)){ %>
+                  <span class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle editprofile valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xs"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right dropbox">
+                      <div class="container drop-shadow1">
+                        <li>
+                          <a class="dropitems text-sm" href="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>/edit">Edit comment</a>
+                        </li>
+                        <hr>
+                        <li>
+                          <form class="delete-form inline text-sm" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
+                            <button class="dropitems link-button red" type="submit">Delete comment</button>
+                          </form>
+                        </li>
+                      </div>
+                    </ul>
+                  </span>
+                <% } %>
+                </div>
+              </div>
+            <% z++;} %>
+            <% } %>
+          <% } %>
+        </div>
+        <hr>
+      <% }; %>
+      <div class="card-body3">
+        <div class="valign">
+          <div class="mb-auto">
+            <% if(currentUser){ %>
+              <a href="/users/<%= currentUser._id %>"><span><img class="postdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
+            <% } else{ %>
+              <span><img class="postdp rounded-circle" src="<%= '/images/noUser.png' %>"></span>
+            <% }%>
+          </div>
+          <div class="commentdiv">
+            <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
+              <div class="input-group">
+                <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
+              </div>
+              <div class="d-flex flex-row-reverse">
+                <div onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Cancel</div>
+                  <button class="btn btn-sm btn-primary commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% }; %>
+<% }; %>

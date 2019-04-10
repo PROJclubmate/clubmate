@@ -1,0 +1,52 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters">
+	<div class="col-lg-9">
+		<div class="ml-2"><span class="boldtext"><a href="/users/<%= userId %>" class="black"><%= userName %></a></span>'s friends</div>
+
+		<div id="server-friends">
+			<div class="row no-gutters">
+				<% if(friendsCount == 0){ %>
+					<h6 class="grey m-2">No friends yet :)</h6>
+				<% }else{ %>
+					<% var len = users.length; var k=0; for(k;k<len;k++){ %>
+						<div class="col-md-4 mobilepad px-1">
+							<div class="card searchcard">
+								<div class="d-inline-flex">
+									<div>
+							      <a href="/users/<%= users[k]._id %>">
+				            	<img class="searchdp" style="margin: 0 !important;" src="<%= users[k].profilePic || '/images/noUser.png' %>">
+				          	</a>
+							    </div>
+							    <div class="card-body3 lineheight">
+							    	<a href="/users/<%= users[k]._id %>">
+							      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+							      </a>
+							      <span class="grey text-xs"><%= users[k].note %></span>
+							      <span class="darkgrey text-sm bottomtext"><%= users[k].userKeys.residence %></span>
+							    </div>
+							  </div>
+						  </div>
+						</div>
+				  <% } %>
+				<% } %>
+			</div>
+		</div>
+		<div id="client-friends"></div>
+		<% if(friendsCount > 9){ %>
+			<div class="text-center mt-2">
+	      <button id="load-more-friends-btn" class="btn btn-primary btn-sm" type="button" value="<%= foundFriendIds %>">
+	      	<span id="load-more-friends-span"></span>Load More
+	      </button>
+	    </div>
+	  <% } %>
+	</div>
+	<div class="col-lg-3 px-2 mobileNone">
+    <br>
+    <div class="list-group">
+      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

@@ -1,0 +1,78 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters">
+	<div class="col-lg-9">
+		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+
+		<div id="server-search-clubs">
+			<% var len = clubs.length; var k=0; for(k;k<len;k++){ %>
+				<div class="card searchcard2">
+					<div class="d-flex flex-row">
+						<div>
+				      <a href="/clubs/<%= clubs[k]._id %>">
+	            	<img class="searchdp" src="<%= clubs[k].avatar || '/images/noClub.png' %>">
+	          	</a>
+				    </div>
+				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+				    	<div class="valign">
+				    		<div>
+						    	<a href="/clubs/<%= clubs[k]._id %>">
+						      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
+						      </a>
+						    </div>
+					    	<div>
+						    	<% if(currentUser){ 
+						    		currentUser.userClubs.forEach(function(userClub){ 
+						    			if(clubs[k]._id.equals(userClub.id)){ %>
+							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				                <i class="fas fa-check"></i> Member</button>
+						    	<% }})} %>
+						    </div>
+						  </div>
+						  <div class="grey text-xs"><%= clubs[k].banner %></div>
+				      <br>
+				      <% if(clubs[k].clubKeys){ %>
+					      <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.weblink %></div>
+					      <div class="grey text-xs"><%= clubs[k].clubKeys.grouptype %></div>
+					      <div class="grey text-xs"><%= clubs[k].clubKeys.organization %></div>
+					    <% } %>
+				      <div class="valign">
+					      <div class="grey text-xs"><%= break_arr(clubs[k].categories) %></div>
+					      <% if(clubs[k].clubKeys){ %>
+					      	<div class="darkgrey text-sm mt-auto"><%= clubs[k].clubKeys.location %></div>
+					      <% } %>
+					    </div>
+				    </div>
+				  </div>
+			  </div>
+			<% } %>
+		</div>
+		<div id="client-search-clubs"></div>
+		<div class="text-center mt-2">
+      <button id="load-more-search-clubs-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundClubIds %>">
+      	<span id="load-more-search-clubs-span"></span>Load More
+      </button>
+    </div>
+	</div>
+	<div class="col-lg-3 px-2 mobileNone">
+    <br>
+    <div class="list-group">
+      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>
+
+<%
+function break_arr(arr){
+	for(i=0;i<arr.length;i++){
+		if(i == 0){
+			var str = arr[i];
+		} else{
+			var str = str +', '+ arr[i];
+		}
+	}
+	return str;
+}
+%>

@@ -1,0 +1,54 @@
+<div class="row no-gutters mt-2 lineheight2">
+  <% for(var i=0;i<clubs.length;i++){ %>
+    <div class="col-md-1 col-2 py-1 mb-auto">
+      <a href="/clubs/<%= clubs[i].id._id %>">
+      <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
+    </div>
+    <div class="col-md-9 col-8 my-auto">
+      <span>
+        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext">
+          <strong><%= clubs[i].id.name %></strong>
+        </a>
+      </span>
+      <span class="my-auto grey text-xs">
+        <%= clubs[i].status %>
+        <div class="status" id="status<%= clubs[i].id._id %>">
+          <form action="/status-rank?_method=PUT" method="POST">
+            <div class="input-group mt-1">
+              <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
+              <div class="input-group-append">
+                <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= user._id %>,<%= clubs[i].id._id %>">Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </span>
+    </div>
+    <div class="col-md-2 col-2 my-auto text-right">
+      <span class="mobileNone">
+        <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
+      </span>
+      <span class="mobileShow">
+        <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
+      </span>
+      <span class="dropdown">
+        <% if(currentUser && match){ %>
+          <button class="btn btn-sm dropdown-toggle text-xs nothing" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+        <% }; %>
+        <ul class="dropdown-menu dropdown-menu-right dropbox">
+          <div class="container drop-shadow1">
+            <li><a class="dropitems text-sm" href="#!" onclick="toggle_display('status<%= clubs[i].id._id %>')">Update status</a></li>
+            <% if(clubs[i].rank != 0){ %>
+              <hr>
+              <li>
+                <form class="delete-form inline text-sm" action="/status-rank?_method=PUT" method="POST">
+                  <button class="dropitems link-button red" type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>">Leave <%= clubs[i].id.name %></button>
+                </form>
+              </li>
+            <% } %>
+          </div>
+        </ul>
+      </span>
+    </div>
+  <% }; %>
+</div>
