@@ -1,7 +1,8 @@
-var mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
+const mongoose          = require("mongoose"),
+  passportLocalMongoose = require("passport-local-mongoose"),
+  Schema                = mongoose.Schema;
 
-var clubSchema = new mongoose.Schema({
+const clubSchema = new Schema({
   name: String,
   banner: String,
   avatar: String,
@@ -30,12 +31,12 @@ var clubSchema = new mongoose.Schema({
     pushedAt: {type: Date, default: Date.now}
   }],
   reccomendations: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }],
   clubUsers: [{
     id: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     },
     userRank: {
@@ -53,13 +54,14 @@ var clubSchema = new mongoose.Schema({
     _id: false
   }],
   conversationId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "ClubConversation"
   }
 },
 {
   timestamps: true
 });
+
 clubSchema.index({name: "text"});
 
 module.exports = mongoose.model("Club", clubSchema);

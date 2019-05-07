@@ -1,7 +1,7 @@
-var Post = require("../models/post");
-var Comment = require("../models/comment");
-var User = require("../models/user");
-var Club = require("../models/club");
+const Post  = require("../models/post"),
+  Comment   = require("../models/comment"),
+  User      = require("../models/user"),
+  Club      = require("../models/club");
 
 // all the middleare goes here
 var middlewareObj = {};

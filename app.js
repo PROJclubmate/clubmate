@@ -1,54 +1,55 @@
- var express       = require("express"),
+const express      = require('express'),
   app              = express(),
-  bodyParser       = require("body-parser"),
-  http             = require("http").Server(app),
-  io               = require("socket.io")(http),
-  mongoose         = require("mongoose"),
-  flash            = require("connect-flash"),
-  passport         = require("passport"),
-  LocalStrategy    = require("passport-local"),
-  methodOverride   = require("method-override"),
-  User             = require("./models/user"),
-  Club             = require("./models/club"),
-  Conversation     = require("./models/conversation"),
-  ClubConversation = require("./models/club-conversation"),
-  Message          = require("./models/message")
+  bodyParser       = require('body-parser'),
+  http             = require('http').Server(app),
+  io               = require('socket.io')(http),
+  mongoose         = require('mongoose'),
+  flash            = require('connect-flash'),
+  passport         = require('passport'),
+  LocalStrategy    = require('passport-local'),
+  methodOverride   = require('method-override'),
+  User             = require('./models/user'),
+  Club             = require('./models/club'),
+  Conversation     = require('./models/conversation'),
+  ClubConversation = require('./models/club-conversation'),
+  Message          = require('./models/message')
   port             = 8080,
-  url              = "mongodb://localhost/ghost_dev",
+  url              = 'mongodb://localhost/ghost_dev',
   dotenv           = require('dotenv').config();
 
-var cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary');
 cloudinary.config({ 
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_ID, 
   api_secret: process.env.API_SECRET,
 });
 
-//Requiring controllers
-var commentRoutes  = require("./controllers/comments"),
-  discussionRoutes = require("./controllers/discussions"),
-  postRoutes       = require("./controllers/posts"),
-  indexRoutes      = require("./controllers/index"),
-  profileRoutes    = require("./controllers/profiles");
+//Requiring routes
+const indexRoutes  = require('./routes/index'),
+  profileRoutes    = require('./routes/profiles'),
+  postRoutes       = require('./routes/posts'),
+  commentRoutes    = require('./routes/comments'),
+  discussionRoutes = require('./routes/discussions');
 
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
-app.use(methodOverride("_method"));
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 app.use(flash());
 
-app.locals.moment = require("moment");
+app.locals.moment = require('moment');
 
 //PASSPORT CONFIGURATION
-app.use(require("express-session")({
-  secret: "Once again Rusty wins cutest dog!",
+app.use(require('express-session')({
+  secret: 'Once again Rusty wins cutest dog!',
   resave: false,
   saveUninitialized: false
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
+// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
@@ -87,16 +88,35 @@ app.use(async function(req, res, next){
       return res.redirect('back');
     }
   }
-  res.locals.error   = req.flash("error");
-  res.locals.success = req.flash("success");
+  res.locals.error   = req.flash('error');
+  res.locals.success = req.flash('success');
   next();
 });
 
-app.use("/", indexRoutes);
-app.use("/", postRoutes);
-app.use("/", commentRoutes);
-app.use("/", discussionRoutes);
-app.use("/", profileRoutes);
+// Mount routes
+app.use('/', indexRoutes);
+app.use('/', profileRoutes);
+app.use('/', postRoutes);
+app.use('/', commentRoutes);
+app.use('/', discussionRoutes);
+
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   const err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
+
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 io.on('connection', function(socket){
   // console.log('socket: '+ socket.id +' connected');
@@ -351,8 +371,14 @@ app.post('/new/club-chat', function(req, res, next){
 
 
 http.listen(port, function(){
-  console.log("GhosTwn server has started on port "+port+"!!");
+  console.log('http is listening');
 })
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log("GhosTwn server has started on port "+port+"!!");
+});
 
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true}, function(err, client){
   if(err){

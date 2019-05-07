@@ -1,7 +1,8 @@
-var mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
+const mongoose          = require("mongoose"),
+  passportLocalMongoose = require("passport-local-mongoose"),
+  Schema                = mongoose.Schema;
 
-var userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   firstName: {type: String, required: true},
   lastName: String,
   fullName: {type: String, required: true},
@@ -32,16 +33,16 @@ var userSchema = new mongoose.Schema({
   friends: [this],
   friendsCount: Number,
   clubInvites: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Club"
   }],
   postHearts: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Post"
   }],
   userClubs: [{
     id: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Club"
     },
     clubName: String,
@@ -68,7 +69,7 @@ var userSchema = new mongoose.Schema({
   userChats: [{
     userId: this,
     conversationId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Conversation"
     },
     _id: false
@@ -94,7 +95,7 @@ userSchema.plugin(passportLocalMongoose,{
   usernameField : "email",
   errorMessages: {
     IncorrectPasswordError: "Password incorrect",
-    IncorrectUsernameError: "There is no account registered with that email",
+    IncorrectUsernameError: "There is either no account registered with that email or the account may not have been verified",
     UserExistsError: "A user with the given email is already registered"
   },
   // passwordValidator: passwordValidator,

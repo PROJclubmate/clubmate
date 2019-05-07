@@ -310,9 +310,9 @@
                           <% var interests = user.interests; var len = interests.length; var i=0;
                           for(i;i<=len;i++){ %>
                             <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Motocross" value="<%= interests[i] %>" autofocus>
+                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Photography" value="<%= interests[i] %>" autofocus>
                             <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Motocross" value="<%= interests[i] %>">
+                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Photography" value="<%= interests[i] %>">
                             <% } %>
                           <% }; %>
                         </div>
@@ -506,9 +506,9 @@
                 <form action="/users/<%= user._id %>/clubs" method="POST" enctype="multipart/form-data">
                   <div class="form-signin">
                     <label for="name" class="sr-only">Club name</label>
-                      <input id="name" class="form-control" type="text" name="name" placeholder="Club name">
+                      <input id="name" class="form-control commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
                     <label for="banner" class="sr-only">Club banner</label>
-                      <input id="banner" class="form-control" type="text" name="banner" placeholder="Banner">
+                      <input id="banner" class="form-control" type="text" name="banner" placeholder="Banner" required>
                     <label for="avatar" class="d-flex text-left">Club avatar</label>
                       <input type="file" id="avatar" name="avatar" accept="image/*" required>
                     <br>

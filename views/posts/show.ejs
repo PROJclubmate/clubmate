@@ -199,7 +199,7 @@
         <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
         <div class="card-body3 greyback2 notext-shadow valign">
           <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
-          <div class="text-xs righttext"><em><%= moment(edits[i].createdAt).fromNow() %></em></div>
+          <div class="text-xs righttext"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
         </div>
         <br>
         <% }; %>

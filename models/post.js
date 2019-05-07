@@ -1,6 +1,7 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema       = mongoose.Schema;
 
-var postSchema = new mongoose.Schema({
+const postSchema = new Schema({
   description: String,
   descEdit: [{
     desc: String,
@@ -33,15 +34,15 @@ var postSchema = new mongoose.Schema({
   dislikeCount: {type: Number, default: 0},
   heartCount: {type: Number, default: 0},
   likeUserIds: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }],
   dislikeUserIds: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }],
   heartUserIds: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }],
   commentsCount: {type: Number, default: 0},
@@ -49,17 +50,17 @@ var postSchema = new mongoose.Schema({
   bucketNum: {type: Number, default: 1},
   commentBuckets: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Comment"
     }
   ],
   postClub: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Club"
   },
   postAuthor: {
     id:{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     },
     authorName: String
@@ -70,18 +71,18 @@ var postSchema = new mongoose.Schema({
   subpostbucketNum: {type: Number, default: 1},
   subpostBuckets: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Discussion"
     }
   ],
   upVoteCount: {type: Number, default: 0},
   downVoteCount: {type: Number, default: 0},
   upVoteUserIds: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }],
   downVoteUserIds: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   }]
 },

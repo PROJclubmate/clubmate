@@ -1,8 +1,9 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema       = mongoose.Schema;
 
-var commentSchema = new mongoose.Schema({
+const commentSchema = new Schema({
 	postId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: Schema.Types.ObjectId,
     ref: "Post"
 	},
 	bucket: {type: Number, default: 1},
@@ -17,7 +18,7 @@ var commentSchema = new mongoose.Schema({
 		postedAt: {type: Date, default: Date.now},
 		commentAuthor: {
 			id:{
-				type: mongoose.Schema.Types.ObjectId,
+				type: Schema.Types.ObjectId,
 	      ref: "User"
 	    },
 	    authorName: String
@@ -25,7 +26,7 @@ var commentSchema = new mongoose.Schema({
 		text: String,
 		upvotesCount: {type: Number, default: 0},
 		upvoteUserIds: [{
-		  type: mongoose.Schema.Types.ObjectId,
+		  type: Schema.Types.ObjectId,
 		  ref: "User"
 		}]
 	}]

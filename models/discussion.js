@@ -1,8 +1,9 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema       = mongoose.Schema;
 
-var discussionSchema = new mongoose.Schema({
+const discussionSchema = new Schema({
 	postId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Post"
   },
   bucket: {type: Number, default: 1},
@@ -15,7 +16,7 @@ var discussionSchema = new mongoose.Schema({
     postedAt: {type: Date, default: Date.now},
     subPostAuthor: {
       id:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User"
       },
       authorName: String
@@ -28,11 +29,11 @@ var discussionSchema = new mongoose.Schema({
     likeCount: {type: Number, default: 0},
     dislikeCount: {type: Number, default: 0},
     likeUserIds: [{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     }],
     dislikeUserIds: [{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     }]
   }]

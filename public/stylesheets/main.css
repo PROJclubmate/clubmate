@@ -51,11 +51,11 @@ div.content {
   #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
     box-shadow: 0px 3px 5px -2px rgba(0,0,0,0.3);}
   a.hr2{border: none;}
-  .sidebar {z-index: 4; width: 100%; height: auto; position: fixed;
+  .sidebar{z-index: 4; width: 100%; height: auto; position: fixed;
     box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.3);}
   html{scroll-behavior: smooth;}
-  .sidebar a {float: left;}
-  div.content {margin-left: 0;}
+  .sidebar a{float: left;}
+  div.content{margin-left: 0;}
   div.content{padding: 0.5rem 0;}
   .hidesidebar{visibility: hidden;}
 }
@@ -91,8 +91,8 @@ div.content {
   div.rcov{border-radius: 0.75rem 0.75rem 0 0; box-shadow: none;}
   div.lpcov{width: inherit; top: -2.5rem;}
   .profilename{text-align: center; white-space: pre-wrap !important; width: 175px !important;}
-  img.profilePic.cover{height: 175px;width: 175px;}
-  img.avatar.cover{height: 175px;width: 175px;}
+  img.profilePic.cover{height: 175px; width: 175px;}
+  img.avatar.cover{height: 175px; width: 175px;}
   div.carousel-frame{height: 150px;}
   div.carousel-frame2{height: 150px;}
   img.postimg{width: 100%;max-height: 25rem;object-fit: cover;}
@@ -230,7 +230,7 @@ button.btn.btn-secondary.search{
 }
 .form-control:focus {
   z-index: 2;
-  box-shadow: inset 0px 0px 4px 0px rgba(0,159,94,1);
+  box-shadow: inset 0px 0px 4px 0px rgba(96,183,105,1);
 }
 .text-xxxs{
   font-size: 9px !important;
@@ -471,7 +471,7 @@ span.nopad{
   color: white;
 }
 .navback{
-  background-color: #009f5e;
+  background-color: #60b769;
 }
 .navbar-dark .navbar-nav .nav-link{
   color: white;
@@ -479,7 +479,7 @@ span.nopad{
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover{
   transition: ease-in-out 0.15s;
   color: white;
-  background-color: #009055;
+  background-color: #5aa262;
 }
 a.nav-link{
   margin: 0 0.25rem;
@@ -493,7 +493,7 @@ a.nav-link{
 .requests.nav-link:focus, .requests.nav-link:hover{
   transition: ease-in-out 0.15s;
   opacity: 0.9;
-  background-color: #009f5e !important;
+  background-color: #60b769 !important;
 }
 button.dropdown-toggle{
   color: rgba(0,0,0,0.5);
@@ -700,7 +700,6 @@ button.dropdown-toggle2:focus{
   box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3);
 }
 .btn.btncollapse:hover{
-  /*color: #009f5e;*/
   border: 1px solid #009f5e;
 }
 .btn-info{
@@ -708,26 +707,26 @@ button.dropdown-toggle2:focus{
   background-color: #007bff;
 }
 .btn-info:hover{
-  border-color: #0062cc;
-  background-color: #0069d9;
+  border-color: #0057b5;
+  background-color: #065fd4;
 }
 .btn-primary{
-  border-color: #009f5e;
-  background-color: #009f5e;
+  border-color: #60b769;
+  background-color: #60b769;
 }
 .btn-primary:hover{
-  border-color: #007747;
-  background-color: #007e4b;
+  border-color: #528a58;
+  background-color: #5b9e61;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
-  border-color: #00844e;
-  background-color: #00844e;
+  border-color: #528a58;
+  background-color: #5b9e61;
 }
 .btn-primary.focus, .btn-primary:focus{
-  box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
+  box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
 }
 .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
-  box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
+  box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
 }
 .btn-primary.disabled, .btn-primary:disabled{
   border-color: #13a368;
@@ -938,19 +937,19 @@ img.cover{
 .rcov{
   border-radius: 0 0.75rem 0.75rem 0;
 }
-ul {
+ul{
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 /** {box-sizing: border-box}*/
-.container {
+.container{
   position: relative;
   margin: 0;
   padding: 0;
   max-width: none;
 }
-.image {
+.image{
   display: block;
   width: 100%;
   /*height: auto;*/
@@ -962,7 +961,7 @@ ul {
   background-color: #ededed;
 }
 .badge-warning{
-  background-color: #ffffcc;
+  background-color: #fff5cc;
 }
 .notification .badge {
   position: absolute;
@@ -1160,8 +1159,8 @@ input[type="file"]#inputavatar{
   background-color: #707070;
 }
 .redcolor-border{
-  border-color: #dc3545;
-  color: #dc3545;
+  border-color: #cc0000;
+  color: #cc0000;
 }
 .redcolor-border:hover{
   border-color: red;
@@ -1174,7 +1173,7 @@ input[type="file"]#inputavatar{
   color: #dc3545 !important;
 }
 .bluecolor{
-  color: #007bff !important;
+  color: #065fd4 !important;
 }
 .orangecolor{
   color: orange !important;
@@ -1252,7 +1251,7 @@ select{
   background-color: white;
   padding: 4px 8px;
   font-size: 14px;
-  border: 1px solid #009f5e;
+  border: 1px solid;
   border-radius: 0 0.15rem 0.15rem 0;
   color: #009f5e;
   height: 31px;
@@ -1281,20 +1280,18 @@ select.select1::-ms-expand{
   } 
 }
 .select2{
-  border: 2px solid;
   width: 91px;
   font-size: 14px;
   padding: 0 4px;
   border-radius: 0.15rem;
-  height: 26px;
+  height: 27px;
 }
 .select3{
-  border: 2px solid;
   width: 136px;
   font-size: 14px;
   padding: 0 4px;
   border-radius: 0.15rem;
-  height: 26px;
+  height: 27px;
 }
 .select4{
   -webkit-appearance: none;
@@ -1303,7 +1300,7 @@ select.select1::-ms-expand{
   font-size: 14px;
   padding: 0 4px;
   border-radius: 0.15rem;
-  height: 26px;
+  height: 27px;
 }
 .card.tabcard{
   border-radius: 0.25rem 0.25rem 0 0;
@@ -1638,6 +1635,9 @@ input:-webkit-autofill:focus{
 }
 .quote{
   border: dashed grey 1px;
+}
+.uppercase{
+  text-transform: uppercase;
 }
 /*************** fix? for weird dropdown stuck on scrolling down on mobile devices ****************/
 .dropdown-menu[x-placement^=bottom], .dropdown-menu[x-placement^=left], .dropdown-menu[x-placement^=right], .dropdown-menu[x-placement^=top]{

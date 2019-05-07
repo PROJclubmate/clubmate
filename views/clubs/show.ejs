@@ -112,7 +112,7 @@
                   </div>
                 <% } %>
               </div>
-              <span class="text-sm linewrap"><%= club.info.rules %></span>
+              <span class="text-sm linewrap uppercase"><%= club.info.rules %></span>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_rules" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
@@ -358,9 +358,11 @@
                   <div class="d-flex flex-row">
                     <span class="grey text-sm my-auto ml-2"><%= userCount %> members</span>
                   </div>
-                  <div class="d-flex">
-                    <button onclick="toggleclass_display('newMember_form');" class="btn btnxs text-xs btn-secondary my-auto">Recommendations</button>
-                  </div>
+                  <% if(0 <= rank && rank <= 1){ %>
+                    <div class="d-flex">
+                      <button onclick="toggleclass_display('newMember_form');" class="btn btnxs text-xs btn-secondary my-auto">Recommendations</button>
+                    </div>
+                  <% } %>
                 </div>
                 <div class="newMember_form">
                   <form></form>

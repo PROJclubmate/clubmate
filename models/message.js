@@ -1,8 +1,9 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema       = mongoose.Schema;
 
-var messageSchema = new mongoose.Schema({
+const messageSchema = new Schema({
 	conversationId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Conversation"
   },
   bucket: {type: Number, default: 1},
@@ -14,7 +15,7 @@ var messageSchema = new mongoose.Schema({
   messages: [{
     createdAt: {type: Date, default: Date.now},
     authorId:{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     },
     authorName: String,

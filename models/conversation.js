@@ -1,16 +1,17 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema       = mongoose.Schema;
 
-var conversationSchema = new mongoose.Schema({
+const conversationSchema = new Schema({
   participants: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User"
     }
   ],
   bucketNum: {type: Number, default: 1},
   messageBuckets: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Message"
     }
   ]
