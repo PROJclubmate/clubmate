@@ -49,7 +49,6 @@ app.use(require('express-session')({
 
 app.use(passport.initialize());
 app.use(passport.session());
-// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
@@ -371,7 +370,7 @@ app.post('/new/club-chat', function(req, res, next){
 
 
 http.listen(port, function(){
-  console.log('http is listening');
+  console.log('socket is listening');
 })
 
 const db = mongoose.connection;
@@ -380,6 +379,7 @@ db.once('open', () => {
   console.log("GhosTwn server has started on port "+port+"!!");
 });
 
+// Connect to database
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true}, function(err, client){
   if(err){
     return console.log('(app-17)'+JSON.stringify(err, null, 2));

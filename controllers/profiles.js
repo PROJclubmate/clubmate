@@ -1,16 +1,18 @@
-const express  = require('express'),
-  router     = express.Router(),
-  passport   = require('passport'),
-  User       = require('../models/user'),
-  Club       = require('../models/club'),
-  Post       = require('../models/post'),
-  Token      = require('../models/token'),
-  async      = require('async'),
-  nodemailer = require('nodemailer'),
-  crypto     = require('crypto'),
-  multer     = require('multer'),
-  mongoose   = require('mongoose'),
-  moment     = require('moment');
+const express     = require('express'),
+  router          = express.Router(),
+  passport        = require('passport'),
+  User            = require('../models/user'),
+  Club            = require('../models/club'),
+  Post            = require('../models/post'),
+  Token           = require('../models/token'),
+  async           = require('async'),
+  nodemailer      = require('nodemailer'),
+  crypto          = require('crypto'),
+  multer          = require('multer'),
+  mongoose        = require('mongoose'),
+  moment          = require('moment'),
+  mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 const storage = multer.diskStorage({
   filename: function(req, file, callback) {
@@ -974,6 +976,17 @@ module.exports = {
         }
         if(req.body.clubKeys){
           foundClub.clubKeys = req.body.clubKeys;
+          if(foundClub.clubKeys.location != ''){
+            let response = await geocodingClient
+            .forwardGeocode({
+              query: req.body.clubKeys.location,
+              limit: 1
+            })
+            .send();
+            foundClub.coordinates = response.body.features[0].geometry.coordinates;
+          } else{
+            foundClub.coordinates = '';
+          }
         }
         if(req.body.info){
           if(req.body.info.description){

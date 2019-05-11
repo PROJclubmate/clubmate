@@ -1,5 +1,9 @@
 <% include ../partials/header %>
 
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+
 <div class="row no-gutters">
   <div class="col-lg-9 order-md-first order-last">
     <div class="row no-gutters">
@@ -112,7 +116,7 @@
                   </div>
                 <% } %>
               </div>
-              <span class="text-sm linewrap uppercase"><%= club.info.rules %></span>
+              <span class="text-sm linewrap"><%= club.info.rules %></span>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_rules" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
@@ -121,7 +125,13 @@
                 </form>
               <% } %>
             </div>
-            <hr>
+            <% if(club.clubKeys.location != ''){ %>
+              <div>
+                <div id='map' style="border: 1px solid lightgrey;"></div>
+              </div>
+            <% } else{ %>
+              <hr>
+            <% } %>
           </div>
           <div class="card-body">
             <h6 class="text-center"><%= club.banner %></h6>
@@ -401,6 +411,30 @@
 </div>
 
 <% include ../partials/footer %>
+
+<!-- Mapbox location marker -->
+<script>
+var club = <%- JSON.stringify(club) %>;
+mapboxgl.accessToken = 'pk.eyJ1IjoiZ2hvc3QxMjU0IiwiYSI6ImNqdmVzenRhMzI1bDg0NHA4Z3VkMmh4cHEifQ.tb3ff1Hqpw9hezxknR5cOg';
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v9',
+  center: club.coordinates,
+  zoom: 10
+});
+
+// create a HTML element for club location/marker
+var el = document.createElement('div');
+el.className = 'marker';
+
+// make a marker for each feature and add to the map
+new mapboxgl.Marker(el)
+.setLngLat(club.coordinates)
+.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+.setHTML('<h6>' + club.name + '</h6><p>' + club.clubKeys.location + '</p>'))
+.addTo(map);
+</script>
 
 <!-- ////////////FUNCTIONS//////////// -->
 <% function categories_split(arr){ %>

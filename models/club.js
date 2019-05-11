@@ -24,6 +24,7 @@ const clubSchema = new Schema({
     organization: String,
     weblink: String
   },
+  coordinates: Array,
   description: String,
   updates: [{
     news: String,
