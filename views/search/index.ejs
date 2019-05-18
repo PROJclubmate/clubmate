@@ -40,12 +40,15 @@
 			            	<img class="searchdp" style="margin: 0 !important;" src="<%= users[k].profilePic || '/images/noUser.png' %>">
 			          	</a>
 						    </div>
-						    <div class="card-body3 lineheight">
-						    	<a href="/users/<%= users[k]._id %>">
-						      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
-						      </a>
-						      <span class="grey text-xs"><%= users[k].note %></span>
-						      <span class="darkgrey text-sm bottomtext"><%= users[k].userKeys.residence %></span>
+						    <div class="card-body3 lineheight fullwidth">
+							    <div>
+							    	<a href="/users/<%= users[k]._id %>" class="green">
+							      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+							      </a>
+							    </div>
+						      <div class="grey text-xs"><%= users[k].note %></div>
+						      <br>
+						      <div class="darkgrey text-sm text-right"><%= users[k].userKeys.residence %></div>
 						    </div>
 						  </div>
 					  </div>
@@ -75,12 +78,15 @@
 			            	<img class="searchdp" style="margin: 0 !important;" src="<%= clubs[k].avatar || 'https://res.cloudinary.com/dubirhea4/image/upload/v1544819201/defaults/noUser.png' %>">
 			          	</a>
 						    </div>
-						    <div class="card-body3 lineheight">
-						    	<a href="/clubs/<%= clubs[k]._id %>">
-						      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
-						      </a>
-						      <span class="grey text-xs"><%= clubs[k].banner %></span>
-						      <span class="darkgrey text-sm bottomtext"><%= clubs[k].clubKeys.location %></span>
+						    <div class="card-body3 lineheight fullwidth">
+						    	<div>
+							    	<a href="/clubs/<%= clubs[k]._id %>" class="green">
+							      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
+							      </a>
+							    </div>
+						      <div class="grey text-xs"><%= clubs[k].banner %></div>
+						      <br>
+						      <div class="darkgrey text-sm text-right"><%= clubs[k].clubKeys.location %></div>
 						    </div>
 						  </div>
 					  </div>

@@ -189,7 +189,7 @@ hr{
   overflow: hidden;
   display: inline-block;
   /*width: 90%;*/
-  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
   margin: 0.25rem 0;
   line-height: 1.25rem;
 }
@@ -781,6 +781,8 @@ button.dropdown-toggle2:focus{
 .nav-tabs .nav-link{
   padding: 0.5rem;
 }
+a.green{color: #009f5e;}
+a.green:hover{color: #007e4b;}
 .grey{color: grey;}
 a.darkgrey:hover{color: black !important;}
 a.lightgrey:hover{color: black !important;}
@@ -792,12 +794,6 @@ div.alert{
   z-index: 2;
   border: none;
   box-shadow: 1px 2px 2px -1px rgba(0,0,0,0.15);
-}
-a{
-  color: #009f5e;
-}
-a:hover{
-  color: #007e4b;
 }
 .nounderline a:hover{
   text-decoration: none !important;
@@ -1114,14 +1110,12 @@ ul{
 .bottomtext{
   background-color: white;
   position: absolute;
-  bottom: 0.25rem;
-  right: 0.5rem;
+  bottom: 0;
 }
 .toptext{
   background-color: white;
   position: absolute;
   top: 0;
-  right: 0;
 }
 .floatright{
   float: right;

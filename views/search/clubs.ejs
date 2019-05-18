@@ -16,7 +16,7 @@
 				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
 				    	<div class="valign">
 				    		<div>
-						    	<a href="/clubs/<%= clubs[k]._id %>">
+						    	<a href="/clubs/<%= clubs[k]._id %>" class="green">
 						      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
 						      </a>
 						    </div>
@@ -39,7 +39,7 @@
 				      <div class="valign">
 					      <div class="grey text-xs"><%= break_arr(clubs[k].categories) %></div>
 					      <% if(clubs[k].clubKeys){ %>
-					      	<div class="darkgrey text-sm mt-auto"><%= clubs[k].clubKeys.location %></div>
+					      	<div class="darkgrey text-sm mt-auto text-right"><%= clubs[k].clubKeys.location %></div>
 					      <% } %>
 					    </div>
 				    </div>

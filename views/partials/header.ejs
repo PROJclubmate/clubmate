@@ -102,7 +102,7 @@
             </span>
             <span>
               <div class="d-flex flex-column lineheight2 mx-2">
-                <a href="/clubs/<%= clubInviteRequests[i]._id %>">
+                <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="green">
                   <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
                 <span class="grey text-xs"><%= clubInviteRequests[i].banner %></span>
               </div>
@@ -140,7 +140,7 @@
             </span>
             <span>
               <div class="d-flex flex-column lineheight2 mx-2">
-                <a href="/users/<%= friendRequests[j]._id %>">
+                <a href="/users/<%= friendRequests[j]._id %>" class="green">
                   <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
                 <span class="grey text-xs"><%= friendRequests[j].note %></span>
               </div>

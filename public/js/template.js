@@ -31,13 +31,13 @@ if(location.pathname == '/home'){
   });
 }
 
-if(location.pathname == '/friends-posts'){
+if(location.pathname == '/friends_posts'){
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
     $.ajax({
       type: 'GET',
-      url: '/friends-morePosts',
+      url: '/friends_posts-morePosts',
       data: {ids: $('#load-more-btn').val()},
       timeout: 3000,
       success: function (response){
@@ -1723,7 +1723,7 @@ function moreMembers_template(response){
     </div>
     <div class="col-md-8 col-8 my-auto">
       <span>
-        <a href="/users/<%= users[i].id._id %>" class="mobiletext">
+        <a href="/users/<%= users[i].id._id %>" class="mobiletext green">
           <strong><%= users[i].id.fullName %></strong>
         </a>
       </span>
@@ -1802,7 +1802,7 @@ function moreClubs_template(response){
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext green">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>
@@ -1877,7 +1877,7 @@ function search_people_template(response){
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
-            <a href="/users/<%= users[k]._id %>">
+            <a href="/users/<%= users[k]._id %>" class="green">
               <span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
             </a>
           </div>
@@ -1929,7 +1929,7 @@ function search_clubs_template(response){
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
-            <a href="/clubs/<%= clubs[k]._id %>">
+            <a href="/clubs/<%= clubs[k]._id %>" class="green">
               <span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
             </a>
           </div>

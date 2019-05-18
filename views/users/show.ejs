@@ -139,11 +139,11 @@
               <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
               <span class="grey text-sm nopad"> . <%= user.friendsCount %></span>
             </button>
-            <% if(currentUser && match){ %>
+            <% //if(currentUser && match){ %>
               <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
-            <% } else{ %>
-              <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;">
-            <% } %>
+            <% //} else{ %>
+              <!-- <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;"> -->
+            <% //} %>
               <% for(i=0;i<foundFriends.length;i++){ %>
                 <% if(foundFriends[i]){ %>
                   <div class="col-3 pl-1 py-1">
