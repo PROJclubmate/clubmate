@@ -26,7 +26,7 @@ for (var i=0;i<dropdown.length;i++){
     } else if(location.pathname == '/discover'){
       var discover = document.getElementById('side-discover');
       discover.classList.toggle('active');
-    } else if(location.pathname == '/friends-posts'){
+    } else if(location.pathname == '/friends_posts'){
       var friends = document.getElementById('side-friends');
       friends.classList.toggle('active');
     }
@@ -54,7 +54,7 @@ if(location.pathname == '/home'){
 } else if(location.pathname == '/discover'){
   var discover = document.getElementById('side-discover');
   discover.classList.toggle('active');
-} else if(location.pathname == '/friends-posts'){
+} else if(location.pathname == '/friends_posts'){
   var friends = document.getElementById('side-friends');
   friends.classList.toggle('active');
 }
