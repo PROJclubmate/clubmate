@@ -2,8 +2,7 @@ const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
   {indexRoot, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
-  indexSearchMoreClubs, indexRequests, indexMemberInfo, indexViewAllFriends, indexViewAllMoreFriends
-	} = require('../controllers/index');
+  indexSearchMoreClubs, indexRequests, indexMemberInfo, indexViewAllFriends} = require('../controllers/index');
 
 
 
@@ -35,9 +34,6 @@ router.put('/requests', middleware.isLoggedIn, indexRequests);
 router.put('/status-rank', indexMemberInfo);
 
 // View all friends
-router.get('/users/:id/all_friends', indexViewAllFriends);
-
-// View all friends(Load more using AJAX)
-router.get('/users-moreFriends/:id/all_friends', indexViewAllMoreFriends);
+router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 module.exports = router;

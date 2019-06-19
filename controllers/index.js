@@ -402,64 +402,40 @@ module.exports = {
   },
 
   indexViewAllFriends(req, res, next){
+    var perPage = 12;
+    var pageQuery = parseInt(req.query.page);
+    var pageNumber = pageQuery ? pageQuery : 1;
     User.findById(req.params.id)
     .exec(function(err, foundUser){
-      if(err || !foundUser){
-        console.log('(index-27)foundUser err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
+    if(err || !foundUser){
+      console.log('(index-27)foundUser err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else{
+      if(foundUser._id.equals(req.user._id) || foundUser.friends.includes(req.user._id)){
         User.find({_id: {$in: foundUser.friends}})
-        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(9)
+        .skip((perPage * pageNumber) - perPage).limit(perPage)
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
           console.log('(index-28)foundFriends err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
+          var count = foundUser.friends.length;
           var foundFriendIds = foundFriends.map(function(user){
             return user._id;
           });
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
           res.render('users/all_friends',{users: foundFriends, userName: userName, userId: userId,
-          foundFriendIds: foundFriendIds, friendsCount: friendsCount});
+          foundFriendIds: foundFriendIds, friendsCount: friendsCount, current: pageNumber,
+          pages: Math.ceil(count / perPage)});
         }
         });
-      }
-    });
-  },
-
-  indexViewAllMoreFriends(req, res, next){
-    User.findById(req.params.id)
-    .exec(function(err, foundUser){
-      if(err || !foundUser){
-        console.log('(index-29)foundUser err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
       } else{
-        if(req.query.ids.split(',') != ''){
-          var seenIds = req.query.ids.split(',');
-        } else{
-          var seenIds = [];
-        }
-        var friends = foundUser.friends;
-        User.find({$and: [{_id: {$in: friends}},{_id: {$nin: seenIds}}]})
-        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(9)
-        .exec(function(err, foundFriends){
-        if(err || !foundFriends){
-          console.log('(index-30)foundFriends err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var foundFriendIds = foundFriends.map(function(user){
-            return user._id;
-          });
-          var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
-          res.json({users: foundFriends, userName: userName, userId: userId,
-          foundFriendIds: foundFriendIds, friendsCount: friendsCount});
-        }
-        });
+        req.flash('success', 'You are not a friend with this person :(');
+        return res.redirect('back');
       }
+    }
     });
   }
 };

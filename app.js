@@ -1,6 +1,5 @@
 const express      = require('express'),
   app              = express(),
-  bodyParser       = require('body-parser'),
   http             = require('http').Server(app),
   io               = require('socket.io')(http),
   mongoose         = require('mongoose'),
@@ -33,7 +32,7 @@ const indexRoutes    = require('./routes/index'),
   conversationRoutes = require('./routes/conversations')(io);
 
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
@@ -132,7 +131,7 @@ db.once('open', () => {
 });
 
 // Connect to database
-mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true}, function(err, client){
+mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false}, function(err, client){
   if(err){
     return console.log('(app-17)'+JSON.stringify(err, null, 2));
   }

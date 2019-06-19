@@ -216,6 +216,13 @@ function showpw(){
   }
 }
 
+$('div#paginate-go-to').on('click', '#page-index-button2', function(e){
+  e.preventDefault();
+  var value = Math.abs($('#page-index-input2').val());
+  var url = $('#page-index-input2').attr('href'); 
+  window.location.href = url+value;
+});
+
 //Truncate
 String.prototype.trunc = String.prototype.trunc ||
 function(n){
@@ -296,11 +303,11 @@ function blur() {
 });
 
 // System emoji picker
-$(document).on("click","#emoji-picker",function(e){
+$(document).on("click","#emoji-picker",function (e){
   e.stopPropagation();
   $('.intercom-composer-emoji-popover').addClass("active");
 });
-$(document).click(function (e) {
+$(document).click(function (e){
   if ($(e.target).attr('class') != '.intercom-composer-emoji-popover' && $(e.target).parents(".intercom-composer-emoji-popover").length == 0) {
     $(".intercom-composer-emoji-popover").removeClass("active");
   }

@@ -2,7 +2,59 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9">
-		<div class="ml-2"><span class="boldtext"><a href="/users/<%= userId %>" class="black"><%= userName %></a></span>'s friends</div>
+
+		<div class="ml-2">
+			<span class="boldtext"><a href="/users/<%= userId %>" class="black"><%= userName %></a></span>'s friends
+		</div>
+
+		<div class="dropctn mt-2">
+			<div class="pr-2">
+	      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+	    </div>
+			<div>
+	      <nav aria-label="Page navigation">
+		    <% if (pages && pages > 0){ %>
+		    	<ul class="pagination justify-content-center">
+		        <% if (current == 1){ %>
+		        <li class="page-item disabled text-sm"><a class="page-link">«</a></li>
+		        <% } else{ %>
+		        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends">«</a></li>
+		        <% } %>
+		 
+		        <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
+		        <% for (; i <= (Number(current) + 2) && i <= pages; i++){ %>
+			        <% if (i == current) { %>
+			        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
+			        <% } else{ %>
+			        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends?page=<%= i %>"><%= i %></a></li>
+			        <% } %>
+		        <% } %>
+		 
+		        <% if (current == pages){ %>
+		        <li class="page-item disabled text-sm"><a class="page-link">»</a></li>
+		        <% } else{ %>
+		        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends?page=<%= pages %>">»</a></li>
+		        <% } %>
+		    	</ul>
+		    <% } %>
+				</nav>
+	    </div>
+	    <div id="paginate-go-to">
+	      <div class="dropdown ml-auto pr-2">
+	        <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+	        <div class="dropdown-menu dropdown-menu-right dropbox transparent">
+	          <div class="container drop-shadow1 floatright page-index-back">
+	            <div class="input-group input-group-sm px-2">
+	              <input href="/users/<%= userId %>/all_friends?page=" type="number" id="page-index-input2" class="form-control search text-xs px-1" placeholder="Page ..">
+	              <div class="input-group-append">
+	                <button id="page-index-button2" class="btn btn-secondary text-sm btnxs" type="submit"> Go </button>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
 
 		<div id="server-friends">
 			<div class="row no-gutters">
@@ -35,14 +87,6 @@
 				<% } %>
 			</div>
 		</div>
-		<div id="client-friends"></div>
-		<% if(friendsCount > 9){ %>
-			<div class="text-center mt-2">
-	      <button id="load-more-friends-btn" class="btn btn-primary btn-sm" type="button" value="<%= foundFriendIds %>">
-	      	<span id="load-more-friends-span"></span>Load More
-	      </button>
-	    </div>
-	  <% } %>
 	</div>
 	<div class="col-lg-3 px-2 mobileNone">
     <br>

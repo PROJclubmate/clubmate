@@ -328,7 +328,7 @@
               </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
                 <div class="dropctn">
-                  <strong>On my mind:</strong>
+                  <strong>Favourite:</strong>
                 </div>
                 <div class="info1">
                   Music: 
@@ -455,15 +455,43 @@
                           <% var books = user.favourites.books; var len = books.length; var i=0;
                           for(i;i<=len;i++){ %>
                             <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Kensuke's Kingdom" value="<%= books[i] %>" autofocus>
+                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One : Peter Thiel" value="<%= books[i] %>" autofocus>
                             <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Kensuke's Kingdom" value="<%= books[i] %>">
+                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One : Peter Thiel" value="<%= books[i] %>">
                             <% } %>
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                           <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                        </div>
+                      </form>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+                <div class="info1">
+                  Video Games: 
+                  <div class="info30">
+                    <% if(currentUser && match){ %>
+                      <button onclick="toggle_display('favourites_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                    <% } %>
+                    <% favourites_split(user.favourites.videogames); %>
+                    <div id="favourites_form6_div" class="greyback">
+                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                        <div id="favourites_form6" class="form-inline d-flex justify-content-between fullwidth">
+                          <% var videogames = user.favourites.videogames; var len = videogames.length; var i=0;
+                          for(i;i<=len;i++){ %>
+                            <% if(i == len){ %>
+                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>" autofocus>
+                            <% }else{ %>
+                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>">
+                            <% } %>
+                          <% }; %>
+                        </div>
+                        <div class="d-flex flex-row-reverse fullwidth">
+                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
