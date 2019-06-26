@@ -1,8 +1,8 @@
 <% include ../partials/header %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+<!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' /> -->
 
 <div class="row no-gutters">
   <div class="col-lg-9 order-md-first order-last">
@@ -125,13 +125,13 @@
                 </form>
               <% } %>
             </div>
-            <% if(club.clubKeys.location != ''){ %>
+            <!-- <% if(club.clubKeys.location != ''){ %>
               <div>
                 <div id='map' style="border: 1px solid lightgrey;"></div>
               </div>
             <% } else{ %>
               <hr>
-            <% } %>
+            <% } %> -->
           </div>
           <div class="card-body">
             <h6 class="text-center"><%= club.banner %></h6>
@@ -340,7 +340,9 @@
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% }; %>
                         <div class="mx-2 my-auto news">
-                          <%= club.updates[i].news %><span class="darkgrey text-xxs boldtext">[<%= moment(club.updates[i].pushedAt).fromNow() %>]</span>
+                          <%= club.updates[i].news %><span class="darkgrey text-xxs boldtext"></span>
+                          <span class="darkgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
+                          <span class="darkgrey text-xxs boldtext">[by: <em><%= club.updates[i].pusherName %></em>]</span>
                         </div>
                         <% if(0 <= rank && rank <= 1){ %>
                           <span class="dropdown ml-auto mb-auto">
@@ -413,7 +415,7 @@
 <% include ../partials/footer %>
 
 <!-- Mapbox location marker FIX CLIENT SIDE SCRIPT -->
-<script>
+<!-- <script>
 var club = <%- JSON.stringify(club) %>;
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2hvc3QxMjU0IiwiYSI6ImNqdmVzenRhMzI1bDg0NHA4Z3VkMmh4cHEifQ.tb3ff1Hqpw9hezxknR5cOg';
 
@@ -434,7 +436,7 @@ new mapboxgl.Marker(el)
 .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
 .setHTML('<h6>' + club.name + '</h6><p>' + club.clubKeys.location + '</p>'))
 .addTo(map);
-</script>
+</script> -->
 
 <!-- ////////////FUNCTIONS//////////// -->
 <% function categories_split(arr){ %>

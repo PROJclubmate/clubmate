@@ -562,12 +562,10 @@ module.exports = {
         }
       }
       if(req.body.delUpdate){
-        for(i=foundUser.userClubs.length-1;i>=0;i--){
-          if(foundUser.userClubs[i].clubUpdates.length != 0){
-            for(j=foundUser.userClubs[i].clubUpdates.length-1;j>=0;j--){
-              if(foundUser.userClubs[i].clubUpdates[j]._id.equals(req.body.delUpdate)){
-                foundUser.userClubs[i].clubUpdates.splice(j,1);
-              }
+        if(foundUser.clubUpdates.length != 0){
+          for(i=foundUser.clubUpdates.length-1;i>=0;i--){
+            if(foundUser.clubUpdates[i]._id.equals(req.body.delUpdate)){
+              foundUser.clubUpdates.splice(i,1);
             }
           }
         };
@@ -910,7 +908,7 @@ module.exports = {
       return res.redirect('back');
     } else{
       var rankUsers = foundClub.clubUsers;
-      var admin = checkRank(rankUsers,req.user._id,1);
+      var admin = checkRank(rankUsers,req.user._id,1); 
       var moder = checkRank(rankUsers,req.user._id,2);
       if(req.body.newsUpdate && moder == true){
         if(req.body.newsDate && req.body.newsDate != ''){
@@ -918,19 +916,27 @@ module.exports = {
           var date = moment(strDate, 'MM-DD-YYYY').toDate();
         } else{var eventDate = null;}
         var news = req.body.newsUpdate;
-        var update = {'news': news, 'eventDate': date};
-        foundClub.updates.push(update);
-        User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
-        {$push: {'userClubs.$.clubUpdates': update}}, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(req.user._id+' => (profiles-28)foundUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
+        var clubId = foundClub._id;
+        var clubName = foundClub.name;
+        var pusherName = req.user.fullName;
+        var clubUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName};
+        foundClub.updates.push(clubUpdate);
+        // foundClub is locked for modification untill fn updatedClub is finished.?
+        foundClub.save(function(err, updatedClub){
+          var len = updatedClub.updates.length;
+          var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
+          'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
+          User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
+          {$push: {clubUpdates: userUpdate}}, function(err, foundUser){
+            if(err || !foundUser){
+              console.log(req.user._id+' => (profiles-28)foundUser err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            }
+          });
+          req.flash('success', 'Successfully updated');
+          res.redirect('/clubs/' + req.params.club_id);
         });
-        foundClub.save();
-        req.flash('success', 'Successfully updated');
-        res.redirect('/clubs/' + req.params.club_id);
       } else if(admin == true){
         // is avatar uploaded?
         if(req.file){
@@ -951,27 +957,22 @@ module.exports = {
           var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
           for(i=0;i<foundClub.updates.length;i++){
             if(foundClub.updates[i]._id.equals(req.body.delUpdate)){
-              // var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
-              // // Notify update deletion which was created in last 24 hrs
-              // if(timeDiff < 3600000*24){
-              //   console.log('UPDATE POSTED TODAY');
-              //   var update = {'news': 'This update has been deleted.', 'eventDate': ''};
-              //   User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
-              //   {
-              //     $set: {'userClubs.$.clubUpdates.$[inner]': update}
-              //   },
-              //   {
-              //     'arrayFilters': [{'inner._id': delUpdateId}] 
-              //   }, function(err, foundUser){
-              //     if(err || !foundUser){
-              //       console.log(req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
-              //       req.flash('error', 'Something went wrong :(');
-              //       return res.redirect('back');
-              //     } else{
-              //       console.log('FOUND USER'+JSON.stringify(foundUser, null, 2));
-              //     }
-              //   });
-              // }
+              var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
+              // Notify update deletion which was created in last 24 hrs
+              if(timeDiff < 3600000*24){
+                var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
+                'clubId': foundClub._id, 'deleterName': req.user.fullName};
+                User.updateMany({clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
+                {
+                  $set: {'clubUpdates.$': update}
+                }, function(err, foundUser){
+                  if(err || !foundUser){
+                    console.log(req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
+                });
+              }
               foundClub.updates.splice(i,1);
             }
           }

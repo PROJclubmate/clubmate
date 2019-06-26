@@ -67,6 +67,7 @@ app.use(async function(req, res, next){
       .exec();
       // check security of theese local variables & check for no variable overwriting
       res.locals.userClubs = foundUser.userClubs;
+      res.locals.clubUpdates = foundUser.clubUpdates;
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
       res.locals.friendRequests = foundUser.friendRequests.reverse();
 

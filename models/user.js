@@ -58,13 +58,20 @@ const userSchema = new Schema({
     },
     status: String,
     memberSince: {type: Date, default: Date.now},
-    // currently stores latest update from each club
-    clubUpdates: [{
-      news: String,
-      eventDate: Date,
-      pushedAt: {type: Date, default: Date.now}
-    }],
     _id: false
+  }],
+  clubUpdates: [{
+    clubId: {
+      type: Schema.Types.ObjectId,
+      ref: "Club"
+    },
+    clubName: String,
+    pusherName: String,
+    deleterName: String,
+    updateId: Schema.Types.ObjectId,
+    news: String,
+    eventDate: Date,
+    pushedAt: {type: Date, default: Date.now}
   }],
   userChats: [{
     userId: this,

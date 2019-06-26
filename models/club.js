@@ -27,6 +27,8 @@ const clubSchema = new Schema({
   coordinates: Array,
   description: String,
   updates: [{
+    pusherId: this,
+    pusherName: String,
     news: String,
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}

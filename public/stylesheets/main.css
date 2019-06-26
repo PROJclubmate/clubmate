@@ -374,7 +374,7 @@ li.nav-item{
 .eventD{
   color: #007bff;
   height: 42px;
-  min-width: 52px;
+  min-width: 55px;
   border: 1px solid darkgrey;
   background: repeating-linear-gradient(
     45deg,
@@ -1531,6 +1531,7 @@ select.select1::-ms-expand{
   justify-content: flex-end;
 }
 .chat-msg{
+  word-break: break-word;
   line-height: 1.15rem !important;
   font-size: 14px;
   border: 1px solid lightgrey;

@@ -16,7 +16,7 @@ module.exports = function(io){
 	  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
 	  .exec(function(err, foundMessages){
 	  if(err || !foundMessages){
-	    console.log(req.user._id+' => (app-2)foundMessages err:- '+JSON.stringify(err, null, 2));
+	    console.log(req.user._id+' => (conversations-1)foundMessages err:- '+JSON.stringify(err, null, 2));
 	    req.flash('error', 'Something went wrong :(');
 	    return res.redirect('back');
 	  } else{
@@ -24,7 +24,7 @@ module.exports = function(io){
 	      if(contains(foundMessages.participants,req.user._id)){
 	        var currentUser = req.user._id;
 	        res.send({messages: foundMessages, currentUser: currentUser});
-	      } else{console.log('(app-3)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{console.log('(conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
 	  });
@@ -37,7 +37,7 @@ module.exports = function(io){
 	  Conversation.findOne({_id: req.params.conversationId })
 	  .exec(function(err, foundConversation){
 	  if(err || !foundConversation){
-	    console.log(req.user._id+' => (app-4)foundConversation err:- '+JSON.stringify(err, null, 2));
+	    console.log(req.user._id+' => (conversations-3)foundConversation err:- '+JSON.stringify(err, null, 2));
 	    req.flash('error', 'Something went wrong :(');
 	    return res.redirect('back');
 	  } else{
@@ -49,7 +49,7 @@ module.exports = function(io){
 	          }
 	        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 	        if(err || !newMessageBucket){
-	          console.log(req.user._id+' => (app-5)newMessageBucket err:- '+JSON.stringify(err, null, 2));
+	          console.log(req.user._id+' => (conversations-4)newMessageBucket err:- '+JSON.stringify(err, null, 2));
 	          req.flash('error', 'Something went wrong :(');
 	          return res.redirect('back');
 	        } else{
@@ -63,7 +63,7 @@ module.exports = function(io){
 	            foundConversation.save();
 	          }
 	          if(err){
-	            console.log(req.user._id+' => (app-6) err:- '+JSON.stringify(err, null, 2));
+	            console.log(req.user._id+' => (conversations-5) err:- '+JSON.stringify(err, null, 2));
 	            req.flash('error', 'Something went wrong :(');
 	            return res.redirect('back');
 	          }
@@ -75,7 +75,7 @@ module.exports = function(io){
 	          });
 	        }
 	        });
-	      } else{console.log('(app-7)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{console.log('(conversations-6)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
 	  })
@@ -115,14 +115,14 @@ module.exports = function(io){
 	    currentUserUserChats.push(currentUserObj);
 	    User.updateOne({_id: req.body.recipientId},{$push: {userChats: foundUserUserChats}}, function(err, foundUser){
 	      if(err || !foundUser){
-	        console.log(req.user._id+' => (app-8)foundUser err:- '+JSON.stringify(err, null, 2));
+	        console.log(req.user._id+' => (conversations-7)foundUser err:- '+JSON.stringify(err, null, 2));
 	        req.flash('error', 'Something went wrong :(');
 	        return res.redirect('back');
 	      }
 	    });
 	    User.updateOne({_id: req.user._id},{$push: {userChats: currentUserUserChats}}, function(err, currentUser){
 	      if(err || !currentUser){
-	        console.log(req.user._id+' => (app-9)currentUser err:- '+JSON.stringify(err, null, 2));
+	        console.log(req.user._id+' => (conversations-8)currentUser err:- '+JSON.stringify(err, null, 2));
 	        req.flash('error', 'Something went wrong :(');
 	        return res.redirect('back');
 	      }
@@ -138,7 +138,7 @@ module.exports = function(io){
 	  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
 	  .exec(function(err, foundMessages){
 	  if(err || !foundMessages){
-	    console.log(req.user._id+' => (app-10)foundMessages err:- '+JSON.stringify(err, null, 2));
+	    console.log(req.user._id+' => (conversations-9)foundMessages err:- '+JSON.stringify(err, null, 2));
 	    req.flash('error', 'Something went wrong :(');
 	    return res.redirect('back');
 	  } else{
@@ -147,7 +147,7 @@ module.exports = function(io){
 	        var currentUser = req.user._id;
 	        var firstName = req.user.firstName;
 	        res.send({messages: foundMessages, currentUser: currentUser, firstName: firstName});
-	      } else{console.log('(app-11)Not a club member: ('+req.user._id+') '+req.user.fullName);}
+	      } else{console.log('(conversations-10)Not a club member: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
 	  });
@@ -160,7 +160,7 @@ module.exports = function(io){
 	  ClubConversation.findOne({_id: req.params.conversationId })
 	  .exec(function(err, foundConversation){
 	  if(err || !foundConversation){
-	    console.log(req.user._id+' => (app-12)foundConversation err:- '+JSON.stringify(err, null, 2));
+	    console.log(req.user._id+' => (conversations-11)foundConversation err:- '+JSON.stringify(err, null, 2));
 	    req.flash('error', 'Something went wrong :(');
 	    return res.redirect('back');
 	  } else{
@@ -173,7 +173,7 @@ module.exports = function(io){
 	          }
 	        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 	        if(err || !newMessageBucket){
-	          console.log(req.user._id+' => (app-13)newMessageBucket err:- '+JSON.stringify(err, null, 2));
+	          console.log(req.user._id+' => (conversations-12)newMessageBucket err:- '+JSON.stringify(err, null, 2));
 	          req.flash('error', 'Something went wrong :(');
 	          return res.redirect('back');
 	        } else{
@@ -187,7 +187,7 @@ module.exports = function(io){
 	            foundConversation.save();
 	          }
 	          if(err){
-	            console.log(req.user._id+' => (app-14) err:- '+JSON.stringify(err, null, 2));
+	            console.log(req.user._id+' => (conversations-13) err:- '+JSON.stringify(err, null, 2));
 	            req.flash('error', 'Something went wrong :(');
 	            return res.redirect('back');
 	          }
@@ -199,7 +199,7 @@ module.exports = function(io){
 	          });
 	        }
 	        });
-	      } else{console.log('(app-15)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{console.log('(conversations-14)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
 	  })
@@ -231,7 +231,7 @@ module.exports = function(io){
 	    // Insert conversationId into clubUsers
 	    Club.updateOne({_id: req.body.clubId},{$set: {conversationId: clubConversation._id}}, function(err, foundClub){
 	      if(err || !foundClub){
-	        console.log(req.user._id+' => (app-16)foundClub err:- '+JSON.stringify(err, null, 2));
+	        console.log(req.user._id+' => (conversations-15)foundClub err:- '+JSON.stringify(err, null, 2));
 	        req.flash('error', 'Something went wrong :(');
 	        return res.redirect('back');
 	      }
