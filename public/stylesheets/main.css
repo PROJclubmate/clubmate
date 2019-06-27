@@ -238,23 +238,26 @@ button.btn.btn-secondary.search{
 .text-xxs{
   font-size: 11px !important;
 }
-.text-xs {
+.text-xs{
   font-size: 12px !important;
 }
-.text-sm {
+.text-sm{
   font-size: 14px !important;
 }
 .text-md{
   font-size: 15px !important;
 }
-.text-lg {
+.text-lg{
   font-size: 18px !important;
 }
-.text-xl {
+.text-xl{
   font-size: 20px !important;
 }
-.text-xxl {
+.text-xxl{
   font-size: 22px !important;
+}
+.text-xxxl{
+  font-size: 25px !important;
 }
 label{
   margin: 0;
@@ -714,7 +717,7 @@ button.dropdown-toggle2:focus{
   background-color: #065fd4;
 }
 .btn-primary{
-  border-color: #60b769;
+  border-color: #55a85e;
   background-color: #60b769;
 }
 .btn-primary:hover{
@@ -736,7 +739,7 @@ button.dropdown-toggle2:focus{
   background-color: #13a368;
 }
 .btn-secondary{
-  border-color: grey;
+  border-color: #777777;
   background-color: grey;
 }
 .btn-secondary:hover{
@@ -1661,4 +1664,37 @@ input:-webkit-autofill:focus{
 .mapboxgl-popup-content {
   text-align: center;
   font-family: 'Open Sans', sans-serif;
+}
+
+/****************************/
+.modal-confirm .modal-content {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+.modal-confirm .close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+.modal-confirm .icon-box {
+  width: 50px;
+  height: 50px;
+}
+.modal-confirm .icon-box i {
+  color: #f15e5e;
+  font-size: 46px;
+  display: inline-block;
+  margin-top: 13px;
+}
+.btn-danger {
+  background: #f15e5e;
+}
+.btn-danger:hover, .modal-confirm .btn-danger:focus {
+  background: #ee3535;
+}
+.fixed-padding {
+  padding-right: 0px !important;
 }

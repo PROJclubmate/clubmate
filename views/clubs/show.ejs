@@ -350,13 +350,35 @@
                             <ul class="dropdown-menu dropdown-menu-right dropbox">
                               <div class="container drop-shadow1">
                                 <li>
-                                  <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                                    <button class="dropitems link-button red" name="delUpdate" value="<%= club.updates[i]._id %>" type="submit">Delete update</button>
-                                  </form>
+                                  <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= i %>" data-toggle="modal">Delete update</button>
                                 </li>
                               </div>
                             </ul>
                           </span>
+
+                          <!-- Modal HTML -->
+                          <div id="delUpdateModal<%= i %>" class="fixed-padding modal fade">
+                            <div class="modal-dialog modal-confirm">
+                              <div class="modal-content">
+                                <div class="d-flex">
+                                  <span class="icon-box">
+                                    <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                                  </span>              
+                                  <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div>
+                                  <p>Do you really want to delete this update? This cannot be undone.</p>
+                                </div>
+                                <div class="my-2">
+                                  <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                                  <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
+                                    <button class="btn btn-danger btn-sm ml-1" name="delUpdate" value="<%= club.updates[i]._id %>" type="submit">Delete</button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         <% } %>
                       </div>
                     <% }; %>

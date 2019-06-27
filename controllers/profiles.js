@@ -955,8 +955,8 @@ module.exports = {
         }
         if(req.body.delUpdate){
           var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
-          for(i=0;i<foundClub.updates.length;i++){
-            if(foundClub.updates[i]._id.equals(req.body.delUpdate)){
+          for(i=foundClub.updates.length-1;i>=0;i--){
+            if(foundClub.updates[i]._id.equals(delUpdateId)){
               var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
               // Notify update deletion which was created in last 24 hrs
               if(timeDiff < 3600000*24){
@@ -1220,51 +1220,52 @@ module.exports = {
       profilePic: null,
       profilePicId: null
     });
-    User.register(newUser, req.body.password, function(err, user){
-    if(err || !user){
-      console.log('(profiles-37)user err:- '+JSON.stringify(err, null, 2));
-      if(err.code == 11000 || err.name == 'UserExistsError'){
-        req.flash('error', 'A user with the given email is already registered');
+    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,10}$/;
+    if(req.body.password.match(pass)){
+      User.register(newUser, req.body.password, function(err, user){
+      if(err || !user){
+        console.log('(profiles-37)user err:- '+JSON.stringify(err, null, 2));
+        if(err.code == 11000 || err.name == 'UserExistsError'){
+          req.flash('error', 'A user with the given email is already registered');
+        } else{
+          req.flash('error', 'Something went wrong :(');
+        }
+        return res.redirect('back');
       } else{
-        req.flash('error', 'Something went wrong :(');
+        // Create a verification token for this user
+        var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
+
+        // Save the verification token
+        token.save(function(err){
+          if(err){return console.log('(profiles-38)user err:- '+JSON.stringify(err, null, 2));}
+
+          // Send the email
+          var smtpTransport = nodemailer.createTransport({
+            service: 'Godaddy', 
+            auth: {
+              user: 'admins@ghostwn.com',
+              pass: process.env.ADMINS_EMAIL_PW
+            }
+          });
+          var mailOptions = {
+            to: user.email,
+            from: 'admins@ghostwn.com',
+            subject: 'Account Verification Token',
+            text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
+            '\/confirmation\/' + token.token + '.\n'
+          };
+          smtpTransport.sendMail(mailOptions, function(err){
+            done(err, 'done');
+          });
+        });
+        req.flash('success', 'Welcome to ghostwn '+user.firstName+'. An email has been sent to your account for verification.');
+        return res.redirect('/discover');
       }
-      return res.redirect('back');
-    } else{
-      // req.login(user, function(err){
-      //   req.flash('success', 'Welcome to ghostwn ' + user.firstName);
-      //   return res.redirect('/discover');
-      // });
-
-      // Create a verification token for this user
-      var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
-
-      // Save the verification token
-      token.save(function(err){
-        if(err){return console.log('(profiles-38)user err:- '+JSON.stringify(err, null, 2));}
-
-        // Send the email
-        var smtpTransport = nodemailer.createTransport({
-          service: 'Godaddy', 
-          auth: {
-            user: 'admins@ghostwn.com',
-            pass: process.env.ADMINS_EMAIL_PW
-          }
-        });
-        var mailOptions = {
-          to: user.email,
-          from: 'admins@ghostwn.com',
-          subject: 'Account Verification Token',
-          text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-          '\/confirmation\/' + token.token + '.\n'
-        };
-        smtpTransport.sendMail(mailOptions, function(err){
-          done(err, 'done');
-        });
       });
-      req.flash('success', 'Welcome to ghostwn '+user.firstName+'. An email has been sent to your account for verification.');
-      return res.redirect('/discover');
+    } else{
+      req.flash('error', 'Password must contain (6-10) characters, at least one letter and one number');
+      return res.redirect('back');
     }
-    });
   },
 
   profilesVerifyUser(req, res, next){

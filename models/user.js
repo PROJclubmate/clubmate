@@ -90,22 +90,15 @@ const userSchema = new Schema({
 userSchema.index({fullName: "text"});
 userSchema.index({email: 1});
 
-// var passwordValidator = function(password, cb){
-//   var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-//   if(!password.match(regex)){
-//     return cb(null, false)
-//   }
-//   return cb(null, true);
-// }
-
 userSchema.plugin(passportLocalMongoose,{
   usernameField : "email",
+  // Set usernameUnique to false to avoid a mongodb index on the username column!
+  usernameUnique: false,
   errorMessages: {
     IncorrectPasswordError: "Password incorrect",
     IncorrectUsernameError: "There is either no account registered with that email or the account may not have been verified",
     UserExistsError: "A user with the given email is already registered"
   },
-  // passwordValidator: passwordValidator,
   findByUsername: function(model, queryParameters){
     // Add additional query parameter - AND condition - verified: true
     queryParameters.verified = true;

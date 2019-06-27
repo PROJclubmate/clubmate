@@ -79,7 +79,7 @@ router.put('/clubs/:id/featured_photos', middleware.checkClubAdminship, upload.s
 router.get('/register', profilesRegisterUserPage);
 
 // Register new user
-router.put('/register', profilesSignUp);
+router.post('/register', profilesSignUp);
 
 // Verify new user
 router.get('/confirmation/:token', profilesVerifyUser);

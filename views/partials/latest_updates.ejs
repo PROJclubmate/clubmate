@@ -22,7 +22,7 @@
             <div><a class="black" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a></div>
             <div id="clear_update<%= i %>" class="nounderline clear_update">
               <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
-                <button class="grey red nothing link-button px-1" name="delUpdate" value="<%= arr[i]._id %>" type="submit">x</button>
+                <button class="grey red nothing link-button px-1 text-sm" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong>&times;</strong></button>
               </form>
             </div>
           </div>

@@ -85,6 +85,15 @@ $('#input_topic').on('keyup keypress', function(e){
   }
 });
 
+$('#inputPassword').on('keyup keypress', function(e){
+  var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,10}$/;
+  if($(this).val().match(pass)){
+    $('#pass_info').css('display','none');
+  } else{
+    $('#pass_info').css('display','block');
+  }
+});
+
 // Manual club invite
 $(function(){
   if($('div').hasClass('clubInvite-select') && adminClubs.length!=0){

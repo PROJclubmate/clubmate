@@ -364,24 +364,47 @@ function index_posts_template(response){
             </div>
           </div>
         </div>
-        <div class="dropdown">
-          <% if(currentUser){ %>
-          <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-          <% }; %>
-          <ul class="dropdown-menu dropdown-menu-right dropbox">
-            <div class="container drop-shadow1">
-              <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
-              <% if(currentUser && currentUser._id == posts[k].postAuthor.id){ %>
-                <hr>
-                <li>
-                  <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
-                    <button class="dropitems link-button text-sm red" type="submit">Delete post</button>
-                  </form>
-                </li>
-              <% }; %>
-            </div>
-          </ul>
-        </div>
+        <% if(currentUser){ %>
+          <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right dropbox">
+              <div class="container drop-shadow1">
+                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+                <% if(currentUser._id == posts[k].postAuthor.id){ %>
+                  <hr>
+                  <li>
+                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
+                  </li>
+                <% }; %>
+              </div>
+            </ul>
+            <% if(currentUser._id == posts[k].postAuthor.id){ %>
+              <!-- Modal HTML -->
+              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="d-flex">
+                      <span class="icon-box">
+                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      </span>              
+                      <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div>
+                      <p>Do you really want to delete this post? This cannot be undone.</p>
+                    </div>
+                    <div class="my-2">
+                      <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                      <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }; %>
+          </div>
+        <% }; %>
       </div>
     </div>
     <% if(posts[k].topic == ''){ %>
@@ -562,13 +585,35 @@ function index_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <form class="delete-form inline text-sm" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
-                            <button class="dropitems link-button red" type="submit">Delete comment</button>
-                          </form>
+                          <li>
+                            <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                          </li>
                         </li>
                       </div>
                     </ul>
                   </span>
+                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="d-flex">
+                          <span class="icon-box">
+                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          </span>              
+                          <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div>
+                          <p>Do you really want to delete this comment? This cannot be undone.</p>
+                        </div>
+                        <div class="my-2">
+                          <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                          <form class="delete-form inline" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 <% } %>
                 </div>
               </div>
@@ -662,13 +707,35 @@ function club_posts_template(response){
                 <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
                   <hr>
                   <li>
-                    <form class="delete-form inline" action="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
-                      <button class="dropitems link-button text-sm red" type="submit">Delete post</button>
-                    </form>
+                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
+            <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
+              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="d-flex">
+                      <span class="icon-box">
+                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      </span>              
+                      <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div>
+                      <p>Do you really want to delete this post? This cannot be undone.</p>
+                    </div>
+                    <div class="my-2">
+                      <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                      <form class="delete-form inline" action="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }; %>
           </div>
         <% }; %>
       </div>
@@ -847,13 +914,33 @@ function club_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <form class="delete-form inline text-sm" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
-                            <button class="dropitems link-button red" type="submit">Delete comment</button>
-                          </form>
+                          <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
+                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="d-flex">
+                          <span class="icon-box">
+                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          </span>              
+                          <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div>
+                          <p>Do you really want to delete this comment? This cannot be undone.</p>
+                        </div>
+                        <div class="my-2">
+                          <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                          <form class="delete-form inline text-sm" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 <% } %>
                 </div>
               </div>
@@ -943,13 +1030,35 @@ function user_posts_template(response){
                 <% if(currentUser._id == posts[k].postAuthor.id){ %>
                   <hr>
                   <li>
-                    <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
-                      <button class="dropitems link-button text-sm red" type="submit">Delete post</button>
-                    </form>
+                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
+            <% if(currentUser._id == posts[k].postAuthor.id){ %>
+              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="d-flex">
+                      <span class="icon-box">
+                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      </span>              
+                      <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div>
+                      <p>Do you really want to delete this post? This cannot be undone.</p>
+                    </div>
+                    <div class="my-2">
+                      <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                      <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }; %>
           </div>
         <% }; %>
       </div>
@@ -1116,13 +1225,33 @@ function user_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <form class="delete-form inline text-sm" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
-                            <button class="dropitems link-button red" type="submit">Delete comment</button>
-                          </form>
+                          <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
+                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="d-flex">
+                          <span class="icon-box">
+                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          </span>              
+                          <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div>
+                          <p>Do you really want to delete this comment? This cannot be undone.</p>
+                        </div>
+                        <div class="my-2">
+                          <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                          <form class="delete-form inline" action="/posts/<%=posts[k]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 <% } %>
                 </div>
               </div>
@@ -1195,13 +1324,35 @@ function heart_posts_template(response){
                 <% if(currentUser._id == postsH[l].postAuthor.id){ %>
                   <hr>
                   <li>
-                    <form class="delete-form inline" action="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>?_method=DELETE" method="POST">
-                      <button class="dropitems link-button text-sm red" type="submit">Delete post</button>
-                    </form>
+                    <button class="dropitems link-button text-sm red" href="#delPostHModal<%= l %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
+            <% if(currentUser._id == postsH[l].postAuthor.id){ %>
+              <div id="delPostHModal<%= l %>" class="fixed-padding modal fade">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="d-flex">
+                      <span class="icon-box">
+                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      </span>              
+                      <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div>
+                      <p>Do you really want to delete this post? This cannot be undone.</p>
+                    </div>
+                    <div class="my-2">
+                      <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                      <form class="delete-form inline" action="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }; %>
           </div>
         <% }; %>
       </div>
@@ -1368,13 +1519,33 @@ function heart_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <form class="delete-form inline text-sm" action="/posts/<%=postsH[l]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
-                            <button class="dropitems link-button red" type="submit">Delete comment</button>
-                          </form>
+                          <button class="dropitems link-button red text-sm" href="#delPostH<%= l %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
+                  <div id="delPostH<%= l %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="d-flex">
+                          <span class="icon-box">
+                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          </span>              
+                          <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div>
+                          <p>Do you really want to delete this comment? This cannot be undone.</p>
+                        </div>
+                        <div class="my-2">
+                          <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                          <form class="delete-form inline" action="/posts/<%=postsH[l]._id%>/comments/<%= buckets[i]._id %>/<%=comments[j]._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 <% } %>
                 </div>
               </div>
@@ -1442,13 +1613,33 @@ function post_comments_template(response){
                     </li>
                     <hr>
                     <li>
-                      <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
-                        <button class="dropitems link-button red" type="submit">Delete comment</button>
-                      </form>
+                      <button class="dropitems link-button red text-sm" href="#delBucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
                     </li>
                   </div>
                 </ul>
               </div>
+              <div id="delBucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+              <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                  <div class="d-flex">
+                    <span class="icon-box">
+                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                    </span>              
+                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  </div>
+                  <div>
+                    <p>Do you really want to delete this comment? This cannot be undone.</p>
+                  </div>
+                  <div class="my-2">
+                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                    <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
+                      <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
               <div class="d-flex flex-column lineheight0">
