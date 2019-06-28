@@ -143,8 +143,8 @@
                 <% }; %>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
                     <% if(0 <= rank && rank <= 1){ %>
+                      <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                       <li onclick="toggle_display('toggle_club_form');"><a class="dropitems text-sm" href="#">Edit club profile</a></li>
                       <hr>
                       <li>
@@ -390,17 +390,15 @@
                 <hr>
                 <div class="greyback valign">
                   <div class="d-flex flex-row">
-                    <span class="grey text-sm my-auto ml-2"><%= userCount %> members</span>
+                    <span class="grey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
-                  <% if(0 <= rank && rank <= 1){ %>
-                    <div class="d-flex">
-                      <button onclick="toggleclass_display('newMember_form');" class="btn btnxs text-xs btn-secondary my-auto">Recommendations</button>
-                    </div>
-                  <% } %>
+                  <div class="d-flex">
+                    <button onclick="toggleclass_display('searchMember_form');" class="btn btn-sm chat-input-tool my-auto"><i class="fas fa-search"></i></button>
+                  </div>
                 </div>
-                <div class="newMember_form">
+                <!-- <div class="searchMember_form">
                   <form></form>
-                </div>
+                </div> -->
                 <hr>
                 <div id="server-members">
                   <% include ../partials/club_members %>

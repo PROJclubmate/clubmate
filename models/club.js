@@ -56,6 +56,7 @@ const clubSchema = new Schema({
     memberSince: {type: Date, default: Date.now},
     _id: false
   }],
+  membersCount: Number,
   conversationId: {
     type: Schema.Types.ObjectId,
     ref: "ClubConversation"

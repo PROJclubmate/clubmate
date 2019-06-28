@@ -218,31 +218,6 @@ function load_subPost_page(url,value){
   });
 }
 
-if(location.pathname.split('/').length == 4 && location.pathname.split('/')[1] == 'users' && 
-  location.pathname.split('/')[3] == 'all_friends'){
-  $('#load-more-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-friends-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/users-moreFriends/'+location.pathname.split('/')[2]+'/all_friends',
-      data: {ids: $('#load-more-friends-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundFriendIds;
-        if($('#load-more-friends-btn').val() != ''){
-          $('#load-more-friends-btn').val(arr.concat($('#load-more-friends-btn').val()));
-          var div = document.getElementById('client-friends');
-          div.innerHTML += all_friends_template(response);
-        } else{
-          $('#load-more-friends-btn').val(arr);
-        }
-        $('#load-more-friends-btn').html('<span id="load-more-friends-span"></span>Load More').blur();
-      }
-    });
-  });
-}
-
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   $('#load-more-members-btn').on('click', function(e){
@@ -369,7 +344,7 @@ function index_posts_template(response){
             <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser._id == posts[k].postAuthor.id){ %>
                   <hr>
                   <li>
@@ -379,7 +354,6 @@ function index_posts_template(response){
               </div>
             </ul>
             <% if(currentUser._id == posts[k].postAuthor.id){ %>
-              <!-- Modal HTML -->
               <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
@@ -692,7 +666,6 @@ function club_posts_template(response){
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
                 <% if(0 <= rank && rank <= 1){ %>
                   <li>
                     <form class="post-vote-form valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -704,6 +677,7 @@ function club_posts_template(response){
                     </form>
                   </li>
                 <% } %>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
                   <hr>
                   <li>
@@ -1026,7 +1000,7 @@ function user_posts_template(response){
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser._id == posts[k].postAuthor.id){ %>
                   <hr>
                   <li>
@@ -1320,7 +1294,7 @@ function heart_posts_template(response){
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser._id == postsH[l].postAuthor.id){ %>
                   <hr>
                   <li>
@@ -1871,39 +1845,6 @@ function post_subPosts_template(response){
   return html;
 }
 
-function all_friends_template(response){
-  html = ejs.render(`
-<div class="row no-gutters">
-  <% if(users.length == 0){ %>
-    <h6 class="grey m-2">No more friends to show :3</h6>
-  <% }else{ %>
-    <% var len = users.length; var k=0; for(k;k<len;k++){ %>
-      <div class="col-md-4 mobilepad px-1">
-        <div class="card searchcard">
-          <div class="d-inline-flex">
-            <div>
-              <a href="/users/<%= users[k]._id %>">
-                <img class="searchdp" style="margin: 0 !important;" src="<%= users[k].profilePic || '/images/noUser.png' %>">
-              </a>
-            </div>
-            <div class="card-body3 lineheight">
-              <a href="/users/<%= users[k]._id %>">
-                <span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
-              </a>
-              <span class="grey text-xs"><%= users[k].note %></span>
-              <span class="darkgrey text-sm bottomtext"><%= users[k].userKeys.residence %></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% } %>
-  <% } %>
-</div>
-`,{users: response.users, userName: response.userName, userId: response.userId,
-  foundFriendIds: response.foundFriendIds, friendsCount: response.friendsCount});
-  return html;
-}
-
 function moreMembers_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight2">
@@ -1933,11 +1874,11 @@ function moreMembers_template(response){
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
           <select id="userRank" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
-            <option value="0" data-descr="Founder" disabled selected>0</option>
-            <option value="1,<%= users[i].id._id %>,<%= clubId %>,<%= rank %>" data-descr="Administrator">1</option>
-            <option value="2,<%= users[i].id._id %>,<%= clubId %>,<%= rank %>" data-descr="Moderator">2</option>
-            <option value="3,<%= users[i].id._id %>,<%= clubId %>,<%= rank %>" data-descr="Sr. Member">3</option>
-            <option value="4,<%= users[i].id._id %>,<%= clubId %>,<%= rank %>" data-descr="Jr. Member">4</option>
+            <option value="0" data-descr="Founder" disabled selected>&#x25BC;</option>
+            <option value="1,<%= users[i].id._id %><%= clubId %>" data-descr="Administrator">Admin</option>
+            <option value="2,<%= users[i].id._id %><%= clubId %>" data-descr="Moderator">Mod.</option>
+            <option value="3,<%= users[i].id._id %><%= clubId %>" data-descr="Sr. Member">Sr. M</option>
+            <option value="4,<%= users[i].id._id %><%= clubId %>" data-descr="Jr. Member">Jr. M</option>
           </select>
         </form>
       </span>
@@ -1978,8 +1919,8 @@ function moreMembers_template(response){
     else if(rank == 4){return 'Jr. member';}
   }
 %>
-`,{users: response.users, userCount: response.userCount, Users_50_profilePic: response.Users_50_profilePic,
-  newEndpoints: response.newEndpoints, clubId: response.clubId, rank: response.rank});
+`,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, newEndpoints: response.newEndpoints,
+  clubId: response.clubId, rank: response.rank});
   return html;
 }
 

@@ -152,7 +152,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-8)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     }
@@ -164,7 +164,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-9)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     }
@@ -174,7 +174,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-10)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     };
@@ -184,19 +184,20 @@ module.exports = {
       if(err || !foundUser){
         console.log(req.user._id+' => (index-11)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        // return res.redirect('back');
       } else{
         Club.findById(acceptInvite, function(err, foundClub){
         if(err || !foundClub){
           console.log(req.user._id+' => (index-12)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         } else{
           //pushing user details into club
           var obja = {};
           obja['id'] = foundUser._id;
           obja['userRank'] = 4;
           foundClub.clubUsers.push(obja);
+          foundClub.membersCount += 1;
           //pushing club details into users
           var objb = {};
           objb['id'] = foundClub._id;
@@ -217,7 +218,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-13)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     };
@@ -227,7 +228,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-14)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     };
@@ -237,7 +238,7 @@ module.exports = {
         if(err || !foundUser){
           console.log(req.user._id+' => (index-15)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         }
       });
     };
@@ -249,14 +250,14 @@ module.exports = {
       if(err || !foundUser){
         console.log(req.user._id+' => (index-16)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        // return res.redirect('back');
       } else{
         User.updateOne({_id: acceptReq}, 
         {$push: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
           if(err || !foundUser){
             console.log(req.user._id+' => (index-17)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+            // return res.redirect('back');
           }
         });
       }
@@ -269,14 +270,14 @@ module.exports = {
       if(err || !foundUser){
         console.log(req.user._id+' => (index-18)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        // return res.redirect('back');
       } else{
         User.updateOne({_id: unFriendReq}, 
         {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, foundUser){
           if(err || !foundUser){
             console.log(req.user._id+' => (index-19)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+            // return res.redirect('back');
           }
         });
       }
@@ -291,41 +292,35 @@ module.exports = {
       var newRank = userRankuserIdclubIdRank[0];
       var userId = userRankuserIdclubIdRank[1];
       var clubId = userRankuserIdclubIdRank[2];
-      // Remove this stupidity
-      // var adminRank = userRankuserIdclubIdRank[3];
       Club.findById(clubId, function(err, foundClub){
       if(err || !foundClub){
         console.log(req.user._id+' => (index-20)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        // return res.redirect('back');
       } else{
         var admin = checkRank(foundClub.clubUsers,req.user._id,1);
         if(admin){
-          User.findById(userId, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            for(var i=0;i<foundUser.userClubs.length;i++){
-              if(foundUser.userClubs[i].id.equals(clubId) && foundUser.userClubs[i].rank != 0){
-                foundUser.userClubs[i].rank = newRank;
+          if(0<newRank && newRank<5){
+            for(var i=0;i<foundClub.clubUsers.length;i++){
+              if(foundClub.clubUsers[i].id.equals(userId)){
+                foundClub.clubUsers[i].userRank = newRank;
+                User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
+                {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
+                if(err || !foundUser){
+                  console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                  // return res.redirect('back');
+                } else{
+                  foundClub.save();
+                }
+                });
                 break;
               }
             }
-            for(var j=0;j<foundClub.clubUsers.length;j++){
-              if(foundClub.clubUsers[j].id.equals(userId) && foundClub.clubUsers[j].userRank != 0){
-                foundClub.clubUsers[j].userRank = newRank;
-                break;
-              }
-            }
-            foundUser.save();
-            foundClub.save();
           }
-          });
         } else{
           console.log('Unauthorized rank change attempt of: '+userId+
-          ' by: '+req.user.firstName+' '+req.user.lastName+' User ID: '+req.user._id);
+          ' by: '+req.user.fullName+' User ID: '+req.user._id);
         }
       }
       });
@@ -340,26 +335,26 @@ module.exports = {
         } else{
           var status = req.body.status;
         }
-        User.updateMany({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
+        User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
         {$set: {'userClubs.$.status': status}}, function(err, foundUser){
         if(err || !foundUser){
           console.log(req.user._id+' => (index-22)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          // return res.redirect('back');
         } else{
-          Club.updateMany({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
+          Club.updateOne({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
           {$set: {'clubUsers.$.userStatus': status}}, function(err, foundClub){
             if(err || !foundClub){
               console.log(req.user._id+' => (index-23)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              // return res.redirect('back');
             }
           });
         }
         });
       } else{
         console.log('Unauthorized status change attempt of: '+userId+
-        ' by: '+req.user.firstName+' '+req.user.lastName+' User ID: '+req.user._id);
+        ' by: '+req.user.fullName+' User ID: '+req.user._id);
       }
     }
     if(req.body.leave){
@@ -370,30 +365,30 @@ module.exports = {
       if(err || !foundClub){
         console.log(req.user._id+' => (index-24)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        // return res.redirect('back');
       } else{
         var admin = checkRank(foundClub.clubUsers,req.user._id,1);
         if(admin || req.user._id.equals(mongoose.Types.ObjectId(userId))){
-          User.updateMany({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-          {$pull: {userClubs: {id: clubId}}}, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(req.user._id+' => (index-25)foundUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            Club.updateMany({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
-            {$pull: {clubUsers: {id: userId}}}, function(err, foundClub){
-              if(err || !foundClub){
-                console.log(req.user._id+' => (index-26)foundUser err:- '+JSON.stringify(err, null, 2));
+          for(var i=foundClub.clubUsers.length-1;i>=0;i--){
+            if(foundClub.clubUsers[i].id.equals(mongoose.Types.ObjectId(userId))){
+              foundClub.clubUsers.splice(i,1);
+              foundClub.membersCount -= 1;
+              User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
+              {$pull: {userClubs: {id: clubId}}}, function(err, foundUser){
+              if(err || !foundUser){
+                console.log(req.user._id+' => (index-25)foundUser err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
+                // return res.redirect('back');
+              } else{
+                foundClub.save();
               }
-            });
+              });
+              break;
+            }
           }
-          });
         } else{
           console.log('Unauthorized club member removal attempt of: '+userId+
-          ' by: '+req.user.firstName+' '+req.user.lastName+' User ID: '+req.user._id);
+          ' by: '+req.user.fullName+' User ID: '+req.user._id);
         }
       }
       });
@@ -408,7 +403,7 @@ module.exports = {
     User.findById(req.params.id)
     .exec(function(err, foundUser){
     if(err || !foundUser){
-      console.log('(index-27)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-26)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -417,7 +412,7 @@ module.exports = {
         .skip((perPage * pageNumber) - perPage).limit(perPage)
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
-          console.log('(index-28)foundFriends err:- '+JSON.stringify(err, null, 2));
+          console.log('(index-27)foundFriends err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -439,74 +434,6 @@ module.exports = {
     });
   }
 };
-
-// *********** BUG? => $nin not working with $match in aggregation pipeline ************
-
-// // View all friends
-// router.get('/users/:id/all_friends', function(req, res){
-//   User.findById(req.params.id)
-//   .exec(function(err, foundUser){
-//     if(err || !foundUser){
-//       console.log('(index-31)foundUser err:- '+JSON.stringify(err, null, 2));
-//       req.flash('error', 'Something went wrong :(');
-//       return res.redirect('back');
-//     } else{
-//       var friends = foundUser.friends;
-//       User.aggregate([
-//         {$match: {_id: {$in: friends}}},
-//         {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
-//         {$sort: {"__order": 1}},
-//         {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}},
-//         {$limit: 3}
-//         ])
-//       .exec(function(err, foundFriends){
-//         var foundFriendIds = foundFriends.map(function(user){
-//           return user._id;
-//         });
-//         var userName = foundUser.fullName, userId = foundUser._id;
-//         res.render('users/all_friends',{users: foundFriends, userName: userName, userId: userId,
-//         foundFriendIds: foundFriendIds});
-//       });
-//     }
-//   });
-// });
-
-// router.get('/users-moreFriends/:id/all_friends', function(req, res){
-//   User.findById(req.params.id)
-//   .exec(function(err, foundUser){
-//     if(err || !foundUser){
-//       console.log('(index-32)foundUser err:- '+JSON.stringify(err, null, 2));
-//       req.flash('error', 'Something went wrong :(');
-//       return res.redirect('back');
-//     } else{
-//       if(req.query.ids.split(',') != ''){
-//         var seenIds = req.query.ids.split(',');
-//       } else{
-//         var seenIds = [];
-//       }
-//       // console.log('HAHAHAHAHAHAHA'+JSON.stringify(err, null, 2));
-//       var friends = foundUser.friends;
-//       // User.aggregate([
-//       //   {$match: {$and: [{_id: {$in: friends}},{_id: {$nin: seenIds}}]}},
-//       //   {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
-//       //   {$sort: {"__order": 1}},
-//       //   {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}},
-//       //   // {$limit: 3}
-//       //   ])
-//       // .exec(function(err, foundFriends){
-//       User.find({$and: [{_id: {$in: friends}},{_id: {$nin: seenIds}}]})
-//       .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
-//       .exec(function(err, foundFriends){
-//         var foundFriendIds = foundFriends.map(function(user){
-//           return user._id;
-//         });
-//         var userName = foundUser.fullName, userId = foundUser._id;
-//         res.json({users: foundFriends, userName: userName, userId: userId,
-//         foundFriendIds: foundFriendIds});
-//       });
-//     }
-//   });
-// });
 
 //*******************FUNCTIONS***********************
 function escapeRegex(text){

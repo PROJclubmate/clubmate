@@ -98,10 +98,10 @@
                 <% } %>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
                     <% if(currentUser && match){ %>
                       <li onclick="toggle_display('toggle_profile_form');"><a class="dropitems text-sm" href="#">Edit user profile</a></li>
                     <% } %>
+                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                   </div>
                 </ul>
               </div>
@@ -212,13 +212,13 @@
                       </button>
                       <ul class="dropdown-menu dropdown-menu-right dropbox">
                         <div class="container drop-shadow1 drop-items text-sm">
-                          <li><a class="dropitems2 text-sm" href="#">Edit 2</a></li>
-                          <div class="dropdown-divider"></div>
                           <li>
                             <form action="/requests?_method=PUT" method="POST" class="form-inline">
                               <button class="dropitems2 link-button text-sm red" name="unFriendReq" type="submit" value="<%= user._id %>">Unfriend</button>
                             </form>
                           </li>
+                          <hr>
+                          <li><a class="dropitems2 text-sm" href="#">Help ?</a></li>
                         </div>
                       </ul>
                     </div>

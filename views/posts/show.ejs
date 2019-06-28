@@ -45,10 +45,10 @@
             <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
                 <% if(post.descEdit.length != 0){ %>
                   <li onclick="toggle_display('post_edit_history');"><a class="dropitems text-sm" href="#">View edit history</a></li>
                 <% } %>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
                   <li onclick="toggle_display('post_edit_form');"><a class="dropitems text-sm" href="#">Edit post</a></li>
                   <hr>

@@ -33,9 +33,9 @@
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                <hr>
                 <% if(currentUser._id.equals(posts[k].postAuthor.id)){ %>
-                  <hr>
                   <li>
                     <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
                   </li>

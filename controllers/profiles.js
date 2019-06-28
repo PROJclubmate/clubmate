@@ -601,7 +601,7 @@ module.exports = {
           } else{
             var oldData = [newData].filter(Boolean);;
           }
-          var len = oldData.length; var i=0; for(i;i<len;i++){
+          var len = oldData.length; for(var i=len-1;i>=0;i--){
             var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
             oldData.splice(i,1,inputstring);
           }
@@ -725,7 +725,6 @@ module.exports = {
           var users = foundClub.clubUsers.sort(function(a, b){
             return parseFloat(a.userRank) - parseFloat(b.userRank);
           });
-          var userCount = users.length;
           var limitedUsers = users.slice(0,1);
           for(var k=0;k<limitedUsers.length;k++){
             Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
@@ -740,8 +739,8 @@ module.exports = {
             } else{var convClubId = foundClub._id;}
           } else{foundClub.updates = '';}
           res.render('clubs/show', {hasVote: hasVote, hasModVote: hasModVote, posts: modPosts, rank: rank, 
-          currentUser: currentUser, users: limitedUsers, userCount: userCount, conversationId: conversationId, 
-          convClubId: convClubId, foundPostIds: foundPostIds, PA_50_profilePic: PA_50_profilePic, club: foundClub,
+          currentUser: currentUser, users: limitedUsers, conversationId: conversationId, convClubId: convClubId,
+          foundPostIds: foundPostIds, PA_50_profilePic: PA_50_profilePic, club: foundClub,
           Users_50_profilePic: Users_50_profilePic});
         }
         });
@@ -772,7 +771,6 @@ module.exports = {
           var users = foundClub.clubUsers.sort(function(a, b) {
             return parseFloat(a.userRank) - parseFloat(b.userRank);
           });
-          var userCount = users.length;
           var limitedUsers = users.slice(0,1);
           for(var k=0;k<limitedUsers.length;k++){
             Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
@@ -781,7 +779,7 @@ module.exports = {
           var rank, currentUser = null;
           foundClub.updates = '';
           res.render('clubs/show', {hasVote: hasVote, hasModVote: hasModVote, posts: posts, currentUser: currentUser,
-          rank: rank, users: limitedUsers, userCount: userCount, club: foundClub, foundPostIds: foundPostIds,
+          rank: rank, users: limitedUsers, club: foundClub, foundPostIds: foundPostIds,
           PA_50_profilePic: PA_50_profilePic, Users_50_profilePic: Users_50_profilePic});
         }
         });
@@ -804,7 +802,7 @@ module.exports = {
         var junior = checkRank(rankUsers,req.user._id,4);
         var endpoints = req.query.endpoints.split(',');
         var start = Number(endpoints[0]), end = Number(endpoints[1]);
-        var userCount = foundClub.clubUsers.length, Users_50_profilePic = []; 
+        var Users_50_profilePic = []; 
         if(junior){
           var users = foundClub.clubUsers.sort(function(a, b) {
             return parseFloat(a.userRank) - parseFloat(b.userRank);
@@ -817,8 +815,8 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          res.json({users: limitedUsers, userCount: userCount, Users_50_profilePic: Users_50_profilePic,
-          newEndpoints: newEndpoints, clubId: foundClub._id, rank: rank});
+          res.json({users: limitedUsers, Users_50_profilePic: Users_50_profilePic, newEndpoints: newEndpoints,
+          clubId: foundClub._id, rank: rank});
         }
       }
     }
@@ -974,6 +972,7 @@ module.exports = {
                 });
               }
               foundClub.updates.splice(i,1);
+              break;
             }
           }
         }
@@ -1018,7 +1017,7 @@ module.exports = {
           if(newData){
             oldData=[];
             var oldData = newData.filter(Boolean);
-            var len = oldData.length; var i=0; for(i;i<len;i++){
+            var len = oldData.length; for(var i=len-1;i>=0;i--){
               var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
               oldData.splice(i,1,inputstring);
             }
@@ -1103,6 +1102,7 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
             foundUser.featuredPhotos.splice(i,1);
             foundUser.save();
+            break;
           }
         }
         req.flash('success', 'Successfully deleted');
@@ -1175,6 +1175,7 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
             foundClub.featuredPhotos.splice(i,1);
             foundClub.save();
+            break;
           }
         }
         req.flash('success', 'Successfully deleted');

@@ -34,7 +34,6 @@
             <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
-                <li><a class="dropitems text-sm" href="#">Edit 2</a></li>
                 <% if(0 <= rank && rank <= 1){ %>
                   <li>
                     <form class="post-vote-form valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -46,6 +45,7 @@
                     </form>
                   </li>
                 <% } %>
+                <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                 <% if(currentUser._id.equals(posts[k].postAuthor.id._id)){ %>
                   <hr>
                   <li>

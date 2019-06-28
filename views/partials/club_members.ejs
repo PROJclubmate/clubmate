@@ -25,11 +25,11 @@
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
           <select id="userRank" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
-            <option value="0" data-descr="Founder" disabled selected></option>
-            <option value="1,<%= users[i].id._id %>,<%= club._id %>,<%= rank %>" data-descr="Administrator"></option>
-            <option value="2,<%= users[i].id._id %>,<%= club._id %>,<%= rank %>" data-descr="Moderator"></option>
-            <option value="3,<%= users[i].id._id %>,<%= club._id %>,<%= rank %>" data-descr="Sr. Member"></option>
-            <option value="4,<%= users[i].id._id %>,<%= club._id %>,<%= rank %>" data-descr="Jr. Member"></option>
+            <option value="0" data-descr="Founder" disabled selected>&#x25BC;</option>
+            <option value="1,<%= users[i].id._id %>,<%= club._id %>" data-descr="Administrator">Admin</option>
+            <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Moderator">Mod.</option>
+            <option value="3,<%= users[i].id._id %>,<%= club._id %>" data-descr="Sr. Member">Sr. M</option>
+            <option value="4,<%= users[i].id._id %>,<%= club._id %>" data-descr="Jr. Member">Jr. M</option>
           </select>
         </form>
       </span>
