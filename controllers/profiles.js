@@ -46,6 +46,7 @@ module.exports = {
         return res.redirect('back');
       } else{
         var friends = foundUser.friends.reverse();
+        // Show friends made in order of latest(4)
         User.aggregate([
           {$match: {_id: {$in: friends}}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
@@ -59,6 +60,7 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
+          // Server rendered posts(2)
           Post.find({'postAuthor.id': req.params.id})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
@@ -73,6 +75,7 @@ module.exports = {
             var foundPostIds = foundUserPosts.map(function(post){
               return post._id;
             });
+            // Is conversation initiated/NOT../blocked?
             var isBlocked = false, hasConversation = false, conversationId = '', recipientId = '';
             if(foundUser.blockedUsers.length != 0){
               for(var i=0;i<foundUser.blockedUsers.length;i++){
@@ -97,6 +100,7 @@ module.exports = {
             if(hasConversation == false){
               var recipientId = foundUser._id;
             }
+            // Match ~ if current user(cU) is logged in user(fU)
             var match = false;
             var userPosts = foundUserPosts;
             var posts = postPrivacy(userPosts, req.user);
@@ -110,8 +114,8 @@ module.exports = {
               hasVote[k] = voteCheck(req.user,modPosts[k]);
               hasModVote[k] = modVoteCheck(req.user,posts[k]);
             }
-            // requests
-            var rankClubs = []; var clubInvites = [];
+            // requests(Friends/Club Invites)
+            var adminClubs = []; var clubInvites = []; var mutualClubs = [];
             var fUcIlength = foundUser.clubInvites.length;
             var fUuClength = foundUser.userClubs.length;
             var cUuClength = currentUser.userClubs.length;
@@ -123,6 +127,7 @@ module.exports = {
               var clubs = foundUser.userClubs.sort(function(a, b) {
                 return parseFloat(a.rank) - parseFloat(b.rank);
               });
+              // If friend, then show 10 server rendered clubs under Clubs Tab
               var limitedClubs = clubs.slice(0,9);
               for(var k=0;k<limitedClubs.length;k++){
                 Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
@@ -131,14 +136,19 @@ module.exports = {
             } else{
               var clubs = [], Clubs_50_clubAvatar = [];
             }
+            // cU userClubs loop
             for(var i=0;i<cUuClength;i++){
-              //rankClubs
               var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
               if(fUuClength != 0){
+                // fU userClubs loop
                 for(var j=0;j<fUuClength;j++){
                   if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                    // MUTUAL CLUBS
                     inClub = true;
-                    break;
+                    var objc = {};
+                    objc['_id'] = currentUser.userClubs[i].id;
+                    objc['name'] = currentUser.userClubs[i].clubName;
+                    mutualClubs.push(objc);
                   }
                 }
               } else if(fUuClength == 0){inClub = false};
@@ -148,13 +158,14 @@ module.exports = {
                   break;
                 }
               }
+              // adminClubs ~ Clubs in which currUser has Admin priv. to INVITE foundUser
               if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
                 var obja = {};
                 obja['_id'] = currentUser.userClubs[i].id;
                 obja['name'] = currentUser.userClubs[i].clubName;
-                rankClubs.push(obja);
+                adminClubs.push(obja);
               }
-              //clubInvites
+              // clubInvites ~ Clubs which foundUser has been invited to 'CANCEL INV'
               if(fUcIlength != 0){
                 for(var j=0;j<fUcIlength;j++){
                   var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
@@ -172,9 +183,10 @@ module.exports = {
               }
             }
             return res.render('users/show', {haveRequest: haveRequest, sentRequest: sentRequest, isFriend: isFriend,
-            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs, match: match,
-            rankClubs: rankClubs, clubInvites: clubInvites, conversationId: conversationId, recipientId: recipientId,
-            foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
+            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs,
+            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
+            conversationId: conversationId,recipientId: recipientId, foundPostIds: foundPostIds,
+            PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
             foundFriends: foundFriends, clubCount: clubCount});
           }
           });
@@ -264,7 +276,7 @@ module.exports = {
               {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
             }
             // requests
-            var rankClubs = []; var clubInvites = [];
+            var adminClubs = []; var clubInvites = []; var mutualClubs = [];
             var fUcIlength = foundUser.clubInvites.length;
             var fUuClength = foundUser.userClubs.length;
             var cUuClength = currentUser.userClubs.length;
@@ -273,7 +285,7 @@ module.exports = {
             var isFriend = contains(currentUser.friends,foundUser._id);
             var clubCount = foundUser.userClubs.length;
             for(var i=0;i<cUuClength;i++){
-              //rankClubs
+              // adminClubs
               var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
               if(fUuClength != 0){
                 for(var j=0;j<fUuClength;j++){
@@ -290,9 +302,9 @@ module.exports = {
                 }
               }
               if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
-                rankClubs.push(currentUser.userClubs[i].id);
+                adminClubs.push(currentUser.userClubs[i].id);
               }
-              //clubInvites
+              // clubInvites
               if(fUcIlength != 0){
                 for(var j=0;j<fUcIlength;j++){
                   var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
@@ -307,9 +319,10 @@ module.exports = {
               }
             }
             return res.render("users/show", {haveRequest: haveRequest, sentRequest: sentRequest, isFriend: isFriend,
-            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs, match: match,
-            rankClubs: rankClubs, clubInvites: clubInvites, conversationId: conversationId, recipientId: recipientId,
-            foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
+            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs,
+            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
+            conversationId: conversationId, recipientId: recipientId, foundPostIds: foundPostIds,
+            PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
             foundFriends: foundFriends, clubCount: clubCount});
           }
           });
@@ -364,11 +377,12 @@ module.exports = {
             }
             var clubCount = foundUser.userClubs.length;
             var sentRequest = haveRequest = isFriend = false;
-            var rankClubs = []; var clubInvites = []; var hasVote = [];
+            var adminClubs = []; var clubInvites = []; var mutualClubs = []; var hasVote = [];
             return res.render("users/show", {haveRequest: haveRequest, sentRequest: sentRequest, 
             isFriend: isFriend, hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: userPosts,
-            match: match, rankClubs: rankClubs, clubInvites: clubInvites, foundPostIds: foundPostIds,
-            PC_50_clubAvatar: PC_50_clubAvatar, foundFriends: foundFriends, clubCount: clubCount});
+            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
+            foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar, foundFriends: foundFriends,
+            clubCount: clubCount});
           }
           });
         }

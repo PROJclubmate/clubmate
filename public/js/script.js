@@ -59,7 +59,15 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
-//Hide sidebar
+// Mobile search
+function mobileSearch(){
+  var toggleBtn = document.getElementById('mobile_toggler');
+  var searchbox = document.getElementById('nav_search');
+  toggleBtn.click();
+  searchbox.focus();
+}
+
+// Hide sidebar
 function hidesidebar(){
   var sidebar = document.getElementById('sidebar');
   var content = document.getElementById('content');

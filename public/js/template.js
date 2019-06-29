@@ -1875,10 +1875,10 @@ function moreMembers_template(response){
           <label for="userRank" class="sr-only">User rank</label>
           <select id="userRank" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
             <option value="0" data-descr="Founder" disabled selected>&#x25BC;</option>
-            <option value="1,<%= users[i].id._id %><%= clubId %>" data-descr="Administrator">Admin</option>
-            <option value="2,<%= users[i].id._id %><%= clubId %>" data-descr="Moderator">Mod.</option>
-            <option value="3,<%= users[i].id._id %><%= clubId %>" data-descr="Sr. Member">Sr. M</option>
-            <option value="4,<%= users[i].id._id %><%= clubId %>" data-descr="Jr. Member">Jr. M</option>
+            <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
+            <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
+            <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
+            <option value="4,<%= users[i].id._id %>,<%= clubId %>" data-descr="Jr. Member">Jr. M</option>
           </select>
         </form>
       </span>

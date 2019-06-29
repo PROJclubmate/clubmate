@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 
 <script type='text/javascript'>
-  var adminClubs = <%- JSON.stringify(rankClubs) %>;
+  var adminClubs = <%- JSON.stringify(adminClubs) %>;
   var invitedUser = <%- JSON.stringify(user._id) %>;
   var clubInvites = <%- JSON.stringify(clubInvites) %>;
 </script>
@@ -257,6 +257,20 @@
                   <br>
                   <!-- Total fad, does not work xD -->
                   Last update: <span class="info30"><%= moment(user.updatedAt).format('ll') %></span>
+                  <% if(mutualClubs.length != 0){ %>
+                  <div class="info1">Mutal clubs: <div class="info30">
+                    <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
+                    <% if(i==0 && i==len-1){ %>
+                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                      <% }else if(i==0){ %>
+                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                      <% }else if(i>0 && i<len-1){ %>
+                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                      <% }else if(i=len-1){ %>
+                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                    <% }}; %>
+                  </div></div>
+                <% }; %>
                   <div class="info30">
                     <div id="account_info_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -510,7 +524,7 @@
                   <span class="grey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>
                 <div class="d-flex flex-row">
-                  <% if(currentUser && !match && rankClubs.length!=0){ %>
+                  <% if(currentUser && !match && adminClubs.length!=0){ %>
                     <span>
                       <form action="/requests?_method=PUT" method="POST" class="form-inline">
                         <div id="clubInvite-select" class="clubInvite-select"></div>
@@ -612,7 +626,6 @@
 
 <% include ../partials/footer %>
 
-<!-- ////////////FUNCTIONS//////////// -->
 <% function favourites_split(arr){ %>
   <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
   <% if(i==0 && i==len-1){ %>

@@ -18,10 +18,11 @@
       <a href="#" onclick="hidesidebar();" class="btn hidesidebar" id="menu-toggle">
         <i class="fas fa-bars"></i>
       </a>
+      <a class="navbar-brand desktopNone" href="#" onclick="mobileSearch();"><i class="fas fa-search"></i></a>
       <a class="navbar-brand" href="/">
         <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -33,7 +34,7 @@
           <li class="nav-item">
             <form action="/search" method="GET" class="form-inline">
               <div class="input-group input-group-sm">
-                <input type="text" name="search" class="form-control search" placeholder="Search">
+                <input id="nav_search" type="text" name="search" class="form-control search" placeholder="Search">
                 <div class="input-group-append">
                   <button class="btn btn-secondary search" type="submit">
                     <i class="fa fa-search" aria-hidden="true"></i>
