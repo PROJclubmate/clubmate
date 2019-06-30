@@ -139,23 +139,19 @@
               <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
               <span class="grey text-sm nopad"> . <%= user.friendsCount %></span>
             </button>
-            <% //if(currentUser && match){ %>
-              <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
-            <% //} else{ %>
-              <!-- <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;"> -->
-            <% //} %>
-              <% for(i=0;i<foundFriends.length;i++){ %>
-                <% if(foundFriends[i]){ %>
-                  <div class="col-3 pl-1 py-1">
-                    <a href="/users/<%= foundFriends[i]._id %>">
-                      <img class="friends-dp" src="<%= foundFriends[i].profilePic || '/images/noUser.png' %>">
-                    </a>
-                    <div class="lineheight3 friends-text">
-                      <span class="text-xs boldtext nopad"><%= foundFriends[i].fullName %></span>
-                    </div>
+            <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
+            <% for(i=0;i<foundFriends.length;i++){ %>
+              <% if(foundFriends[i]){ %>
+                <div class="col-3 pl-1 py-1">
+                  <a href="/users/<%= foundFriends[i]._id %>">
+                    <img class="friends-dp" src="<%= foundFriends[i].profilePic || '/images/noUser.png' %>">
+                  </a>
+                  <div class="lineheight3 friends-text">
+                    <span class="text-xs boldtext nopad"><%= foundFriends[i].fullName %></span>
                   </div>
-                <% } %>
+                </div>
               <% } %>
+            <% } %>
             </div>
           </div>
         </div>
@@ -258,19 +254,19 @@
                   <!-- Total fad, does not work xD -->
                   Last update: <span class="info30"><%= moment(user.updatedAt).format('ll') %></span>
                   <% if(mutualClubs.length != 0){ %>
-                  <div class="info1">Mutal clubs: <div class="info30">
-                    <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
-                    <% if(i==0 && i==len-1){ %>
-                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
-                      <% }else if(i==0){ %>
-                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
-                      <% }else if(i>0 && i<len-1){ %>
-                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
-                      <% }else if(i=len-1){ %>
-                      <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
-                    <% }}; %>
-                  </div></div>
-                <% }; %>
+                    <div class="info1">Mutal clubs: <div class="info30">
+                      <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
+                      <% if(i==0 && i==len-1){ %>
+                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                        <% }else if(i==0){ %>
+                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                        <% }else if(i>0 && i<len-1){ %>
+                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                        <% }else if(i=len-1){ %>
+                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                      <% }}; %>
+                    </div></div>
+                  <% }; %>
                   <div class="info30">
                     <div id="account_info_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">

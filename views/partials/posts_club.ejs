@@ -15,17 +15,17 @@
               <em class="text-xs grey">. <%= moment(posts[k].createdAt).calendar();  %></em>
             </div>
             <div>
-              <% if(0 <= rank && rank <= 2){ %>
-                <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
-              <% } %>
-              <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
-              <% } else if(posts[k].moderation == -1){ %>
-                <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
-              <% } %>
-              <% if(posts[k].descEdit.length != 0){ %>
-                <div class="badge badge-warning text-xxs">Edited</div>
-              <% } %>
+            <% if(0 <= rank && rank <= 2){ %>
+              <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+            <% } %>
+            <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
+              <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+            <% } else if(posts[k].moderation == -1){ %>
+              <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+            <% } %>
+            <% if(posts[k].descEdit.length != 0){ %>
+              <div class="badge badge-warning text-xxs">Edited</div>
+            <% } %>
             </div>
           </div>
         </div>
