@@ -204,12 +204,12 @@
               <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#hot_topics">
                 <span><i class="fas fa-fire"></i></span><span class="boldtext">HOT Topics</span>
               </button>
-              <div id="hot_topics" class="collapse show">
+              <div id="hot_topics" class="collapse">
                 <div class="card-body3">
                   <% for(var i=0;i<topTopicPosts.length;i++){ %>
                   <div class="valign">
-                    <div><a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="black truncate3 linewrap mobiletext"><%= topTopicPosts[i].topic %></a></div>
-                    <div class="mb-auto ml-2"><strong><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></strong></div>
+                    <div><a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext lineheight2 my-1"><%= topTopicPosts[i].topic %></a></div>
+                    <div class="mb-auto ml-2 darkgrey"><strong><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></strong></div>
                   </div>
                   <% } %>
                 </div>
