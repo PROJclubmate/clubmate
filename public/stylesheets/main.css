@@ -229,7 +229,7 @@ button.btn.btn-secondary.search{
   margin: 0.5rem 0;
   border: none;
   border-radius: 0.1rem;
-  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.4);
 }
 .form-control:focus {
   z-index: 2;
@@ -522,81 +522,36 @@ button.dropdown-toggle2:focus{
   box-shadow: 0px 2px 7px -1px rgba(0,0,0,0.4);
 }
 .dropdown-toggle2::after {
-    display: none;
+  display: none;
 }
 /*None elements*/
-.nodisplay{
-  display: none;
-}
-#toggle_profile_form{
-  display: none;
-}
-#account_info_form_div{
-  display: none;
-}
-#interests_form_div{
-  display: none;
-}
-#favourites_form1_div{
-  display: none;
-}
-#favourites_form2_div{
-  display: none;
-}
-#favourites_form3_div{
-  display: none;
-}
-#favourites_form4_div{
-  display: none;
-}
-#favourites_form5_div{
-  display: none;
-}
-#favourites_form6_div{
-  display: none;
-}
-#category_form_div{
-  display: none;
-}
-#interests_display{
-  display: block;
-}
-#toggle_club_form{
-  display: none;
-}
-.commentbtn{
-  display: none;
-}
-.newClub_form{
-  display: none;
-}
-#post_edit_form{
-  display: none;
-}
-#post_edit_history{
-  display: none;
-}
-.user_Rank{
-  display: none;
-}
-.status{
-  display: none;
-}
-.pushmsg{
-  display: none;
-}
-#club_desc{
-  display: none;
-}
-#club_rules{
-  display: none;
-}
-.subpostbtn{
-  display: none;
-}
-.clear_update{
-  display: none;
-}
+.nodisplay{display: none;}
+.commentbtn{display: none;}
+.newClub_form{display: none;}
+.user_Rank{display: none;}
+.status{display: none;}
+.pushmsg{display: none;}
+.subpostbtn{display: none;}
+.clear_update{display: none;}
+#toggle_profile_form{display: none;}
+#account_info_form_div{display: none;}
+#interests_form_div{display: none;}
+#favourites_form1_div{display: none;}
+#favourites_form2_div{display: none;}
+#favourites_form3_div{display: none;}
+#favourites_form4_div{display: none;}
+#favourites_form5_div{display: none;}
+#favourites_form6_div{display: none;}
+#category_form_div{display: none;}
+#interests_display{display: block;}
+#toggle_club_form{display: none;}
+#post_edit_form{display: none;}
+#post_edit_history{display: none;}
+#club_desc{display: none;}
+#club_rules{display: none;}
+#club_filter{display: none;}
+#user_filter{display: none;}
+#location_status{display: none;}
 /*--------------*/
 .dropctn{
   width: 100% !important;
@@ -660,9 +615,11 @@ button.dropdown-toggle2:focus{
   font-weight: 600;
   font-size: 22px;
   background:none!important;
-  border:none; 
-  padding:0!important;
+  border: none; 
+  padding: 0 0.25rem !important;
   cursor:pointer;
+  border: 1px dashed #cc0000;
+  border-radius: 3px;
 }
 .btn-search:hover{
   text-decoration:underline;
@@ -712,7 +669,7 @@ button.dropdown-toggle2:focus{
   border: 1px solid #009f5e;
 }
 .btn-info{
-  border-color: #007bff;
+  border-color: #006bde;
   background-color: #007bff;
 }
 .btn-info:hover{
@@ -1269,6 +1226,10 @@ select:hover{
   transition: 0.15s ease-in-out;
   color: #007e4b;
   border-color: #007e4b;
+}
+select.select_dark{
+  color: #303030;
+  border-color: grey;
 }
 select.select1{
   -webkit-appearance: none;

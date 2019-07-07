@@ -2,7 +2,8 @@ const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
   {indexRoot, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
-  indexSearchMoreClubs, indexRequests, indexMemberInfo, indexViewAllFriends} = require('../controllers/index');
+  indexSearchMoreClubs, indexRequests, indexMemberInfo, indexFilterSearchClubs,
+  indexFilterSearchPeople, indexViewAllFriends} = require('../controllers/index');
 
 
 
@@ -21,11 +22,17 @@ router.get('/find_people/search', indexSearchPeople);
 // Search people(Load more using AJAX)
 router.get('/people-moreResults/search/:query', indexSearchMorePeople);
 
+// Filter search people
+router.get('/find_people/filter_search', middleware.searchAndFilterPeople, indexFilterSearchPeople);
+
 // Search clubs
 router.get('/find_clubs/search', indexSearchClubs);
 
 // Search clubs(Load more using AJAX)
 router.get('/clubs-moreResults/search/:query', indexSearchMoreClubs);
+
+// Filter search clubs
+router.get('/find_clubs/filter_search', middleware.searchAndFilterClubs, indexFilterSearchClubs);
 
 // Friend requests / Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);

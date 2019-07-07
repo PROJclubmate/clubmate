@@ -4,29 +4,10 @@
 	<div class="col-lg-9">
 		<div class="ml-2">Search results for: <span class="boldtext"><%= query %></span></div>
 
-		<div class="card d-inline-flex flex-row valign mt-3 mb-2 mobilewidth">
-			<div class="mx-2 text-sm">Search user by email:</div>
-			<div class="card-body">
-				<form action="/find_email/search" method="GET" class="form-inline">
-		      <div class="input-group input-group-sm">
-		        <input type="email" name="email" class="form-control search" placeholder="simon@riley.com" required>
-		        <div class="input-group-append">
-		          <button class="btn btn-secondary search" type="submit">
-		            Go
-		          </button>
-		        </div>
-		      </div>
-		    </form>
-		  </div>
-	  </div>
 		<br>
-		<% if(users.length != 0){ %>
-			<form action="/find_people/search" method="GET">
-				<button class="btn-search ml-2" type="submit" value="<%= query %>" name="people">People</button>
-			</form>
-		<% } else{ %>
-			<button class="btn-search ml-2 grey nopoint" name="people">People</button>
-		<% } %>
+		<form action="/find_people/search" method="GET">
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="people">People</button>
+		</form>
 		<div class="row no-gutters">
 			<% if(users.length == 0){ %>
 				<h6 class="grey ml-2">No matching users found :(</h6>
@@ -58,13 +39,9 @@
 		</div>
 
 		<br>
-		<% if(clubs.length != 0){ %>
-			<form action="/find_clubs/search" method="GET">
-				<button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button>
-			</form>
-		<% } else{ %>
-			<button class="btn-search ml-2 grey nopoint" name="clubs">Clubs</button>
-		<% } %>
+		<form action="/find_clubs/search" method="GET">
+			<span><button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button></span>
+		</form>
 		<div class="row no-gutters">
 			<% if(clubs.length == 0){ %>
 				<h6 class="grey ml-2">No matching clubs found :(</h6>
@@ -95,10 +72,10 @@
 			<% } %>
 		</div>
 	</div>
-	<div class="col-lg-3 px-2 mobileNone">
-    <br>
+	<div class="col-lg-3 px-2">
+    <br class="mobileNone">
     <div class="list-group">
-      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+      <li class="list-group-item orangecolor text-sm boldtext mt-3 mobileNone"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
     </div>
   </div>
 </div>

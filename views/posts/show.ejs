@@ -269,7 +269,7 @@
                 <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
               </div>
               <div class="commentdiv d-flex flex-column">
-                <form action="/posts/<%= post._id %>/discussions" method="POST">
+                <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
                   <div class="valign">
                     <div class="d-flex flex-column">
                       <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>

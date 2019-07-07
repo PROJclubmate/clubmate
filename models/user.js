@@ -1,5 +1,6 @@
-const mongoose          = require("mongoose"),
-  passportLocalMongoose = require("passport-local-mongoose"),
+const mongoose          = require('mongoose'),
+  passportLocalMongoose = require('passport-local-mongoose'),
+  mongoosePaginate      = require('mongoose-paginate'),
   Schema                = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -23,8 +24,20 @@ const userSchema = new Schema({
     birthdate: Date,
     school: String,
     college: String,
+    concentration: String,
     worksAt: String,
     residence: String
+  },
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      // required: true
+    },
+    coordinates: {
+      type: [Number],
+      // required: true
+    }
   },
   note: String,
   interests: [String],
@@ -34,26 +47,26 @@ const userSchema = new Schema({
   friendsCount: Number,
   clubInvites: [{
     type: Schema.Types.ObjectId,
-    ref: "Club"
+    ref: 'Club'
   }],
   postHearts: [{
     type: Schema.Types.ObjectId,
-    ref: "Post"
+    ref: 'Post'
   }],
   userClubs: [{
     id: {
       type: Schema.Types.ObjectId,
-      ref: "Club"
+      ref: 'Club'
     },
     clubName: String,
     rank: {
       type: Number,
       min: 0,
       max: 4,
-      required: "Please provide a (clubRank:0-Founder,1-Admin,2-Moderator,3-SrMember,4-JrMember)",
+      required: 'Please provide a (clubRank:0-Founder,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
       validate: {
         validator: Number.isInteger,
-        message: "{VALUE} is not an integer value."
+        message: '{VALUE} is not an integer value.'
       }
     },
     status: String,
@@ -63,7 +76,7 @@ const userSchema = new Schema({
   clubUpdates: [{
     clubId: {
       type: Schema.Types.ObjectId,
-      ref: "Club"
+      ref: 'Club'
     },
     clubName: String,
     pusherName: String,
@@ -77,7 +90,7 @@ const userSchema = new Schema({
     userId: this,
     conversationId: {
       type: Schema.Types.ObjectId,
-      ref: "Conversation"
+      ref: 'Conversation'
     },
     _id: false
   }],
@@ -87,17 +100,19 @@ const userSchema = new Schema({
   timestamps: true
 });
 
-userSchema.index({fullName: "text"});
+userSchema.index({fullName: 'text'});
+userSchema.index({geometry: '2dsphere'});
 userSchema.index({email: 1});
 
+userSchema.plugin(mongoosePaginate);
 userSchema.plugin(passportLocalMongoose,{
-  usernameField : "email",
+  usernameField : 'email',
   // Set usernameUnique to false to avoid a mongodb index on the username column!
   usernameUnique: false,
   errorMessages: {
-    IncorrectPasswordError: "Password incorrect",
-    IncorrectUsernameError: "There is either no account registered with that email or the account may not have been verified",
-    UserExistsError: "A user with the given email is already registered"
+    IncorrectPasswordError: 'Password incorrect',
+    IncorrectUsernameError: 'There is either no account registered with that email or the account may not have been verified',
+    UserExistsError: 'A user with the given email is already registered'
   },
   findByUsername: function(model, queryParameters){
     // Add additional query parameter - AND condition - verified: true
@@ -106,4 +121,4 @@ userSchema.plugin(passportLocalMongoose,{
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

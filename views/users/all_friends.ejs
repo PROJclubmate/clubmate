@@ -2,7 +2,6 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9">
-
 		<div class="ml-2">
 			<span class="boldtext"><a href="/users/<%= userId %>" class="black"><%= userName %></a></span>'s friends
 		</div>
@@ -21,8 +20,8 @@
 		        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends">«</a></li>
 		        <% } %>
 		 
-		        <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
-		        <% for (; i <= (Number(current) + 2) && i <= pages; i++){ %>
+		        <% var i=(Number(current)>3 ? Number(current)-2:1) %>
+		        <% for (i;i<=(Number(current)+2) && i<=pages; i++){ %>
 			        <% if (i == current) { %>
 			        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
 			        <% } else{ %>

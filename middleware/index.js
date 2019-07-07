@@ -1,7 +1,13 @@
-const Post  = require("../models/post"),
-  Comment   = require("../models/comment"),
-  User      = require("../models/user"),
-  Club      = require("../models/club");
+const Post        = require("../models/post"),
+  Comment         = require("../models/comment"),
+  User            = require("../models/user"),
+  Club            = require("../models/club"),
+  mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+
+function escapeRegExp(str){
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
 
 // all the middleare goes here
 var middlewareObj = {};
@@ -142,6 +148,120 @@ middlewareObj.isLoggedIn = function(req, res, next){
   }
   req.flash('error', 'Please Login First');
   res.redirect('/login');
+};
+
+middlewareObj.searchAndFilterClubs = async function(req, res, next){
+  const queryKeys = Object.keys(req.query);
+  if(queryKeys.length){
+    const dbQueries = [];
+    let {clubs, location, distance, grouptype, organization} = req.query;
+    if(clubs){
+      clubs = new RegExp(escapeRegExp(clubs), 'gi');
+      dbQueries.push({name: clubs});
+    }
+    if(location){
+      let coordinates;
+      try{
+        location = JSON.parse(location);
+        coordinates = location;
+      } catch(err){
+        const response = await geocodingClient.forwardGeocode({
+          query: location,
+          limit: 1
+        }).send();
+        coordinates = response.body.features[0].geometry.coordinates;
+      }
+      let maxDistance = distance || 25;
+      maxDistance *= 1000;
+      dbQueries.push({
+        geometry: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates
+            },
+            $maxDistance: maxDistance
+          }
+        }
+      });
+    }
+    if(grouptype){
+      dbQueries.push({'clubKeys.grouptype': grouptype});
+    }
+    if(organization){
+      organization = new RegExp(escapeRegExp(organization), 'gi');
+      dbQueries.push({'clubKeys.organization': organization});
+    }
+    res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
+  }
+  res.locals.query = req.query;
+  queryKeys.splice(queryKeys.indexOf('page'), 1);
+  const delimiter = queryKeys.length ? '&' : '?';
+  res.locals.paginateUrl = req.originalUrl.replace(/(\?|\&)page=\d+/g, '') + `${delimiter}page=`;
+  next();
+};
+
+middlewareObj.searchAndFilterPeople = async function(req, res, next){
+  const queryKeys = Object.keys(req.query);
+  if(queryKeys.length){
+    const dbQueries = [];
+    let {users, sex, school, college, concentration, worksAt, location, distance} = req.query;
+    if(users){
+      users = new RegExp(escapeRegExp(users), 'gi');
+      dbQueries.push({fullName: users});
+    }
+    if(sex){
+      dbQueries.push({'userKeys.sex': sex});
+    }
+    if(school){
+      school = new RegExp(escapeRegExp(school), 'gi');
+      dbQueries.push({'userKeys.school': school});
+    }
+    if(college){
+      college = new RegExp(escapeRegExp(college), 'gi');
+      dbQueries.push({'userKeys.college': college});
+    }
+    if(concentration){
+      concentration = new RegExp(escapeRegExp(concentration), 'gi');
+      dbQueries.push({'userKeys.concentration': concentration});
+    }
+    if(worksAt){
+      worksAt = new RegExp(escapeRegExp(worksAt), 'gi');
+      dbQueries.push({'userKeys.worksAt': worksAt});
+    }
+    if(location){
+      let coordinates;
+      try{
+        location = JSON.parse(location);
+        coordinates = location;
+      } catch(err){
+        const response = await geocodingClient.forwardGeocode({
+          query: location,
+          limit: 1
+        }).send();
+        coordinates = response.body.features[0].geometry.coordinates;
+      }
+      let maxDistance = distance || 25;
+      maxDistance *= 1000;
+      dbQueries.push({
+        geometry: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates
+            },
+            $maxDistance: maxDistance
+          }
+        }
+      });
+    }
+    res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
+  }
+  res.locals.query = req.query;
+  queryKeys.splice(queryKeys.indexOf('page'), 1);
+  const delimiter = queryKeys.length ? '&' : '?';
+  res.locals.paginateUrl = req.originalUrl.replace(/(\?|\&)page=\d+/g, '') + `${delimiter}page=`;
+  next();
 };
 
 module.exports = middlewareObj;

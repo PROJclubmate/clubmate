@@ -1,9 +1,10 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-9">
+	<div class="col-lg-9 order-md-first order-last">
+	<% if(!clubs.docs){ %>
+		<!-- Load more Search -->
 		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
-
 		<div id="server-search-clubs">
 			<% var len = clubs.length; var k=0; for(k;k<len;k++){ %>
 				<div class="card searchcard2">
@@ -49,19 +50,154 @@
 		</div>
 		<div id="client-search-clubs"></div>
 		<div class="text-center mt-2">
-      <button id="load-more-search-clubs-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundClubIds %>">
-      	<span id="load-more-search-clubs-span"></span>Load More
-      </button>
+			<% if(clubs.length != 0 && clubs.length > 11){ %>
+	      <button id="load-more-search-clubs-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundClubIds %>">
+	    <% } else{ %>
+	    	<button id="load-more-search-clubs-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundClubIds %>">
+	    <% } %>
+	    	<span id="load-more-search-clubs-span"></span>Load More
+	    </button>
     </div>
+	<% }else { %>
+		<!-- Paginate Search -->
+		<div class="ml-2 mb-3">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query.clubs %></span></div>
+			<% if (clubs.page && clubs.page > 0){ %>
+	    	<ul class="pagination justify-content-center">
+	        <% if (clubs.page - 1){ %>
+	        	<!-- <li><a class="page-link text-sm" href="/find_clubs/filter_search?clubs=<%= query %>&page=<%= clubs.page - 1 %>">Prev</a></li> -->
+	        	<li><a class="page-link text-sm" href="<%= paginateUrl %><%= clubs.page - 1 %>">Prev</a></li>
+	        <% } %>
+	        <% var i=(clubs.page>3 ? clubs.page-2:1) %>
+	        <% for (i;i<=(clubs.page+2) && i<=clubs.pages; i++){ %>
+		        <% if (i == clubs.page) { %>
+		        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
+		        <% } else{ %>
+		        <!-- <li><a class="page-link text-sm" href="/find_clubs/filter_search?clubs=<%= query %>&page=<%= i %>"><%= i %></a></li> -->
+		        <li><a class="page-link text-sm" href="<%= paginateUrl %><%= i %>"><%= i %></a></li>
+		        <% } %>
+	        <% } %>
+	        <% if ((clubs.page + 1) <= clubs.pages){ %>
+	        	<!-- <li class="page-item disabled text-sm" href="/find_clubs/filter_search?clubs=<%= query %>&page=<%= clubs.page + 1 %>"><a class="page-link">Next</a></li> -->
+	        	<li class="page-item disabled text-sm" href="<%= paginateUrl %><%= clubs.page + 1 %>"><a class="page-link">Next</a></li>
+	        <% } %>
+	    	</ul>
+	    <% } %>
+
+			<% var len = clubs.docs.length; var k=0; for(k;k<len;k++){ %>
+				<div class="card searchcard2">
+					<div class="d-flex flex-row">
+						<div>
+				      <a href="/clubs/<%= clubs.docs[k]._id %>">
+	            	<img class="searchdp" src="<%= clubs.docs[k].avatar || '/images/noClub.png' %>">
+	          	</a>
+				    </div>
+				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+				    	<div class="valign">
+				    		<div>
+						    	<a href="/clubs/<%= clubs.docs[k]._id %>" class="green">
+						      	<span class="nothing text-lg"><strong class="searchname"><%= clubs.docs[k].name %></strong></span>
+						      </a>
+						    </div>
+					    	<div>
+						    	<% if(currentUser){ 
+						    		currentUser.userClubs.forEach(function(userClub){ 
+						    			if(clubs.docs[k]._id.equals(userClub.id)){ %>
+							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				                <i class="fas fa-check"></i> Member</button>
+						    	<% }})} %>
+						    </div>
+						  </div>
+						  <div class="grey text-xs"><%= clubs.docs[k].banner %></div>
+				      <br>
+				      <% if(clubs.docs[k].clubKeys){ %>
+					      <div class="text-sm boldtext darkgrey"><%= clubs.docs[k].clubKeys.weblink %></div>
+					      <div class="grey text-xs"><%= clubs.docs[k].clubKeys.grouptype %></div>
+					      <div class="grey text-xs"><%= clubs.docs[k].clubKeys.organization %></div>
+					    <% } %>
+				      <div class="valign">
+					      <div class="grey text-xs"><%= break_arr(clubs.docs[k].categories) %></div>
+					      <% if(clubs.docs[k].clubKeys){ %>
+					      	<div class="darkgrey text-sm mt-auto text-right"><%= clubs.docs[k].clubKeys.location %></div>
+					      <% } %>
+					    </div>
+				    </div>
+				  </div>
+			  </div>
+			<% } %>
+		<% }; %>
 	</div>
-	<div class="col-lg-3 px-2 mobileNone">
-    <br>
-    <div class="list-group">
-      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
-    </div>
+	<div class="col-lg-3 px-2 mb-3">
+    <br class="mobileNone">
+    <br class="mobileNone">
+    <span><i class="fas fa-filter ml-2"></i></span>
+    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('club_filter')">Filter search</button></span>
+    <% if(query){ %>
+    	<form id="club_filter" class="form-signin" action="/find_clubs/filter_search" method="GET">
+    <% } else{ %>
+    	<form id="club_filter" style="display: block;" class="form-signin" action="/find_clubs/filter_search" method="GET">
+    <% } %>
+			<label for="search" class="sr-only">Search</label>
+			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Club name" name="clubs" id="search" value="<%= query.clubs %>" autofocus>
+			<h6 class="nothing">Club keys</h6>
+			<div class="d-flex flex-row">
+		  	<label for="location" class="sr-only">Location</label>
+		  	<input type="text" id="location" class="form-control form-control-sm" name="location" placeholder="Club location or zipcode" value="<%= query.location %>">
+		  	<a href="#" id="find-me" class="my-auto mx-1" title="Use my location"><i class="fas fa-crosshairs text-lg"></i></a>
+		  </div>
+		  <p id="location_status" class="text-sm darkgrey"></p>
+	  	<div>
+		    <input type="radio" name="distance" id="distance25" value="25" <%= query.distance === '25' ? 'checked' : '' %>>
+	  	  <label for="distance25" class="text-sm darkgrey">within 25 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance50" value="50" <%= query.distance === '50' ? 'checked' : '' %>>
+	  	  <label for="distance50" class="text-sm darkgrey">50 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance100" value="100" <%= query.distance === '100' ? 'checked' : '' %>>
+			  <label for="distance100" class="text-sm darkgrey">100 Km</label>
+	  	</div>
+	  	<div>
+        <label for="grouptype" class="sr-only" title="Group type">Group Type</label>
+        <select id="grouptype" class="select_dark select3 mt-2 fullwidth" name="grouptype" data-toggle="tooltip" title="Group type">
+        	<% if(!query.grouptype){ %>
+        		<option value="" disabled selected>Group Type</option>
+        	<% } %>
+          <% if(query.grouptype && query.grouptype == 'Work'){ %>
+            <option value="Work" selected>Work</option>
+          <% } else{ %>
+            <option value="Work">Work</option>
+          <% } %>
+          <% if(query.grouptype && query.grouptype == 'College'){ %>
+            <option value="College" selected>College</option>
+          <% } else{ %>
+            <option value="College">College</option>
+          <% } %>
+          <% if(query.grouptype && query.grouptype == 'School'){ %>
+            <option value="School" selected>School</option>
+          <% } else{ %>
+            <option value="School">School</option>
+          <% } %>
+          <% if(query.grouptype && query.grouptype == 'Private'){ %>
+            <option value="Private" selected>Private</option>
+          <% } else{ %>
+            <option value="Private">Private</option>
+          <% } %>
+        </select>
+      </div>
+      <div>
+      	<label for="organization" class="sr-only">Organization name</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Organization name" name="organization" id="organization" value="<%= query.organization %>">
+      </div>
+			<div>
+				<a href="/find_clubs/search?clubs=">Reset keys</a>
+			</div>
+			<input class="btn btn-primary btn-sm" type="submit" value="Search">
+		</form>
   </div>
 </div>
 
+<script src="/js/use-my-location.js"></script>
 <% include ../partials/footer %>
 
 <%

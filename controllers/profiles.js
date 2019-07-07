@@ -593,10 +593,19 @@ module.exports = {
           foundUser.userKeys.birthdate = req.body.userKeys.birthdate;
           foundUser.userKeys.sex = req.body.userKeys.sex;
         } else{
-          foundUser.userKeys.school = req.body.userKeys.school;
-          foundUser.userKeys.college = req.body.userKeys.college;
-          foundUser.userKeys.worksAt = req.body.userKeys.worksAt;
-          foundUser.userKeys.residence = req.body.userKeys.residence;
+          foundUser.userKeys = req.body.userKeys;
+          if(foundUser.userKeys.residence != ''){
+            let response = await geocodingClient
+            .forwardGeocode({
+              query: req.body.userKeys.residence,
+              limit: 1
+            })
+            .send();
+            foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, "");
+            foundUser.geometry = response.body.features[0].geometry;
+          } else{
+            foundUser.geometry = undefined;
+          }
         }
       }
       editinfo(0,req.body.interests,foundUser.interests);
@@ -1001,7 +1010,7 @@ module.exports = {
             }
           }
         }
-        if(req.body.clubKeys){
+        if(req.body.clubKeys){ 
           foundClub.clubKeys = req.body.clubKeys;
           if(foundClub.clubKeys.location != ''){
             let response = await geocodingClient
@@ -1010,9 +1019,10 @@ module.exports = {
               limit: 1
             })
             .send();
-            foundClub.coordinates = response.body.features[0].geometry.coordinates;
+            foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, "");
+            foundClub.geometry = response.body.features[0].geometry;
           } else{
-            foundClub.coordinates = '';
+            foundClub.geometry = undefined;
           }
         }
         if(req.body.info){

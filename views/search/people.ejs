@@ -1,9 +1,10 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-9">
+	<div class="col-lg-9 order-md-first order-last">
+	<% if(!users.docs){ %>
+		<!-- Load more Search -->
 		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
-
 		<div id="server-search-people">
 			<% var len = users.length; var k=0; for(k;k<len;k++){ %>
 				<div class="card searchcard2">
@@ -54,17 +55,158 @@
 		</div>
 		<div id="client-search-people"></div>
 		<div class="text-center mt-2">
-      <button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
+			<% if(users.length != 0 && users.length > 11){ %>
+      	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
+      <% } else{ %>
+      	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+      <% } %>
       	<span id="load-more-search-people-span"></span>Load More
       </button>
     </div>
+  <% }else { %>
+		<!-- Paginate Search -->
+		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query.users %></span></div>
+		<div id="server-search-people">
+			<% if (users.page && users.page > 0){ %>
+	    	<ul class="pagination justify-content-center">
+	        <% if (users.page - 1){ %>
+	        	<li><a class="page-link text-sm" href="<%= paginateUrl %><%= users.page - 1 %>">Prev</a></li>
+	        <% } %>
+	        <% var i=(users.page>3 ? users.page-2:1) %>
+	        <% for (i;i<=(users.page+2) && i<=users.pages; i++){ %>
+		        <% if (i == users.page) { %>
+		        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
+		        <% } else{ %>
+		        <li><a class="page-link text-sm" href="<%= paginateUrl %><%= i %>"><%= i %></a></li>
+		        <% } %>
+	        <% } %>
+	        <% if ((users.page + 1) <= users.pages){ %>
+	        	<li class="page-item disabled text-sm" href="<%= paginateUrl %><%= users.page + 1 %>"><a class="page-link">Next</a></li>
+	        <% } %>
+	    	</ul>
+	    <% } %>
+
+			<% var len = users.docs.length; var k=0; for(k;k<len;k++){ %>
+				<div class="card searchcard2">
+					<div class="d-flex flex-row">
+						<div>
+				      <a href="/users/<%= users.docs[k]._id %>">
+	            	<img class="searchdp" src="<%= users.docs[k].profilePic || '/images/noUser.png' %>">
+	          	</a>
+				    </div>
+				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+				    	<div class="valign">
+				    		<div>
+						    	<a href="/users/<%= users.docs[k]._id %>" class="green">
+						      	<span class="nothing text-lg"><strong class="searchname"><%= users.docs[k].fullName %></strong></span>
+						      </a>
+						    </div>
+				    		<div>
+						    	<% if(currentUser && users.docs[k]._id.equals(currentUser._id)){ %>
+						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+						    	<% } else if(currentUser && !users.docs[k]._id.equals(currentUser._id)){ 
+						    		currentUser.friends.forEach(function(friend){ 
+						    			if(users.docs[k]._id.equals(friend)){ %>
+							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+				                <i class="fas fa-check"></i> Friends</button>
+						    	<% }})} %>
+						    </div>
+					    </div>
+				      <div class="grey text-xs"><%= users.docs[k].note %></div>
+				      <br>
+				      <div class="valign">
+				      	<div>
+					      	<div class="text-sm boldtext darkgrey"><%= users.docs[k].email %></div>
+					      	<% if(users.docs[k].userKeys){ %>
+							      <div class="grey text-xs"><%= users.docs[k].userKeys.worksAt %></div>
+							      <div class="grey text-xs"><%= users.docs[k].userKeys.college %></div>
+							      <div class="grey text-xs"><%= users.docs[k].userKeys.school %></div>
+							    <% } %>
+						    </div>
+						    <% if(users.docs[k].userKeys){ %>
+					      	<div class="darkgrey text-sm mt-auto text-right"><%= users.docs[k].userKeys.residence %></div>
+					      <% } %>
+					    </div>
+				    </div>
+				  </div>
+			  </div>
+			<% } %>
+		</div>
+	<% } %>
 	</div>
-	<div class="col-lg-3 px-2 mobileNone">
-		<br>
-    <div class="list-group">
-      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
-    </div>
+	<div class="col-lg-3 px-2">
+		<br class="mobileNone">
+    <div class="mx-2 text-sm boldtext">Search user by email:</div>
+		<form action="/find_email/search" method="GET" class="form-signin">
+      <div class="input-group input-group-sm">
+        <input type="email" name="email" class="form-control search" placeholder="simon@riley.com" autofocus required>
+        <div class="input-group-append">
+          <button class="btn btn-secondary search" type="submit">
+            Go
+          </button>
+        </div>
+      </div>
+    </form>
+    <span><i class="fas fa-filter ml-2"></i></span>
+    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter')">Filter search</button></span>
+    <% if(query){ %>
+    	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
+    <% } else{ %>
+    	<form id="user_filter" style="display: block;" class="form-signin" action="/find_people/filter_search" method="GET">
+    <% } %>
+			<label for="search" class="sr-only">Search</label>
+			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>" autofocus>
+			<h6 class="nothing mb-1">User keys</h6>
+			<div class="form-check-inline">
+		    <span><input type="radio" name="sex" id="sexMale" value="Male" <%= query.sex == 'Male' ? 'checked' : '' %>></span>
+	  	  <span><label for="sexMale" class="form-check-label text-sm darkgrey">Male</label></span>
+	  	</div>
+	  	<div class="form-check-inline">
+		    <span><input type="radio" name="sex" id="sexFemale" value="Female" <%= query.sex == 'Female' ? 'checked' : '' %>></span>
+	  	  <span><label for="sexFemale" class="form-check-label text-sm darkgrey">Female</label></span>
+	  	</div>
+	  	<div>
+      	<label for="school" class="sr-only">School</label>
+				<input class="form-control form-control-sm" type="text" placeholder="School" name="school" id="school" value="<%= query.school %>">
+      </div>
+      <div>
+      	<label for="college" class="sr-only">College</label>
+				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
+      </div>
+      <div>
+      	<label for="concentration" class="sr-only">Concentration</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Concentration" name="concentration" id="concentration" value="<%= query.concentration %>">
+      </div>
+      <div>
+      	<label for="worksAt" class="sr-only">Works At</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Works At" name="worksAt" id="worksAt" value="<%= query.worksAt %>">
+      </div>
+			<div class="d-flex flex-row">
+		  	<label for="location" class="sr-only">Location</label>
+		  	<input type="text" id="location" class="form-control form-control-sm" name="location" placeholder="Residence or zipcode" value="<%= query.location %>">
+		  	<a href="#" id="find-me" class="my-auto mx-1" title="Use my location"><i class="fas fa-crosshairs text-lg"></i></a>
+		  </div>
+		  <p id="location_status" class="text-sm darkgrey"></p>
+	  	<div>
+		    <input type="radio" name="distance" id="distance25" value="25" <%= query.distance === '25' ? 'checked' : '' %>>
+	  	  <label for="distance25" class="text-sm darkgrey">within 25 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance50" value="50" <%= query.distance === '50' ? 'checked' : '' %>>
+	  	  <label for="distance50" class="text-sm darkgrey">50 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance100" value="100" <%= query.distance === '100' ? 'checked' : '' %>>
+			  <label for="distance100" class="text-sm darkgrey">100 Km</label>
+	  	</div>
+			<div>
+				<a href="/find_people/search?people=">Reset keys</a>
+			</div>
+			<input class="btn btn-primary btn-sm" type="submit" value="Search">
+		</form>
   </div>
 </div>
 
+<script src="/js/use-my-location.js"></script>
 <% include ../partials/footer %>

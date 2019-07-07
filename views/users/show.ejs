@@ -108,10 +108,17 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <div class="info1">Works at: <div class="info30"><a href="#"><%= user.userKeys.worksAt %></a></div></div>
-              <div class="info1">College: <div class="info30"><a href="#"><%= user.userKeys.college %></a></div></div>
-              <div class="info1">School: <div class="info30"><a href="#"><%= user.userKeys.school %></a></div></div>
-              <div class="info1">Residence: <div class="info30"><a href="#"><%= user.userKeys.residence %></a></div></div>
+              <% if(user.userKeys.worksAt){ %>
+                <div class="info1">Works at: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=&worksAt=<%= user.userKeys.worksAt %>&location="><%= user.userKeys.worksAt %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.college){ %>
+                <div class="info1">College: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=<%= user.userKeys.college %>&concentration=&worksAt=&location="><%= user.userKeys.college %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.college && user.userKeys.concentration){ %>
+                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=<%= user.userKeys.concentration %>&worksAt=&location="><%= user.userKeys.concentration %></a></div></div>
+              <% } %>
+              <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&school=<%= user.userKeys.school %>&college=&concentration=&worksAt=&location="><%= user.userKeys.school %></a></div></div>
+              <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=&worksAt=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
             </div>
           </div>
           <% if(currentUser && match){ %>
@@ -124,6 +131,8 @@
                 <input type="text" id="worksAt" class="form-control form-control-sm" name="userKeys[worksAt]" value="<%= user.userKeys.worksAt %>" placeholder="Works at">
                 <label for="college" class="sr-only">College</label>
                 <input type="text" id="college" class="form-control form-control-sm" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
+                <label for="concentration" class="sr-only">Concentration</label>
+                <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
                 <label for="school" class="sr-only">School</label>
                 <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
                 <label for="residence" class="sr-only">Residence</label>

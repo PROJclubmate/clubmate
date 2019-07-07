@@ -1,6 +1,8 @@
 <% include ../partials/header %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet'>
 
 <div class="row no-gutters">
   <div class="col-lg-9 order-md-first order-last">
@@ -123,6 +125,13 @@
                 </form>
               <% } %>
             </div>
+            <% if(club.clubKeys.location != ''){ %>
+              <div>
+                <div id='map' style="border: 1px solid lightgrey;"></div>
+              </div>
+            <% } else{ %>
+              <hr>
+            <% } %>
           </div>
           <div class="card-body">
             <h6 class="text-center"><%= club.banner %></h6>
@@ -134,8 +143,8 @@
                 <% }; %>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <% if(0 <= rank && rank <= 1){ %>
                       <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <% if(0 <= rank && rank <= 1){ %>
                       <li onclick="toggle_display('toggle_club_form');"><a class="dropitems text-sm" href="#">Edit club profile</a></li>
                       <hr>
                       <li>
@@ -150,10 +159,14 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <div class="info1">Location: <div class="info30"><a href="#"><%= club.clubKeys.location %></a></div></div>
-              <div class="info1">Group type: <div class="info30"><a href="#"><%= club.clubKeys.grouptype %></a></div></div>
-              <div class="info1">Org. name: <div class="info30"><a href="#"><%= club.clubKeys.organization %></a></div></div>
-              <div class="info1">Weblink: <div class="info30"><a href="https://<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
+              <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&grouptype=&organization="><%= club.clubKeys.location %></a></div></div>
+              <div class="info1">Group type: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&grouptype=<%= club.clubKeys.grouptype %>&organization="><%= club.clubKeys.grouptype %></a></div></div>
+              <% if(club.clubKeys.organization){ %>
+                <div class="info1">Org. name: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&grouptype=&organization=<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
+              <% } %>
+              <% if(club.clubKeys.weblink){ %>
+                <div class="info1">Weblink: <div class="info30"><a href="https://<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
+              <% } %>
               <div class="info1">Categories: <div class="info30">
               <% if(0 <= rank && rank <= 1){ %>
                 <button onclick="toggle_display('category_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
@@ -184,11 +197,34 @@
                 <input type="text" id="name" class="form-control form-control-sm commentbox2 text-center" name="name" value="<%= club.name %>" placeholder="Club name">
                 <br>
                 <label for="banner" class="sr-only">Banner</label>
-                <input type="text" id="banner" class="form-control form-control-sm commentbox2" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
+                <input type="text" id="banner" class="form-control form-control-sm text-center" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
                 <label for="location" class="sr-only">Location</label>
                 <input type="text" id="location" class="form-control form-control-sm" name="clubKeys[location]" value="<%= club.clubKeys.location %>" placeholder="Location">
-                <label for="grouptype" class="sr-only">Group type</label>
-                <input type="text" id="grouptype" class="form-control form-control-sm" name="clubKeys[grouptype]" value="<%= club.clubKeys.grouptype %>" placeholder="Group type">
+
+                <label for="grouptype" class="sr-only" title="Group type">Group Type</label>
+                <select id="grouptype" class="select_dark select3 mt-2 fullwidth" name="clubKeys[grouptype]" data-toggle="tooltip" title="Group type">
+                  <% if(club.clubKeys.grouptype == 'Work'){ %>
+                    <option value="Work" selected>Work</option>
+                  <% } else{ %>
+                    <option value="Work">Work</option>
+                  <% } %>
+                  <% if(club.clubKeys.grouptype == 'College'){ %>
+                    <option value="College" selected>College</option>
+                  <% } else{ %>
+                    <option value="College">College</option>
+                  <% } %>
+                  <% if(club.clubKeys.grouptype == 'School'){ %>
+                    <option value="School" selected>School</option>
+                  <% } else{ %>
+                    <option value="School">School</option>
+                  <% } %>
+                  <% if(club.clubKeys.grouptype == 'Private'){ %>
+                    <option value="Private" selected>Private</option>
+                  <% } else{ %>
+                    <option value="Private">Private</option>
+                  <% } %>
+                </select>
+
                 <label for="organization" class="sr-only">Organization name</label>
                 <input type="text" id="organization" class="form-control form-control-sm" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="Organization name">
                 <label for="weblink" class="sr-only">Weblink</label>
@@ -202,14 +238,14 @@
           <div class="mt-2">
             <div class="card mt-0">
               <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#hot_topics">
-                <span><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
+                <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
               </button>
               <div id="hot_topics" class="collapse">
                 <div class="card-body3">
                   <% for(var i=0;i<topTopicPosts.length;i++){ %>
                   <div class="valign">
                     <div><a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext lineheight2 my-1"><%= topTopicPosts[i].topic %></a></div>
-                    <div class="mb-auto ml-2 darkgrey"><strong><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></strong></div>
+                    <div class="mb-auto ml-2 badge badge-pill badge-secondary text-xs"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
                   </div>
                   <% } %>
                 </div>
@@ -351,8 +387,8 @@
                         <% }; %>
                         <div class="mx-2 my-auto news">
                           <%= club.updates[i].news %><span class="darkgrey text-xxs boldtext"></span>
-                          <span class="darkgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
-                          <span class="darkgrey text-xxs boldtext">[by: <em><%= club.updates[i].pusherName %></em>]</span>
+                          <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
+                          <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
                         </div>
                         <% if(0 <= rank && rank <= 1){ %>
                           <span class="dropdown ml-auto mb-auto">
@@ -435,25 +471,27 @@
     </div>
   <% } else if(currentUser && (!rank || 0 >= rank && rank >=4)){ %>
     <div class="col-lg-3 px-2 pb-2">
-      <div class="card nothing">
-        <div class="card-body"></div>
-      </div>
     </div>
   <% } %>
 </div>
 
+<script type='text/javascript'>
+  var club = <%- JSON.stringify(club) %>;
+</script>
+<script src="/js/mapbox.js"></script>
 <% include ../partials/footer %>
+
 
 <% function categories_split(arr){ %>
   <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
   <% if(i==0 && i==len-1){ %>
     <%= arr[i] %>
     <% }else if(i==0){ %>
-    <a href="#"><%= arr[i] %></a><%= ',' %>
+    <%= arr[i] %><%= ',' %>
     <% }else if(i>0 && i<len-1){ %>
-    <%= ' ' %><a href="#"><%= arr[i] %></a><%= ',' %>
+    <%= ' ' %><%= arr[i] %><%= ',' %>
     <% }else if(i=len-1){ %>
-    <%= ' ' %><a href="#"><%= arr[i] %></a>
+    <%= ' ' %><%= arr[i] %>
   <% }}; %>
 <% }; %>
 

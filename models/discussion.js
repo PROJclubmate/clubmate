@@ -1,10 +1,10 @@
-const mongoose = require("mongoose"),
+const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const discussionSchema = new Schema({
 	postId: {
     type: Schema.Types.ObjectId,
-    ref: "Post"
+    ref: 'Post'
   },
   bucket: {type: Number, default: 1},
   count: {
@@ -17,7 +17,7 @@ const discussionSchema = new Schema({
     subPostAuthor: {
       id:{
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: 'User'
       },
       authorName: String
     },
@@ -30,14 +30,14 @@ const discussionSchema = new Schema({
     dislikeCount: {type: Number, default: 0},
     likeUserIds: [{
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: 'User'
     }],
     dislikeUserIds: [{
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: 'User'
     }]
   }]
 });
 discussionSchema.index({postId: 1, bucket: 1}, {unique: true});
 
-module.exports = mongoose.model("Discussion", discussionSchema);
+module.exports = mongoose.model('Discussion', discussionSchema);

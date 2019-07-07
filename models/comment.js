@@ -1,10 +1,10 @@
-const mongoose = require("mongoose"),
+const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const commentSchema = new Schema({
 	postId: {
 		type: Schema.Types.ObjectId,
-    ref: "Post"
+    ref: 'Post'
 	},
 	bucket: {type: Number, default: 1},
 	count: {
@@ -19,7 +19,7 @@ const commentSchema = new Schema({
 		commentAuthor: {
 			id:{
 				type: Schema.Types.ObjectId,
-	      ref: "User"
+	      ref: 'User'
 	    },
 	    authorName: String
 		},
@@ -27,11 +27,11 @@ const commentSchema = new Schema({
 		upvotesCount: {type: Number, default: 0},
 		upvoteUserIds: [{
 		  type: Schema.Types.ObjectId,
-		  ref: "User"
+		  ref: 'User'
 		}]
 	}]
 });
 commentSchema.index({postId: 1, bucket: 1}, {unique: true});
 
-module.exports = mongoose.model("Comment", commentSchema);
+module.exports = mongoose.model('Comment', commentSchema);
 

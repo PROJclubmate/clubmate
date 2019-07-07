@@ -1,5 +1,6 @@
-const mongoose          = require("mongoose"),
-  passportLocalMongoose = require("passport-local-mongoose"),
+const mongoose          = require('mongoose'),
+  passportLocalMongoose = require('passport-local-mongoose'),
+  mongoosePaginate      = require('mongoose-paginate'),
   Schema                = mongoose.Schema;
 
 const clubSchema = new Schema({
@@ -24,7 +25,17 @@ const clubSchema = new Schema({
     organization: String,
     weblink: String
   },
-  coordinates: Array,
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  },
   description: String,
   updates: [{
     pusherId: this,
@@ -35,21 +46,21 @@ const clubSchema = new Schema({
   }],
   reccomendations: [{
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: 'User'
   }],
   clubUsers: [{
     id: {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: 'User'
     },
     userRank: {
       type: Number,
       min: 0,
       max: 4,
-      required: "Please provide a (clubRank:0-Founder,1-Admin,2-Moderator,3-SrMember,4-JrMember)",
+      required: 'Please provide a (clubRank:0-Founder,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
       validate: {
         validator: Number.isInteger,
-        message: "{VALUE} is not an integer value."
+        message: '{VALUE} is not an integer value.'
       }
     },
     userStatus: String,
@@ -59,13 +70,16 @@ const clubSchema = new Schema({
   membersCount: Number,
   conversationId: {
     type: Schema.Types.ObjectId,
-    ref: "ClubConversation"
+    ref: 'ClubConversation'
   }
 },
 {
   timestamps: true
 });
 
-clubSchema.index({name: "text"});
+clubSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Club", clubSchema);
+clubSchema.index({name: 'text'});
+clubSchema.index({geometry: '2dsphere'});
+
+module.exports = mongoose.model('Club', clubSchema);

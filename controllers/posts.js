@@ -229,6 +229,7 @@ module.exports = {
       }
       });
     } else{
+      // posts made today where likes are great
       Post.find({privacy: 0, moderation: 0})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})

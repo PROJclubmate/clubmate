@@ -1,10 +1,10 @@
-const mongoose = require("mongoose"),
+const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const messageSchema = new Schema({
 	conversationId: {
     type: Schema.Types.ObjectId,
-    ref: "Conversation"
+    ref: 'Conversation'
   },
   bucket: {type: Number, default: 1},
   count: {
@@ -16,7 +16,7 @@ const messageSchema = new Schema({
     createdAt: {type: Date, default: Date.now},
     authorId:{
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: 'User'
     },
     authorName: String,
     text: String
@@ -24,4 +24,4 @@ const messageSchema = new Schema({
 });
 messageSchema.index({conversationId: 1, bucket: 1}, {unique: true});
 
-module.exports = mongoose.model("Message", messageSchema);
+module.exports = mongoose.model('Message', messageSchema);
