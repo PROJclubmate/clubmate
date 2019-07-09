@@ -2,137 +2,102 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
-	<% if(!users.docs){ %>
-		<!-- Load more Search -->
+	<% if(!filter){ %>
 		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
-		<div id="server-search-people">
-			<% var len = users.length; var k=0; for(k;k<len;k++){ %>
-				<div class="card searchcard2">
-					<div class="d-flex flex-row">
-						<div>
-				      <a href="/users/<%= users[k]._id %>">
-	            	<img class="searchdp" src="<%= users[k].profilePic || '/images/noUser.png' %>">
-	          	</a>
-				    </div>
-				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
-				    	<div class="valign">
-				    		<div>
-						    	<a href="/users/<%= users[k]._id %>" class="green">
-						      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
-						      </a>
-						    </div>
-				    		<div>
-						    	<% if(currentUser && users[k]._id.equals(currentUser._id)){ %>
-						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-				              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
-						    	<% } else if(currentUser && !users[k]._id.equals(currentUser._id)){ 
-						    		currentUser.friends.forEach(function(friend){ 
-						    			if(users[k]._id.equals(friend)){ %>
-							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-				                <i class="fas fa-check"></i> Friends</button>
-						    	<% }})} %>
-						    </div>
-					    </div>
-				      <div class="grey text-xs"><%= users[k].note %></div>
-				      <br>
-				      <div class="valign">
-				      	<div>
-					      	<div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
-					      	<% if(users[k].userKeys){ %>
-							      <div class="grey text-xs"><%= users[k].userKeys.worksAt %></div>
-							      <div class="grey text-xs"><%= users[k].userKeys.college %></div>
-							      <div class="grey text-xs"><%= users[k].userKeys.school %></div>
-							    <% } %>
-						    </div>
-						    <% if(users[k].userKeys){ %>
-					      	<div class="darkgrey text-sm mt-auto text-right"><%= users[k].userKeys.residence %></div>
-					      <% } %>
-					    </div>
-				    </div>
-				  </div>
-			  </div>
+	<% } else{ %>
+		<div class="ml-2 lineheight">Search results for <strong>(</strong>
+			<% if(filterKeys.users){ %>
+				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span><span class="lightgrey nothing">,</span>
 			<% } %>
+			<% if(filterKeys.school){ %>
+				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span><span class="lightgrey nothing">,</span>
+			<% } %>
+			<% if(filterKeys.college){ %>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span><span class="lightgrey nothing">,</span>
+			<% } %>
+			<% if(filterKeys.concentration){ %>
+				<span class="lightgrey text-xs">Concentration=</span><span class="boldtext text-sm nothing"><%= filterKeys.concentration %></span><span class="lightgrey nothing">,</span>
+			<% } %>
+			<% if(filterKeys.worksAt){ %>
+				<span class="lightgrey text-xs">Works At=</span><span class="boldtext text-sm nothing"><%= filterKeys.worksAt %></span><span class="lightgrey nothing">,</span>
+			<% } %>
+			<% if(filterKeys.location){ %>
+				<span class="lightgrey text-xs">Residence=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span><span class="lightgrey nothing">,</span>
+			<% } %>
+			<% if(filterKeys.distance){ %>
+				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
+			<% } %><strong>)</strong>
 		</div>
-		<div id="client-search-people"></div>
+	<% } %>
+	<div id="server-search-people">
+		<% var len = users.length; var k=0; for(k;k<len;k++){ %>
+			<div class="card searchcard2">
+				<div class="d-flex flex-row">
+					<div>
+			      <a href="/users/<%= users[k]._id %>">
+            	<img class="searchdp" src="<%= users[k].profilePic || '/images/noUser.png' %>">
+          	</a>
+			    </div>
+			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+			    	<div class="valign">
+			    		<div>
+					    	<a href="/users/<%= users[k]._id %>" class="green">
+					      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+					      </a>
+					    </div>
+			    		<div>
+					    	<% if(currentUser && users[k]._id.equals(currentUser._id)){ %>
+					    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+			              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+					    	<% } else if(currentUser && !users[k]._id.equals(currentUser._id)){ 
+					    		currentUser.friends.forEach(function(friend){ 
+					    			if(users[k]._id.equals(friend)){ %>
+						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+			                <i class="fas fa-check"></i> Friends</button>
+					    	<% }})} %>
+					    </div>
+				    </div>
+			      <div class="grey text-xs"><%= users[k].note %></div>
+			      <br>
+			      <div class="valign">
+			      	<div>
+				      	<div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
+				      	<% if(users[k].userKeys){ %>
+						      <div class="grey text-xs"><%= users[k].userKeys.worksAt %></div>
+						      <div class="grey text-xs"><%= users[k].userKeys.college %></div>
+						      <div class="grey text-xs"><%= users[k].userKeys.school %></div>
+						    <% } %>
+					    </div>
+					    <% if(users[k].userKeys){ %>
+				      	<div class="darkgrey text-sm mt-auto text-right"><%= users[k].userKeys.residence %></div>
+				      <% } %>
+				    </div>
+			    </div>
+			  </div>
+		  </div>
+		<% } %>
+	</div>
+	<div id="client-search-people"></div>
+	<% if(!filter){ %>
 		<div class="text-center mt-2">
-			<% if(users.length != 0 && users.length > 11){ %>
-      	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
-      <% } else{ %>
-      	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
-      <% } %>
-      	<span id="load-more-search-people-span"></span>Load More
-      </button>
-    </div>
-  <% }else { %>
-		<!-- Paginate Search -->
-		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query.users %></span></div>
-		<div id="server-search-people">
-			<% if (users.page && users.page > 0){ %>
-	    	<ul class="pagination justify-content-center">
-	        <% if (users.page - 1){ %>
-	        	<li><a class="page-link text-sm" href="<%= paginateUrl %><%= users.page - 1 %>">Prev</a></li>
-	        <% } %>
-	        <% var i=(users.page>3 ? users.page-2:1) %>
-	        <% for (i;i<=(users.page+2) && i<=users.pages; i++){ %>
-		        <% if (i == users.page) { %>
-		        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
-		        <% } else{ %>
-		        <li><a class="page-link text-sm" href="<%= paginateUrl %><%= i %>"><%= i %></a></li>
-		        <% } %>
-	        <% } %>
-	        <% if ((users.page + 1) <= users.pages){ %>
-	        	<li class="page-item disabled text-sm" href="<%= paginateUrl %><%= users.page + 1 %>"><a class="page-link">Next</a></li>
-	        <% } %>
-	    	</ul>
+			<% if(users.length != 0 && !users.length < 10){ %>
+	    	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    <% } else{ %>
+	    	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
 	    <% } %>
-
-			<% var len = users.docs.length; var k=0; for(k;k<len;k++){ %>
-				<div class="card searchcard2">
-					<div class="d-flex flex-row">
-						<div>
-				      <a href="/users/<%= users.docs[k]._id %>">
-	            	<img class="searchdp" src="<%= users.docs[k].profilePic || '/images/noUser.png' %>">
-	          	</a>
-				    </div>
-				    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
-				    	<div class="valign">
-				    		<div>
-						    	<a href="/users/<%= users.docs[k]._id %>" class="green">
-						      	<span class="nothing text-lg"><strong class="searchname"><%= users.docs[k].fullName %></strong></span>
-						      </a>
-						    </div>
-				    		<div>
-						    	<% if(currentUser && users.docs[k]._id.equals(currentUser._id)){ %>
-						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-				              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
-						    	<% } else if(currentUser && !users.docs[k]._id.equals(currentUser._id)){ 
-						    		currentUser.friends.forEach(function(friend){ 
-						    			if(users.docs[k]._id.equals(friend)){ %>
-							    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-				                <i class="fas fa-check"></i> Friends</button>
-						    	<% }})} %>
-						    </div>
-					    </div>
-				      <div class="grey text-xs"><%= users.docs[k].note %></div>
-				      <br>
-				      <div class="valign">
-				      	<div>
-					      	<div class="text-sm boldtext darkgrey"><%= users.docs[k].email %></div>
-					      	<% if(users.docs[k].userKeys){ %>
-							      <div class="grey text-xs"><%= users.docs[k].userKeys.worksAt %></div>
-							      <div class="grey text-xs"><%= users.docs[k].userKeys.college %></div>
-							      <div class="grey text-xs"><%= users.docs[k].userKeys.school %></div>
-							    <% } %>
-						    </div>
-						    <% if(users.docs[k].userKeys){ %>
-					      	<div class="darkgrey text-sm mt-auto text-right"><%= users.docs[k].userKeys.residence %></div>
-					      <% } %>
-					    </div>
-				    </div>
-				  </div>
-			  </div>
-			<% } %>
-		</div>
+	    	<span id="load-more-search-people-span"></span>Load More
+	    </button>
+	  </div>
+	<% } else{ %>
+	  <div class="text-center mt-2">
+			<% if(users.length != 0 && !users.length < 10){ %>
+	    	<button id="load-more-filterSearch-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    <% } else{ %>
+	    	<button id="load-more-filterSearch-people-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+	    <% } %>
+	    	<span id="load-more-filterSearch-people-span"></span>Load More
+	    </button>
+	  </div>
 	<% } %>
 	</div>
 	<div class="col-lg-3 px-2">
@@ -158,14 +123,6 @@
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>" autofocus>
 			<h6 class="nothing mb-1">User keys</h6>
-			<div class="form-check-inline">
-		    <span><input type="radio" name="sex" id="sexMale" value="Male" <%= query.sex == 'Male' ? 'checked' : '' %>></span>
-	  	  <span><label for="sexMale" class="form-check-label text-sm darkgrey">Male</label></span>
-	  	</div>
-	  	<div class="form-check-inline">
-		    <span><input type="radio" name="sex" id="sexFemale" value="Female" <%= query.sex == 'Female' ? 'checked' : '' %>></span>
-	  	  <span><label for="sexFemale" class="form-check-label text-sm darkgrey">Female</label></span>
-	  	</div>
 	  	<div>
       	<label for="school" class="sr-only">School</label>
 				<input class="form-control form-control-sm" type="text" placeholder="School" name="school" id="school" value="<%= query.school %>">
@@ -203,7 +160,7 @@
 			<div>
 				<a href="/find_people/search?people=">Reset keys</a>
 			</div>
-			<input class="btn btn-primary btn-sm" type="submit" value="Search">
+			<button id="search-moreFilterPeople-btn" class="btn btn-primary btn-sm fullwidth" type="submit" value="<%= morePeopleUrl %>">Search</button>
 		</form>
   </div>
 </div>

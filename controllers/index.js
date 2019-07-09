@@ -1,9 +1,11 @@
-const express  = require('express'),
-  router     = express.Router(),
-  User       = require('../models/user'),
-  Club       = require('../models/club'),
-  Post       = require('../models/post'),
-  mongoose   = require('mongoose');
+const express     = require('express'),
+  router          = express.Router(),
+  User            = require('../models/user'),
+  Club            = require('../models/club'),
+  Post            = require('../models/post'),
+  mongoose        = require('mongoose'),
+  mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 module.exports = {
   indexRoot(req, res, next){
@@ -16,7 +18,6 @@ module.exports = {
 
   indexSearch(req, res, next){
     const query = req.query.search;
-    // const regex = new RegExp(escapeRegex(req.query.search), 'gi');
     User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
     .exec(function(err, foundUsers){
@@ -71,7 +72,8 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds});
+      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds, filter: false,
+      morePeopleUrl: ''});
     }
     });
   },
@@ -95,7 +97,7 @@ module.exports = {
         return user._id;
       });
       var currentUser = req.user;
-      res.json({users: foundUsers, query: query, foundUserIds: foundUserIds, currentUser: currentUser});
+      res.json({users: foundUsers, query: query, foundUserIds: foundUserIds, currentUser: currentUser, filter: false});
     }
     });
   },
@@ -103,22 +105,119 @@ module.exports = {
   indexFilterSearchPeople(req, res, next){
     const query = req.query;
     const {dbQuery} = res.locals;
+    const morePeopleUrl = res.locals.morePeopleUrl;
+    const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
-      User.paginate(dbQuery,{
-      page: req.query.page || 1,
-      limit: 10,
-      select: 'fullName profilePic profilePicId userKeys note'
-    } , function(err, foundUsers){
+    delete res.locals.morePeopleUrl;
+    delete res.locals.moreClubsUrl;
+    User.find(dbQuery).select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
+    .limit(1).exec(function(err, foundUsers){
     if(err){
       console.log('(index-6)foundUsers err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
-    } else if(!foundUsers.docs.length && res.locals.query){
+    } else if(!foundUsers && res.locals.query){
       req.flash('success', 'No results found :|');
       return res.redirect('back');
     } else{
-      foundUsers.page = Number(foundUsers.page);
-      res.render('search/people',{users: foundUsers, query: query});
+      var foundUserIds = foundUsers.map(function(user){
+        return user._id;
+      });
+      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds, filter: true,
+      morePeopleUrl: morePeopleUrl, filterKeys});
+    }
+    });
+  },
+
+  async indexFilterSearchMorePeople(req, res, next){
+    const query = req.query;
+    const dbQueries = [];
+    if(req.query.ids.split(',') != ''){
+      var seenIds = req.query.ids.split(',');
+    } else{
+      var seenIds = [];
+    }
+    // creating mongoDB query
+    if(req.query.url.split('=') != ''){
+      const urlEqualsSplit = req.query.url.split('=');
+      var users = urlEqualsSplit[1];
+      if(users.split('&')[0]){
+        users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({fullName: users});
+      }
+      var school = urlEqualsSplit[2];
+      if(school.split('&')[0]){
+        school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.school': school});
+      }
+      var college = urlEqualsSplit[3];
+      if(college.split('&')[0]){
+        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.college': college});
+      }
+      var concentration = urlEqualsSplit[4];
+      if(concentration.split('&')[0]){
+        concentration = new RegExp(escapeRegExp(concentration.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.concentration': concentration});
+      }
+      var worksAt = urlEqualsSplit[5];
+      if(worksAt.split('&')[0]){
+        worksAt = new RegExp(escapeRegExp(worksAt.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.worksAt': worksAt});
+      }
+      var location = urlEqualsSplit[6];
+      if(location.split('&')[0]){
+        let coordinates;
+        try{
+          if(location.split('&')[0].includes('\+')){
+            // replacing ascii characters of [, ]
+            location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
+            .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
+          } else{
+            location = JSON.parse(location);
+          }
+          coordinates = location;
+        } catch(err){
+          const response = await geocodingClient.forwardGeocode({
+            query: location,
+            limit: 1
+          }).send();
+          coordinates = response.body.features[0].geometry.coordinates;
+        }
+        if(urlEqualsSplit[7]){
+          var distance = Number(urlEqualsSplit[7]);
+        }
+        let maxDistance = distance || 25;
+        maxDistance *= 1000;
+        dbQueries.push({
+          geometry: {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates
+              },
+              $maxDistance: maxDistance
+            }
+          }
+        });
+      }
+      dbQueries.push({_id: {$nin: seenIds}})
+    }
+    User.find({$and: dbQueries})
+    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
+    .limit(1).exec(function(err, foundUsers){
+    if(err){
+      console.log('(index-7)foundUsers err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else if(!foundUsers && res.locals.query){
+      req.flash('success', 'No results found :|');
+      return res.redirect('back');
+    } else{
+      var foundUserIds = foundUsers.map(function(user){
+        return user._id;
+      });
+      res.json({users: foundUsers, query: query, foundUserIds: foundUserIds, filter: true});
     }
     });
   },
@@ -129,14 +228,15 @@ module.exports = {
     .select({name: 1, avatar: 1, avatarId: 1, categories: 1, clubKeys: 1, banner: 1}).limit(10)
     .exec(function(err, foundClubs){
     if(err || !foundClubs){
-      console.log('(index-7)foundClubs err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-8)foundClubs err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
       var foundClubIds = foundClubs.map(function(club){
         return club._id;
       });
-      res.render('search/clubs',{clubs: foundClubs, query: query, foundClubIds: foundClubIds});
+      res.render('search/clubs',{clubs: foundClubs, query: query, foundClubIds: foundClubIds, filter: false,
+      moreClubsUrl: ''});
     }
     });
   },
@@ -152,7 +252,7 @@ module.exports = {
     .select({name: 1, avatar: 1, avatarId: 1, categories: 1, clubKeys: 1, banner: 1}).limit(10)
     .exec(function(err, foundClubs){
     if(err || !foundClubs){
-      console.log('(index-8)foundClubs err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-9)foundClubs err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -160,7 +260,7 @@ module.exports = {
         return club._id;
       });
       var currentUser = req.user;
-      res.json({clubs: foundClubs, query: query, foundClubIds: foundClubIds, currentUser: currentUser});
+      res.json({clubs: foundClubs, query: query, foundClubIds: foundClubIds, currentUser: currentUser, filter: false});
     }
     });
   },
@@ -168,23 +268,109 @@ module.exports = {
   indexFilterSearchClubs(req, res, next){
     const query = req.query;
     const {dbQuery} = res.locals;
+    const moreClubsUrl = res.locals.moreClubsUrl;
+    const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
-      Club.paginate(dbQuery,{
-      page: req.query.page || 1,
-      limit: 10,
-      // sort: {score: {$meta: 'textScore'}},
-      select: 'name avatar avatarId categories clubKeys banner'
-    } , function(err, foundClubs){
+    delete res.locals.moreClubsUrl;
+    delete res.locals.moreClubsUrl;
+    Club.find(dbQuery).select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1, categories: 1})
+    .limit(1).exec(function(err, foundClubs){
     if(err){
-      console.log('(index-9)foundClubs err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-10)foundClubs err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
-    } else if(!foundClubs.docs.length && res.locals.query){
+    } else if(!foundClubs && res.locals.query){
       req.flash('success', 'No results found :|');
       return res.redirect('back');
     } else{
-      foundClubs.page = Number(foundClubs.page);
-      res.render('search/clubs',{clubs: foundClubs, query: query});
+      var foundClubIds = foundClubs.map(function(user){
+        return user._id;
+      });
+      res.render('search/clubs',{clubs: foundClubs, query: query, foundClubIds: foundClubIds, filter: true,
+      moreClubsUrl: moreClubsUrl, filterKeys});
+    }
+    });
+  },
+
+  async indexFilterSearchMoreClubs(req, res, next){
+    const query = req.query;
+    const dbQueries = [];
+    if(req.query.ids.split(',') != ''){
+      var seenIds = req.query.ids.split(',');
+    } else{
+      var seenIds = [];
+    }
+    // creating mongoDB query
+    if(req.query.url.split('=') != ''){
+      const urlEqualsSplit = req.query.url.split('=');
+      var clubs = urlEqualsSplit[1];
+      if(clubs.split('&')[0]){
+        clubs = new RegExp(escapeRegExp(clubs.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({name: clubs});
+      }
+      var grouptype = urlEqualsSplit[2];
+      if(grouptype.split('&')[0]){
+        grouptype = grouptype.split('&')[0].replace(/\+/g, ' ');
+        dbQueries.push({'clubKeys.grouptype': grouptype});
+      }
+      var organization = urlEqualsSplit[3];
+      if(organization.split('&')[0]){
+        organization = new RegExp(escapeRegExp(organization.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        dbQueries.push({'clubKeys.organization': organization});
+      }
+      var location = urlEqualsSplit[4];
+      if(location.split('&')[0]){ 
+        let coordinates;
+        try{
+          if(location.split('&')[0].includes('\+')){
+            // replacing ascii characters of [, ]
+            location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
+            .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
+          } else{
+            location = JSON.parse(location);
+          }
+          coordinates = location;
+        } catch(err){
+          const response = await geocodingClient.forwardGeocode({
+            query: location,
+            limit: 1
+          }).send();
+          coordinates = response.body.features[0].geometry.coordinates;
+        }
+        if(urlEqualsSplit[5]){
+          var distance = Number(urlEqualsSplit[5]);
+        }
+        let maxDistance = distance || 25;
+        maxDistance *= 1000;
+        dbQueries.push({
+          geometry: {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates
+              },
+              $maxDistance: maxDistance
+            }
+          }
+        });
+      }
+      dbQueries.push({_id: {$nin: seenIds}})
+    }
+    Club.find({$and: dbQueries})
+    .select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1, categories: 1})
+    .limit(1).exec(function(err, foundClubs){
+    if(err){
+      console.log('(index-11)foundClubs err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else if(!foundClubs && res.locals.query){
+      req.flash('success', 'No results found :|');
+      return res.redirect('back');
+    } else{
+      var foundUserIds = foundClubs.map(function(user){
+        return user._id;
+      });
+      res.json({clubs: foundClubs, query: query, foundUserIds: foundUserIds, filter: true});
     }
     });
   },
@@ -197,7 +383,7 @@ module.exports = {
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
       User.updateOne({_id: invitedUserId},{$push: {clubInvites: adminClubId}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-10)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-12)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -209,7 +395,7 @@ module.exports = {
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
       User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-11)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-13)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -219,7 +405,7 @@ module.exports = {
       var removeInvite = mongoose.Types.ObjectId(req.body.removeInvite);
       User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-12)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-14)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -229,13 +415,13 @@ module.exports = {
       var acceptInvite = mongoose.Types.ObjectId(req.body.acceptInvite);
       User.findOneAndUpdate({_id: req.user._id},{$pull: {clubInvites: acceptInvite}}, {new: true}, function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-13)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-15)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         // return res.redirect('back');
       } else{
         Club.findById(acceptInvite, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-14)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-16)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         } else{
@@ -263,7 +449,7 @@ module.exports = {
       var friendReq = mongoose.Types.ObjectId(req.body.friendReq);
       User.updateOne({_id: friendReq},{$push: {friendRequests: req.user._id}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-15)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-17)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -273,7 +459,7 @@ module.exports = {
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
       User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-16)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-18)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -283,7 +469,7 @@ module.exports = {
       var removeReq = mongoose.Types.ObjectId(req.body.removeReq);
       User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-17)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-19)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         }
@@ -295,14 +481,14 @@ module.exports = {
       {$pull: {friendRequests: acceptReq}, $push: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
       function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-18)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-20)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         // return res.redirect('back');
       } else{
         User.updateOne({_id: acceptReq}, 
         {$push: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (index-19)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             // return res.redirect('back');
           }
@@ -315,14 +501,14 @@ module.exports = {
       User.updateOne({_id: req.user._id}, 
       {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-20)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-22)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         // return res.redirect('back');
       } else{
         User.updateOne({_id: unFriendReq}, 
         {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (index-23)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             // return res.redirect('back');
           }
@@ -341,7 +527,7 @@ module.exports = {
       var clubId = userRankuserIdclubIdRank[2];
       Club.findById(clubId, function(err, foundClub){
       if(err || !foundClub){
-        console.log(req.user._id+' => (index-22)foundClub err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-24)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         // return res.redirect('back');
       } else{
@@ -354,7 +540,7 @@ module.exports = {
                 User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
                 {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
                 if(err || !foundUser){
-                  console.log(req.user._id+' => (index-23)foundUser err:- '+JSON.stringify(err, null, 2));
+                  console.log(req.user._id+' => (index-25)foundUser err:- '+JSON.stringify(err, null, 2));
                   req.flash('error', 'Something went wrong :(');
                   // return res.redirect('back');
                 } else{
@@ -385,14 +571,14 @@ module.exports = {
         User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
         {$set: {'userClubs.$.status': status}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-24)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-26)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           // return res.redirect('back');
         } else{
           Club.updateOne({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
           {$set: {'clubUsers.$.userStatus': status}}, function(err, foundClub){
             if(err || !foundClub){
-              console.log(req.user._id+' => (index-25)foundClub err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (index-27)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               // return res.redirect('back');
             }
@@ -410,7 +596,7 @@ module.exports = {
       var clubId = userIdclubId[1];
       Club.findById(clubId, function(err, foundClub){
       if(err || !foundClub){
-        console.log(req.user._id+' => (index-26)foundClub err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-28)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         // return res.redirect('back');
       } else{
@@ -423,7 +609,7 @@ module.exports = {
               User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
               {$pull: {userClubs: {id: clubId}}}, function(err, foundUser){
               if(err || !foundUser){
-                console.log(req.user._id+' => (index-27)foundUser err:- '+JSON.stringify(err, null, 2));
+                console.log(req.user._id+' => (index-29)foundUser err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 // return res.redirect('back');
               } else{
@@ -450,7 +636,7 @@ module.exports = {
     User.findById(req.params.id)
     .exec(function(err, foundUser){
     if(err || !foundUser){
-      console.log('(index-28)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-30)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -459,7 +645,7 @@ module.exports = {
         .skip((perPage * pageNumber) - perPage).limit(perPage)
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
-          console.log('(index-29)foundFriends err:- '+JSON.stringify(err, null, 2));
+          console.log('(index-31)foundFriends err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -483,9 +669,9 @@ module.exports = {
 };
 
 //*******************FUNCTIONS***********************
-function escapeRegex(text){
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
+function escapeRegExp(str){
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function checkRank(clubUsers,userId,rank){
   var ok;

@@ -1,6 +1,5 @@
 const mongoose          = require('mongoose'),
   passportLocalMongoose = require('passport-local-mongoose'),
-  mongoosePaginate      = require('mongoose-paginate'),
   Schema                = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -104,7 +103,6 @@ userSchema.index({fullName: 'text'});
 userSchema.index({geometry: '2dsphere'});
 userSchema.index({email: 1});
 
-userSchema.plugin(mongoosePaginate);
 userSchema.plugin(passportLocalMongoose,{
   usernameField : 'email',
   // Set usernameUnique to false to avoid a mongodb index on the username column!

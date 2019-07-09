@@ -124,6 +124,7 @@
           <% if(currentUser && match){ %>
             <div id="toggle_profile_form">
               <hr>
+              <span class="redcolor ml-2">*<span class="text-xs lightgrey"> Avoid abbrevations</span></span>
               <form class="form-signin" action="/users/<%= user._id %>?_method=PUT" method="POST">
                 <label for="note" class="sr-only">Note</label>
                 <input type="text" id="note" class="form-control form-control-sm commentbox2" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>

@@ -1,6 +1,5 @@
 const mongoose          = require('mongoose'),
   passportLocalMongoose = require('passport-local-mongoose'),
-  mongoosePaginate      = require('mongoose-paginate'),
   Schema                = mongoose.Schema;
 
 const clubSchema = new Schema({
@@ -76,8 +75,6 @@ const clubSchema = new Schema({
 {
   timestamps: true
 });
-
-clubSchema.plugin(mongoosePaginate);
 
 clubSchema.index({name: 'text'});
 clubSchema.index({geometry: '2dsphere'});

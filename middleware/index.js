@@ -151,15 +151,26 @@ middlewareObj.isLoggedIn = function(req, res, next){
 };
 
 middlewareObj.searchAndFilterClubs = async function(req, res, next){
-  const queryKeys = Object.keys(req.query);
+  const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {clubs, location, distance, grouptype, organization} = req.query;
+    let {clubs, grouptype, organization, location, distance} = req.query;
     if(clubs){
+      filterKeys['clubs'] = clubs;
       clubs = new RegExp(escapeRegExp(clubs), 'gi');
       dbQueries.push({name: clubs});
     }
+    if(grouptype){
+      filterKeys['grouptype'] = grouptype;
+      dbQueries.push({'clubKeys.grouptype': grouptype});
+    }
+    if(organization){
+      filterKeys['organization'] = organization;
+      organization = new RegExp(escapeRegExp(organization), 'gi');
+      dbQueries.push({'clubKeys.organization': organization});
+    }
     if(location){
+      filterKeys['location'] = location;
       let coordinates;
       try{
         location = JSON.parse(location);
@@ -170,6 +181,9 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
           limit: 1
         }).send();
         coordinates = response.body.features[0].geometry.coordinates;
+      }
+      if(distance){
+        filterKeys['distance'] = distance;
       }
       let maxDistance = distance || 25;
       maxDistance *= 1000;
@@ -185,51 +199,46 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
         }
       });
     }
-    if(grouptype){
-      dbQueries.push({'clubKeys.grouptype': grouptype});
-    }
-    if(organization){
-      organization = new RegExp(escapeRegExp(organization), 'gi');
-      dbQueries.push({'clubKeys.organization': organization});
-    }
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
   }
   res.locals.query = req.query;
-  queryKeys.splice(queryKeys.indexOf('page'), 1);
-  const delimiter = queryKeys.length ? '&' : '?';
-  res.locals.paginateUrl = req.originalUrl.replace(/(\?|\&)page=\d+/g, '') + `${delimiter}page=`;
+  res.locals.moreClubsUrl = req.originalUrl;
+  res.locals.filterKeys = filterKeys;
   next();
 };
 
 middlewareObj.searchAndFilterPeople = async function(req, res, next){
-  const queryKeys = Object.keys(req.query);
+  const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
     let {users, sex, school, college, concentration, worksAt, location, distance} = req.query;
     if(users){
+      filterKeys['users'] = users;
       users = new RegExp(escapeRegExp(users), 'gi');
       dbQueries.push({fullName: users});
     }
-    if(sex){
-      dbQueries.push({'userKeys.sex': sex});
-    }
     if(school){
+      filterKeys['school'] = school;
       school = new RegExp(escapeRegExp(school), 'gi');
       dbQueries.push({'userKeys.school': school});
     }
     if(college){
+      filterKeys['college'] = college;
       college = new RegExp(escapeRegExp(college), 'gi');
       dbQueries.push({'userKeys.college': college});
     }
     if(concentration){
+      filterKeys['concentration'] = concentration;
       concentration = new RegExp(escapeRegExp(concentration), 'gi');
       dbQueries.push({'userKeys.concentration': concentration});
     }
     if(worksAt){
+      filterKeys['worksAt'] = worksAt;
       worksAt = new RegExp(escapeRegExp(worksAt), 'gi');
       dbQueries.push({'userKeys.worksAt': worksAt});
     }
     if(location){
+      filterKeys['location'] = location;
       let coordinates;
       try{
         location = JSON.parse(location);
@@ -240,6 +249,9 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
           limit: 1
         }).send();
         coordinates = response.body.features[0].geometry.coordinates;
+      }
+      if(distance){
+        filterKeys['distance'] = distance;
       }
       let maxDistance = distance || 25;
       maxDistance *= 1000;
@@ -258,9 +270,8 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
   }
   res.locals.query = req.query;
-  queryKeys.splice(queryKeys.indexOf('page'), 1);
-  const delimiter = queryKeys.length ? '&' : '?';
-  res.locals.paginateUrl = req.originalUrl.replace(/(\?|\&)page=\d+/g, '') + `${delimiter}page=`;
+  res.locals.morePeopleUrl = req.originalUrl;
+  res.locals.filterKeys = filterKeys;
   next();
 };
 

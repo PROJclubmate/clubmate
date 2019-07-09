@@ -778,6 +778,7 @@ a .nolink:hover{
 .info30{
   width:68%;
   float:right;
+  line-height: 1.25rem;
 }
 .commentbox{
   margin: 0;

@@ -283,6 +283,29 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       }
     });
   });
+
+  $('#load-more-filterSearch-people-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-filterSearch-people-span').addClass("spinner-border spinner-border-sm mr-1");
+    var dbQuery = $('#searchFilter-btn').attr('value');
+    $.ajax({
+      type: 'GET',
+      url: '/people-moreResults/filter_search',
+      data: {ids: $('#load-more-filterSearch-people-btn').val(), url: $('#search-moreFilterPeople-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.foundUserIds;
+        if($('#load-more-filterSearch-people-btn').val() != ''){
+          $('#load-more-filterSearch-people-btn').val(arr.concat($('#load-more-filterSearch-people-btn').val()));
+          var div = document.getElementById('client-search-people');
+          div.innerHTML += search_people_template(response);
+        } else{
+          $('#load-more-filterSearch-people-btn').val(arr);
+        }
+        $('#load-more-filterSearch-people-btn').html('<span id="load-more-filterSearch-people-span"></span>Load More').blur();
+      }
+    });
+  });
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_clubs'){
@@ -305,6 +328,29 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           $('#load-more-search-clubs-btn').val(arr);
         }
         $('#load-more-search-clubs-btn').html('<span id="load-more-search-clubs-span"></span>Load More').blur();
+      }
+    });
+  });
+
+  $('#load-more-filterSearch-clubs-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-filterSearch-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
+    var dbQuery = $('#searchFilter-btn').attr('value');
+    $.ajax({
+      type: 'GET',
+      url: '/clubs-moreResults/filter_search',
+      data: {ids: $('#load-more-filterSearch-clubs-btn').val(), url: $('#search-moreFilterClubs-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.foundUserIds;
+        if($('#load-more-filterSearch-clubs-btn').val() != ''){
+          $('#load-more-filterSearch-clubs-btn').val(arr.concat($('#load-more-filterSearch-clubs-btn').val()));
+          var div = document.getElementById('client-search-clubs');
+          div.innerHTML += search_clubs_template(response);
+        } else{
+          $('#load-more-filterSearch-clubs-btn').val(arr);
+        }
+        $('#load-more-filterSearch-clubs-btn').html('<span id="load-more-filterSearch-clubs-span"></span>Load More').blur();
       }
     });
   });
