@@ -59,7 +59,7 @@ module.exports = {
     } else{
       var bucket = foundBucket;
       var foundComment = foundBucket.comments[0];
-      res.render('comments/edit', {bucket: bucket, comment: foundComment});
+      res.render('comments/edit', {bucket, comment: foundComment});
     }
     });
   },
@@ -142,8 +142,7 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
-          res.json({post: foundPost, upComments: upComments, buckets: foundBucket, index: index,
-          currentUser: currentUser, CA_50_profilePic: CA_50_profilePic});
+          res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, CA_50_profilePic});
         }
         });
       } else{

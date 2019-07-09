@@ -182,12 +182,10 @@ module.exports = {
                 }
               }
             }
-            return res.render('users/show', {haveRequest: haveRequest, sentRequest: sentRequest, isFriend: isFriend,
-            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs,
-            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
-            conversationId: conversationId,recipientId: recipientId, foundPostIds: foundPostIds,
-            PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
-            foundFriends: foundFriends, clubCount: clubCount});
+            return res.render('users/show', {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
+            user: foundUser, posts: modPosts, clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs,
+            conversationId,recipientId, foundPostIds, PC_50_clubAvatar, Clubs_50_clubAvatar, foundFriends,
+            clubCount});
           }
           });
         }
@@ -318,12 +316,10 @@ module.exports = {
                 }
               }
             }
-            return res.render("users/show", {haveRequest: haveRequest, sentRequest: sentRequest, isFriend: isFriend,
-            hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: modPosts, clubs: limitedClubs,
-            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
-            conversationId: conversationId, recipientId: recipientId, foundPostIds: foundPostIds,
-            PC_50_clubAvatar: PC_50_clubAvatar, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
-            foundFriends: foundFriends, clubCount: clubCount});
+            return res.render("users/show", {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
+            user: foundUser, posts: modPosts, clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs,
+            conversationId, recipientId, foundPostIds, PC_50_clubAvatar, Clubs_50_clubAvatar, foundFriends,
+            clubCount});
           }
           });
         }
@@ -378,11 +374,9 @@ module.exports = {
             var clubCount = foundUser.userClubs.length;
             var sentRequest = haveRequest = isFriend = false;
             var adminClubs = []; var clubInvites = []; var mutualClubs = []; var hasVote = [];
-            return res.render("users/show", {haveRequest: haveRequest, sentRequest: sentRequest, 
-            isFriend: isFriend, hasVote: hasVote, hasModVote: hasModVote, user: foundUser, posts: userPosts,
-            match: match, adminClubs: adminClubs, clubInvites: clubInvites, mutualClubs: mutualClubs,
-            foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar, foundFriends: foundFriends,
-            clubCount: clubCount});
+            return res.render("users/show", {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
+            user: foundUser, posts: userPosts, match, adminClubs, clubInvites, mutualClubs, foundPostIds,
+            PC_50_clubAvatar, foundFriends, clubCount});
           }
           });
         }
@@ -423,8 +417,8 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          res.json({clubs: limitedClubs, clubCount: clubCount, Clubs_50_clubAvatar: Clubs_50_clubAvatar,
-          newEndpoints: newEndpoints, userId: foundUser._id, rank: rank, currentUserId: currentUserId, match: match});
+          res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, userId: foundUser._id,
+          rank, currentUserId, match});
         }
       }
     }
@@ -465,9 +459,8 @@ module.exports = {
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
-        return res.json({hasVote: hasVote, hasModVote: hasModVote, posts: modPosts, match: match,
-        currentUser: currentUser, foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar,
-        CU_50_profilePic: CU_50_profilePic});
+        return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundPostIds, PC_50_clubAvatar,
+        CU_50_profilePic});
       }
       });
     } else{
@@ -500,9 +493,8 @@ module.exports = {
           hasVote[k] = voteCheck(req.user,userPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,userPosts[k]);
         }
-        return res.json({hasVote: hasVote, hasModVote: hasModVote, posts: userPosts, match: match,
-        currentUser: currentUser, foundPostIds: foundPostIds, PC_50_clubAvatar: PC_50_clubAvatar,
-        CU_50_profilePic: CU_50_profilePic});
+        return res.json({hasVote, hasModVote, posts: userPosts, match, currentUser, foundPostIds, PC_50_clubAvatar,
+        CU_50_profilePic});
       }
       });
     }
@@ -542,9 +534,8 @@ module.exports = {
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
-        return res.json({hasVote: hasVote, hasModVote: hasModVote, posts: modPosts, match: match,
-        currentUser: currentUser, foundHPostIds: foundHPostIds, CU_50_profilePicH: CU_50_profilePicH,
-        PC_50_clubAvatarH: PC_50_clubAvatarH});
+        return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundHPostIds, CU_50_profilePicH,
+        PC_50_clubAvatarH});
       }
       });
     } else{
@@ -770,10 +761,9 @@ module.exports = {
           return res.redirect('back');
           } else{
             var modTopTopicPosts = postModeration(topTopicPosts,req.user);
-            res.render('clubs/show', {hasVote: hasVote, hasModVote: hasModVote, posts: modPosts, rank: rank, 
-            currentUser: req.user, users: limitedUsers, conversationId: conversationId, convClubId: convClubId,
-            foundPostIds: foundPostIds, PA_50_profilePic: PA_50_profilePic, club: foundClub,
-            Users_50_profilePic: Users_50_profilePic, topTopicPosts: modTopTopicPosts});
+            res.render('clubs/show', {hasVote, hasModVote, posts: modPosts, rank, currentUser: req.user,
+            users: limitedUsers, conversationId, convClubId, foundPostIds, PA_50_profilePic, club: foundClub,
+            Users_50_profilePic, topTopicPosts: modTopTopicPosts});
           }
           });
         }
@@ -812,9 +802,8 @@ module.exports = {
           }
           var rank, currentUser = null; var topTopicPosts = [];
           foundClub.updates = '';
-          res.render('clubs/show', {hasVote: hasVote, hasModVote: hasModVote, posts: posts, currentUser: currentUser,
-          rank: rank, users: limitedUsers, club: foundClub, foundPostIds: foundPostIds, topTopicPosts: topTopicPosts,
-          PA_50_profilePic: PA_50_profilePic, Users_50_profilePic: Users_50_profilePic});
+          res.render('clubs/show', {hasVote, hasModVote, posts, currentUser, rank, users: limitedUsers,
+          club: foundClub, foundPostIds, topTopicPosts, PA_50_profilePic, Users_50_profilePic});
         }
         });
       }
@@ -849,8 +838,7 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          res.json({users: limitedUsers, Users_50_profilePic: Users_50_profilePic, newEndpoints: newEndpoints,
-          clubId: foundClub._id, rank: rank});
+          res.json({users: limitedUsers, Users_50_profilePic, newEndpoints, clubId: foundClub._id, rank});
         }
       }
     }
@@ -891,8 +879,8 @@ module.exports = {
         }
         var currentUser = req.user;
         var rank = currentRank2(req.params.club_id,req.user.userClubs);
-        res.json({hasVote: hasVote, hasModVote: hasModVote, posts: modPosts, rank: rank, currentUser: currentUser,
-        foundPostIds: foundPostIds, PA_50_profilePic: PA_50_profilePic, CU_50_profilePic: CU_50_profilePic});
+        res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, PA_50_profilePic,
+        CU_50_profilePic});
       }
       });
     } else{
@@ -925,8 +913,8 @@ module.exports = {
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
         var rank, currentUser = null;
-        res.json({hasVote: hasVote, hasModVote: hasModVote, posts: posts, rank: rank, currentUser: currentUser,
-        foundPostIds: foundPostIds, PA_50_profilePic: PA_50_profilePic, CU_50_profilePic: CU_50_profilePic});
+        res.json({hasVote, hasModVote, posts, rank, currentUser, foundPostIds, PA_50_profilePic,
+        CU_50_profilePic});
       }
       });
     }
@@ -1106,7 +1094,7 @@ module.exports = {
       featuredPhotos = foundUser.featuredPhotos;
       firstName = foundUser.firstName;
       userId = foundUser._id;
-      res.render('users/featured_photos', {featuredPhotos: featuredPhotos, firstName: firstName, userId: userId});
+      res.render('users/featured_photos', {featuredPhotos, firstName, userId});
     }
     });
   },
@@ -1179,7 +1167,7 @@ module.exports = {
       featuredPhotos = foundClub.featuredPhotos;
       clubName = foundClub.name;
       clubId = foundClub._id;
-      res.render('clubs/featured_photos', {featuredPhotos: featuredPhotos, clubName: clubName, clubId: clubId});
+      res.render('clubs/featured_photos', {featuredPhotos, clubName, clubId});
     }
     });
   },

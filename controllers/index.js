@@ -34,7 +34,7 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          res.render('search/index',{users: foundUsers, clubs: foundClubs, query: query});
+          res.render('search/index',{users: foundUsers, clubs: foundClubs, query});
         }
       });
     }
@@ -54,7 +54,7 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds});
+      res.render('search/people',{users: foundUsers, query, foundUserIds});
     }
     });
   },
@@ -72,8 +72,7 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds, filter: false,
-      morePeopleUrl: ''});
+      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: ''});
     }
     });
   },
@@ -97,7 +96,7 @@ module.exports = {
         return user._id;
       });
       var currentUser = req.user;
-      res.json({users: foundUsers, query: query, foundUserIds: foundUserIds, currentUser: currentUser, filter: false});
+      res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false});
     }
     });
   },
@@ -111,7 +110,7 @@ module.exports = {
     delete res.locals.morePeopleUrl;
     delete res.locals.moreClubsUrl;
     User.find(dbQuery).select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
-    .limit(1).exec(function(err, foundUsers){
+    .limit(10).exec(function(err, foundUsers){
     if(err){
       console.log('(index-6)foundUsers err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
@@ -123,8 +122,7 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.render('search/people',{users: foundUsers, query: query, foundUserIds: foundUserIds, filter: true,
-      morePeopleUrl: morePeopleUrl, filterKeys});
+      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys});
     }
     });
   },
@@ -205,7 +203,7 @@ module.exports = {
     }
     User.find({$and: dbQueries})
     .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
-    .limit(1).exec(function(err, foundUsers){
+    .limit(10).exec(function(err, foundUsers){
     if(err){
       console.log('(index-7)foundUsers err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
@@ -217,7 +215,7 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.json({users: foundUsers, query: query, foundUserIds: foundUserIds, filter: true});
+      res.json({users: foundUsers, query, foundUserIds, filter: true});
     }
     });
   },
@@ -235,8 +233,7 @@ module.exports = {
       var foundClubIds = foundClubs.map(function(club){
         return club._id;
       });
-      res.render('search/clubs',{clubs: foundClubs, query: query, foundClubIds: foundClubIds, filter: false,
-      moreClubsUrl: ''});
+      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: false, moreClubsUrl: ''});
     }
     });
   },
@@ -260,7 +257,7 @@ module.exports = {
         return club._id;
       });
       var currentUser = req.user;
-      res.json({clubs: foundClubs, query: query, foundClubIds: foundClubIds, currentUser: currentUser, filter: false});
+      res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false});
     }
     });
   },
@@ -274,7 +271,7 @@ module.exports = {
     delete res.locals.moreClubsUrl;
     delete res.locals.moreClubsUrl;
     Club.find(dbQuery).select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1, categories: 1})
-    .limit(1).exec(function(err, foundClubs){
+    .limit(10).exec(function(err, foundClubs){
     if(err){
       console.log('(index-10)foundClubs err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
@@ -286,8 +283,7 @@ module.exports = {
       var foundClubIds = foundClubs.map(function(user){
         return user._id;
       });
-      res.render('search/clubs',{clubs: foundClubs, query: query, foundClubIds: foundClubIds, filter: true,
-      moreClubsUrl: moreClubsUrl, filterKeys});
+      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: true, moreClubsUrl, filterKeys});
     }
     });
   },
@@ -358,7 +354,7 @@ module.exports = {
     }
     Club.find({$and: dbQueries})
     .select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1, categories: 1})
-    .limit(1).exec(function(err, foundClubs){
+    .limit(10).exec(function(err, foundClubs){
     if(err){
       console.log('(index-11)foundClubs err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
@@ -370,7 +366,7 @@ module.exports = {
       var foundUserIds = foundClubs.map(function(user){
         return user._id;
       });
-      res.json({clubs: foundClubs, query: query, foundUserIds: foundUserIds, filter: true});
+      res.json({clubs: foundClubs, query, foundUserIds, filter: true});
     }
     });
   },
@@ -654,9 +650,8 @@ module.exports = {
             return user._id;
           });
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
-          res.render('users/all_friends',{users: foundFriends, userName: userName, userId: userId,
-          foundFriendIds: foundFriendIds, friendsCount: friendsCount, current: pageNumber,
-          pages: Math.ceil(count / perPage)});
+          res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
+          current: pageNumber, pages: Math.ceil(count / perPage)});
         }
         });
       } else{
