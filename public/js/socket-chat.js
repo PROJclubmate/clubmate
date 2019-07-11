@@ -176,6 +176,7 @@ if(socket !== undefined){
 
   function addMessages(data){
     var prevDate;
+    $('#load-prevMsgs-btn').val(data.foundMessageIds);
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){
@@ -197,6 +198,7 @@ if(socket !== undefined){
   }
   function addClubMessages(data){
     var prevDate;
+    $('#load-prevMsgs-btn').val(data.foundMessageIds);
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){

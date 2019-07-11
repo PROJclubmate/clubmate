@@ -2,15 +2,19 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9">
-		<div class="ml-2">Search results for: <span class="boldtext"><%= query %></span></div>
-
+		<% if(query){ %>
+			<div class="ml-2">Search results for: <span class="boldtext"><%= query %></span></div>
+		<% } %>
 		<br>
 		<form action="/find_people/search" method="GET">
+			<span class="text-sm boldtext lightgrey ml-2">search </span>
 			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="people">People</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(users.length == 0){ %>
-				<h6 class="grey ml-2">No matching users found :(</h6>
+				<% if(query){ %>
+					<h6 class="grey ml-2">No matching users found :(</h6>
+				<% } %>
 			<% }else{ %>
 				<% var len = users.length; var k=0; for(k;k<len;k++){ %>
 					<div class="col-md-4 mobilepad px-1">
@@ -40,11 +44,14 @@
 
 		<br>
 		<form action="/find_clubs/search" method="GET">
-			<span><button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button></span>
+			<span class="text-sm boldtext lightgrey ml-2">search </span>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(clubs.length == 0){ %>
-				<h6 class="grey ml-2">No matching clubs found :(</h6>
+				<% if(query){ %>
+					<h6 class="grey ml-2">No matching clubs found :(</h6>
+				<% } %>
 			<% }else{ %>
 				<% var len = clubs.length; var k=0; for(k;k<len;k++){ %>
 					<div class="col-md-4 mobilepad px-1">

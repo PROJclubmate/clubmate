@@ -102,6 +102,33 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       }
     });
   });
+
+  $('#load-prevMsgs-btn').on('click', function(e){
+    e.preventDefault();
+    const conversationId = $("#club-convoId").attr("value").split(',')[0];
+    $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/prev-clubChatMsgs/'+conversationId,
+      data: {ids: $('#load-prevMsgs-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        if(response.foundMessageId){
+            var arr = response.foundMessageId;
+            $('#prevMessage-div').removeClass('nodisplay');
+            if($('#load-prevMsgs-btn').val() != ''){
+              $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+              $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
+            } else{
+              $('#load-prevMsgs-btn').val(arr);
+            }
+          } else{
+            $('#load-prevMsgs-btn').addClass('nodisplay');
+          }
+        $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
+      }
+    });
+  });
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
@@ -150,6 +177,33 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           div.innerHTML += heart_posts_template(response);
         }
         $('#load-more-heart-btn').html('<span id="load-more-heart-span"></span>Load More').blur();
+      }
+    });
+  });
+
+  $('#load-prevMsgs-btn').on('click', function(e){
+    e.preventDefault();
+    const conversationId = $("#user-convoId").attr("value").split(',')[0];
+    $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/prev-chatMsgs/'+conversationId,
+      data: {ids: $('#load-prevMsgs-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        if(response.foundMessageId){
+            var arr = response.foundMessageId;
+            $('#prevMessage-div').removeClass('nodisplay');
+            if($('#load-prevMsgs-btn').val() != ''){
+              $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+              $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
+            } else{
+              $('#load-prevMsgs-btn').val(arr);
+            }
+          } else{
+            $('#load-prevMsgs-btn').addClass('nodisplay');
+          }
+        $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
       }
     });
   });
@@ -354,6 +408,46 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       }
     });
   });
+}
+
+function load_prevMsgs_template(response){
+  html = ejs.render(`
+<% var prevDate; %>
+<% messageBucket.messages.forEach(function(message){ %>
+  <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+    <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
+  <% } %>
+  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
+  <% if(message.authorId == currentUser){ %>
+    <div class="flex-end"><div class="chat-msg2"><div><%= message.text %></div><div class="chat-head2">
+       <%= moment(message.createdAt).format('LT') %></div></div></div>
+  <% } else{ %>
+    <div><div class="chat-msg"><div><%= message.text %></div><div class="chat-head">
+      <%= moment(message.createdAt).format('LT') %></div></div></div>
+  <% } %>
+<% }); %>
+`,{messageBucket: response.messageBucket, currentUser: response.currentUser});
+  return html;
+}
+
+function load_prevClubMsgs_template(response){
+  html = ejs.render(`
+<% var prevDate; %>
+<% messageBucket.messages.forEach(function(message){ %>
+  <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+    <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
+  <% } %>
+  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
+  <% if(message.authorId == currentUser){ %>
+    <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"><%= firstName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+  <% } else{ %>
+    <div><div class="chat-msg"><div class="chat-head bluecolor"><%= message.authorName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+  <% } %>
+<% }); %>
+`,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName});
+  return html;
 }
 
 function index_posts_template(response){

@@ -12,9 +12,9 @@ module.exports = function(io){
 
 	// ================================ USER-CHAT ROUTES ====================================
 	router.get('/chat/:conversationId', function(req, res){
-	  Conversation.findOne({_id: req.params.conversationId })
+	  Conversation.findOne({_id: req.params.conversationId})
 	  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
-	  .exec(function(err, foundMessages){
+	  .exec(function(err, foundMessages){ 
 	  if(err || !foundMessages){
 	    console.log(req.user._id+' => (conversations-1)foundMessages err:- '+JSON.stringify(err, null, 2));
 	    req.flash('error', 'Something went wrong :(');
@@ -22,8 +22,49 @@ module.exports = function(io){
 	  } else{
 	    if(req.user){
 	      if(contains(foundMessages.participants,req.user._id)){
+	      	var foundMessageIds = foundMessages.messageBuckets.map(function(messages){
+		        return messages._id;
+		      });
 	        var currentUser = req.user._id;
-	        res.send({messages: foundMessages, currentUser: currentUser});
+	        res.send({messages: foundMessages, currentUser, foundMessageIds});
+	      } else{console.log('(conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	    }
+	  }
+	  });
+	});
+
+	router.get('/prev-chatMsgs/:conversationId', function(req, res){
+		if(req.query.ids.split(',') != ''){
+      var seenIds = req.query.ids.split(',');
+    } else{
+      var seenIds = [];
+    }
+	  Conversation.findOne({_id: req.params.conversationId})
+	  // .populate({path: 'messageBuckets', match: {_id: {$nin: seenIds}}, options: {sort: {_id: -1}, limit: 1}})
+	  .exec(function(err, foundConversation){
+	  if(err || !foundConversation){
+	    console.log(req.user._id+' => (conversations-1)foundConversation err:- '+JSON.stringify(err, null, 2));
+	    req.flash('error', 'Something went wrong :(');
+	    return res.redirect('back');
+	  } else{
+	    if(req.user){
+	    	var bucket = foundConversation.messageBuckets;
+	    	for(var i=bucket.length-1;i>=0;i--){
+	    		for(var j=seenIds.length-1;j>=0;j--){
+		    		if(seenIds[j] == bucket[i]){
+		    			bucket.splice(i,1);
+		    			break;
+		    		}
+		    	}
+	    	};
+    		if(contains(foundConversation.participants,req.user._id)){
+    			Message.findById(bucket[bucket.length-1], function(err, foundMessages){
+		        var currentUser = req.user._id;
+		        if(foundMessages){
+		        	var foundMessageId = [foundMessages._id];
+		        } else{var foundMessageId = null;}
+		        res.send({messageBucket: foundMessages, currentUser, foundMessageId});
+		      });
 	      } else{console.log('(conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
@@ -34,7 +75,7 @@ module.exports = function(io){
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
 	    return msgStatus('Pl. enter a message');
 	  }
-	  Conversation.findOne({_id: req.params.conversationId })
+	  Conversation.findOne({_id: req.params.conversationId})
 	  .exec(function(err, foundConversation){
 	  if(err || !foundConversation){
 	    console.log(req.user._id+' => (conversations-3)foundConversation err:- '+JSON.stringify(err, null, 2));
@@ -134,7 +175,7 @@ module.exports = function(io){
 
 	// ================================ CLUB-CHAT ROUTES =====================================
 	router.get('/club-chat/:conversationId', function(req, res){
-	  ClubConversation.findOne({_id: req.params.conversationId })
+	  ClubConversation.findOne({_id: req.params.conversationId})
 	  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
 	  .exec(function(err, foundMessages){
 	  if(err || !foundMessages){
@@ -144,10 +185,51 @@ module.exports = function(io){
 	  } else{
 	    if(req.user){
 	      if(contains2(req.user.userClubs,foundMessages.clubId)){
+	      	var foundMessageIds = foundMessages.messageBuckets.map(function(messages){
+		        return messages._id;
+		      });
 	        var currentUser = req.user._id;
 	        var firstName = req.user.firstName;
-	        res.send({messages: foundMessages, currentUser: currentUser, firstName: firstName});
+	        res.send({messages: foundMessages, currentUser, firstName, foundMessageIds});
 	      } else{console.log('(conversations-10)Not a club member: ('+req.user._id+') '+req.user.fullName);}
+	    }
+	  }
+	  });
+	});
+
+	router.get('/prev-clubChatMsgs/:conversationId', function(req, res){
+		if(req.query.ids.split(',') != ''){
+      var seenIds = req.query.ids.split(',');
+    } else{
+      var seenIds = [];
+    }
+	  ClubConversation.findOne({_id: req.params.conversationId})
+	  .exec(function(err, foundClubConversation){
+	  if(err || !foundClubConversation){
+	    console.log(req.user._id+' => (conversations-1)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+	    req.flash('error', 'Something went wrong :(');
+	    return res.redirect('back');
+	  } else{
+	    if(req.user){
+	    	var bucket = foundClubConversation.messageBuckets;
+	    	for(var i=bucket.length-1;i>=0;i--){
+	    		for(var j=seenIds.length-1;j>=0;j--){
+		    		if(seenIds[j] == bucket[i]){
+		    			bucket.splice(i,1);
+		    			break;
+		    		}
+		    	}
+	    	};
+    		if(contains2(req.user.userClubs,foundClubConversation.clubId)){
+    			Message.findById(bucket[bucket.length-1], function(err, foundMessages){
+		        var currentUser = req.user._id;
+		        var firstName = req.user.firstName;
+		        if(foundMessages){
+		        	var foundMessageId = [foundMessages._id];
+		        } else{var foundMessageId = null;}
+		        res.send({messageBucket: foundMessages, currentUser, foundMessageId, firstName});
+		      });
+	      } else{console.log('(conversations-2)Not a club member: ('+req.user._id+') '+req.user.fullName);}
 	    }
 	  }
 	  });
@@ -157,7 +239,7 @@ module.exports = function(io){
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
 	    return clubMsgStatus('Pl. enter a message');
 	  }
-	  ClubConversation.findOne({_id: req.params.conversationId })
+	  ClubConversation.findOne({_id: req.params.conversationId})
 	  .exec(function(err, foundConversation){
 	  if(err || !foundConversation){
 	    console.log(req.user._id+' => (conversations-11)foundConversation err:- '+JSON.stringify(err, null, 2));
