@@ -277,13 +277,13 @@
                     <form class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="start new discussion [topic]">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic shadow" placeholder="start new discussion [topic]">
                       <% } else{ %>
                         <label for="topic" class="sr-only">Topic</label>
                         <input type="text" name="topic" class="form-control topic2" placeholder="start new discussion [topic]" readonly="readonly" value="">
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
-                      <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                      <textarea id="description" class="emoji-input form-control text-sm description shadow" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
                       <div class="righttext d-flex my-auto">
                         <span>
                           <div class="emoji-panel">

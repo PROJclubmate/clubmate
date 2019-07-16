@@ -106,28 +106,32 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   $('#load-prevMsgs-btn').on('click', function(e){
     e.preventDefault();
     const conversationId = $("#club-convoId").attr("value").split(',')[0];
-    $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/prev-clubChatMsgs/'+conversationId,
-      data: {ids: $('#load-prevMsgs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        if(response.foundMessageId){
-            var arr = response.foundMessageId;
-            $('#prevMessage-div').removeClass('nodisplay');
-            if($('#load-prevMsgs-btn').val() != ''){
-              $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-              $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
+    if(conversationId){
+      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+      $.ajax({
+        type: 'GET',
+        url: '/prev-clubChatMsgs/'+conversationId,
+        data: {ids: $('#load-prevMsgs-btn').val()},
+        timeout: 3000,
+        success: function (response){
+          if(response.foundMessageId){
+              var arr = response.foundMessageId;
+              $('#prevMessage-div').removeClass('nodisplay');
+              if($('#load-prevMsgs-btn').val() != ''){
+                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+                $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
+              } else{
+                $('#load-prevMsgs-btn').val(arr);
+              }
             } else{
-              $('#load-prevMsgs-btn').val(arr);
+              $('#load-prevMsgs-btn').addClass('nodisplay');
             }
-          } else{
-            $('#load-prevMsgs-btn').addClass('nodisplay');
-          }
-        $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
-      }
-    });
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
+        }
+      });
+    } else{
+      $('#load-prevMsgs-btn').addClass('nodisplay');
+    }
   });
 }
 
@@ -184,28 +188,32 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   $('#load-prevMsgs-btn').on('click', function(e){
     e.preventDefault();
     const conversationId = $("#user-convoId").attr("value").split(',')[0];
-    $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/prev-chatMsgs/'+conversationId,
-      data: {ids: $('#load-prevMsgs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        if(response.foundMessageId){
-            var arr = response.foundMessageId;
-            $('#prevMessage-div').removeClass('nodisplay');
-            if($('#load-prevMsgs-btn').val() != ''){
-              $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-              $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
+    if(conversationId){
+      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+      $.ajax({
+        type: 'GET',
+        url: '/prev-chatMsgs/'+conversationId,
+        data: {ids: $('#load-prevMsgs-btn').val()},
+        timeout: 3000,
+        success: function (response){
+          if(response.foundMessageId){
+              var arr = response.foundMessageId;
+              $('#prevMessage-div').removeClass('nodisplay');
+              if($('#load-prevMsgs-btn').val() != ''){
+                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+                $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
+              } else{
+                $('#load-prevMsgs-btn').val(arr);
+              }
             } else{
-              $('#load-prevMsgs-btn').val(arr);
+              $('#load-prevMsgs-btn').addClass('nodisplay');
             }
-          } else{
-            $('#load-prevMsgs-btn').addClass('nodisplay');
-          }
-        $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
-      }
-    });
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
+        }
+      });
+    } else{
+      $('#load-prevMsgs-btn').addClass('nodisplay');
+    }
   });
 }
 

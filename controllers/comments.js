@@ -33,7 +33,7 @@ module.exports = {
           foundPost.commentBuckets.push(newCommentBucket._id);
           foundPost.commentsCount += 1;
           foundPost.save();
-        } else if(newCommentBucket.count >= 10){
+        } else if(newCommentBucket.count >= 20){
           foundPost.bucketNum += 1;
           foundPost.commentsCount += 1;
           foundPost.save();

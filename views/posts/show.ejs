@@ -207,7 +207,7 @@
         <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
         <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
           <label for="description" class="sr-only">Post description</label>
-          <textarea type="text" id="description" class="emoji-input form-control" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
+          <textarea type="text" id="description" class="emoji-input form-control shadow" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
           <div class="valign">
             <div onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm" title="Cancel update">Cancel</div>
             <div class="righttext d-flex my-auto">
@@ -278,7 +278,7 @@
                     <div class="darkgrey boldtext text-xs subpostbtn py-2 mb-auto"><%= moment().format('lll'); %></div>
                   </div>
                   <div class="input-group">
-                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4"></textarea>
+                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow" name="text" placeholder="Add sub-post" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
                     <div onclick="none_display('subpostbtn'); clear_subpost();" class="btn  btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs ml-2 mt-2">Cancel</div>
@@ -314,7 +314,7 @@
           <div class="commentdiv">
             <form action="/posts/<%= post._id %>/comments" method="POST">
               <div class="input-group">
-                <input id="commentbox" onclick="block_display('commentbtn');" class="form-control commentbox2 text-sm" type="text" name="text" placeholder="Write a comment" required>
+                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="2" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
                 <div onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs ml-2 mt-2">Cancel</div>

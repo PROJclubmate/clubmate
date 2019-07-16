@@ -10,7 +10,7 @@ const commentSchema = new Schema({
 	count: {
 		type: Number,
 		default: 0,
-		max: 10
+		max: 20
 	},
 	comments: [{
 		// slug: String,

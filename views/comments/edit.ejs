@@ -5,8 +5,8 @@
     <h3 class="my-3">Edit Comment</h3>
     <form action="/comments/<%=bucket._id%>/<%=comment._id%>?_method=PUT" method="POST">
       <div class="form-group">
-        <textarea class="form-control" type="text" name="text" rows="10"><%= comment.text %></textarea>
-        <button class="btn btn-md btn-primary btn-block">Submit!</button>
+        <textarea class="form-control shadow" type="text" name="text" rows="10"><%= comment.text %></textarea>
+        <button class="btn btn-md btn-primary btn-block">Update</button>
       </div>
     </form>
     <a href="/home">Home</a>
