@@ -54,7 +54,8 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.render('search/people',{users: foundUsers, query, foundUserIds});
+      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: ''
+      , emailSearch: true});
     }
     });
   },
@@ -140,30 +141,35 @@ module.exports = {
       const urlEqualsSplit = req.query.url.split('=');
       var users = urlEqualsSplit[1];
       if(users.split('&')[0]){
-        users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({fullName: users});
       }
-      var school = urlEqualsSplit[2];
-      if(school.split('&')[0]){
-        school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.school': school});
-      }
-      var college = urlEqualsSplit[3];
+      var college = urlEqualsSplit[2];
       if(college.split('&')[0]){
-        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var concentration = urlEqualsSplit[4];
+      var concentration = urlEqualsSplit[3];
       if(concentration.split('&')[0]){
-        concentration = new RegExp(escapeRegExp(concentration.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        concentration = new RegExp(escapeRegExp(concentration.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.concentration': concentration});
+      }
+      var batch = urlEqualsSplit[4];
+      if(batch.split('&')[0]){
+        batch = batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
+        dbQueries.push({'userKeys.batch': batch});
       }
       var worksAt = urlEqualsSplit[5];
       if(worksAt.split('&')[0]){
-        worksAt = new RegExp(escapeRegExp(worksAt.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        worksAt = new RegExp(escapeRegExp(worksAt.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.worksAt': worksAt});
       }
-      var location = urlEqualsSplit[6];
+      var school = urlEqualsSplit[6];
+      if(school.split('&')[0]){
+        school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.school': school});
+      }
+      var location = urlEqualsSplit[7];
       if(location.split('&')[0]){
         let coordinates;
         try{
@@ -172,6 +178,7 @@ module.exports = {
             location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
             .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
           } else{
+            location = location.split('&')[0].replace(/\%20/g, ' ');
             location = JSON.parse(location);
           }
           coordinates = location;
@@ -182,7 +189,7 @@ module.exports = {
           }).send();
           coordinates = response.body.features[0].geometry.coordinates;
         }
-        if(urlEqualsSplit[7]){
+        if(urlEqualsSplit[8]){
           var distance = Number(urlEqualsSplit[7]);
         }
         let maxDistance = distance || 25;
@@ -304,15 +311,15 @@ module.exports = {
         clubs = new RegExp(escapeRegExp(clubs.split('&')[0].replace(/\+/g, ' ')), 'gi');
         dbQueries.push({name: clubs});
       }
-      var grouptype = urlEqualsSplit[2];
-      if(grouptype.split('&')[0]){
-        grouptype = grouptype.split('&')[0].replace(/\+/g, ' ');
-        dbQueries.push({'clubKeys.grouptype': grouptype});
-      }
-      var organization = urlEqualsSplit[3];
+      var organization = urlEqualsSplit[2];
       if(organization.split('&')[0]){
-        organization = new RegExp(escapeRegExp(organization.split('&')[0].replace(/\+/g, ' ')), 'gi');
+        organization = new RegExp(escapeRegExp(organization.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'clubKeys.organization': organization});
+      }
+      var category = urlEqualsSplit[3];
+      if(category.split('&')[0]){
+        category = category.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
+        dbQueries.push({'clubKeys.category': category});
       }
       var location = urlEqualsSplit[4];
       if(location.split('&')[0]){ 
@@ -323,6 +330,7 @@ module.exports = {
             location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
             .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
           } else{
+            location = location.split('&')[0].replace(/\%20/g, ' ');
             location = JSON.parse(location);
           }
           coordinates = location;
@@ -655,7 +663,7 @@ module.exports = {
         }
         });
       } else{
-        req.flash('success', 'You are not a friend with this person :(');
+        req.flash('success', 'You are not a friend with this person :/');
         return res.redirect('back');
       }
     }

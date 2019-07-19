@@ -17,12 +17,12 @@ const clubSchema = new Schema({
     description: String,
     rules: String
   },
-  categories: [String],
   clubKeys: {
-    location: String,
-    grouptype: String,
     organization: String,
-    weblink: String
+    category: String,
+    weblink: String,
+    location: String,
+    tags: [String]
   },
   geometry: {
     type: {
@@ -42,10 +42,6 @@ const clubSchema = new Schema({
     news: String,
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
-  }],
-  reccomendations: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
   }],
   clubUsers: [{
     id: {

@@ -580,12 +580,16 @@ module.exports = {
       }
 
       if(req.body.userKeys){
-        if(req.body.userKeys.birthdate){
+        if(req.body.userKeys.birthdate && req.body.userKeys.sex){
           foundUser.userKeys.birthdate = req.body.userKeys.birthdate;
           foundUser.userKeys.sex = req.body.userKeys.sex;
-        } else{
+        } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
+          const tempBirthdate = foundUser.userKeys.birthdate;
+          const tempSex = foundUser.userKeys.sex;
           foundUser.userKeys = req.body.userKeys;
-          if(foundUser.userKeys.residence != ''){
+          foundUser.userKeys.birthdate = tempBirthdate;
+          foundUser.userKeys.sex = tempSex;
+          if(foundUser.userKeys.residence && foundUser.userKeys.residence != ''){
             let response = await geocodingClient
             .forwardGeocode({
               query: req.body.userKeys.residence,
@@ -998,9 +1002,26 @@ module.exports = {
             }
           }
         }
-        if(req.body.clubKeys){ 
+        if(req.body.clubKeys.tags){
+          editinfo(req.body.clubKeys.tags,foundClub.clubKeys.tags);
+          function editinfo(newData,oldData){
+            if(newData){
+              oldData=[];
+              var oldData = newData.filter(Boolean);
+              var len = oldData.length; for(var i=len-1;i>=0;i--){
+                var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
+                oldData.splice(i,1,inputstring);
+              }
+              foundClub.clubKeys.tags = oldData;
+            }
+          }
+        } else if(req.body.clubKeys && !req.body.clubKeys.tags){
+          const tempTags = foundClub.clubKeys.tags;
+          const filteredCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, "");
           foundClub.clubKeys = req.body.clubKeys;
-          if(foundClub.clubKeys.location != ''){
+          foundClub.clubKeys.tags = tempTags;
+          foundClub.clubKeys.category = filteredCategory;
+          if(foundClub.clubKeys.location && foundClub.clubKeys.location != ''){
             let response = await geocodingClient
             .forwardGeocode({
               query: req.body.clubKeys.location,
@@ -1035,18 +1056,6 @@ module.exports = {
         if(req.body.banner){
           foundClub.banner = req.body.banner;
         }
-        editinfo(req.body.categories,foundClub.categories);
-        function editinfo(newData,oldData){
-          if(newData){
-            oldData=[];
-            var oldData = newData.filter(Boolean);
-            var len = oldData.length; for(var i=len-1;i>=0;i--){
-              var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
-              oldData.splice(i,1,inputstring);
-            }
-            foundClub.categories = oldData;
-          }
-        };
         foundClub.save();
         req.flash('success', 'Successfully updated');
         res.redirect('/clubs/' + req.params.club_id);

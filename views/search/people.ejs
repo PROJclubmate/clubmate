@@ -7,22 +7,25 @@
 	<% } else{ %>
 		<div class="ml-2 lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.users){ %>
-				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span><span class="lightgrey nothing">,</span>
-			<% } %>
-			<% if(filterKeys.school){ %>
-				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span>
 			<% } %>
 			<% if(filterKeys.college){ %>
-				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
 			<% if(filterKeys.concentration){ %>
-				<span class="lightgrey text-xs">Concentration=</span><span class="boldtext text-sm nothing"><%= filterKeys.concentration %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Concentration=</span><span class="boldtext text-sm nothing"><%= filterKeys.concentration %></span>
+			<% } %>
+			<% if(filterKeys.batch){ %>
+				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
 			<% } %>
 			<% if(filterKeys.worksAt){ %>
-				<span class="lightgrey text-xs">Works At=</span><span class="boldtext text-sm nothing"><%= filterKeys.worksAt %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Works At=</span><span class="boldtext text-sm nothing"><%= filterKeys.worksAt %></span>
+			<% } %>
+			<% if(filterKeys.school){ %>
+				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span>
 			<% } %>
 			<% if(filterKeys.location){ %>
-				<span class="lightgrey text-xs">Residence=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Residence=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span>
 			<% } %>
 			<% if(filterKeys.distance){ %>
 				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
@@ -63,13 +66,19 @@
 			      	<div>
 				      	<div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
 				      	<% if(users[k].userKeys){ %>
+				      		<div class="grey text-xs boldtext"><%= users[k].userKeys.college %></div>
+				      		<% if(users[k].userKeys.college){ %>
+					      		<div class="grey text-xs">
+					      			<span class="nothing"><%= users[k].userKeys.concentration %></span>
+					      			<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+					      		</div>
+					      	<% } %>
 						      <div class="grey text-xs"><%= users[k].userKeys.worksAt %></div>
-						      <div class="grey text-xs"><%= users[k].userKeys.college %></div>
 						      <div class="grey text-xs"><%= users[k].userKeys.school %></div>
 						    <% } %>
 					    </div>
 					    <% if(users[k].userKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right"><%= users[k].userKeys.residence %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right ml-1"><%= users[k].userKeys.residence %></div>
 				      <% } %>
 				    </div>
 			    </div>
@@ -80,7 +89,7 @@
 	<div id="client-search-people"></div>
 	<% if(!filter){ %>
 		<div class="text-center mt-2">
-			<% if(users.length != 0 && !users.length < 10){ %>
+			<% if((users.length != 0 && !users.length < 10) && !emailSearch){ %>
 	    	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
 	    	<button id="load-more-search-people-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
@@ -121,12 +130,8 @@
     	<form id="user_filter" style="display: block;" class="form-signin" action="/find_people/filter_search" method="GET">
     <% } %>
 			<label for="search" class="sr-only">Search</label>
-			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>" autofocus>
+			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>">
 			<h6 class="nothing mb-1">User keys</h6>
-	  	<div>
-      	<label for="school" class="sr-only">School</label>
-				<input class="form-control form-control-sm" type="text" placeholder="School" name="school" id="school" value="<%= query.school %>">
-      </div>
       <div>
       	<label for="college" class="sr-only">College</label>
 				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
@@ -136,8 +141,16 @@
 				<input class="form-control form-control-sm" type="text" placeholder="Concentration" name="concentration" id="concentration" value="<%= query.concentration %>">
       </div>
       <div>
+      	<label for="batch" class="sr-only">Batch</label>
+				<input class="form-control form-control-sm" type="number" placeholder="Batch" name="batch" id="batch" value="<%= query.batch %>">
+      </div>
+      <div>
       	<label for="worksAt" class="sr-only">Works At</label>
 				<input class="form-control form-control-sm" type="text" placeholder="Works At" name="worksAt" id="worksAt" value="<%= query.worksAt %>">
+      </div>
+      <div>
+      	<label for="school" class="sr-only">School</label>
+				<input class="form-control form-control-sm" type="text" placeholder="School" name="school" id="school" value="<%= query.school %>">
       </div>
 			<div class="d-flex flex-row">
 		  	<label for="location" class="sr-only">Location</label>

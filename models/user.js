@@ -21,10 +21,11 @@ const userSchema = new Schema({
   userKeys: {
     sex: String,
     birthdate: Date,
-    school: String,
     college: String,
     concentration: String,
+    batch: String,
     worksAt: String,
+    school: String,
     residence: String
   },
   geometry: {

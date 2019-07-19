@@ -108,32 +108,40 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <% if(user.userKeys.worksAt){ %>
-                <div class="info1">Works at: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=&worksAt=<%= user.userKeys.worksAt %>&location="><%= user.userKeys.worksAt %></a></div></div>
-              <% } %>
-              <% if(user.userKeys.college){ %>
-                <div class="info1">College: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=<%= user.userKeys.college %>&concentration=&worksAt=&location="><%= user.userKeys.college %></a></div></div>
-              <% } %>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/find_people/filter_search?users=&college=<%= user.userKeys.college %>&concentration=&batch=&worksAt=&school=&location="><%= user.userKeys.college %></a></div></div>
               <% if(user.userKeys.college && user.userKeys.concentration){ %>
-                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=<%= user.userKeys.concentration %>&worksAt=&location="><%= user.userKeys.concentration %></a></div></div>
+                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&worksAt=&school=&location="><%= user.userKeys.concentration %></a></div></div>
               <% } %>
-              <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&school=<%= user.userKeys.school %>&college=&concentration=&worksAt=&location="><%= user.userKeys.school %></a></div></div>
-              <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&school=&college=&concentration=&worksAt=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+              <% if(user.userKeys.college && user.userKeys.batch){ %>
+                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=<%= user.userKeys.batch %>&worksAt=&school=&location="><%= user.userKeys.batch %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.worksAt){ %>
+                <div class="info1">Works at: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=<%= user.userKeys.worksAt %>&school=&location="><%= user.userKeys.worksAt %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.school){ %>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.residence){ %>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+              <% } %>
             </div>
           </div>
           <% if(currentUser && match){ %>
             <div id="toggle_profile_form">
               <hr>
-              <span class="redcolor ml-2">*<span class="text-xs lightgrey"> Avoid abbrevations</span></span>
               <form class="form-signin" action="/users/<%= user._id %>?_method=PUT" method="POST">
                 <label for="note" class="sr-only">Note</label>
-                <input type="text" id="note" class="form-control form-control-sm commentbox2" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
-                <label for="worksAt" class="sr-only">Works at</label>
-                <input type="text" id="worksAt" class="form-control form-control-sm" name="userKeys[worksAt]" value="<%= user.userKeys.worksAt %>" placeholder="Works at">
+                <input type="text" id="note" class="form-control form-control-sm commentbox2 text-center" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
+                <br>
+                <span class="redcolor ml-2">*<span class="text-xs lightgrey"> Avoid abbrevations</span></span>
                 <label for="college" class="sr-only">College</label>
                 <input type="text" id="college" class="form-control form-control-sm" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
                 <label for="concentration" class="sr-only">Concentration</label>
                 <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
+                <label for="batch" class="sr-only">Batch</label>
+                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch">
+                <label for="worksAt" class="sr-only">Works at</label>
+                <input type="text" id="worksAt" class="form-control form-control-sm" name="userKeys[worksAt]" value="<%= user.userKeys.worksAt %>" placeholder="Works at">
                 <label for="school" class="sr-only">School</label>
                 <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
                 <label for="residence" class="sr-only">Residence</label>

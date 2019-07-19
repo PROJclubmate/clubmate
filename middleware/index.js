@@ -154,20 +154,20 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {clubs, grouptype, organization, location, distance} = req.query;
+    let {clubs, organization, category, location, distance} = req.query;
     if(clubs){
       filterKeys['clubs'] = clubs;
       clubs = new RegExp(escapeRegExp(clubs), 'gi');
       dbQueries.push({name: clubs});
     }
-    if(grouptype){
-      filterKeys['grouptype'] = grouptype;
-      dbQueries.push({'clubKeys.grouptype': grouptype});
-    }
     if(organization){
       filterKeys['organization'] = organization;
       organization = new RegExp(escapeRegExp(organization), 'gi');
       dbQueries.push({'clubKeys.organization': organization});
+    }
+    if(category){
+      filterKeys['category'] = category;
+      dbQueries.push({'clubKeys.category': category});
     }
     if(location){
       filterKeys['location'] = location;
@@ -211,16 +211,11 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {users, sex, school, college, concentration, worksAt, location, distance} = req.query;
+    let {users, college, concentration, batch, worksAt, school, location, distance} = req.query;
     if(users){
       filterKeys['users'] = users;
       users = new RegExp(escapeRegExp(users), 'gi');
       dbQueries.push({fullName: users});
-    }
-    if(school){
-      filterKeys['school'] = school;
-      school = new RegExp(escapeRegExp(school), 'gi');
-      dbQueries.push({'userKeys.school': school});
     }
     if(college){
       filterKeys['college'] = college;
@@ -232,10 +227,19 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       concentration = new RegExp(escapeRegExp(concentration), 'gi');
       dbQueries.push({'userKeys.concentration': concentration});
     }
+    if(batch){
+      filterKeys['batch'] = batch;
+      dbQueries.push({'userKeys.batch': batch});
+    }
     if(worksAt){
       filterKeys['worksAt'] = worksAt;
       worksAt = new RegExp(escapeRegExp(worksAt), 'gi');
       dbQueries.push({'userKeys.worksAt': worksAt});
+    }
+    if(school){
+      filterKeys['school'] = school;
+      school = new RegExp(escapeRegExp(school), 'gi');
+      dbQueries.push({'userKeys.school': school});
     }
     if(location){
       filterKeys['location'] = location;

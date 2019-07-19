@@ -7,16 +7,16 @@
 	<% } else{ %>
 		<div class="ml-2 lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.clubs){ %>
-				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm nothing"><%= filterKeys.clubs %></span><span class="lightgrey nothing">,</span>
-			<% } %>
-			<% if(filterKeys.grouptype){ %>
-				<span class="lightgrey text-xs">Group type=</span><span class="boldtext text-sm nothing"><%= filterKeys.grouptype %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm nothing"><%= filterKeys.clubs %></span>
 			<% } %>
 			<% if(filterKeys.organization){ %>
-				<span class="lightgrey text-xs">Org. name=</span><span class="boldtext text-sm nothing"><%= filterKeys.organization %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.organization %></span>
+			<% } %>
+			<% if(filterKeys.category){ %>
+				<span class="lightgrey text-xs">Category=</span><span class="boldtext text-sm nothing"><%= filterKeys.category %></span>
 			<% } %>
 			<% if(filterKeys.location){ %>
-				<span class="lightgrey text-xs">Club location=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span><span class="lightgrey nothing">,</span>
+				<span class="lightgrey text-xs">Club location=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span>
 			<% } %>
 			<% if(filterKeys.distance){ %>
 				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
@@ -52,13 +52,13 @@
 			      <br>
 			      <% if(clubs[k].clubKeys){ %>
 				      <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.weblink %></div>
-				      <div class="grey text-xs"><%= clubs[k].clubKeys.grouptype %></div>
-				      <div class="grey text-xs"><%= clubs[k].clubKeys.organization %></div>
+				      <div class="grey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
+				      <div class="grey text-xs"><%= clubs[k].clubKeys.category %></div>
 				    <% } %>
 			      <div class="valign">
-				      <div class="grey text-xs"><%= break_arr(clubs[k].categories) %></div>
+				      <div class="grey text-xs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right"><%= clubs[k].clubKeys.location %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right ml-1"><%= clubs[k].clubKeys.organization %></div>
 				      <% } %>
 				    </div>
 			    </div>
@@ -102,37 +102,37 @@
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Club name" name="clubs" id="search" value="<%= query.clubs %>" autofocus>
 			<h6 class="nothing">Club keys</h6>
-	  	<div>
-        <label for="grouptype" class="sr-only" title="Group type">Group Type</label>
-        <select id="grouptype" class="select_dark select3 mt-2 fullwidth" name="grouptype" data-toggle="tooltip" title="Group type">
-        	<% if(!query.grouptype){ %>
-        		<option value="" selected>Group Type</option>
-        	<% } %>
-          <% if(query.grouptype && query.grouptype == 'Work'){ %>
-            <option value="Work" selected>Work</option>
-          <% } else{ %>
-            <option value="Work">Work</option>
-          <% } %>
-          <% if(query.grouptype && query.grouptype == 'College'){ %>
-            <option value="College" selected>College</option>
-          <% } else{ %>
-            <option value="College">College</option>
-          <% } %>
-          <% if(query.grouptype && query.grouptype == 'School'){ %>
-            <option value="School" selected>School</option>
-          <% } else{ %>
-            <option value="School">School</option>
-          <% } %>
-          <% if(query.grouptype && query.grouptype == 'Private'){ %>
-            <option value="Private" selected>Private</option>
-          <% } else{ %>
-            <option value="Private">Private</option>
-          <% } %>
-        </select>
+			<div>
+      	<label for="organization" class="sr-only">College name</label>
+				<input class="form-control form-control-sm" type="text" placeholder="College name" name="organization" id="organization" value="<%= query.organization %>">
       </div>
-      <div>
-      	<label for="organization" class="sr-only">Organization name</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Organization name" name="organization" id="organization" value="<%= query.organization %>">
+	  	<div>
+        <label for="category" class="sr-only" title="Category">Category</label>
+        <% if(!query.category){ %>
+      		<input list="category" class="form-control form-control-sm select_dark" name="category" value="" placeholder="Club category">
+      	<% } else{ %>
+      		<input list="category" class="form-control form-control-sm select_dark" name="category" value="<%= query.category %>" placeholder="Club category">
+      	<% } %>
+        <datalist id="category">
+          <option value="Academic & Educational">
+          <option value="Programming & Development">
+          <option value="Robotics">
+          <option value="Entreprenurship">
+          <option value="Student bodies">
+          <option value="Bussiness & Management">
+          <option value="Dance & Music">
+          <option value="Theatre & Literature">
+          <option value="Film & Photography">
+          <option value="Graphics & Animation">
+          <option value="Sports & Recreational">
+          <option value="Events & Sponsor management">
+          <option value="Magazines & Newspaper">
+          <option value="Placement & Career">
+          <option value="Hostelers">
+          <option value="Day scholars">
+          <option value="Community service">
+          <option value="Religious & Spiritual">
+        </datalist>
       </div>
       <div class="d-flex flex-row">
 		  	<label for="location" class="sr-only">Location</label>
@@ -165,13 +165,17 @@
 
 <%
 function break_arr(arr){
-	for(i=0;i<arr.length;i++){
-		if(i == 0){
-			var str = arr[i];
-		} else{
-			var str = str +', '+ arr[i];
+	if(arr && arr.length){
+		for(i=0;i<arr.length;i++){
+			if(i == 0){
+				var str = arr[i];
+			} else{
+				var str = str +', '+ arr[i];
+			}
 		}
+		return str;
+	} else{
+		return '';
 	}
-	return str;
 }
 %>

@@ -52,7 +52,7 @@ div.content {
     box-shadow: 0px 3px 5px -2px rgba(0,0,0,0.3);}
   a.hr2{border: none;}
   .sidebar{z-index: 4; width: 100%; height: auto; position: fixed;
-    box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.3);}
+    box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.25);}
   html{scroll-behavior: smooth;}
   .sidebar a{float: left;}
   div.content{margin-left: 0;}
@@ -110,6 +110,7 @@ div.content {
 /* MIN WIDTH */
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
+  #side-home{height: 40px;}
 }
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
@@ -206,6 +207,7 @@ hr{
   margin: 0 auto;
 }
 input.form-control.search{
+  height: 30px;
   margin: 0;
   border: none;
   border-top-left-radius: 0.1rem;
@@ -217,6 +219,7 @@ input.form-control.search:focus{
   box-shadow: inset 0px 0.35px 4px 0px rgba(0,159,94,1);
 }
 button.btn.btn-secondary.search{
+  height: 30px;
   border-top-right-radius: 0.1rem;
   border-bottom-right-radius: 0.1rem; 
 }
@@ -473,9 +476,10 @@ span.nopad{
   will-change: transform;
   transition: top 0.3s;
   z-index: 6;
-  padding: 1px 50px 2px 50px;
+  /*padding: 1px 50px 2px 50px;*/
+  padding: 0px 50px 0px 50px;
   justify-content: space-between;
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.35);
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.4);
 }
 @media screen and (max-width: 1199px){
   .navbar{padding: 1px 10px 2px 10px;}
@@ -549,7 +553,7 @@ button.dropdown-toggle2:focus{
 #favourites_form4_div{display: none;}
 #favourites_form5_div{display: none;}
 #favourites_form6_div{display: none;}
-#category_form_div{display: none;}
+#tags_form_div{display: none;}
 #interests_display{display: block;}
 #toggle_club_form{display: none;}
 #post_edit_form{display: none;}
@@ -673,7 +677,7 @@ button.dropdown-toggle2:focus{
   box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.25);
 }
 .btn.btncollapse:hover{
-  border: 1px solid #009f5e;
+  outline: 2px solid rgba(0,159,94,0.4);
 }
 .btn-info{
   border-color: #006bde;
@@ -1239,7 +1243,7 @@ select:hover{
   color: #007e4b;
   border-color: #007e4b;
 }
-select.select_dark{
+.select_dark{
   color: #303030;
   border-color: grey;
 }
