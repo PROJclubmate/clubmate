@@ -13,19 +13,24 @@ if(location.pathname == '/home'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        // If server + client side rendering is used
-        if($('#load-more-btn').val() != ''){
-          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          var div = document.getElementById('client-posts');
-          div.innerHTML += index_posts_template(response);
+        if(arr != ''){
+          // If server + client side rendering is used
+          if($('#load-more-btn').val() != ''){
+            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+            var div = document.getElementById('client-posts');
+            div.innerHTML += index_posts_template(response);
+          } else{
+            $('#load-more-btn').val(arr);
+          }
+          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
+          // Only client side rendering
+          // $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+          // var div = document.getElementById('client-posts');
+          // div.innerHTML += index_posts_template(response);
         } else{
-          $('#load-more-btn').val(arr);
+          $('#load-more-btn').addClass('nodisplay');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-        // Only client side rendering
-        // $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-        // var div = document.getElementById('client-posts');
-        // div.innerHTML += index_posts_template(response);
       }
     });
   });
@@ -42,12 +47,17 @@ if(location.pathname == '/friends_posts'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if($('#load-more-btn').val() != ''){
-          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          var div = document.getElementById('client-posts');
-          div.innerHTML += index_posts_template(response);
+        if(arr != ''){
+          if($('#load-more-btn').val() != ''){
+            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+            var div = document.getElementById('client-posts');
+            div.innerHTML += index_posts_template(response);
+          } else{
+            $('#load-more-btn').val(arr);
+          }
+          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
-          $('#load-more-btn').val(arr);
+          $('#load-more-btn').addClass('nodisplay');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
@@ -66,14 +76,19 @@ if(location.pathname == '/discover'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if($('#load-more-btn').val() != ''){
-          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          var div = document.getElementById('client-posts');
-          div.innerHTML += index_posts_template(response);
+        if(arr != ''){
+          if($('#load-more-btn').val() != ''){
+            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+            var div = document.getElementById('client-posts');
+            div.innerHTML += index_posts_template(response);
+          } else{
+            $('#load-more-btn').val(arr);
+          }
+          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
-          $('#load-more-btn').val(arr);
+          $('#load-more-btn').addClass('nodisplay');
+          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         }
-        $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
     });
   });
@@ -91,12 +106,17 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if($('#load-more-btn').val() != ''){
-          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          var div = document.getElementById('client-posts');
-          div.innerHTML += club_posts_template(response);
+        if(arr != ''){
+          if($('#load-more-btn').val() != ''){
+            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+            var div = document.getElementById('client-posts');
+            div.innerHTML += club_posts_template(response);
+          } else{
+            $('#load-more-btn').val(arr);
+          }
+          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
-          $('#load-more-btn').val(arr);
+          $('#load-more-btn').addClass('nodisplay');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
@@ -147,12 +167,16 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if($('#load-more-btn').val() != ''){
-          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          var div = document.getElementById('client-posts');
-          div.innerHTML += user_posts_template(response);
+        if(arr != ''){
+          if($('#load-more-btn').val() != ''){
+            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+            var div = document.getElementById('client-posts');
+            div.innerHTML += user_posts_template(response);
+          } else{
+            $('#load-more-btn').val(arr);
+          }
         } else{
-          $('#load-more-btn').val(arr);
+          $('#load-more-btn').addClass('nodisplay');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
@@ -169,16 +193,20 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundHPostIds;
-        if($('#load-more-heart-btn').val() != ''){
-          if(arr){
-            $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));
+          if(arr != ''){
+          if($('#load-more-heart-btn').val() != ''){
+            if(arr){
+              $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));
+              var div = document.getElementById('client-heart-posts');
+              div.innerHTML += heart_posts_template(response);
+            }
+          } else{
+            $('#load-more-heart-btn').val(arr);
             var div = document.getElementById('client-heart-posts');
             div.innerHTML += heart_posts_template(response);
           }
         } else{
-          $('#load-more-heart-btn').val(arr);
-          var div = document.getElementById('client-heart-posts');
-          div.innerHTML += heart_posts_template(response);
+          $('#load-more-heart-btn').addClass('nodisplay');
         }
         $('#load-more-heart-btn').html('<span id="load-more-heart-span"></span>Load More').blur();
       }
@@ -230,10 +258,15 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       data: {newIndex: $('#load-more-comments-btn').val()},
       timeout: 3000,
       success: function (response){
-        if(response.index >= -1){
-          $('#load-more-comments-btn').val(response.index);
-          var div = document.getElementById('client-comments');
-          div.innerHTML += post_comments_template(response);
+        var arr = response.buckets;
+        if(arr != ''){
+          if(response.index >= -1){
+            $('#load-more-comments-btn').val(response.index);
+            var div = document.getElementById('client-comments');
+            div.innerHTML += post_comments_template(response);
+          }
+        } else{
+          $('#load-more-comments-btn').addClass('nodisplay');
         }
         $('#load-more-comments-btn').html('<span id="load-more-comments-span"></span>Load More').blur();
       }
@@ -291,10 +324,15 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       data: {endpoints: $('#load-more-members-btn').val()},
       timeout: 3000,
       success: function (response){
-        var newEndpoints = response.newEndpoints;
-        $('#load-more-members-btn').val(newEndpoints);
-        var div = document.getElementById('client-members');
-        div.innerHTML += moreMembers_template(response);
+        var arr = response.users;
+        if(arr != ''){
+          var newEndpoints = response.newEndpoints;
+          $('#load-more-members-btn').val(newEndpoints);
+          var div = document.getElementById('client-members');
+          div.innerHTML += moreMembers_template(response);
+        } else{
+          $('#load-more-members-btn').addClass('nodisplay');
+        }
         $('#load-more-members-btn').html('<span id="load-more-members-span"></span>Load More').blur();
       }
     });
@@ -312,10 +350,15 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       data: {endpoints: $('#load-more-clubs-btn').val()},
       timeout: 3000,
       success: function (response){
-        var newEndpoints = response.newEndpoints;
-        $('#load-more-clubs-btn').val(newEndpoints);
-        var div = document.getElementById('client-clubs');
-        div.innerHTML += moreClubs_template(response);
+        var arr = response.clubs;
+        if(arr != ''){
+          var newEndpoints = response.newEndpoints;
+          $('#load-more-clubs-btn').val(newEndpoints);
+          var div = document.getElementById('client-clubs');
+          div.innerHTML += moreClubs_template(response);
+        } else{
+          $('#load-more-clubs-btn').addClass('nodisplay');
+        }
         $('#load-more-clubs-btn').html('<span id="load-more-clubs-span"></span>Load More').blur();
       }
     });
@@ -334,12 +377,16 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if($('#load-more-search-people-btn').val() != ''){
-          $('#load-more-search-people-btn').val(arr.concat($('#load-more-search-people-btn').val()));
-          var div = document.getElementById('client-search-people');
-          div.innerHTML += search_people_template(response);
+        if(arr != ''){
+          if($('#load-more-search-people-btn').val() != ''){
+            $('#load-more-search-people-btn').val(arr.concat($('#load-more-search-people-btn').val()));
+            var div = document.getElementById('client-search-people');
+            div.innerHTML += search_people_template(response);
+          } else{
+            $('#load-more-search-people-btn').val(arr);
+          }
         } else{
-          $('#load-more-search-people-btn').val(arr);
+          $('#load-more-search-people-btn').addClass('nodisplay');
         }
         $('#load-more-search-people-btn').html('<span id="load-more-search-people-span"></span>Load More').blur();
       }
@@ -357,12 +404,16 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if($('#load-more-filterSearch-people-btn').val() != ''){
-          $('#load-more-filterSearch-people-btn').val(arr.concat($('#load-more-filterSearch-people-btn').val()));
-          var div = document.getElementById('client-search-people');
-          div.innerHTML += search_people_template(response);
+        if(arr != ''){
+          if($('#load-more-filterSearch-people-btn').val() != ''){
+            $('#load-more-filterSearch-people-btn').val(arr.concat($('#load-more-filterSearch-people-btn').val()));
+            var div = document.getElementById('client-search-people');
+            div.innerHTML += search_people_template(response);
+          } else{
+            $('#load-more-filterSearch-people-btn').val(arr);
+          }
         } else{
-          $('#load-more-filterSearch-people-btn').val(arr);
+          $('#load-more-filterSearch-people-btn').addClass('nodisplay');
         }
         $('#load-more-filterSearch-people-btn').html('<span id="load-more-filterSearch-people-span"></span>Load More').blur();
       }
@@ -382,12 +433,16 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundClubIds;
-        if($('#load-more-search-clubs-btn').val() != ''){
-          $('#load-more-search-clubs-btn').val(arr.concat($('#load-more-search-clubs-btn').val()));
-          var div = document.getElementById('client-search-clubs');
-          div.innerHTML += search_clubs_template(response);
+        if(arr != ''){
+          if($('#load-more-search-clubs-btn').val() != ''){
+            $('#load-more-search-clubs-btn').val(arr.concat($('#load-more-search-clubs-btn').val()));
+            var div = document.getElementById('client-search-clubs');
+            div.innerHTML += search_clubs_template(response);
+          } else{
+            $('#load-more-search-clubs-btn').val(arr);
+          }
         } else{
-          $('#load-more-search-clubs-btn').val(arr);
+          $('#load-more-search-clubs-btn').addClass('nodisplay');
         }
         $('#load-more-search-clubs-btn').html('<span id="load-more-search-clubs-span"></span>Load More').blur();
       }
@@ -405,14 +460,47 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if($('#load-more-filterSearch-clubs-btn').val() != ''){
-          $('#load-more-filterSearch-clubs-btn').val(arr.concat($('#load-more-filterSearch-clubs-btn').val()));
-          var div = document.getElementById('client-search-clubs');
-          div.innerHTML += search_clubs_template(response);
+        if(arr != ''){
+          if($('#load-more-filterSearch-clubs-btn').val() != ''){
+            $('#load-more-filterSearch-clubs-btn').val(arr.concat($('#load-more-filterSearch-clubs-btn').val()));
+            var div = document.getElementById('client-search-clubs');
+            div.innerHTML += search_clubs_template(response);
+          } else{
+            $('#load-more-filterSearch-clubs-btn').val(arr);
+          }
         } else{
-          $('#load-more-filterSearch-clubs-btn').val(arr);
+          $('#load-more-filterSearch-clubs-btn').addClass('nodisplay');
         }
         $('#load-more-filterSearch-clubs-btn').html('<span id="load-more-filterSearch-clubs-span"></span>Load More').blur();
+      }
+    });
+  });
+}
+
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_org_pages'){
+  $('#load-more-search-org_pages-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-search-org_pages-span').addClass("spinner-border spinner-border-sm mr-1");
+    var query = $('#query').attr('value');
+    $.ajax({
+      type: 'GET',
+      url: '/org_pages-moreResults/search/'+query,
+      data: {ids: $('#load-more-search-org_pages-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.foundOrgPageIds;
+        if(arr != ''){
+          if($('#load-more-search-org_pages-btn').val() != ''){
+            $('#load-more-search-org_pages-btn').val(arr.concat($('#load-more-search-org_pages-btn').val()));
+            var div = document.getElementById('client-search-org_pages');
+            div.innerHTML += search_org_pages_template(response);
+          } else{
+            $('#load-more-search-org_pages-btn').val(arr);
+          }
+        } else{
+          $('#load-more-search-org_pages-btn').addClass('nodisplay');
+        }
+        $('#load-more-search-org_pages-btn').html('<span id="load-more-search-org_pages-span"></span>Load More').blur();
       }
     });
   });
@@ -2012,12 +2100,14 @@ function moreMembers_template(response){
       </span>
     </div>
     <div class="col-md-3 col-2 my-auto text-right">
-      <span class="mobileNone">
-        <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
-      </span>
-      <span class="mobileShow">
-        <em class="darkgrey text-sm boldtext"><%= users[i].userRank %></em>
-      </span>
+      <div class="d-inline-flex">
+        <span class="mobileNone">
+          <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
+        </span>
+        <span class="mobileShow">
+          <em class="darkgrey text-sm boldtext"><%= users[i].userRank %></em>
+        </span>
+      </div>
       <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
@@ -2101,12 +2191,14 @@ function moreClubs_template(response){
       </span>
     </div>
     <div class="col-md-2 col-2 my-auto text-right">
-      <span class="mobileNone">
-        <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
-      </span>
-      <span class="mobileShow">
-        <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
-      </span>
+      <div class="d-inline-flex">
+        <span class="mobileNone">
+          <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
+        </span>
+        <span class="mobileShow">
+          <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
+        </span>
+      </div>
       <span class="dropdown">
         <% if(currentUserId && match){ %>
           <button class="btn btn-sm dropdown-toggle text-xs nothing" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -2253,5 +2345,29 @@ function break_arr(arr){
 }
 %>
 `,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, currentUser: response.currentUser});
+  return html;
+}
+
+function search_org_pages_template(response){
+  html = ejs.render(`
+<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
+  <div class="card searchcard2">
+    <div class="d-flex flex-row">
+      <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+        <div class="valign organization p-2">
+          <a href="/org_pages/<%= org_pages[k].name %>" class="black">
+            <span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
+          </a>
+        </div>
+        <br>
+        <div class="darkgrey text-sm text-right">
+          <span>[<span class="boldtext"><%= org_pages[k].clubCount %></span> clubs</span>
+          <span><span class="boldtext"><%= org_pages[k].userCount %></span> members]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, currentUser: response.currentUser});
   return html;
 }

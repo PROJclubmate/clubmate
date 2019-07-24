@@ -1,0 +1,27 @@
+const mongoose = require('mongoose'),
+  Schema       = mongoose.Schema;
+
+const orgPageSchema = new Schema({
+  name: {type: String, unique: true, required: true},
+  userCount: {type: Number, default: 0},
+  allUsers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  clubCount: {type: Number, default: 0},
+  allClubs: [{
+    category: String,
+    categoryCount: {type: Number, default: 0},
+    categoryClubIds: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Club'
+    }],
+    _id: false
+  }]
+});
+// for search
+orgPageSchema.index({name: 'text'});
+// for find queries(match exact strings)
+orgPageSchema.index({name:1});
+
+module.exports = mongoose.model('OrgPage', orgPageSchema);

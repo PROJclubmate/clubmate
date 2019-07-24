@@ -4,6 +4,7 @@ const express     = require('express'),
   User            = require('../models/user'),
   Club            = require('../models/club'),
   Post            = require('../models/post'),
+  OrgPage         = require('../models/organization-page'),
   Token           = require('../models/token'),
   async           = require('async'),
   nodemailer      = require('nodemailer'),
@@ -578,17 +579,48 @@ module.exports = {
       if(req.body.note){
         foundUser.note = req.body.note;
       }
-
       if(req.body.userKeys){
         if(req.body.userKeys.birthdate && req.body.userKeys.sex){
           foundUser.userKeys.birthdate = req.body.userKeys.birthdate;
           foundUser.userKeys.sex = req.body.userKeys.sex;
         } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-          const tempBirthdate = foundUser.userKeys.birthdate;
-          const tempSex = foundUser.userKeys.sex;
-          foundUser.userKeys = req.body.userKeys;
-          foundUser.userKeys.birthdate = tempBirthdate;
-          foundUser.userKeys.sex = tempSex;
+          // COLLEGE PAGE(OrgPage)
+          if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '')){
+            var oldCollegeName = foundUser.userKeys.college;
+            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '');
+            OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
+              if(foundOldOrgPage && foundOldOrgPage.allUsers.length){
+                for(var i=foundOldOrgPage.allUsers.length-1;i>=0;i--){
+                  if(foundOldOrgPage.allUsers[i].equals(foundUser._id)){
+                    foundOldOrgPage.allUsers.splice(i,1);
+                    break;
+                  }
+                }
+                foundOldOrgPage.userCount -= 1;
+                foundOldOrgPage.save();
+              }
+            });
+            OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
+              if(foundNewOrgPage){
+                foundNewOrgPage.allUsers.push(foundUser._id);
+                foundNewOrgPage.userCount += 1;
+                foundNewOrgPage.save();
+              } else{
+                if(newCollegeName && newCollegeName != ''){
+                  OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
+                    createdNewOrgPage.allUsers.push(foundUser._id);
+                    createdNewOrgPage.userCount += 1;
+                    createdNewOrgPage.save();
+                  });
+                }
+              }
+            });
+            foundUser.userKeys.college = newCollegeName;
+          }
+          foundUser.userKeys.concentration = req.body.userKeys.concentration.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '');
+          foundUser.userKeys.worksAt = req.body.userKeys.worksAt.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '');
           if(foundUser.userKeys.residence && foundUser.userKeys.residence != ''){
             let response = await geocodingClient
             .forwardGeocode({
@@ -596,7 +628,7 @@ module.exports = {
               limit: 1
             })
             .send();
-            foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, "");
+            foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, '');
             foundUser.geometry = response.body.features[0].geometry;
           } else{
             foundUser.geometry = undefined;
@@ -620,7 +652,7 @@ module.exports = {
             var oldData = [newData].filter(Boolean);;
           }
           var len = oldData.length; for(var i=len-1;i>=0;i--){
-            var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
+            var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
             oldData.splice(i,1,inputstring);
           }
           if(count==0){foundUser.interests=oldData;}
@@ -1009,18 +1041,95 @@ module.exports = {
               oldData=[];
               var oldData = newData.filter(Boolean);
               var len = oldData.length; for(var i=len-1;i>=0;i--){
-                var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, "");
+                var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
                 oldData.splice(i,1,inputstring);
               }
               foundClub.clubKeys.tags = oldData;
             }
           }
         } else if(req.body.clubKeys && !req.body.clubKeys.tags){
-          const tempTags = foundClub.clubKeys.tags;
-          const filteredCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, "");
-          foundClub.clubKeys = req.body.clubKeys;
-          foundClub.clubKeys.tags = tempTags;
-          foundClub.clubKeys.category = filteredCategory;
+          const oldOrgName = foundClub.clubKeys.organization;
+          const oldCategory = foundClub.clubKeys.category;
+          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          // COLLEGE PAGE(OrgPage)
+          if(oldOrgName != newOrgName || oldCategory != newCategory){
+            if(oldOrgName != newOrgName){
+              // 1) IF an orgPage of OLD ORG name exists => SPLICE clubId from old category & dec. count
+              OrgPage.findOne({name: oldOrgName}, function (err, foundOldOrgPage){
+                if(foundOldOrgPage && foundOldOrgPage.allClubs.length){
+                  for(var i=foundOldOrgPage.allClubs.length-1;i>=0;i--){
+                    if(foundOldOrgPage.allClubs[i].category == oldCategory){
+                      foundOldOrgPage.allClubs[i].categoryCount -= 1;
+                      for(var j=foundOldOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                        if(foundOldOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                          foundOldOrgPage.allClubs[i].categoryClubIds.splice(j,1);
+                        }
+                      }
+                      break;
+                    }
+                  }
+                  foundOldOrgPage.clubCount -= 1;
+                  foundOldOrgPage.save();
+                }
+              });
+            }
+            // 2) IF an orgPage of NEW ORG name "exists" => PUSH clubId into category(upsert) & inc. count
+            OrgPage.findOne({name: newOrgName}, function (err, foundNewOrgPage){
+              if(foundNewOrgPage && foundNewOrgPage.allClubs.length){
+                var foundNewCategory = false;
+                for(var i=foundNewOrgPage.allClubs.length-1;i>=0;i--){
+                  if(oldOrgName != newOrgName && foundNewOrgPage.allClubs[i].category == newCategory){
+                    foundNewOrgPage.allClubs[i].categoryCount += 1;
+                    foundNewOrgPage.allClubs[i].categoryClubIds.push(foundClub._id);
+                    foundNewCategory = true;
+                    foundNewOrgPage.clubCount += 1;
+                  } 
+                  if(oldOrgName == newOrgName && oldCategory != newCategory && foundNewOrgPage.allClubs[i].category == oldCategory){
+                    foundNewOrgPage.allClubs[i].categoryCount -= 1;
+                    for(var j=foundNewOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                      if(foundNewOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                        foundNewOrgPage.allClubs[i].categoryClubIds.splice(j,1);
+                        foundNewOrgPage.clubCount -= 1;
+                      }
+                    }
+                  } 
+                  if(oldOrgName == newOrgName && oldCategory != newCategory && foundNewOrgPage.allClubs[i].category == newCategory){
+                    foundNewOrgPage.allClubs[i].categoryCount += 1;
+                    foundNewOrgPage.allClubs[i].categoryClubIds.push(foundClub._id);
+                    foundNewCategory = true;
+                    foundNewOrgPage.clubCount += 1;
+                  }
+                }
+                if(foundNewCategory == false){
+                  var obj = {};
+                  obj['category'] = newCategory;
+                  obj['categoryCount'] = 1;
+                  obj['categoryClubIds'] = [foundClub._id];
+                  foundNewOrgPage.allClubs.push(obj);
+                  foundNewOrgPage.clubCount += 1;
+                }
+                foundNewOrgPage.save();
+              } else{
+                // 3) If an orgPage of NEW ORG name "does not exist" => Create NEW ORG PAGE with new org name
+                if(newOrgName && newOrgName != ''){
+                  OrgPage.create({name: newOrgName}, function (err, createdNewOrgPage){
+                    createdNewOrgPage.clubCount += 1;
+                    var obj = {};
+                    obj['category'] = newCategory;
+                    obj['categoryCount'] = 1;
+                    obj['categoryClubIds'] = [foundClub._id];
+                    createdNewOrgPage.allClubs.push(obj);
+                    createdNewOrgPage.save();
+                  });
+                }
+              }
+            });
+            foundClub.clubKeys.organization = newOrgName;
+            foundClub.clubKeys.category = newCategory;
+          }
+
+          foundClub.clubKeys.weblink = req.body.clubKeys.weblink.replace(/\&/g, ' ');
           if(foundClub.clubKeys.location && foundClub.clubKeys.location != ''){
             let response = await geocodingClient
             .forwardGeocode({
@@ -1028,7 +1137,7 @@ module.exports = {
               limit: 1
             })
             .send();
-            foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, "");
+            foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, '');
             foundClub.geometry = response.body.features[0].geometry;
           } else{
             foundClub.geometry = undefined;

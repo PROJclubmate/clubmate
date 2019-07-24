@@ -108,7 +108,7 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/find_people/filter_search?users=&college=<%= user.userKeys.college %>&concentration=&batch=&worksAt=&school=&location="><%= user.userKeys.college %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
               <% if(user.userKeys.college && user.userKeys.concentration){ %>
                 <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&worksAt=&school=&location="><%= user.userKeys.concentration %></a></div></div>
               <% } %>
@@ -133,9 +133,8 @@
                 <label for="note" class="sr-only">Note</label>
                 <input type="text" id="note" class="form-control form-control-sm commentbox2 text-center" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
                 <br>
-                <span class="redcolor ml-2">*<span class="text-xs lightgrey"> Avoid abbrevations</span></span>
-                <label for="college" class="sr-only">College</label>
-                <input type="text" id="college" class="form-control form-control-sm" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
+                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
+                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
                 <label for="concentration" class="sr-only">Concentration</label>
                 <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
                 <label for="batch" class="sr-only">Batch</label>
@@ -570,7 +569,7 @@
                       <input type="file" id="avatar" name="avatar" accept="image/*" required>
                     <br>
                     <br>
-                    <button class="btn btn-sm btn-primary btn-block">Submit!</button>
+                    <button class="btn btn-sm btn-primary btn-block">Submit</button>
                   </div>
                 </form>
               </div>

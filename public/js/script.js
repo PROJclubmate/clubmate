@@ -2,11 +2,14 @@
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function(){
   var currentScrollPos = window.pageYOffset;
-  if (prevScrollpos > currentScrollPos) {
+  if($(window).width() > 1199 && prevScrollpos > currentScrollPos) {
     document.getElementById("navbar").style.top = "0";
-    document.getElementById("pop_box").style.top = "44px";
+    document.getElementById("pop_box").style.top = "40px";
+  } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
+    document.getElementById("navbar").style.top = "0px";
+    document.getElementById("pop_box").style.top = "43px";
   } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 43){
-    document.getElementById("navbar").style.top = "-41px";
+    document.getElementById("navbar").style.top = "-40px";
     document.getElementById("pop_box").style.top = "-600px";
   } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
     document.getElementById("navbar").style.top = "-50px";

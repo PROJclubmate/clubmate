@@ -15,16 +15,34 @@
   </head>
   <body>
     <nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top navback drop-shadow">
-      <a href="#" onclick="hidesidebar();" class="btn hidesidebar" id="menu-toggle">
+      <a href="#" onclick="hidesidebar();" class="btn hidesidebar mobileNoneFlex" id="menu-toggle">
         <i class="fas fa-bars"></i>
       </a>
-      <a class="navbar-brand desktopNone" href="/search?search="><i class="fas fa-search"></i></a>
-      <a class="navbar-brand" href="/">
-        <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
-      </a>
-      <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="d-flex justify-content-between mobileNoneFlex">
+        <div>
+          <a class="navbar-brand" href="/">
+            <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
+          </a>
+        </div>
+        <div>
+          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between fullwidth desktopNoneFlex">
+        <div style="width: 56px;"><a class="navbar-brand mobile-search desktopNone" href="/search?search="><i class="fas fa-search"></i></a></div>
+        <div>
+          <a class="navbar-brand" href="/">
+            <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
+          </a>
+        </div>
+        <div>
+          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">

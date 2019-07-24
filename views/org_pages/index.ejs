@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters">
+	<div class="col-lg-9 order-md-first order-last card" style="min-height: 75vh;">
+		<div class="px-3 py-1 organization valign">
+			<% if(match){ %>
+				<div class="boldtext text-xxl">
+					<sup class="greencolor text-xs pb-auto">My </sup><i class="fas fa-university greencolor mr-2"></i><%= org_page.name %>
+				</div>
+			<% } else{ %>
+				<div class="boldtext text-xxl"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+			<% } %>
+			<div class="boldtext text-lg badge badge-danger mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> users</span></div>
+			<div class="boldtext text-lg badge badge-danger desktopNoneFlex mt-auto"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> users</span></div>
+		</div>
+		<hr>
+		<div class="boldtext lightgrey text-md my-3 px-3"><%= org_page.clubCount %> clubs</div>
+		<div class="px-3 py-1">
+			<hr>
+			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
+				<% if(org_page.allClubs[i].category != ''){ %>
+					<div class="boldtext lightgrey text-md"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
+				<% } else{ %>
+						<div class="boldtext lightgrey text-md"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+				<% } %>
+				<div class="mb-3 lineheight2">
+			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>
+			  	<div class="valign">
+				  	<div>
+					    <span class="py-1 mb-auto">
+					      <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>">
+					      <img class="navdp rounded-circle my-1" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
+					    </span>
+					    <span class="my-auto">
+					      <span>
+					        <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>" class="green">
+					          <strong><%= org_page.allClubs[i].categoryClubIds[j].name %></strong>
+					        </a>
+					      </span>
+					      <span class="my-auto grey text-xs"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
+					    </span>
+					  </div>
+					  <div class="darkgrey text-sm">
+			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xs">members</span></em>
+			      </div>
+			    </div>
+			  <% }; %>
+			</div>
+			<hr>
+			<% } %>
+		</div>
+	</div>
+	<div class="col-lg-3 px-2">
+    <div class="list-group">
+      <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

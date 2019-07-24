@@ -25,12 +25,14 @@
       </span>
     </div>
     <div class="col-md-2 col-2 my-auto text-right">
-      <span class="mobileNone">
-        <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
-      </span>
-      <span class="mobileShow">
-        <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
-      </span>
+      <div class="d-inline-flex">
+        <span class="mobileNone">
+          <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
+        </span>
+        <span class="mobileShow">
+          <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
+        </span>
+      </div>
       <span class="dropdown">
         <% if(currentUser && match){ %>
           <button class="btn btn-sm dropdown-toggle text-xs nothing" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>

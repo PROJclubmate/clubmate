@@ -143,6 +143,9 @@ module.exports = {
             var upComments = [], currentUser = null;
           }
           res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, CA_50_profilePic});
+        // Close else block if problem
+        } else{
+          res.json({buckets: []});
         }
         });
       } else{

@@ -7,7 +7,7 @@
 		<% } %>
 		<br>
 		<form action="/find_people/search" method="GET">
-			<span class="text-sm boldtext lightgrey ml-2">search </span>
+			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
 			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="people">People</button>
 		</form>
 		<div class="row no-gutters">
@@ -44,7 +44,7 @@
 
 		<br>
 		<form action="/find_clubs/search" method="GET">
-			<span class="text-sm boldtext lightgrey ml-2">search </span>
+			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
 			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button>
 		</form>
 		<div class="row no-gutters">
@@ -71,6 +71,44 @@
 						      <div class="grey text-xs"><%= clubs[k].banner %></div>
 						      <br>
 						      <div class="darkgrey text-sm text-right"><%= clubs[k].clubKeys.location %></div>
+						    </div>
+						  </div>
+					  </div>
+					</div>
+			  <% } %>
+			<% } %>
+		</div>
+
+		<br>
+		<form action="/find_org_pages/search" method="GET">
+			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="org_pages">College</button>
+		</form>
+		<div class="row no-gutters">
+			<% if(org_pages.length == 0){ %>
+				<% if(query){ %>
+					<h6 class="grey ml-2">No matching colleges found :(</h6>
+				<% } %>
+			<% }else{ %>
+				<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
+					<div class="col-md-4 mobilepad px-1">
+						<div class="card searchcard">
+							<div class="d-inline-flex">
+						    <div class="card-body3 lineheight fullwidth">
+						    	<div>
+							    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
+							      	<span class="nothing searchname organization p-1 boldtext"><%= org_pages[k].name %></span>
+							      </a>
+							    </div>
+						      <br>
+						      <div class="text-sm text-right">
+						      	<span>
+						      		<span class="lightgrey">[</span><span class="boldtext darkgrey nothing"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
+						      	</span>
+						      	<span>
+						      		<span class="boldtext darkgrey"><%= org_pages[k].userCount %></span> <span class="lightgrey nothing">users]</span>
+						      	</span>
+						      </div>
 						    </div>
 						  </div>
 					  </div>

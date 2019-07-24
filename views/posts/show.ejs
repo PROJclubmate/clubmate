@@ -170,7 +170,7 @@
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">
               <span class="grey nothing boldtext text-sm"><%= post.subpostsCount %></span>
-              <span class="grey text-xxl d-flex mr-2"><i class="fas fa-comments-dollar"></i></span>
+              <span class="grey text-xl d-flex mr-2 mt-1"><i class="fas fa-comment-alt"></i></span>
               <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
                 <span class="darkgrey boldtext text-sm nopad">(<%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>% upVotes)</span>
               <% } %>

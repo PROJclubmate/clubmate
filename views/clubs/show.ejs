@@ -183,7 +183,7 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/find_clubs/filter_search?clubs=&location=&category=&organization=<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
                 <div class="info1">Weblink: <div class="info30"><a href="https://<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
@@ -202,9 +202,8 @@
                 <label for="banner" class="sr-only">Banner</label>
                 <input type="text" id="banner" class="form-control form-control-sm commentbox2 text-center" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
                 <br>
-                <span class="redcolor ml-2">*<span class="text-xs lightgrey"> Avoid abbrevations</span></span>
-                <label for="organization" class="sr-only">College name</label>
-                <input type="text" id="organization" class="form-control form-control-sm" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="College name">
+                <label for="organization" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
+                <input type="text" id="organization" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="College name">
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" value="" placeholder="Club category">
@@ -283,13 +282,13 @@
                     <form class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic shadow" placeholder="start new discussion [topic]">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="start new discussion [topic]">
                       <% } else{ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input type="text" name="topic" class="form-control topic2" placeholder="start new discussion [topic]" readonly="readonly" value="">
+                        <input type="text" name="topic" class="form-control topic2" placeholder="start new discussion [topic]" readonly="readonly" value="" style="border: none;">
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
-                      <textarea id="description" class="emoji-input form-control text-sm description shadow" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                      <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
                       <div class="righttext d-flex my-auto">
                         <span>
                           <div class="emoji-panel">

@@ -70,7 +70,9 @@
 				      		<% if(users[k].userKeys.college){ %>
 					      		<div class="grey text-xs">
 					      			<span class="nothing"><%= users[k].userKeys.concentration %></span>
-					      			<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+					      			<% if(users[k].userKeys.batch){ %>
+					      				<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+					      			<% } %>
 					      		</div>
 					      	<% } %>
 						      <div class="grey text-xs"><%= users[k].userKeys.worksAt %></div>

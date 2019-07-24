@@ -248,6 +248,7 @@ if(socket !== undefined){
 
   function getMessages(conversation){
     if(conversation.conversationId == ''){
+      $('#load-prevMsgs-btn').addClass('nodisplay');
       $("#messages").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation </span></div> <br>`);
     } else{
@@ -258,6 +259,7 @@ if(socket !== undefined){
   }
   function getClubMessages(conversation){
     if(conversation.conversationId == ''){
+      $('#load-prevMsgs-btn').addClass('nodisplay');
       $("#messages").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation </span></div> <br>`);
     } else{

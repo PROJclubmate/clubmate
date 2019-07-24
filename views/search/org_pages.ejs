@@ -1,0 +1,53 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters">
+	<div class="col-lg-9 order-md-first order-last">
+	<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+	<div id="server-search-org_pages">
+		<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
+			<div class="card searchcard2">
+				<div class="d-flex flex-row">
+			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+			    	<div class="valign organization p-2">
+				    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
+				      	<span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
+				      </a>
+					  </div>
+					  <br>
+			      <div class="darkgrey text-sm text-right">
+			      	<span>[<span class="boldtext"><%= org_pages[k].clubCount %></span> clubs</span>
+			      	<span><span class="boldtext"><%= org_pages[k].userCount %></span> members]</span>
+			      </div>
+			    </div>
+			  </div>
+		  </div>
+		<% } %>
+	</div>
+	<div id="client-search-org_pages"></div>
+	<div class="text-center mt-2">
+		<% if(org_pages.length != 0 && !org_pages.length < 10){ %>
+      <button id="load-more-search-org_pages-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= foundOrgPageIds %>">
+    <% } else{ %>
+    	<button id="load-more-search-org_pages-btn" class="btn btn-primary btnxs text-sm nodisplay" type="button" value="<%= foundOrgPageIds %>">
+    <% } %>
+    	<span id="load-more-search-org_pages-span"></span>Load More
+    </button>
+  </div>
+	</div>
+	<div class="col-lg-3 px-2">
+		<br class="mobileNone">
+    <div class="mx-2 text-sm boldtext">Search colleges:</div>
+		<form action="/find_org_pages/search" method="GET" class="form-signin">
+      <div class="input-group input-group-sm">
+        <input type="text" name="org_pages" class="form-control search" placeholder="College name" autofocus required>
+        <div class="input-group-append">
+          <button class="btn btn-secondary search" type="submit">
+            Go
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% include ../partials/footer %>

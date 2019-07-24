@@ -15,12 +15,14 @@
       </span>
     </div>
     <div class="col-md-3 col-2 my-auto text-right">
-      <span class="mobileNone">
-        <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
-      </span>
-      <span class="mobileShow">
-        <em class="darkgrey text-sm boldtext"><%= users[i].userRank %></em>
-      </span>
+      <div class="d-inline-flex">
+        <span class="mobileNone">
+          <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
+        </span>
+        <span class="mobileShow">
+          <em class="darkgrey text-sm boldtext"><%= users[i].userRank %></em>
+        </span>
+      </div>
       <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
