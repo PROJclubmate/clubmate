@@ -16,37 +16,35 @@
 		<hr>
 		<div class="boldtext lightgrey text-md my-3 px-3"><%= org_page.clubCount %> clubs</div>
 		<div class="px-3 py-1">
-			<hr>
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
-					<div class="boldtext lightgrey text-md"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
+					<div class="boldtext text-md category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } else{ %>
-						<div class="boldtext lightgrey text-md"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+						<div class="boldtext text-md category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } %>
-				<div class="mb-3 lineheight2">
+				<div class="my-2 lineheight2">
 			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>
 			  	<div class="valign">
-				  	<div>
-					    <span class="py-1 mb-auto">
+				  	<div class="d-flex flex-row">
+					    <div class="py-1 mb-auto">
 					      <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>">
-					      <img class="navdp rounded-circle my-1" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
-					    </span>
-					    <span class="my-auto">
+					      <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
+					    </div>
+					    <div class="my-auto ml-2">
 					      <span>
 					        <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>" class="green">
 					          <strong><%= org_page.allClubs[i].categoryClubIds[j].name %></strong>
 					        </a>
 					      </span>
 					      <span class="my-auto grey text-xs"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
-					    </span>
+					    </div>
 					  </div>
-					  <div class="darkgrey text-sm">
-			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xs">members</span></em>
+					  <div class="darkgrey text-sm px-1 nowrap">
+			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xs"><span class="lightgrey">mems.</span></span></em>
 			      </div>
 			    </div>
 			  <% }; %>
 			</div>
-			<hr>
 			<% } %>
 		</div>
 	</div>

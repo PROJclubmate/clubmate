@@ -444,12 +444,21 @@
                     <span class="grey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
                   <div class="d-flex">
-                    <button onclick="toggleclass_display('searchMember_form');" class="btn btn-sm chat-input-tool my-auto"><i class="fas fa-search"></i></button>
+                    <div>
+                      <button onclick="toggle_display('searchMember_form');" class="btn btn-sm chat-input-tool my-auto"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div id="searchMember_form">
+                      <div class="input-group input-group-sm">
+                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 25px;">
+                        <div class="input-group-append">
+                          <button id="search-members-btn" class="btn btn-secondary search py-0 px-1" type="submit" style="height: 25px;">
+                            <span id="search-members-span"></span>Go
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <!-- <div class="searchMember_form">
-                  <form></form>
-                </div> -->
                 <hr>
                 <div id="server-members">
                   <% include ../partials/club_members %>

@@ -50,14 +50,35 @@
                 <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
                 <hr>
                 <li>
-                  <form class="delete-form inline text-sm" action="/status-rank?_method=PUT" method="POST">
-                    <button class="dropitems link-button red" type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>">Remove <%= users[i].id.firstName %></button>
-                  </form>
+                  <button class="dropitems link-button red text-sm" href="#removeClubModal<%= i %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
                 </li>
               </div>
             </ul>
           <% }; %>
         </span>
+        <!-- Modal HTML -->
+        <div id="removeClubModal<%= i %>" class="fixed-padding modal fade">
+          <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+              <div class="d-flex">
+                <span class="icon-box">
+                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                </span>              
+                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div>
+                <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
+              </div>
+              <div class="my-2">
+                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                  <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       <% }; %>
     </div>
   <% }; %>

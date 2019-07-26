@@ -8,7 +8,7 @@ const express  = require('express'),
 	profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos, profilesUpdateClubsFeaturedPhotos,
 	profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify, profilesVerificationToken,
 	profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken,
-	profilesResetPass} = require('../controllers/profiles');
+	profilesResetPass, profilesClubSearchMembers} = require('../controllers/profiles');
 
 const storage = multer.diskStorage({
   filename: function(req, file, callback) {
@@ -29,13 +29,13 @@ const upload = multer({ storage: storage, fileFilter: imageFilter});
 // Show user profile
 router.get('/users/:id', profilesUserProfile);
 
-// Load user's joined clubs(AJAX)
+// Load user joined clubs(AJAX)
 router.get('/users-moreClubs/:user_id', profilesUserMoreClubs);
 
-// Load user's created posts
+// Load user created posts
 router.get('/users-morePosts/:id', profilesUserMorePosts);
 
-// Load user's heart posts
+// Load user heart posts
 router.get('/heart-morePosts/:id', profilesUserMoreHeartPosts);
 
 // Update user profile
@@ -47,10 +47,13 @@ router.post('/users/:id/clubs', middleware.checkAccountOwnership, upload.single(
 // Show club profile
 router.get('/clubs/:club_id', profilesClubProfile);
 
-// Load club's members(AJAX)
+// Load club members(AJAX)
 router.get('/clubs-moreMembers/:club_id', profilesClubMoreMembers);
 
-// Load club's posts(AJAX)
+// Search club members(AJAX)
+router.get('/clubs-searchMembers/:club_id', profilesClubSearchMembers);
+
+// Load club posts(AJAX)
 router.get('/clubs-morePosts/:club_id', profilesClubMorePosts);
 
 // Update club profile
@@ -59,16 +62,16 @@ router.put('/clubs/:club_id', middleware.isLoggedIn, upload.single('avatar'), pr
 // Delete club profile
 router.delete('/clubs/:club_id', profilesDeleteClubProfile);
 
-// Get user's featured photos page
+// Get user featured photos page
 router.get('/users/:id/featured_photos', middleware.checkAccountOwnership, profilesGetUsersFeaturedPhotos);
 
-// Update user's featured photos
+// Update user featured photos
 router.put('/users/:id/featured_photos', middleware.checkAccountOwnership, upload.single('image'), profilesUpdateUsersFeaturedPhotos);
 
-// Get club's featured photos page
+// Get club featured photos page
 router.get('/clubs/:id/featured_photos', middleware.checkClubAdminship, profilesGetClubsFeaturedPhotos);
 
-// Update club's featured photos
+// Update club featured photos
 router.put('/clubs/:id/featured_photos', middleware.checkClubAdminship, upload.single('image'), profilesUpdateClubsFeaturedPhotos);
 
 //============================================

@@ -1,39 +1,20 @@
-const express     = require('express'),
-  router          = express.Router(),
-  passport        = require('passport'),
-  User            = require('../models/user'),
-  Club            = require('../models/club'),
-  Post            = require('../models/post'),
-  OrgPage         = require('../models/organization-page'),
-  Token           = require('../models/token'),
-  async           = require('async'),
-  nodemailer      = require('nodemailer'),
-  crypto          = require('crypto'),
-  multer          = require('multer'),
-  mongoose        = require('mongoose'),
-  moment          = require('moment'),
-  mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
-  geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+const express          = require('express'),
+  router               = express.Router(),
+  passport             = require('passport'),
+  User                 = require('../models/user'),
+  Club                 = require('../models/club'),
+  Post                 = require('../models/post'),
+  OrgPage              = require('../models/organization-page'),
+  Token                = require('../models/token'),
+  async                = require('async'),
+  nodemailer           = require('nodemailer'),
+  crypto               = require('crypto'),
+  mongoose             = require('mongoose'),
+  moment               = require('moment'),
+  {cloudinary, upload} = require('../cloudinary'),
+  mbxGeocoding         = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient      = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
-const storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
-const imageFilter = function (req, file, cb) {
-  // accept image files only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
-    return cb(new Error('Only image files are allowed!'), false);
-  }
-    cb(null, true);
-};
-const upload = multer({ storage: storage, fileFilter: imageFilter});
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_ID, 
-  api_secret: process.env.API_SECRET,
-});
 
 module.exports = {
   profilesUserProfile(req, res, next){
@@ -557,7 +538,7 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
           }
           var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 512, height: 512, crop: 'limit'});
+            {folder: 'profilePics/', use_filename: true, width: 1024, height: 768, crop: 'limit'});
           //replace original information with new information
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
@@ -672,7 +653,7 @@ module.exports = {
   },
 
   profilesNewClub(req, res, next){
-    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 512, height: 512, crop: 'limit'},
+    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
     function(err, result){
     if(err){
       console.log(req.user._id+' => (profiles-16)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -881,6 +862,38 @@ module.exports = {
     });
   },
 
+  profilesClubSearchMembers(req, res, next){
+    Club.findById(req.params.club_id)
+    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
+    .exec(function(err, foundClub){
+    if(err || !foundClub){
+      console.log('(profiles-25)foundClub err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else{
+      if(req.user){
+        var matchingUsers = []; var Users_50_profilePic = [];
+        var rank = currentRank(foundClub.clubUsers,req.user._id);
+        var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
+        var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
+        for(var i=0;i<foundClub.clubUsers.length;i++){
+          // JS test() returns false for next iteration(matches only once??)
+          // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
+          var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
+          if(match){
+            matchingUsers.push(foundClub.clubUsers[i]); 
+          }
+        }
+        for(var j=0;j<matchingUsers.length;j++){
+            Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
+            {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          }
+        res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
+      }
+    }
+    });
+  },
+
   profilesClubMorePosts(req, res, next){
     if(req.user){
       var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
@@ -999,7 +1012,7 @@ module.exports = {
           try{
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
-              {folder: 'clubAvatars/', use_filename: true, width: 512, height: 512, crop: 'limit'});
+              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 768, crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1226,7 +1239,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 768, height: 768, crop: 'limit'});
+        use_filename: true, width: 1024, height: 768, crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1255,7 +1268,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 768, height: 768, crop: 'limit'});
+              use_filename: true, width: 1024, height: 768, crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1299,7 +1312,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 768, height: 768, crop: 'limit'});
+        use_filename: true, width: 1024, height: 768, crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1328,7 +1341,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 768, height: 768, crop: 'limit'});
+              use_filename: true, width: 1024, height: 768, crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;
@@ -1628,6 +1641,7 @@ module.exports = {
 };
 
 //*******************FUNCTIONS***********************
+
 function checkRank(clubUsers,userId,rank){
   var ok;
   clubUsers.forEach(function(user){

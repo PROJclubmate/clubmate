@@ -153,6 +153,57 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       $('#load-prevMsgs-btn').addClass('nodisplay');
     }
   });
+
+  $('#load-more-members-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-members-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/clubs-moreMembers/'+location.pathname.split('/')[2],
+      data: {endpoints: $('#load-more-members-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.users;
+        if(arr != ''){
+          var newEndpoints = response.newEndpoints;
+          $('#load-more-members-btn').val(newEndpoints);
+          var div = document.getElementById('client-members');
+          div.innerHTML += moreMembers_template(response);
+        } else{
+          $('#load-more-members-btn').addClass('nodisplay');
+        }
+        $('#load-more-members-btn').html('<span id="load-more-members-span"></span>Load More').blur();
+      }
+    });
+  });
+
+  $('#search-members-btn').on('click', function(e){
+    e.preventDefault();
+    $('#search-members-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/clubs-searchMembers/'+location.pathname.split('/')[2],
+      data: {name: $('#search-members-input').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.users;
+        if(arr != ''){
+          var div = document.getElementById('server-members');
+          div.innerHTML = moreMembers_template(response);
+          $('#load-more-members-btn').addClass('nodisplay');
+          $('#server-members').addClass('mt-2');
+          $('#client-members').addClass('nodisplay');
+        } else{
+          var div = document.getElementById('server-members');
+          div.innerHTML = `<div class="text-center lightgrey text-sm">No matching names found</div>`
+          $('#load-more-members-btn').addClass('nodisplay');
+          $('#server-members').addClass('mt-2');
+          $('#client-members').addClass('nodisplay');
+        }
+        $('#search-members-btn').html('<span id="search-members-span"></span>Go').blur();
+      }
+    });
+  });
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
@@ -243,12 +294,39 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       $('#load-prevMsgs-btn').addClass('nodisplay');
     }
   });
+
+  $('#load-more-clubs-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/users-moreClubs/'+location.pathname.split('/')[2],
+      data: {endpoints: $('#load-more-clubs-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.clubs;
+        if(arr != ''){
+          var newEndpoints = response.newEndpoints;
+          $('#load-more-clubs-btn').val(newEndpoints);
+          var div = document.getElementById('client-clubs');
+          div.innerHTML += moreClubs_template(response);
+        } else{
+          $('#load-more-clubs-btn').addClass('nodisplay');
+        }
+        $('#load-more-clubs-btn').html('<span id="load-more-clubs-span"></span>Load More').blur();
+      }
+    });
+  });
 }
 
 if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[3] == 'posts' && location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)) || 
   (location.pathname.split('/').length == 7 && location.pathname.split('/')[5] == 'subPost'))
 {
+  if($('#load-prevMsgs-btn')){
+    $('#load-prevMsgs-btn').addClass('nodisplay');
+  }
+
   $('#load-more-comments-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-comments-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -310,58 +388,6 @@ function load_subPost_page(url,value){
         div.innerHTML = post_subPosts_template(response);
       }
     }
-  });
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  $('#load-more-members-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-members-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-moreMembers/'+location.pathname.split('/')[2],
-      data: {endpoints: $('#load-more-members-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.users;
-        if(arr != ''){
-          var newEndpoints = response.newEndpoints;
-          $('#load-more-members-btn').val(newEndpoints);
-          var div = document.getElementById('client-members');
-          div.innerHTML += moreMembers_template(response);
-        } else{
-          $('#load-more-members-btn').addClass('nodisplay');
-        }
-        $('#load-more-members-btn').html('<span id="load-more-members-span"></span>Load More').blur();
-      }
-    });
-  });
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  $('#load-more-clubs-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/users-moreClubs/'+location.pathname.split('/')[2],
-      data: {endpoints: $('#load-more-clubs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.clubs;
-        if(arr != ''){
-          var newEndpoints = response.newEndpoints;
-          $('#load-more-clubs-btn').val(newEndpoints);
-          var div = document.getElementById('client-clubs');
-          div.innerHTML += moreClubs_template(response);
-        } else{
-          $('#load-more-clubs-btn').addClass('nodisplay');
-        }
-        $('#load-more-clubs-btn').html('<span id="load-more-clubs-span"></span>Load More').blur();
-      }
-    });
   });
 }
 
@@ -2135,14 +2161,35 @@ function moreMembers_template(response){
                 <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
                 <hr>
                 <li>
-                  <form class="delete-form inline text-sm" action="/status-rank?_method=PUT" method="POST">
-                    <button class="dropitems link-button red" type="submit" name="leave" value="<%= users[i].id._id %>,<%= clubId %>">Remove <%= users[i].id.firstName %></button>
-                  </form>
+                  <button class="dropitems link-button red text-sm" href="#removeClubModal<%= i %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
                 </li>
               </div>
             </ul>
           <% }; %>
         </span>
+        <!-- Modal HTML -->
+        <div id="removeClubModal<%= i %>" class="fixed-padding modal fade">
+          <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+              <div class="d-flex">
+                <span class="icon-box">
+                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                </span>              
+                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div>
+                <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
+              </div>
+              <div class="my-2">
+                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                  <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       <% }; %>
     </div>
   <% }; %>
@@ -2209,14 +2256,35 @@ function moreClubs_template(response){
             <% if(clubs[i].rank != 0){ %>
               <hr>
               <li>
-                <form class="delete-form inline text-sm" action="/status-rank?_method=PUT" method="POST">
-                  <button class="dropitems link-button red" type="submit" name="leave" value="<%= userId %>,<%= clubs[i].id._id %>">Leave <%= clubs[i].id.name %></button>
-                </form>
+                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= i %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
               </li>
             <% } %>
           </div>
         </ul>
       </span>
+      <!-- Modal HTML -->
+      <div id="leaveClubModal<%= i %>" class="fixed-padding modal fade">
+        <div class="modal-dialog modal-confirm">
+          <div class="modal-content">
+            <div class="d-flex">
+              <span class="icon-box">
+                <i class="fas fa-exclamation-triangle text-xxxl"></i>
+              </span>              
+              <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div>
+              <p>Do you really want to leave <%= clubs[i].id.name %>? This cannot be undone.</p>
+            </div>
+            <div class="my-2">
+              <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+              <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                <button type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   <% }; %>
 </div>

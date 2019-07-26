@@ -1,31 +1,11 @@
-const express  = require('express'),
-  router       = express.Router(),
-  Post         = require('../models/post'),
-  User         = require('../models/user'),
-  Club         = require('../models/club'),
-  Comment      = require('../models/comment'),
-  Discussion   = require('../models/discussion'),
-  multer       = require('multer');
-
-const storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
-const imageFilter = function (req, file, cb) {
-  // accept image files only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
-    return cb(new Error('Only image files are allowed!'), false);
-  }
-  cb(null, true);
-};
-const upload = multer({ storage: storage, fileFilter: imageFilter});
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_ID, 
-  api_secret: process.env.API_SECRET,
-});
+const express          = require('express'),
+  router               = express.Router(),
+  Post                 = require('../models/post'),
+  User                 = require('../models/user'),
+  Club                 = require('../models/club'),
+  Comment              = require('../models/comment'),
+  Discussion           = require('../models/discussion'),
+  {cloudinary, upload} = require('../cloudinary');
 
 module.exports = {
   postsHome(req, res, next){
@@ -324,7 +304,7 @@ module.exports = {
     if(req.file){
       if(req.body.privacy){
         cloudinary.v2.uploader.upload(req.file.path,
-        {folder: 'postImages/', use_filename: true, width: 768, height: 768, crop: 'limit'},
+        {folder: 'postImages/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
         function(err, result){
         if(err){
           console.log(req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));

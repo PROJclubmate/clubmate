@@ -416,6 +416,10 @@ li.nav-item{
     white 5px
   );
 }
+.category{
+  color: black;
+  background-color: #ededed;
+}
 .news{
   min-height: 42px;
   width: auto;
@@ -577,6 +581,7 @@ button.dropdown-toggle2:focus{
 #club_filter{display: none;}
 #user_filter{display: none;}
 #location_status{display: none;}
+#searchMember_form{display: none;}
 /*--------------*/
 .dropctn{
   width: 100% !important;

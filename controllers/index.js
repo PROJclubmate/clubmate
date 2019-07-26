@@ -5,16 +5,9 @@ const express     = require('express'),
   Post            = require('../models/post'),
   OrgPage         = require('../models/organization-page'),
   mongoose        = require('mongoose'),
+  {cloudinary}    = require('../cloudinary'),
   mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
-
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_ID, 
-  api_secret: process.env.API_SECRET,
-});
-
 
 module.exports = {
   indexRoot(req, res, next){

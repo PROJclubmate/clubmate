@@ -1,14 +1,8 @@
-const express = require('express'),
-  router      = express.Router({mergeParams: true}),
-  Post        = require('../models/post'),
-  Comment     = require('../models/comment');
-
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_ID, 
-  api_secret: process.env.API_SECRET,
-});
+const express  = require('express'),
+  router       = express.Router({mergeParams: true}),
+  Post         = require('../models/post'),
+  Comment      = require('../models/comment'),
+  {cloudinary} = require('../cloudinary');
 
 module.exports = {
   commentsCreate(req, res, next){
