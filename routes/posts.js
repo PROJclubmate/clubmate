@@ -1,25 +1,10 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  multer       = require('multer'),
+  {upload}     = require('../cloudinary'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts, postsDiscover,
   postsDiscoverMorePosts, postsCreate, postsShow, postsQuote, postsUpdate, postsDelete, postsVote,
 	postsModVote} = require('../controllers/posts');
-
-const storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
-const imageFilter = function (req, file, cb) {
-  // accept image files only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
-    return cb(new Error('Only image files are allowed!'), false);
-  }
-    cb(null, true);
-};
-const upload = multer({ storage: storage, fileFilter: imageFilter});
-
 
 
 // Home

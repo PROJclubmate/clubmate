@@ -19,9 +19,9 @@ const orgPageSchema = new Schema({
     _id: false
   }]
 });
+// for find queries(match exact strings)
+orgPageSchema.index({name:1}, {unique: true});
 // for search
 orgPageSchema.index({name: 'text'});
-// for find queries(match exact strings)
-orgPageSchema.index({name:1});
 
 module.exports = mongoose.model('OrgPage', orgPageSchema);

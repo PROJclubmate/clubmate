@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  multer       = require('multer'),
+  {upload}     = require('../cloudinary'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesClubMoreMembers,
 	profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetUsersFeaturedPhotos,
@@ -9,22 +9,7 @@ const express  = require('express'),
 	profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify, profilesVerificationToken,
 	profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken,
 	profilesResetPass, profilesClubSearchMembers} = require('../controllers/profiles');
-
-const storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
-const imageFilter = function (req, file, cb) {
-  // accept image files only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
-    return cb(new Error('Only image files are allowed!'), false);
-  }
-    cb(null, true);
-};
-const upload = multer({ storage: storage, fileFilter: imageFilter});
-
-
+  
 
 // Show user profile
 router.get('/users/:id', profilesUserProfile);

@@ -352,11 +352,11 @@ div.card-title{
   display: inline-block;
 }
 .checked {
-    color: orange;
+  color: orange;
 }
 .vr{
-    border-right:1px solid rgba(0, 0, 0, .15);
-    max-height: 40px;
+  border-right:1px solid rgba(0, 0, 0, .15);
+  max-height: 40px;
 }
 #reviewbox{
   border-left: 1px solid rgba(0, 0, 0, .1);
@@ -552,6 +552,52 @@ button.dropdown-toggle2:focus{
 }
 .dropdown-toggle2::after {
   display: none;
+}
+input[type="file"].featuredImage{
+  display: none;
+}
+input[type="file"]#inputImage{
+  display: none;
+}
+input[type="file"]#inputprofilePic{
+  display: none;
+}
+input[type="file"]#inputavatar{
+  display: none;
+}
+.custom-file-upload{
+  border: 1px solid grey;
+  display: inline-block;
+  height: 31px;
+  font-size: 14px;
+  padding: 4px 8px;
+  cursor: pointer;
+  background-color: grey;
+  color: white;
+  border-radius: 0.15rem;
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.5);
+}
+.custom-file-upload-light{
+  border: 1px solid darkgrey;
+  display: inline-block;
+  height: 31px;
+  font-size: 14px;
+  padding: 4px 8px;
+  cursor: pointer;
+  background-color: #ededed;
+  color: #555555;
+  border-radius: 0.15rem;
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.35);
+}
+.custom-file-upload:hover{
+  transition: .15s ease-in-out;
+  border-color: #656565;
+  background-color: #707070;
+}
+.custom-file-upload-light:hover{
+  transition: .15s ease-in-out;
+  border-color: grey;
+  background-color: #dcdcdc;
 }
 /*None elements*/
 .nodisplay{display: none;}
@@ -883,6 +929,11 @@ div.carousel-frame2{
   padding: 0;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
+.subPostimg-div{
+  float: left;
+  position: relative;
+  width: 50%;
+}
 img.cover{
   width: 100%;
   object-fit: cover;
@@ -1127,35 +1178,6 @@ ul{
 }
 .centertext{
   text-align: center;
-}
-input[type="file"].featuredImage{
-  display: none;
-}
-input[type="file"]#inputImage{
-  display: none;
-}
-input[type="file"]#inputprofilePic{
-  display: none;
-}
-input[type="file"]#inputavatar{
-  display: none;
-}
-.custom-file-upload{
-  border: 1px solid grey;
-  display: inline-block;
-  height: 31px;
-  font-size: 14px;
-  padding: 4px 8px;
-  cursor: pointer;
-  background-color: grey;
-  color: white;
-  border-radius: 0.15rem;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.5);
-}
-.custom-file-upload:hover{
-  transition: .15s ease-in-out;
-  border-color: #656565;
-  background-color: #707070;
 }
 .redcolor-border{
   border-color: #cc0000;

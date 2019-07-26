@@ -6,16 +6,30 @@ const express  = require('express'),
 
 module.exports = {
   discussionsNew(req, res, next){
-    Post.findById(req.params.post_id, function(err, foundPost){
+    Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
       console.log(req.user._id+' => (discussions-1)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
+      var multiImagesArr = [];
+      if(req.files){
+        multiImagesArr = [];
+        // upload images
+        for(const file of req.files){
+          let result = await cloudinary.v2.uploader.upload(file.path,
+          {folder: 'subPostImages/', use_filename: true, width: 1024, height: 768, crop: 'limit'});
+          // add images to multiImagesArr array
+          multiImagesArr.push({
+            image: result.secure_url,
+            imageId: result.public_id
+          });
+        }
+      };
       Discussion.findOneAndUpdate({postId: foundPost._id, bucket: foundPost.subpostbucketNum},
       {$inc: {count: 1},
         $push: {subPosts: {subPostAuthor: {id: req.user._id, authorName: req.user.fullName},
-        text: req.body.text, quoteNum: req.body.quoteNum, quoteText: req.body.quoteText}}
+        text: req.body.text,images: multiImagesArr, quoteNum: req.body.quoteNum, quoteText: req.body.quoteText}}
       }, {fields: {count:1} , upsert: true, new: true}, function(err, newSubPostBucket){
       if(err || !newSubPostBucket){
         console.log(req.user._id+' => (discussions-2)newSubPostBucket err:- '+JSON.stringify(err, null, 2));

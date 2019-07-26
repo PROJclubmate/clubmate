@@ -127,6 +127,13 @@
           </div>
         <% } %>
         <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
+        <% if(subPosts[j].images && subPosts[j].images.length){ %>
+          <% for(var k=0;k<subPosts[j].images.length;k++){ %>
+            <div class="subPostimg-div">
+              <img class="card-img-top p-1" src="<%= subPosts[j].images[k].image %>">
+            </div>
+          <% } %>
+        <% } %>
       </div>
     </div>
   </div>
@@ -158,7 +165,7 @@
           <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
         </div>
         <div class="commentdiv d-flex flex-column">
-          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
+          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST" enctype="multipart/form-data">
             <div class="valign">
               <div class="d-flex flex-column">
                 <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
@@ -186,8 +193,12 @@
               <% } %>
             </div>
             <div class="d-flex flex-row-reverse">
-              <div onclick="none_display('subpostbtn'); clear_subpost();" class="btn  btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs ml-2 mt-2">Cancel</div>
-              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2">Submit</button>
+              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2 ml-2">Submit</button>
+              <label for="inputImage" class="custom-file-upload-light subpostbtn mt-2" title="Upload image">
+                <i class="fas fa-upload"></i> Image(s)
+              </label>
+              <input type="file" id="inputImage" class="text-sm" name="images" accept="images/*" multiple>
               <div class="emoji-panel subpostbtn pt-2 px-2">
                 <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
                   <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">

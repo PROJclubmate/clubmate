@@ -198,7 +198,7 @@
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -285,7 +285,7 @@
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
               </div>
             </form>

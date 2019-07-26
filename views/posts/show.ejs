@@ -209,7 +209,7 @@
           <label for="description" class="sr-only">Post description</label>
           <textarea type="text" id="description" class="emoji-input form-control shadow" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
           <div class="valign">
-            <div onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm" title="Cancel update">Cancel</div>
+            <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
             <div class="righttext d-flex my-auto">
               <span>
                 <div class="emoji-panel">
@@ -281,8 +281,12 @@
                     <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow" name="text" placeholder="Add sub-post" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
-                    <div onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs ml-2 mt-2">Cancel</div>
-                    <button class="btn btn-primary subpostbtn btnxs mt-2">Submit</button>
+                    <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+                    <button class="btn btn-primary subpostbtn btnxs ml-2 mt-2">Submit</button>
+                    <label for="inputImage" class="custom-file-upload-light subpostbtn mt-2" title="Upload image">
+                      <i class="fas fa-upload"></i> Image(s)
+                    </label>
+                    <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
                     <div class="emoji-panel subpostbtn pt-2 px-2">
                       <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
                         <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
@@ -317,7 +321,7 @@
                 <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="2" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn btnxs mt-2">Submit</button>
               </div>
             </form>

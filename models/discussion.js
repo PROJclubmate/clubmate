@@ -21,8 +21,10 @@ const discussionSchema = new Schema({
       },
       authorName: String
     },
-    // image: String,
-    // imageId: String,
+    images: [{
+      image: String,
+      imageId: String
+    }],
     quoteNum: {type: Number, default: 0},
     quoteText: {type: String, default: ''},
     text: String,

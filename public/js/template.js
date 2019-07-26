@@ -786,7 +786,7 @@ function index_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -874,7 +874,7 @@ function index_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
               </div>
             </form>
@@ -1055,7 +1055,7 @@ function club_posts_template(response){
                     <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                   </span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -1115,7 +1115,7 @@ function club_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -1201,7 +1201,7 @@ function club_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
               </div>
             </form>
@@ -1426,7 +1426,7 @@ function user_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext grey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -1512,7 +1512,7 @@ function user_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
               </div>
             </form>
@@ -1720,7 +1720,7 @@ function heart_posts_template(response){
                 <span id="heart-countH<%= postsH[l]._id %>" class="boldtext grey nothing text-sm"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                  <span class="invisible" id="modVisibility<%= postsH[l]._id %>"></span>
+                  <span class="nodisplay" id="modVisibility<%= postsH[l]._id %>"></span>
             <% } else{ %>
               <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart"><i class="far fa-heart"></i></button></span>
             <% } %>
@@ -1806,7 +1806,7 @@ function heart_posts_template(response){
                 <input onclick="block_display('commentbtn<%= postsH[l]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <div onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Cancel</div>
+                <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                   <button class="btn btn-sm btn-primary commentbtn commentbtn<%= postsH[l]._id %> btnxs mt-2">Submit</button>
               </div>
             </form>
@@ -1909,7 +1909,7 @@ function post_subPosts_template(response){
 <% if(post.subpostBuckets.length >= 1){ %>
   <div class="dropctn mt-2">
     <div class="pr-2">
-      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 nodisplay" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
     <div>
       <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>
@@ -2030,6 +2030,13 @@ function post_subPosts_template(response){
           </div>
         <% } %>
         <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
+        <% if(subPosts[j].images && subPosts[j].images.length){ %>
+          <% for(var k=0;k<subPosts[j].images.length;k++){ %>
+            <div class="subPostimg-div">
+              <img class="card-img-top p-1" src="<%= subPosts[j].images[k].image %>">
+            </div>
+          <% } %>
+        <% } %>
       </div>
     </div>
   </div>
@@ -2073,8 +2080,12 @@ function post_subPosts_template(response){
               <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4"></textarea>
             </div>
             <div class="d-flex flex-row-reverse">
-              <div onclick="none_display('subpostbtn'); clear_subpost();" class="btn  btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs ml-2 mt-2">Cancel</div>
-              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2">Submit</button>
+              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2 ml-2">Submit</button>
+              <label for="inputImage" class="custom-file-upload-light subpostbtn mt-2" title="Upload image">
+                <i class="fas fa-upload"></i> Image(s)
+              </label>
+              <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
             </div>
           </form>
         </div>
