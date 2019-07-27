@@ -426,6 +426,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = foundUserPosts.length;
         var currentUser = req.user; var match = false;
         var foundPostIds = foundUserPosts.map(function(post){
           return post._id;
@@ -442,7 +443,7 @@ module.exports = {
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
         return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundPostIds, PC_50_clubAvatar,
-        CU_50_profilePic});
+        CU_50_profilePic, arrLength});
       }
       });
     } else{
@@ -462,6 +463,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = foundUserPosts.length;
         var currentUser = req.user; var match = false;
         var foundPostIds = foundUserPosts.map(function(post){
           return post._id;
@@ -476,7 +478,7 @@ module.exports = {
           hasModVote[k] = modVoteCheck(req.user,userPosts[k]);
         }
         return res.json({hasVote, hasModVote, posts: userPosts, match, currentUser, foundPostIds, PC_50_clubAvatar,
-        CU_50_profilePic});
+        CU_50_profilePic, arrLength});
       }
       });
     }
@@ -501,6 +503,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = foundHeartPosts.length;
         var currentUser = req.user; var match = false;
         var foundHPostIds = foundHeartPosts.map(function(post){
           return post._id;
@@ -517,7 +520,7 @@ module.exports = {
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
         return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundHPostIds, CU_50_profilePicH,
-        PC_50_clubAvatarH});
+        PC_50_clubAvatarH, arrLength});
       }
       });
     } else{
@@ -913,6 +916,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = clubPosts.length;
         var foundPostIds = clubPosts.map(function(post){
           return post._id;
         });
@@ -929,7 +933,7 @@ module.exports = {
         var currentUser = req.user;
         var rank = currentRank2(req.params.club_id,req.user.userClubs);
         res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, PA_50_profilePic,
-        CU_50_profilePic});
+        CU_50_profilePic, arrLength});
       }
       });
     } else{
@@ -949,6 +953,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = clubPosts.length;
         var foundPostIds = clubPosts.map(function(post){
           return post._id;
         });
@@ -963,7 +968,7 @@ module.exports = {
         }
         var rank, currentUser = null;
         res.json({hasVote, hasModVote, posts, rank, currentUser, foundPostIds, PA_50_profilePic,
-        CU_50_profilePic});
+        CU_50_profilePic, arrLength});
       }
       });
     }

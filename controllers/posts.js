@@ -69,6 +69,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = homePosts.length;
         var friendsPostUrl = false; var currentUser2 = req.user;
         var foundPostIds = homePosts.map(function(post){
           return post._id;
@@ -86,7 +87,7 @@ module.exports = {
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
-        foundPostIds, CU_50_profilePic, PC_50_clubAvatar});
+        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
       }
       });
     } else{
@@ -148,6 +149,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = friendsPosts.length;
         var friendsPostUrl = true; var currentUser2 = req.user;
         var foundPostIds = friendsPosts.map(function(post){
           return post._id;
@@ -165,7 +167,7 @@ module.exports = {
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
-        CU_50_profilePic, PA_50_profilePic});
+        CU_50_profilePic, PA_50_profilePic, arrLength});
       }
       });
     } else{
@@ -251,6 +253,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = discoverPosts.length;
         var friendsPostUrl = false; var currentUser2 = req.user;
         var foundPostIds = discoverPosts.map(function(post){
           return post._id;
@@ -266,7 +269,7 @@ module.exports = {
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-        foundPostIds, CU_50_profilePic, PC_50_clubAvatar});
+        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
       }
       });
     } else{
@@ -280,6 +283,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var arrLength = discoverPosts.length;
         var friendsPostUrl = false;
         var foundPostIds = discoverPosts.map(function(post){
           return post._id;
@@ -292,7 +296,8 @@ module.exports = {
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
         }
-        res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar});
+        res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar,
+        arrLength});
       }
       });
     }

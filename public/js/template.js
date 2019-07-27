@@ -8,12 +8,12 @@ if(location.pathname == '/home'){
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
     $.ajax({
       type: 'GET',
-      url: '/home-morePosts',
+      url: '/home-morePosts', 
       data: {ids: $('#load-more-btn').val()},
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != ''){
+        if(arr != '' && response.arrLength){
           // If server + client side rendering is used
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
@@ -47,7 +47,7 @@ if(location.pathname == '/friends_posts'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != ''){
+        if(arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -76,7 +76,7 @@ if(location.pathname == '/discover'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != ''){
+        if(arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -106,7 +106,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != ''){
+        if(arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -218,7 +218,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != ''){
+        if(arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -244,7 +244,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundHPostIds;
-          if(arr != ''){
+          if(arr != '' && response.arrLength){
           if($('#load-more-heart-btn').val() != ''){
             if(arr){
               $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));

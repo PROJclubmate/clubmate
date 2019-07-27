@@ -81,7 +81,7 @@ div.content {
   .desktopNoneFlex{display: flex !important;}
   span.mobileShow{display: flex;}
   select.select3{width: 75px;}
-  .card{border: none;}
+  /*.card{border: none;}*/
   .popup-box{min-width: 300px !important; width: 100%; right: 0 !important;}
   .px-1.mobilepad{padding: 0 !important;}
   .mobilemargin{margin: 0 !important;}
@@ -566,7 +566,7 @@ input[type="file"]#inputavatar{
   display: none;
 }
 .custom-file-upload{
-  border: 1px solid grey;
+  border: 1px solid #777777;
   display: inline-block;
   height: 31px;
   font-size: 14px;
