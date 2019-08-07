@@ -11,7 +11,7 @@ const express          = require('express'),
   crypto               = require('crypto'),
   mongoose             = require('mongoose'),
   moment               = require('moment'),
-  {cloudinary, upload} = require('../cloudinary'),
+  {cloudinary, upload} = require('../public/js/cloudinary'),
   mbxGeocoding         = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient      = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
@@ -571,7 +571,7 @@ module.exports = {
           // COLLEGE PAGE(OrgPage)
           if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '')){
             var oldCollegeName = foundUser.userKeys.college;
-            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '');
+            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '');
             OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
               if(foundOldOrgPage && foundOldOrgPage.allUsers.length){
                 for(var i=foundOldOrgPage.allUsers.length-1;i>=0;i--){
@@ -870,28 +870,33 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-25)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-26)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
       if(req.user){
-        var matchingUsers = []; var Users_50_profilePic = [];
-        var rank = currentRank(foundClub.clubUsers,req.user._id);
-        var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
-        var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
-        for(var i=0;i<foundClub.clubUsers.length;i++){
-          // JS test() returns false for next iteration(matches only once??)
-          // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
-          var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
-          if(match){
-            matchingUsers.push(foundClub.clubUsers[i]); 
+        if(req.query.name && req.query.name != ''){
+          var matchingUsers = []; var Users_50_profilePic = [];
+          var rank = currentRank(foundClub.clubUsers,req.user._id);
+          var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
+          var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
+          for(var i=0;i<foundClub.clubUsers.length;i++){
+            // JS test() returns false for next iteration(matches only once??)
+            // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
+            var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
+            if(match){
+              matchingUsers.push(foundClub.clubUsers[i]); 
+            }
           }
+          for(var j=0;j<matchingUsers.length;j++){
+              Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
+              {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            }
+          res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
+        } else{
+          req.flash('error', 'Please enter a valid member name');
+          return res.redirect('back');
         }
-        for(var j=0;j<matchingUsers.length;j++){
-            Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
-            {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          }
-        res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
       }
     }
     });
@@ -912,7 +917,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log(req.user._id+' => (profiles-26)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (profiles-27)clubPosts err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -949,7 +954,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log('(profiles-27)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log('(profiles-28)clubPosts err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -977,7 +982,7 @@ module.exports = {
   profilesUpdateClubProfile(req, res, next){
     Club.findById(req.params.club_id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log(req.user._id+' => (profiles-28)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(req.user._id+' => (profiles-29)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1003,7 +1008,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
           {$push: {clubUpdates: userUpdate}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-29)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1022,7 +1027,7 @@ module.exports = {
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
           }catch(err){
-            console.log(req.user._id+' => (profiles-30)avatarUpload err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (profiles-31)avatarUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1041,7 +1046,7 @@ module.exports = {
                   $set: {'clubUpdates.$': update}
                 }, function(err, foundUser){
                   if(err || !foundUser){
-                    console.log(req.user._id+' => (profiles-31)foundUser err:- '+JSON.stringify(err, null, 2));
+                    console.log(req.user._id+' => (profiles-32)foundUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1052,7 +1057,7 @@ module.exports = {
             }
           }
         }
-        if(req.body.clubKeys.tags){
+        if(req.body.clubKeys && req.body.clubKeys.tags){
           editinfo(req.body.clubKeys.tags,foundClub.clubKeys.tags);
           function editinfo(newData,oldData){
             if(newData){
@@ -1068,7 +1073,7 @@ module.exports = {
         } else if(req.body.clubKeys && !req.body.clubKeys.tags){
           const oldOrgName = foundClub.clubKeys.organization;
           const oldCategory = foundClub.clubKeys.category;
-          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '');
           const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '');
           // COLLEGE PAGE(OrgPage)
           if(oldOrgName != newOrgName || oldCategory != newCategory){
@@ -1174,7 +1179,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
           {$set: {'userClubs.$.clubName': req.body.name}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-32)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (profiles-33)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1187,7 +1192,7 @@ module.exports = {
         req.flash('success', 'Successfully updated');
         res.redirect('/clubs/' + req.params.club_id);
       } else{
-        console.log(req.user._id+' => (profiles-33)rankCheck fail :Update Club');
+        console.log(req.user._id+' => (profiles-34)rankCheck fail :Update Club');
         req.flash('error', "You don't have enough admin privileges :(");
         return res.redirect('back');
       }
@@ -1198,7 +1203,7 @@ module.exports = {
   profilesDeleteClubProfile(req, res, next){
     // Club.findById(req.params.club_id, async function(err, foundClub){
     // if(err || !foundClub){
-    //   console.log(req.user._id+' => (profiles-34)foundClub err:- '+JSON.stringify(err, null, 2));
+    //   console.log(req.user._id+' => (profiles-35)foundClub err:- '+JSON.stringify(err, null, 2));
     //   req.flash('error', 'Something went wrong :(');
     //   return res.redirect('back');
     // } else{
@@ -1223,7 +1228,7 @@ module.exports = {
   profilesGetUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-35)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1238,7 +1243,7 @@ module.exports = {
   profilesUpdateUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, async function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-37)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1296,7 +1301,7 @@ module.exports = {
   profilesGetClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-37)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-38)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1311,7 +1316,7 @@ module.exports = {
   profilesUpdateClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-38)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-39)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1384,7 +1389,7 @@ module.exports = {
     if(req.body.password.match(pass)){
       User.register(newUser, req.body.password, function(err, user){
       if(err || !user){
-        console.log('(profiles-39)user err:- '+JSON.stringify(err, null, 2));
+        console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));
         if(err.code == 11000 || err.name == 'UserExistsError'){
           req.flash('error', 'A user with the given email is already registered');
         } else{
@@ -1397,7 +1402,7 @@ module.exports = {
 
         // Save the verification token
         token.save(function(err){
-          if(err){return console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log('(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
 
           // Send the email
           var smtpTransport = nodemailer.createTransport({
@@ -1450,7 +1455,7 @@ module.exports = {
         // Verify and save the user
         user.verified = true;
         user.save(function(err){
-          if(err){return console.log('(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log('(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
           // res.status(200).send("The account has been verified. Please log in.");
           console.log(user._id+' <= VERIFIED '+user.fullName);
           req.flash('success', 'Thank you for verification, you may now log in :)');
@@ -1479,7 +1484,7 @@ module.exports = {
 
       // Save the verification token
       token.save(function (err){
-        if(err){return console.log('(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
+        if(err){return console.log('(profiles-43)user err:- '+JSON.stringify(err, null, 2));}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1538,7 +1543,7 @@ module.exports = {
       function(token, done){
         User.findOne({email: req.body.email}, function(err, user){
         if(err || !user){
-          console.log('(profiles-43)forgot err:- '+JSON.stringify(err, null, 2));
+          console.log('(profiles-44)forgot err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         } else{
@@ -1581,7 +1586,7 @@ module.exports = {
   profilesForgotToken(req, res, next){
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
     if (err || !user){
-      console.log('(profiles-44)token invalid err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-45)token invalid err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     } else{
@@ -1595,7 +1600,7 @@ module.exports = {
       function(done){
         User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
         if(err || !user){
-          console.log('(profiles-45)token invalid err:- '+JSON.stringify(err, null, 2));
+          console.log('(profiles-46)token invalid err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Password reset token is invalid or has expired.');
           return res.redirect('back');
         } else{
@@ -1611,7 +1616,7 @@ module.exports = {
               });
             })
           } else{
-            console.log('(profiles-46)pass dont match err:- '+JSON.stringify(err, null, 2));
+            console.log('(profiles-47)pass dont match err:- '+JSON.stringify(err, null, 2));
             req.flash("error", "Passwords do not match.");
             return res.redirect('back');
           }

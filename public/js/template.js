@@ -13,7 +13,7 @@ if(location.pathname == '/home'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != '' && response.arrLength){
+        if(arr && arr != '' && response.arrLength){
           // If server + client side rendering is used
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
@@ -47,7 +47,7 @@ if(location.pathname == '/friends_posts'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != '' && response.arrLength){
+        if(arr && arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -76,7 +76,7 @@ if(location.pathname == '/discover'){
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != '' && response.arrLength){
+        if(arr && arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -106,7 +106,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != '' && response.arrLength){
+        if(arr && arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -164,7 +164,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.users;
-        if(arr != ''){
+        if(arr && arr != ''){
           var newEndpoints = response.newEndpoints;
           $('#load-more-members-btn').val(newEndpoints);
           var div = document.getElementById('client-members');
@@ -187,7 +187,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.users;
-        if(arr != ''){
+        if(arr && arr != ''){
           var div = document.getElementById('server-members');
           div.innerHTML = moreMembers_template(response);
           $('#load-more-members-btn').addClass('nodisplay');
@@ -218,7 +218,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundPostIds;
-        if(arr != '' && response.arrLength){
+        if(arr && arr != '' && response.arrLength){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -244,7 +244,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundHPostIds;
-          if(arr != '' && response.arrLength){
+          if(arr && arr != '' && response.arrLength){
           if($('#load-more-heart-btn').val() != ''){
             if(arr){
               $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));
@@ -305,7 +305,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.clubs;
-        if(arr != ''){
+        if(arr && arr != ''){
           var newEndpoints = response.newEndpoints;
           $('#load-more-clubs-btn').val(newEndpoints);
           var div = document.getElementById('client-clubs');
@@ -337,7 +337,7 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       timeout: 3000,
       success: function (response){
         var arr = response.buckets;
-        if(arr != ''){
+        if(arr && arr != ''){
           if(response.index >= -1){
             $('#load-more-comments-btn').val(response.index);
             var div = document.getElementById('client-comments');
@@ -403,7 +403,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if(arr != ''){
+        if(arr && arr != ''){
           if($('#load-more-search-people-btn').val() != ''){
             $('#load-more-search-people-btn').val(arr.concat($('#load-more-search-people-btn').val()));
             var div = document.getElementById('client-search-people');
@@ -430,7 +430,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if(arr != ''){
+        if(arr && arr != ''){
           if($('#load-more-filterSearch-people-btn').val() != ''){
             $('#load-more-filterSearch-people-btn').val(arr.concat($('#load-more-filterSearch-people-btn').val()));
             var div = document.getElementById('client-search-people');
@@ -459,7 +459,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundClubIds;
-        if(arr != ''){
+        if(arr && arr != ''){
           if($('#load-more-search-clubs-btn').val() != ''){
             $('#load-more-search-clubs-btn').val(arr.concat($('#load-more-search-clubs-btn').val()));
             var div = document.getElementById('client-search-clubs');
@@ -486,7 +486,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundUserIds;
-        if(arr != ''){
+        if(arr && arr != ''){
           if($('#load-more-filterSearch-clubs-btn').val() != ''){
             $('#load-more-filterSearch-clubs-btn').val(arr.concat($('#load-more-filterSearch-clubs-btn').val()));
             var div = document.getElementById('client-search-clubs');
@@ -515,7 +515,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       timeout: 3000,
       success: function (response){
         var arr = response.foundOrgPageIds;
-        if(arr != ''){
+        if(arr && arr != ''){
           if($('#load-more-search-org_pages-btn').val() != ''){
             $('#load-more-search-org_pages-btn').val(arr.concat($('#load-more-search-org_pages-btn').val()));
             var div = document.getElementById('client-search-org_pages');
@@ -2082,7 +2082,7 @@ function post_subPosts_template(response){
             <div class="d-flex flex-row-reverse">
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2 ml-2">Submit</button>
-              <label for="inputImage" class="custom-file-upload-light subpostbtn mt-2" title="Upload image">
+              <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Image(s)
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">

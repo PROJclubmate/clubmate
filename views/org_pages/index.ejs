@@ -2,19 +2,36 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last card" style="min-height: 75vh;">
-		<div class="px-3 py-1 organization valign">
+		<div class="orgpad py-1 organization valign mobileNoneFlex">
 			<% if(match){ %>
 				<div class="boldtext text-xxl">
-					<sup class="greencolor text-xs pb-auto">My </sup><i class="fas fa-university greencolor mr-2"></i><%= org_page.name %>
+					<div class="orgname"><sup class="greencolor text-xs pb-auto">My </sup><i class="fas fa-university greencolor mr-2"></i><%= org_page.name %></div>
 				</div>
 			<% } else{ %>
-				<div class="boldtext text-xxl"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+				<div class="boldtext text-xxl">
+					<div class="orgname"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+					</div>
 			<% } %>
 			<div class="boldtext text-lg badge badge-danger mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> users</span></div>
-			<div class="boldtext text-lg badge badge-danger desktopNoneFlex mt-auto"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> users</span></div>
 		</div>
-		<hr>
-		<div class="boldtext lightgrey text-md my-3 px-3"><%= org_page.clubCount %> clubs</div>
+		<div class="orgpad py-1 organization desktopNoneFlex d-flex flex-column">
+			<% if(match){ %>
+				<div class="boldtext text-xxl">
+					<div class="orgname"><sup class="greencolor text-xs pb-auto">My </sup><i class="fas fa-university greencolor mr-2"></i><%= org_page.name %></div>
+				</div>
+			<% } else{ %>
+				<div class="boldtext text-xxl">
+					<div class="orgname"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+					</div>
+			<% } %>
+		</div>
+		<div class="my-3 px-3 mobileNoneFlex">
+			<div class="boldtext lightgrey text-md"><%= org_page.clubCount %> clubs</div>
+		</div>
+		<div class="valign mb-3 px-3 desktopNoneFlex">
+			<div class="boldtext lightgrey text-lg"><%= org_page.clubCount %> <span class="text-xs">clubs</span></div>
+			<div class="boldtext text-lg badge badge-danger desktopNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> <span class="text-xs">users</span></span></div>
+		</div>
 		<div class="px-3 py-1">
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
@@ -28,7 +45,7 @@
 				  	<div class="d-flex flex-row">
 					    <div class="py-1 mb-auto">
 					      <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>">
-					      <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
+					      <img class="orgdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
 					    </div>
 					    <div class="my-auto ml-2">
 					      <span>

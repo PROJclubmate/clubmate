@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router({mergeParams: true}),
   middleware   = require('../middleware'),
-  {upload}     = require('../cloudinary'),
+  {upload}     = require('../public/js/cloudinary.js'),
   {discussionsNew, discussionsPagination, discussionsVote} = require('../controllers/discussions');
 
 

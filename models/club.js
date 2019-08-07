@@ -19,6 +19,7 @@ const clubSchema = new Schema({
   },
   clubKeys: {
     organization: String,
+    // type: String,
     category: String,
     weblink: String,
     location: String,

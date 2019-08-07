@@ -5,7 +5,7 @@ const express          = require('express'),
   Club                 = require('../models/club'),
   Comment              = require('../models/comment'),
   Discussion           = require('../models/discussion'),
-  {cloudinary, upload} = require('../cloudinary');
+  {cloudinary, upload} = require('../public/js/cloudinary.js');
 
 module.exports = {
   postsHome(req, res, next){

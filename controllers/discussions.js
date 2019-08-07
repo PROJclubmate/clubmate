@@ -2,7 +2,7 @@ const express  = require('express'),
   router       = express.Router({mergeParams: true}),
   Post         = require('../models/post'),
   Discussion   = require('../models/discussion'),
-  {cloudinary} = require('../cloudinary');
+  {cloudinary} = require('../public/js/cloudinary.js');
 
 module.exports = {
   discussionsNew(req, res, next){

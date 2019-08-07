@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {upload}     = require('../cloudinary'),
+  {upload}     = require('../public/js/cloudinary.js'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesClubMoreMembers,
 	profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetUsersFeaturedPhotos,
