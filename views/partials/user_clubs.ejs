@@ -6,11 +6,11 @@
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext green">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext2 green">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>
-      <span class="my-auto grey text-xs">
+      <span class="my-auto lightgrey text-xs">
         <%= clubs[i].status %>
         <div class="status" id="status<%= clubs[i].id._id %>">
           <form action="/status-rank?_method=PUT" method="POST">

@@ -20,7 +20,7 @@
                     <i class="fas fa-upload"></i> Update profile pic
                   </label>
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                  <button class="btn btn-sm btn-primary overlay2">Submit</button>
+                  <button class="btn btn-sm btn-success overlay2">Submit</button>
                 </form>
               <% }; %>
             </div>
@@ -110,19 +110,19 @@
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
               <% if(user.userKeys.college && user.userKeys.concentration){ %>
-                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&worksAt=&school=&location="><%= user.userKeys.concentration %></a></div></div>
+                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&workplace=&school=&location="><%= user.userKeys.concentration %></a></div></div>
               <% } %>
               <% if(user.userKeys.college && user.userKeys.batch){ %>
-                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=<%= user.userKeys.batch %>&worksAt=&school=&location="><%= user.userKeys.batch %></a></div></div>
+                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=<%= user.userKeys.batch %>&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
               <% } %>
-              <% if(user.userKeys.worksAt){ %>
-                <div class="info1">Works at: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=<%= user.userKeys.worksAt %>&school=&location="><%= user.userKeys.worksAt %></a></div></div>
+              <% if(user.userKeys.workplace){ %>
+                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
               <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
               <% } %>
               <% if(user.userKeys.residence){ %>
-                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&worksAt=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -139,13 +139,13 @@
                 <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
                 <label for="batch" class="sr-only">Batch</label>
                 <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch">
-                <label for="worksAt" class="sr-only">Works at</label>
-                <input type="text" id="worksAt" class="form-control form-control-sm" name="userKeys[worksAt]" value="<%= user.userKeys.worksAt %>" placeholder="Works at">
+                <label for="workplace" class="sr-only">Workplace</label>
+                <input type="text" id="workplace" class="form-control form-control-sm" name="userKeys[workplace]" value="<%= user.userKeys.workplace %>" placeholder="Workplace">
                 <label for="school" class="sr-only">School</label>
                 <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
                 <label for="residence" class="sr-only">Residence</label>
                 <input type="text" id="residence" class="form-control form-control-sm" name="userKeys[residence]" value="<%= user.userKeys.residence %>" placeholder="Residence">
-                <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
+                <button class="btn btn-sm btn-success btn-block mt-2" type="submit">Update user profile</button>
               </form>
             </div>
           <% }; %>
@@ -154,7 +154,7 @@
           <div class="card mt-0">
             <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#friends">
               <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
-              <span class="grey text-sm nopad"> . <%= user.friendsCount %></span>
+              <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
             </button>
             <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
             <% for(i=0;i<foundFriends.length;i++){ %>
@@ -335,7 +335,7 @@
                           </div>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth mt-2">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
                         </div>
                       </form>
                     </div>
@@ -366,8 +366,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('interests_form','interests','Hobbies');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('interests_form','interests','Hobbies');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -399,8 +399,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -427,8 +427,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -455,8 +455,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -483,8 +483,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -511,8 +511,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -539,8 +539,8 @@
                           <% }; %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button class="btn btn-sm btnxs btn-success ml-2" type="submit">Update</button>
+                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-success btn-round ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -555,7 +555,7 @@
               <hr>
               <div class="greyback valign my-auto">
                 <div class="d-flex flex-row">
-                  <span class="grey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
+                  <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>
                 <div class="d-flex flex-row">
                   <% if(currentUser && !match && adminClubs.length!=0){ %>
@@ -590,7 +590,7 @@
                       <input type="file" id="avatar" name="avatar" accept="image/*" required>
                     <br>
                     <br>
-                    <button class="btn btn-sm btn-primary btn-block">Submit</button>
+                    <button class="btn btn-sm btn-success btn-block">Submit</button>
                   </div>
                 </form>
               </div>
@@ -602,7 +602,7 @@
                 <div id="client-clubs"></div>
                 <% if(clubCount > 10){ %>
                   <div class="text-center pt-2">
-                    <button id="load-more-clubs-btn" class="btn btn-primary btnxxs text-sm" type="button" value="10,20">
+                    <button id="load-more-clubs-btn" class="btn btn-success btnxxs text-sm" type="button" value="10,20">
                       <span id="load-more-clubs-span"></span>Load
                     </button>
                   </div>
@@ -621,7 +621,7 @@
                 </div>
                 <div id="client-posts"></div>
                 <div class="text-center pt-2">
-                  <button id="load-more-btn" class="btn btn-primary btn-sm" type="button" value="<%= foundPostIds %>">
+                  <button id="load-more-btn" class="btn btn-success btn-sm" type="button" value="<%= foundPostIds %>">
                     <span id="load-more-span"></span>Load
                   </button>
                 </div>
@@ -633,7 +633,7 @@
                 <div id="delegated-heart-posts">
                   <div id="client-heart-posts"></div>
                   <div class="text-center pt-2">
-                    <button id="load-more-heart-btn" class="btn btn-primary btn-sm" type="button" value="">
+                    <button id="load-more-heart-btn" class="btn btn-success btn-sm" type="button" value="">
                       <span id="load-more-heart-span"></span>Load
                     </button>
                   </div>

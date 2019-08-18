@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="theme-color" content="#60b769">
-    <meta name="msapplication-navbutton-color" content="#60b769">
+    <meta name="theme-color" content="#50b46c">
+    <meta name="msapplication-navbutton-color" content="#50b46c">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#60b769">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#50b46c">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GhosTwn</title>
+    <title>ClubOration</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.css">
@@ -20,8 +20,8 @@
       </a>
       <div class="d-flex justify-content-between mobileNoneFlex">
         <div>
-          <a class="navbar-brand" href="/">
-            <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
+          <a href="/">
+            <strong class="navbar-brand logo"><sup class="text-xxxxs">PR</sup>Club<span style="color: #50b46c;">O<span id="navcolor"></span>ration</span></strong>
           </a>
         </div>
         <div>
@@ -33,8 +33,8 @@
       <div class="d-flex justify-content-between fullwidth desktopNoneFlex">
         <div style="width: 56px;"><a class="navbar-brand mobile-search desktopNone" href="/search?search="><i class="fas fa-search"></i></a></div>
         <div>
-          <a class="navbar-brand" href="/">
-            <strong>GhosT<span id="navcolor"><i class="fas fa-ghost" aria-hidden="true"></i></span>wn</strong>
+          <a href="/">
+            <strong class="navbar-brand logo"><sup class="text-xxxxs">PR</sup>Club<span style="color: #50b46c;">O<span id="navcolor"></span>ration</span></strong>
           </a>
         </div>
         <div>
@@ -65,7 +65,7 @@
         <ul class="navbar-nav navbar-right">
           <% if(!currentUser){ %>
             <li class="nav-item">
-              <span class="text-lg nav-link requests" data-toggle="tooltip" title="Help"><i class="fas fa-question-circle"></i></span>
+              <span id="help_offline" class="text-lg nav-link requests" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></span>
             </li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
               <a href="/login" class="nav-link">Login</a>
@@ -75,26 +75,27 @@
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <span class="text-lg nav-link requests" title="Help"><i class="fas fa-question-circle"></i></span>
+              <span id="help_online" class="text-lg nav-link requests" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></span>
             </li>
             <li class="nav-item">
-              <span class="text-lg nav-link requests" title="Coming soon"><i class="fas fa-bell"></i></span>
+              <span id="notification" class="text-lg nav-link requests" title="Coming soon" onclick="toggle_requests('notification');"><i class="fas fa-bell"></i></span>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
-              <span class="text-xl nav-link requests" title="Requests" onclick="toggle_display('pop_box');">
+              <span id="requestslink" class="text-xl nav-link requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box');">
                 <i class="fas fa-user-friends"></i>
               </span>
               <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
                 <span class="badge text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
               <% } %>
             </li>
-            <li class="nav-item">
-              <div class="vr">
+            <li class="nav-item d-inline-flex">
+              <div>
                 <a href="/users/<%= currentUser.id %>" class="nav-link img">
                   <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
                   <span id="navname"><%= currentUser.firstName %></span>
                 </a>
               </div>
+              <div class="vr"></div>
             </li>
             <li class="nav-item">
                 <a href="/logout" class="nav-link">Logout</a>
@@ -108,9 +109,9 @@
 <div class="popup-box scroll moz-scroll" id="pop_box">
   <% if (currentUser && currentUser.clubInvites.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing grey text-xs">Club Invites</h6>
+      <h6 class="nothing lightgrey text-xs">Club Invites</h6>
       <% if (currentUser.clubInvites.length != 0){ %>
-        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm(); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>
     </div>
     <hr>
@@ -126,14 +127,14 @@
               <div class="d-flex flex-column lineheight2 mx-2">
                 <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="green">
                   <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
-                <span class="grey text-xs"><%= clubInviteRequests[i].banner %></span>
+                <span class="lightgrey text-xs"><%= clubInviteRequests[i].banner %></span>
               </div>
             </span>
           </div>
           <div>
             <form action="/requests?_method=PUT" method="POST" class="form-inline">
               <span>
-                <button class="btn btnxs btn-primary text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
+                <button class="btn btnxs btn-success text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
               </span>
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Decline</button>
@@ -146,9 +147,9 @@
   <% } %>
   <% if(currentUser && currentUser.friendRequests.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing grey text-xs">Friend Requests</h6>
+      <h6 class="nothing lightgrey text-xs">Friend Requests</h6>
       <% if (currentUser.clubInvites.length == 0){ %>
-        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm(); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>
     </div>
     <hr>
@@ -164,14 +165,14 @@
               <div class="d-flex flex-column lineheight2 mx-2">
                 <a href="/users/<%= friendRequests[j]._id %>" class="green">
                   <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
-                <span class="grey text-xs"><%= friendRequests[j].note %></span>
+                <span class="lightgrey text-xs"><%= friendRequests[j].note %></span>
               </div>
             </span>
           </div>
           <div>
             <form action="/requests?_method=PUT" method="POST" class="form-inline">
               <span>
-                <button class="btn btnxs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
+                <button class="btn btnxs btn-success text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
               </span>
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeReq" type="submit" value="<%= friendRequests[j]._id %>">Decline</button>
@@ -183,8 +184,8 @@
     <% }; %>
   <% } else if(currentUser && (currentUser.friendRequests.length == 0 && currentUser.clubInvites.length == 0)){ %>
     <div class="pop-container valign">
-      <span class="grey text-sm">No pending requests</span>
-      <button class="btn btn-danger btnxxs text-xs" onclick="closeForm()"><i class="fas fa-times"></i></button>
+      <span class="lightgrey text-sm">No pending requests</span>
+      <button class="btn btn-danger btnxxs text-xs" onclick="closeForm(); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
     </div>
   <% } %>
 </div>

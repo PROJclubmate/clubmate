@@ -17,12 +17,12 @@
             <div>
               <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
             </div>
-            <div class="lineheight2">
+            <div class="lineheight">
               <div class="mobiletext2">
                 <span>
                   <a href="/clubs/<%= post.postClub._id %>" class="green"><strong><%= post.postClub.name %></strong></a>
                 </span>
-                <i class="fas fa-caret-left grey"></i>
+                <i class="fas fa-caret-left lightgrey"></i>
                 <span>
                   <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
                 </span>
@@ -37,7 +37,7 @@
                 <% if(post.descEdit.length != 0){ %>
                   <div class="badge badge-warning text-xxs">Edited</div>
                 <% } %>
-                <span><em class="text-xxs grey">. <%= moment(post.createdAt).format('lll'); %></em></span>
+                <span><em class="text-xxs lightgrey">. <%= moment(post.createdAt).format('lll'); %></em></span>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
                   <li onclick="toggle_display('post_edit_form');"><a class="dropitems text-sm" href="#">Edit post</a></li>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red greyback grey">Delete post</button>
+                    <button class="dropitems link-button text-sm red greyback lightgrey">Delete post</button>
                   </li>
                 <% }; %>
               </div>
@@ -80,29 +80,29 @@
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= post._id %>" class="vote likebtn greencolor" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= post._id %>" class="boldtext grey nothing text-sm greencolor"><%= post.likeCount %></span>
+                <span id="like-count<%= post._id %>" class="boldtext lightgrey nothing text-sm greencolor"><%= post.likeCount %></span>
                 <span class="d-flex ml-2 mr-1">
                   <button id="dislike-btn<%= post._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
                 </span>
-                <span id="dislike-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.dislikeCount %></span>
+                <span id="dislike-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.dislikeCount %></span>
               <% } else if(hasVote == -1){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= post._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.likeCount %></span>
+                <span id="like-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.likeCount %></span>
                 <span class="d-flex ml-2 mr-1">
                   <button id="dislike-btn<%= post._id %>" class="vote dislikebtn blackcolor" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
                 </span>
-                <span id="dislike-count<%= post._id %>" class="boldtext grey nothing text-sm blackcolor"><%= post.dislikeCount %></span>
+                <span id="dislike-count<%= post._id %>" class="boldtext lightgrey nothing text-sm blackcolor"><%= post.dislikeCount %></span>
               <% } else if(hasVote == 0 || hasVote == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= post._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.likeCount %></span>
+                <span id="like-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.likeCount %></span>
                 <span class="d-flex ml-2 mr-1">
                   <button id="dislike-btn<%= post._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
                 </span>
-                <span id="dislike-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.dislikeCount %></span>
+                <span id="dislike-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.dislikeCount %></span>
               <% } %>
             <% }else{ %>
               <span class="d-flex mr-2"> 
@@ -115,14 +115,14 @@
           </div>
 
           <div class="valign">
-            <span class="grey nothing boldtext text-sm"><%= post.commentsCount %></span>
-            <span class="grey text-xl d-flex mr-2"><i class="fas fa-comments"></i></span>
+            <span class="lightgrey nothing boldtext text-sm"><%= post.commentsCount %></span>
+            <span class="lightgrey text-xl d-flex mr-2"><i class="fas fa-comments"></i></span>
             <% if(currentUser){ %>
               <% if(hasVote == 3){ %>
-                <span id="heart-count<%= post._id %>" class="boldtext grey nothing text-sm redcolor"><%= post.heartCount %></span>
+                <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= post.heartCount %></span>
                 <span><button id="heart-btn<%= post._id %>" class="vote heartbtn redcolor" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
               <% } else if(hasVote == 0 || hasVote == 1 || hasVote == -1){ %>
-                <span id="heart-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.heartCount %></span>
+                <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.heartCount %></span>
                 <span><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% }else{ %>
@@ -169,8 +169,8 @@
         <div class="card-body3">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">
-              <span class="grey nothing boldtext text-sm"><%= post.subpostsCount %></span>
-              <span class="grey text-xl d-flex mr-2 mt-1"><i class="fas fa-comment-alt"></i></span>
+              <span class="lightgrey nothing boldtext text-sm"><%= post.subpostsCount %></span>
+              <span class="lightgrey text-xl d-flex mr-2 mt-1"><i class="fas fa-comment-alt"></i></span>
               <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
                 <span class="darkgrey boldtext text-sm nopad">(<%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>% upVotes)</span>
               <% } %>
@@ -178,10 +178,10 @@
             <div class="valign">
               <% if(currentUser){ %>
                 <% if(hasVote == 3){ %>
-                  <span id="heart-count<%= post._id %>" class="boldtext grey nothing text-sm redcolor"><%= post.heartCount %></span>
+                  <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= post.heartCount %></span>
                   <span><button id="heart-btn<%= post._id %>" class="vote heartbtn redcolor" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
                 <% } else if(hasVote == 0 || hasVote == 1 || hasVote == -1){ %>
-                  <span id="heart-count<%= post._id %>" class="boldtext grey nothing text-sm"><%= post.heartCount %></span>
+                  <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm"><%= post.heartCount %></span>
                   <span><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                   <% } %>
                     <span class="invisible" id="modVisibility<%= post._id %>"></span>
@@ -222,7 +222,7 @@
                 </div>
               </span>
               <span>
-                <button id="postbutton" class="btn btn-sm btn-primary postprivacy" title="Submit update">Update post</button>
+                <button id="postbutton" class="btn btn-sm btn-success postprivacy" title="Submit update">Update post</button>
               </span>
               <span>
                 <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
@@ -256,7 +256,7 @@
       <% } else if(post.subpostsCount == 0){ %>
         <div class="card">
           <div class="card-body3 d-flex mx-auto">
-            <span class="text-sm grey">No sub-posts yet.</span>
+            <span class="text-sm lightgrey">No sub-posts yet.</span>
           </div>
         </div>
         <div class="card indexcard2">
@@ -282,7 +282,7 @@
                   </div>
                   <div class="d-flex flex-row-reverse">
                     <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                    <button class="btn btn-primary subpostbtn btnxs ml-2 mt-2">Submit</button>
+                    <button class="btn btn-success subpostbtn btnxs ml-2 mt-2">Submit</button>
                     <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                       <i class="fas fa-upload"></i> Image(s)
                     </label>
@@ -322,7 +322,7 @@
               </div>
               <div class="d-flex flex-row-reverse">
                 <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-primary commentbtn btnxs mt-2">Submit</button>
+                  <button class="btn btn-sm btn-success commentbtn btnxs mt-2">Submit</button>
               </div>
             </form>
           </div>
@@ -335,7 +335,7 @@
             <div id="client-comments"></div>
             <% if(post.commentBuckets.length > 2){ %>
               <div class="text-center mb-2">
-                <button id="load-more-comments-btn" class="btn btn-primary btnxs text-sm" type="button" value="<%= index %>">
+                <button id="load-more-comments-btn" class="btn btn-success btnxs text-sm" type="button" value="<%= index %>">
                   <span id="load-more-comments-span"></span>Load More
                 </button>
               </div>
@@ -343,7 +343,7 @@
           </div>
         <% } else if(post.commentsCount == 0){ %>
           <div class="card-body2 d-flex mx-auto">
-            <span class="text-sm grey">No comments yet.</span>
+            <span class="text-sm lightgrey">No comments yet.</span>
           </div>
         <% }; %>
       </div>

@@ -18,7 +18,7 @@
                       <i class="fas fa-upload"></i> Update club avatar
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
-                    <button class="btn btn-sm btn-primary overlay2">Submit</button>
+                    <button class="btn btn-sm btn-success overlay2">Submit</button>
                   </form>
                 <% }; %>
               </div>
@@ -102,7 +102,7 @@
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_desc" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
-                  <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update description</button>
+                  <button class="btn btn-sm btn-success btn-block mt-2" type="submit">Update description</button>
                 </form>
               <% } %>
             </div>
@@ -120,7 +120,7 @@
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_rules" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
-                  <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update rules</button>
+                  <button class="btn btn-sm btn-success btn-block mt-2" type="submit">Update rules</button>
                   <br>
                 </form>
               <% } %>
@@ -146,7 +146,7 @@
                     <% } %>
                   <% } %>
                 <br>
-                <button class="btn btn-sm btnxs btn-primary d-flex ml-auto" type="submit">Update</button>
+                <button class="btn btn-sm btnxs btn-success d-flex ml-auto" type="submit">Update</button>
               </form>
             </div>
             <% if(club.clubKeys.location != ''){ %>
@@ -173,7 +173,7 @@
                       <hr>
                       <li>
                         <form class="delete-form inline" action="/clubs/<%= club._id %>?_method=DELETE" method="POST">
-                          <button class="dropitems link-button text-sm greyback grey" type="submit" disabled>Delete club</button>
+                          <button class="dropitems link-button text-sm greyback lightgrey" type="submit" disabled>Delete club</button>
                         </form>
                       </li>
                     <% }; %>
@@ -234,7 +234,7 @@
                 <input type="text" id="weblink" class="form-control form-control-sm" name="clubKeys[weblink]" value="<%= club.clubKeys.weblink %>" placeholder="Weblink">
                 <label for="location" class="sr-only">Location</label>
                 <input type="text" id="location" class="form-control form-control-sm" name="clubKeys[location]" value="<%= club.clubKeys.location %>" placeholder="Location">
-                <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update club profile</button>
+                <button class="btn btn-sm btn-success btn-block mt-2" type="submit">Update club profile</button>
               </form>
             </div>
           <% }; %>
@@ -308,7 +308,7 @@
                         </span>
                         <span class="righttext d-flex my-auto">
                           <span>
-                            <button id="postbutton" class="btn btn-sm btn-primary" title="Submit post">Post</button>
+                            <button id="postbutton" class="btn btn-sm btn-success" title="Submit post">Post</button>
                           </span>
                           <span>
                             <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
@@ -331,7 +331,7 @@
                   </div>
                   <div id="client-posts"></div>
                   <div class="text-center pt-2">
-                    <button id="load-more-btn" class="btn btn-primary btn-sm" type="button" value="<%= foundPostIds %>">
+                    <button id="load-more-btn" class="btn btn-success btn-sm" type="button" value="<%= foundPostIds %>">
                       <span id="load-more-span"></span>Load
                     </button>
                   </div>
@@ -441,7 +441,7 @@
                 <hr>
                 <div class="greyback valign">
                   <div class="d-flex flex-row">
-                    <span class="grey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
+                    <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
                   <div class="d-flex">
                     <div>
@@ -466,7 +466,7 @@
                 <div id="client-members"></div>
                 <% if(0 <= rank && rank <= 4){ %>
                   <div class="text-center pt-2">
-                    <button id="load-more-members-btn" class="btn btn-primary btnxxs text-sm" type="button" value="1,11">
+                    <button id="load-more-members-btn" class="btn btn-success btnxxs text-sm" type="button" value="1,11">
                       <span id="load-more-members-span"></span>Load
                     </button>
                   </div>

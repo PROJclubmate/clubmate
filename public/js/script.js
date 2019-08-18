@@ -151,6 +151,13 @@ $(function(){
   }
 });
 
+// Togle requests navlink active state
+function toggle_requests(id){
+  var divelement = document.getElementById(id);
+  divelement.classList.toggle('greencolor');
+  divelement.classList.toggle('notextshadow');
+}
+
 //Toggle element display
 function toggle_inline_display(id){
   var divelement = document.getElementById(id);
@@ -186,7 +193,7 @@ function toggleclass_display(id){
 function block_display(id){
     var x = document.getElementsByClassName(id);
 	var i;
-	for (i = 0; i < x.length; i++) {
+	for (i = 0; i < x.length; i++){
 		x[i].style.display = 'block';
 	}
 }
@@ -194,7 +201,7 @@ function block_display(id){
 function none_display(id){
     var x = document.getElementsByClassName(id);
 	var i;
-	for (i = 0; i < x.length; i++) {
+	for (i = 0; i < x.length; i++){
 		x[i].style.display = 'none';
 	}
 }
@@ -221,7 +228,7 @@ function clear_subpost(){
 
 function showpw(){
   var x = document.getElementById('inputPassword');
-  if (x.type === 'password') {
+  if (x.type === 'password'){
     x.type = 'text';
   } else{
     x.type = 'password';
@@ -456,12 +463,12 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
     type: 'PUT',
     success: function(data){
       if(formData[0].name == 'published'){
-        $('#moderation'+data._id).removeClass('btn-primary').addClass('btn-info').text('Published')
+        $('#moderation'+data._id).removeClass('btn-light').addClass('btn-info').text('Published')
         .attr('name','exclusive').attr('value',1);
         $('#mod-badge'+data._id).text('0');
       }
       if(formData[0].name == 'exclusive'){
-        $('#moderation'+data._id).removeClass('btn-info').addClass('btn-primary').text('Exclusive')
+        $('#moderation'+data._id).removeClass('btn-info').addClass('btn-light').text('Exclusive')
         .attr('name','published').attr('value',0);
         $('#mod-badge'+data._id).text('1');
       }

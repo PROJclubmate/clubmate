@@ -8,7 +8,7 @@
       <% if(index-1 > 0){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> <%= index-1 %> </a></span>
       <% } %>
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-success mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
       <% if(index+1 < post.subpostBuckets.length){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
       <% } %>
@@ -51,29 +51,29 @@
                   <span> 
                     <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn greencolor" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
                   </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs greencolor"><%= subPosts[j].likeCount %></span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor"><%= subPosts[j].likeCount %></span>
                   <span>
                     <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
                   </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
                 <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
                   <span> 
                     <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
                   </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs"><%= subPosts[j].likeCount %></span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
                   <span>
                     <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn blackcolor" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
                   </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
                 <% } else{ %>
                   <span> 
                     <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
                   </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext grey text-xxs nopad"><%= subPosts[j].likeCount %></span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
                   <span>
                     <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
                   </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext grey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
+                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
               </form>
             <% } else{ %>
@@ -104,7 +104,7 @@
                   <div class="container drop-shadow1">
                     <% //if(currentUser && subPosts[j].subPostAuthor.id._id.equals(currentUser._id)){ %>
                       <!-- <li>
-                        <a class="dropitems text-sm greyback grey" href="#">Help ?</a>
+                        <a class="dropitems text-sm greyback lightgrey" href="#">Help ?</a>
                       </li> -->
                     <% //} %>
                     <li>
@@ -194,7 +194,7 @@
             </div>
             <div class="d-flex flex-row-reverse">
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-              <button class="btn btn-sm btn-primary subpostbtn btnxs mt-2 ml-2">Submit</button>
+              <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2">Submit</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Image(s)
               </label>

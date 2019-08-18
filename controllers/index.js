@@ -172,10 +172,10 @@ module.exports = {
         batch = batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
         dbQueries.push({'userKeys.batch': batch});
       }
-      var worksAt = urlEqualsSplit[5];
-      if(worksAt.split('&')[0]){
-        worksAt = new RegExp(escapeRegExp(worksAt.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.worksAt': worksAt});
+      var workplace = urlEqualsSplit[5];
+      if(workplace.split('&')[0]){
+        workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.workplace': workplace});
       }
       var school = urlEqualsSplit[6];
       if(school.split('&')[0]){

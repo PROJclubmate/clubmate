@@ -24,7 +24,7 @@ const userSchema = new Schema({
     college: String,
     concentration: String,
     batch: String,
-    worksAt: String,
+    workplace: String,
     school: String,
     residence: String
   },
