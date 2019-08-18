@@ -1,1 +1,1 @@
-# ClubOration
+# ClubOrate
