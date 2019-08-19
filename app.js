@@ -13,7 +13,7 @@ const express      = require('express'),
   ClubConversation = require('./models/club-conversation'),
   Message          = require('./models/message'),
   port             = 8080,
-  url              = 'mongodb://localhost/ghost_dev',
+  url              = 'mongodb://localhost/ghost_prod',
   dotenv           = require('dotenv').config();
 
 const cloudinary = require('cloudinary');
