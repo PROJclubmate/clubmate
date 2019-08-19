@@ -857,6 +857,9 @@ a.black:hover{color: black;}
 a.red:hover{color: red;}
 .greencolor{
   color: #009f5e !important;
+}
+.greencolor2{
+  color: #50b46c !important;
   opacity: 1;
 }
 .redcolor{
