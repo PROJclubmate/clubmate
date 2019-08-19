@@ -506,6 +506,9 @@ span.nopad{
 .navbar-brand.logo{
   text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
 }
+.notextshadow{
+  text-shadow: none !important;
+}
 .navback{
   background-color: #5f5f5f;
 }
@@ -531,9 +534,6 @@ a.nav-link{
   transition: ease-in-out 0.15s;
   background-color: #5f5f5f !important;
   color: #50b46c !important;
-  text-shadow: none;
-}
-.notextshadow{
   text-shadow: none;
 }
 button.dropdown-toggle{

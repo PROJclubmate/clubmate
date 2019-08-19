@@ -1408,13 +1408,13 @@ module.exports = {
           var smtpTransport = nodemailer.createTransport({
             service: 'Godaddy', 
             auth: {
-              user: 'admins@moontwn.com',
-              pass: process.env.ADMINS_EMAIL_PW
+              user: 'team@cluborate.com',
+              pass: process.env.TEAM_EMAIL_PW
             }
           });
           var mailOptions = {
             to: user.email,
-            from: 'admins@moontwn.com',
+            from: 'team@cluborate.com',
             subject: 'Account Verification Token',
             text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
             '\/confirmation\/' + token.token + '.\n'
@@ -1423,7 +1423,7 @@ module.exports = {
             done(err, 'done');
           });
         });
-        req.flash('success', 'Welcome to moontwn '+user.firstName+'. An email has been sent to your account for verification.');
+        req.flash('success', 'Welcome to Cluborate '+user.firstName+'. An email has been sent to your account for verification.');
         return res.redirect('/discover');
       }
       });
@@ -1490,13 +1490,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'admins@moontwn.com',
-            pass: process.env.ADMINS_EMAIL_PW
+            user: 'team@cluborate.com',
+            pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'admins@moontwn.com',
+          from: 'team@cluborate.com',
           subject: 'Account Verification Token',
           text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
           '\/confirmation\/' + token.token + '.\n'
@@ -1559,13 +1559,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'admins@moontwn.com',
-            pass: process.env.ADMINS_EMAIL_PW
+            user: 'team@cluborate.com',
+            pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'admins@moontwn.com',
+          from: 'team@cluborate.com',
           subject: 'Password reset request',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -1627,13 +1627,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'admins@moontwn.com',
-            pass: process.env.ADMINS_EMAIL_PW
+            user: 'team@cluborate.com',
+            pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'admins@moontwn.com',
+          from: 'team@cluborate.com',
           subject: 'Password reset request',
           text: 'Hello,\n\n' +
             'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
