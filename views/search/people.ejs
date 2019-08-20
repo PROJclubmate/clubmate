@@ -92,9 +92,9 @@
 	<% if(!filter){ %>
 		<div class="text-center mt-2">
 			<% if((users.length != 0 && !users.length < 10) && !emailSearch){ %>
-	    	<button id="load-more-search-people-btn" class="btn btn-success btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-search-people-btn" class="btn btn-dark btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-search-people-btn" class="btn btn-success btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-search-people-btn" class="btn btn-dark btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
 	    <% } %>
 	    	<span id="load-more-search-people-span"></span>Load More
 	    </button>
@@ -102,9 +102,9 @@
 	<% } else{ %>
 	  <div class="text-center mt-2">
 			<% if(users.length != 0 && !users.length < 10){ %>
-	    	<button id="load-more-filterSearch-people-btn" class="btn btn-success btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-filterSearch-people-btn" class="btn btn-dark btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-filterSearch-people-btn" class="btn btn-success btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-filterSearch-people-btn" class="btn btn-dark btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
 	    <% } %>
 	    	<span id="load-more-filterSearch-people-span"></span>Load More
 	    </button>
