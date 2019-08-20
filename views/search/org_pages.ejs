@@ -8,7 +8,7 @@
 			<div class="card searchcard2">
 				<div class="d-flex flex-row">
 			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
-			    	<div class="valign organization p-2">
+			    	<div class="valign organization-light p-2">
 				    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
 				      	<span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
 				      </a>
@@ -26,9 +26,9 @@
 	<div id="client-search-org_pages"></div>
 	<div class="text-center mt-2">
 		<% if(org_pages.length != 0 && !org_pages.length < 10){ %>
-      <button id="load-more-search-org_pages-btn" class="btn btn-dark btnxs text-sm" type="button" value="<%= foundOrgPageIds %>">
+      <button id="load-more-search-org_pages-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundOrgPageIds %>">
     <% } else{ %>
-    	<button id="load-more-search-org_pages-btn" class="btn btn-dark btnxs text-sm nodisplay" type="button" value="<%= foundOrgPageIds %>">
+    	<button id="load-more-search-org_pages-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundOrgPageIds %>">
     <% } %>
     	<span id="load-more-search-org_pages-span"></span>Load More
     </button>

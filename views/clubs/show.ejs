@@ -250,7 +250,7 @@
                   <% for(var i=0;i<topTopicPosts.length;i++){ %>
                   <div class="valign">
                     <div><a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext lineheight2 my-1"><%= topTopicPosts[i].topic %></a></div>
-                    <div class="mb-auto ml-2 badge badge-pill badge-secondary text-xs"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
+                    <div class="mb-auto ml-2 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
                   </div>
                   <% } %>
                 </div>
@@ -331,7 +331,7 @@
                   </div>
                   <div id="client-posts"></div>
                   <div class="text-center pt-2">
-                    <button id="load-more-btn" class="btn btn-dark btn-sm" type="button" value="<%= foundPostIds %>">
+                    <button id="load-more-btn" class="btn btn-light btn-sm" type="button" value="<%= foundPostIds %>">
                       <span id="load-more-span"></span>Load
                     </button>
                   </div>

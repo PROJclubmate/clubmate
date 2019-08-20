@@ -1,8 +1,8 @@
 if(location.pathname == '/home'){
   // Client side rendering
-  // window.onload=function(){
-  //   document.getElementById('load-more-btn').click();
-  // };
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");

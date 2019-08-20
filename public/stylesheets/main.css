@@ -8,7 +8,7 @@
   position: fixed;
   height: 100%;
   overflow: auto;
-  box-shadow: inset -3px 0px 2px -2px rgba(0,0,0,0.35);
+  box-shadow: inset -3px 0px 2px -2px rgba(0,0,0,0.3);
 }
 .sidebar a{
   display: block;
@@ -67,7 +67,7 @@ div.content {
   .carousel-caption{bottom: 2.5rem !important;}
   .carousel-caption-heading{margin: 0;}
   .chat-head3{width: 92vw;}
-  .topic-head{border-left: 3px dashed #dc3545; box-shadow: none !important;}
+  .topic-head{border-left: 3px dashed #ea0027; box-shadow: none !important;}
   h5.topic-h5{font-size: 1.15rem!important;}
   .searchcard2{width: 100% !important;}
   .friends-dp{height: 6rem !important;}
@@ -97,7 +97,7 @@ div.content {
   div.carousel-frame{height: 150px;}
   div.carousel-frame2{height: 150px;}
   img.postimg{width: 100%;max-height: 25rem;object-fit: cover;}
-  .mobile-search{padding: 0.7rem 1rem 0 1rem; opacity: 0.6;}
+  .mobile-search{padding: 0.7rem 1rem 0 1rem; color: silver !important;}
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.75rem !important;}
@@ -141,8 +141,8 @@ div.content {
     scrollbar-color: darkgrey lightgrey;
     scrollbar-width: thin;
   }
-  div.lcov.clubback{border-left: 1px solid whitesmoke; border-top: 1px solid whitesmoke; border-bottom: none;}
-  div.rcov.clubback{border-top: 1px solid whitesmoke; border-bottom: none;}
+  div.lcov.clubback{border-left: 1px solid WhiteSmoke; border-top: 1px solid WhiteSmoke; border-bottom: none;}
+  div.rcov.clubback{border-top: 1px solid WhiteSmoke; border-bottom: none;}
 }
 /*----------------------------------------------------------------*/
 .hr3{
@@ -402,8 +402,20 @@ li.nav-item{
   text-shadow: 0 0 3px rgb(255,255,255);
   background: repeating-linear-gradient(
     45deg,
-    #cce4f6,
-    #cce4f6 3px,
+    #c2d4df,
+    #c2d4df 3px,
+    white 5px,
+    white 5px
+  );
+  border-bottom: 1px solid lightgrey;
+}
+.organization-light{
+  color: #212529;
+  text-shadow: 0 0 3px rgb(255,255,255);
+  background: repeating-linear-gradient(
+    45deg,
+    #dfe9f0,
+    #dfe9f0 3px,
     white 5px,
     white 5px
   );
@@ -503,11 +515,14 @@ span.nopad{
 @media screen and (max-width: 1199px){
   .navbar{padding: 1px 10px 2px 10px;}
 }
+.navbar-brand.logo{
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
+}
 .notextshadow{
   text-shadow: none !important;
 }
 .navback{
-  background-color: #60b769;
+  background-color: #505050;
 }
 .navbar-dark .navbar-nav .nav-link{
   color: white;
@@ -525,12 +540,12 @@ a.nav-link{
   cursor: pointer;
   color: #202020 !important;
   opacity: 0.65;
-  text-shadow: 1px 1px 1px rgba(255,255,255,0.35);
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.25);
 }
-.requests:focus, .requests:hover{
+.requests.nav-link:focus, .requests.nav-link:hover{
   transition: ease-in-out 0.15s;
-  background-color: #50b46c !important;
-  color: white !important;
+  background-color: #505050 !important;
+  color: #50b46c !important;
   text-shadow: none;
 }
 button.dropdown-toggle{
@@ -696,8 +711,23 @@ input[type="file"]#inputavatar{
 .btn.btn-round{
   border-radius: 2rem;
 }
+.btn.btn-dark{
+  background-color: white;
+  border: 1px solid #757575;
+  color: #757575;
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
+}
+.btn-dark:hover{
+  border-color: #5f5f5f;
+  color: #5f5f5f;
+}
+.btn-dark.focus, .btn-dark:focus{
+  background-color: #252525;
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
+}
 .btn.btn-light{
-  background-color: whitesmoke;
+  background-color: ededed;
   border: 1px solid #b8b8b8;
   color: #555555;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
@@ -705,7 +735,12 @@ input[type="file"]#inputavatar{
 .btn-light:hover{
   transition: .15s ease-in-out;
   border-color: grey;
-  background-color: #e0e0e0;
+  background-color: #dcdcdc;
+}
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle {
+  color: white;
+  background-color: #252525;
+  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
 }
 .btn-light.focus, .btn-light:focus{
   background-color: #252525;
@@ -725,30 +760,6 @@ input[type="file"]#inputavatar{
 }
 .btn-white.focus, .btn-white:focus{
   box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
-}
-/*btn-dark is totally light LOL*/
-.btn.btn-dark{
-  background-color: white;
-  border: none;
-  color: #404040;
-  font-weight: 600;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
-  /*font-weight: 600;
-  background-color: white;
-  color: #2f2d2e;
-  border-radius: 5px;
-  border: 2px solid #2f2d2e;
-  padding: 0.15rem 0.25rem;*/
-}
-.btn-dark:hover{
-  border-color: #2f2d2e;
-  background-color: whitesmoke;
-  color: #202020;
-}
-.btn-dark.focus, .btn-dark:focus{
-  background-color: #252525;
-  color: white;
-  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
 }
 .btn.btncollapse{
   background-color: white;
@@ -820,13 +831,13 @@ input[type="file"]#inputavatar{
   box-shadow: none;
 }
 .hidesidebar{
-  color: rgba(255,255,255,0.5);
+  color: darkgrey;
   box-shadow: none;
   margin-left: -38px;
 }
 .hidesidebar:hover{
   transition: ease-in-out 0.15s;
-  color: grey;
+  color: #009f5e;
 }
 .btnxs{
   padding: 1px 4px !important;
@@ -850,17 +861,7 @@ input[type="file"]#inputavatar{
   box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.5);
 }
 .nav-tabs .nav-link{
-  color: #495057;
   padding: 0.5rem;
-}
-.nav-tabs .nav-link.active{
-  color: #009f5e !important;
-}
-.nav-tabs .nav-link.active{
-  box-shadow: 0px 5px 3px 0px #fff;
-}
-.nav-tabs .nav-link:hover{
-  border-bottom: none;
 }
 a{color: #0079d3;}
 a.green{color: #009f5e;}
@@ -874,8 +875,12 @@ a.red:hover{color: red;}
 .greencolor{
   color: #009f5e !important;
 }
+.greencolor2{
+  color: #50b46c !important;
+  opacity: 1;
+}
 .redcolor{
-  color: #dc3545 !important;
+  color: #ea0027 !important;
 }
 .bluecolor{
   color: #0079d3 !important;
@@ -888,7 +893,6 @@ a.red:hover{color: red;}
 }
 .whitecolor{
   color: white !important;
-  opacity: 1;
 }
 .darkgrey{
   color: #212529 !important;
@@ -1008,7 +1012,7 @@ img.cover{
   box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.3);
 }
 .clubback{
-  background-color: #505050;
+  background-color: #5f5f5f;
   color: white;
 }
 .hr2{
@@ -1035,7 +1039,7 @@ img.cover{
   background-color: transparent;
 }
 .yellowback{
-  background-color: #fce9c5;
+  background-color: #fff5cd;
   background-image: url(/images/doodleBack.png);
   background-size: 417px 417px;
   background-repeat: repeat;
@@ -1071,7 +1075,10 @@ ul{
   background-color: #e0e0e0;
 }
 .badge-warning{
-  background-color: #fce9c5;
+  background-color: #fff5cd;
+}
+.badge-danger{
+  background-color: #ea0027;
 }
 .notification .badge {
   position: absolute;
@@ -1079,7 +1086,7 @@ ul{
   right: -0.15rem;
   padding: 0.15rem;
   border-radius: 0.25rem;
-  background: #dc3545;
+  background: #ea0027;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
 }
@@ -1425,7 +1432,7 @@ select.select1::-ms-expand{
   bottom: 2.5rem !important;
 }
 .emoji-right{
-  right: -7.5rem !important;
+  right: -10rem !important;
 }
 .intercom-composer-popover{
   z-index: 3;
@@ -1655,18 +1662,18 @@ select.select1::-ms-expand{
   border-radius: 5px;
   border-bottom: 1px solid silver;
   border-right: 1px solid lightgrey;
-  border-top: 1px solid whitesmoke;
-  border-left: 1px solid whitesmoke;
+  border-top: 1px solid WhiteSmoke;
+  border-left: 1px solid WhiteSmoke;
 }
 .topic-head{
   background-image: linear-gradient(to bottom right, #dcdcdc, white);
-  box-shadow: -3px 0px 0px 0px #dc3545;
+  box-shadow: -3px 0px 0px 0px #ea0027;
 }
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;
   font-weight: 600;
   font-size: 14px;
-  background-color: #fce9c5;
+  background-color: #fff5cd;
 }
 .topic2{
   border-radius: 0.5rem 0.5rem 0 0;
@@ -1694,13 +1701,13 @@ select.select1::-ms-expand{
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #fce9c5 inset !important;
+  box-shadow: 0 0 0px 1000px #fff5cd inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
 input.shadow:-webkit-autofill,
 input.shadow:-webkit-autofill:hover, 
 input.shadow:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #fce9c5 inset !important;
+  box-shadow: 0 0 0px 1000px #fff5cd inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
 .page-index-back{
