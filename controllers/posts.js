@@ -16,7 +16,7 @@ module.exports = {
       Post.find({postClub: {$in: userClubIds}})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(5)
+      .sort({createdAt: -1}).limit(10)
       .exec(function(err, homePosts){
       if(err || !homePosts){
         console.log(req.user._id+' => (posts-1)homePosts err:- '+JSON.stringify(err, null, 2));
@@ -100,7 +100,7 @@ module.exports = {
       Post.find({'postAuthor.id': {$in: req.user.friends}})
       .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(5)
+      .sort({createdAt: -1}).limit(10)
       .exec(function(err, friendsPosts){
       if(err || !friendsPosts){
         console.log(req.user._id+' => (posts-3)friendsPosts err:- '+JSON.stringify(err, null, 2));
@@ -180,7 +180,7 @@ module.exports = {
       Post.find({privacy: 0, moderation: 0})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(5)
+      .sort({createdAt: -1}).limit(10)
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
         console.log(req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
@@ -210,7 +210,7 @@ module.exports = {
       Post.find({privacy: 0, moderation: 0})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(5)
+      .sort({createdAt: -1}).limit(10)
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
         console.log('(posts-6)discoverPosts err:- '+JSON.stringify(err, null, 2));

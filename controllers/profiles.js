@@ -46,7 +46,7 @@ module.exports = {
           Post.find({'postAuthor.id': req.params.id})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(2)
+          .sort({createdAt: -1}).limit(5)
           .exec(function(err, foundUserPosts){
           if(err || !foundUserPosts){
             console.log(req.user._id+' => (profiles-3)foundUserPosts err:- '+JSON.stringify(err, null, 2));
@@ -200,7 +200,7 @@ module.exports = {
           Post.find({'postAuthor.id': req.params.id})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(2)
+          .sort({createdAt: -1}).limit(5)
           .exec(function(err, foundUserPosts){
           if(err || !foundUserPosts){
             console.log(req.user._id+' => (profiles-6)foundUserPosts err:- '+JSON.stringify(err, null, 2));
@@ -332,7 +332,7 @@ module.exports = {
           Post.find({'postAuthor.id': req.params.id, privacy: 0, moderation: 0})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(2)
+          .sort({createdAt: -1}).limit(5)
           .exec(function(err, foundUserPosts){
           if(err || !foundUserPosts){
             console.log('(profiles-9)foundUserPosts err:- '+JSON.stringify(err, null, 2));
@@ -735,7 +735,7 @@ module.exports = {
         Post.find({postClub: req.params.club_id})
         .populate({path: 'postAuthor.id', select: 'firstName fullName profilePic profilePicId'})
         .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-        .sort({createdAt: -1}).limit(2)
+        .sort({createdAt: -1}).limit(5)
         .exec(function(err, clubPosts){
         if(err || !clubPosts){
           console.log(req.user._id+' => (profiles-22)clubPosts err:- '+JSON.stringify(err, null, 2));
@@ -792,7 +792,7 @@ module.exports = {
         Post.find({postClub: req.params.club_id, privacy: 0, moderation: 0})
         .populate({path: 'postAuthor.id', select: 'firstName fullName profilePic profilePicId'})
         .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-        .sort({createdAt: -1}).limit(2)
+        .sort({createdAt: -1}).limit(5)
         .exec(function(err, clubPosts){
         if(err || !clubPosts){
           console.log('(profiles-24)clubPosts err:- '+JSON.stringify(err, null, 2));
@@ -1408,13 +1408,13 @@ module.exports = {
           var smtpTransport = nodemailer.createTransport({
             service: 'Godaddy', 
             auth: {
-              user: 'team@cluborate.com',
+              user: 'team@clubmate.co.in',
               pass: process.env.TEAM_EMAIL_PW
             }
           });
           var mailOptions = {
             to: user.email,
-            from: 'team@cluborate.com',
+            from: 'team@clubmate.co.in',
             subject: 'Account Verification Token',
             text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
             '\/confirmation\/' + token.token + '.\n'
@@ -1423,7 +1423,7 @@ module.exports = {
             done(err, 'done');
           });
         });
-        req.flash('success', 'Welcome to Cluborate '+user.firstName+'. An email has been sent to your account for verification.');
+        req.flash('success', 'Welcome to clubmate '+user.firstName+'. An email has been sent to your account for verification.');
         return res.redirect('/discover');
       }
       });
@@ -1490,13 +1490,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'team@cluborate.com',
+            user: 'team@clubmate.co.in',
             pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'team@cluborate.com',
+          from: 'team@clubmate.co.in',
           subject: 'Account Verification Token',
           text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
           '\/confirmation\/' + token.token + '.\n'
@@ -1559,13 +1559,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'team@cluborate.com',
+            user: 'team@clubmate.co.in',
             pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'team@cluborate.com',
+          from: 'team@clubmate.co.in',
           subject: 'Password reset request',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -1627,13 +1627,13 @@ module.exports = {
         var smtpTransport = nodemailer.createTransport({
           service: 'Godaddy', 
           auth: {
-            user: 'team@cluborate.com',
+            user: 'team@clubmate.co.in',
             pass: process.env.TEAM_EMAIL_PW
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'team@cluborate.com',
+          from: 'team@clubmate.co.in',
           subject: 'Password reset request',
           text: 'Hello,\n\n' +
             'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'

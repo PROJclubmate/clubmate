@@ -55,7 +55,7 @@ module.exports = {
   indexSearchEmail(req, res, next){
     const query = req.query.email;
     User.find({email: req.query.email})
-    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(1)
+    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
       console.log('(index-4)foundUsers err:- '+JSON.stringify(err, null, 2));

@@ -515,11 +515,12 @@ span.nopad{
 @media screen and (max-width: 1199px){
   .navbar{padding: 1px 10px 2px 10px;}
 }
-.navbar-brand.logo{
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.15);
+.navbar-brand.name{
+  /*text-shadow: 1px 1px 1px rgba(0,0,0,0.15);*/
 }
-.notextshadow{
-  text-shadow: none !important;
+.navbar-brand.name:hover > .logo{
+  transition: ease-in-out 0.15s;
+  color: #009f5e;
 }
 .navback{
   background-color: #505050;
@@ -737,16 +738,6 @@ input[type="file"]#inputavatar{
   border-color: grey;
   background-color: #dcdcdc;
 }
-.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle {
-  color: white;
-  background-color: #252525;
-  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
-}
-.btn-light.focus, .btn-light:focus{
-  background-color: #252525;
-  color: white;
-  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
-}
 .btn.btn-white{
   padding: 0px 4px;
   background-color: white;
@@ -822,6 +813,20 @@ input[type="file"]#inputavatar{
   border-color: #656565;
   background-color: #707070;
 }
+.btn-info{
+  border-color: #0f8ad6;
+  background-color: #1da1f2;
+}
+.btn-info:hover{
+  border-color: #0061ca;
+  background-color: #368dff;
+}
+.btn-danger {
+  background: #f15e5e;
+}
+.btn-danger:hover, .modal-confirm .btn-danger:focus {
+  background: #ee3535;
+}
 .btn{
   vertical-align: baseline;
   border-radius: 0.15rem;
@@ -880,7 +885,7 @@ a.red:hover{color: red;}
   opacity: 1;
 }
 .redcolor{
-  color: #ea0027 !important;
+  color: #dd2e44 !important;
 }
 .bluecolor{
   color: #0079d3 !important;
@@ -1076,9 +1081,6 @@ ul{
 }
 .badge-warning{
   background-color: #fff5cd;
-}
-.badge-danger{
-  background-color: #ea0027;
 }
 .notification .badge {
   position: absolute;
@@ -1449,6 +1451,7 @@ select.select1::-ms-expand{
   opacity: 0;
   transition: all 0.2s linear;
   visibility: hidden;
+  margin-bottom: 2.5rem;
 }
 .intercom-composer-popover.active{
   visibility: visible;
@@ -1771,12 +1774,6 @@ input.shadow:-webkit-autofill:focus{
   font-size: 46px;
   display: inline-block;
   margin-top: 13px;
-}
-.btn-danger {
-  background: #f15e5e;
-}
-.btn-danger:hover, .modal-confirm .btn-danger:focus {
-  background: #ee3535;
 }
 .fixed-padding {
   padding-right: 0px !important;
