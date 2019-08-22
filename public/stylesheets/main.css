@@ -108,11 +108,11 @@ div.content {
   .mobilebold{font-weight: 500 !important;}
   /*.nav-link.active{color: #009f5e !important;}*/
 }
-@media screen and (max-width: 425px){
+@media screen and (max-width: 400px){
   #sidebar-dropbox{top: 42px; left: 78px;}
   .sidebar a{padding: 9px 6px; font-size: 1rem;}
 }
-@media screen and (max-width: 375px){
+@media screen and (max-width: 359px){
   #sidebar-dropbox{top: 38px; left: 70px;}
   .sidebar a{font-size: 14px;}
 }
@@ -133,12 +133,12 @@ div.content {
     width: 0.5rem;
   }
   .scroll::-webkit-scrollbar-track{
-    background: lightgrey;
+    background: rgba(0,0,0,0.1);
   }
   .scroll::-webkit-scrollbar-thumb{
     background-color: darkgrey;
     outline: 1px solid slategrey;
-    border-radius: 3px;
+    border-radius: 2px;
   }
   .scroll::-webkit-scrollbar-thumb:hover{
     background-color: grey;
@@ -888,7 +888,7 @@ a.darkgrey:hover{color: black;}
 a.lightgrey:hover{color: black;}
 a.black{color: inherit;}
 a.black:hover{color: black;}
-a.red:hover{color: red;}
+a.red:hover{color: #ea0027;}
 .greencolor{
   color: #009f5e !important;
 }
@@ -897,7 +897,7 @@ a.red:hover{color: red;}
   opacity: 1;
 }
 .redcolor{
-  color: #ea0027 !important;
+  color: #dc3545 !important;
 }
 .bluecolor{
   color: #0079d3 !important;
@@ -1093,13 +1093,16 @@ ul{
 .badge-warning{
   background-color: #fff5cd;
 }
+.badge-danger{
+  background-color: #ea0027;
+}
 .notification .badge {
   position: absolute;
   top: 0;
   right: -0.15rem;
   padding: 0.15rem;
   border-radius: 0.25rem;
-  background: #ea0027;
+  background: #dc3545;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
 }
@@ -1665,14 +1668,14 @@ select.select1::-ms-expand{
 }
 .chat-head4{
   text-align: center;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   color: #0079d3;
   background-color: white;
   cursor: pointer;
   border-radius: 5px;
-  border-bottom: 1px solid silver;
-  border-right: 1px solid lightgrey;
+  border-bottom: 1px solid darkgrey;
+  border-right: 1px solid silver;
   border-top: 1px solid whitesmoke;
   border-left: 1px solid whitesmoke;
 }

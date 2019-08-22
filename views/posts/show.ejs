@@ -17,7 +17,7 @@
             <div>
               <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
             </div>
-            <div class="lineheight">
+            <div class="lineheight2">
               <div class="mobiletext2">
                 <span>
                   <a href="/clubs/<%= post.postClub._id %>" class="green"><strong><%= post.postClub.name %></strong></a>
@@ -318,7 +318,7 @@
           <div class="commentdiv">
             <form action="/posts/<%= post._id %>/comments" method="POST">
               <div class="input-group">
-                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="2" required></textarea>
+                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
                 <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm ml-2 mt-2" type="button">Cancel</button>

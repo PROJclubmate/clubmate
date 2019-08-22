@@ -593,7 +593,7 @@ function index_posts_template(response){
                   <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
                 </span>
               <% } else{ %>
-                <span>
+                <span class="mobiletext2">
                   <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                 </span>
               <% } %>
