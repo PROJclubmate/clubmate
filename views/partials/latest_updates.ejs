@@ -19,7 +19,7 @@
         </div>
         <div class="mr-1 fullwidth">
           <div class="boldtext text-sm valign">
-            <div><a class="black" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
+            <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
               <% if((Date.now() - arr[i].pushedAt) < 3600000*24){ %>
                 <sup class="badge badge-warning text-xxxxs">NEW</sup>
               <% } %>
