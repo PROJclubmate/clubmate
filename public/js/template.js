@@ -2128,7 +2128,7 @@ function moreMembers_template(response){
     </div>
     <div class="col-md-8 col-8 my-auto">
       <span>
-        <a href="/users/<%= users[i].id._id %>" class="mobiletext2 green">
+        <a href="/users/<%= users[i].id._id %>" class="mobiletext2 grey">
           <strong><%= users[i].id.fullName %></strong>
         </a>
       </span>
@@ -2230,7 +2230,7 @@ function moreClubs_template(response){
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext2 green">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext2 grey">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>
