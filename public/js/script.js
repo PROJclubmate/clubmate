@@ -154,8 +154,7 @@ $(function(){
 // Togle requests navlink active state
 function toggle_requests(id){
   var divelement = document.getElementById(id);
-  divelement.classList.toggle('greencolor2');
-  divelement.classList.toggle('notextshadow');
+  divelement.classList.toggle('requests-active');
 }
 
 //Toggle element display

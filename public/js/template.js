@@ -1905,11 +1905,11 @@ function post_comments_template(response){
 }
 
 function post_subPosts_template(response){
-  html = ejs.render(`
+  html = ejs.render(` 
 <% if(post.subpostBuckets.length >= 1){ %>
   <div class="dropctn mt-2">
     <div class="pr-2">
-      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 nodisplay" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
+      <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
     <div>
       <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>

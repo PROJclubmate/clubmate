@@ -30,7 +30,7 @@
   overflow-y: auto;
 }
 .sidebar a.active{
-  background-color: #e5e5e5;
+  background-color: #e0e0e0;
 }
 .sidebar a:hover:not(.active) {
   transition: ease-in-out 0.15s;
@@ -66,7 +66,7 @@ div.content {
   .searchdp{margin: 0 !important;}
   .commentdiv{width: 90% !important;}
   .mobile-cover{height: 200px !important;}
-  .hr3{border-bottom: 1px solid #e5e5e5; margin: 0 !important; padding: 0.25rem 0 0.75rem 0;}
+  .hr3{border-bottom: 1px solid #e0e0e0; margin: 0 !important; padding: 0.25rem 0 0.75rem 0;}
   .postclubchat{padding: 0 0.25rem 0.5rem 0.25rem !important; margin: 0 !important;}
   .carousel-caption{bottom: 2.5rem !important;}
   .carousel-caption-heading{margin: 0;}
@@ -100,7 +100,7 @@ div.content {
   div.carousel-frame{height: 150px;}
   div.carousel-frame2{height: 150px;}
   img.postimg{width: 100%;max-height: 25rem;object-fit: cover;}
-  .mobile-search{padding: 0.7rem 1rem 0 1rem; color: silver !important;}
+  .mobile-search{padding: 0.7rem 1rem 0 1rem; color: #afdec1 !important;}
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.75rem !important;}
@@ -168,7 +168,7 @@ html {
 }
 body {
   margin-top: 43px;
-  background-color: #e5e5e5;
+  background-color: #e0e0e0;
 }
 .dropdown-menu{
   z-index: 3 !important;
@@ -523,15 +523,8 @@ span.nopad{
 @media screen and (max-width: 1199px){
   .navbar{padding: 1px 10px 2px 10px;}
 }
-.navbar-brand.name{
-  /*text-shadow: 1px 1px 1px rgba(0,0,0,0.15);*/
-}
-.navbar-brand.name:hover > .logo{
-  transition: ease-in-out 0.15s;
-  color: #009f5e;
-}
 .navback{
-  background-color: #505050;
+  background-image: linear-gradient(#009f5e, #60b769);
 }
 .navbar-dark .navbar-nav .nav-link{
   color: white;
@@ -557,8 +550,12 @@ a.nav-link{
   color: #50b46c !important;
   text-shadow: none;
 }
-.notextshadow{
-  text-shadow: none !important;
+.requests-active{
+  transition: ease-in-out 0.15s;
+  background-color: #505050 !important;
+  color: #50b46c !important;
+  border-radius: 1rem;
+  text-shadow: none;
 }
 button.dropdown-toggle{
   color: rgba(0,0,0,0.5);
@@ -746,7 +743,7 @@ input[type="file"]#inputavatar{
 }
 .btn-light:hover{
   transition: .15s ease-in-out;
-  border-color: grey;
+  border-color: darkgrey;
   background-color: #ededed;
 }
 .btn.btn-white{
@@ -847,13 +844,13 @@ input[type="file"]#inputavatar{
   box-shadow: none !important;
 }
 .hidesidebar{
-  color: darkgrey;
+  color: #4c5154;
   box-shadow: none;
   margin-left: -38px;
 }
 .hidesidebar:hover{
   transition: ease-in-out 0.15s;
-  color: #009f5e;
+  color: #212529;
 }
 .btnxs{
   padding: 1px 4px !important;
@@ -890,10 +887,6 @@ a.black:hover{color: black;}
 a.red:hover{color: #ea0027;}
 .greencolor{
   color: #009f5e !important;
-}
-.greencolor2{
-  color: #50b46c !important;
-  opacity: 1;
 }
 .redcolor{
   color: #ea0027 !important;
@@ -1045,7 +1038,7 @@ img.cover{
   padding: 0.5rem;
 }
 .greyback{
-  background-color: #e5e5e5;
+  background-color: #e0e0e0;
 }
 .greyback2{
   background-color: #606060;
@@ -1087,7 +1080,7 @@ ul{
   padding: 0.1rem 0.25rem;
 }
 .badge-light{
-  background-color: #e5e5e5;
+  background-color: #e0e0e0;
 }
 .badge-warning{
   background-color: #fff5cd;
@@ -1615,7 +1608,7 @@ select.select1::-ms-expand{
   word-break: break-word;
   line-height: 1.15rem !important;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e0e0e0;
   border-top: none;
   border-right: none;
   background-color: white;
@@ -1648,14 +1641,14 @@ select.select1::-ms-expand{
 }
 .chat-head{
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 500;
   color: #909090;
   margin: -0.25rem 0;
 }
 .chat-head2{
   text-align: right;
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 500;
   color: #909090;
   margin: -0.25rem 0;
 }
@@ -1667,16 +1660,16 @@ select.select1::-ms-expand{
 }
 .chat-head4{
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  color: #0079d3;
+  color: darkslateblue;
   background-color: white;
   cursor: pointer;
   border-radius: 5px;
   border-bottom: 1px solid darkgrey;
   border-right: 1px solid silver;
-  border-top: 1px solid whitesmoke;
-  border-left: 1px solid whitesmoke;
+  border-top: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
 }
 .topic-head{
   background-image: linear-gradient(to bottom right, #dcdcdc, white);
