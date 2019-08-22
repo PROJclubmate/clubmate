@@ -91,8 +91,7 @@ div.content {
   .card{border: none !important;}
   div.vr{border-right: none; padding-top: 0.25rem;}
   div.lcov{border-radius: 0 0 0.75rem 0.75rem; z-index: 3;}
-  div.lcov.clubback{border-left: 1px solid darkgrey; border-top: 1px solid darkgrey;
-  border-right: none; border-bottom: none;}
+  div.lcov.clubback{border-left: 1px solid darkgrey !important; border-top: 1px solid darkgrey !important;}
   div.rcov{border-radius: 0.75rem 0.75rem 0 0; box-shadow: none;}
   div.lpcov{width: inherit; top: -2.5rem;}
   .profilename{text-align: center; white-space: pre-wrap !important; width: 175px !important;}
@@ -147,8 +146,8 @@ div.content {
     scrollbar-color: darkgrey lightgrey;
     scrollbar-width: thin;
   }
-  div.lcov.clubback{border-left: 1px solid whitesmoke; border-top: 1px solid whitesmoke; border-bottom: none;}
-  div.rcov.clubback{border-top: 1px solid whitesmoke; border-bottom: none;}
+  div.lcov.clubback{border-left: 1px solid whitesmoke; border-top: 1px solid whitesmoke;}
+  div.rcov.clubback{border-top: 1px solid whitesmoke;}
 }
 /*----------------------------------------------------------------*/
 .hr3{
@@ -897,7 +896,7 @@ a.red:hover{color: #ea0027;}
   opacity: 1;
 }
 .redcolor{
-  color: #dc3545 !important;
+  color: #ea0027 !important;
 }
 .bluecolor{
   color: #0079d3 !important;
@@ -1102,7 +1101,7 @@ ul{
   right: -0.15rem;
   padding: 0.15rem;
   border-radius: 0.25rem;
-  background: #dc3545;
+  background: #ea0027;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
 }
