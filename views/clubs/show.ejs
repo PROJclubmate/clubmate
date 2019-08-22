@@ -375,7 +375,11 @@
                       </div>
                     </form>
                   </div>
-                <% } %>
+                <% } else{ %>
+                  <div class="updates-card mb-2" style="border: 1px dotted silver; border-top: none;">
+                    <br>
+                  </div>
+                <% }; %>
                 <% if(club.updates && club.updates != ''){ %>
                   <div class="updates-card">
                     <% for(i=club.updates.length-1;i>=0;i--){ %>
