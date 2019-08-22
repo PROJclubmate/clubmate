@@ -35,15 +35,15 @@
 		<div class="px-3 py-1">
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
-					<div class="boldtext text-md category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
+					<div class="mobilebold text-md category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } else{ %>
-						<div class="boldtext text-md category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+						<div class="mobilebold text-md category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } %>
 				<div class="my-2 lineheight2">
 			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>
 			  	<div class="valign">
 				  	<div class="d-flex flex-row">
-					    <div class="pb-1 mb-auto">
+					    <div class="py-1 mb-auto">
 					      <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>">
 					      <img class="orgdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
 					    </div>

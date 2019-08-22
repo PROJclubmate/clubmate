@@ -105,7 +105,6 @@ div.content {
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.75rem !important;}
   .mobilebold{font-weight: 500 !important;}
-  /*.nav-link.active{color: #009f5e !important;}*/
 }
 @media screen and (max-width: 400px){
   #sidebar-dropbox{top: 42px; left: 78px;}
