@@ -2328,7 +2328,7 @@ function search_people_template(response){
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
-            <a href="/users/<%= users[k]._id %>" class="green">
+            <a href="/users/<%= users[k]._id %>" class="grey">
               <span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
             </a>
           </div>
@@ -2380,7 +2380,7 @@ function search_clubs_template(response){
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
-            <a href="/clubs/<%= clubs[k]._id %>" class="green">
+            <a href="/clubs/<%= clubs[k]._id %>" class="grey">
               <span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
             </a>
           </div>
