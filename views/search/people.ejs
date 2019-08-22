@@ -64,9 +64,8 @@
 			      <br>
 			      <div class="valign">
 			      	<div>
-				      	<div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
+				      	<div class="text-sm boldtext darkgrey"><%= users[k].userKeys.college %></div>
 				      	<% if(users[k].userKeys){ %>
-				      		<div class="lightgrey text-xs boldtext"><%= users[k].userKeys.college %></div>
 				      		<% if(users[k].userKeys.college){ %>
 					      		<div class="lightgrey text-xs">
 					      			<span class="nothing"><%= users[k].userKeys.concentration %></span>
@@ -77,10 +76,11 @@
 					      	<% } %>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
+						      <div class="lightgrey text-xs boldtext"><%= users[k].email %></div>
 						    <% } %>
 					    </div>
 					    <% if(users[k].userKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right ml-1"><%= users[k].userKeys.residence %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right ml-1" style="max-width: 35%;"><%= users[k].userKeys.residence %></div>
 				      <% } %>
 				    </div>
 			    </div>

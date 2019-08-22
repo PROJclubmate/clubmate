@@ -51,14 +51,14 @@
 					  <div class="lightgrey text-xs"><%= clubs[k].banner %></div>
 			      <br>
 			      <% if(clubs[k].clubKeys){ %>
-				      <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.weblink %></div>
+				      <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
 				      <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
-				      <div class="lightgrey text-xs"><%= clubs[k].clubKeys.category %></div>
+				      <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
 				    <% } %>
 			      <div class="valign">
-				      <div class="lightgrey text-xs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
+				      <div class="lightgrey text-xxs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right ml-1"><%= clubs[k].clubKeys.organization %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right ml-1" style="max-width: 35%;"><%= clubs[k].clubKeys.organization %></div>
 				      <% } %>
 				    </div>
 			    </div>

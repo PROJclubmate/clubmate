@@ -43,7 +43,7 @@
 			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>
 			  	<div class="valign">
 				  	<div class="d-flex flex-row">
-					    <div class="py-1 mb-auto">
+					    <div class="pb-1 mb-auto">
 					      <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>">
 					      <img class="orgdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
 					    </div>
@@ -57,7 +57,7 @@
 					    </div>
 					  </div>
 					  <div class="darkgrey text-sm px-1 nowrap">
-			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xs"><span class="lightgrey">mems.</span></span></em>
+			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
 			      </div>
 			    </div>
 			  <% }; %>
