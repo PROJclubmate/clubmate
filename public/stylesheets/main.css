@@ -88,6 +88,7 @@ div.content {
   .mobiletext{font-size: 14px !important;}
   .mobiletext2{font-size: 15px !important;}
   .mobiletext3{font-size: 12px !important;}
+  .card{border: none !important;}
   div.vr{border-right: none; padding-top: 0.25rem;}
   div.lcov{border-radius: 0 0 0.75rem 0.75rem; z-index: 3;}
   div.lcov.clubback{border-left: 1px solid darkgrey; border-top: 1px solid darkgrey;
