@@ -12,7 +12,7 @@
 					<div class="orgname"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
 					</div>
 			<% } %>
-			<div class="boldtext text-lg badge badge-danger mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> users</span></div>
+			<div class="boldtext text-lg badge badge-danger mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
 		</div>
 		<div class="orgpad py-1 organization desktopNoneFlex d-flex flex-column">
 			<% if(match){ %>
@@ -26,7 +26,7 @@
 			<% } %>
 		</div>
 		<div class="my-3 px-3 mobileNoneFlex">
-			<div class="boldtext lightgrey text-md"><%= org_page.clubCount %> clubs</div>
+			<div class="boldtext lightgrey text-md"><span class=" mobilebold"><%= org_page.clubCount %></span> clubs</div>
 		</div>
 		<div class="valign mb-3 px-3 desktopNoneFlex">
 			<div class="boldtext lightgrey text-lg"><%= org_page.clubCount %> <span class="text-xs">clubs</span></div>
@@ -35,9 +35,9 @@
 		<div class="px-3 py-1">
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
-					<div class="mobilebold text-md category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
+					<div class="mobilebold text-sm category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } else{ %>
-						<div class="mobilebold text-md category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+						<div class="mobilebold text-sm category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } %>
 				<div class="my-2 lineheight2">
 			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>

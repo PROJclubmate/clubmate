@@ -146,7 +146,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             } else{
               $('#load-prevMsgs-btn').addClass('nodisplay');
             }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
         }
       });
     } else{
@@ -287,7 +287,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             } else{
               $('#load-prevMsgs-btn').addClass('nodisplay');
             }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>Load More').blur();
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
         }
       });
     } else{
@@ -1048,11 +1048,11 @@ function club_posts_template(response){
                 <!-- Moderation -->
                 <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
                   <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
+                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                   </span>
                 <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
                   <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
+                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                   </span>
                 <% } %>
                   <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>

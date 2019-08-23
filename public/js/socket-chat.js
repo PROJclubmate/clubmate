@@ -5,10 +5,12 @@ if($(window).width() > 767){
   if($("#emoji-box").hasClass('right')){
     $("#emoji-box").toggleClass('emoji-right');
   }
-  $("#drop-chat").click(()=>{
-    var msgbox = $('#messages');
-    msgbox.animate({scrollTop: 5000}, 1500);
-  });
+  window.onload=function(){
+    $("#drop-chat").click(()=>{
+      var msgbox = $('#messages');
+      msgbox.animate({scrollTop: 5000}, 1500);
+    });
+  };
 }
 
 $("#arrows-v").click(()=>{

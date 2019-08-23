@@ -78,7 +78,7 @@
               <span id="help_online" class="text-lg nav-link requests" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></span>
             </li>
             <li class="nav-item">
-              <span id="notification" class="text-lg nav-link requests" title="Coming soon" onclick="toggle_requests('notification');"><i class="fas fa-bell"></i></span>
+              <span id="notification" class="text-lg nav-link requests" title="Inbox 'Coming soon'" onclick="toggle_requests('notification');"><i class="fas fa-envelope"></i></span>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
               <span id="requestslink" class="text-xl nav-link requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box');">
@@ -125,7 +125,7 @@
             </span>
             <span>
               <div class="d-flex flex-column lineheight2 mx-2">
-                <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="green">
+                <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="grey">
                   <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
                 <span class="lightgrey text-xs"><%= clubInviteRequests[i].banner %></span>
               </div>
@@ -134,7 +134,7 @@
           <div>
             <form action="/requests?_method=PUT" method="POST" class="form-inline">
               <span>
-                <button class="btn btnxs btn-success text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
+                <button class="btn btnxs btn-primary text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
               </span>
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Decline</button>
@@ -163,7 +163,7 @@
             </span>
             <span>
               <div class="d-flex flex-column lineheight2 mx-2">
-                <a href="/users/<%= friendRequests[j]._id %>" class="green">
+                <a href="/users/<%= friendRequests[j]._id %>" class="grey">
                   <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
                 <span class="lightgrey text-xs"><%= friendRequests[j].note %></span>
               </div>
@@ -172,7 +172,7 @@
           <div>
             <form action="/requests?_method=PUT" method="POST" class="form-inline">
               <span>
-                <button class="btn btnxs btn-success text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
+                <button class="btn btnxs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
               </span>
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeReq" type="submit" value="<%= friendRequests[j]._id %>">Decline</button>
