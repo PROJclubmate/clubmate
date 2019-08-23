@@ -250,6 +250,7 @@
     <!-- SUB POSTS -->
     <% if(post.topic != '' && 0 <= rank && rank <= 4){ %>
       <% if(post.subpostsCount != 0){ %>
+        <hr>
         <div id="dynamic-subPosts">
           <% include ../partials/subPosts %>
         </div>
@@ -301,6 +302,7 @@
             </div>
           </div>
         </div>
+        <hr>
       <% }; %>
     <% } %>
 

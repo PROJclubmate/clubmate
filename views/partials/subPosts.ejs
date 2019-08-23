@@ -3,12 +3,12 @@
     <div class="pr-2">
       <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
-    <div>
+    <div class="my-2">
       <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>
       <% if(index-1 > 0){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> <%= index-1 %> </a></span>
       <% } %>
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-success mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
       <% if(index+1 < post.subpostBuckets.length){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
       <% } %>
@@ -94,19 +94,14 @@
                   <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
                 </a>
               </div>
-              <div class="darkgrey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+              <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="darkgrey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
+              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
               <div class="dropdown ml-auto">
                 <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <% //if(currentUser && subPosts[j].subPostAuthor.id._id.equals(currentUser._id)){ %>
-                      <!-- <li>
-                        <a class="dropitems text-sm greyback lightgrey" href="#">Help ?</a>
-                      </li> -->
-                    <% //} %>
                     <li>
                       <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket._id %>" method="GET">
                         <button class="dropitems2 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>

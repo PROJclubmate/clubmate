@@ -35,9 +35,9 @@
 		<div class="px-3 py-1">
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
-					<div class="mobilebold text-sm category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
+					<div class="boldtext mobiletext3 category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } else{ %>
-						<div class="mobilebold text-sm category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+						<div class="boldtext mobiletext3 category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
 				<% } %>
 				<div class="my-2 lineheight2">
 			  <% for(var j=0;j<org_page.allClubs[i].categoryClubIds.length;j++){ %>

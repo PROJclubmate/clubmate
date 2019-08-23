@@ -575,6 +575,7 @@ function load_prevClubMsgs_template(response){
 function index_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
+  <hr>
   <div class="card">
     <div class="card-body">
       <div class="dropctn">
@@ -597,7 +598,7 @@ function index_posts_template(response){
                   <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                 </span>
               <% } %>
-              <em class="text-xs lightgrey">. <%= moment(posts[k].createdAt).fromNow() %></em>
+              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).fromNow() %></em>
             </div>
           </div>
         </div>
@@ -906,7 +907,7 @@ function club_posts_template(response){
               <span class="mobiletext2">
                 <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
               </span>
-              <em class="text-xs lightgrey">. <%= moment(posts[k].createdAt).calendar();  %></em>
+              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar();  %></em>
             </div>
             <div>
               <% if(0 <= rank && rank <= 2){ %>
@@ -1228,6 +1229,7 @@ function privacyText(privacy){
 function user_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
+  <hr>
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
@@ -1240,7 +1242,7 @@ function user_posts_template(response){
               <span class="mobiletext2">
                 <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
               </span>
-              <em class="text-xs lightgrey">. <%= moment(posts[k].createdAt).calendar(); %></em>
+              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar(); %></em>
             </div>
             <div>
               <% if(currentUser && match){ %>
@@ -1530,6 +1532,7 @@ function user_posts_template(response){
 function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
+  <hr>
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
@@ -1542,7 +1545,7 @@ function heart_posts_template(response){
               <span class="mobiletext2">
                 <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
               </span>
-              <em class="text-xs lightgrey">. <%= moment(postsH[l].createdAt).fromNow() %></em>
+              <em class="text-xxs lightgrey">. <%= moment(postsH[l].createdAt).fromNow() %></em>
             </div>
             <div>
               <% if(postsH[l].descEdit.length != 0){ %>
@@ -1911,12 +1914,12 @@ function post_subPosts_template(response){
     <div class="pr-2">
       <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
-    <div>
+    <div class="my-2">
       <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>
       <% if(index-1 > -1){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
       <% } %>
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-success mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
       <% if(index+1 < post.subpostBuckets.length){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index+1 %>"> <%= index+2 %> </a></span>
       <% } %>
@@ -2002,10 +2005,10 @@ function post_subPosts_template(response){
                   <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
                 </a>
               </div>
-              <div class="darkgrey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+              <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="darkgrey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
+              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
               <div class="dropdown ml-auto">
                 <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">

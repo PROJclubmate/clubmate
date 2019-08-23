@@ -1,5 +1,7 @@
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <hr>
+  <% if(k!=0){ %>
+    <hr>
+  <% } %>
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
@@ -12,7 +14,7 @@
               <span class="mobiletext2">
                 <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
               </span>
-              <em class="text-xs lightgrey">. <%= moment(posts[k].createdAt).calendar();  %></em>
+              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar();  %></em>
             </div>
             <div>
             <% if(0 <= rank && rank <= 2){ %>

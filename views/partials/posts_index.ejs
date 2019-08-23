@@ -1,4 +1,7 @@
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
+  <% if(k!=0){ %>
+    <hr>
+  <% } %>
   <div class="card">
     <div class="card-body">
       <div class="dropctn">
@@ -21,7 +24,7 @@
                   <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                 </span>
               <% } %>
-              <em class="text-xs lightgrey">. <%= moment(posts[k].createdAt).fromNow() %></em>
+              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).fromNow() %></em>
             </div>
           </div>
         </div>
