@@ -596,6 +596,7 @@ module.exports = {
   },
 
   postsDelete(req, res, next){
+    // console.log('HAHAHAHAH'+JSON.stringify(req.params.post_id, null, 2));
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
       console.log(req.user._id+' => (posts-23)foundPost err:- '+JSON.stringify(err, null, 2));

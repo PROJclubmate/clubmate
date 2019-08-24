@@ -69,8 +69,8 @@ div.content {
   .carousel-caption{bottom: 2.5rem !important;}
   .carousel-caption-heading{margin: 0;}
   .chat-head3{width: 92vw;}
-  .topic-head{border-left: 3px ridge #dc3545; box-shadow: none !important;}
-  h5.topic-h5{font-size: 1.15rem!important;}
+  .topic-head{border-left: 3px ridge #dc3545; box-shadow: inset 3px 0px 0px 0px #ea0027 !important;}
+  h5.topic-h5{font-size: 1rem!important;}
   .searchcard2{width: 100% !important;}
   .friends-dp{height: 6rem !important;}
   div.mt-2.mobilepad.keys{margin-top: -2.5rem !important;}
@@ -86,6 +86,7 @@ div.content {
   .mobiletext{font-size: 14px !important;}
   .mobiletext2{font-size: 15px !important;}
   .mobiletext3{font-size: 12px !important;}
+  .info1{font-size: 15px !important;}
   div.vr{border-right: none; padding-top: 0.25rem;}
   div.lcov{border-radius: 0 0 0.75rem 0.75rem; z-index: 3;}
   div.lcov.clubback{border-left: 1px solid darkgrey !important; border-top: 1px solid darkgrey !important;}
@@ -882,13 +883,14 @@ input[type="file"]#inputavatar{
 }
 a{color: #428bca;}
 .green{color: #009f5e;}
-.green:hover{color: #007e4b;}
 .grey{color: #454545;}
-.darkgrey:hover{color: black;}
-.lightgrey:hover{color: black;}
 .black{color: inherit;}
-.black:hover{color: black;}
-.red:hover{color: #dc3545;}
+a.green:hover{color: #007e4b;}
+a.grey:hover{color: black;}
+a.darkgrey:hover{color: black;}
+a.lightgrey:hover{color: black;}
+a.black:hover{color: black;}
+a.red:hover{color: #dc3545;}
 .greencolor{
   color: #009f5e !important;
 }
@@ -974,7 +976,7 @@ a .nolink:hover{
 }
 .commentbox6{
   margin: 0;
-  border-radius: 0.1rem 1rem 1rem 1rem !important;
+  border-radius: 0.1rem 0.85rem 0.85rem 0.85rem !important;
 }
 .inline{
   display: inline;
@@ -1056,6 +1058,9 @@ img.cover{
   background-image: url(/images/doodleBack.png);
   background-size: 417px 417px;
   background-repeat: repeat;
+}
+.whiteback{
+  background-color: white;
 }
 .lcov{
   border-radius: 0.75em 0 0 0.75rem;
@@ -1676,8 +1681,9 @@ select.select1::-ms-expand{
   border-left: 1px solid #e0e0e0;
 }
 .topic-head{
-  background-image: linear-gradient(to bottom right, #dce1ed, white);
-  box-shadow: -3px 0px 0px 0px #dc3545;
+  background-image: linear-gradient(to right, #d2dbe9, white);
+  box-shadow: -3px 0px 0px 0px #ea0027;
+  border:2px dashed #fff1cd;
 }
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;

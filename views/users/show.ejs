@@ -226,7 +226,7 @@
                       <ul class="dropdown-menu dropdown-menu-right dropbox">
                         <div class="container drop-shadow1 drop-items text-sm">
                           <li>
-                            <button class="dropitems2 link-button text-sm red" href="#unfriendModal" data-toggle="modal">Unfriend</button> 
+                            <button class="dropitems2 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
                           </li>
                           <hr>
                           <li><a class="dropitems2 text-sm" href="#">Help ?</a></li>
@@ -234,7 +234,7 @@
                       </ul>
                     </div>
                     <!-- Modal HTML -->
-                    <div id="unfriendModal" class="fixed-padding modal fade">
+                    <div id="unfriendModal<%= user._id %>" class="fixed-padding modal fade">
                       <div class="modal-dialog modal-confirm">
                         <div class="modal-content">
                           <div class="d-flex">

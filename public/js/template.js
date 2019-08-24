@@ -611,13 +611,14 @@ function index_posts_template(response){
                 <% if(currentUser._id == posts[k].postAuthor.id){ %>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
+                    <button class="dropitems link-button text-sm red" href="#delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
             <% if(currentUser._id == posts[k].postAuthor.id){ %>
-              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+              <!-- Modal HTML -->
+              <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
                     <div class="d-flex">
@@ -823,13 +824,14 @@ function index_posts_template(response){
                         <hr>
                         <li>
                           <li>
-                            <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                            <button class="dropitems link-button red text-sm" href="#delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" data-toggle="modal">Delete comment</button>
                           </li>
                         </li>
                       </div>
                     </ul>
                   </span>
-                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                  <!-- Modal HTML -->
+                  <div id="delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="d-flex">
@@ -944,13 +946,14 @@ function club_posts_template(response){
                 <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
+                    <button class="dropitems link-button text-sm red" href="#delPostModalclubs<%= posts[k].postClub %>posts<%= posts[k]._id %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
             <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
-              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+              <!-- Modal HTML -->
+              <div id="delPostModalclubs<%= posts[k].postClub %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
                     <div class="d-flex">
@@ -1151,12 +1154,13 @@ function club_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                          <button class="dropitems link-button red text-sm" href="#delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
-                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                  <!-- Modal HTML -->
+                  <div id="delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="d-flex">
@@ -1268,13 +1272,14 @@ function user_posts_template(response){
                 <% if(currentUser._id == posts[k].postAuthor.id){ %>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
+                    <button class="dropitems link-button text-sm red" href="#delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
             <% if(currentUser._id == posts[k].postAuthor.id){ %>
-              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+              <!-- Modal HTML -->
+              <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
                     <div class="d-flex">
@@ -1463,12 +1468,13 @@ function user_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                          <button class="dropitems link-button red text-sm" href="#delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
-                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                  <!-- Modal HTML -->
+                  <div id="delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="d-flex">
@@ -1563,13 +1569,14 @@ function heart_posts_template(response){
                 <% if(currentUser._id == postsH[l].postAuthor.id){ %>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red" href="#delPostHModal<%= l %>" data-toggle="modal">Delete post</button>
+                    <button class="dropitems link-button text-sm red" href="#delPostHModalclubs<%= postsH[l].postClub._id %>posts<%= postsH[l]._id %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
             <% if(currentUser._id == postsH[l].postAuthor.id){ %>
-              <div id="delPostHModal<%= l %>" class="fixed-padding modal fade">
+              <!-- Modal HTML -->
+              <div id="delPostHModalclubs<%= postsH[l].postClub._id %>posts<%= postsH[l]._id %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
                     <div class="d-flex">
@@ -1758,12 +1765,13 @@ function heart_posts_template(response){
                         </li>
                         <hr>
                         <li>
-                          <button class="dropitems link-button red text-sm" href="#delPostH<%= l %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                          <button class="dropitems link-button red text-sm" href="#delCommentModalposts<%=postsH[l]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
-                  <div id="delPostH<%= l %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                  <!-- Modal HTML -->
+                  <div id="delCommentModalposts<%=postsH[l]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="d-flex">
@@ -2175,14 +2183,14 @@ function moreMembers_template(response){
                 <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
                 <hr>
                 <li>
-                  <button class="dropitems link-button red text-sm" href="#removeClubModal<%= i %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
+                  <button class="dropitems link-button red text-sm" href="#removeClubMemberModal<%= users[i].id._id %><%= club._id %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
                 </li>
               </div>
             </ul>
           <% }; %>
         </span>
         <!-- Modal HTML -->
-        <div id="removeClubModal<%= i %>" class="fixed-padding modal fade">
+        <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
           <div class="modal-dialog modal-confirm">
             <div class="modal-content">
               <div class="d-flex">
@@ -2270,14 +2278,14 @@ function moreClubs_template(response){
             <% if(clubs[i].rank != 0){ %>
               <hr>
               <li>
-                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= i %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
+                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= user._id %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
               </li>
             <% } %>
           </div>
         </ul>
       </span>
       <!-- Modal HTML -->
-      <div id="leaveClubModal<%= i %>" class="fixed-padding modal fade">
+      <div id="leaveClubModal<%= user._id %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
         <div class="modal-dialog modal-confirm">
           <div class="modal-content">
             <div class="d-flex">

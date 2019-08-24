@@ -40,14 +40,14 @@
                 <% if(currentUser._id.equals(posts[k].postAuthor.id)){ %>
                   <hr>
                   <li>
-                    <button class="dropitems link-button text-sm red" href="#delPostModal<%= k %>" data-toggle="modal">Delete post</button>
+                    <button class="dropitems link-button text-sm red" href="#delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" data-toggle="modal">Delete post</button>
                   </li>
                 <% }; %>
               </div>
             </ul>
             <% if(currentUser._id.equals(posts[k].postAuthor.id)){ %>
               <!-- Modal HTML -->
-              <div id="delPostModal<%= k %>" class="fixed-padding modal fade">
+              <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
                     <div class="d-flex">
@@ -236,13 +236,13 @@
                         </li>
                         <hr>
                         <li>
-                          <button class="dropitems link-button red text-sm" href="#delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" data-toggle="modal">Delete comment</button>
+                          <button class="dropitems link-button red text-sm" href="#delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" data-toggle="modal">Delete comment</button>
                         </li>
                       </div>
                     </ul>
                   </span>
                   <!-- Modal HTML -->
-                  <div id="delPost<%= k %>Bucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
+                  <div id="delCommentModalposts<%=posts[k]._id%>comments<%= buckets[i]._id %><%=comments[j]._id%>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="d-flex">

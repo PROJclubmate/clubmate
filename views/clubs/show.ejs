@@ -401,14 +401,13 @@
                             <ul class="dropdown-menu dropdown-menu-right dropbox">
                               <div class="container drop-shadow1">
                                 <li>
-                                  <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= i %>" data-toggle="modal">Delete update</button>
+                                  <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= club.updates[i]._id %>" data-toggle="modal">Delete update</button>
                                 </li>
                               </div>
                             </ul>
                           </span>
-
                           <!-- Modal HTML -->
-                          <div id="delUpdateModal<%= i %>" class="fixed-padding modal fade">
+                          <div id="delUpdateModal<%= club.updates[i]._id %>" class="fixed-padding modal fade">
                             <div class="modal-dialog modal-confirm">
                               <div class="modal-content">
                                 <div class="d-flex">
