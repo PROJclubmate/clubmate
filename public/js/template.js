@@ -1952,7 +1952,7 @@ function post_subPosts_template(response){
 <% } %>
 
 <% var subPosts = bucket[0].subPosts; var len2 = subPosts.length; var j; for(j=0;j<len2;j++){ %>
-  <div class="card indexcard2">
+  <div class="card indexcard2 my-2">
     <div class="card-body">
       <div>
         <div class="mb-auto d-flex flex-column subpost-left">

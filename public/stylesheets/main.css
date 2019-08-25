@@ -70,7 +70,7 @@ div.content {
   .carousel-caption-heading{margin: 0;}
   .chat-head3{width: 92vw;}
   .topic-head{border-left: 3px ridge #dc3545; box-shadow: inset 3px 0px 0px 0px #ea0027 !important;}
-  h5.topic-h5{font-size: 1rem!important;}
+  h5.topic-h5{font-size: 1.125rem!important;}
   .searchcard2{width: 100% !important;}
   .friends-dp{height: 6rem !important;}
   div.mt-2.mobilepad.keys{margin-top: -2.5rem !important;}
@@ -83,10 +83,10 @@ div.content {
   .popup-box{min-width: 300px !important; width: 100%; right: 0 !important;}
   .px-1.mobilepad{padding: 0 !important;}
   .mobilemargin{margin: 0 !important;}
-  .mobiletext{font-size: 14px !important;}
-  .mobiletext2{font-size: 15px !important;}
-  .mobiletext3{font-size: 12px !important;}
-  .info1{font-size: 15px !important;}
+  .mobiletext{font-size: 0.875rem !important;}
+  .mobiletext2{font-size: 0.9375rem !important;}
+  .mobiletext3{font-size: 0.75rem !important;}
+  .info1{font-size: 0.9375rem !important;}
   div.vr{border-right: none; padding-top: 0.25rem;}
   div.lcov{border-radius: 0 0 0.75rem 0.75rem; z-index: 3;}
   div.lcov.clubback{border-left: 1px solid darkgrey !important; border-top: 1px solid darkgrey !important;}
@@ -105,14 +105,6 @@ div.content {
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important;}
 }
-@media screen and (max-width: 400px){
-  #sidebar-dropbox{top: 42px; left: 78px;}
-  .sidebar a{padding: 9px 6px; font-size: 1rem;}
-}
-@media screen and (max-width: 359px){
-  #sidebar-dropbox{top: 38px; left: 70px;}
-  .sidebar a{font-size: 14px;}
-}
 /* MIN WIDTH */
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
@@ -121,31 +113,49 @@ div.content {
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
 }
-@media screen and (min-width: 768px){
+@media screen and (min-width: 768px) and (max-width: 992px){
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
   .mobileNoneFlex{display: flex !important;}
-  .scroll::-webkit-scrollbar{
-    width: 0.5rem;
-  }
-  .scroll::-webkit-scrollbar-track{
-    background: rgba(0,0,0,0.1);
-  }
-  .scroll::-webkit-scrollbar-thumb{
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
-    border-radius: 2px;
-  }
-  .scroll::-webkit-scrollbar-thumb:hover{
-    background-color: grey;
-  }
-  .moz-scroll{
-    scrollbar-color: darkgrey lightgrey;
-    scrollbar-width: thin;
-  }
+  .scroll::-webkit-scrollbar{width: 0.5rem;}
+  .scroll::-webkit-scrollbar-track{background: rgba(0,0,0,0.1);}
+  .scroll::-webkit-scrollbar-thumb{background-color: darkgrey; outline: 1px solid slategrey; border-radius: 2px;}
+  .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
+  .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin;}
   div.lcov.clubback{border-left: 1px solid whitesmoke; border-top: 1px solid whitesmoke;}
   div.rcov.clubback{border-top: 1px solid whitesmoke;}
+}
+/* MAX WIDTH */
+/*Pixel 2/2XL => 411px*/
+@media screen and (max-width: 412px){
+  #sidebar-dropbox{top: 42px; left: 91px;}
+  .sidebar a{padding: 9px 12.5px; font-size: 1rem;}
+}
+/*Pixel 3/3XL => 393px*/
+@media screen and (max-width: 394px){
+  #sidebar-dropbox{top: 42px; left: 86px;}
+  .sidebar a{padding: 9px 10px; font-size: 1rem;}
+}
+/*LG Optimus L70 => 384px*/
+@media screen and (max-width: 385px){
+  #sidebar-dropbox{top: 42px; left: 84px;}
+  .sidebar a{padding: 9px 9px; font-size: 1rem;}
+}
+/*iPhone X and 6/7/8 => 375px*/
+@media screen and (max-width: 376px){
+  #sidebar-dropbox{top: 42px; left: 82px;}
+  .sidebar a{padding: 9px 8px; font-size: 1rem;}
+}
+/*Asus Max Pro M-1 => 360px*/
+@media screen and (max-width: 361px){
+  #sidebar-dropbox{top: 42px; left: 78px;}
+  .sidebar a{padding: 9px 6px; font-size: 1rem;}
+}
+/*iPhone 5/SE => 320px*/
+@media screen and (max-width: 321px){
+  #sidebar-dropbox{top: 38px; left: 70px;}
+  .sidebar a{padding: 9px 6px; font-size: 0.8725rem;}
 }
 /*----------------------------------------------------------------*/
 .hr3{
@@ -258,16 +268,16 @@ button.btn.btn-secondary.search{
 .form-control.shadow:focus{
   box-shadow: inset 0px 0.25px 4px 0px rgba(0,159,94,1) !important;
 }
-.text-xxxxs{font-size: 7px !important;}
-.text-xxxs{font-size: 9px !important;}
-.text-xxs{font-size: 11px !important;}
-.text-xs{font-size: 12px !important;}
-.text-sm{font-size: 14px !important;}
-.text-md{font-size: 15px !important;}
-.text-lg{font-size: 18px !important;}
-.text-xl{font-size: 20px !important;}
-.text-xxl{font-size: 22px !important;}
-.text-xxxl{font-size: 25px !important;}
+.text-xxxxs{font-size: 0.4375rem !important;}
+.text-xxxs{font-size: 0.5625rem !important;}
+.text-xxs{font-size: 0.6875rem !important;}
+.text-xs{font-size: 0.75rem !important;}
+.text-sm{font-size: 0.875rem !important;}
+.text-md{font-size: 0.9375rem !important;}
+.text-lg{font-size: 1.125rem !important;}
+.text-xl{font-size: 1.25rem !important;}
+.text-xxl{font-size: 1.375rem !important;}
+.text-xxxl{font-size: 1.5625rem !important;}
 label{
   margin: 0;
 }
@@ -439,7 +449,7 @@ li.nav-item{
 }
 .orgpad{padding: 0.75rem;}
 .category{
-  font-size: 14px;
+  font-size: 0.875rem;
   color: black;
   background-color: #ededed;
 }
@@ -600,7 +610,7 @@ input[type="file"]#inputavatar{
   border: 1px solid #b8b8b8;
   display: inline-block;
   height: 31px;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 4px 8px;
   cursor: pointer;
   background-color: #ededed;
@@ -707,7 +717,7 @@ input[type="file"]#inputavatar{
 /*Button styles*/
 .btn-search{
   font-weight: 600;
-  font-size: 22px;
+  font-size: 1.375rem;
   background:none!important;
   border: none; 
   padding: 0 0.25rem !important;
@@ -1122,7 +1132,7 @@ ul{
   width: 100%;
   transition: 0.15s ease;
   opacity: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   text-align: center;
   cursor: pointer;
@@ -1135,7 +1145,7 @@ ul{
   color: white; 
   width: 100%;
   transition: 0.15s ease;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   text-align: center;
   cursor: pointer;
@@ -1149,7 +1159,7 @@ ul{
   width: 100%;
   transition: 0.15s ease;
   opacity: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   text-align: center;
   cursor: pointer;
@@ -1164,7 +1174,7 @@ ul{
   height: 100%;
   transition: 0.15s ease;
   opacity: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px;
   text-align: center;
   cursor: pointer;
@@ -1276,7 +1286,7 @@ ul{
   color: red;
 }
 button.vote{
-  font-size: 20px;
+  font-size: 1.25rem;
   padding: 0;
   border: none;
   background-color: rgba(0,0,0,0);
@@ -1310,7 +1320,7 @@ button.upVotebtn{
   z-index: 2;
 }
 button.commentvote{
-  font-size: 22px;
+  font-size: 1.375rem;
   margin: 0 0 -0.15rem 0.35rem;
 }
 button.upVotebtn:hover{
@@ -1332,7 +1342,7 @@ button.heartbtn:hover{
 select{
   background-color: white;
   padding: 4px 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid;
   border-radius: 0 0.15rem 0.15rem 0;
   color: #009f5e;
@@ -1365,14 +1375,14 @@ select.select1::-ms-expand{
 }
 .select2{
   width: 91px;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.15rem;
   height: 27px;
 }
 .select3{
   width: 136px;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.15rem;
   height: 27px;
@@ -1381,7 +1391,7 @@ select.select1::-ms-expand{
   -webkit-appearance: none;
   -ms-appearance: none;
   -o-appearance: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.15rem;
   height: 27px;
@@ -1486,7 +1496,7 @@ select.select1::-ms-expand{
   background-repeat: no-repeat;
   background-position: 0 12px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #6e7a89;
   padding-left: 25px;
   height: 40px;
@@ -1546,7 +1556,7 @@ select.select1::-ms-expand{
   background-repeat: no-repeat;
   background-position: 0 12px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #6e7a89;
   padding-left: 25px;
   height: 40px;
@@ -1616,7 +1626,7 @@ select.select1::-ms-expand{
 .chat-msg{
   word-break: break-word;
   line-height: 1.15rem !important;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid #e0e0e0;
   border-top: none;
   border-right: none;
@@ -1628,7 +1638,7 @@ select.select1::-ms-expand{
 }
 .chat-msg2{
   line-height: 1.15rem !important;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid silver;
   border-top: none;
   border-left: none;
@@ -1640,7 +1650,7 @@ select.select1::-ms-expand{
 }
 .chat-msg3{
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 2px solid darkgrey;
   background-color: white;
   border-radius: 0.5rem;
@@ -1649,14 +1659,14 @@ select.select1::-ms-expand{
   margin: 0.15rem 0;
 }
 .chat-head{
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
   margin: -0.25rem 0;
 }
 .chat-head2{
   text-align: right;
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
   margin: -0.25rem 0;
@@ -1688,13 +1698,13 @@ select.select1::-ms-expand{
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: #fff1cd;
 }
 .topic2{
   border-radius: 0.5rem 0.5rem 0 0;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   box-shadow: none;
 }
 .description{
@@ -1771,7 +1781,7 @@ input.shadow:-webkit-autofill:focus{
   border-radius: 5px;
   border: none;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .modal-confirm .close {
   position: absolute;
