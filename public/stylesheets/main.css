@@ -1715,8 +1715,8 @@ select.select1::-ms-expand{
 }
 .subpost-left{
   float: left;
-  border: 1px solid #dcdcdc;
-  background-color: white;
+  border: 1px solid #d0d0d0;
+  background-color: #fffaf0;
   margin-right: 0.5rem;
   text-align: center;
   max-width: 100px;

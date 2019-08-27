@@ -102,33 +102,10 @@ app.use('/', discussionRoutes);
 app.use('/', conversationRoutes);
 
 
-io.on('connection', function(socket){
-  // console.log('socket: '+ socket.id +' connected');
-
-  msgStatus = function(s){
-    socket.emit('status', s);
-  }
-  socket.on('typing', function(data){
-    socket.broadcast.emit('typing', data);
-  })
-
-  clubMsgStatus = function(s){
-    socket.emit('clubStatus', s);
-  }
-  socket.on('clubTyping', function(data){
-    socket.broadcast.emit('clubTyping', data);
-  })
-});
-
-
-http.listen(port, function(){
-  console.log('socket is listening');
-});
-
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log("GhosTwn server has started on port "+port+"!!");
+  console.log("clubmate server has started on port "+port+"!!");
 });
 
 // Connect to database
@@ -137,4 +114,40 @@ mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndMo
     return console.log('(app-17)'+JSON.stringify(err, null, 2));
   }
   console.log('MongoDB connected...');
+
+  // Connect to Socket.io
+  io.on('connection', function(socket){
+    // console.log('socket: '+ socket.id +' connected');
+
+    // Create function to send status
+    sendStatus = function(s){
+      socket.emit('status', s);
+    }
+
+    socket.on('joinRoom', room =>{
+      socket.join(room);
+      // << BUG >> SOCKET EMITING RANDOMLY, Use:- Server acknowledgement that the message is sent
+      // msgStatus = function(s){
+      //   socket.emit('status', s);
+      // }
+      // Join a room and then broadcast
+      socket.on('typing', function(data){
+        socket.broadcast.to(room).emit('typing', data);
+      })
+    })
+    
+    socket.on('joinClubRoom', clubRoom =>{
+      socket.join(clubRoom);
+      // clubMsgStatus = function(s){
+      //   socket.emit('clubStatus', s);
+      // }
+      socket.on('clubTyping', function(data){
+        socket.broadcast.to(clubRoom).emit('clubTyping', data);
+      })
+    })
+  });
+
+  http.listen(port, function(){
+    console.log('socket is listening');
+  });
 });

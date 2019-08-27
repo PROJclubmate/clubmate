@@ -40,7 +40,6 @@ module.exports = function(io){
       var seenIds = [];
     }
 	  Conversation.findOne({_id: req.params.conversationId})
-	  // .populate({path: 'messageBuckets', match: {_id: {$nin: seenIds}}, options: {sort: {_id: -1}, limit: 1}})
 	  .exec(function(err, foundConversation){
 	  if(err || !foundConversation){
 	    console.log(req.user._id+' => (conversations-1)foundConversation err:- '+JSON.stringify(err, null, 2));
@@ -73,7 +72,8 @@ module.exports = function(io){
 
 	router.post('/chat/:conversationId', function(req, res){
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
-	    return msgStatus('Pl. enter a message');
+	  	return res.sendStatus(400);
+	    // return msgStatus('Pl. enter a message');
 	  }
 	  Conversation.findOne({_id: req.params.conversationId})
 	  .exec(function(err, foundConversation){
@@ -107,13 +107,16 @@ module.exports = function(io){
 	            console.log(req.user._id+' => (conversations-5) err:- '+JSON.stringify(err, null, 2));
 	            req.flash('error', 'Something went wrong :(');
 	            return res.redirect('back');
+	            sendStatus(500);
 	          }
-	          io.emit('message', req.body);
-	          // res.sendStatus(200);
-	          return msgStatus({
-	            message: 'Message sent',
-	            clear: true
-	          });
+	          io.to(req.params.conversationId).emit('message', req.body);
+	          // Close pending xhr request
+	          return res.sendStatus(200);
+	          // == BUG? ===> socket.emit('status', s); emits randomly in a group
+	          // return msgStatus({
+	          //   message: 'Message sent',
+	          //   clear: true
+	          // });
 	        }
 	        });
 	      } else{console.log('(conversations-6)Not a participant: ('+req.user._id+') '+req.user.fullName);}
@@ -124,10 +127,12 @@ module.exports = function(io){
 
 	router.post('/new/chat', function(req, res, next){
 	  if(!req.body.recipientId || req.body.recipientId == ''){
-	    return msgStatus('Invalid recipient');
+	  	return res.sendStatus(400);
+	    // return msgStatus('Invalid recipient');
 	  }
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
-	    return msgStatus('Pl. enter a message');
+	  	return res.sendStatus(400);
+	    // return msgStatus('Pl. enter a message');
 	  }
 	  if(req.user){
 	    const conversation = new Conversation({
@@ -168,7 +173,8 @@ module.exports = function(io){
 	        return res.redirect('back');
 	      }
 	    });
-	    msgStatus('Conversation started!');
+	    // msgStatus('Conversation started!');
+	    res.sendStatus(200);
 	    return io.emit('userRefresh', req.body.recipientId);
 	  }
 	});
@@ -237,7 +243,8 @@ module.exports = function(io){
 
 	router.post('/club-chat/:conversationId', function(req, res){
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
-	    return clubMsgStatus('Pl. enter a message');
+	  	return res.sendStatus(400);
+	    // return clubMsgStatus('Pl. enter a message');
 	  }
 	  ClubConversation.findOne({_id: req.params.conversationId})
 	  .exec(function(err, foundConversation){
@@ -272,13 +279,14 @@ module.exports = function(io){
 	            console.log(req.user._id+' => (conversations-13) err:- '+JSON.stringify(err, null, 2));
 	            req.flash('error', 'Something went wrong :(');
 	            return res.redirect('back');
+	            sendStatus(500);
 	          }
-	          io.emit('clubMessage', req.body);
-	          // res.sendStatus(200);
-	          return clubMsgStatus({
-	            message: 'Message sent',
-	            clear: true
-	          });
+	          io.to(req.params.conversationId).emit('clubMessage', req.body); 
+	          return res.sendStatus(200);
+	          // return clubMsgStatus({
+	          //   message: 'Message sent',
+	          //   clear: true
+	          // });
 	        }
 	        });
 	      } else{console.log('(conversations-14)Not a participant: ('+req.user._id+') '+req.user.fullName);}
@@ -289,10 +297,12 @@ module.exports = function(io){
 
 	router.post('/new/club-chat', function(req, res, next){
 	  if(!req.body.clubId || req.body.clubId == ''){
-	    return clubMsgStatus('Invalid club');
+	  	return res.sendStatus(400);
+	    // return clubMsgStatus('Invalid club');
 	  }
 	  if(!req.body.composedMessage || req.body.composedMessage == ''){
-	    return clubMsgStatus('Pl. enter a message');
+	  	return res.sendStatus(400);
+	    // return clubMsgStatus('Pl. enter a message');
 	  }
 	  if(req.user){
 	    const clubConversation = new ClubConversation({
@@ -318,7 +328,8 @@ module.exports = function(io){
 	        return res.redirect('back');
 	      }
 	    });
-	    clubMsgStatus('Club Conversation started!');
+	    res.sendStatus(200);
+	    // clubMsgStatus('Club Conversation started!');
 	    return io.emit('clubRefresh', req.body.clubId);
 	  }
 	});

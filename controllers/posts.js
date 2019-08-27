@@ -64,10 +64,11 @@ module.exports = {
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, homePosts){
-      if(err || !homePosts){
+      if(homePosts){
         console.log(req.user._id+' => (posts-2)homePosts err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
+        // return res.sendStatus(500);
       } else{
         var arrLength = homePosts.length;
         var friendsPostUrl = false; var currentUser2 = req.user;
