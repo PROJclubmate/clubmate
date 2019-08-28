@@ -109,6 +109,7 @@ div.content {
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
   #side-home{height: 40px;}
+  .btn-search:hover{text-decoration: underline;}
 }
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
@@ -236,8 +237,8 @@ input.form-control.search{
   box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.5);
 }
 input.form-control.search:focus{
-  border: none;
-  box-shadow: inset 0px 0px 4px 0px rgba(108,138,183,1);
+  border: 1px solid #a9c9df;
+  box-shadow: inset 0px 0px 3px 0px rgba(108,138,183,1);
 }
 button.btn.btn-secondary.search{
   height: 30px;
@@ -722,9 +723,6 @@ input[type="file"]#inputavatar{
   cursor:pointer;
   border: 2px dotted #cc0000;
   border-radius: 2.5rem;
-}
-.btn-search:hover{
-  text-decoration:underline;
 }
 .nopoint{
   cursor: default !important;

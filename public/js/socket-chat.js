@@ -58,7 +58,7 @@ if(socket !== undefined){
     }
   }
   // Emit typing
-  $("#user-message").keypress(function(){
+  $("#user-message").on('input', function(){
     // Send value = firstName to server to 'broadcast'
     socket.emit('typing', $("#pin-chatbox").attr("value"));
   });
@@ -190,7 +190,7 @@ if(socket !== undefined){
       }
     }
   }
-  $("#club-message").keypress(function(){
+  $("#club-message").on('input', function(){
     socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
   });
   socket.on('clubTyping', function(data){
