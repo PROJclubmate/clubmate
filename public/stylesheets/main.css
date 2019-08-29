@@ -1321,7 +1321,7 @@ button.upVotebtn{
 }
 button.commentvote{
   font-size: 1rem;
-  /*padding: 0.15rem 0.25rem;*/
+  padding: 0.15rem 0.25rem;
 }
 button.upVotebtn:hover{
   color: #1976d2;
