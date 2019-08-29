@@ -1892,13 +1892,13 @@ function post_comments_template(response){
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
               <div class="d-flex flex-row commentwrap lineheight0 mt-1">
                 <% if(upComments.includes(comments[j]._id)){ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
-                  <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote p-1" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                  <button class="vote boldtext commentvote pl-0 pr-1 mb-1" name="commentUp" type="button" value="up" title="Upvote comment">
                     <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center greencolor"><%= comments[j].upvotesCount %></span>
                   </button>
                 <% } else{ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
-                  <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote p-1" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                  <button class="vote boldtext commentvote pl-0 pr-1 mb-1" name="commentUp" type="button" value="up" title="Upvote comment">
                     <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center"><%= comments[j].upvotesCount %></span>
                   </button>
                 <% } %>
