@@ -126,7 +126,9 @@ mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndMo
 
     socket.on('joinRoom', room =>{
       socket.join(room);
-      // << BUG >> SOCKET EMITING RANDOMLY, Use:- Server acknowledgement that the message is sent
+      /* << BUG >> SOCKET EMITING RANDOMLY
+      Current exec:- Client side validation
+      Desired :- Server side acknowledgement that the msg is sent */
       // msgStatus = function(s){
       //   socket.emit('status', s);
       // }

@@ -1835,14 +1835,14 @@ function heart_posts_template(response){
 function post_comments_template(response){
   html = ejs.render(`
 <% var comments = buckets[0].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
-  <div class="hr3">
+  <div class="hr3 mb-1">
     <div class="valign card-body1">
-      <div class="mb-auto py-1">
+      <div class="mb-auto py-2">
         <a href="/users/<%= comments[j].commentAuthor.id._id %>">
           <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
         </a>
       </div>
-      <div class="commentdiv mt-1 mb-2 lineheight">
+      <div class="commentdiv my-1 pb-2 lineheight">
         <div class="valign pl-1">
           <div>
             <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-md darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -1865,39 +1865,40 @@ function post_comments_template(response){
                   </div>
                 </ul>
               </div>
+              <!-- Modal HTML -->
               <div id="delBucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
-              <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                  <div class="d-flex">
-                    <span class="icon-box">
-                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                    </span>              
-                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  </div>
-                  <div>
-                    <p>Do you really want to delete this comment? This cannot be undone.</p>
-                  </div>
-                  <div class="my-2">
-                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                    <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
-                      <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
-                    </form>
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="d-flex">
+                      <span class="icon-box">
+                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      </span>              
+                      <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div>
+                      <p>Do you really want to delete this comment? This cannot be undone.</p>
+                    </div>
+                    <div class="my-2">
+                      <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                      <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
-              <div class="d-flex flex-column lineheight0">
+              <div class="d-flex flex-row commentwrap lineheight0 mt-1">
                 <% if(upComments.includes(comments[j]._id)){ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-caret-up"></i></button>
-                  <button class="vote boldtext commentvote" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                  <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
                     <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center greencolor"><%= comments[j].upvotesCount %></span>
                   </button>
                 <% } else{ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-caret-up"></i></button>
-                  <button class="vote boldtext commentvote" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                  <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
                     <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center"><%= comments[j].upvotesCount %></span>
                   </button>
                 <% } %>
@@ -1905,7 +1906,7 @@ function post_comments_template(response){
             </form>
           </div>
         </div>
-        <div class="mobiletext linewrap px-1 pb-1"><%= comments[j].text %></div>
+        <div class="mobiletext linewrap px-1 pb-1" style="margin-top: -0.25rem ;"><%= comments[j].text %></div>
       </div>
     </div>
   </div>

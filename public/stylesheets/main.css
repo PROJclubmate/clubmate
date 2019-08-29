@@ -8,7 +8,7 @@
   position: fixed;
   height: 100%;
   overflow: auto;
-  box-shadow: inset -3px 0px 2px -2px rgba(0,0,0,0.3);
+  box-shadow: inset -3px 0px 2px -2px rgba(0,0,0,0.35);
 }
 .sidebar a{
   display: block;
@@ -64,7 +64,7 @@ div.content {
   .searchdp{margin: 0 !important;}
   .commentdiv{width: 90% !important;}
   .mobile-cover{height: 200px !important;}
-  .hr3{border-bottom: 1px solid #e0e0e0; margin: 0 !important; padding: 0.25rem 0 0.75rem 0;}
+  .hr3{border-bottom: 1px solid #e0e0e0; margin: 0 !important;}
   .postclubchat{padding: 0 0.25rem 0.5rem 0.25rem !important; margin: 0 !important;}
   .carousel-caption{bottom: 2.5rem !important;}
   .carousel-caption-heading{margin: 0;}
@@ -946,6 +946,10 @@ a .nolink:hover{
   float:right;
   line-height: 1.25rem;
 }
+.commentwrap{
+  border: 1px solid silver;
+  border-radius: 0.25rem;
+}
 .commentbox{
   margin: 0;
   height: 30px;
@@ -1316,8 +1320,8 @@ button.upVotebtn{
   z-index: 2;
 }
 button.commentvote{
-  font-size: 1.375rem;
-  margin: 0 0 -0.15rem 0.35rem;
+  font-size: 1rem;
+  margin: 0.15rem 0.25rem;
 }
 button.upVotebtn:hover{
   color: #1976d2;
@@ -1714,7 +1718,13 @@ select.select1::-ms-expand{
 .subpost-left{
   float: left;
   border: 1px solid #d0d0d0;
-  background-color: #fffaf0;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff3d7,
+    #fff3d7 3px,
+    white 3px,
+    white 5px
+  );
   margin-right: 0.5rem;
   text-align: center;
   max-width: 100px;

@@ -774,7 +774,7 @@ module.exports = {
           // Make it for posts made in past week
           Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
           .select({topic: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1, postAuthor: 1, postClub: 1})
-          .sort({upVoteCount: -1}).limit(3).exec(function(err, topTopicPosts){
+          .sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           console.log(req.user._id+' => (profiles-23)topTopicPosts err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');

@@ -1,13 +1,13 @@
 <% var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){ %>
   <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
-    <div class="hr3">
+    <div class="hr3 mb-1">
       <div class="valign card-body1">
-        <div class="mb-auto py-1">
+        <div class="mb-auto py-2">
           <a href="/users/<%= comments[j].commentAuthor.id._id %>">
             <img class="postdp rounded-circle" src="<%= CA_50_profilePic[i][j] || '/images/noUser.png' %>">
           </a>
         </div>
-        <div class="commentdiv mt-1 mb-2 lineheight">
+        <div class="commentdiv my-1 pb-2 lineheight">
           <div class="valign pl-1">
             <div>
               <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-md darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -55,15 +55,15 @@
                 </div>
               <% } %>
               <form action="/comments/<%= buckets[i]._id %>/<%= comments[j]._id %>/vote" method="POST">
-                <div class="d-flex flex-column lineheight0">
+                <div class="d-flex flex-row commentwrap lineheight0 mt-1">
                   <% if(upComments.includes(comments[j]._id)){ %>
-                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-caret-up"></i></button>
-                    <button class="vote boldtext commentvote" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                    <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
                       <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center greencolor"><%= comments[j].upvotesCount %></span>
                     </button>
                   <% } else{ %>
-                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-caret-up"></i></button>
-                    <button class="vote boldtext commentvote" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                    <button class="vote boldtext commentvote text-xxl ml-0 pb-2" name="commentUp" type="button" value="up" title="Upvote comment">
                       <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center"><%= comments[j].upvotesCount %></span>
                     </button>
                   <% } %>
@@ -71,7 +71,7 @@
               </form>
             </div>
           </div>
-          <div class="mobiletext linewrap px-1 pb-1"><%= comments[j].text %></div>
+          <div class="mobiletext linewrap px-1 pb-1" style="margin-top: -0.25rem ;"><%= comments[j].text %></div>
         </div>
       </div>
     </div>
