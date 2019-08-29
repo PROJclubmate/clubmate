@@ -102,8 +102,7 @@ module.exports = {
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
       console.log('(index-6)foundUsers err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
@@ -226,8 +225,7 @@ module.exports = {
     .limit(10).exec(function(err, foundUsers){
     if(err){
       console.log('(index-8)foundUsers err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else if(!foundUsers && res.locals.query){
       req.flash('success', 'No results found :|');
       return res.redirect('back');
@@ -270,8 +268,7 @@ module.exports = {
     .exec(function(err, foundClubs){
     if(err || !foundClubs){
       console.log('(index-10)foundClubs err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       var foundClubIds = foundClubs.map(function(club){
         return club._id;
@@ -378,8 +375,7 @@ module.exports = {
     .limit(10).exec(function(err, foundClubs){
     if(err){
       console.log('(index-12)foundClubs err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else if(!foundClubs && res.locals.query){
       req.flash('success', 'No results found :|');
       return res.redirect('back');
@@ -420,8 +416,7 @@ module.exports = {
     .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
     if(err || !foundOrgPages){
       console.log('(index-14)foundOrgPages err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       var foundOrgPageIds = foundOrgPages.map(function(orgPage){
         return orgPage._id;

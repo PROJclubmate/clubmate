@@ -5,9 +5,15 @@
 <div class="row">
 	<div class="col-md-12 no-gutters">
 		<form class="form-signin" action="/reset/<%= token %>" method="POST">
-	  	<h3 class="mb-3">Reset Password</h3>
-	    <label for="password" class="sr-only">New Password</label>
-	    <input type="password" name="password" value="" placeholder="New password" autofocus="autofocus" class="form-control">
+	  	<legend class="mb-5">Reset password</legend>
+	  	<br>
+	    <label for="inputPassword" class="sr-only">New Password</label>
+	    <input id="inputPassword" type="password" name="password" value="" placeholder="New password" autofocus="autofocus" class="form-control">
+	    <div id="pass_info" class="text-xs darkgrey nodisplay">
+        <span class="redcolor"><strong>*</strong></span>
+        <span>Password must contain (6-10) characters, at least one letter and one number</span>
+      </div>
+      <br>
 	    <label for="confirm" class="sr-only">Confirm Password</label>
 	    <input type="password" name="confirm" value="" placeholder="Confirm password" class="form-control">
 	    <br>

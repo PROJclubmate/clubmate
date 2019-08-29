@@ -112,8 +112,7 @@ module.exports = {
     .exec(function (err, foundPost){
     if(err || !foundPost){
       console.log('(comments-7)foundPost err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(foundPost.topic == '' && foundPost.commentBuckets != ''){
         Comment.find({_id: foundPost.commentBuckets[req.query.newIndex]})
@@ -121,8 +120,7 @@ module.exports = {
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
           console.log('(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          return res.sendStatus(500);
         } else if(!err && foundBucket != ''){
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
@@ -157,8 +155,7 @@ module.exports = {
     function(err, notFoundComment){
     if(err){
       console.log(req.user._id+' => (comments-9)notFoundComment err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(notFoundComment){
         res.json(notFoundComment);
@@ -170,8 +167,7 @@ module.exports = {
         function(err, foundComment){
         if(err){
           console.log(req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          return res.sendStatus(500);
         } else{
           res.json(foundComment);
         }

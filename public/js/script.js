@@ -76,7 +76,7 @@ function hidesidebar(){
   }
 }
 
-$('#input_topic').on('keyup keypress', function(e){
+$('#input_topic').on('input', function(e){
   if($(this).val() != ''){
     $('#priv_everyone').removeAttr('selected');
     $('#priv_club').attr('selected', 'true');
@@ -88,7 +88,7 @@ $('#input_topic').on('keyup keypress', function(e){
   }
 });
 
-$('#inputPassword').on('keyup keypress', function(e){
+$('#inputPassword').on('input', function(e){ 
   var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,10}$/;
   if($(this).val().match(pass)){
     $('#pass_info').css('display','none');
@@ -441,8 +441,8 @@ $("div#delegated-posts").on('click', '.vote', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }
@@ -493,8 +493,8 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         alert("Error "+xhr.status+": "+ xhr.statusText);
       }
     }
@@ -535,8 +535,8 @@ $("div#delegated-posts").on('click', '.modvote', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }
@@ -596,8 +596,8 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }
@@ -638,8 +638,8 @@ $('div#delegated-heart-posts').on('click', '.modvote', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }
@@ -667,8 +667,8 @@ $('div#delegated-comments').on('click', '.commentvote', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }
@@ -704,8 +704,8 @@ $('div#dynamic-subPosts').on('click', '.vote2', function(e){
       }
     },
     error: function(xhr) {
-      alert("Please Login first");
       if(xhr.status == 404){
+        alert("Please Login first");
         location = "/login";
       } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
     }

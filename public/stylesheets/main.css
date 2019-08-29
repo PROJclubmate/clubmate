@@ -427,6 +427,9 @@ li.nav-item{
   );
   border-bottom: 1px solid lightgrey;
 }
+.notextshadow{
+  text-shadow: none !important;
+}
 .organization-light{
   color: #212529;
   text-shadow: 0 0 3px rgb(255,255,255);

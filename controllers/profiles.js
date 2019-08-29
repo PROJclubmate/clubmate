@@ -374,8 +374,7 @@ module.exports = {
     .exec(function(err, foundUser){
     if(err || !foundUser){
       console.log('(profiles-10)foundUser err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(req.user){
         var currentUser = req.user, currentUserId = currentUser._id;
@@ -423,8 +422,7 @@ module.exports = {
       .exec(function(err, foundUserPosts){
       if(err || !foundUserPosts){
         console.log(req.user._id+' => (profiles-11)foundUserPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = foundUserPosts.length;
         var currentUser = req.user; var match = false;
@@ -460,8 +458,7 @@ module.exports = {
       .exec(function(err, foundUserPosts){
       if(err || !foundUserPosts){
         console.log('(profiles-12)foundUserPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = foundUserPosts.length;
         var currentUser = req.user; var match = false;
@@ -500,8 +497,7 @@ module.exports = {
       .exec(function(err, foundHeartPosts){
       if(err || !foundHeartPosts){
         console.log(req.user._id+' => (profiles-13)foundHeartPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = foundHeartPosts.length;
         var currentUser = req.user; var match = false;
@@ -837,8 +833,7 @@ module.exports = {
     .exec(function(err, foundClub){
     if(err || !foundClub){
       console.log('(profiles-25)foundClub err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(req.user){
         var rankUsers = foundClub.clubUsers;
@@ -871,8 +866,7 @@ module.exports = {
     .exec(function(err, foundClub){
     if(err || !foundClub){
       console.log('(profiles-26)foundClub err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(req.user){
         if(req.query.name && req.query.name != ''){
@@ -918,8 +912,7 @@ module.exports = {
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
         console.log(req.user._id+' => (profiles-27)clubPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
         var foundPostIds = clubPosts.map(function(post){
@@ -955,8 +948,7 @@ module.exports = {
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
         console.log('(profiles-28)clubPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
         var foundPostIds = clubPosts.map(function(post){

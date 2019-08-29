@@ -66,9 +66,7 @@ module.exports = {
       .exec(function(err, homePosts){
       if(err || !homePosts){
         console.log(req.user._id+' => (posts-2)homePosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-        // return res.sendStatus(500);
+        return res.sendStatus(500);
       } else{
         var arrLength = homePosts.length;
         var friendsPostUrl = false; var currentUser2 = req.user;
@@ -147,8 +145,7 @@ module.exports = {
       .exec(function(err, friendsPosts){
       if(err || !friendsPosts){
         console.log(req.user._id+' => (posts-4)friendsPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = friendsPosts.length;
         var friendsPostUrl = true; var currentUser2 = req.user;
@@ -251,8 +248,7 @@ module.exports = {
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
         console.log(req.user._id+' => (posts-7)discoverPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
         var friendsPostUrl = false; var currentUser2 = req.user;
@@ -281,8 +277,7 @@ module.exports = {
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
         console.log('(posts-8)discoverPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
         var friendsPostUrl = false;
@@ -658,8 +653,7 @@ module.exports = {
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
       console.log(req.user._id+' => (posts-29)foundPost err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(req.body.visibility){
         foundPost.moderation = parseInt(req.body.visibility);
@@ -713,8 +707,7 @@ module.exports = {
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
               if(err || !foundUser){
                 console.log(req.user._id+' => (posts-30)foundUser err:- '+JSON.stringify(err, null, 2));
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
+                return res.sendStatus(500);
               }
             });
           }
@@ -759,8 +752,7 @@ module.exports = {
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
               if(err || !foundUser){
                 console.log(req.user._id+' => (posts-31)foundUser err:- '+JSON.stringify(err, null, 2));
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
+                return res.sendStatus(500);
               }
             });
           }
@@ -786,8 +778,7 @@ module.exports = {
           User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
             if(err || !foundUser){
               console.log(req.user._id+' => (posts-32)foundUser err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              return res.sendStatus(500);
             }
           });
         }
@@ -817,8 +808,7 @@ module.exports = {
           User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, foundUser){
             if(err || !foundUser){
               console.log(req.user._id+' => (posts-33)foundUser err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              return res.sendStatus(500);
             }
           });
         }
@@ -833,8 +823,7 @@ module.exports = {
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
       console.log(req.user._id+' => (posts-34)foundPost err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;
       var upVoteIds = foundPost.upVoteUserIds; var len1 = foundPost.upVoteCount;

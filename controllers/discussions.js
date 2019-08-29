@@ -64,8 +64,7 @@ module.exports = {
     .exec(function (err, foundPost){
     if(err || !foundPost){
       console.log('(discussions-3)foundPost err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
+      return res.sendStatus(500);
     } else{
       if(foundPost.topic != '' && foundPost.subpostBuckets != ''){
         if(0 <= req.query.newIndex && req.query.newIndex < foundPost.subpostBuckets.length-1){
@@ -78,8 +77,7 @@ module.exports = {
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
           console.log('(discussions-4)foundBucket err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          return res.sendStatus(500);
         } else{
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
@@ -118,8 +116,7 @@ module.exports = {
       function(err, foundClickId){
       if(err){
         console.log(req.user._id+' => (discussions-5)foundClickId err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         if(foundClickId){
           return res.json(foundClickId);
@@ -131,8 +128,7 @@ module.exports = {
           function(err, foundSecondId){
           if(err){
             console.log(req.user._id+' => (discussions-6)foundSecondId err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+            return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
               subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: {$ne: req.user._id}}}},
@@ -141,8 +137,7 @@ module.exports = {
             function(err, notFoundClickId){
             if(err){
               console.log(req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              return res.sendStatus(500);
             } else{
               return res.json(notFoundClickId);
             }
@@ -160,8 +155,7 @@ module.exports = {
       function(err, foundClickId){
       if(err){
         console.log(req.user._id+' => (discussions-8)foundClickId err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+        return res.sendStatus(500);
       } else{
         if(foundClickId){
           return res.json(foundClickId);
@@ -173,8 +167,7 @@ module.exports = {
           function(err, foundSecondId){
           if(err){
             console.log(req.user._id+' => (discussions-9)foundSecondId err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+            return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
               subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: {$ne: req.user._id}}}},
@@ -183,8 +176,7 @@ module.exports = {
             function(err, notFoundClickId){
             if(err){
               console.log(req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              return res.sendStatus(500);
             } else{
               return res.json(notFoundClickId);
             }

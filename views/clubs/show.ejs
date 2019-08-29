@@ -86,7 +86,7 @@
       </div>
       <div class="col-md-4 px-1 mobilepad mt-2 keys">
         <div class="card">
-          <button type="button" class="btn btn-sm boldtext btncollapse" data-toggle="collapse" data-target="#infobox">Info</button>
+          <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse" data-toggle="collapse" data-target="#infobox">Info</button>
           <!-- Description -->
           <div id="infobox" class="collapse card-body5">
             <div>
@@ -390,8 +390,8 @@
                         <% } else{ %>
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% }; %>
-                        <div class="mx-2 my-auto news">
-                          <%= club.updates[i].news %><span class="darkgrey text-xxs boldtext"></span>
+                        <div class="mx-2 my-auto news mobiletext2">
+                          <%= club.updates[i].news %>
                           <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
                           <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
                         </div>
@@ -498,8 +498,8 @@
 <script type='text/javascript'>
   var club = <%- JSON.stringify(club) %>;
 </script>
-<script src="/js/mapbox.js"></script>
 <% include ../partials/footer %>
+<script src="/js/mapbox.js"></script>
 
 
 <% function tags_split(arr){ %>
