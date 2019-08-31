@@ -101,7 +101,7 @@ div.content {
   .mobile-search{padding: 0.7rem 1rem 0 1rem; color: #afdec1 !important;}
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
-  .orgpad{padding: 0.25rem 0.75rem !important;}
+  .orgpad{padding: 0.25rem 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important;}
 }
@@ -449,7 +449,7 @@ li.nav-item{
   border: 1px solid darkgrey;
   line-height: 1.25rem;
 }
-.orgpad{padding: 0.75rem;}
+.orgpad{padding: 0.25rem 1rem;}
 .category{
   font-size: 0.875rem;
   color: black;
@@ -538,7 +538,8 @@ span.nopad{
   .navbar{padding: 1px 10px 2px 10px;}
 }
 .navback{
-  background-image: linear-gradient(#009f5e, #50b46c);
+  /*background-image: linear-gradient(#009f5e, #50b46c);*/
+  background-image: linear-gradient(#50b46c, #60b769);
 }
 .navbar-dark .navbar-nav .nav-link{
   color: white;
@@ -1484,7 +1485,7 @@ select.select1::-ms-expand{
   height: 350px;
 }
 .intercom-emoji-picker{
-  width: 269px;
+  width: 250px;
   height: 350px;
 }
 .intercom-composer-popover-header{
@@ -1519,8 +1520,7 @@ select.select1::-ms-expand{
   overflow-y: scroll;
 }
 .intercom-emoji-picker-group{
-  margin: 10px -5px;
-  text-align: left;
+  text-align: center;
 }
 .intercom-emoji-picker-group-title{
   text-align: left;
@@ -1753,7 +1753,7 @@ input.shadow:-webkit-autofill:focus{
   padding: 0.5rem 1rem;
 }
 .quote{
-  border: dashed grey 1px;
+  border: dashed darkgrey 1px;
 }
 .uppercase{
   text-transform: uppercase;
