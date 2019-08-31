@@ -330,15 +330,15 @@ $(document).click(function (e){
     $(".intercom-composer-emoji-popover").removeClass("active");
   }
 });
-$(document).on("click",".intercom-emoji-picker-emoji",function(e){
+$(document).on("click",".intercom-emoji-picker-emoji", function(e){
   var target = $('.emoji-input');
-  var cursorPosStart = target.prop('selectionStart');
-  var cursorPosEnd = target.prop('selectionEnd');
-  var value = target.val();
-  var textBefore = value.substring(0,  cursorPosStart );
-  var textAfter  = value.substring( cursorPosEnd, value.length );
-  target.val( textBefore+ $(this).html() +textAfter )
-  .focus().prop({'selectionStart': cursorPosEnd, 'selectionEnd': cursorPosEnd});
+  var caretPos = document.getElementsByClassName('emoji-input')[0].selectionStart;
+  var caretEnd = document.getElementsByClassName('emoji-input')[0].selectionEnd;
+  var textAreaTxt = target.val();
+  var txtToAdd = $(this).html();
+  target.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring( caretEnd )).focus();
+  document.getElementsByClassName('emoji-input')[0].selectionStart = caretPos + txtToAdd.length;
+  document.getElementsByClassName('emoji-input')[0].selectionEnd = caretPos + txtToAdd.length;
 });
 $('.intercom-composer-popover-input').on('input', function() {
   var query = this.value;
@@ -362,13 +362,13 @@ $(document).click(function (e) {
 });
 $(document).on("click",".intercom-emoji-picker-emoji2",function(e){
   var target = $('.emoji-input2');
-  var cursorPosStart = target.prop('selectionStart');
-  var cursorPosEnd = target.prop('selectionEnd');
-  var value = target.val();
-  var textBefore = value.substring(0,  cursorPosStart );
-  var textAfter  = value.substring( cursorPosEnd, value.length );
-  target.val( textBefore+ $(this).html() +textAfter )
-  .focus().prop({'selectionStart': cursorPosEnd, 'selectionEnd': cursorPosEnd});
+  var caretPos = document.getElementsByClassName('emoji-input2')[0].selectionStart;
+  var caretEnd = document.getElementsByClassName('emoji-input2')[0].selectionEnd;
+  var textAreaTxt = target.val();
+  var txtToAdd = $(this).html();
+  target.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring( caretEnd )).focus();
+  document.getElementsByClassName('emoji-input2')[0].selectionStart = caretPos + txtToAdd.length;
+  document.getElementsByClassName('emoji-input2')[0].selectionEnd = caretPos + txtToAdd.length;
 });
 $('.intercom-composer-popover-input2').on('input', function() {
   var query = this.value;
@@ -380,7 +380,7 @@ $('.intercom-composer-popover-input2').on('input', function() {
   }
 });
 
-$(function () {
+$(function (){
   $('#datetimepicker4').datetimepicker({
     format: 'L'
   });

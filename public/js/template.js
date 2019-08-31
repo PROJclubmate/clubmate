@@ -1538,7 +1538,9 @@ function user_posts_template(response){
 function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
-  <hr>
+  <% if(l!=0){ %>
+    <hr>
+  <% }; %>
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
@@ -1890,16 +1892,24 @@ function post_comments_template(response){
               </div>
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
-              <div class="d-flex flex-row commentwrap lineheight0 mt-1">
+              <div class="commentwrap lineheight0 mt-1">
                 <% if(upComments.includes(comments[j]._id)){ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
-                  <button class="vote boldtext commentvote pl-0 mb-1" name="commentUp" type="button" value="up" title="Upvote comment">
-                    <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center greencolor"><%= comments[j].upvotesCount %></span>
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <div>
+                      <i class="fas fa-arrow-alt-circle-up"></i>
+                    </div>
+                    <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs greencolor ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
+                      <%= comments[j].upvotesCount %>
+                  </div>
                   </button>
                 <% } else{ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote" name="commentUp" type="button" value="up" title="Upvote comment"><i class="fas fa-arrow-alt-circle-up"></i></button>
-                  <button class="vote boldtext commentvote pl-0 mb-1" name="commentUp" type="button" value="up" title="Upvote comment">
-                    <span id="comment-up-count<%= comments[j]._id %>" class="text-xs text-center"><%= comments[j].upvotesCount %></span>
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <div>
+                      <i class="fas fa-arrow-alt-circle-up"></i>
+                    </div>
+                    <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
+                      <%= comments[j].upvotesCount %>
+                    </div>
                   </button>
                 <% } %>
               </div>
