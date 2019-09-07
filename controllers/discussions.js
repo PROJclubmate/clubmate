@@ -58,7 +58,7 @@ module.exports = {
 
   discussionsPagination(req, res, next){
     var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-    {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+    {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
     .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
@@ -82,7 +82,7 @@ module.exports = {
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
             sPA_50_profilePic[j] = cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId,
-            {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
           }
           var currentUser = req.user, index = page;
           if(req.user && foundBucket != ''){

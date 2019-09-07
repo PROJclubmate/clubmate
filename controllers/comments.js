@@ -125,7 +125,7 @@ module.exports = {
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
             CA_50_profilePic[j] = cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId,
-            {width: 50, height: 50, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
           }
           var index = req.query.newIndex-1;
           if(req.user && foundBucket != ''){
