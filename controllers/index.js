@@ -328,7 +328,7 @@ module.exports = {
       }
       var category = urlEqualsSplit[3];
       if(category.split('&')[0]){
-        category = category.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
+        category = new RegExp(escapeRegExp(category.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'clubKeys.category': category});
       }
       var location = urlEqualsSplit[4];

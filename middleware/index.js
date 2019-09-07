@@ -167,6 +167,7 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
     }
     if(category){
       filterKeys['category'] = category;
+      category = new RegExp(escapeRegExp(category), 'gi');
       dbQueries.push({'clubKeys.category': category});
     }
     if(location){
