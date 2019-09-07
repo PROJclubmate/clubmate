@@ -352,11 +352,11 @@
     <% }; %>
   </div>
   <% if(currentUser && post.topic == ''){ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone">
+    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 mobileNone">
       <% include ../partials/latest_updates %>
     </div>
   <% } else if(currentUser && post.topic != '' && quote == false){ %>
-    <div id="pin-chatbox" class="col-lg-3 mt-3 pb-2 px-2 order-md-last order-first postclubchat" value="<%= currentUser.firstName %>">
+    <div id="pin-chatbox" class="col-md-4 col-lg-3 mt-3 pb-2 px-2 order-md-last order-first postclubchat" value="<%= currentUser.firstName %>">
       <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
         <% include ../partials/clubchat %>
       </div>

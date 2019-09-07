@@ -646,13 +646,13 @@
     </div>
   </div>
   <% if(currentUser && !match){ %>
-    <div id="pin-chatbox" class="col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
+    <div id="pin-chatbox" class="col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
       <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUser._id %>">
         <% include ../partials/userchat %>
       </div>
     </div>
   <% } else if(currentUser && match){ %>
-    <div class="col-lg-3 px-2 pb-2">
+    <div class="col-md-4 col-lg-3 px-2 pb-2">
       <% include ../partials/latest_updates %>
     </div>
   <% } %>

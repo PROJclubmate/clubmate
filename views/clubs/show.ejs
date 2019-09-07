@@ -477,13 +477,13 @@
     </div>
   </div>
   <% if(currentUser && 0 <= rank && rank <=4){ %>
-    <div id="pin-chatbox" class="col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
+    <div id="pin-chatbox" class="col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
       <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
         <% include ../partials/clubchat %>
       </div>
     </div>
   <% } else if(currentUser && (!rank || 0 >= rank && rank >=4)){ %>
-    <div class="col-lg-3 px-2 pb-2">
+    <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="card m-0">
         <div class="card-body">
           <div class="lightgrey lineheight text-sm">

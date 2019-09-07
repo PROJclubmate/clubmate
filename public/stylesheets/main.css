@@ -1696,7 +1696,7 @@ select.select1::-ms-expand{
 .topic-head{
   background-image: linear-gradient(to right, #d2dbe9, white);
   box-shadow: -3px 0px 0px 0px #ea0027;
-  border:2px dashed #fff1cd;
+  border: 1px dotted #fff1cd;
 }
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;
