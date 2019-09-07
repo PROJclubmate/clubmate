@@ -5,7 +5,7 @@
       <div><span class="lightgrey text-sm nopad"><%= latestUpdates().length %></span></div>
     </div>
   </button>
-  <div id="latestUpdates" class="collapse show scroll moz-scroll">
+  <div id="latestUpdates" class="collapse show scroll moz-scroll hr1">
     <% var arr = latestUpdates();
     for(i=0;i<arr.length;i++){ %>
       <div class="searchcard d-flex flex-row" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">

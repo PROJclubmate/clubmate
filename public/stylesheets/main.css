@@ -69,9 +69,10 @@ div.content {
     font-size: 1.35rem;
     padding: 0.25rem 0;
     -webkit-text-fill-color: #50b46c;
-    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-width: 0.35px;
     -webkit-text-stroke-color: #009f5e;
   }
+  input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
   .mobilewidth{width: 100% !important;}
   .searchdp{margin: 0 !important;}
@@ -262,7 +263,7 @@ input.form-control.search{
 }
 input.form-control.search:focus{
   border: 1px solid #a9c9df;
-  box-shadow: inset 0px 0px 2px 0px rgba(108,138,183,1);
+  box-shadow: inset 0px 0px 3px 0px rgba(0,123,255,.5) !important;
 }
 button.btn.btn-secondary.search{
   height: 30px;
@@ -280,17 +281,21 @@ button.btn.btn-secondary.search{
   border-radius: 0.1rem;
 }
 .form-control:focus{
+  border: 1px solid #a9c9df !important;
+  box-shadow: inset 0px 0px 3px 0px rgba(0,123,255,.5) !important;
   z-index: 2;
-  border: 1px solid #a9c9df;
-  box-shadow: inset 0px 0px 2px 0px rgba(108,138,183,1);
 }
 .form-control.shadow{
-  border: none !important;
+  border: none;
   box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;
 }
 .form-control.shadow:focus{
+<<<<<<< HEAD
   border: 1px solid #a9c9df;
+  box-shadow: inset 0px 0px 3px 0px rgba(0,123,255,.5) !important;
+=======
   box-shadow: inset 0px 0px 2px 0px rgba(108,138,183,1) !important;
+>>>>>>> parent of 0a77034... minor fix
 }
 .text-xxxxs{font-size: 0.4375rem !important;}
 .text-xxxs{font-size: 0.5625rem !important;}
@@ -1056,6 +1061,9 @@ img.cover{
 .clubback{
   background-color: #4c5154;
   color: white;
+}
+.hr1{
+  border-bottom: 1px solid lightgrey;
 }
 .hr2{
   border-bottom: 1px solid rgba(0,0,0,0.075);
