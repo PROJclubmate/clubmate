@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 		<% if(query){ %>
-			<div class="ml-2">Search results for: <span class="boldtext"><%= query %></span></div>
+			<div class="ml-2 mobiletext">Search results for: <span class="boldtext"><%= query %></span></div>
 		<% } else{ %>
-			<div class="ml-2 boldtext">Search for :-</div>
+			<div class="ml-2 mobiletext boldtext">Search for :-</div>
 		<% } %>
 		<br>
 		<form action="/find_people/search" method="GET">
@@ -105,10 +105,10 @@
 						      <br>
 						      <div class="text-sm text-right">
 						      	<span>
-						      		<span class="lightgrey">[</span><span class="boldtext lightgrey nothing text-lg"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
+						      		<span class="lightgrey">[</span><span class="boldtext lightgrey nothing text-md"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
 						      	</span>
 						      	<span>
-						      		<span class="boldtext darkgrey"><span class="redcolor text-lg"><%= org_pages[k].userCount %></span></span> <span class="lightgrey nothing">users]</span>
+						      		<span class="boldtext darkgrey"><span class="redcolor text-md"><%= org_pages[k].userCount %></span></span> <span class="lightgrey nothing">users]</span>
 						      	</span>
 						      </div>
 						    </div>
@@ -119,7 +119,7 @@
 			<% } %>
 		</div>
 	</div>
-	<div class="col-lg-3 px-2">
+	<div class="col-md-4 col-lg-3 px-2">
     <br class="mobileNone">
     <div class="list-group">
       <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>

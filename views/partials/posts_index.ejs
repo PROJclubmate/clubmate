@@ -8,9 +8,9 @@
         <div class="valign">
           <div>
             <% if(!friendsPostUrl){ %>
-              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
             <% } else{ %>
-              <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
+              <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
             <% } %>
           </div>
           <div>

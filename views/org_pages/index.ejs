@@ -12,7 +12,7 @@
 					<div class="orgname"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
 					</div>
 			<% } %>
-			<div class="boldtext text-lg badge badge-danger notextshadow mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
+			<div class="boldtext text-lg badge badge-danger mobileNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
 		</div>
 		<div class="px-2 py-1 organization desktopNoneFlex d-flex flex-column">
 			<% if(match){ %>
@@ -30,7 +30,7 @@
 		</div>
 		<div class="valign mb-4 px-3 desktopNoneFlex">
 			<div class="boldtext lightgrey text-lg"><%= org_page.clubCount %> <span class="text-xs">clubs</span></div>
-			<div class="boldtext text-lg badge badge-danger notextshadow desktopNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> <span class="text-xs">users</span></span></div>
+			<div class="boldtext text-lg badge badge-danger desktopNoneFlex"><%= org_page.userCount %><span class="text-sm my-auto ml-1"> <span class="text-xs">users</span></span></div>
 		</div>
 		<div class="orgpad py-1">
 			<% for(var i=0;i<org_page.allClubs.length;i++){ %>
@@ -65,7 +65,7 @@
 			<% } %>
 		</div>
 	</div>
-	<div class="col-lg-3 px-2">
+	<div class="col-md-4 col-lg-3 px-2">
     <div class="list-group">
       <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
     </div>

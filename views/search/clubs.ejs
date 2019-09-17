@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 	<% if(!filter){ %>
-		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+		<div class="mt-2 ml-2 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<% } else{ %>
-		<div class="ml-2 lineheight">Search results for <strong>(</strong>
+		<div class="mt-2 ml-2 mobiletext lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.clubs){ %>
 				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm nothing"><%= filterKeys.clubs %></span>
 			<% } %>
@@ -58,7 +58,7 @@
 			      <div class="valign">
 				      <div class="lightgrey text-xxs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right ml-1" style="max-width: 35%;"><%= clubs[k].clubKeys.organization %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= clubs[k].clubKeys.organization %></div>
 				      <% } %>
 				    </div>
 			    </div>

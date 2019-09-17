@@ -46,7 +46,7 @@
                         <img class="cover mobile-cover" src="<%= club.featuredPhotos[0].image %>">
                         <div class="carousel-caption">
                           <h6 class="carousel-caption-heading"><%= club.featuredPhotos[0].heading %></h6>
-                          <div class="text-sm"><%= club.featuredPhotos[0].description %></div>
+                          <div><%= club.featuredPhotos[0].description %></div>
                         </div>
                       </div>
                     <% } %>
@@ -56,7 +56,7 @@
                           <img class="cover mobile-cover" src="<%= club.featuredPhotos[i].image %>">
                           <div class="carousel-caption">
                             <h6 class="carousel-caption-heading"><%= club.featuredPhotos[i].heading %></h6>
-                            <div class="text-sm"><%= club.featuredPhotos[i].description %></div>
+                            <div><%= club.featuredPhotos[i].description %></div>
                           </div>
                         </div>
                       <% } %>
@@ -239,25 +239,56 @@
             </div>
           <% }; %>
         </div>
-        <% if(topTopicPosts.length != 0){ %>
-          <div class="mt-2">
-            <div class="card mt-0">
-              <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#hot_topics">
-                <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
-              </button>
-              <div id="hot_topics" class="collapse">
-                <div class="card-body3">
+        <div class="mt-2">
+          <div class="card mt-0">
+            <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#hot_topics">
+              <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
+            </button>
+            <% if(rank >= 0 && rank <=4){ %>
+              <div id="hot_topics" class="tab-content collapse show">
+            <% } else{ %>
+              <div id="hot_topics" class="tab-content collapse">
+            <% } %>
+              <div class="card-body3 tab-pane container active" id="thisweek">
+                <% if(topTopicPosts.length != 0){ %>
                   <% for(var i=0;i<topTopicPosts.length;i++){ %>
                   <div class="valign">
-                    <div><a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext lineheight2 my-1"><%= topTopicPosts[i].topic %></a></div>
-                    <div class="mb-auto ml-2 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
+                    <div class="valign">
+                      <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
+                        <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+                      <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
+                        <div>
+                          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="orgdp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
+                        </div>
+                        <div>
+                          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+                        </div>
+                      <% } %>
+                    </div>
+                    <div class="mb-auto ml-2 mt-1 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
                   </div>
                   <% } %>
-                </div>
+                <% } else if(rank >= 0 && rank <=4){ %>
+                  <div class="lightgrey mobiletext2">No discussions created this week :/</div>
+                <% } else{ %>
+                  <div class="lightgrey mobiletext2">You are not a club member :/</div>
+                <% } %>
+              </div>
+              <div class="card-body3 tab-pane container fade" id="alltime">...</div>
+              <hr>
+              <div class="card-body1">
+                <ul class="nav justify-content-end">
+                  <li class="nav-item">
+                    <a class="nav-link nav-topic nothing active text-xs" data-toggle="tab" href="#thisweek">this week</a>
+                  </li>
+                  <li class="nav-item">
+                    <a id="alltime-posts-btn" class="nav-link nav-topic nothing text-xs" data-toggle="tab" href="#alltime">all time</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-        <% }; %>
+        </div>
       </div>
       <div class="col-md-8 px-1 mobilepad mt-2">
         <div class="card tabcard">
@@ -327,11 +358,11 @@
                 <% }; %>
                 <div id="delegated-posts">
                   <div id="server-posts">
-                    <% include ../partials/posts_club %>
+                    <% //include ../partials/posts_club %>
                   </div>
                   <div id="client-posts"></div>
                   <div class="text-center pt-2">
-                    <button id="load-more-btn" class="btn btn-light btn-sm" type="button" value="<%= foundPostIds %>">
+                    <button id="load-more-btn" class="btn btn-light btn-sm" type="button" value="<%= //foundPostIds %>">
                       <span id="load-more-span"></span>Load
                     </button>
                   </div>
@@ -432,6 +463,10 @@
                         <% } %>
                       </div>
                     <% }; %>
+                  </div>
+                <% } else{ %>
+                  <div class="updates-card">
+                    <div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>
                   </div>
                 <% }; %>
               </div>

@@ -10,40 +10,7 @@ const express          = require('express'),
 module.exports = {
   postsHome(req, res, next){
     if(req.user){
-      var userClubIds = req.user.userClubs.map(function(club){
-        return club.id;
-      });
-      Post.find({postClub: {$in: userClubIds}})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, homePosts){
-      if(err || !homePosts){
-        console.log(req.user._id+' => (posts-1)homePosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        var friendsPostUrl = false;
-        var foundPostIds = homePosts.map(function(post){
-          return post._id;
-        });
-        var posts = postPrivacy(homePosts, req.user);
-        var modPosts = postModeration(posts,req.user);
-        sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = modPosts.length;
-        for(k;k<len;k++){
-          PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          hasVote[k] = voteCheck(req.user,modPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
-        }
-        var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-        res.render('posts/index',{hasVote, hasModVote, posts: modPosts, friendsPostUrl, foundPostIds,
-        CU_50_profilePic, PC_50_clubAvatar});
-      }
-      });
-      // res.render('posts/index');
+      res.render('posts/index');
     } else{
       res.redirect('/discover');
     }
@@ -96,36 +63,7 @@ module.exports = {
 
   postsFriends_posts(req, res, next){
     if(req.user){
-      Post.find({'postAuthor.id': {$in: req.user.friends}})
-      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, friendsPosts){
-      if(err || !friendsPosts){
-        console.log(req.user._id+' => (posts-3)friendsPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        var friendsPostUrl = true;
-        var foundPostIds = friendsPosts.map(function(post){
-          return post._id;
-        });
-        var posts = postPrivacy(friendsPosts, req.user);
-        var modPosts = postModeration(posts,req.user);
-        sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PA_50_profilePic = []; var k=0; var len = modPosts.length;
-        for(k;k<len;k++){
-          PA_50_profilePic[k] = cloudinary.url(modPosts[k].postAuthor.id.profilePicId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          hasVote[k] = voteCheck(req.user,modPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
-        }
-        var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-        res.render('posts/index',{hasVote, hasModVote, posts: modPosts, friendsPostUrl, foundPostIds,
-        CU_50_profilePic, PA_50_profilePic});
-      }
-      });
+      res.render('posts/index');
     } else{
       res.redirect('/discover');
     }
@@ -175,62 +113,9 @@ module.exports = {
 
   postsDiscover(req, res, next){
     if(req.user){
-      Post.find({privacy: 0, moderation: 0})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, discoverPosts){
-      if(err || !discoverPosts){
-        console.log(req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        var friendsPostUrl = false;
-        var foundPostIds = discoverPosts.map(function(post){
-          return post._id;
-        });
-        sortComments(discoverPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
-        for(k;k<len;k++){
-          PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-        }
-        var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-        res.render('posts/index',{hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds,
-        CU_50_profilePic, PC_50_clubAvatar});
-      }
-      });
+      res.render('posts/index');
     } else{
-      // posts made today where likes are great
-      Post.find({privacy: 0, moderation: 0})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, discoverPosts){
-      if(err || !discoverPosts){
-        console.log('(posts-6)discoverPosts err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        var friendsPostUrl = false;
-        var foundPostIds = discoverPosts.map(function(post){
-          return post._id;
-        });
-        sortComments(discoverPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
-        for(k;k<len;k++){
-          PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-        }
-        res.render('posts/index',{hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds,
-        PC_50_clubAvatar});
-      }
-      });
+      res.render('posts/index');
     }
   },
 
@@ -302,22 +187,54 @@ module.exports = {
   postsCreate(req, res, next){
     var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
     {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-    if(req.file){
-      if(req.body.privacy){
-        cloudinary.v2.uploader.upload(req.file.path,
-        {folder: 'postImages/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
-        function(err, result){
-        if(err){
-          console.log(req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+    var rank = currentRank2(req.params.club_id,req.user.userClubs);
+    // Only rank 0-3 can create a topic
+    if(((req.body.topic == '') && (0<=rank && rank<=4)) || ((req.body.topic != '') && (0<=rank && rank<4))){
+      if(req.file){
+        if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
+          cloudinary.v2.uploader.upload(req.file.path,
+          {folder: 'postImages/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
+          function(err, result){
+          if(err){
+            console.log(req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            req.body.image = result.secure_url;
+            req.body.imageId = result.public_id;
+            req.body.moderation = 1;
+            Post.create(req.body, function(err, newPost){
+            if(err || !newPost){
+              console.log(req.user._id+' => (posts-10)newPost err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              newPost.postClub = req.params.club_id;
+              newPost.postAuthor.id = req.user._id;
+              newPost.postAuthor.authorName = req.user.fullName;
+              newPost.save(function(err, newPost){
+              if(err || !newPost){
+                console.log(req.user._id+' => (posts-11)newPost err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                res.redirect('/clubs/'+req.params.club_id+'/posts/'+newPost._id);
+              }
+              });
+            }
+            });
+          }
+          });
         } else{
-          req.body.image = result.secure_url;
-          req.body.imageId = result.public_id;
+          req.flash('error', 'Please enter a valid post privacy setting');
+          return res.redirect('back');
+        }
+      } else{
+        if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           req.body.moderation = 1;
           Post.create(req.body, function(err, newPost){
           if(err || !newPost){
-            console.log(req.user._id+' => (posts-10)newPost err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (posts-12)newPost err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -326,7 +243,7 @@ module.exports = {
             newPost.postAuthor.authorName = req.user.fullName;
             newPost.save(function(err, newPost){
             if(err || !newPost){
-              console.log(req.user._id+' => (posts-11)newPost err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (posts-13)newPost err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -335,39 +252,14 @@ module.exports = {
             });
           }
           });
+        } else{
+          req.flash('error', 'Please enter a valid post privacy setting');
+          return res.redirect('back');
         }
-        });
-      } else{
-        req.flash('error', 'Please enter a valid post privacy setting.');
-        return res.redirect('back');
       }
     } else{
-      if(req.body.privacy){
-        req.body.moderation = 1;
-        Post.create(req.body, function(err, newPost){
-        if(err || !newPost){
-          console.log(req.user._id+' => (posts-12)newPost err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          newPost.postClub = req.params.club_id;
-          newPost.postAuthor.id = req.user._id;
-          newPost.postAuthor.authorName = req.user.fullName;
-          newPost.save(function(err, newPost){
-          if(err || !newPost){
-            console.log(req.user._id+' => (posts-13)newPost err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            res.redirect('/clubs/'+req.params.club_id+'/posts/'+newPost._id);
-          }
-          });
-        }
-        });
-      } else{
-        req.flash('error', 'Please enter a valid post privacy setting.');
-        return res.redirect('back');
-      }
+      req.flash('error', 'Not allowed.');
+      return res.redirect('back');
     }
   },
 
@@ -887,6 +779,15 @@ module.exports = {
 }
 
 //*************FUNCTIONS**************
+function currentRank2(clubId,userClubs){
+  var rank;
+  userClubs.forEach(function(club){
+    if(club.id.equals(clubId)){
+      rank = club.rank;
+    }
+  });
+  return rank;
+};
 
 function voteCheck(user,post){
   var i=0; var j=0; var k=0; var hasVote = 0;

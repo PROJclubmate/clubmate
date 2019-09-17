@@ -42,134 +42,106 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          // Server rendered posts(2)
-          Post.find({'postAuthor.id': req.params.id})
-          .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(5)
-          .exec(function(err, foundUserPosts){
-          if(err || !foundUserPosts){
-            console.log(req.user._id+' => (profiles-3)foundUserPosts err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            var currentUser = req.user;
-            var foundPostIds = foundUserPosts.map(function(post){
-              return post._id;
-            });
-            // Is conversation initiated/NOT../blocked?
-            var isBlocked = false, hasConversation = false, conversationId = '', recipientId = '';
-            if(foundUser.blockedUsers.length != 0){
-              for(var i=0;i<foundUser.blockedUsers.length;i++){
-                if(foundUser.blockedUsers[i].equals(req.user._id)){
-                  var isBlocked = true;
-                  break;
-                }
+          var currentUser = req.user;
+          // Is conversation initiated/NOT../blocked?
+          var isBlocked = false, hasConversation = false, conversationId = '', recipientId = '';
+          if(foundUser.blockedUsers.length != 0){
+            for(var i=0;i<foundUser.blockedUsers.length;i++){
+              if(foundUser.blockedUsers[i].equals(req.user._id)){
+                var isBlocked = true;
+                break;
               }
             }
-            // Javascript is synchronus right?
-            if(isBlocked == false){
-              if(foundUser.userChats.length != 0){
-                for(var i=0;i<foundUser.userChats.length;i++){
-                  if(foundUser.userChats[i].userId.equals(req.user._id)){
-                    var hasConversation = true;
-                    var conversationId = foundUser.userChats[i].conversationId;
-                    break;
-                  }
-                }
-              } else{hasConversation = false};
-            }
-            if(hasConversation == false){
-              var recipientId = foundUser._id;
-            }
-            // Match ~ if current user(cU) is logged in user(fU)
-            var match = false;
-            var userPosts = foundUserPosts;
-            var posts = postPrivacy(userPosts, req.user);
-            var modPosts = postModeration(posts,req.user);
-            sortComments(modPosts);
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], Clubs_50_clubAvatar = [];
-            var k=0; var len = modPosts.length;
-            for(k;k<len;k++){
-              PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-              hasVote[k] = voteCheck(req.user,modPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,posts[k]);
-            }
-            // requests(Friends/Club Invites)
-            var adminClubs = []; var clubInvites = []; var mutualClubs = [];
-            var fUcIlength = foundUser.clubInvites.length;
-            var fUuClength = foundUser.userClubs.length;
-            var cUuClength = currentUser.userClubs.length;
-            var sentRequest = contains(foundUser.friendRequests,currentUser._id);
-            var haveRequest = contains(currentUser.friendRequests,foundUser._id);
-            var isFriend = contains(currentUser.friends,foundUser._id);
-            var clubCount = foundUser.userClubs.length;
-            if(isFriend){
-              var clubs = foundUser.userClubs.sort(function(a, b) {
-                return parseFloat(a.rank) - parseFloat(b.rank);
-              });
-              // If friend, then show 10 server rendered clubs under Clubs Tab
-              var limitedClubs = clubs.slice(0,9);
-              for(var k=0;k<limitedClubs.length;k++){
-                Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
-                {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-              }
-            } else{
-              var clubs = [], Clubs_50_clubAvatar = [];
-            }
-            // cU userClubs loop
-            for(var i=0;i<cUuClength;i++){
-              var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
-              if(fUuClength != 0){
-                // fU userClubs loop
-                for(var j=0;j<fUuClength;j++){
-                  if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
-                    // MUTUAL CLUBS
-                    inClub = true;
-                    var objc = {};
-                    objc['_id'] = currentUser.userClubs[i].id;
-                    objc['name'] = currentUser.userClubs[i].clubName;
-                    mutualClubs.push(objc);
-                  }
-                }
-              } else if(fUuClength == 0){inClub = false};
-              for(var j=0;j<fUcIlength;j++){
-                if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
-                  isInvited = true;
-                  break;
-                }
-              }
-              // adminClubs ~ Clubs in which currUser has Admin priv. to INVITE foundUser
-              if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
-                var obja = {};
-                obja['_id'] = currentUser.userClubs[i].id;
-                obja['name'] = currentUser.userClubs[i].clubName;
-                adminClubs.push(obja);
-              }
-              // clubInvites ~ Clubs which foundUser has been invited to 'CANCEL INV'
-              if(fUcIlength != 0){
-                for(var j=0;j<fUcIlength;j++){
-                  var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
-                  for(var k=0;k<fUcIcUlength;k++){
-                    if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
-                    foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
-                    foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
-                      var objb = {};
-                      objb['_id'] = currentUser.userClubs[i].id;
-                      objb['name'] = currentUser.userClubs[i].clubName;
-                      clubInvites.push(objb);
-                    }
-                  }
-                }
-              }
-            }
-            return res.render('users/show', {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
-            user: foundUser, posts: modPosts, clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs,
-            conversationId,recipientId, foundPostIds, PC_50_clubAvatar, Clubs_50_clubAvatar, foundFriends,
-            clubCount});
           }
-          });
+          // Javascript is synchronus right?
+          if(isBlocked == false){
+            if(foundUser.userChats.length != 0){
+              for(var i=0;i<foundUser.userChats.length;i++){
+                if(foundUser.userChats[i].userId.equals(req.user._id)){
+                  var hasConversation = true;
+                  var conversationId = foundUser.userChats[i].conversationId;
+                  break;
+                }
+              }
+            } else{hasConversation = false};
+          }
+          if(hasConversation == false){
+            var recipientId = foundUser._id;
+          }
+          // Match ~ if current user(cU) is logged in user(fU)
+          var match = false;
+          // requests(Friends/Club Invites)
+          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          var fUcIlength = foundUser.clubInvites.length;
+          var fUuClength = foundUser.userClubs.length;
+          var cUuClength = currentUser.userClubs.length;
+          var sentRequest = contains(foundUser.friendRequests,currentUser._id);
+          var haveRequest = contains(currentUser.friendRequests,foundUser._id);
+          var isFriend = contains(currentUser.friends,foundUser._id);
+          var clubCount = foundUser.userClubs.length;
+          if(isFriend){
+            var clubs = foundUser.userClubs.sort(function(a, b) {
+              return parseFloat(a.rank) - parseFloat(b.rank);
+            });
+            var Clubs_50_clubAvatar = [];
+            // If friend, then show 10 server rendered clubs under Clubs Tab
+            var limitedClubs = clubs.slice(0,9);
+            for(var k=0;k<limitedClubs.length;k++){
+              Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
+              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            }
+          } else{
+            var clubs = [], Clubs_50_clubAvatar = [];
+          }
+          // cU userClubs loop
+          for(var i=0;i<cUuClength;i++){
+            var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
+            if(fUuClength != 0){
+              // fU userClubs loop
+              for(var j=0;j<fUuClength;j++){
+                if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                  // MUTUAL CLUBS
+                  inClub = true;
+                  var objc = {};
+                  objc['_id'] = currentUser.userClubs[i].id;
+                  objc['name'] = currentUser.userClubs[i].clubName;
+                  mutualClubs.push(objc);
+                }
+              }
+            } else if(fUuClength == 0){inClub = false};
+            for(var j=0;j<fUcIlength;j++){
+              if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
+                isInvited = true;
+                break;
+              }
+            }
+            // adminClubs ~ Clubs in which currUser has Admin priv. to INVITE foundUser
+            if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
+              var obja = {};
+              obja['_id'] = currentUser.userClubs[i].id;
+              obja['name'] = currentUser.userClubs[i].clubName;
+              adminClubs.push(obja);
+            }
+            // clubInvites ~ Clubs which foundUser has been invited to 'CANCEL INV'
+            if(fUcIlength != 0){
+              for(var j=0;j<fUcIlength;j++){
+                var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
+                for(var k=0;k<fUcIcUlength;k++){
+                  if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
+                  foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
+                  foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
+                    var objb = {};
+                    objb['_id'] = currentUser.userClubs[i].id;
+                    objb['name'] = currentUser.userClubs[i].clubName;
+                    clubInvites.push(objb);
+                  }
+                }
+              }
+            }
+          }
+          return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId,recipientId,
+          foundFriends, Clubs_50_clubAvatar, clubCount});
         }
         });
       }
@@ -197,113 +169,86 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          Post.find({'postAuthor.id': req.params.id})
-          .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(5)
-          .exec(function(err, foundUserPosts){
-          if(err || !foundUserPosts){
-            console.log(req.user._id+' => (profiles-6)foundUserPosts err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            var foundPostIds = foundUserPosts.map(function(post){
-              return post._id;
-            });
-            var currentUser = req.user;
-            var isBlocked = false, hasConversation = false, conversationId = '', recipientId = '';
-            if(foundUser.blockedUsers.length != 0){
-              for(var i=0;i<foundUser.blockedUsers.length;i++){
-                if(foundUser.blockedUsers[i].equals(req.user._id)){
-                  var isBlocked = true;
-                  break;
-                }
+          var currentUser = req.user;
+          var isBlocked = false, hasConversation = false, conversationId = '', recipientId = '';
+          if(foundUser.blockedUsers.length != 0){
+            for(var i=0;i<foundUser.blockedUsers.length;i++){
+              if(foundUser.blockedUsers[i].equals(req.user._id)){
+                var isBlocked = true;
+                break;
               }
             }
-            if(isBlocked == false){
-              if(foundUser.userChats.length != 0){
-                for(var i=0;i<foundUser.userChats.length;i++){
-                  if(foundUser.userChats[i].userId.equals(req.user._id)){
-                    var hasConversation = true;
-                    var conversationId = foundUser.userChats[i].conversationId;
-                    break;
-                  }
-                }
-              } else{hasConversation = false};
-            }
-            if(hasConversation == false){
-              var recipientId = foundUser._id;
-            }
-            var match = true;
-            var userPosts = foundUserPosts;
-            var posts = postPrivacy(userPosts, req.user);
-            var modPosts = postModeration(posts,req.user);
-            sortComments(modPosts);
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], Clubs_50_clubAvatar = [];
-            var k=0; var len = modPosts.length;
-            for(k;k<len;k++){
-              PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-              hasVote[k] = voteCheck(req.user,modPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,posts[k]);
-            }
-            var clubs = foundUser.userClubs.sort(function(a, b) {
-              return parseFloat(a.rank) - parseFloat(b.rank);
-            });
-            var limitedClubs = clubs.slice(0,9);
-            for(var k=0;k<limitedClubs.length;k++){
-              Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-            }
-            // requests
-            var adminClubs = []; var clubInvites = []; var mutualClubs = [];
-            var fUcIlength = foundUser.clubInvites.length;
-            var fUuClength = foundUser.userClubs.length;
-            var cUuClength = currentUser.userClubs.length;
-            var sentRequest = contains(foundUser.friendRequests,currentUser._id);
-            var haveRequest = contains(currentUser.friendRequests,foundUser._id);
-            var isFriend = contains(currentUser.friends,foundUser._id);
-            var clubCount = foundUser.userClubs.length;
-            for(var i=0;i<cUuClength;i++){
-              // adminClubs
-              var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
-              if(fUuClength != 0){
-                for(var j=0;j<fUuClength;j++){
-                  if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
-                    inClub = true;
-                    break;
-                  }
-                }
-              } else if(fUuClength == 0){inClub = false};
-              for(var j=0;j<fUcIlength;j++){
-                if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
-                  isInvited = true;
-                  break;
-                }
-              }
-              if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
-                adminClubs.push(currentUser.userClubs[i].id);
-              }
-              // clubInvites
-              if(fUcIlength != 0){
-                for(var j=0;j<fUcIlength;j++){
-                  var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
-                  for(var k=0;k<fUcIcUlength;k++){
-                    if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
-                    foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
-                    foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
-                      clubInvites.push(currentUser.userClubs[i].id);
-                    }
-                  }
-                }
-              }
-            }
-            return res.render("users/show", {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
-            user: foundUser, posts: modPosts, clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs,
-            conversationId, recipientId, foundPostIds, PC_50_clubAvatar, Clubs_50_clubAvatar, foundFriends,
-            clubCount});
           }
+          if(isBlocked == false){
+            if(foundUser.userChats.length != 0){
+              for(var i=0;i<foundUser.userChats.length;i++){
+                if(foundUser.userChats[i].userId.equals(req.user._id)){
+                  var hasConversation = true;
+                  var conversationId = foundUser.userChats[i].conversationId;
+                  break;
+                }
+              }
+            } else{hasConversation = false};
+          }
+          if(hasConversation == false){
+            var recipientId = foundUser._id;
+          }
+          var match = true;
+          var clubs = foundUser.userClubs.sort(function(a, b) {
+            return parseFloat(a.rank) - parseFloat(b.rank);
           });
+          var Clubs_50_clubAvatar = [];
+          var limitedClubs = clubs.slice(0,9);
+          for(var k=0;k<limitedClubs.length;k++){
+            Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
+            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          }
+          // requests
+          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          var fUcIlength = foundUser.clubInvites.length;
+          var fUuClength = foundUser.userClubs.length;
+          var cUuClength = currentUser.userClubs.length;
+          var sentRequest = contains(foundUser.friendRequests,currentUser._id);
+          var haveRequest = contains(currentUser.friendRequests,foundUser._id);
+          var isFriend = contains(currentUser.friends,foundUser._id);
+          var clubCount = foundUser.userClubs.length;
+          for(var i=0;i<cUuClength;i++){
+            // adminClubs
+            var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
+            if(fUuClength != 0){
+              for(var j=0;j<fUuClength;j++){
+                if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                  inClub = true;
+                  break;
+                }
+              }
+            } else if(fUuClength == 0){inClub = false};
+            for(var j=0;j<fUcIlength;j++){
+              if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
+                isInvited = true;
+                break;
+              }
+            }
+            if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
+              adminClubs.push(currentUser.userClubs[i].id);
+            }
+            // clubInvites
+            if(fUcIlength != 0){
+              for(var j=0;j<fUcIlength;j++){
+                var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
+                for(var k=0;k<fUcIcUlength;k++){
+                  if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
+                  foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
+                  foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
+                    clubInvites.push(currentUser.userClubs[i].id);
+                  }
+                }
+              }
+            }
+          }
+          return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId,recipientId,
+          foundFriends, Clubs_50_clubAvatar, clubCount});
         }
         });
       }
@@ -329,38 +274,12 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          Post.find({'postAuthor.id': req.params.id, privacy: 0, moderation: 0})
-          .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(5)
-          .exec(function(err, foundUserPosts){
-          if(err || !foundUserPosts){
-            console.log('(profiles-9)foundUserPosts err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            var foundPostIds = foundUserPosts.map(function(post){
-              return post._id;
-            });
-            var match = false;
-            var userPosts = foundUserPosts;
-            sortComments(userPosts);
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], Clubs_50_clubAvatar = [];
-            var k=0; var len = userPosts.length;
-            for(k;k<len;k++){
-              PC_50_clubAvatar[k] = cloudinary.url(userPosts[k].postClub.avatarId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-              hasVote[k] = voteCheck(req.user,userPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,userPosts[k]);
-            }
-            var clubCount = foundUser.userClubs.length;
-            var sentRequest = haveRequest = isFriend = false;
-            var adminClubs = []; var clubInvites = []; var mutualClubs = []; var hasVote = [];
-            return res.render("users/show", {haveRequest, sentRequest, isFriend, hasVote, hasModVote,
-            user: foundUser, posts: userPosts, match, adminClubs, clubInvites, mutualClubs, foundPostIds,
-            PC_50_clubAvatar, foundFriends, clubCount});
-          }
-          });
+          var match = false;
+          var clubCount = foundUser.userClubs.length;
+          var sentRequest = haveRequest = isFriend = false;
+          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          return res.render("users/show", {haveRequest, sentRequest, isFriend, user: foundUser, match, adminClubs,
+          clubInvites, mutualClubs, foundFriends, clubCount});
         }
         });
       }
@@ -728,103 +647,87 @@ module.exports = {
       return res.redirect('back');
     } else{
       if(req.user){
-        Post.find({postClub: req.params.club_id})
-        .populate({path: 'postAuthor.id', select: 'firstName fullName profilePic profilePicId'})
-        .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-        .sort({createdAt: -1}).limit(5)
-        .exec(function(err, clubPosts){
-        if(err || !clubPosts){
-          console.log(req.user._id+' => (profiles-22)clubPosts err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var foundPostIds = clubPosts.map(function(post){
-            return post._id;
-          });
-          var posts = postPrivacy(clubPosts, req.user);
-          var modPosts = postModeration(posts,req.user);
-          sortComments(modPosts);
-          var hasVote = [], hasModVote = [], PA_50_profilePic = [], Users_50_profilePic = [];
-          var k=0; var len = modPosts.length;
-          for(k;k<len;k++){
-            PA_50_profilePic[k] = cloudinary.url(modPosts[k].postAuthor.id.profilePicId,
-            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-            hasVote[k] = voteCheck(req.user,modPosts[k]);
-            hasModVote[k] = modVoteCheck(req.user,posts[k]);
-          }
-          var users = foundClub.clubUsers.sort(function(a, b){
-            return parseFloat(a.userRank) - parseFloat(b.userRank);
-          });
-          var limitedUsers = users.slice(0,1);
-          for(var k=0;k<limitedUsers.length;k++){
-            Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
-            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          }
-          var rank = currentRank(users,req.user._id);
-          if(0 <= rank && rank <= 4){
-            var conversationId = '', convClubId = '';
-            if(foundClub.conversationId){
-              var conversationId = foundClub.conversationId;
-            } else{var convClubId = foundClub._id;}
-          } else{foundClub.updates = '';}
-          // Make it for posts made in past week
-          Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
-          .select({topic: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1, postAuthor: 1, postClub: 1})
-          .sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
+        var users = foundClub.clubUsers.sort(function(a, b){
+          return parseFloat(a.userRank) - parseFloat(b.userRank);
+        });
+        var Users_50_profilePic = [], Posts_50_Image = [];
+        var limitedUsers = users.slice(0,1);
+        for(var k=0;k<limitedUsers.length;k++){
+          Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
+          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        }
+        var rank = currentRank(users,req.user._id);
+        if(0 <= rank && rank <= 4){
+          var conversationId = '', convClubId = '';
+          if(foundClub.conversationId){
+            var conversationId = foundClub.conversationId;
+          } else{var convClubId = foundClub._id;}
+        } else{foundClub.updates = '';}
+        if(0 <= rank && rank <= 4){
+          // for posts made in past week
+          Post.find({postClub: req.params.club_id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
+          .select({topic: 1, image: 1, imageId: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+          postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           console.log(req.user._id+' => (profiles-23)topTopicPosts err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
           } else{
             var modTopTopicPosts = postModeration(topTopicPosts,req.user);
-            res.render('clubs/show', {hasVote, hasModVote, posts: modPosts, rank, currentUser: req.user,
-            users: limitedUsers, conversationId, convClubId, foundPostIds, PA_50_profilePic, club: foundClub,
-            Users_50_profilePic, topTopicPosts: modTopTopicPosts});
+            for(var l=0;l<modTopTopicPosts.length;l++){
+              Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
+              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            }
+            res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
+            club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts});
           }
           });
-        }
-        });
-      } else{
-        Post.find({postClub: req.params.club_id, privacy: 0, moderation: 0})
-        .populate({path: 'postAuthor.id', select: 'firstName fullName profilePic profilePicId'})
-        .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-        .sort({createdAt: -1}).limit(5)
-        .exec(function(err, clubPosts){
-        if(err || !clubPosts){
-          console.log('(profiles-24)clubPosts err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
         } else{
-          var foundPostIds = clubPosts.map(function(post){
-            return post._id;
-          });
-          var posts = clubPosts;
-          sortComments(posts);
-          var hasVote = [], hasModVote = [], PA_50_profilePic = [], Users_50_profilePic = [];
-          var k=0; var len = posts.length;
-          for(k;k<len;k++){
-            PA_50_profilePic[k] = cloudinary.url(posts[k].postAuthor.id.profilePicId,
+          console.log('NINOOOOOOOOO')
+          res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
+          club: foundClub, Users_50_profilePic, Posts_50_Image: [], topTopicPosts: []});
+        }
+      } else{
+        var PA_50_profilePic = [], Users_50_profilePic = [];
+        var users = foundClub.clubUsers.sort(function(a, b) {
+          return parseFloat(a.userRank) - parseFloat(b.userRank);
+        });
+        var limitedUsers = users.slice(0,1);
+        for(var k=0;k<limitedUsers.length;k++){
+          Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
+          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        }
+        var rank, currentUser = null; var topTopicPosts = [];
+        foundClub.updates = '';
+        res.render('clubs/show', {currentUser, rank, users: limitedUsers, club: foundClub, topTopicPosts,
+        PA_50_profilePic, Users_50_profilePic});
+      }
+    }
+    });
+  },
+
+  profilesCluballTimeTopPosts(req, res, next){
+    if(req.user){
+      var rank = currentRank2(req.params.club_id,req.user.userClubs);
+      if(0<=rank && rank<=4){
+        var Posts_50_Image = [];
+        Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
+        .select({topic: 1, image: 1, imageId: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+        postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
+        if(err || !topTopicPosts){
+        console.log(req.user._id+' => (profiles-25)topTopicPosts err:- '+JSON.stringify(err, null, 2));
+        return res.sendStatus(500);
+        } else{
+          var modTopTopicPosts = postModeration(topTopicPosts,req.user);
+          for(var l=0;l<modTopTopicPosts.length;l++){
+            Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
             {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-            hasVote[k] = voteCheck(req.user,posts[k]);
-            hasModVote[k] = modVoteCheck(req.user,posts[k]);
           }
-          var users = foundClub.clubUsers.sort(function(a, b) {
-            return parseFloat(a.userRank) - parseFloat(b.userRank);
-          });
-          var limitedUsers = users.slice(0,1);
-          for(var k=0;k<limitedUsers.length;k++){
-            Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
-            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-          }
-          var rank, currentUser = null; var topTopicPosts = [];
-          foundClub.updates = '';
-          res.render('clubs/show', {hasVote, hasModVote, posts, currentUser, rank, users: limitedUsers,
-          club: foundClub, foundPostIds, topTopicPosts, PA_50_profilePic, Users_50_profilePic});
+          res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts});
         }
         });
       }
     }
-    });
   },
 
   profilesClubMoreMembers(req, res, next){
@@ -832,7 +735,7 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-25)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-26)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.user){
@@ -865,31 +768,35 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-26)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-27)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.user){
-        if(req.query.name && req.query.name != ''){
-          var matchingUsers = []; var Users_50_profilePic = [];
-          var rank = currentRank(foundClub.clubUsers,req.user._id);
-          var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
-          var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
-          for(var i=0;i<foundClub.clubUsers.length;i++){
-            // JS test() returns false for next iteration(matches only once??)
-            // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
-            var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
-            if(match){
-              matchingUsers.push(foundClub.clubUsers[i]); 
+        var rankUsers = foundClub.clubUsers;
+        var junior = checkRank(rankUsers,req.user._id,4);
+        if(junior == true){
+          if(req.query.name && req.query.name != ''){
+            var matchingUsers = []; var Users_50_profilePic = [];
+            var rank = currentRank(foundClub.clubUsers,req.user._id);
+            var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
+            var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
+            for(var i=0;i<foundClub.clubUsers.length;i++){
+              // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
+              var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
+              if(match){
+                matchingUsers.push(foundClub.clubUsers[i]); 
+              }
             }
+            for(var j=0;j<matchingUsers.length;j++){
+                Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
+                {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+              }
+            res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
+          } else{
+            return res.sendStatus(400);
           }
-          for(var j=0;j<matchingUsers.length;j++){
-              Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
-            }
-          res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
         } else{
-          req.flash('error', 'Please enter a valid member name');
-          return res.redirect('back');
+          return res.sendStatus(204);
         }
       }
     }
@@ -911,7 +818,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log(req.user._id+' => (profiles-27)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (profiles-28)clubPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
@@ -947,7 +854,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log('(profiles-28)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log('(profiles-29)clubPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
@@ -974,7 +881,7 @@ module.exports = {
   profilesUpdateClubProfile(req, res, next){
     Club.findById(req.params.club_id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log(req.user._id+' => (profiles-29)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(req.user._id+' => (profiles-30)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1000,7 +907,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
           {$push: {clubUpdates: userUpdate}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (profiles-31)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1019,7 +926,7 @@ module.exports = {
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
           }catch(err){
-            console.log(req.user._id+' => (profiles-31)avatarUpload err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (profiles-32)avatarUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1038,7 +945,7 @@ module.exports = {
                   $set: {'clubUpdates.$': update}
                 }, function(err, foundUser){
                   if(err || !foundUser){
-                    console.log(req.user._id+' => (profiles-32)foundUser err:- '+JSON.stringify(err, null, 2));
+                    console.log(req.user._id+' => (profiles-33)foundUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1171,7 +1078,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
           {$set: {'userClubs.$.clubName': req.body.name}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-33)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (profiles-34)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1184,7 +1091,7 @@ module.exports = {
         req.flash('success', 'Successfully updated');
         res.redirect('/clubs/' + req.params.club_id);
       } else{
-        console.log(req.user._id+' => (profiles-34)rankCheck fail :Update Club');
+        console.log(req.user._id+' => (profiles-35)rankCheck fail :Update Club');
         req.flash('error', "You don't have enough admin privileges :(");
         return res.redirect('back');
       }
@@ -1195,7 +1102,7 @@ module.exports = {
   profilesDeleteClubProfile(req, res, next){
     // Club.findById(req.params.club_id, async function(err, foundClub){
     // if(err || !foundClub){
-    //   console.log(req.user._id+' => (profiles-35)foundClub err:- '+JSON.stringify(err, null, 2));
+    //   console.log(req.user._id+' => (profiles-36)foundClub err:- '+JSON.stringify(err, null, 2));
     //   req.flash('error', 'Something went wrong :(');
     //   return res.redirect('back');
     // } else{
@@ -1220,7 +1127,7 @@ module.exports = {
   profilesGetUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-37)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1235,7 +1142,7 @@ module.exports = {
   profilesUpdateUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, async function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-37)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-38)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1293,7 +1200,7 @@ module.exports = {
   profilesGetClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-38)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-39)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1308,7 +1215,7 @@ module.exports = {
   profilesUpdateClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-39)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-40)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1381,7 +1288,7 @@ module.exports = {
     if(req.body.password.match(pass)){
       User.register(newUser, req.body.password, function(err, user){
       if(err || !user){
-        console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));
+        console.log('(profiles-41)user err:- '+JSON.stringify(err, null, 2));
         if(err.code == 11000 || err.name == 'UserExistsError'){
           req.flash('error', 'A user with the given email is already registered');
         } else{
@@ -1394,7 +1301,7 @@ module.exports = {
 
         // Save the verification token
         token.save(function(err){
-          if(err){return console.log('(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log('(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
 
           // Send the email
           var smtpTransport = nodemailer.createTransport({
@@ -1447,7 +1354,7 @@ module.exports = {
         // Verify and save the user
         user.verified = true;
         user.save(function(err){
-          if(err){return console.log('(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log('(profiles-43)user err:- '+JSON.stringify(err, null, 2));}
           // res.status(200).send("The account has been verified. Please log in.");
           console.log(user._id+' <= VERIFIED '+user.fullName);
           req.flash('success', 'Thank you for verification, you may now log in :)');
@@ -1476,7 +1383,7 @@ module.exports = {
 
       // Save the verification token
       token.save(function (err){
-        if(err){return console.log('(profiles-43)user err:- '+JSON.stringify(err, null, 2));}
+        if(err){return console.log('(profiles-44)user err:- '+JSON.stringify(err, null, 2));}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1535,7 +1442,7 @@ module.exports = {
       function(token, done){
         User.findOne({email: req.body.email}, function(err, user){
         if(err || !user){
-          console.log('(profiles-44)forgot err:- '+JSON.stringify(err, null, 2));
+          console.log('(profiles-45)forgot err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         } else{
@@ -1578,7 +1485,7 @@ module.exports = {
   profilesForgotToken(req, res, next){
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
     if (err || !user){
-      console.log('(profiles-45)token invalid err:- '+JSON.stringify(err, null, 2));
+      console.log('(profiles-46)token invalid err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     } else{
@@ -1592,7 +1499,7 @@ module.exports = {
       function(done){
         User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
         if(err || !user){
-          console.log('(profiles-46)token invalid err:- '+JSON.stringify(err, null, 2));
+          console.log('(profiles-47)token invalid err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Password reset token is invalid or has expired.');
           return res.redirect('back');
         } else{
@@ -1608,7 +1515,7 @@ module.exports = {
               });
             })
           } else{
-            console.log('(profiles-47)pass dont match err:- '+JSON.stringify(err, null, 2));
+            console.log('(profiles-48)pass dont match err:- '+JSON.stringify(err, null, 2));
             req.flash("error", "Passwords do not match.");
             return res.redirect('back');
           }

@@ -7,8 +7,8 @@ window.onscroll = function(){
     document.getElementById("pop_box").style.top = "40px";
   } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
     document.getElementById("navbar").style.top = "0px";
-    document.getElementById("pop_box").style.top = "43px";
-  } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 43){
+    document.getElementById("pop_box").style.top = "42px";
+  } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
     document.getElementById("navbar").style.top = "-40px";
     document.getElementById("pop_box").style.top = "-600px";
   } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){

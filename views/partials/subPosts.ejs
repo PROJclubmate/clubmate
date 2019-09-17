@@ -97,14 +97,19 @@
               <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
+              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %> <em class="lightgrey text-xxxs">(UTC)</em></div>
               <div class="dropdown ml-auto">
                 <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>
                       <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket._id %>" method="GET">
-                        <button class="dropitems2 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                        <button class="dropitems pl-3 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                      </form>
+                    </li>
+                    <li>
+                      <form class="delete-form inline" action="" method="POST">
+                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate</button>
                       </form>
                     </li>
                   </div>

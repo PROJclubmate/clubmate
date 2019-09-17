@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 	<% if(!filter){ %>
-		<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+		<div class="mt-2 ml-2 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<% } else{ %>
-		<div class="ml-2 lineheight">Search results for <strong>(</strong>
+		<div class="mt-2 ml-2 mobiletext lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.users){ %>
 				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span>
 			<% } %>
@@ -64,7 +64,7 @@
 			      <br>
 			      <div class="valign">
 			      	<div>
-				      	<div class="text-sm boldtext darkgrey"><%= users[k].userKeys.college %></div>
+				      	<div class="text-sm mobilebold darkgrey"><%= users[k].userKeys.college %></div>
 				      	<% if(users[k].userKeys){ %>
 				      		<% if(users[k].userKeys.college){ %>
 					      		<div class="lightgrey text-xs">
@@ -80,7 +80,7 @@
 						    <% } %>
 					    </div>
 					    <% if(users[k].userKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right ml-1" style="max-width: 35%;"><%= users[k].userKeys.residence %></div>
+				      	<div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= users[k].userKeys.residence %></div>
 				      <% } %>
 				    </div>
 			    </div>
@@ -113,23 +113,25 @@
 	</div>
 	<div class="col-lg-3 px-2">
 		<br class="mobileNone">
-    <div class="mx-2 text-sm boldtext">Search user by email:</div>
-		<form action="/find_email/search" method="GET" class="form-signin">
-      <div class="input-group input-group-sm">
-        <input type="email" name="email" class="form-control search" placeholder="simon@riley.com" autofocus required>
-        <div class="input-group-append">
-          <button class="btn btn-secondary search" type="submit">
-            Go
-          </button>
-        </div>
-      </div>
-    </form>
+		<div id="user_email" style="display: block;">
+	    <div class="mx-2 text-sm boldtext">Search user by email:</div>
+			<form  action="/find_email/search" method="GET" class="form-signin">
+	      <div class="input-group input-group-sm">
+	        <input type="email" name="email" class="form-control search" placeholder="simon@riley.com" autofocus required>
+	        <div class="input-group-append">
+	          <button class="btn btn-secondary search" type="submit">
+	            Go
+	          </button>
+	        </div>
+	      </div>
+	    </form>
+	  </div>
     <span><i class="fas fa-filter ml-2"></i></span>
-    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter')">Filter search</button></span>
+    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter'); toggle_display('user_email');">Filter search</button></span>
     <% if(query){ %>
     	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
     <% } else{ %>
-    	<form id="user_filter" style="display: block;" class="form-signin" action="/find_people/filter_search" method="GET">
+    	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
     <% } %>
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>">

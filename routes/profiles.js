@@ -3,10 +3,10 @@ const express  = require('express'),
   middleware   = require('../middleware'),
   {upload}     = require('../public/js/cloudinary.js'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
-  profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesClubMoreMembers,
-	profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetUsersFeaturedPhotos,
-	profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos, profilesUpdateClubsFeaturedPhotos,
-	profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify, profilesVerificationToken,
+  profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
+  profilesClubMoreMembers, profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile,
+  profilesGetUsersFeaturedPhotos, profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos,
+  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify, profilesVerificationToken,
 	profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken,
 	profilesResetPass, profilesClubSearchMembers} = require('../controllers/profiles');
   
@@ -31,6 +31,9 @@ router.post('/users/:id/clubs', middleware.checkAccountOwnership, upload.single(
 
 // Show club profile
 router.get('/clubs/:club_id', profilesClubProfile);
+
+// Load all time top topic posts(AJAX)
+router.get('/clubs-allTimeTopTopicPosts/:club_id', profilesCluballTimeTopPosts);
 
 // Load club members(AJAX)
 router.get('/clubs-moreMembers/:club_id', profilesClubMoreMembers);

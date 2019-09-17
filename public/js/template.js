@@ -1,8 +1,8 @@
 if(location.pathname == '/home'){
   // Client side rendering
-  // window.onload=function(){
-  //   document.getElementById('load-more-btn').click();
-  // };
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -16,17 +16,21 @@ if(location.pathname == '/home'){
         if(arr && arr != '' && response.arrLength){
           // If server + client side rendering is used
           if($('#load-more-btn').val() != ''){
-            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+          //   $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+          //   var div = document.getElementById('client-posts');
+          //   div.innerHTML += index_posts_template(response);
+          // Only client side rendering
+          $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
+          var div = document.getElementById('client-posts');
+          div.innerHTML += index_posts_template(response);
+          } else{
+            // $('#load-more-btn').removeClass('invisible');
+            $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
-          } else{
-            $('#load-more-btn').val(arr);
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-          // Only client side rendering
-          // $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          // var div = document.getElementById('client-posts');
-          // div.innerHTML += index_posts_template(response);
+          
         } else{
           $('#load-more-btn').addClass('nodisplay');
         }
@@ -37,6 +41,9 @@ if(location.pathname == '/home'){
 }
 
 if(location.pathname == '/friends_posts'){
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -54,6 +61,8 @@ if(location.pathname == '/friends_posts'){
             div.innerHTML += index_posts_template(response);
           } else{
             $('#load-more-btn').val(arr);
+            var div = document.getElementById('client-posts');
+            div.innerHTML += index_posts_template(response);
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
@@ -66,6 +75,9 @@ if(location.pathname == '/friends_posts'){
 }
 
 if(location.pathname == '/discover'){
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -83,6 +95,8 @@ if(location.pathname == '/discover'){
             div.innerHTML += index_posts_template(response);
           } else{
             $('#load-more-btn').val(arr);
+            var div = document.getElementById('client-posts');
+            div.innerHTML += index_posts_template(response);
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
@@ -92,10 +106,13 @@ if(location.pathname == '/discover'){
       }
     });
   });
-}
+} 
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -113,6 +130,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             div.innerHTML += club_posts_template(response);
           } else{
             $('#load-more-btn').val(arr);
+            var div = document.getElementById('client-posts');
+            div.innerHTML += club_posts_template(response);
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
@@ -154,6 +173,24 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     }
   });
 
+  $('#alltime-posts-btn').on('click', function(e){
+    if(!$('#alltime-posts-btn').hasClass('done')){
+      $.ajax({
+        type: 'GET',
+        url: '/clubs-allTimeTopTopicPosts/'+location.pathname.split('/')[2],
+        timeout: 3000,
+        success: function (response){
+          var arr = response.topTopicPosts.length;
+          if(arr && arr > 0){
+            var div = document.getElementById('alltime');
+            div.innerHTML = allTimeTopTopicPosts_template(response);
+            $('#alltime-posts-btn').addClass('done');
+          }
+        }
+      });
+    }
+  });
+
   $('#load-more-members-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-members-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -185,9 +222,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       url: '/clubs-searchMembers/'+location.pathname.split('/')[2],
       data: {name: $('#search-members-input').val()},
       timeout: 3000,
-      success: function (response){
-        var arr = response.users;
-        if(arr && arr != ''){
+      success: function (response, textStatus, xhr){
+        if(xhr.status == 200 && response.users && response.users != ''){
           var div = document.getElementById('server-members');
           div.innerHTML = moreMembers_template(response);
           $('#load-more-members-btn').addClass('nodisplay');
@@ -195,7 +231,13 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           $('#client-members').addClass('nodisplay');
         } else{
           var div = document.getElementById('server-members');
-          div.innerHTML = `<div class="text-center lightgrey text-sm">No matching names found</div>`
+          if(xhr.status == 200){
+            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">No matching names found</div>`
+          } else if(xhr.status == 400){
+            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">Please enter a valid member name</div>`
+          } else if(xhr.status == 204){
+            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>`
+          }
           $('#load-more-members-btn').addClass('nodisplay');
           $('#server-members').addClass('mt-2');
           $('#client-members').addClass('nodisplay');
@@ -208,6 +250,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  window.onload=function(){
+    document.getElementById('load-more-btn').click();
+  };
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -225,6 +270,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             div.innerHTML += user_posts_template(response);
           } else{
             $('#load-more-btn').val(arr);
+            var div = document.getElementById('client-posts');
+            div.innerHTML += user_posts_template(response);
           }
         } else{
           $('#load-more-btn').addClass('nodisplay');
@@ -575,16 +622,16 @@ function load_prevClubMsgs_template(response){
 function index_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <hr>
+  <!-- <hr> -->
   <div class="card">
     <div class="card-body">
       <div class="dropctn">
         <div class="valign">
           <div>
             <% if(!friendsPostUrl){ %>
-              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
             <% } else{ %>
-              <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
+              <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
             <% } %>
           </div>
           <div>
@@ -886,6 +933,7 @@ function index_posts_template(response){
       </div>
     </div>
   <% }; %>
+  <hr>
 <% }; %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   friendsPostUrl: response.friendsPostUrl, currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
@@ -896,13 +944,13 @@ function index_posts_template(response){
 function club_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <hr>
+  <!-- <hr> -->
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
         <div class="valign">
           <div>
-            <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
+            <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
           </div>
           <div class="lineheight2">
             <div>
@@ -1215,6 +1263,7 @@ function club_posts_template(response){
       </div>
     </div>
   <% }; %>
+  <hr>
 <% }; %>
 
 <%
@@ -1233,13 +1282,13 @@ function privacyText(privacy){
 function user_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <hr>
+  <!-- <hr> -->
   <div class="card noborder">
     <div class="card-body">
       <div class="dropctn">
         <div class="valign lineheight">
           <div>
-            <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+            <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
           </div>
           <div class="lineheight2">
             <div>
@@ -1529,6 +1578,7 @@ function user_posts_template(response){
       </div>
     </div>
   <% }; %>
+  <hr>
 <% }; %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, match: response.match,
   currentUser: response.currentUser, PC_50_clubAvatar: response.PC_50_clubAvatar, CU_50_profilePic: response.CU_50_profilePic});
@@ -1546,7 +1596,7 @@ function heart_posts_template(response){
       <div class="dropctn">
         <div class="valign lineheight">
           <div>
-            <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
+            <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
           </div>
           <div class="lineheight2">
             <div>
@@ -2034,7 +2084,12 @@ function post_subPosts_template(response){
                   <div class="container drop-shadow1">
                     <li>
                       <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket[0]._id %>" method="GET">
-                        <button class="dropitems2 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                        <button class="dropitems pl-3 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                      </form>
+                    </li>
+                    <li>
+                      <form class="delete-form inline" action="" method="POST">
+                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate</button>
                       </form>
                     </li>
                   </div>
@@ -2239,6 +2294,33 @@ function moreMembers_template(response){
 %>
 `,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, newEndpoints: response.newEndpoints,
   clubId: response.clubId, rank: response.rank});
+  return html;
+}
+
+function allTimeTopTopicPosts_template(response){
+  html = ejs.render(`
+<% if(topTopicPosts.length != 0){ %>
+  <% for(var i=0;i<topTopicPosts.length;i++){ %>
+  <div class="valign">
+    <div class="valign">
+      <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
+        <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+      <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
+        <div>
+          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="orgdp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
+        </div>
+        <div>
+          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+        </div>
+      <% } %>
+    </div>
+    <div class="mb-auto ml-2 mt-1 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
+  </div>
+  <% } %>
+<% } else{ %>
+  <div class="lightgrey mobiletext2">No discussions created yet :/</div>
+<% } %>
+`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image});
   return html;
 }
 

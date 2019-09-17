@@ -2,12 +2,12 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
-	<div class="ml-2">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+	<div class="ml-2 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<div id="server-search-org_pages">
 		<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
 			<div class="card searchcard2">
 				<div class="d-flex flex-row">
-			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+			    <div class="card-body3 lineheight1 fullwidth" style="overflow: hidden;">
 			    	<div class="valign organization-light p-2">
 				    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
 				      	<span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
@@ -15,8 +15,8 @@
 					  </div>
 					  <br>
 			      <div class="darkgrey text-sm text-right">
-			      	<span>[<span class="boldtext text-lg"><%= org_pages[k].clubCount %></span> clubs</span>
-			      	<span><span class="boldtext redcolor text-lg"><%= org_pages[k].userCount %></span> users]</span>
+			      	<span>[<span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
+			      	<span><span class="boldtext redcolor text-md"><%= org_pages[k].userCount %></span> users]</span>
 			      </div>
 			    </div>
 			  </div>
