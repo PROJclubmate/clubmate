@@ -60,15 +60,15 @@ div.content {
 }
 @media screen and (max-width: 767px){
   .navbar{box-shadow: none;}
-  .navbar-toggler{padding: 0.25rem 0.5rem !important;}
+  .navbar-toggler{border-color: #a7d9b5 !important; padding: 0.25rem 0.5rem !important;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{
-    color: #666666 !important;
+    color: #50b46c !important;
     font-size: 1.5rem;
     font-weight: 900;
-    -webkit-text-fill-color: #666666;
+    -webkit-text-fill-color: #50b46c;
     -webkit-text-stroke-width: 0.75px;
-    -webkit-text-stroke-color: #4e4f52;
+    -webkit-text-stroke-color: #19a86e;
   }
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
