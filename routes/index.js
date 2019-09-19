@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexRoot, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
+  {indexRoot, indexHelp, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
   indexSearchMoreClubs, indexRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople,
   indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchOrgPages,
   indexSearchMoreOrgPages, indexViewOrgPage} = require('../controllers/index');
@@ -10,6 +10,9 @@ const express  = require('express'),
 
 // Root(Landing) page
 router.get('/', indexRoot);
+
+// Help page
+router.get('/help', indexHelp);
 
 // Search
 router.get('/search', indexSearch);

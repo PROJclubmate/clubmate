@@ -18,6 +18,10 @@ module.exports = {
     }
   },
 
+  indexHelp(req, res, next){
+    res.render('help');
+  },
+
   indexSearch(req, res, next){
     const query = req.query.search;
     User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="theme-color" content="#222428">
-    <meta name="msapplication-navbutton-color" content="#222428">
+    <meta name="theme-color" content="#4aac71">
+    <meta name="msapplication-navbutton-color" content="#4aac71">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#222428">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#4aac71">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>clubmate</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -51,7 +51,7 @@
         <ul class="navbar-nav navbar-right">
           <% if(!currentUser){ %>
             <li class="nav-item">
-              <span id="help_offline" class="text-lg nav-link requests" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></span>
+              <a href="/help" id="help_offline" class="text-lg nav-link requests" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
               <a href="/login" class="nav-link">Login</a>
@@ -61,7 +61,7 @@
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <span id="help_online" class="text-lg nav-link requests" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></span>
+              <a href="/help" id="help_online" class="text-lg nav-link requests" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item">
               <span id="notification" class="text-lg nav-link requests" title="Inbox 'Coming soon'" onclick="toggle_requests('notification');"><i class="fas fa-envelope"></i></span>
