@@ -24,7 +24,7 @@ if(location.pathname == '/home'){
           var div = document.getElementById('client-posts');
           div.innerHTML += index_posts_template(response);
           } else{
-            // $('#load-more-btn').removeClass('invisible');
+            $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
@@ -60,6 +60,7 @@ if(location.pathname == '/friends_posts'){
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
           } else{
+            $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
@@ -94,6 +95,7 @@ if(location.pathname == '/discover'){
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
           } else{
+            $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += index_posts_template(response);
@@ -129,6 +131,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             var div = document.getElementById('client-posts');
             div.innerHTML += club_posts_template(response);
           } else{
+            $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += club_posts_template(response);
@@ -269,6 +272,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             var div = document.getElementById('client-posts');
             div.innerHTML += user_posts_template(response);
           } else{
+            $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
             div.innerHTML += user_posts_template(response);
@@ -622,8 +626,11 @@ function load_prevClubMsgs_template(response){
 function index_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <!-- <hr> -->
-  <div class="card">
+  <% if(posts[k].topic == ''){ %>
+    <div class="card">
+  <% } else{ %>
+    <div class="card topic-body">
+  <% } %>
     <div class="card-body">
       <div class="dropctn">
         <div class="valign">
@@ -944,8 +951,11 @@ function index_posts_template(response){
 function club_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <!-- <hr> -->
-  <div class="card noborder">
+  <% if(posts[k].topic == ''){ %>
+    <div class="card noborder">
+  <% } else{ %>
+    <div class="card noborder topic-body">
+  <% } %>
     <div class="card-body">
       <div class="dropctn">
         <div class="valign">
@@ -1282,8 +1292,11 @@ function privacyText(privacy){
 function user_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <!-- <hr> -->
-  <div class="card noborder">
+  <% if(posts[k].topic == ''){ %>
+    <div class="card noborder">
+  <% } else{ %>
+    <div class="card noborder topic-body">
+  <% } %>
     <div class="card-body">
       <div class="dropctn">
         <div class="valign lineheight">
@@ -1588,10 +1601,11 @@ function user_posts_template(response){
 function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
-  <% if(l!=0){ %>
-    <hr>
-  <% }; %>
-  <div class="card noborder">
+  <% if(posts[k].topic == ''){ %>
+    <div class="card noborder">
+  <% } else{ %>
+    <div class="card noborder topic-body">
+  <% } %>
     <div class="card-body">
       <div class="dropctn">
         <div class="valign lineheight">
@@ -1878,6 +1892,7 @@ function heart_posts_template(response){
       </div>
     </div>
   <% }; %>
+  <hr>
 <% }; %>
 `,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, match: response.match,
   currentUser: response.currentUser, PC_50_clubAvatarH: response.PC_50_clubAvatarH, CU_50_profilePicH: response.CU_50_profilePicH});

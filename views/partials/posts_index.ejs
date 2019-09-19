@@ -1,8 +1,9 @@
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
-  <% if(k!=0){ %>
-    <hr>
+  <% if(posts[k].topic == ''){ %>
+    <div class="card">
+  <% } else{ %>
+    <div class="card topic-body">
   <% } %>
-  <div class="card">
     <div class="card-body">
       <div class="dropctn">
         <div class="valign">
@@ -310,4 +311,5 @@
       </div>
     </div>
   <% }; %>
+  <hr>
 <% }; %>

@@ -268,10 +268,12 @@
                     <div class="mb-auto ml-2 mt-1 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
                   </div>
                   <% } %>
-                <% } else if(rank >= 0 && rank <=4){ %>
+                <% } else if(currentUser && (rank >= 0 && rank <=4)){ %>
                   <div class="lightgrey mobiletext2">No discussions created this week :/</div>
-                <% } else{ %>
+                <% } else if(currentUser && rank == undefined){ %>
                   <div class="lightgrey mobiletext2">You are not a club member :/</div>
+                <% } else if(!currentUser && rank == undefined){ %>
+                  <div class="lightgrey mobiletext2">You are not logged in.</div>
                 <% } %>
               </div>
               <div class="card-body3 tab-pane container fade" id="alltime">...</div>
@@ -313,10 +315,10 @@
                     <form class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="start new discussion [topic]">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]">
                       <% } else{ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input type="text" name="topic" class="form-control topic2" placeholder="start new discussion [topic]" readonly="readonly" value="" style="border: none;">
+                        <input type="text" name="topic" class="form-control topic2" placeholder="discussion [topic]" readonly="readonly" value="" style="border: none;">
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
@@ -362,7 +364,7 @@
                   </div>
                   <div id="client-posts"></div>
                   <div class="text-center pt-2">
-                    <button id="load-more-btn" class="btn btn-light btn-sm" type="button" value="<%= //foundPostIds %>">
+                    <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
                       <span id="load-more-span"></span>Load
                     </button>
                   </div>
@@ -522,7 +524,7 @@
       <div class="card m-0">
         <div class="card-body">
           <div class="lightgrey lineheight text-sm">
-            <i class="fas fa-info-circle orangecolor"></i> You are not a member of this club, ask for an invite to participate in exclusive content & discussions ;)
+            <i class="fas fa-info-circle orangecolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
           </div>
         </div>
       </div>

@@ -683,7 +683,6 @@ module.exports = {
           }
           });
         } else{
-          console.log('NINOOOOOOOOO')
           res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
           club: foundClub, Users_50_profilePic, Posts_50_Image: [], topTopicPosts: []});
         }
