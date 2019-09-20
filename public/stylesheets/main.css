@@ -116,7 +116,7 @@ div.content {
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; text-shadow: none !important;}
-  .helppad{padding: 0 0.5rem;}
+  .helppad{padding: 0 0.75rem;}
 }
 /* MIN WIDTH */
 @media screen and (min-width: 1200px){
@@ -336,6 +336,9 @@ label{
 input{
   background-color: lightgrey;
   width: inherit;
+}
+.underline {
+  text-decoration: underline;
 }
 /* Card styles 
 ------------------------------------------------------*/
