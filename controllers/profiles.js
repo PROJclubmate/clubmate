@@ -140,7 +140,7 @@ module.exports = {
             }
           }
           return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
-          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId,recipientId,
+          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
           foundFriends, Clubs_50_clubAvatar, clubCount});
         }
         });

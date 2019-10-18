@@ -2,9 +2,15 @@
   <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left card-body3 valign" data-toggle="collapse" data-target="#chatbox">
     <div class="text-sm mobilebold">Club chat</div>
     <div class="boldtext text-xxxs ml-2">
-      <svg height="12" width="12">
-        <circle cx="6" cy="6" r="4" stroke="#d6d6d6" stroke-width="1" fill="#d6d6d6" />
-      </svg>
+      <% if(conversationId && conversationId != ''){ %>
+        <svg height="12" width="12">
+          <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
+        </svg>
+      <% } else{ %>
+        <svg height="12" width="12">
+          <circle cx="6" cy="6" r="4" stroke="darkgrey" stroke-width="1" fill="#e0e0e0"/>
+        </svg>
+      <% } %>
     </div>
   </div>
   <div id="chatbox" class="yellowback collapse">

@@ -20,7 +20,7 @@
             <div class="lineheight2">
               <div class="mobiletext2">
                 <span>
-                  <a href="/clubs/<%= post.postClub._id %>" class="green"><strong><%= post.postClub.name %></strong></a>
+                  <a href="/clubs/<%= post.postClub._id %>" class="lightgrey"><strong><%= post.postClub.name %></strong></a>
                 </span>
                 <i class="fas fa-caret-left lightgrey"></i>
                 <span>
@@ -282,8 +282,8 @@
                     <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow" name="text" placeholder="Add sub-post" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
-                    <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                     <button class="btn btn-success subpostbtn btnxs text-sm ml-2 mt-2">Submit</button>
+                    <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                     <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                       <i class="fas fa-upload"></i> Image(s)
                     </label>
@@ -323,8 +323,8 @@
                 <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-success commentbtn btnxs mt-2">Submit</button>
+                <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
             </form>
           </div>

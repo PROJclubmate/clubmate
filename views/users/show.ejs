@@ -557,7 +557,7 @@
             <!-- Clubs Tab -->
             <div class="tab-pane fade cardpad" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
               <hr>
-              <div class="greyback valign my-auto">
+              <div class="greyback valign my-auto hr1">
                 <div class="d-flex flex-row">
                   <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>
@@ -598,7 +598,6 @@
                   </div>
                 </form>
               </div>
-              <hr>
               <% if((isFriend || match) && clubs.length!=0){ %>
                 <div id="server-clubs">
                   <% include ../partials/user_clubs %>

@@ -18,7 +18,7 @@
           <% } %>
         </div>
         <div class="mr-1 fullwidth">
-          <div class="boldtext text-sm valign">
+          <div class="boldtext desktoptext2 mobiletext3 valign">
             <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
               <% if((Date.now() - arr[i].pushedAt) < 3600000*24){ %>
                 <sup class="badge badge-warning text-xxxxs">NEW</sup>
@@ -26,14 +26,14 @@
             </div>
             <div id="clear_update<%= i %>" class="nounderline clear_update">
               <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
-                <button class="red lightgrey nothing link-button px-1 text-sm" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong>&times;</strong></button>
+                <button class="red lightgrey nothing link-button px-1 desktoptext2 mobiletext3" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong>&times;</strong></button>
               </form>
             </div>
           </div>
           <% if(arr[i].news == 'This update has been deleted'){ %>
-            <div class="text-xs redcolor"><em><%= arr[i].news %> by <%= arr[i].deleterName %></em></div>
+            <div class="desktoptext3 mobiletext3 redcolor"><em><%= arr[i].news %> by <%= arr[i].deleterName %></em></div>
           <% } else{ %>
-            <div class="lightgrey text-xs mobilebold"><%= arr[i].news %></div>
+            <div class="lightgrey desktoptext3 mobiletext3 mobilebold"><%= arr[i].news %></div>
           <% } %>
         </div>
       </div>

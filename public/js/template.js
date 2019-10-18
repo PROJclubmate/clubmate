@@ -931,8 +931,8 @@ function index_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
+                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
             </form>
           </div>
@@ -1264,8 +1264,8 @@ function club_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
+                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
             </form>
           </div>
@@ -1582,8 +1582,8 @@ function user_posts_template(response){
                 <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs mt-2">Submit</button>
+                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
             </form>
           </div>
@@ -1601,7 +1601,7 @@ function user_posts_template(response){
 function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
-  <% if(posts[k].topic == ''){ %>
+  <% if(postsH[l].topic == ''){ %>
     <div class="card noborder">
   <% } else{ %>
     <div class="card noborder topic-body">
@@ -1883,8 +1883,8 @@ function heart_posts_template(response){
                 <input onclick="block_display('commentbtn<%= postsH[l]._id %>');" id="commentbox" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                  <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs mt-2">Submit</button>
+                <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
             </form>
           </div>
@@ -1902,19 +1902,19 @@ function heart_posts_template(response){
 function post_comments_template(response){
   html = ejs.render(`
 <% var comments = buckets[0].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
-  <div class="hr3 mb-1">
+  <div class="mb-1">
     <div class="valign card-body1">
-      <div class="mb-auto py-2">
+      <div class="mb-auto py-2 commentpad">
         <a href="/users/<%= comments[j].commentAuthor.id._id %>">
           <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
         </a>
       </div>
-      <div class="commentdiv my-1 pb-2 lineheight">
-        <div class="valign pl-1">
+      <div class="commentdiv my-1 pb-2 lineheight hr2">
+        <div class="valign commentpad commentpad2">
           <div>
-            <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-md darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
+            <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
             </span>
-            <span class="darkgrey text-xxs boldtext"><%= moment(comments[j].postedAt).fromNow() %></span>
+            <span class="darkgrey text-xxs mobilebold"><%= moment(comments[j].postedAt).fromNow() %></span>
           </div>
           <div class="d-flex flex-row mb-auto">
             <% if(currentUser && comments[j].commentAuthor.id._id == currentUser){ %>
@@ -1981,7 +1981,7 @@ function post_comments_template(response){
             </form>
           </div>
         </div>
-        <div class="mobiletext linewrap px-1 pb-1" style="margin-top: -0.25rem ;"><%= comments[j].text %></div>
+        <div class="mobiletext linewrap commentpad commentpad2 pr-1 pb-1" style="margin-top: -0.25rem ;"><%= comments[j].text %></div>
       </div>
     </div>
   </div>
@@ -2172,8 +2172,8 @@ function post_subPosts_template(response){
               <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4"></textarea>
             </div>
             <div class="d-flex flex-row-reverse">
-              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2">Submit</button>
+              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Image(s)
               </label>

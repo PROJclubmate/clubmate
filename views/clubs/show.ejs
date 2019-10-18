@@ -423,46 +423,48 @@
                         <% } else{ %>
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% }; %>
-                        <div class="mx-2 my-auto news mobiletext2">
+                        <div class="mx-2 pb-3 my-auto news mobiletext hr2">
                           <%= club.updates[i].news %>
                           <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
                           <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
                         </div>
-                        <% if(0 <= rank && rank <= 1){ %>
-                          <span class="dropdown ml-auto mb-auto">
-                            <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-right dropbox">
-                              <div class="container drop-shadow1">
-                                <li>
-                                  <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= club.updates[i]._id %>" data-toggle="modal">Delete update</button>
-                                </li>
-                              </div>
-                            </ul>
-                          </span>
-                          <!-- Modal HTML -->
-                          <div id="delUpdateModal<%= club.updates[i]._id %>" class="fixed-padding modal fade">
-                            <div class="modal-dialog modal-confirm">
-                              <div class="modal-content">
-                                <div class="d-flex">
-                                  <span class="icon-box">
-                                    <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                                  </span>              
-                                  <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <div class="d-flex flex-row ml-auto mb-auto">
+                          <% if(0 <= rank && rank <= 1){ %>
+                            <span class="dropdown ml-auto mb-auto">
+                              <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                              <ul class="dropdown-menu dropdown-menu-right dropbox">
+                                <div class="container drop-shadow1">
+                                  <li>
+                                    <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= club.updates[i]._id %>" data-toggle="modal">Delete update</button>
+                                  </li>
                                 </div>
-                                <div>
-                                  <p>Do you really want to delete this update? This cannot be undone.</p>
-                                </div>
-                                <div class="my-2">
-                                  <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                                  <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                                    <button class="btn btn-danger btn-sm ml-1" name="delUpdate" value="<%= club.updates[i]._id %>" type="submit">Delete</button>
-                                  </form>
+                              </ul>
+                            </span>
+                            <!-- Modal HTML -->
+                            <div id="delUpdateModal<%= club.updates[i]._id %>" class="fixed-padding modal fade">
+                              <div class="modal-dialog modal-confirm">
+                                <div class="modal-content">
+                                  <div class="d-flex">
+                                    <span class="icon-box">
+                                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                                    </span>              
+                                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  </div>
+                                  <div>
+                                    <p>Do you really want to delete this update? This cannot be undone.</p>
+                                  </div>
+                                  <div class="my-2">
+                                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                                    <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
+                                      <button class="btn btn-danger btn-sm ml-1" name="delUpdate" value="<%= club.updates[i]._id %>" type="submit">Delete</button>
+                                    </form>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        <% } %>
+                          <% } %>
+                        </div>
                       </div>
                     <% }; %>
                   </div>
@@ -475,7 +477,7 @@
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
                 <hr>
-                <div class="greyback valign">
+                <div class="greyback valign hr1">
                   <div class="d-flex flex-row">
                     <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
@@ -495,7 +497,6 @@
                     </div>
                   </div>
                 </div>
-                <hr>
                 <div id="server-members">
                   <% include ../partials/club_members %>
                 </div>
