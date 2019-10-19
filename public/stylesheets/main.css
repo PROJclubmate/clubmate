@@ -496,23 +496,20 @@ li.nav-item{
   );
   border-bottom: 1px solid lightgrey;
 }
-.organization-light{
-  color: #212529;
-  background-color: #d1deff;
-  text-shadow:
-   -0.5px -0.5px 0 whitesmoke,  
-    0.5px -0.5px 0 whitesmoke,
-    -0.5px 0.5px 0 whitesmoke,
-     0.5px 0.5px 0 whitesmoke;
-  border-radius: 0.5rem;
-  border: 1px solid lightgrey !important;
-}
 .orgname{
   background-color: white;
   border-radius: 2.5rem;
   padding: 0.25rem 0.5rem;
   border: 1px solid darkgrey;
   line-height: 1.25rem;
+}
+.orgname-search{
+  background-color: white;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid darkgrey;
+  line-height: 1.25rem;
+  font-size: 1.15rem;
+  border-radius: 0.5rem !important;
 }
 .orgpad{padding: 0.25rem 1rem;}
 .category{
@@ -1140,7 +1137,7 @@ img.cover{
   box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.3);
 }
 .clubback{
-  background-color: #4e4f52;
+  background-color: #575757;
   color: white;
 }
 .hr1{
@@ -1202,7 +1199,7 @@ ul{
   width: 100%;
 }
 .badge{
-  padding: 0.1rem 0.25rem;
+  padding: 0.15rem 0.25rem;
 }
 .badge-light{
   background-color: #dcdcdc;
@@ -1599,7 +1596,7 @@ select.select1::-ms-expand{
   top: 0;
   left: 20px;
   right: 20px;
-  border-bottom: 1px solid #009f5e;
+  border-bottom: 1px solid grey;
 }
 .intercom-composer-popover-input{
   background-size: 16px 16px;

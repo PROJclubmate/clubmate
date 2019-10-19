@@ -40,7 +40,7 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        OrgPage.find({$text: {$search: query}, $or: [{clubCount: {$gt: 0}}, {userCount: {$gt: 0}}]}, {score: {$meta: 'textScore'}})
+        OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
         .sort({score: {$meta: 'textScore'}}).exec(function(err, foundOrgPages){
         if(err || !foundOrgPages){
           console.log('(index-3)foundOrgPages err:- '+JSON.stringify(err, null, 2));
@@ -160,32 +160,22 @@ module.exports = {
         users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({fullName: users});
       }
-      var college = urlEqualsSplit[2];
-      if(college.split('&')[0]){
-        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.college': college});
-      }
-      var concentration = urlEqualsSplit[3];
-      if(concentration.split('&')[0]){
-        concentration = new RegExp(escapeRegExp(concentration.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.concentration': concentration});
-      }
-      var batch = urlEqualsSplit[4];
-      if(batch.split('&')[0]){
-        batch = batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
-        dbQueries.push({'userKeys.batch': batch});
-      }
-      var workplace = urlEqualsSplit[5];
+      var workplace = urlEqualsSplit[2];
       if(workplace.split('&')[0]){
         workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.workplace': workplace});
       }
-      var school = urlEqualsSplit[6];
+      var college = urlEqualsSplit[3];
+      if(college.split('&')[0]){
+        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.college': college});
+      }
+      var school = urlEqualsSplit[4];
       if(school.split('&')[0]){
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[7];
+      var location = urlEqualsSplit[5];
       if(location.split('&')[0]){
         let coordinates;
         try{
@@ -394,7 +384,7 @@ module.exports = {
 
   indexSearchOrgPages(req, res, next){
     const query = req.query.org_pages;
-    OrgPage.find({$text: {$search: query}, $or: [{clubCount: {$gt: 0}}, {userCount: {$gt: 0}}]}, {score: {$meta: 'textScore'}})
+    OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
     .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
     if(err || !foundOrgPages){
       console.log('(index-13)foundOrgPages err:- '+JSON.stringify(err, null, 2));
@@ -416,7 +406,7 @@ module.exports = {
     } else{
       var seenIds = [];
     }
-    OrgPage.find({$text: {$search: query}, $or: [{clubCount: {$gt: 0}}, {userCount: {$gt: 0}}], _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}})
+    OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}, _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}})
     .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
     if(err || !foundOrgPages){
       console.log('(index-14)foundOrgPages err:- '+JSON.stringify(err, null, 2));
@@ -732,27 +722,20 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundOrgPage){
-      req.flash('error', 'College page does not exist :(');
+      req.flash('error', 'Organization page does not exist :(');
       return res.redirect('back');
     } else{
-      var Clubs_50_clubAvatar = []; var match = false;
+      var Clubs_50_clubAvatar = []; var match = false; var allMembersCount = 0;
       for(var i=0;i<foundOrgPage.allClubs.length;i++){
         var arr2D = [];
         for(var j=0;j<foundOrgPage.allClubs[i].categoryClubIds.length;j++){
           arr2D[j] = cloudinary.url(foundOrgPage.allClubs[i].categoryClubIds[j].avatarId,
           {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          allMembersCount = allMembersCount + foundOrgPage.allClubs[i].categoryClubIds[j].membersCount;
         }
         Clubs_50_clubAvatar[i] = arr2D;
       }
-      if(req.user){
-        for(var k=0;k<foundOrgPage.allUsers.length;k++){
-          if(foundOrgPage.allUsers[k].equals(req.user._id)){
-            match = true;
-            break;
-          }
-        }
-      }
-      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, match});
+      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allMembersCount});
     }
     });
   }

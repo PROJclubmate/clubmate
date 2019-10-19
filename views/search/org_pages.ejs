@@ -8,15 +8,18 @@
 			<div class="card searchcard2">
 				<div class="d-flex flex-row">
 			    <div class="card-body3 lineheight1 fullwidth" style="overflow: hidden;">
-			    	<div class="valign organization-light p-2">
-				    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
-				      	<span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
-				      </a>
-					  </div>
+			    	<div class="px-2 py-1 organization d-flex flex-column">
+							<div class="boldtext text-xxl">
+								<div class="orgname-search">
+									<a href="/org_pages/<%= org_pages[k].name %>" class="black">
+										<i class="fas fa-university lightgrey mr-2"></i><%= org_pages[k].name %>
+									</a>
+								</div>
+							</div>
+						</div>
 					  <br>
 			      <div class="darkgrey text-sm text-right">
-			      	<span>[<span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
-			      	<span><span class="boldtext redcolor text-md"><%= org_pages[k].userCount %></span> users]</span>
+			      	<span><span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
 			      </div>
 			    </div>
 			  </div>

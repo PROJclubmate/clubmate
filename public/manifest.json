@@ -43,7 +43,7 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#fff",
-  "theme_color": "#222428",
+  "theme_color": "#2e2e2e",
   "description": "A hyperlocal social network.",
   "dir": "ltr",
   "lang": "en-US"

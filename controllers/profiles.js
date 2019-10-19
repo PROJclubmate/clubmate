@@ -483,42 +483,8 @@ module.exports = {
           foundUser.userKeys.birthdate = req.body.userKeys.birthdate;
           foundUser.userKeys.sex = req.body.userKeys.sex;
         } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-          // COLLEGE PAGE(OrgPage)
-          if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '')){
-            var oldCollegeName = foundUser.userKeys.college;
-            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '');
-            OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
-              if(foundOldOrgPage && foundOldOrgPage.allUsers.length){
-                for(var i=foundOldOrgPage.allUsers.length-1;i>=0;i--){
-                  if(foundOldOrgPage.allUsers[i].equals(foundUser._id)){
-                    foundOldOrgPage.allUsers.splice(i,1);
-                    break;
-                  }
-                }
-                foundOldOrgPage.userCount -= 1;
-                foundOldOrgPage.save();
-              }
-            });
-            OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
-              if(foundNewOrgPage){
-                foundNewOrgPage.allUsers.push(foundUser._id);
-                foundNewOrgPage.userCount += 1;
-                foundNewOrgPage.save();
-              } else{
-                if(newCollegeName && newCollegeName != ''){
-                  OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
-                    createdNewOrgPage.allUsers.push(foundUser._id);
-                    createdNewOrgPage.userCount += 1;
-                    createdNewOrgPage.save();
-                  });
-                }
-              }
-            });
-            foundUser.userKeys.college = newCollegeName;
-          }
-          foundUser.userKeys.concentration = req.body.userKeys.concentration.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '');
           foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          foundUser.userKeys.college = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '');
           foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '');
           if(foundUser.userKeys.residence && foundUser.userKeys.residence != ''){
             let response = await geocodingClient
@@ -973,10 +939,10 @@ module.exports = {
           const oldCategory = foundClub.clubKeys.category;
           const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '');
           const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          // COLLEGE PAGE(OrgPage)
+          // ORG. PAGE
           if(oldOrgName != newOrgName || oldCategory != newCategory){
             if(oldOrgName != newOrgName){
-              // 1) IF an orgPage of OLD ORG name exists => SPLICE clubId from old category & dec. count
+              // 1) IF an orgPage of OLD ORG name exists => SPLICE clubId from old category of old org & dec. count
               OrgPage.findOne({name: oldOrgName}, function (err, foundOldOrgPage){
                 if(foundOldOrgPage && foundOldOrgPage.allClubs.length){
                   for(var i=foundOldOrgPage.allClubs.length-1;i>=0;i--){

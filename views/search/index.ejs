@@ -84,12 +84,12 @@
 		<br>
 		<form action="/find_org_pages/search" method="GET">
 			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
-			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="org_pages">College</button>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="org_pages">Organizations</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(org_pages.length == 0){ %>
 				<% if(query){ %>
-					<h6 class="lightgrey ml-2">No matching colleges found :(</h6>
+					<h6 class="lightgrey ml-2">No matching organizations found :(</h6>
 				<% } %>
 			<% }else{ %>
 				<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
@@ -97,18 +97,17 @@
 						<div class="card searchcard">
 							<div class="d-inline-flex">
 						    <div class="card-body3 lineheight fullwidth">
-						    	<div>
-							    	<a href="/org_pages/<%= org_pages[k].name %>" class="black">
-							      	<span class="nothing searchname organization-light p-1 boldtext"><%= org_pages[k].name %></span>
-							      </a>
-							    </div>
+						    	<div class="px-2 py-1 organization d-flex flex-column">
+										<div class="boldtext text-xxl">
+											<div class="orgname-search">
+												<a href="/org_pages/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>
+											</div>
+										</div>
+									</div>
 						      <br>
 						      <div class="text-sm text-right">
 						      	<span>
-						      		<span class="lightgrey">[</span><span class="boldtext lightgrey nothing text-md"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
-						      	</span>
-						      	<span>
-						      		<span class="boldtext darkgrey"><span class="redcolor text-md"><%= org_pages[k].userCount %></span></span> <span class="lightgrey nothing">users]</span>
+						      		<span class="lightgrey"></span><span class="boldtext lightgrey nothing text-md"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
 						      	</span>
 						      </div>
 						    </div>
