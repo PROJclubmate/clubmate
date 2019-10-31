@@ -72,7 +72,7 @@
           <p class="nothing mobiletext linewrap"><%= post.description %></p>
         </div>
         <hr>
-        <div class="card-body3">
+        <div class="card-body">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
           <div class="valign">
             <% if(currentUser){ %>
@@ -207,7 +207,7 @@
         <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
         <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
           <label for="description" class="sr-only">Post description</label>
-          <textarea type="text" id="description" class="emoji-input form-control shadow" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
+          <textarea type="text" id="description" class="emoji-input form-control shadow whitesmokeback" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
           <div class="valign">
             <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
             <div class="righttext d-flex my-auto">
@@ -279,7 +279,7 @@
                     <div class="darkgrey boldtext text-xs subpostbtn py-2 mb-auto"><%= moment().format('lll'); %></div>
                   </div>
                   <div class="input-group">
-                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow" name="text" placeholder="Add sub-post" rows="4"></textarea>
+                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
                     <button class="btn btn-success subpostbtn btnxs text-sm ml-2 mt-2">Submit</button>
@@ -320,7 +320,7 @@
           <div class="commentdiv">
             <form action="/posts/<%= post._id %>/comments" method="POST">
               <div class="input-group">
-                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
+                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
                 <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>

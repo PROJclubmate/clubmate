@@ -730,7 +730,7 @@ module.exports = {
         var arr2D = [];
         for(var j=0;j<foundOrgPage.allClubs[i].categoryClubIds.length;j++){
           arr2D[j] = cloudinary.url(foundOrgPage.allClubs[i].categoryClubIds[j].avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           allMembersCount = allMembersCount + foundOrgPage.allClubs[i].categoryClubIds[j].membersCount;
         }
         Clubs_50_clubAvatar[i] = arr2D;

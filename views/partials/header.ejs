@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="/stylesheets/main.css">
     <link href="https://fonts.googleapis.com/css?family=Bitter|Lato:900i&display=swap" rel="stylesheet">
     <!-- Mobile/PWA support -->
-    <link rel="icon" type="image/x-icon" href="/images/icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="/images/icons/favicon-16x16.ico">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="/images/icons/favicon-32x32.ico">
+    <link rel="icon" type="image/x-icon" sizes="64x64" href="/images/icons/favicon-96x96.ico">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/images/icons/app-icon-192x192.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#2e2e2e">
@@ -66,7 +69,7 @@
         <ul class="navbar-nav navbar-right">
           <% if(!currentUser){ %>
             <li class="nav-item">
-              <a href="/help" id="help_offline" class="text-lg nav-link requests" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
+              <a href="/help" id="help_offline" class="text-lg nav-link requests navhelp" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
               <a href="/login" class="nav-link">Login</a>
@@ -76,7 +79,7 @@
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <a href="/help" id="help_online" class="text-lg nav-link requests" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
+              <a href="/help" id="help_online" class="text-lg nav-link requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item">
               <span id="notification" class="text-lg nav-link requests" title="Inbox 'Coming soon'" onclick="toggle_requests('notification');"><i class="fas fa-envelope"></i></span>

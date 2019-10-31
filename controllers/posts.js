@@ -46,12 +46,12 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = modPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
         }
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
       }
@@ -96,12 +96,12 @@ module.exports = {
         var hasVote = [], hasModVote = [], PA_50_profilePic = []; var k=0; var len = modPosts.length;
         for(k;k<len;k++){
           PA_50_profilePic[k] = cloudinary.url(modPosts[k].postAuthor.id.profilePicId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
         }
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
         CU_50_profilePic, PA_50_profilePic, arrLength});
       }
@@ -144,12 +144,12 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
         }
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
       }
@@ -173,7 +173,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
         }
@@ -186,7 +186,7 @@ module.exports = {
 
   postsCreate(req, res, next){
     var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-    {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+    {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
     var rank = currentRank2(req.params.club_id,req.user.userClubs);
     // Only rank 0-3 can create a topic
     if(((req.body.topic == '') && (0<=rank && rank<=4)) || ((req.body.topic != '') && (0<=rank && rank<4))){
@@ -272,7 +272,7 @@ module.exports = {
       return res.redirect('back');
     } else{
       var PC_50_clubAvatar = cloudinary.url(foundPost.postClub.avatarId,
-      {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
       var hasVote = voteCheck(req.user,foundPost);
       var hasModVote = modVoteCheck(req.user,foundPost);
       if(req.user){
@@ -300,14 +300,14 @@ module.exports = {
             CA_50_profilePic[i] = [];
             for(var j=0;j<foundBuckets[i].comments.length;j++){
               CA_50_profilePic[i][j] = cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
             }
           }
           var index = len-3;
           if(req.user){
             var upComments = commentCheck(req.user._id,foundBuckets);
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-            {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           } else{
             var upComments = [];
             var CU_50_profilePic = null;
@@ -318,7 +318,7 @@ module.exports = {
         });
       } else if(foundPost.topic != '' && req.user){
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         if(foundPost.subpostBuckets != ''){
           var len = index = foundPost.subpostBuckets.length;
           Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
@@ -332,7 +332,7 @@ module.exports = {
             var sPA_50_profilePic = [];
             for(var j=0;j<foundBucket.subPosts.length;j++){
               sPA_50_profilePic[j] = cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId,
-              {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
             }
             // Push conversationId to clubUsers
             // If conversationId == null then find
@@ -375,7 +375,7 @@ module.exports = {
       } else{
         if(req.user){
           var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         }
         var index = null;
         res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, index, PC_50_clubAvatar,
@@ -395,7 +395,7 @@ module.exports = {
         return res.redirect('back');
       } else{
         var PC_50_clubAvatar = cloudinary.url(foundPost.postClub.avatarId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
         var hasVote = voteCheck(req.user,foundPost);
         var hasModVote = modVoteCheck(req.user,foundPost);
         if(req.user){
@@ -408,7 +408,7 @@ module.exports = {
         }
         if(foundPost.topic != '' && req.user){
           var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-          {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
           if(foundPost.subpostBuckets != ''){
             var len = index = foundPost.subpostBuckets.length;
             Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
@@ -422,7 +422,7 @@ module.exports = {
               var sPA_50_profilePic = [];
               for(var j=0;j<foundBucket.subPosts.length;j++){
                 sPA_50_profilePic[j] = cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId,
-                {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
               }
               var subVotes = subVoteCheck(req.user._id,foundBucket);
               Discussion.findOne({_id: req.params.bucket_id}, function(err, foundQuoteBucket){

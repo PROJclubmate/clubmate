@@ -59,7 +59,7 @@ app.use(async function(req, res, next){
   if(req.user){
     try{
       res.locals.CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
       //REQUESTS
       let foundUser = await User.findById(req.user._id)
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
@@ -74,11 +74,11 @@ app.use(async function(req, res, next){
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = [];
       for(var i=0;i<foundUser.clubInvites.length;i++){
         fUCI_50_clubAvatar[i] = cloudinary.url(foundUser.clubInvites[i].avatarId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
       }
       for(var j=0;j<foundUser.friendRequests.length;j++){
         fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
-        {width: 100, height: 100, quality: 100, secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
       }
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
       res.locals.FR_50_profilePic = fUFR_50_profilePic;

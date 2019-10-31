@@ -45,6 +45,7 @@ div.content{
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
+  .navback{background-color: #3e3d3c !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
     box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
   a.hr2{border: none;}
@@ -67,10 +68,13 @@ div.content{
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
 }
+@media screen and (min-width: 768px) and (max-width: 992px){
+  .mobileNone.tabletNone{display: none !important;}
+}
 @media screen and (min-width: 768px){
-  .name{color: white !important;}
+  .name{color: white !important; background-color: #3e3d3c;}
   .navbar{box-shadow: 0px 2px 7px -2px rgba(0,0,0,0.4);}
-  .navback{background-image: linear-gradient(#5cb47f, #19a86e);}
+  .navback{background-color: rgba(54,53,52,0.95);}
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
@@ -80,9 +84,10 @@ div.content{
   .scroll::-webkit-scrollbar-thumb{background-color: darkgrey; outline: 1px solid slategrey; border-radius: 3px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin;}
-  .navbar-light .navbar-nav .nav-link{color: white;}
+  .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
-    transition: ease-in-out 0.15s; color: white; background-color: rgba(0,0,0,0.15);}
+    transition: ease-in-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
+  .nav-link.requests{color: grey !important;}
   .pl-2.mobilepad{padding: 0 !important;}
   .topic-head{box-shadow: -3px 0px 0px 0px #dc3545;}
   .helppad{padding: 0 3rem;}
@@ -100,9 +105,9 @@ div.content{
     font-size: 1.5rem !important;
     padding: 0 !important;
     font-weight: 900;
-    -webkit-text-fill-color: #4aac71;
+    -webkit-text-fill-color: #19ae69;
     -webkit-text-stroke-width: 0.75px;
-    -webkit-text-stroke-color: #19a86e;
+    -webkit-text-stroke-color: #169f69;
   }
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
@@ -148,7 +153,7 @@ div.content{
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
-  .nav-link.requests{margin: 0 0.25rem !important; text-shadow: none !important;}
+  .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 0.75rem;}
 }
 /*LG G5, Oneplus 3 => 480px*/
@@ -585,8 +590,8 @@ span.nopad{
   margin-left: 0;
 }
 #menu-toggle{
-  padding: 0 0.5rem;
-  margin-right: 0.5rem;
+  padding: 0 0.85rem;
+  z-index: 6;
 }
 .name{
   font-family: 'Lato', sans-serif;
@@ -609,9 +614,9 @@ a.nav-link{
 .nav-link.requests{
   padding: 0 0.5rem;
   cursor: pointer;
-  color: #202020 !important;
+  color: grey;
   opacity: 0.75;
-  text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
   padding: 0 0.25rem;
   margin: 0 0.1rem;
 }
@@ -624,7 +629,8 @@ a.nav-link{
 .nav-link.requests-active{
   transition: ease-in-out 0.15s;
   background-color: #505050 !important;
-  color: #4aac71 !important;
+  color: #009f5e !important;
+  opacity: 1;
   border-radius: 1rem;
   text-shadow: none;
 }
@@ -936,9 +942,10 @@ input[type="file"]#inputavatar{
   box-shadow: none !important;
 }
 .hidesidebar{
-  color: #4c5154;
+  background-color: #3e3d3c;
+  color: #009f5e;
   box-shadow: none;
-  margin-left: -38px;
+  margin-left: -42px;
 }
 .hidesidebar:hover{
   transition: ease-in-out 0.15s;
@@ -976,7 +983,7 @@ input[type="file"]#inputavatar{
 .nav-tabs.nav-link{
   padding: 0.5rem;
 }
-a{color: #558bca;}
+a{color: #4a8cd6;}
 .green{color: #009f5e;}
 .grey{color: #454545;}
 .black{color: inherit;}
@@ -1137,7 +1144,7 @@ img.cover{
   box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.3);
 }
 .clubback{
-  background-color: #575757;
+  background-color: #4e4f52;
   color: white;
 }
 .hr1{
@@ -1174,6 +1181,9 @@ img.cover{
 }
 .whiteback{
   background-color: white;
+}
+.whitesmokeback{
+  background-color: whitesmoke !important;
 }
 .lcov{
   border-radius: 0.75em 0 0 0.75rem;

@@ -385,6 +385,10 @@ $(function (){
     format: 'L'
   });
 });
+
+if(location.pathname == '/help/'){
+  $(".navhelp").addClass('requests-active');
+}
 //================================================================================
 // AJAX
 // Expensive event delegation?

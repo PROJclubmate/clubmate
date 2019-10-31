@@ -44,7 +44,7 @@
   "orientation": "portrait-primary",
   "background_color": "#fff",
   "theme_color": "#2e2e2e",
-  "description": "A hyperlocal social network.",
+  "description": "Find groups of interests around you.",
   "dir": "ltr",
   "lang": "en-US"
 }
