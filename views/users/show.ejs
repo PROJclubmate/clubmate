@@ -108,16 +108,22 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <% if(user.userKeys.workplace){ %>
-                <div class="info1">Workplace: <div class="info30"><a href="/org_pages/<%= user.userKeys.workplace %>"><%= user.userKeys.workplace %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
+              <% if(user.userKeys.college && user.userKeys.concentration){ %>
+                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&workplace=&school=&location="><%= user.userKeys.concentration %></a></div></div>
               <% } %>
-              <% if(user.userKeys.college){ %>
-                <div class="info1">College: <div class="info30"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
+              <% if(user.userKeys.college && user.userKeys.batch){ %>
+                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=<%= user.userKeys.batch %>&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.workplace){ %>
+                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
               <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/org_pages/<%= user.userKeys.school %>"><%= user.userKeys.school %></a></div></div>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
               <% } %>
-              <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&workplace=&college=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+              <% if(user.userKeys.residence){ %>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+              <% } %>
             </div>
           </div>
           <% if(currentUser && match){ %>
@@ -127,10 +133,14 @@
                 <label for="note" class="sr-only">Note</label>
                 <input type="text" id="note" class="form-control form-control-sm commentbox2 text-center" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
                 <br>
+                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
+                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
+                <label for="concentration" class="sr-only">Concentration</label>
+                <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
+                <label for="batch" class="sr-only">Batch</label>
+                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch">
                 <label for="workplace" class="sr-only">Workplace</label>
                 <input type="text" id="workplace" class="form-control form-control-sm" name="userKeys[workplace]" value="<%= user.userKeys.workplace %>" placeholder="Workplace">
-                <label for="college" class="sr-only">College</label>
-                <input type="text" id="college" class="form-control form-control-sm" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
                 <label for="school" class="sr-only">School</label>
                 <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
                 <label for="residence" class="sr-only">Residence</label>

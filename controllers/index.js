@@ -160,22 +160,32 @@ module.exports = {
         users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({fullName: users});
       }
-      var workplace = urlEqualsSplit[2];
-      if(workplace.split('&')[0]){
-        workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.workplace': workplace});
-      }
-      var college = urlEqualsSplit[3];
+      var college = urlEqualsSplit[2];
       if(college.split('&')[0]){
         college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var school = urlEqualsSplit[4];
+      var concentration = urlEqualsSplit[3];
+      if(concentration.split('&')[0]){
+        concentration = new RegExp(escapeRegExp(concentration.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.concentration': concentration});
+      }
+      var batch = urlEqualsSplit[4];
+      if(batch.split('&')[0]){
+        batch = batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
+        dbQueries.push({'userKeys.batch': batch});
+      }
+      var workplace = urlEqualsSplit[5];
+      if(workplace.split('&')[0]){
+        workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.workplace': workplace});
+      }
+      var school = urlEqualsSplit[6];
       if(school.split('&')[0]){
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[5];
+      var location = urlEqualsSplit[7];
       if(location.split('&')[0]){
         let coordinates;
         try{
@@ -722,7 +732,7 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundOrgPage){
-      req.flash('error', 'Organization page does not exist :(');
+      req.flash('error', 'College page does not exist :(');
       return res.redirect('back');
     } else{
       var Clubs_50_clubAvatar = []; var match = false; var allMembersCount = 0;

@@ -9,11 +9,17 @@
 			<% if(filterKeys.users){ %>
 				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span>
 			<% } %>
-			<% if(filterKeys.workplace){ %>
-				<span class="lightgrey text-xs">Workplace=</span><span class="boldtext text-sm nothing"><%= filterKeys.workplace %></span>
-			<% } %>
 			<% if(filterKeys.college){ %>
 				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
+			<% } %>
+			<% if(filterKeys.concentration){ %>
+				<span class="lightgrey text-xs">Concentration=</span><span class="boldtext text-sm nothing"><%= filterKeys.concentration %></span>
+			<% } %>
+			<% if(filterKeys.batch){ %>
+				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
+			<% } %>
+			<% if(filterKeys.workplace){ %>
+				<span class="lightgrey text-xs">Workplace=</span><span class="boldtext text-sm nothing"><%= filterKeys.workplace %></span>
 			<% } %>
 			<% if(filterKeys.school){ %>
 				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span>
@@ -58,9 +64,17 @@
 			      <br>
 			      <div class="valign">
 			      	<div>
+			      		<div class="text-sm mobilebold darkgrey"><%= users[k].userKeys.college %></div>
 				      	<% if(users[k].userKeys){ %>
+						      <% if(users[k].userKeys.college){ %>
+					      		<div class="lightgrey text-xs">
+					      			<span class="nothing"><%= users[k].userKeys.concentration %></span>
+					      			<% if(users[k].userKeys.batch){ %>
+					      				<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+					      			<% } %>
+					      		</div>
+					      	<% } %>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
-						      <div class="lightgrey text-xs"><%= users[k].userKeys.college %></div>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
 						      <div class="lightgrey text-xs boldtext"><%= users[k].email %></div>
 						    <% } %>
@@ -122,13 +136,21 @@
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>">
 			<h6 class="nothing mb-1">User keys</h6>
-			<div>
-      	<label for="workplace" class="sr-only">Workplace</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Workplace" name="workplace" id="workplace" value="<%= query.workplace %>">
-      </div>
       <div>
       	<label for="college" class="sr-only">College</label>
 				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
+			</div>
+      <div>
+      	<label for="concentration" class="sr-only">Concentration</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Concentration" name="concentration" id="concentration" value="<%= query.concentration %>">
+      </div>
+      <div>
+      	<label for="batch" class="sr-only">Batch</label>
+				<input class="form-control form-control-sm" type="number" placeholder="Batch" name="batch" id="batch" value="<%= query.batch %>">
+      </div>
+      <div>
+      	<label for="workplace" class="sr-only">Workplace</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Workplace" name="workplace" id="workplace" value="<%= query.workplace %>">
       </div>
       <div>
       	<label for="school" class="sr-only">School</label>

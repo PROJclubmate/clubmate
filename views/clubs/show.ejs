@@ -183,7 +183,7 @@
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
-              <div class="info1">Org. Page: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
                 <div class="info1">Weblink: <div class="info30"><a href="https://<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
@@ -202,8 +202,8 @@
                 <label for="banner" class="sr-only">Banner</label>
                 <input type="text" id="banner" class="form-control form-control-sm commentbox2 text-center" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
                 <br>
-                <label for="organization" class="text-xs lightgrey"><span class="redcolor">* </span> Unique org. name (Avoid duplicate pages)</label>
-                <input type="text" id="organization" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="Organization name">
+                <label for="organization" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
+                <input type="text" id="organization" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="College name">
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" value="" placeholder="Club category">
@@ -212,25 +212,22 @@
                 <% } %>
                 <datalist id="category">
                   <option value="Academic and Educational">
-                  <option value="Bussiness and Management">
-                  <option value="Placement and Career">
-                  <option value="Entreprenurship">
                   <option value="Programming and Development">
+                  <option value="Robotics">
+                  <option value="Entreprenurship">
+                  <option value="Student bodies">
+                  <option value="Bussiness and Management">
+                  <option value="Dance and Music">
                   <option value="Theatre and Literature">
                   <option value="Film and Photography">
                   <option value="Graphics and Animation">
-                  <option value="Dance and Music">
-                  <option value="Political and Debates">
-                  <option value="Ethnic and Regional">
-                  <option value="Common Interests">
-                  <option value="Community service">
-                  <option value="Movies TV series and VGames">
-                  <option value="Student bodies">
                   <option value="Sports and Recreational">
                   <option value="Events and Sponsor management">
                   <option value="Magazines and Newspaper">
+                  <option value="Placement and Career">
                   <option value="Hostelers">
                   <option value="Day scholars">
+                  <option value="Community service">
                   <option value="Religious and Spiritual">
                 </datalist>
                 <label for="weblink" class="sr-only">Weblink</label>

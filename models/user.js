@@ -21,8 +21,10 @@ const userSchema = new Schema({
   userKeys: {
     sex: String,
     birthdate: Date,
-    workplace: String,
     college: String,
+    concentration: String,
+    batch: String,
+    workplace: String,
     school: String,
     residence: String
   },
