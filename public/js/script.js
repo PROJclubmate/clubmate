@@ -416,37 +416,49 @@ $("div#delegated-posts").on('click', '.vote', function(e){
       $('#heart-count'+data._id).text(data.heartCount);
 
       if(formData[0].name == 'like'){
-        $('#like-btn'+data._id).toggleClass('greencolor');
+        if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        }
+        else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
+        || $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
+        || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+        }
         $('#like-count'+data._id).toggleClass('greencolor');
-        $('#dislike-btn'+data._id).removeClass('blackcolor');
         $('#dislike-count'+data._id).removeClass('blackcolor');
-        $('#heart-btn'+data._id).html('<i class="far fa-heart grey"></i>');
         $('#heart-count'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'dislike'){
-        $('#dislike-btn'+data._id).toggleClass('blackcolor');
-        $('#dislike-count'+data._id).toggleClass('blackcolor');
-        $('#like-btn'+data._id).removeClass('greencolor');
+        if($('#dislike-btn'+data._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
+          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
+        }
+        else if($('#dislike-btn'+data._id).html() == '<i class="far fa-thumbs-down"></i>'
+        || $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>')
+        || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
+          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+        }
         $('#like-count'+data._id).removeClass('greencolor');
-        $('#heart-btn'+data._id).html('<i class="far fa-heart grey"></i>');
+        $('#dislike-count'+data._id).toggleClass('blackcolor');
         $('#heart-count'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'heart'){
-        if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>' || 
-          $('#heart-btn'+data._id).html() == '<i class="far fa-heart grey"></i>')
-          {
-            $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor"></i>');
-          }
-        else if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart"></i>' ||
-          $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>')
-          {
-            $('#heart-btn'+data._id).html('<i class="far fa-heart grey"></i>');
-          }
-        $('#heart-count'+data._id).toggleClass('redcolor');
-        $('#like-btn'+data._id).removeClass('greencolor');
+        if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+        }
+        else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
+        || $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
+        || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor"></i>');
+          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        }
         $('#like-count'+data._id).removeClass('greencolor');
-        $('#dislike-btn'+data._id).removeClass('blackcolor');
         $('#dislike-count'+data._id).removeClass('blackcolor');
+        $('#heart-count'+data._id).toggleClass('redcolor');
       }
     },
     error: function(xhr) {
@@ -571,37 +583,49 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
       $('#heart-countH'+data._id).text(data.heartCount);
 
       if(formData[0].name == 'like'){
-        $('#like-btnH'+data._id).toggleClass('greencolor');
+        if($('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        }
+        else if($('#like-btnH'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
+        || $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
+        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
+        }
         $('#like-countH'+data._id).toggleClass('greencolor');
-        $('#dislike-btnH'+data._id).removeClass('blackcolor');
         $('#dislike-countH'+data._id).removeClass('blackcolor');
-        $('#heart-btnH'+data._id).html('<i class="far fa-heart grey"></i>');
         $('#heart-countH'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'dislike'){
-        $('#dislike-btnH'+data._id).toggleClass('blackcolor');
-        $('#dislike-countH'+data._id).toggleClass('blackcolor');
-        $('#like-btnH'+data._id).removeClass('greencolor');
+        if($('#dislike-btnH'+data._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
+          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
+        }
+        else if($('#dislike-btnH'+data._id).html() == '<i class="far fa-thumbs-down"></i>'
+        || $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>')
+        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
+          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
+        }
         $('#like-countH'+data._id).removeClass('greencolor');
-        $('#heart-btnH'+data._id).html('<i class="far fa-heart grey"></i>');
+        $('#dislike-countH'+data._id).toggleClass('blackcolor');
         $('#heart-countH'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'heart'){
-        if($('#heart-btnH'+data._id).html() == '<i class="far fa-heart"></i>' || 
-          $('#heart-btnH'+data._id).html() == '<i class="far fa-heart grey"></i>')
-          {
-            $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor"></i>');
-          }
-        else if($('#heart-btnH'+data._id).html() == '<i class="fas fa-heart"></i>' ||
-          $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>')
-          {
-            $('#heart-btnH'+data._id).html('<i class="far fa-heart grey"></i>');
-          }
-        $('#heart-countH'+data._id).toggleClass('redcolor');
-        $('#like-btnH'+data._id).removeClass('greencolor');
+        if($('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
+        }
+        else if($('#heart-btnH'+data._id).html() == '<i class="far fa-heart"></i>'
+        || $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
+        || $('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor"></i>');
+          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        }
         $('#like-countH'+data._id).removeClass('greencolor');
-        $('#dislike-btnH'+data._id).removeClass('blackcolor');
         $('#dislike-countH'+data._id).removeClass('blackcolor');
+        $('#heart-countH'+data._id).toggleClass('redcolor');
       }
     },
     error: function(xhr) {
@@ -700,16 +724,28 @@ $('div#dynamic-subPosts').on('click', '.vote2', function(e){
       $('#dislike-count'+data.subPosts[0]._id).text(data.subPosts[0].dislikeCount);
 
       if(formData[0].name == 'subLike'){
-        $('#like-btn'+data.subPosts[0]._id).toggleClass('greencolor');
+        if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#like-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-up"></i>');
+        }
+        else if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="far fa-thumbs-up"></i>'
+        || $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')){
+          $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-down"></i>');
+        }
         $('#like-count'+data.subPosts[0]._id).toggleClass('greencolor');
-        $('#dislike-btn'+data.subPosts[0]._id).removeClass('blackcolor');
         $('#dislike-count'+data.subPosts[0]._id).removeClass('blackcolor');
       }
       if(formData[0].name == 'subDislike'){
-        $('#dislike-btn'+data.subPosts[0]._id).toggleClass('blackcolor');
-        $('#dislike-count'+data.subPosts[0]._id).toggleClass('blackcolor');
-        $('#like-btn'+data.subPosts[0]._id).removeClass('greencolor');
+        if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
+          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-down"></i>');
+        }
+        else if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="far fa-thumbs-down"></i>'
+        || $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>')){
+          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
+          $('#like-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-up"></i>');
+        }
         $('#like-count'+data.subPosts[0]._id).removeClass('greencolor');
+        $('#dislike-count'+data.subPosts[0]._id).toggleClass('blackcolor');
       }
     },
     error: function(xhr) {

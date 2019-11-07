@@ -49,29 +49,29 @@
               <form action="/subposts/<%= bucket._id %>/<%= subPosts[j]._id %>/vote" method="POST">
                 <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn greencolor" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up greencolor"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="far fa-thumbs-down"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
                 <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="far fa-thumbs-up"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn blackcolor" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down blackcolor"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
                 <% } else{ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="far fa-thumbs-up"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="far fa-thumbs-down"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
@@ -81,7 +81,7 @@
                 <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
               </span>
               <span class="ml-2">
-                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="dislike" type="submit" value="dislike" title="Disagree/Disapprove"><i class="fas fa-thumbs-down"></i></button>
+                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down"></i></button>
               </span>
             <% } %>
           </div>
