@@ -22,8 +22,9 @@ const userSchema = new Schema({
     sex: String,
     birthdate: Date,
     college: String,
-    concentration: String,
+    major: String,
     batch: String,
+    section: String,
     workplace: String,
     school: String,
     residence: String
@@ -32,11 +33,9 @@ const userSchema = new Schema({
     type: {
       type: String,
       enum: ['Point'],
-      // required: true
     },
     coordinates: {
       type: [Number],
-      // required: true
     }
   },
   note: String,
@@ -44,7 +43,7 @@ const userSchema = new Schema({
   favourites: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String], videogames: [String]},
   friendRequests: [this],
   friends: [this],
-  friendsCount: Number,
+  friendsCount: {type: Number, default: 0},
   clubInvites: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'
@@ -63,7 +62,7 @@ const userSchema = new Schema({
       type: Number,
       min: 0,
       max: 4,
-      required: 'Please provide a (clubRank:0-Founder,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
+      required: 'Please provide a (clubRank:0-Owner,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'

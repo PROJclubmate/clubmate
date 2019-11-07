@@ -7,10 +7,10 @@
 		<form class="form-signin" action="/reset/<%= token %>" method="POST">
 	  	<legend class="mb-5">Reset password</legend>
 	    <label for="inputPassword" class="sr-only">New Password</label>
-	    <input id="inputPassword" type="password" name="password" value="" placeholder="New password" autofocus="autofocus" class="form-control">
+	    <input id="inputPassword" type="password" name="password" value="" placeholder="New password" required autofocus="autofocus" class="form-control">
 	    <div id="pass_info" class="text-xs darkgrey nodisplay">
         <span class="redcolor"><strong>*</strong></span>
-        <span>Password must contain (6-10) characters, at least one letter and one number</span>
+        <span>Password must contain (6-18) characters, at least one letter and one number</span>
       </div>
 	    <label for="confirm" class="sr-only">Confirm Password</label>
 	    <input type="password" name="confirm" value="" placeholder="Confirm password" class="form-control">

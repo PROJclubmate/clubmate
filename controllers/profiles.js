@@ -475,7 +475,7 @@ module.exports = {
           }
         };
       }
-      if(req.body.note){
+      if(foundUser.note != req.body.note){
         foundUser.note = req.body.note;
       }
       if(req.body.userKeys){
@@ -484,21 +484,25 @@ module.exports = {
           foundUser.userKeys.sex = req.body.userKeys.sex;
         } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
           foundUser.userKeys.college = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.concentration = req.body.userKeys.concentration.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          foundUser.userKeys.major = req.body.userKeys.major.replace(/[^a-zA-Z'()0-9 ]/g, '');
           foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '');
+          foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '');
           foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '');
           foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          if(foundUser.userKeys.residence && foundUser.userKeys.residence != ''){
-            let response = await geocodingClient
-            .forwardGeocode({
-              query: req.body.userKeys.residence,
-              limit: 1
-            })
-            .send();
-            foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, '');
-            foundUser.geometry = response.body.features[0].geometry;
-          } else{
-            foundUser.geometry = undefined;
+          if(foundUser.userKeys.residence != req.body.userKeys.residence){
+            if(req.body.userKeys.residence != ''){
+              let response = await geocodingClient
+              .forwardGeocode({
+                query: req.body.userKeys.residence,
+                limit: 1
+              })
+              .send();
+              foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, '');
+              foundUser.geometry = response.body.features[0].geometry;
+            } else{
+              foundUser.userKeys.residence = '';
+              foundUser.geometry = undefined;
+            }
           }
         }
       }
@@ -1019,17 +1023,20 @@ module.exports = {
           }
 
           foundClub.clubKeys.weblink = req.body.clubKeys.weblink.replace(/\&/g, ' ');
-          if(foundClub.clubKeys.location && foundClub.clubKeys.location != ''){
-            let response = await geocodingClient
-            .forwardGeocode({
-              query: req.body.clubKeys.location,
-              limit: 1
-            })
-            .send();
-            foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, '');
-            foundClub.geometry = response.body.features[0].geometry;
-          } else{
-            foundClub.geometry = undefined;
+          if(foundClub.clubKeys.location != req.body.clubKeys.location){
+            if(req.body.clubKeys.location != ''){
+              let response = await geocodingClient
+              .forwardGeocode({
+                query: req.body.clubKeys.location,
+                limit: 1
+              })
+              .send();
+              foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, '');
+              foundClub.geometry = response.body.features[0].geometry;
+            } else{
+              foundClub.clubKeys.location = '';
+              foundClub.geometry = undefined;
+            }
           }
         }
         if(req.body.info){
@@ -1040,7 +1047,7 @@ module.exports = {
             foundClub.info.rules = req.body.info.rules;
           }
         }
-        if(req.body.name){
+        if(foundClub.name != req.body.name){
           foundClub.name = req.body.name;
           User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
           {$set: {'userClubs.$.clubName': req.body.name}}, function(err, foundUser){
@@ -1051,7 +1058,7 @@ module.exports = {
             }
           });
         }
-        if(req.body.banner){
+        if(foundClub.banner != req.body.banner){
           foundClub.banner = req.body.banner;
         }
         foundClub.save();
@@ -1073,8 +1080,8 @@ module.exports = {
     //   req.flash('error', 'Something went wrong :(');
     //   return res.redirect('back');
     // } else{
-    //   var founders = foundClub.clubUsers;
-    //   var ok = checkRank(founders,req.user._id,0);
+    //   var owners = foundClub.clubUsers;
+    //   var ok = checkRank(owners,req.user._id,0);
     //   if(ok == true){
     //     await cloudinary.v2.uploader.destroy(foundClub.avatarId);
     //     var clubDelete = req.params.club_id;
@@ -1084,7 +1091,7 @@ module.exports = {
     //     res.redirect('/posts');
     //   } else{
     //     console.log('rankCheck fail :Destroy Club');
-    //     req.flash('error', "Only founders can delete their clubs!");
+    //     req.flash('error', "Only owners can delete their clubs!");
     //     return res.redirect('back');
     //   }
     // }
@@ -1251,7 +1258,7 @@ module.exports = {
       profilePic: null,
       profilePicId: null
     });
-    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,10}$/;
+    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
     if(req.body.password.match(pass)){
       User.register(newUser, req.body.password, function(err, user){
       if(err || !user){
@@ -1280,7 +1287,7 @@ module.exports = {
           });
           var mailOptions = {
             to: user.email,
-            from: 'team@clubmate.co.in',
+            from: '"Team Clubmate 👻"team@clubmate.co.in',
             subject: 'Account Verification Token',
             text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
             '\/confirmation\/' + token.token + '.\n'
@@ -1289,12 +1296,12 @@ module.exports = {
             done(err, 'done');
           });
         });
-        req.flash('success', 'Welcome to clubmate '+user.firstName+'. An email has been sent to your account for verification.');
+        req.flash('success', 'Welcome to clubmate '+user.firstName+'!!  ,  An email has been sent to your account for verification.');
         return res.redirect('/discover');
       }
       });
     } else{
-      req.flash('error', 'Password must contain (6-10) characters, at least one letter and one number');
+      req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number');
       return res.redirect('back');
     }
   },
@@ -1362,7 +1369,7 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: 'team@clubmate.co.in',
+          from: '"Team Clubmate 👻"team@clubmate.co.in',
           subject: 'Account Verification Token',
           text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
           '\/confirmation\/' + token.token + '.\n'
@@ -1431,7 +1438,7 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: 'team@clubmate.co.in',
+          from: '"Team Clubmate 👻"team@clubmate.co.in',
           subject: 'Password reset request',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -1462,57 +1469,63 @@ module.exports = {
   },
 
   profilesResetPass(req, res, next){
-    async.waterfall([
-      function(done){
-        User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
-        if(err || !user){
-          console.log('(profiles-47)token invalid err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
-        } else{
-          if(req.body.password === req.body.confirm){
-            user.setPassword(req.body.password, function(err) {
-              user.resetPasswordToken = undefined;
-              user.resetPasswordExpires = undefined;
-
-              user.save(function(err) {
-                req.logIn(user, function(err) {
-                  done(err, user);
-                });
-              });
-            })
-          } else{
-            console.log('(profiles-48)pass dont match err:- '+JSON.stringify(err, null, 2));
-            req.flash("error", "Passwords do not match.");
+    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    if(req.body.password.match(pass)){
+      async.waterfall([
+        function(done){
+          User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
+          if(err || !user){
+            console.log('(profiles-47)token invalid err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('back');
+          } else{
+            if(req.body.password === req.body.confirm){
+              user.setPassword(req.body.password, function(err) {
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpires = undefined;
+
+                user.save(function(err) {
+                  req.logIn(user, function(err) {
+                    done(err, user);
+                  });
+                });
+              })
+            } else{
+              console.log('(profiles-48)pass dont match err:- '+JSON.stringify(err, null, 2));
+              req.flash("error", "Passwords do not match.");
+              return res.redirect('back');
+            }
           }
+          });
+        },
+        function(user, done){
+          var smtpTransport = nodemailer.createTransport({
+            service: 'Godaddy', 
+            auth: {
+              user: 'team@clubmate.co.in',
+              pass: process.env.TEAM_EMAIL_PW
+            }
+          });
+          var mailOptions = {
+            to: user.email,
+            from: '"Team Clubmate 👻"team@clubmate.co.in',
+            subject: 'Password reset request',
+            text: 'Hello,\n\n' +
+              'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+          };
+          smtpTransport.sendMail(mailOptions, function(err){
+            console.log('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
+            req.flash('success', 'Success! Your password has been changed.');
+            done(err, 'done');
+          });
         }
-        });
-      },
-      function(user, done){
-        var smtpTransport = nodemailer.createTransport({
-          service: 'Godaddy', 
-          auth: {
-            user: 'team@clubmate.co.in',
-            pass: process.env.TEAM_EMAIL_PW
-          }
-        });
-        var mailOptions = {
-          to: user.email,
-          from: 'team@clubmate.co.in',
-          subject: 'Password reset request',
-          text: 'Hello,\n\n' +
-            'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-        };
-        smtpTransport.sendMail(mailOptions, function(err){
-          console.log('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
-          req.flash('success', 'Success! Your password has been changed.');
-          done(err, 'done');
-        });
-      }
-    ], function(err) {
-      res.redirect('/discover');
-    });
+      ], function(err) {
+        res.redirect('/discover');
+      });
+    } else{
+      req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number');
+      return res.redirect('back');
+    }
   }
 };
 

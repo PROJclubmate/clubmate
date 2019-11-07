@@ -12,11 +12,14 @@
 			<% if(filterKeys.college){ %>
 				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
-			<% if(filterKeys.concentration){ %>
-				<span class="lightgrey text-xs">Concentration=</span><span class="boldtext text-sm nothing"><%= filterKeys.concentration %></span>
+			<% if(filterKeys.major){ %>
+				<span class="lightgrey text-xs">Major=</span><span class="boldtext text-sm nothing"><%= filterKeys.major %></span>
 			<% } %>
 			<% if(filterKeys.batch){ %>
 				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
+			<% } %>
+			<% if(filterKeys.section){ %>
+				<span class="lightgrey text-xs">Section=</span><span class="boldtext text-sm nothing"><%= filterKeys.section %></span>
 			<% } %>
 			<% if(filterKeys.workplace){ %>
 				<span class="lightgrey text-xs">Workplace=</span><span class="boldtext text-sm nothing"><%= filterKeys.workplace %></span>
@@ -68,9 +71,12 @@
 				      	<% if(users[k].userKeys){ %>
 						      <% if(users[k].userKeys.college){ %>
 					      		<div class="lightgrey text-xs">
-					      			<span class="nothing"><%= users[k].userKeys.concentration %></span>
+					      			<span class="nothing"><%= users[k].userKeys.major %></span>
 					      			<% if(users[k].userKeys.batch){ %>
 					      				<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+					      			<% } %>
+					      			<% if(users[k].userKeys.section){ %>
+					      				<span class="nothing">(<%= users[k].userKeys.section %>)</span>
 					      			<% } %>
 					      		</div>
 					      	<% } %>
@@ -141,12 +147,16 @@
 				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
 			</div>
       <div>
-      	<label for="concentration" class="sr-only">Concentration</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Concentration" name="concentration" id="concentration" value="<%= query.concentration %>">
+      	<label for="major" class="sr-only">Major</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Major" name="major" id="major" value="<%= query.major %>">
       </div>
       <div>
       	<label for="batch" class="sr-only">Batch</label>
 				<input class="form-control form-control-sm" type="number" placeholder="Batch" name="batch" id="batch" value="<%= query.batch %>">
+      </div>
+      <div>
+      	<label for="section" class="sr-only">Section</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Section" name="section" id="section" value="<%= query.section %>">
       </div>
       <div>
       	<label for="workplace" class="sr-only">Workplace</label>

@@ -170,13 +170,15 @@
                       <li><a class="dropitems text-sm" href="#">Help ?</a></li>
                     <% if(0 <= rank && rank <= 1){ %>
                       <li onclick="toggle_display('toggle_club_form');"><a class="dropitems text-sm" href="#">Edit club profile</a></li>
+                    <% } %>
+                    <% if(rank == 0){ %>
                       <hr>
                       <li>
                         <form class="delete-form inline" action="/clubs/<%= club._id %>?_method=DELETE" method="POST">
                           <button class="dropitems link-button text-sm greyback lightgrey" type="submit" disabled>Delete club</button>
                         </form>
                       </li>
-                    <% }; %>
+                    <% } %>
                   </div>
                 </ul>
               </div>
@@ -476,8 +478,7 @@
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
-                <hr>
-                <div class="greyback valign hr1">
+                <div class="greyback valign hr3">
                   <div class="d-flex flex-row">
                     <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
@@ -487,7 +488,7 @@
                     </div>
                     <div id="searchMember_form">
                       <div class="input-group input-group-sm">
-                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 25px;">
+                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 25px; border: none;">
                         <div class="input-group-append">
                           <button id="search-members-btn" class="btn btn-secondary search py-0 px-1" type="submit" style="height: 25px;">
                             <span id="search-members-span"></span>Go
@@ -555,7 +556,7 @@
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}

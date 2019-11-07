@@ -88,8 +88,13 @@ $('#input_topic').on('input', function(e){
   }
 });
 
-$('#inputPassword').on('input', function(e){ 
-  var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,10}$/;
+$('#inputPassword').on('input', function(e){
+  if($(this).val() != ''){
+    $('#pass_show').css('display','block');
+  } else{
+    $('#pass_show').css('display','none');
+  }
+  var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
   if($(this).val().match(pass)){
     $('#pass_info').css('display','none');
   } else{

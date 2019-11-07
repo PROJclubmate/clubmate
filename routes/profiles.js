@@ -6,9 +6,10 @@ const express  = require('express'),
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
   profilesClubMoreMembers, profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile,
   profilesGetUsersFeaturedPhotos, profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos,
-  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify, profilesVerificationToken,
-	profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken,
-	profilesResetPass, profilesClubSearchMembers} = require('../controllers/profiles');
+  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify,
+  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage,
+  profilesForgotPass, profilesForgotToken, profilesResetPass,
+  profilesClubSearchMembers} = require('../controllers/profiles');
   
 
 // Show user profile
@@ -79,7 +80,7 @@ router.get('/confirmation/:token', profilesVerifyUser);
 router.get('/resend_verification', profilesReVerify);
 
 // Resend verification token
-router.put('/resend_verification', profilesVerificationToken);
+router.post('/resend_verification', profilesVerificationToken);
 
 // Get Login Page
 router.get('/login', profilesLoginPage);

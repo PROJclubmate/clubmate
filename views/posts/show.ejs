@@ -20,7 +20,7 @@
             <div class="lineheight2">
               <div class="mobiletext2">
                 <span>
-                  <a href="/clubs/<%= post.postClub._id %>" class="lightgrey"><strong><%= post.postClub.name %></strong></a>
+                  <a href="/clubs/<%= post.postClub._id %>" style="color: #a0a0a0;"><strong><%= post.postClub.name %></strong></a>
                 </span>
                 <i class="fas fa-caret-left lightgrey"></i>
                 <span>
@@ -377,7 +377,7 @@
   }
 
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}

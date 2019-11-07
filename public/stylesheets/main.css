@@ -1153,6 +1153,9 @@ img.cover{
 .hr2{
   border-bottom: 1px solid rgba(0,0,0,0.075);
 }
+.hr3{
+  border-top: 1px solid lightgrey;
+}
 .profilename{
   font-size: 1.25rem;
   margin: 0;

@@ -109,20 +109,23 @@
             <hr>
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <% if(user.userKeys.college && user.userKeys.concentration){ %>
-                <div class="info1">Concn: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=<%= user.userKeys.concentration %>&batch=&workplace=&school=&location="><%= user.userKeys.concentration %></a></div></div>
+              <% if(user.userKeys.college && user.userKeys.major){ %>
+                <div class="info1">Major: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=<%= user.userKeys.major %>&batch=&section=&workplace=&school=&location="><%= user.userKeys.major %></a></div></div>
               <% } %>
               <% if(user.userKeys.college && user.userKeys.batch){ %>
-                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=<%= user.userKeys.batch %>&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
+                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=<%= user.userKeys.batch %>&section=&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
+              <% } %>
+              <% if(user.userKeys.college && user.userKeys.section){ %>
+                <div class="info1">Section: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=<%= user.userKeys.section %>&workplace=&school=&location="><%= user.userKeys.section %></a></div></div>
               <% } %>
               <% if(user.userKeys.workplace){ %>
-                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
+                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
               <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
               <% } %>
               <% if(user.userKeys.residence){ %>
-                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&concentration=&batch=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -135,10 +138,12 @@
                 <br>
                 <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
                 <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
-                <label for="concentration" class="sr-only">Concentration</label>
-                <input type="text" id="concentration" class="form-control form-control-sm" name="userKeys[concentration]" value="<%= user.userKeys.concentration %>" placeholder="Concentration">
+                <label for="major" class="sr-only">Major</label>
+                <input type="text" id="major" class="form-control form-control-sm" name="userKeys[major]" value="<%= user.userKeys.major %>" placeholder="Subject Major">
                 <label for="batch" class="sr-only">Batch</label>
-                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch">
+                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch (First year)">
+                <label for="section" class="sr-only">Section</label>
+                <input type="text" id="section" class="form-control form-control-sm" name="userKeys[section]" value="<%= user.userKeys.section %>" placeholder="Section">
                 <label for="workplace" class="sr-only">Workplace</label>
                 <input type="text" id="workplace" class="form-control form-control-sm" name="userKeys[workplace]" value="<%= user.userKeys.workplace %>" placeholder="Workplace">
                 <label for="school" class="sr-only">School</label>
@@ -556,8 +561,7 @@
             </div>
             <!-- Clubs Tab -->
             <div class="tab-pane fade cardpad" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
-              <hr>
-              <div class="greyback valign my-auto hr1">
+              <div class="greyback valign my-auto hr3">
                 <div class="d-flex flex-row">
                   <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>
@@ -678,7 +682,7 @@
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}

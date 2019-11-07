@@ -68,7 +68,7 @@ middlewareObj.checkClubOwnership = function(req, res, next){
       req.flash("error", "Club not found");
       res.redirect("back");
     } else{
-      // is user the founder
+      // is user the owner
       var ok;
       foundClub.clubUsers.forEach(function(user){
         if(user.id.equals(req.user._id) && user.userRank == 0){
@@ -97,7 +97,7 @@ middlewareObj.checkClubAdminship = function(req, res, next){
       req.flash("error", "Club not found");
       res.redirect("back");
     } else{
-      // is user an admin||founder
+      // is user an admin||owner
       var ok;
       foundClub.clubUsers.forEach(function(user){
         if(user.id.equals(req.user._id) && user.userRank <= 1){
@@ -212,7 +212,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {users, college, concentration, batch, workplace, school, location, distance} = req.query;
+    let {users, college, major, batch, section, workplace, school, location, distance} = req.query;
     if(users){
       filterKeys['users'] = users;
       users = new RegExp(escapeRegExp(users), 'gi');
@@ -223,14 +223,19 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       college = new RegExp(escapeRegExp(college), 'gi');
       dbQueries.push({'userKeys.college': college});
     }
-    if(concentration){
-      filterKeys['concentration'] = concentration;
-      concentration = new RegExp(escapeRegExp(concentration), 'gi');
-      dbQueries.push({'userKeys.concentration': concentration});
+    if(major){
+      filterKeys['major'] = major;
+      major = new RegExp(escapeRegExp(major), 'gi');
+      dbQueries.push({'userKeys.major': major});
     }
     if(batch){
       filterKeys['batch'] = batch;
       dbQueries.push({'userKeys.batch': batch});
+    }
+    if(section){
+      filterKeys['section'] = section;
+      section = new RegExp(escapeRegExp(section), 'gi');
+      dbQueries.push({'userKeys.section': section});
     }
     if(workplace){
       filterKeys['workplace'] = workplace;

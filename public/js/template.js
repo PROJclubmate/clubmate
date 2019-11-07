@@ -2104,7 +2104,7 @@ function post_subPosts_template(response){
                     </li>
                     <li>
                       <form class="delete-form inline" action="" method="POST">
-                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate</button>
+                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate &#127988;</button>
                       </form>
                     </li>
                   </div>
@@ -2197,7 +2197,7 @@ function post_subPosts_template(response){
   }
 
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
@@ -2241,7 +2241,10 @@ function moreMembers_template(response){
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
           <select id="userRank" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
-            <option value="0" data-descr="Founder" disabled selected>&#x25BC;</option>
+            <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
+            <% if(rank == 0){ %>
+              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="Owner">Owner</option>
+            <% } %>
             <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
             <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
             <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
@@ -2300,7 +2303,7 @@ function moreMembers_template(response){
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
@@ -2421,7 +2424,7 @@ function moreClubs_template(response){
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Founder';}
+    if(rank == 0){return 'Owner';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
