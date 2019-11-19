@@ -97,7 +97,7 @@
               <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %> <em class="lightgrey text-xxxs">(UTC)</em></div>
+              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %> <span class="text-xxxs lightgrey">(UTC)</span> <em class="lightgrey text-xxxs"></em></div>
               <div class="dropdown ml-auto">
                 <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
@@ -129,7 +129,7 @@
         <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <% for(var k=0;k<subPosts[j].images.length;k++){ %>
-            <div class="subPostimg-div">
+            <div class="subPostimg-div" style="border: 1px solid lightgrey;">
               <img class="card-img-top p-1" src="<%= subPosts[j].images[k].image %>">
             </div>
           <% } %>
@@ -196,7 +196,7 @@
               <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2">Submit</button>
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                <i class="fas fa-upload"></i> Image(s)
+                <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="images/*" multiple>
               <div class="emoji-panel subpostbtn pt-2 px-2">

@@ -57,6 +57,23 @@ if(socket !== undefined){
       }
     }
   }
+  // Emit online/offline
+  $("#user-message").focus(function(){
+    socket.emit('userOnline');
+    var conversationId = $("#user-convoId").attr("value").split(',')[0];
+    $.post('/read/'+conversationId);
+  });
+  $("#user-message").blur(function(){
+    socket.emit('userOffline');
+  });
+  // Listen
+  socket.on('userOnline', function(data){
+    $("#isUserOnline").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
+  })
+  socket.on('userOffline', function(data){
+    $("#isUserOnline").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");
+  })
+
   // Emit typing
   $("#user-message").on('input', function(){
     // Send value = firstName to server to 'broadcast'
@@ -76,12 +93,8 @@ if(socket !== undefined){
   // });
   // From routes.js
   socket.on('message', newMessage)
-  socket.on('userRefresh', userRefresh)
 
   // 3). FUNCTIONS
-  function userRefresh(data){
-    window.location.replace('/users/'+data);
-  }
   function addMessages(data){
     var prevDate;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
@@ -130,7 +143,6 @@ if(socket !== undefined){
   function sendMessage(message){
     if(message.conversationId == ''){
       $.post('/new/chat', message);
-      // TEMPORARY 'till server function(msgStatus)/event 'status' is not working
       setStatus('Conversation started!');
     } else if(message.recipientId == ''){
       $.post('/chat/'+message.conversationId, message);
@@ -203,11 +215,7 @@ if(socket !== undefined){
   //   }
   // });
   socket.on('clubMessage', newClubMessage)
-  socket.on('clubRefresh', clubRefresh)
 
-  function clubRefresh(data){
-    window.location.replace('/clubs/'+data);
-  }
   function addClubMessages(data){
     var prevDate;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
@@ -308,4 +316,20 @@ if(socket !== undefined){
       $("#emoji-box2").toggleClass('emoji-up');
     });
   }
+  $("#block-user-span").click(()=>{
+    var conversationId = $("#user-convoId").attr("value").split(',')[0];
+    if($("#block-user").attr("value") == 'true'){
+      $.post('/block/'+conversationId, $("#block-user").attr("value"));
+      $("#block-user").attr("value","false");
+      $("#block-user").attr("title","Unblock user");
+      $("#block-user").addClass('redcolor');
+      setStatus('BLOCKED!');
+    } else if($("#block-user").attr("value") == 'false'){
+      $.post('/block/'+conversationId, $("#block-user").attr("value"));
+      $("#block-user").attr("value","true");
+      $("#block-user").attr("title","Block user");
+      $("#block-user").removeClass('redcolor');
+      setStatus('UNBLOCKED!');
+    }
+  });
 }

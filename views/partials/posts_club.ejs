@@ -158,16 +158,18 @@
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
                 <!-- Moderation -->
-                <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
-                  <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
-                  </span>
-                <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
-                  <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
-                  </span>
+                <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
+                  <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
+                    <span>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
+                    </span>
+                  <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
+                    <span>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
+                    </span>
+                  <% } %>
                 <% } %>
-                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
+                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>

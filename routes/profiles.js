@@ -49,7 +49,7 @@ router.get('/clubs-morePosts/:club_id', profilesClubMorePosts);
 router.put('/clubs/:club_id', middleware.isLoggedIn, upload.single('avatar'), profilesUpdateClubProfile);
 
 // Delete club profile
-router.delete('/clubs/:club_id', profilesDeleteClubProfile);
+router.put('/clubs/:club_id/delete', profilesDeleteClubProfile);
 
 // Get user featured photos page
 router.get('/users/:id/featured_photos', middleware.checkAccountOwnership, profilesGetUsersFeaturedPhotos);

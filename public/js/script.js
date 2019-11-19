@@ -4,16 +4,20 @@ window.onscroll = function(){
   var currentScrollPos = window.pageYOffset;
   if($(window).width() > 1199 && prevScrollpos > currentScrollPos) {
     document.getElementById("navbar").style.top = "0";
-    document.getElementById("pop_box").style.top = "40px";
+    document.getElementById("pop_box_requests").style.top = "40px";
+    document.getElementById("pop_box_notifications").style.top = "40px";
   } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
     document.getElementById("navbar").style.top = "0px";
-    document.getElementById("pop_box").style.top = "42px";
+    document.getElementById("pop_box_requests").style.top = "42px";
+    document.getElementById("pop_box_notifications").style.top = "42px";
   } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
     document.getElementById("navbar").style.top = "-40px";
-    document.getElementById("pop_box").style.top = "-600px";
+    document.getElementById("pop_box_requests").style.top = "-600px";
+    document.getElementById("pop_box_notifications").style.top = "-600px";
   } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
     document.getElementById("navbar").style.top = "-50px";
-    document.getElementById("pop_box").style.top = "-600px";
+    document.getElementById("pop_box_requests").style.top = "-600px";
+    document.getElementById("pop_box_notifications").style.top = "-600px";
   }
   prevScrollpos = currentScrollPos;
 }
@@ -179,8 +183,8 @@ function toggle_display(id){
     divelement.style.display = 'block';
 }
 
-function closeForm() {
-  document.getElementById("pop_box").style.display = "none";
+function closeForm(id){
+  document.getElementById(id).style.display = "none";
 }
 
 function toggleclass_display(id){

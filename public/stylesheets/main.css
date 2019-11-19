@@ -90,10 +90,12 @@ div.content{
   .nav-link.requests{color: grey !important;}
   .pl-2.mobilepad{padding: 0 !important;}
   .topic-head{box-shadow: -3px 0px 0px 0px #dc3545;}
-  .helppad{padding: 0 3rem;}
+  .helppad{padding-left: 3rem;}
+  .helppad2{padding-left: 2.5rem;}
   .desktoptext3{font-size: 0.75rem !important;}
   .desktoptext2{font-size: 0.875rem !important;}
   .commentpad{padding-left: 0.25rem;}
+  .popup-box-notifications{right: 6.5rem !important;}
 }
 /* MAX WIDTH */
 @media screen and (max-width: 767px){
@@ -101,14 +103,16 @@ div.content{
   .navbar-toggler{border-color: #eaecf0 !important; padding: 0.25rem 0.5rem !important;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{
-    color: #4aac71 !important;
+    color: #19ae69 !important;
     font-size: 1.5rem !important;
     padding: 0 !important;
     font-weight: 900;
     -webkit-text-fill-color: #19ae69;
     -webkit-text-stroke-width: 0.75px;
-    -webkit-text-stroke-color: #169f69;
+    -webkit-text-stroke-color: #169c5e;
   }
+  .badge-mobile{background: #f8f9fa !important; color: #212529 !important; top: -0.25rem !important;
+  right: -0.5rem !important;}
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
   .mobilewidth{width: 100% !important;}
@@ -130,7 +134,7 @@ div.content{
   .desktopNoneFlex{display: flex !important;}
   span.mobileShow{display: flex;}
   select.select3{width: 75px;}
-  .popup-box{min-width: 300px !important; width: 100%; right: 0 !important; will-change: transform;}
+  .popup-box{min-width: 300px !important; width: 100% !important; right: 0 !important; will-change: transform;}
   .px-1.mobilepad{padding: 0 !important;}
   .mobilemargin{margin: 0 !important;}
   .mobiletext{font-size: 0.9375rem !important;}
@@ -148,13 +152,15 @@ div.content{
   img.avatar.cover{height: 175px; width: 175px;}
   div.carousel-frame{height: 150px;}
   div.carousel-frame2{height: 150px;}
+  div.carousel-div{height: 142px;}
   img.postimg{width: 100%;max-height: 25rem;object-fit: cover;}
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
-  .helppad{padding: 0 0.75rem;}
+  .helppad{padding: 0 1rem;}
+  .helppad2{padding: 0 2.5rem;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -205,6 +211,7 @@ div.content{
   img.avatar.cover{height: 160px !important; width: 160px !important;}
   div.carousel-frame{height: 135px !important;}
   div.carousel-frame2{height: 135px !important;}
+  div.carousel-div{height: 127px;}
   .friends-dp{height: 5.25rem !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.875rem !important;}
@@ -296,11 +303,16 @@ input.form-control.search{
   border: none;
   border-top-left-radius: 0.1rem;
   border-bottom-left-radius: 0.1rem;
-  box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.5);
 }
 input.form-control.search:focus{
   border: 1px solid #80bdff;
   box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5) !important;
+  background-color: white;
+}
+input.form-control.search2:focus{
+  border: 1px solid #80bdff;
+  box-shadow: inset 0px 0.25px 3px 0px rgba(0,0,0,0.5) !important;
   background-color: white;
 }
 button.btn.btn-secondary.search{
@@ -690,7 +702,7 @@ input[type="file"]#inputavatar{
   box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5);
 }
 /*None elements*/
-.nodisplay{display: none;}
+.nodisplay{display: none !important;}
 .commentbtn{display: none;}
 .newClub_form{display: none;}
 .user_Rank{display: none;}
@@ -875,6 +887,18 @@ input[type="file"]#inputavatar{
   border-color: #84afd3;
   background-color: #84afd3;
 }
+.btn-info{
+  border-color: #1276c4;
+  background-color: #1484da;
+}
+.btn-info:hover{
+  border-color: #1069ae;
+  background-color: #1276c4;
+}
+.btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
+  border-color: #1470a9;
+  background-color: #1069ae;
+}
 .btn-success{
   border-color: #429a65;
   background-color: #4aac71;
@@ -908,18 +932,6 @@ input[type="file"]#inputavatar{
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
   border-color: #666666;
   background-color: #737373;
-}
-.btn-info{
-  border-color: #1a90d9;
-  background-color: #1da1f2;
-}
-.btn-info:hover{
-  border-color: #1780c1;
-  background-color: #1a90d9;
-}
-.btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
-  border-color: #1470a9;
-  background-color: #1780c1;
 }
 .btn-danger{
   border-color: #d85454;
@@ -1107,12 +1119,6 @@ a .nolink:hover{
 .link-button:active{
   color:red;
 }
-div.carousel-frame{
-  outline: 2px dashed grey;
-}
-div.carousel-frame2{
-  outline: 2px dashed #009f5e;
-}
 .carousel-control{
   top: 5rem;
   bottom: 5rem;
@@ -1178,7 +1184,7 @@ img.cover{
 }
 .yellowback{
   background-color: #fff0d9;
-  background-image: url(/images/doodleBack.png);
+  background-image: url(https://res.cloudinary.com/dubirhea4/image/upload/v1573590441/help/doodleBack.png);
   background-size: 417px 417px;
   background-repeat: repeat;
 }
@@ -1239,6 +1245,12 @@ ul{
 }
 .opaque{
   opacity: 1 !important;
+}
+div.carousel-img{
+  border: 1px dashed silver;
+}
+div.carousel-img2{
+  border: 1px dashed #777;
 }
 .overlay{
   position: absolute; 
@@ -1329,6 +1341,12 @@ ul{
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.truncate1{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 .truncate2{
@@ -1541,17 +1559,17 @@ select.select1::-ms-expand{
 }
 .carousel-indicators{
   top: 0;
-  z-index: 2;
+  z-index: 1;
 }
 .popup-box{
   background-color: white;
-  min-width: 400px;
+  width: 400px;
   max-height: 350px;
   overflow-y: auto;
   display: none;
   position: fixed;
   top: 42px;
-  right: 2.5rem;
+  right: 4rem;
   border: 3px solid #f1f1f1;
   transition: top 0.3s;
   z-index: 4;

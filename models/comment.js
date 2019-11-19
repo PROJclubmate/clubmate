@@ -13,8 +13,6 @@ const commentSchema = new Schema({
 		max: 20
 	},
 	comments: [{
-		// slug: String,
-		// full_slug: String,
 		postedAt: {type: Date, default: Date.now},
 		commentAuthor: {
 			id:{

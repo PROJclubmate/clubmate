@@ -32,6 +32,13 @@
               <div class="col-md-9 p-1 card coverback clubback indexcard rcov carousel-frame2">
             <% } %>
               <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
+                <% if(club.featuredPhotos.length == 0){ %>
+                  <div class="carousel-inner d-flex">
+                    <div class="carousel-item active carousel-div carousel-img2">
+                      <img class="cover mobile-cover" src="/images/noImage.png" style="opacity: 0;">
+                    </div>
+                  </div>
+                <% } %>
                 <% if(club.featuredPhotos.length != 0){ %>
                   <% if(club.featuredPhotos.length > 1){ %>
                     <ol class="carousel-indicators">
@@ -174,14 +181,41 @@
                     <% if(rank == 0){ %>
                       <hr>
                       <li>
-                        <form class="delete-form inline" action="/clubs/<%= club._id %>?_method=DELETE" method="POST">
-                          <button class="dropitems link-button text-sm greyback lightgrey" type="submit" disabled>Delete club</button>
-                        </form>
+                        <button class="dropitems link-button red text-sm" href="#delClubModal<%= club._id %>" data-toggle="modal">
+                          <span>Delete club</span>
+                          <span><img class="mb-1" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573760651/icons/delete.png" style="width: 15px; height: 15px;" title="Designed by [Smashicons] from @flaticon"></span>
+                        </button>
                       </li>
                     <% } %>
                   </div>
                 </ul>
               </div>
+              <% if(rank == 0){ %>
+                <!-- Modal HTML -->
+                <div id="delClubModal<%= club._id %>" class="fixed-padding modal fade">
+                  <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                      <div class="d-flex">
+                        <span class="icon-box">
+                          <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                        </span>              
+                        <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      </div>
+                      <div>
+                        <p class="nothing">Do you really want to delete <%= club.name %>?</p>
+                        <p>Posts created through this club might still appear in other places.</p>
+                      </div>
+                      <div class="my-2">
+                        <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                        <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>/delete?_method=PUT" method="POST">
+                          <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
             </div>
             <hr>
             <div class="d-flex flex-column text-sm">
@@ -523,9 +557,9 @@
     </div>
   <% } else if(currentUser && (!rank || 0 >= rank && rank >=4)){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
-      <div class="card m-0">
-        <div class="card-body">
-          <div class="lightgrey lineheight text-sm">
+      <div class="m-0">
+        <div class="card-body1">
+          <div class="lightgrey lineheight text-sm text-center">
             <i class="fas fa-info-circle orangecolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
           </div>
         </div>

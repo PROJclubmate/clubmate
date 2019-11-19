@@ -1,14 +1,24 @@
 <div class="card mt-0">
   <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left card-body3 valign" data-toggle="collapse" data-target="#chatbox">
-    <div class="text-sm mobilebold">Direct chat</div>
+    <div class="text-sm mobilebold">
+      <span id="lastMsg">Direct chat</span>
+      <% if(lastMessage && lastMessage != ''){ %>
+        <span id="lastMsg-hidden" class="truncate1 nodisplay">"<%= lastMessage %>"</span>
+      <% } else{ %>
+        <span id="lastMsg-hidden" class="nodisplay">Direct chat</span>
+      <% } %>
+      <% if(conversationId && conversationId != '' && isBlocked && isBlockedByFoundUser){ %>
+        <span class="text-xxxs boldtext redcolor">(BLOCKED)</span>
+      <% } %>
+    </div>
     <div class="boldtext text-xxxs ml-2">
       <% if(conversationId && conversationId != ''){ %>
-        <svg height="12" width="12">
+        <svg id="isUserOnline" height="12" width="12">
           <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
         </svg>
       <% } else{ %>
-        <svg height="12" width="12">
-          <circle cx="6" cy="6" r="4" stroke="lightgrey" stroke-width="1" fill="#e0e0e0"/>
+        <svg id="isUserOnline" height="12" width="12">
+          <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="white"/>
         </svg>
       <% } %>
     </div>
@@ -26,7 +36,7 @@
     </div>
     <div class="input-bottom valign px-1">
       <div class="input-group">
-        <input id="user-message" onfocus="block_display('pushmsg');" class="emoji-input2 commentbox text-sm form-control form-control-sm shadow" type="text" name="msgText" placeholder="Write a message" required>
+        <input id="user-message" onfocus="block_display('pushmsg');" class="emoji-input2 commentbox text-sm form-control search2 form-control-sm shadow" type="text" name="msgText" placeholder="Write a message" required>
       </div>
       <% if(currentUser){ %>
         <div class="pushmsg"><button id="user-send" class="btn btn-sm btn-success btn-round ml-1" title="Send club message"><i class="fab fa-telegram-plane"></i></button></div>
@@ -46,7 +56,16 @@
           <i class="far fa-laugh-wink"></i>
         </button>
       </span>
-      <span id="thumbstack" class="btn btn-sm chat-input-tool" title="Pin chatbox"><i class="fas fa-thumbtack"></i></span>
+      <% if(conversationId && conversationId != '' && !isBlocked){ %>
+        <span id="block-user-span">
+          <span id="block-user" class="btn btn-sm chat-input-tool" title="Block user" value="true"><i class="fas fa-ban"></i></span>
+        </span>
+      <% } else if(conversationId && conversationId != '' && isBlocked && !isBlockedByFoundUser){ %>
+        <span id="block-user-span">
+          <span id="block-user" class="btn btn-sm chat-input-tool redcolor" title="Unblock user" value="false"><i class="fas fa-ban"></i></span>
+        </span>
+      <% } %>
+      <span id="thumbstack" class="nopad btn btn-sm chat-input-tool" title="Pin chatbox"><i class="fas fa-thumbtack"></i></span>
       <span id="arrows-v" class="nopad btn btn-sm chat-input-tool" title="Expand chatbox"><i class="fas fa-arrows-alt-v"></i></span>
     </div>
   </div>

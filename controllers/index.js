@@ -36,7 +36,7 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      Club.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
+      Club.find({$text: {$search: query}, isActive: true}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
       .select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1}).limit(3)
       .exec(function(err, foundClubs){
       if(err || !foundClubs){
@@ -253,7 +253,7 @@ module.exports = {
 
   indexSearchClubs(req, res, next){
     const query = req.query.clubs;
-    Club.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
+    Club.find({$text: {$search: query}, isActive: true}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({name: 1, avatar: 1, avatarId: 1, categories: 1, clubKeys: 1, banner: 1}).limit(10)
     .exec(function(err, foundClubs){
     if(err || !foundClubs){

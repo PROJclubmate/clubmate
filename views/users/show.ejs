@@ -31,9 +31,16 @@
           <% if(user.featuredPhotos.length != 0){ %>
             <div class="col-md-9 p-1 card coverback indexcard rcov">
           <% } else{ %>
-            <div class="col-md-9 p-1 card coverback indexcard rcov carousel-frame">
+            <div class="col-md-9 p-1 card coverback indexcard rcov">
           <% } %>
             <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
+              <% if(user.featuredPhotos.length == 0){ %>
+                <div class="carousel-inner d-flex">
+                  <div class="carousel-item active carousel-div carousel-img">
+                    <img class="cover mobile-cover" src="/images/noImage.png" style="opacity: 0;">
+                  </div>
+                </div>
+              <% } %>
               <% if(user.featuredPhotos.length != 0){ %>
                 <% if(user.featuredPhotos.length > 1){ %>
                   <ol class="carousel-indicators">

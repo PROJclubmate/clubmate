@@ -9,9 +9,13 @@ const express          = require('express'),
 
 module.exports = {
   postsHome(req, res, next){
-    if(req.user){
+    if(req.user && req.user.userClubs.length != 0){
       res.render('posts/index');
-    } else{
+    } else if(req.user && req.user.userClubs.length == 0){
+      req.flash('success', 'Join clubs to start seeing their posts at HOME.');
+      res.redirect('/discover');
+    } else if(!req.user){
+      req.flash('success', 'Please Login to go HOME :)');
       res.redirect('/discover');
     }
   },

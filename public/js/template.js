@@ -253,6 +253,17 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  // Last message mobile
+  if($(window).width() < 768){
+    if($('#lastMsg-hidden') && $('#lastMsg-hidden').text() != ''){
+      $('#lastMsg').addClass("nodisplay");
+      $('#lastMsg-hidden').removeClass("nodisplay");
+    }
+    $('#drop-chat').on('click', function(e){
+      $('#lastMsg').toggleClass("nodisplay");
+      $('#lastMsg-hidden').toggleClass("nodisplay");
+    });
+  }
   window.onload=function(){
     document.getElementById('load-more-btn').click();
   };
@@ -1113,16 +1124,18 @@ function club_posts_template(response){
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
                 <!-- Moderation -->
-                <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
-                  <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
-                  </span>
-                <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
-                  <span>
-                    <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
-                  </span>
+                <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
+                  <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
+                    <span>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
+                    </span>
+                  <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
+                    <span>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
+                    </span>
+                  <% } %>
                 <% } %>
-                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
+                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
@@ -2136,7 +2149,7 @@ function post_subPosts_template(response){
         <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <% for(var k=0;k<subPosts[j].images.length;k++){ %>
-            <div class="subPostimg-div">
+            <div class="subPostimg-div" style="border: 1px solid lightgrey;">
               <img class="card-img-top p-1" src="<%= subPosts[j].images[k].image %>">
             </div>
           <% } %>
@@ -2187,7 +2200,7 @@ function post_subPosts_template(response){
               <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2">Submit</button>
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                <i class="fas fa-upload"></i> Image(s)
+                <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
             </div>

@@ -3,11 +3,11 @@ const mongoose          = require('mongoose'),
   Schema                = mongoose.Schema;
 
 const userSchema = new Schema({
+  isVerified: {type: Boolean, default: false},
   firstName: {type: String, required: true},
   lastName: String,
   fullName: {type: String, required: true},
   email: {type: String, unique: true, required: true},
-  verified: {type: Boolean, default: false},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   profilePic: String,
@@ -91,9 +91,9 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Conversation'
     },
+    lastMessage: String,
     _id: false
-  }],
-  blockedUsers: [this]
+  }]
 },
 {
   timestamps: true
@@ -113,8 +113,8 @@ userSchema.plugin(passportLocalMongoose,{
     UserExistsError: 'A user with the given email is already registered'
   },
   findByUsername: function(model, queryParameters){
-    // Add additional query parameter - AND condition - verified: true
-    queryParameters.verified = true;
+    // Add additional query parameter - AND condition - isVerified: true
+    queryParameters.isVerified = true;
     return model.findOne(queryParameters);
   }
 });

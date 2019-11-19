@@ -8,6 +8,11 @@ const conversationSchema = new Schema({
       ref: 'User'
     }
   ],
+  isBlocked: {type: Boolean, default: false},
+  blockedBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   bucketNum: {type: Number, default: 1},
   messageBuckets: [
     {

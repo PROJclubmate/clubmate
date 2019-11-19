@@ -3,6 +3,7 @@ const mongoose          = require('mongoose'),
   Schema                = mongoose.Schema;
 
 const clubSchema = new Schema({
+  isActive: {type: Boolean, default: true},
   name: String,
   banner: String,
   avatar: String,
@@ -33,7 +34,6 @@ const clubSchema = new Schema({
       type: [Number],
     }
   },
-  description: String,
   updates: [{
     pusherId: this,
     pusherName: String,
