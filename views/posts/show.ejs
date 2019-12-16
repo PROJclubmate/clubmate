@@ -4,9 +4,9 @@
   <div class="col-lg-2 col-md-2 px-2 mobileNone">
     <div class="list-group">
       <li class="list-group-item bluecolor text-sm boldtext mt-3"><i class="fas fa-question-circle"></i> Did you..</li>
-      <li class="list-group-item text-sm darkgrey">... have a <a href="https://www.facebook.com/groups/2660887327313418/" target="_blank" class="black underline">question</a>?</li>
-      <li class="list-group-item text-sm darkgrey">... find a <a href="https://www.facebook.com/groups/400084017547657/" target="_blank" class="black underline">bug</a>?</li>
-      <li class="list-group-item text-sm darkgrey">... have a <a href="https://www.facebook.com/groups/1351554461692986/" target="_blank" class="black underline">feature suggestion</a>?</li>
+      <li class="list-group-item text-sm darkgrey">... have a <a href="www.facebook.com/groups/2660887327313418/" target="_blank" class="black underline">question</a>?</li>
+      <li class="list-group-item text-sm darkgrey">... find a <a href="www.facebook.com/groups/400084017547657/" target="_blank" class="black underline">bug</a>?</li>
+      <li class="list-group-item text-sm darkgrey">... have a <a href="www.facebook.com/groups/1351554461692986/" target="_blank" class="black underline">feature suggestion</a>?</li>
     </div>
   </div>
   <div id="delegated-posts" class="col-lg-7 col-md-10">
@@ -15,10 +15,13 @@
         <div class="dropctn">
           <div class="valign">
             <div>
-              <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>" title="<%= post.postClub.name %>"></a>
+              <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
             </div>
             <div class="lineheight2">
               <div class="mobiletext2">
+                <span>
+                  <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
+                </span>
                 <i class="fas fa-caret-left lightgrey"></i>
                 <span>
                   <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
@@ -34,7 +37,8 @@
                 <% if(post.descEdit.length != 0){ %>
                   <div class="badge badge-warning text-xxs">Edited</div>
                 <% } %>
-                <span><em class="text-xxs lightgrey">. <%= moment(post.createdAt).format('lll'); %> (UTC)</em></span>
+                <span><em id="timeUTC" class="text-xxs lightgrey nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                <span class="lightgrey nothing">. <em id="timeLocal" class="text-xxs"></em></span>
               </div>
             </div>
           </div>
@@ -63,10 +67,10 @@
           <img class="card-img-top" src="<%= post.image %>">
           <div class="card-body">
         <% } else{ %>
-          <hr>
           <div class="card-body3">
         <% } %>
           <p class="nothing mobiletext linewrap"><%= post.description %></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
         </div>
         <hr>
         <div class="card-body">
@@ -159,9 +163,13 @@
           </div>
           <% if(post.image){ %>
             <div class="mobiletext linewrap card-body3"><%= post.description %></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            </div>
             <img class="card-img-top" src="<%= post.image %>">
           <% } else{ %>
             <div class="card-body3 mobiletext linewrap nolink"><%= post.description %></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            </div>
           <% } %>
         </div>
         <hr>
@@ -208,6 +216,8 @@
         <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
           <label for="description" class="sr-only">Post description</label>
           <textarea type="text" id="description" class="emoji-input form-control shadow whitesmokeback" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
+          <label for="hyperlink_edit" class="sr-only">Hyperlink</label>
+          <input id="hyperlink_edit" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Insert hyperlink" value="<%= post.hyperlink %>">
           <div class="valign">
             <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
             <div class="righttext d-flex my-auto">

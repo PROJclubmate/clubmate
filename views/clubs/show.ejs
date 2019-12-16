@@ -9,7 +9,7 @@
     <div class="row no-gutters">
       <div class="col-md-12">
           <div class="row no-gutters">
-            <div class="col-md-3 p-1 card coverback indexcard clubback lcov order-md-first order-last lpcov mx-auto">
+            <div class="col-md-3 p-1 card coverback indexcard clubback avatar-frame lcov order-md-first order-last lpcov mx-auto">
               <div class="container">
                 <img class="avatar cover image mx-auto" src="<%= club.avatar || '/images/noClub.png' %>">
                 <% if(0 <= rank && rank <= 1){ %>
@@ -18,7 +18,7 @@
                       <i class="fas fa-upload"></i> Update club avatar
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
-                    <button class="btn btn-sm btn-success overlay2">Submit</button>
+                    <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
                   </form>
                 <% }; %>
               </div>
@@ -183,7 +183,7 @@
                       <li>
                         <button class="dropitems link-button red text-sm" href="#delClubModal<%= club._id %>" data-toggle="modal">
                           <span>Delete club</span>
-                          <span><img class="mb-1" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573760651/icons/delete.png" style="width: 15px; height: 15px;" title="Designed by [Smashicons] from @flaticon"></span>
+                          <span><i class="fas fa-trash-alt"></i></span>
                         </button>
                       </li>
                     <% } %>
@@ -222,7 +222,7 @@
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
-                <div class="info1">Weblink: <div class="info30"><a href="https://<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
+                <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
               <% } %>
               <% if(club.clubKeys.location){ %>
                 <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&category=&organization="><%= club.clubKeys.location %></a></div></div>
@@ -291,13 +291,19 @@
                   <div class="valign">
                     <div class="valign">
                       <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
-                        <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+                        <span class="truncate3 mobiletext2 lineheight2 my-1">
+                          <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
+                          <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+                        </span>
                       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
                         <div>
                           <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="orgdp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
                         </div>
                         <div>
-                          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>" class="darkgrey truncate3 linewrap mobiletext2 lineheight2 my-1"><%= topTopicPosts[i].topic %></a>
+                          <span class="truncate3 mobiletext2 lineheight2 my-1">
+                            <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
+                            <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+                          </span>
                         </div>
                       <% } %>
                     </div>
@@ -358,14 +364,23 @@
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                      <label for="hyperlink" class="sr-only">Hyperlink</label>
+                      <input id="hyperlink" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Hyperlink">
                       <div class="righttext d-flex my-auto">
+                        <span>
+                          <div class="emoji-panel">
+                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md pt-1" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
+                              <i class="fas fa-link"></i>
+                            </button>
+                          </div>
+                        </span>
                         <span>
                           <div class="emoji-panel">
                             <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" type="button" title="Insert emoji">
                               <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                                 <% include ../partials/emoji_picker %>
                               </div>
-                              <i class="far fa-laugh-wink"></i>
+                              <i class="far fa-laugh-wink" style="padding-top: 0.35rem;"></i>
                             </button>
                           </div>
                         </span>
@@ -377,7 +392,7 @@
                         </span>
                         <span class="righttext d-flex my-auto">
                           <span>
-                            <button id="postbutton" class="btn btn-sm btn-success" title="Submit post">Post</button>
+                            <button id="postbutton" class="btn btn-sm btn-success" title="Submit post" onclick="loading_spinner('load-postbutton','description');"><span id="load-postbutton"></span>Post</button>
                           </span>
                           <span>
                             <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
@@ -504,21 +519,28 @@
                       </div>
                     <% }; %>
                   </div>
+                <% } else if(0 <= rank && rank <= 4){ %>
+                  <div class="updates-card">
+                    <div class="text-center lightgrey text-sm pt-1">No updates yet.</div>
+                  </div>
                 <% } else{ %>
                   <div class="updates-card">
                     <div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>
                   </div>
-                <% }; %>
+                <% } %>
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
-                <div class="greyback valign hr3">
+                <div class="greyback valign" style="height: 22px;">
                   <div class="d-flex flex-row">
                     <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
                   <div class="d-flex">
+                    <!-- <div id="inv_requests" style="display: block;">
+                      <button onclick="toggle_display('');" class="btn btnxs chat-input-tool my-auto" title="Invite requests" style="border: 1px solid silver;"><i class="fas fa-envelope-open-text"></i> <span class="text-xxs boldtext">[4]</span></button>
+                    </div> -->
                     <div>
-                      <button onclick="toggle_display('searchMember_form');" class="btn btn-sm chat-input-tool my-auto"><i class="fas fa-search"></i></button>
+                      <button onclick="toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
                     </div>
                     <div id="searchMember_form">
                       <div class="input-group input-group-sm">

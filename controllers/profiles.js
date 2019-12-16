@@ -407,10 +407,65 @@ module.exports = {
       } else{
         var seenIds = [];
       }
-      Post.find({$and: [{_id: {$in: req.user.postHearts}},{_id: {$nin: seenIds}}]})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
+      var seenIdsArr = seenIds.map(s => mongoose.Types.ObjectId(s));
+      var postHeartsArr = req.user.postHearts.reverse();
+      Post.aggregate([
+        {$match: {$and: [{_id: {$in: postHeartsArr}}, {_id: {$nin: seenIdsArr}}]}},
+        {$addFields: {"__order": {$indexOfArray: [postHeartsArr, "$_id" ]}}},
+        {$sort: {"__order": 1}},
+        { "$lookup": {
+          "from": "clubs",
+          "foreignField": "_id",
+          "localField": "postClub",
+          "as": "postClub"
+        }},
+        {
+          "$unwind": "$postClub"
+        },
+        {
+        "$project": {
+            "_id": 1,
+            "postAuthor": 1,
+            "likeCount": 1,
+            "dislikeCount": 1,
+            "heartCount": 1,
+            "likeUserIds": 1,
+            "dislikeUserIds": 1,
+            "heartUserIds": 1,
+            "commentsCount": 1,
+            "bucketNum": 1,
+            "commentBuckets": 1,
+            "subpostsCount": 1,
+            "subpostbucketNum": 1,
+            "subpostBuckets": 1,
+            "upVoteCount": 1,
+            "downVoteCount": 1,
+            "upVoteUserIds": 1,
+            "downVoteUserIds": 1,
+            "image": 1,
+            "imageId": 1,
+            "description": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "descEdit": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
+            "__v": 1,
+            "topic": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1
+          }
+        },
+        { "$lookup": {
+          "from": "comments",
+          "foreignField": "_id",
+          "localField": "commentBuckets",
+          "as": "commentBuckets"
+        }},
+        {$limit: 10}
+        ])
       .exec(function(err, foundHeartPosts){
       if(err || !foundHeartPosts){
         console.log(req.user._id+' => (profiles-11)foundHeartPosts err:- '+JSON.stringify(err, null, 2));
@@ -454,7 +509,7 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
           }
           var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 1024, height: 768, crop: 'limit'});
+            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, crop: 'limit'});
           //replace original information with new information
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
@@ -541,7 +596,7 @@ module.exports = {
   },
 
   profilesNewClub(req, res, next){
-    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
+    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, crop: 'limit'},
     function(err, result){
     if(err){
       console.log(req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -639,7 +694,7 @@ module.exports = {
         if(0 <= rank && rank <= 4){
           // for posts made in past week
           Post.find({postClub: req.params.club_id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
-          .select({topic: 1, image: 1, imageId: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+          .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
           postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           console.log(req.user._id+' => (profiles-20)topTopicPosts err:- '+JSON.stringify(err, null, 2));
@@ -684,7 +739,7 @@ module.exports = {
       if(0<=rank && rank<=4){
         var Posts_50_Image = [];
         Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
-        .select({topic: 1, image: 1, imageId: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+        .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
         postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
         if(err || !topTopicPosts){
         console.log(req.user._id+' => (profiles-21)topTopicPosts err:- '+JSON.stringify(err, null, 2));
@@ -893,7 +948,7 @@ module.exports = {
           try{
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
-              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 768, crop: 'limit'});
+              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1132,7 +1187,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1024, height: 768, crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1161,7 +1216,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1024, height: 768, crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1205,7 +1260,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1024, height: 768, crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1234,7 +1289,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1024, height: 768, crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;
@@ -1272,10 +1327,10 @@ module.exports = {
     if(req.body.password.match(pass)){
       User.register(newUser, req.body.password, function(err, user){
       if(err || !user){
-        console.log('(profiles-38)user err:- '+JSON.stringify(err, null, 2));
         if(err.code == 11000 || err.name == 'UserExistsError'){
-          req.flash('error', 'A user with the given email is already registered');
+          req.flash('error', 'A user with the given email is already registered, Please verify or Login to continue..');
         } else{
+          console.log('(profiles-38)user err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
         return res.redirect('back');

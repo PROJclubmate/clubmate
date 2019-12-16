@@ -197,7 +197,7 @@ module.exports = {
       if(req.file){
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           cloudinary.v2.uploader.upload(req.file.path,
-          {folder: 'postImages/', use_filename: true, width: 1024, height: 768, crop: 'limit'},
+          {folder: 'postImages/', use_filename: true, width: 1024, height: 1024, crop: 'limit'},
           function(err, result){
           if(err){
             console.log(req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
@@ -470,6 +470,7 @@ module.exports = {
         foundPost.descEdit.push(editobj);
         foundPost.description = req.body.description;
       };
+      foundPost.hyperlink = req.body.hyperlink;
       foundPost.privacy = req.body.privacy;
       var hasVote = voteCheck(req.user,foundPost);
       var hasModVote = modVoteCheck(req.user,foundPost);

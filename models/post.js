@@ -3,6 +3,7 @@ const mongoose = require('mongoose'),
 
 const postSchema = new Schema({
   description: String,
+  hyperlink: String,
   descEdit: [{
     desc: String,
     createdAt: {type: Date, default: Date.now},

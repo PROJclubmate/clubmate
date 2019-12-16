@@ -160,6 +160,14 @@ $(function(){
   }
 });
 
+// Add loading spinner
+function loading_spinner(targetId, checkId){
+  var targetIdVar = '#'+targetId; var checkIdVar = '#'+checkId;
+  if(checkId == '' || (checkId != '' && $(checkIdVar).val() != '')){
+    $(targetIdVar).addClass("spinner-border spinner-border-sm mr-1");
+  }
+}
+
 // Togle requests navlink active state
 function toggle_requests(id){
   var divelement = document.getElementById(id);
@@ -393,6 +401,15 @@ $(function (){
   $('#datetimepicker4').datetimepicker({
     format: 'L'
   });
+  setInterval(function(){
+    var divUtc = $('#timeUTC');
+    var divLocal = $('#timeLocal');  
+    
+    //get text from timeUTC and conver to local timezone  
+    var localTime  = moment.utc(divUtc.text()).toDate();
+    localTime = moment(localTime).format('lll');
+    divLocal.text(localTime);        
+  },1000);
 });
 
 if(location.pathname == '/help/'){
@@ -400,6 +417,7 @@ if(location.pathname == '/help/'){
 }
 //================================================================================
 // AJAX
+//================================================================================
 // Expensive event delegation?
 $("div#delegated-posts").on('click', '.vote', function(e){
   e.preventDefault();

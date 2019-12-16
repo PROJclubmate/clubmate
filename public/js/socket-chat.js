@@ -98,6 +98,9 @@ if(socket !== undefined){
   function addMessages(data){
     var prevDate;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
+    if(data.messages.bucketNum > 2){
+      $('#load-prevMsgs-btn').removeClass('nodisplay');
+    }
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){
@@ -144,6 +147,7 @@ if(socket !== undefined){
     if(message.conversationId == ''){
       $.post('/new/chat', message);
       setStatus('Conversation started!');
+      location.reload();
     } else if(message.recipientId == ''){
       $.post('/chat/'+message.conversationId, message);
     }
@@ -219,6 +223,9 @@ if(socket !== undefined){
   function addClubMessages(data){
     var prevDate;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
+    if(data.messages.bucketNum > 2){
+      $('#load-prevMsgs-btn').removeClass('nodisplay');
+    }
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){
@@ -266,7 +273,8 @@ if(socket !== undefined){
   function sendClubMessage(message){
     if(message.conversationId == ''){
       $.post('/new/club-chat', message);
-      setStatus('Conversation started!');
+      setClubStatus('Conversation started!');
+      location.reload();
     } else if(message.clubId == ''){
       $.post('/club-chat/'+message.conversationId, message);
     }

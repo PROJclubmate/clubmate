@@ -15,7 +15,9 @@
               <span class="mobiletext2">
                 <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
               </span>
-              <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar(); %></em>
+              <% if(posts[k].topic != ''){ %>
+                <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar() %></em>
+              <% } %>
             </div>
             <div>
               <% if(currentUser && match){ %>
@@ -82,12 +84,16 @@
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
         </div>
         <hr>
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
           </a>
         </div>
         <hr>
@@ -180,12 +186,14 @@
         </div>
         <% if(posts[k].image){ %>
           <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+          <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
           </a>
         <% } else{ %>
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
           </a>
         <% } %>
       </div>
@@ -223,12 +231,12 @@
             <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
             <% if(z<=2){ %>
               <div class="valign">
-                <div class="wordwrap">
+                <div class="wordwrap lineheight my-15">
                   <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
-                <div class="d-flex flex-row-reverse valign mb-auto pt-2">
+                <div class="d-flex flex-row-reverse valign mb-auto py-15 pl-1">
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id._id.equals(currentUser._id)){ %>
                   <span class="dropdown nopad">

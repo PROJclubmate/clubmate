@@ -74,7 +74,6 @@ module.exports = function(io){
 		if(req.user){
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
-		    // return msgStatus('Pl. enter a message');
 		  }
 		  Conversation.findOne({_id: req.params.conversationId, isBlocked: false})
 		  .exec(function(err, foundConversation){
@@ -97,6 +96,7 @@ module.exports = function(io){
 		        } else{
 		          if(newMessageBucket.count == 1){
 		            foundConversation.messageBuckets.push(newMessageBucket._id);
+		            // HIIIIIIII
 		            foundConversation.save();
 		          } else if(newMessageBucket.count >= 50){
 		            foundConversation.bucketNum += 1;
@@ -129,11 +129,6 @@ module.exports = function(io){
 					      // Close pending xhr request
 			        	return res.sendStatus(200);
 					    });
-		          // == BUG? ===> socket.emit('status', s); emits randomly in a group
-		          // return msgStatus({
-		          //   message: 'Message sent',
-		          //   clear: true
-		          // });
 		        }
 		        });
 		      } else{console.log('(conversations-9)Not a participant: ('+req.user._id+') '+req.user.fullName);}
@@ -209,18 +204,15 @@ module.exports = function(io){
 		if(req.user){
 		  if(!req.body.recipientId || req.body.recipientId == ''){
 		  	return res.sendStatus(400);
-		    // return msgStatus('Invalid recipient');
 		  }
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
-		    // return msgStatus('Pl. enter a message');
 		  }
 	    const conversation = new Conversation({
 	      participants: [req.user._id, mongoose.Types.ObjectId(req.body.recipientId)]
 	    });
 	    var obj={}; var newMessage=[];
 	    obj['authorId'] = req.user._id;
-	    obj['authorName'] = req.user.fullName;
 	    obj['text'] = req.body.composedMessage;
 	    newMessage.push(obj);
 	    const message = new Message({
@@ -253,7 +245,6 @@ module.exports = function(io){
 	        req.flash('error', 'Something went wrong :(');
 	        return res.redirect('back');
 	      }
-	      // msgStatus('Conversation started!');
 		    res.sendStatus(200);
 	    });
 	  }
@@ -325,7 +316,6 @@ module.exports = function(io){
 		if(req.user){
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
-		    // return clubMsgStatus('Pl. enter a message');
 		  }
 		  ClubConversation.findOne({_id: req.params.conversationId})
 		  .exec(function(err, foundConversation){
@@ -363,10 +353,6 @@ module.exports = function(io){
 	          }
 	          io.to(req.params.conversationId).emit('clubMessage', req.body); 
 	          return res.sendStatus(200);
-	          // return clubMsgStatus({
-	          //   message: 'Message sent',
-	          //   clear: true
-	          // });
 	        }
 	        });
 	      } else{console.log('(conversations-23)Not a participant: ('+req.user._id+') '+req.user.fullName);}
@@ -379,11 +365,9 @@ module.exports = function(io){
 		if(req.user){
 		  if(!req.body.clubId || req.body.clubId == ''){
 		  	return res.sendStatus(400);
-		    // return clubMsgStatus('Invalid club');
 		  }
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
-		    // return clubMsgStatus('Pl. enter a message');
 		  }
 	    const clubConversation = new ClubConversation({
 	      clubId: mongoose.Types.ObjectId(req.body.clubId)
@@ -409,7 +393,6 @@ module.exports = function(io){
 	      }
 	    });
 	    res.sendStatus(200);
-	    // clubMsgStatus('Club Conversation started!');
 	  }
 	});
 

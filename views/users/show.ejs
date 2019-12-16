@@ -11,7 +11,7 @@
     <div class="row no-gutters">
       <div class="col-md-12">
         <div class="row no-gutters">
-          <div class="col-md-3 p-1 card coverback indexcard lcov order-md-first order-last lpcov mx-auto">
+          <div class="col-md-3 p-1 card coverback profilePic-frame indexcard lcov order-md-first order-last lpcov mx-auto">
             <div class="container">
               <img class="profilePic cover mx-auto image" src="<%= user.profilePic || '/images/noUser.png' %>">
               <% if(currentUser && match){ %>
@@ -20,7 +20,7 @@
                     <i class="fas fa-upload"></i> Update profile pic
                   </label>
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                  <button class="btn btn-sm btn-success overlay2">Submit</button>
+                  <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                 </form>
               <% }; %>
             </div>
@@ -146,11 +146,11 @@
                 <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
                 <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
                 <label for="major" class="sr-only">Major</label>
-                <input type="text" id="major" class="form-control form-control-sm" name="userKeys[major]" value="<%= user.userKeys.major %>" placeholder="Subject Major">
+                <input type="text" id="major" class="form-control form-control-sm" name="userKeys[major]" value="<%= user.userKeys.major %>" placeholder="Subject Major e.g. CSE">
                 <label for="batch" class="sr-only">Batch</label>
-                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch (First year)">
+                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch (First year) e.g. 2016">
                 <label for="section" class="sr-only">Section</label>
-                <input type="text" id="section" class="form-control form-control-sm" name="userKeys[section]" value="<%= user.userKeys.section %>" placeholder="Section">
+                <input type="text" id="section" class="form-control form-control-sm" name="userKeys[section]" value="<%= user.userKeys.section %>" placeholder="Section e.g. B4">
                 <label for="workplace" class="sr-only">Workplace</label>
                 <input type="text" id="workplace" class="form-control form-control-sm" name="userKeys[workplace]" value="<%= user.userKeys.workplace %>" placeholder="Workplace">
                 <label for="school" class="sr-only">School</label>
@@ -213,7 +213,7 @@
               </li>
               <% if(currentUser && match){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="hearts-tab" data-toggle="tab" href="#hearts" role="tab" aria-controls="hearts" aria-selected="true">Hearts</a>
+                 <a class="nav-link boldtext black" id="hearts-tab" data-toggle="tab" href="#hearts" role="tab" aria-controls="hearts" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Hearts</a>
                 </li>
               <% } %>
             </ul>
@@ -282,17 +282,15 @@
                     <form action="/requests?_method=PUT" method="POST" class="form-inline">
                       <button class="btn btn-white btnxxs text-sm" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
                     </form>
+                  <% } else if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
+                    <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+                    <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
                   <% } %>
                 </span>
               </div>
               <div class="d-flex flex-column px-1 mobilepad">
                 <div class="info1">
                   <strong>Account info:</strong>
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                  </div>
                 </div>
                 <div class="info1">
                   Name: <span class="info30"><%= user.fullName %></span>
@@ -301,7 +299,14 @@
                   <br>
                   Sex: <span class="info30"><%= user.userKeys.sex %></span>
                   <br>
-                  Birthday: <span class="info30"><%= moment(user.userKeys.birthdate).format("MMM Do YY"); %></span>
+                  Birthday: <span class="info30">
+                    <%= moment(user.userKeys.birthdate).format("MMM Do YY"); %>
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                    </div>
+                  </span>
                   <br>
                   Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
                   <br>
@@ -568,7 +573,7 @@
             </div>
             <!-- Clubs Tab -->
             <div class="tab-pane fade cardpad" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
-              <div class="greyback valign my-auto hr3">
+              <div class="greyback valign my-auto" style="height: 22px;">
                 <div class="d-flex flex-row">
                   <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>

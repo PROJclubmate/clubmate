@@ -39,7 +39,7 @@
       </a>
       <div>
         <a href="/">
-          <strong class="navbar-brand name"><em>clubmate</em></strong>
+          <span class="navbar-brand name"><em>clubmate</em></span>
         </a>
       </div>
       <div>
@@ -143,8 +143,8 @@
               </div>
             </span>
           </div>
-          <div>
-            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+          <div class="mb-auto">
+            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: 114px;">
               <span>
                 <button class="btn btnxs btn-primary text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
               </span>
@@ -181,8 +181,8 @@
               </div>
             </span>
           </div>
-          <div>
-            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+          <div class="mb-auto">
+            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: 114px;">
               <span>
                 <button class="btn btnxs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
               </span>

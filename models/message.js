@@ -9,7 +9,7 @@ const messageSchema = new Schema({
   bucket: {type: Number, default: 1},
   count: {
     type: Number,
-    default: 0,
+    default: 1,
     max: 50
   },
   messages: [{

@@ -18,8 +18,8 @@
       <input type="email" id="inputEmail" class="form-control" name="email" placeholder="simon@riley.com" required>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
-      <div id="pass_show" class="nodisplay"><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
-      <div id="pass_info" class="text-xs darkgrey nodisplay">
+      <div id="pass_show" style="display: none;"><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
+      <div id="pass_info" class="text-xs darkgrey" style="display: none;">
         <span class="redcolor"><strong>*</strong></span>
         <span>Password must contain (6-18) characters, at least one letter and one number</span>
       </div>
