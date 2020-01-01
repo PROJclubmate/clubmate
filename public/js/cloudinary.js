@@ -2,7 +2,7 @@ const cloudinary = require('cloudinary'),
   multer         = require('multer');
 
 const storage = multer.diskStorage({
-  filename: function(req, file, callback) {
+  filename: function(req, file, callback){
     callback(null, Date.now() + file.originalname);
   }
 });
@@ -12,7 +12,7 @@ const imageFilter = function (req, file, cb) {
     return cb(new Error('Only image files are allowed!'), false);
   }
   cb(null, true);
-};
+}
 const upload = multer({ storage: storage, fileFilter: imageFilter});
 cloudinary.config({ 
   cloud_name: process.env.CLOUD_NAME,
@@ -20,4 +20,4 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-module.exports = {cloudinary, upload};
+module.exports = {cloudinary, upload}

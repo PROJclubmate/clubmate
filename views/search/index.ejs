@@ -28,9 +28,11 @@
 			          	</a>
 						    </div>
 						    <div class="card-body3 lineheight fullwidth">
-							    <div>
+						    	<div>
 							    	<a href="/users/<%= users[k]._id %>" class="grey">
-							      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+							      	<span class="nothing text-lg"><strong class="searchname">
+							      		<% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong>
+							      	</span>
 							      </a>
 							    </div>
 						      <div class="lightgrey text-xs"><%= users[k].note %></div>

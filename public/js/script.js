@@ -66,6 +66,16 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
+// Fake Progress bar (Nanobar)
+var options = {
+  classname: 'meter',
+    id: 'bar-id'
+};
+var nanobar = new Nanobar( options );
+nanobar.go(30);
+nanobar.go(76);
+nanobar.go(100);
+
 // Hide sidebar
 function hidesidebar(){
   var sidebar = document.getElementById('sidebar');
@@ -262,37 +272,37 @@ $('div#paginate-go-to').on('click', '#page-index-button2', function(e){
 String.prototype.trunc = String.prototype.trunc ||
 function(n){
   return (this.length > n) ? this.substr(0, n-1) + '...' : this;
-};
+}
 
 // FEATURED Images
 $('#featuredImage0').change(function(){
   var i = $(this).prev('label').clone();
   var file = $('#featuredImage0')[0].files[0].name;
-  var truncated = file.trunc(25);
+  var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
 });
 $('#featuredImage1').change(function(){
   var i = $(this).prev('label').clone();
   var file = $('#featuredImage1')[0].files[0].name;
-  var truncated = file.trunc(25);
+  var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
 });
 $('#featuredImage2').change(function(){
   var i = $(this).prev('label').clone();
   var file = $('#featuredImage2')[0].files[0].name;
-  var truncated = file.trunc(25);
+  var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
 });
 $('#featuredImage3').change(function(){
   var i = $(this).prev('label').clone();
   var file = $('#featuredImage3')[0].files[0].name;
-  var truncated = file.trunc(25);
+  var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
 });
 $('#featuredImage4').change(function(){
   var i = $(this).prev('label').clone();
   var file = $('#featuredImage4')[0].files[0].name;
-  var truncated = file.trunc(25);
+  var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
 });
 
@@ -300,20 +310,20 @@ $('#featuredImage4').change(function(){
 $('#inputImage').change(function(){
 	var i = $(this).prev('label').clone();
 	var file = $('#inputImage')[0].files[0].name;
-	var truncated = file.trunc(25);
+	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
 });
 $('#inputprofilePic').change(function(){
 	var i = $(this).prev('label').clone();
 	var file = $('#inputprofilePic')[0].files[0].name;
-	var truncated = file.trunc(20);
+	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
 	$('.overlay2').css('display','block');
 });
 $('#inputavatar').change(function(){
 	var i = $(this).prev('label').clone();
 	var file = $('#inputavatar')[0].files[0].name;
-	var truncated = file.trunc(20);
+	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
 	$('.overlay2').css('display','block');
 });
@@ -401,15 +411,21 @@ $(function (){
   $('#datetimepicker4').datetimepicker({
     format: 'L'
   });
-  setInterval(function(){
+  setTimeout(function(){
     var divUtc = $('#timeUTC');
-    var divLocal = $('#timeLocal');  
+    var divLocal = $('#timeLocal');
+    var divUtcNow = $('#timeUTCNow');
+    var divLocalNow = $('#timeLocalNow');
     
     //get text from timeUTC and conver to local timezone  
     var localTime  = moment.utc(divUtc.text()).toDate();
     localTime = moment(localTime).format('lll');
-    divLocal.text(localTime);        
-  },1000);
+    divLocal.text(localTime);
+    var localTimeNow  = moment.utc(divUtcNow.text()).toDate();
+    localTimeNow = moment(localTimeNow).format('LT');
+    divLocalNow.text(localTimeNow);
+
+  }, 1000);
 });
 
 if(location.pathname == '/help/'){
@@ -517,21 +533,25 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
       if(formData[0].name == 'visibility'){
         if(formData[0].value == '-1'){
           $('#moderation'+data._id).remove();
+          $('#modVisibility'+data._id).removeClass('createdButton');
           $('#mod-badge'+data._id).removeClass('badge-light').addClass('badge-danger').text('-1');
           $('#visibility'+data._id).text('Visibility(Show)').val('1');
         } else if(formData[0].value == '1'){
           $('#visibility'+data._id).text('Visibility(Hide)').val('-1');
           $('#mod-badge'+data._id).removeClass('badge-danger').addClass('badge-light').text('1');
-          $('#modVisibility'+data._id).removeClass('invisible').addClass('nopad');
           var mySpan = document.getElementById('modVisibility'+data._id);
-          var btnVisibility = document.createElement('button');
-          btnVisibility.setAttribute('name', 'published');
-          btnVisibility.classList.add('moderation','btn','btnxxs','btn-primary','text-sm','ml-2');
-          btnVisibility.setAttribute('type', 'submit');
-          btnVisibility.setAttribute('value', '0');
-          btnVisibility.setAttribute('id', 'moderation'+data._id);
-          btnVisibility.innerHTML = 'Exclusive';
-          mySpan.appendChild(btnVisibility);
+            if(!$('#modVisibility'+data._id).hasClass('createdButton')){
+              var btnVisibility = document.createElement('button');
+              btnVisibility.setAttribute('id', 'moderation'+data._id);
+              btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','noshadow','text-sm','ml-2');
+              btnVisibility.setAttribute('name', 'published');
+              btnVisibility.setAttribute('value', '0');
+              btnVisibility.setAttribute('title', 'Post moderation');
+              btnVisibility.setAttribute('type', 'submit');
+              btnVisibility.innerHTML = 'Exclusive';
+              mySpan.appendChild(btnVisibility);
+            }
+          $('#modVisibility'+data._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
         }
       }
     },

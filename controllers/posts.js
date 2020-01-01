@@ -66,9 +66,13 @@ module.exports = {
   },
 
   postsFriends_posts(req, res, next){
-    if(req.user){
+    if(req.user && req.user.friendsCount != 0){
       res.render('posts/index');
-    } else{
+    } else if(req.user && req.user.friendsCount == 0){
+      req.flash('success', 'Add friends to start seeing their posts.');
+      res.redirect('/discover');
+    } else if(!req.user){
+      req.flash('success', 'Please Login to see your FRIENDS\' posts :)');
       res.redirect('/discover');
     }
   },
@@ -197,7 +201,8 @@ module.exports = {
       if(req.file){
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           cloudinary.v2.uploader.upload(req.file.path,
-          {folder: 'postImages/', use_filename: true, width: 1024, height: 1024, crop: 'limit'},
+          {folder: 'postImages/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
+          effect: 'sharpen:50', crop: 'limit'},
           function(err, result){
           if(err){
             console.log(req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));

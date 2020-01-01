@@ -22,10 +22,14 @@
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
                   <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                 </form>
-              <% }; %>
+              <% } %>
             </div>
             <div>
-              <h5 class="profilename"><%= user.fullName %></h5>
+              <% if(user.isVerified){ %>
+                <h5 class="profilename"><%= user.fullName %></h5>
+              <% } else{ %>
+                <h5 class="profilename"><sub class="redcolor" title="Not Verified" style="font-size: 2.5rem; cursor: default;">*</sub><%= user.fullName %></h5>
+              <% } %>
             </div>   
           </div>
           <% if(user.featuredPhotos.length != 0){ %>
@@ -83,11 +87,11 @@
                 <% } %>
                 <% if(currentUser && match){ %>
                   <a class="btn btnxs btn-secondary overlay3" href="/users/<%= user._id %>/featured_photos">Update featured photos</a>
-                <% }; %>
+                <% } %>
               <% } else{ %>
                 <% if(currentUser && match){ %>
                   <a class="btn btnxs btn-secondary overlay3 opaque" href="/users/<%= user._id %>/featured_photos">Update featured photos</a>
-                <% }; %>
+                <% } %>
               <% } %>
             </div>
           </div>
@@ -160,7 +164,7 @@
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
               </form>
             </div>
-          <% }; %>
+          <% } %>
         </div>
         <div class="mt-2">
           <div class="card mt-0">
@@ -295,7 +299,11 @@
                 <div class="info1">
                   Name: <span class="info30"><%= user.fullName %></span>
                   <br>
-                  Email: <span class="info30"><%= user.email %></span>
+                  Email: <span class="info30"><%= user.email %>
+                    <% if(!user.isVerified){ %>
+                      <span class="text-xs orangecolor">Not Verified</span>
+                    <% } %>
+                  </span>
                   <br>
                   Sex: <span class="info30"><%= user.userKeys.sex %></span>
                   <br>
@@ -323,9 +331,9 @@
                         <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
                         <% }else if(i=len-1){ %>
                         <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
-                      <% }}; %>
+                      <% }} %>
                     </div></div>
-                  <% }; %>
+                  <% } %>
                   <div class="info30">
                     <div id="account_info_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -384,7 +392,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Photography" value="<%= interests[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -417,7 +425,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -445,7 +453,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -473,7 +481,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -501,7 +509,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Dehradun valley" value="<%= places[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -529,7 +537,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One : Peter Thiel" value="<%= books[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -557,7 +565,7 @@
                             <% }else{ %>
                               <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>">
                             <% } %>
-                          <% }; %>
+                          <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
@@ -610,7 +618,7 @@
                       <input type="file" id="avatar" name="avatar" accept="image/*" required>
                     <br>
                     <br>
-                    <button class="btn btn-sm btn-success btn-block">Submit</button>
+                    <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','avatar');"><span id="load-createclub"></span>Submit</button>
                   </div>
                 </form>
               </div>
@@ -689,8 +697,8 @@
     <%= ' '+arr[i]+',' %>
     <% }else if(i=len-1){ %>
     <%= ' '+arr[i] %>
-  <% }}; %>
-<% }; %>
+  <% }} %>
+<% } %>
 
 <%
   function rankTitle(rank){

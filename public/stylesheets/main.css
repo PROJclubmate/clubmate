@@ -45,6 +45,7 @@ div.content{
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
+  .navbar{padding: 1px 10px !important;}
   .navback{background-color: #3e3d3c !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
     box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
@@ -124,7 +125,7 @@ div.content{
   .carousel-caption{bottom: 2.5rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
   .carousel-caption-heading{margin: 0; line-height: 1rem !important;}
   .chat-head3{width: 92vw;}
-  h5.topic-h5{font-size: 1.125rem!important;}
+  h5.topic-h5{font-size: 1.125rem!important; padding: 0.125rem 0;}
   .searchcard2{width: 100% !important;}
   .friends-dp{height: 8rem !important;}
   div.mt-2.mobilepad.keys{margin-top: -2.5rem !important;}
@@ -166,28 +167,32 @@ div.content{
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
-  #sidebar-dropbox{top: 42px; left: 108px;}
-  .sidebar a{padding: 9px 21px; font-size: 1rem;}
+  .navbar{padding: 3px 10px !important;}
+  #sidebar-dropbox{top: 46px; left: 108px;}
+  .sidebar a{padding: 11px 21px; font-size: 1rem;}
+  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
+  body{padding-top: 4px;}
   .friends-dp{height: 7.25rem !important;}
 }
 /*Pixel 2/2XL => 411px iphone 8 => 414*/
 @media screen and (max-width: 415px){
-  #sidebar-dropbox{top: 42px; left: 91px;}
-  .sidebar a{padding: 9px 12.5px; font-size: 1rem;}
+  #sidebar-dropbox{top: 46px; left: 91px;}
+  .sidebar a{padding: 11px 12.5px;}
+  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   .friends-dp{height: 6.1rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Pixel 3/3XL => 393px*/
 @media screen and (max-width: 394px){
-  #sidebar-dropbox{top: 42px; left: 86px;}
-  .sidebar a{padding: 9px 10px; font-size: 1rem;}
+  #sidebar-dropbox{top: 46px; left: 86px;}
+  .sidebar a{padding: 11px 10px;}
   .friends-dp{height: 6rem !important;}
   .commentpad2{padding-left: 0.25rem;}
 }
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
-  #sidebar-dropbox{top: 42px; left: 84px;}
-  .sidebar a{padding: 9px 9px; font-size: 1rem;}
+  #sidebar-dropbox{top: 46px; left: 84px;}
+  .sidebar a{padding: 11px 9px;}
   .friends-dp{height: 5.65rem !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
@@ -197,13 +202,18 @@ div.content{
 }
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
-  #sidebar-dropbox{top: 42px; left: 82px;}
-  .sidebar a{padding: 9px 8px; font-size: 1rem;}
+  #sidebar-dropbox{top: 46px; left: 82px;}
+  .sidebar a{padding: 11px 8px;}
   .friends-dp{height: 5.5rem !important;}
   .name{padding: 0.22rem 0 !important; font-size: 1.4rem !important; -webkit-text-stroke-width: 0.65px;}
 }
 /*Asus Max Pro M-1 => 360px*/
 @media screen and (max-width: 361px){
+  .navbar{padding: 1px 10px !important;}
+  #sidebar-dropbox{top: 42px; left: 78px;}
+  .sidebar a{padding: 9px 6px;}
+  a.hr2.active{padding-top: 7px; padding-bottom: 7px;}
+  body{padding-top: 0;}
   .mobile-cover{height: 160px !important;}
   div.lpcov{width: 168px; padding-bottom: 0 !important;}
   .profilename{width: 160px;}
@@ -221,8 +231,6 @@ div.content{
   .mobiletext2{font-size: 0.875rem !important;}
   .mobiletext3{font-size: 0.75rem !important;}
   .info1{font-size: 0.875rem !important;}
-  #sidebar-dropbox{top: 42px; left: 78px;}
-  .sidebar a{padding: 9px 6px; font-size: 1rem;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -232,6 +240,46 @@ div.content{
   .name{padding: 0.25rem 0 !important; font-size: 1.35rem !important; -webkit-text-stroke-width: 0.6px;}
 }
 /*----------------------------------------------------------------*/
+.meter{
+  height: 2px;
+  position: relative;
+  /*background: rgba(0,0,0,0.1);*/
+  /*border-radius: 2px;*/
+  padding: 0;
+  /*box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);*/
+}
+.meter .bar {
+  background: orangered;
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-image: linear-gradient(
+    -45deg, 
+    rgba(255, 255, 255, .2) 25%, 
+    transparent 25%, 
+    transparent 50%, 
+    rgba(255, 255, 255, .2) 50%, 
+    rgba(255, 255, 255, .2) 75%, 
+    transparent 75%, 
+    transparent
+  );
+  z-index: 1;
+  background-size: 50px 50px;
+  animation: move 2s linear infinite;
+  border-radius: 2px;
+  overflow: hidden;
+}
+@keyframes move{
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+.meter .animate{
+  animation: move 2s linear infinite;
+}
 .hr3{
   margin: 0 0.5rem;
 }
@@ -616,17 +664,14 @@ span.nopad{
 .name{
   font-family: 'Lato', sans-serif;
   font-size: 1.375rem;
-  padding: 0.2195rem 0.5rem 0.2195rem 0.25rem;
+  padding: 0.2195rem 0.55rem 0.2195rem 0.25rem;
 }
 .navbar{
   will-change: transform;
   transition: top 0.3s;
   z-index: 6;
-  padding: 0px 50px 0px 50px;
+  padding: 0px 50px;
   justify-content: space-between;
-}
-@media screen and (max-width: 1199px){
-  .navbar{padding: 1px 10px 1px 10px;}
 }
 a.nav-link{
   margin: 0 0.25rem;
@@ -1021,7 +1066,7 @@ a.red:hover{color: #d6312e;}
   color: #d6312e !important;
 }
 .bluecolor{
-  color: #0079d3 !important;
+  color: #007bff !important;
 }
 .orangecolor{
   color: #f48024 !important;
@@ -1152,6 +1197,12 @@ a .nolink:hover{
   float: left;
   position: relative;
   width: 50%;
+  border: 1px solid lightgrey;
+  border-radius: 0.15rem;
+  padding: 0.25rem;
+}
+.mobile-cover{
+  height: 226px;
 }
 img.cover{
   width: 100%;
@@ -1162,7 +1213,7 @@ img.cover{
   box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.3);
 }
 .clubback{
-  background-color: #4e4f52;
+  background-color: #4f4e51;
   color: white;
 }
 .hr1{
@@ -1197,7 +1248,7 @@ img.cover{
 .yellowback{
   background-color: #ffeed9;
   background-image: url(/images/doodleBack.png);
-  background-size: 417px 417px;
+  background-size: 350px 350px;
   background-repeat: repeat;
 }
 .whiteback{
@@ -1236,7 +1287,7 @@ ul{
   background-color: #dcdcdc;
 }
 .badge-warning{
-  background-color: #ffeed9;
+  background-color: #ffe152;
 }
 .badge-danger{
   background-color: #dc3545;
@@ -1260,10 +1311,10 @@ ul{
   opacity: 1 !important;
 }
 div.carousel-img{
-  border: 1px dashed silver;
+  border: 1px dashed #ddd;
 }
 div.carousel-img2{
-  border: 1px dashed #777;
+  border: 1px dashed #666;
 }
 .overlay{
   position: absolute; 
@@ -1472,7 +1523,7 @@ button.commentvote{
   padding: 0.15rem 0.25rem;
 }
 button.upVotebtn:hover{
-  color: #1976d2;
+  color: #007bff;
 }
 button.downVotebtn:hover{
   color: #f48024;
@@ -1485,7 +1536,7 @@ button.heartbtn:hover{
 }
 #postbutton{
   border-radius: 0.15rem 0 0 0.15rem;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.5);
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6);
 }
 #postbutton:focus{
   box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
@@ -1494,9 +1545,9 @@ select{
   background-color: white;
   padding: 4px 8px;
   font-size: 0.875rem;
-  border: 1px solid;
-  border-radius: 0 0.15rem 0.15rem 0;
+  border: 1px solid #009f5e;
   color: #009f5e;
+  border-radius: 0 0.15rem 0.15rem 0;
   height: 31px;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
   cursor: pointer;
@@ -1841,7 +1892,14 @@ select.select1::-ms-expand{
   border-top: 1px solid #dcdcdc;
   border-left: 1px solid #dcdcdc;
 }
-.topic-head{border: 1px dotted #fcd7a4;}
+.topic-head{
+  min-height: 3rem;
+  /*border: 1px dotted #fcd7a4;*/
+}
+.topic-column{
+  border-left: 1px solid rgba(0,0,0,0.1);
+  background-color: whitesmoke;
+}
 h5.topic-h5{font-family: 'Bitter', serif; color: #212529 !important; font-weight: 400;}
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;

@@ -56,7 +56,7 @@
         obj['pushedAt'] = clubUpdates[i].pushedAt;
         upEventsArr.push(obj);
       }
-    };
+    }
     var arr = upEventsArr.sort(function(a, b) {
       return new Date(b.pushedAt) - new Date(a.pushedAt);
     });

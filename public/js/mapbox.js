@@ -20,6 +20,6 @@ $('#drop-info').click(()=>{
 		.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
 		.setHTML('<h6>' + club.name + '</h6><p>' + club.clubKeys.location + '</p>'))
 		.addTo(map);
-		};
+		}
 	}
 });

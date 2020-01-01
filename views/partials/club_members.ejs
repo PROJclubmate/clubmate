@@ -46,7 +46,7 @@
         <span class="dropdown nopad">
           <% if(0 <= rank && rank <= 1){ %>
             <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-          <% }; %>
+          <% } %>
           <% if(users[i].userRank != 0){ %>
             <ul class="dropdown-menu dropdown-menu-right dropbox">
               <div class="container drop-shadow1">
@@ -57,7 +57,7 @@
                 </li>
               </div>
             </ul>
-          <% }; %>
+          <% } %>
         </span>
         <!-- Modal HTML -->
         <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
@@ -82,7 +82,7 @@
             </div>
           </div>
         </div>
-      <% }; %>
+      <% } %>
     </div>
-  <% }; %>
+  <% } %>
 </div>

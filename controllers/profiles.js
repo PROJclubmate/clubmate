@@ -509,7 +509,8 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
           }
           var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
+            effect: 'sharpen:50', crop: 'limit'});
           //replace original information with new information
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
@@ -596,7 +597,8 @@ module.exports = {
   },
 
   profilesNewClub(req, res, next){
-    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, crop: 'limit'},
+    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, 
+      height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'},
     function(err, result){
     if(err){
       console.log(req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -948,7 +950,8 @@ module.exports = {
           try{
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
-              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
+              effect: 'sharpen:50', crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1136,12 +1139,33 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var owners = foundClub.clubUsers;
-      var ok = checkRank(owners,req.user._id,0);
+      var owner = foundClub.clubUsers;
+      var ok = checkRank(owner,req.user._id,0);
       if(ok == true){
         for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
           await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
           foundClub.featuredPhotos.splice(i,1);
+        }
+        var orgName = foundClub.clubKeys.organization;
+        var clubCategory = foundClub.clubKeys.category;
+        if(orgName && orgName != ''){
+          OrgPage.findOne({name: orgName}, function (err, foundOrgPage){
+            if(foundOrgPage && foundOrgPage.allClubs.length){
+              for(var i=foundOrgPage.allClubs.length-1;i>=0;i--){
+                if(foundOrgPage.allClubs[i].category == clubCategory){
+                  foundOrgPage.allClubs[i].categoryCount -= 1;
+                  for(var j=foundOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                    if(foundOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                      foundOrgPage.allClubs[i].categoryClubIds.splice(j,1);
+                    }
+                  }
+                  break;
+                }
+              }
+              foundOrgPage.clubCount -= 1;
+              foundOrgPage.save();
+            }
+          });
         }
         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
         {$pull: {userClubs: {id: req.params.club_id}}}, function(err, foundUser){
@@ -1151,6 +1175,7 @@ module.exports = {
             return res.redirect('back');          }
         });
         foundClub.isActive = false;
+        foundClub.deActivatedOn = Date.now();
         foundClub.save();
         req.flash('success', 'Club deleted successfully!');
         res.redirect('/users/'+req.user._id);
@@ -1187,7 +1212,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1216,7 +1241,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1260,7 +1285,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1289,7 +1314,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1024, height: 1024, crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;
@@ -1352,10 +1377,17 @@ module.exports = {
           });
           var mailOptions = {
             to: user.email,
-            from: '"Team Clubmate 👻"team@clubmate.co.in',
+            from: '"Clubmate"team@clubmate.co.in',
             subject: 'Account Verification Token',
             text: 'Hello '+req.body.firstName+',\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-            '\/confirmation\/' + token.token + '.\n'
+            '\/confirmation\/' + token.token + '.\n\n' +
+            'Thanks,\n' +
+            'Team clubmate',
+            dkim: {
+              domainName: 'www.clubmate.co.in',
+              keySelector: 'dkimkey1',
+              privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+            }
           };
           smtpTransport.sendMail(mailOptions, function(err){
             done(err, 'done');
@@ -1434,10 +1466,17 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: '"Team Clubmate 👻"team@clubmate.co.in',
+          from: '"Clubmate"team@clubmate.co.in',
           subject: 'Account Verification Token',
           text: 'Hello '+user.firstName+',\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-          '\/confirmation\/' + token.token + '.\n'
+          '\/confirmation\/' + token.token + '.\n\n' +
+            'Thanks,\n' +
+            'Team clubmate',
+          dkim: {
+            domainName: 'www.clubmate.co.in',
+            keySelector: 'dkimkey1',
+            privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+          }
         };
         smtpTransport.sendMail(mailOptions, function(err){
           done(err, 'done');
@@ -1503,12 +1542,20 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: '"Team Clubmate 👻"team@clubmate.co.in',
+          from: '"Clubmate"team@clubmate.co.in',
           subject: 'Password reset request',
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          text: 'Hello '+user.firstName+',\n\n' +
+            'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
             'https://' + req.headers.host + '/reset/' + token + '\n\n' +
-            'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            'If you did not request this, please ignore this email and your password will remain unchanged.\n\n' +
+            'Thanks,\n' +
+            'Team clubmate',
+          dkim: {
+            domainName: 'www.clubmate.co.in',
+            keySelector: 'dkimkey1',
+            privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+          }
         };
         smtpTransport.sendMail(mailOptions, function(err){
           console.log('mail sent('+ user.email +' requested a password change)');
@@ -1573,10 +1620,17 @@ module.exports = {
           });
           var mailOptions = {
             to: user.email,
-            from: '"Team Clubmate 👻"team@clubmate.co.in',
+            from: '"Clubmate"team@clubmate.co.in',
             subject: 'Password reset request',
             text: 'Hello '+user.firstName+',\n\n' +
-              'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+              'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n\n' +
+            'Thanks,\n' +
+            'Team clubmate',
+            dkim: {
+              domainName: 'www.clubmate.co.in',
+              keySelector: 'dkimkey1',
+              privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+            }
           };
           smtpTransport.sendMail(mailOptions, function(err){
             console.log('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');

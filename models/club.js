@@ -4,6 +4,7 @@ const mongoose          = require('mongoose'),
 
 const clubSchema = new Schema({
   isActive: {type: Boolean, default: true},
+  deActivatedOn: Date,
   name: String,
   banner: String,
   avatar: String,

@@ -36,7 +36,7 @@ if(socket !== undefined){
       } else{
         // TEMPORARY 'till server function(msgStatus)/event 'status' is not working
         setStatus('Pl. enter a message');
-      };
+      }
       $("#user-send").blur();
       $("#user-message").val('').focus();
     });
@@ -188,7 +188,7 @@ if(socket !== undefined){
         });
       } else{
         setClubStatus('Pl. enter a message');
-      };
+      }
       $("#club-send").blur();
       $("#club-message").val('').focus();
     });

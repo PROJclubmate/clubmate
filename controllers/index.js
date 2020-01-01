@@ -29,7 +29,7 @@ module.exports = {
   indexSearch(req, res, next){
     const query = req.query.search;
     User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
-    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
+    .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
       console.log('(index-1)foundUsers err:- '+JSON.stringify(err, null, 2));
@@ -82,7 +82,7 @@ module.exports = {
   indexSearchPeople(req, res, next){
     const query = req.query.people;
     User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
-    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
+    .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
       console.log('(index-5)foundUsers err:- '+JSON.stringify(err, null, 2));
@@ -106,7 +106,7 @@ module.exports = {
       var seenIds = [];
     }
     User.find({$text: {$search: query}, _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
-    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
+    .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
       console.log('(index-6)foundUsers err:- '+JSON.stringify(err, null, 2));
@@ -129,7 +129,7 @@ module.exports = {
     delete res.locals.dbQuery;
     delete res.locals.morePeopleUrl;
     delete res.locals.moreClubsUrl;
-    User.find(dbQuery).select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
+    User.find(dbQuery).select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
     .limit(10).exec(function(err, foundUsers){
     if(err){
       console.log('(index-7)foundUsers err:- '+JSON.stringify(err, null, 2));
@@ -234,7 +234,7 @@ module.exports = {
       dbQueries.push({_id: {$nin: seenIds}})
     }
     User.find({$and: dbQueries})
-    .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
+    .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
     .limit(10).exec(function(err, foundUsers){
     if(err){
       console.log('(index-8)foundUsers err:- '+JSON.stringify(err, null, 2));

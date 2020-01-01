@@ -5,11 +5,11 @@
 		<form class="form-signin" action="/forgot" method="POST">
 			<legend class="mb-5">Change Password</legend>
 			<div class="form-group">
-				<label for="email">Email address</label>
-				<input type="email" name="email" class="form-control" required autofocus>
+				<label for="email">Enter your email address and we will send you a link to reset your password</label>
+				<input type="email" id="email" name="email" class="form-control" required autofocus placeholder="Email">
 			</div>
 			<div class="form-group">
-				<button class="btn btn-md btn-success btn-block" type="submit">Send</button>
+				<button class="btn btn-md btn-success btn-block" type="submit" onclick="loading_spinner('load-forgot','email');"><span id="load-forgot"></span>Send</button>
 			</div>
 			<a href="/login">Back</a>
 		</form>

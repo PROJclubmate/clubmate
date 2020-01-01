@@ -1,4 +1,4 @@
-<% if(post.subpostBuckets.length > 0){ %>
+ <% if(post.subpostBuckets.length > 0){ %>
   <div class="dropctn mt-2">
     <div class="pr-2">
       <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
@@ -129,8 +129,8 @@
         <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <% for(var k=0;k<subPosts[j].images.length;k++){ %>
-            <div class="subPostimg-div" style="border: 1px solid lightgrey;">
-              <img class="card-img-top p-1" src="<%= subPosts[j].images[k].image %>">
+            <div class="subPostimg-div">
+              <img class="card-img-top" src="<%= subPosts[j].images[k].image %>">
             </div>
           <% } %>
         <% } %>
@@ -171,7 +171,10 @@
                 <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
                 <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
               </div>
-              <div class="darkgrey boldtext text-xs subpostbtn py-2 mb-auto"><%= moment().format('lll'); %></div>
+              <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
+                <span><em id="timeUTCNow" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                <span class="lightgrey nothing"><em id="timeLocalNow" class="text-xxs"></em></span>
+              </div>
             </div>
             <% if(quote){ %>
               <div class="quote px-1 pb-1 my-1 lineheight2">
