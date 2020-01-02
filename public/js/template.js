@@ -249,21 +249,33 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       }
     });
   });
+
+  $('#load-more-memberRequests-btn').on('click', function(e){
+    e.preventDefault();
+    $('#load-more-memberRequests-span').addClass("spinner-border spinner-border-sm mr-1");
+    $.ajax({
+      type: 'GET',
+      url: '/clubs-moreMemberRequests/'+location.pathname.split('/')[2],
+      data: {endpoints: $('#load-more-memberRequests-btn').val()},
+      timeout: 3000,
+      success: function (response){
+        var arr = response.users;
+        if(arr && arr != ''){
+          var newEndpoints = response.newEndpoints;
+          $('#load-more-memberRequests-btn').val(newEndpoints);
+          var div = document.getElementById('client-memberRequests');
+          div.innerHTML += moreMemberRequests_template(response);
+        } else{
+          $('#load-more-memberRequests-btn').addClass('nodisplay');
+        }
+        $('#load-more-memberRequests-btn').html('<span id="load-more-memberRequests-span"></span>Load More').blur();
+      }
+    });
+  });
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  // Last message mobile
-  if($(window).width() < 768){
-    if($('#lastMsg-hidden') && $('#lastMsg-hidden').text() != ''){
-      $('#lastMsg').addClass("nodisplay");
-      $('#lastMsg-hidden').removeClass("nodisplay");
-    }
-    $('#drop-chat').on('click', function(e){
-      $('#lastMsg').toggleClass("nodisplay");
-      $('#lastMsg-hidden').toggleClass("nodisplay");
-    });
-  }
   window.onload=function(){
     document.getElementById('load-more-btn').click();
   }
@@ -2672,6 +2684,43 @@ function moreMembers_template(response){
 %>
 `,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, newEndpoints: response.newEndpoints,
   clubId: response.clubId, rank: response.rank});
+  return html;
+}
+
+function moreMemberRequests_template(response){
+  html = ejs.render(`
+<div class="row no-gutters mt-2 lineheight2">
+  <% for(var m=0;m<users.length;m++){ %>
+    <div class="col-md-1 col-2 py-1 mb-auto">
+      <a href="/users/<%= club.memberRequests[m].userId._id %>">
+      <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUser.png' %>"></a>
+    </div>
+    <div class="col-md-6 col-6 my-auto d-flex flex-column">
+      <div>
+        <a href="/users/<%= club.memberRequests[m].userId._id %>" class="mobiletext2 grey">
+          <strong><%= club.memberRequests[m].userId.fullName %></strong>
+        </a>
+      </div>
+      <div class="my-auto lightgrey text-xs">
+        <%= club.memberRequests[m].message %>
+      </div>
+    </div>
+    <div class="col-md-5 col-4 d-flex">
+      <div class="ml-auto mb-auto">
+        <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST" class="form-inline pt-2">
+          <span>
+            <button class="btn btnxs btn-primary text-sm" type="submit" name="acceptReq" value="<%= club.memberRequests[m].userId._id %>">Invite</button>
+          </span>
+          <span>
+            <button class="btn btnxs btn-secondary text-sm" type="submit" name="declineReq" value="<%= club.memberRequests[m].userId._id %>">Decline</button>
+          </span>
+        </form>
+      </div>
+    </div>
+  <% } %>
+</div>
+`,{users: response.users, MemberRequests_50_profilePic: response.MemberRequests_50_profilePic, 
+  newEndpoints: response.newEndpoints, club: response.club});
   return html;
 }
 

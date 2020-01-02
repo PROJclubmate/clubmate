@@ -2,9 +2,9 @@ const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
   {indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
-  indexSearchMoreClubs, indexRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople,
-  indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchOrgPages,
-  indexSearchMoreOrgPages, indexViewOrgPage} = require('../controllers/index');
+  indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople,
+  indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends,
+  indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage} = require('../controllers/index');
 
 
 
@@ -55,6 +55,9 @@ router.get('/org_pages-moreResults/search/:query', indexSearchMoreOrgPages);
 
 // Friend requests / Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);
+
+// Member requests
+router.put('/clubs/:id/member_requests', middleware.isLoggedIn, indexMemberRequests);
 
 // Edit member-info(status/rank)
 router.put('/status-rank', indexMemberInfo);

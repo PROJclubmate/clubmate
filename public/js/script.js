@@ -66,6 +66,29 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  // Ask for club invite
+  if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
+    $('#memberReq-div').addClass("nodisplay");
+  }
+}
+
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  // Last message mobile
+  if($(window).width() < 768){
+    if($('#lastMsg-hidden') && $('#lastMsg-hidden').text() != ''){
+      $('#lastMsg').addClass("nodisplay");
+      $('#lastMsg-hidden').removeClass("nodisplay");
+    }
+    $('#drop-chat').on('click', function(e){
+      $('#lastMsg').toggleClass("nodisplay");
+      $('#lastMsg-hidden').toggleClass("nodisplay");
+    });
+  }
+}
+
 // Fake Progress bar (Nanobar)
 var options = {
   classname: 'meter',

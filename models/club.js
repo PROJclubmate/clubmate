@@ -42,6 +42,14 @@ const clubSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
+  memberRequests: [{
+    message: String,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    _id: false
+  }],
   clubUsers: [{
     id: {
       type: Schema.Types.ObjectId,

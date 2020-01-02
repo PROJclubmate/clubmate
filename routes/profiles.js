@@ -4,12 +4,12 @@ const express  = require('express'),
   {upload}     = require('../public/js/cloudinary.js'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
-  profilesClubMoreMembers, profilesClubMorePosts, profilesUpdateClubProfile, profilesDeleteClubProfile,
-  profilesGetUsersFeaturedPhotos, profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos,
-  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify,
-  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage,
-  profilesForgotPass, profilesForgotToken, profilesResetPass,
-  profilesClubSearchMembers} = require('../controllers/profiles');
+  profilesClubMoreMembers, profilesClubSearchMembers, profilesClubMoreMemberRequests, profilesClubMorePosts, 
+  profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetUsersFeaturedPhotos, 
+  profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos,  profilesUpdateClubsFeaturedPhotos, 
+  profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify,  profilesVerificationToken, 
+  profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken, 
+  profilesResetPass} = require('../controllers/profiles');
   
 
 // Show user profile
@@ -42,6 +42,9 @@ router.get('/clubs-moreMembers/:club_id', profilesClubMoreMembers);
 // Search club members(AJAX)
 router.get('/clubs-searchMembers/:club_id', profilesClubSearchMembers);
 
+// Load users with member-requests(AJAX)
+router.get('/clubs-moreMemberRequests/:id', middleware.checkClubAdminship, profilesClubMoreMemberRequests);
+
 // Load club posts(AJAX)
 router.get('/clubs-morePosts/:club_id', profilesClubMorePosts);
 
@@ -58,10 +61,10 @@ router.get('/users/:id/featured_photos', middleware.checkAccountOwnership, profi
 router.put('/users/:id/featured_photos', middleware.checkAccountOwnership, upload.single('image'), profilesUpdateUsersFeaturedPhotos);
 
 // Get club featured photos page
-router.get('/clubs/:id/featured_photos', middleware.checkClubAdminship, profilesGetClubsFeaturedPhotos);
+router.get('/clubs/:id/featured_photos', middleware.checkClubModeratorship, profilesGetClubsFeaturedPhotos);
 
 // Update club featured photos
-router.put('/clubs/:id/featured_photos', middleware.checkClubAdminship, upload.single('image'), profilesUpdateClubsFeaturedPhotos);
+router.put('/clubs/:id/featured_photos', middleware.checkClubModeratorship, upload.single('image'), profilesUpdateClubsFeaturedPhotos);
 
 //============================================
 //AUTH ROUTES

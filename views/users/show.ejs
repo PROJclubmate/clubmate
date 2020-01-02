@@ -602,7 +602,7 @@
                   <% } %>
                   <% if(currentUser && match){ %>
                     <span class="d-flex">
-                      <button onclick="toggleclass_display('newClub_form');" class="btn btnxs text-xs btn-secondary my-auto">Start a new club</button>
+                      <button onclick="toggleclass_display('newClub_form')" class="btn btnxs text-xs btn-secondary my-auto">Start a new club</button>
                     </span>
                   <% } %>
                 </div>
@@ -628,8 +628,8 @@
                 </div>
                 <div id="client-clubs"></div>
                 <% if(clubCount > 10){ %>
-                  <div class="text-center pt-2">
-                    <button id="load-more-clubs-btn" class="btn btn-light btnxxs text-sm" type="button" value="10,20">
+                  <div class="text-center">
+                    <button id="load-more-clubs-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="10,20">
                       <span id="load-more-clubs-span"></span>Load
                     </button>
                   </div>
@@ -647,8 +647,8 @@
                   <% //include ../partials/posts_user %>
                 </div>
                 <div id="client-posts"></div>
-                <div class="text-center pt-2">
-                  <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
+                <div class="text-center">
+                  <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">
                     <span id="load-more-span"></span>Load
                   </button>
                 </div>
@@ -659,8 +659,8 @@
               <div class="tab-pane fade greyback" id="hearts" role="tabpanel" aria-labelledby="hearts-tab">
                 <div id="delegated-heart-posts">
                   <div id="client-heart-posts"></div>
-                  <div class="text-center pt-2">
-                    <button id="load-more-heart-btn" class="btn btn-danger btn-sm" type="button" value="">
+                  <div class="text-center">
+                    <button id="load-more-heart-btn" class="btn btn-danger btn-sm mt-2" type="button" value="">
                       <span id="load-more-heart-span"></span>Load
                     </button>
                   </div>
