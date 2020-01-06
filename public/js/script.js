@@ -72,6 +72,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");
   }
+  if($(window).width() < 360){
+    $('#requests-tab').text('Req');
+  }
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 

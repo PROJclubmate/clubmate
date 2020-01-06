@@ -816,7 +816,7 @@ function index_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -1240,7 +1240,7 @@ function club_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -1652,7 +1652,7 @@ function user_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -2044,7 +2044,7 @@ function heart_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>

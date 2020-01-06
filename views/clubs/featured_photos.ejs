@@ -20,7 +20,7 @@
 		              <input type="file" id="featuredImage<%= i %>" class="text-sm featuredImage" name="image" accept="image/*">
 						    </div>
 						  </div>
-						  <div class="card-body3 lineheight2 fullwidth">
+						  <div class="px-2 lineheight2 fullwidth">
 				    		<div class="valign">
 				    			<div class="d-flex flex-column fullwidth">
 				    				<div>
@@ -29,7 +29,7 @@
 				    				</div>
 				    				<div>
 				    					<label for="description<%= i %>" class="sr-only">Description</label>
-	              			<input type="text" id="description<%= i %>" class="form-control form-control-sm" name="description" value="<%= featuredPhotos[i].description %>" placeholder="description [<%= i+1 %>]">
+	              			<input type="text" id="description<%= i %>" class="form-control form-control-sm" name="description" value="<%= featuredPhotos[i].description %>" placeholder="description [<%= i+1 %>]" style="margin-top: 0.75rem;">
 				    				</div>
 				    			</div>
 				    			<div class="ml-2">
@@ -57,7 +57,7 @@
 		              <input type="file" id="featuredImage<%= index %>" class="text-sm featuredImage" name="image" accept="image/*" required>
 						    </div>
 						  </div>
-					    <div class="card-body3 lineheight2 fullwidth">
+					    <div class="px-2 lineheight2 fullwidth">
 				    		<div class="valign">
 				    			<div class="d-flex flex-column fullwidth">
 				    				<div>
@@ -66,11 +66,11 @@
 				    				</div>
 				    				<div>
 				    					<label for="description<%= index %>" class="sr-only">Description</label>
-	              			<input type="text" id="description<%= index %>" class="form-control form-control-sm" name="description" placeholder="description [<%= index+1 %>]">
+	              			<input type="text" id="description<%= index %>" class="form-control form-control-sm" name="description" placeholder="description [<%= index+1 %>]" style="margin-top: 0.75rem;">
 				    				</div>
 				    			</div>
 				    			<div class="ml-2">
-				    				<div><button class="btn btn-success btnxs text-sm mt-5" name="button" value="submit" type="submit" onclick="loading_spinner('load-submitfCP<%= index+1 %>','featuredImage<%= index %>');"><span id="load-submitfCP<%= index+1 %>"></span>Submit</button></div>
+				    				<div><button class="btn btn-success btnxs text-sm" name="button" value="submit" type="submit" onclick="loading_spinner('load-submitfCP<%= index+1 %>','featuredImage<%= index %>');" style="margin-top: 3.15rem;"><span id="load-submitfCP<%= index+1 %>"></span>Submit</button></div>
 				    			</div>
 				    		</div>
 				    	</div>

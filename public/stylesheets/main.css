@@ -1214,11 +1214,14 @@ img.cover{
   background-color: #4f4e51;
   color: white;
 }
+.hr-light{
+  border-top: 1px solid #efefef;
+}
 .hr1{
   border-bottom: 1px solid lightgrey;
 }
 .hr2{
-  border-bottom: 1px solid rgba(0,0,0,0.075);
+  border-bottom: 1px solid rgba(0,0,0,0.062);
 }
 .hr3{
   border-top: 1px solid lightgrey;
@@ -1310,10 +1313,18 @@ ul{
   opacity: 1 !important;
 }
 div.carousel-img{
-  border: 1px dashed #ddd;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid white;
+  border-bottom: 1px solid white;
+  border-left: 1px solid #ccc;
+  box-shadow: inset 0px 0px 3px -1px rgba(0,0,0,0.5);
 }
 div.carousel-img2{
-  border: 1px dashed #666;
+  border-top: 1px solid #555;
+  border-right: 1px solid #666;
+  border-bottom: 1px solid #666;
+  border-left: 1px solid #555;
+  box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.5);
 }
 .overlay{
   position: absolute; 

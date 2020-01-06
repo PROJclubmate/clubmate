@@ -532,17 +532,31 @@ module.exports = {
       if(req.body.note && foundUser.note != req.body.note){
         foundUser.note = req.body.note;
       }
+      if(req.body.firstName || req.body.lastName){
+        var newFirstName = req.body.firstName.trim();
+        var newLastName = req.body.lastName.trim();
+        if(newFirstName != '' && ((newFirstName != foundUser.firstName) || (newLastName != foundUser.lastName))){
+          foundUser.firstName = newFirstName;
+          foundUser.lastName = newLastName;
+          foundUser.fullName = newFirstName+' '+newLastName;
+        }
+      }
       if(req.body.userKeys){
         if(req.body.userKeys.birthdate && req.body.userKeys.sex){
-          foundUser.userKeys.birthdate = req.body.userKeys.birthdate;
-          foundUser.userKeys.sex = req.body.userKeys.sex;
+          var newDate = moment(req.body.userKeys.birthdate, 'MM-DD-YYYY').toDate();
+          if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
+            foundUser.userKeys.birthdate = newDate;
+          }
+          if(req.body.userKeys.sex != foundUser.userKeys.sex){
+            foundUser.userKeys.sex = req.body.userKeys.sex;
+          }
         } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-          foundUser.userKeys.college = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.major = req.body.userKeys.major.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '');
-          foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '');
-          foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          foundUser.userKeys.college = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          foundUser.userKeys.major = req.body.userKeys.major.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '').trim();
+          foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           if(foundUser.userKeys.residence != req.body.userKeys.residence){
             if(req.body.userKeys.residence != ''){
               let response = await geocodingClient
@@ -1034,8 +1048,8 @@ module.exports = {
         } else if(req.body.clubKeys && !req.body.clubKeys.tags){
           const oldOrgName = foundClub.clubKeys.organization;
           const oldCategory = foundClub.clubKeys.category;
-          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '');
-          const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '');
+          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           // COLLEGE PAGE(OrgPage)
           if(oldOrgName != newOrgName || oldCategory != newCategory){
             if(oldOrgName != newOrgName){
@@ -1371,66 +1385,72 @@ module.exports = {
   },
 
   profilesSignUp(req, res, next){
-    var newUser = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      fullName: req.body.firstName+' '+req.body.lastName,
-      email: req.body.email,
-      userKeys: req.body.userKeys,
-      profilePic: null,
-      profilePicId: null
-    });
-    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
-    if(req.body.password.match(pass)){
-      User.register(newUser, req.body.password, function(err, user){
-      if(err || !user){
-        if(err.code == 11000 || err.name == 'UserExistsError'){
-          req.flash('error', 'A user with the given email is already registered, Please verify or Login to continue..');
-        } else{
-          console.log('(profiles-39)user err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-        }
-        return res.redirect('back');
-      } else{
-        // Create a verification token for this user
-        var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
-
-        // Save the verification token
-        token.save(function(err){
-          if(err){return console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));}
-
-          // Send the email
-          var smtpTransport = nodemailer.createTransport({
-            service: 'Godaddy', 
-            auth: {
-              user: 'team@clubmate.co.in',
-              pass: process.env.TEAM_EMAIL_PW
-            }
-          });
-          var mailOptions = {
-            to: user.email,
-            from: '"Clubmate"team@clubmate.co.in',
-            subject: 'Account Verification Token',
-            text: 'Hello '+req.body.firstName+',\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-            '\/confirmation\/' + token.token + '.\n\n' +
-            'Thanks,\n' +
-            'Team clubmate',
-            dkim: {
-              domainName: 'www.clubmate.co.in',
-              keySelector: 'dkimkey1',
-              privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
-            }
-          };
-          smtpTransport.sendMail(mailOptions, function(err){
-            done(err, 'done');
-          });
-        });
-        req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to your account for verification.');
-        return res.redirect('/discover');
-      }
+    if(req.body.firstName.trim() != ''){
+      var newUser = new User({
+        firstName: req.body.firstName.trim(),
+        lastName: req.body.lastName.trim(),
+        fullName: req.body.firstName+' '+req.body.lastName,
+        email: req.body.email,
+        userKeys: req.body.userKeys,
+        profilePic: null,
+        profilePicId: null
       });
+      var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+      if(req.body.password.match(pass)){
+        User.register(newUser, req.body.password, function(err, user){
+        if(err || !user){
+          if(err.code == 11000 || err.name == 'UserExistsError'){
+            req.flash('error', 'A user with the given email is already registered, Please verify or Login to continue..');
+          } else{
+            console.log('(profiles-39)user err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+          }
+          return res.redirect('back');
+        } else{
+          // Create a verification token for this user
+          var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
+
+          // Save the verification token
+          token.save(function(err){
+            if(err){return console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));}
+
+            // Send the email
+            var smtpTransport = nodemailer.createTransport({
+              service: 'Godaddy', 
+              auth: {
+                user: 'team@clubmate.co.in',
+                pass: process.env.TEAM_EMAIL_PW
+              }
+            });
+            var mailOptions = {
+              to: user.email,
+              from: '"Clubmate"team@clubmate.co.in',
+              subject: 'Account Verification Token',
+              text: 'Welcome to clubmate '+req.body.firstName+'!  ,\n\n' + 
+              'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
+              '\/confirmation\/' + token.token + '.\n\n' +
+              'Thanks,\n' +
+              'Team clubmate',
+              dkim: {
+                domainName: 'www.clubmate.co.in',
+                keySelector: 'dkimkey1',
+                privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+              }
+            };
+            smtpTransport.sendMail(mailOptions, function(err){
+              done(err, 'done');
+            });
+          });
+          req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to your account for verification.');
+          return res.redirect('/discover');
+        }
+        });
+      } else{
+        req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number');
+        return res.redirect('back');
+      }
     } else{
-      req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number');
+      req.flash('error', 'First Name cannot be blank');
       return res.redirect('back');
     }
   },

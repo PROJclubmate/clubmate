@@ -217,7 +217,7 @@
                 </div>
               <% } %>
             </div>
-            <hr>
+            <hr class="hr-light">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
@@ -319,7 +319,7 @@
                 <% } %>
               </div>
               <div class="card-body3 tab-pane container fade" id="alltime">...</div>
-              <hr>
+              <hr class="hr-light">
               <div class="card-body1">
                 <ul class="nav justify-content-end">
                   <li class="nav-item">
@@ -479,7 +479,7 @@
                         <% } else{ %>
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% } %>
-                        <div class="mx-2 pb-3 my-auto news mobiletext hr2">
+                        <div class="mx-2 pb-3 my-auto news mobiletext hr2 fullwidth">
                           <%= club.updates[i].news %>
                           <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
                           <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
@@ -546,7 +546,7 @@
                     </div>
                     <div id="searchMember_form">
                       <div class="input-group input-group-sm">
-                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 26px; width: 200px; border: none;">
+                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 26px; width: 185px; border: none;">
                         <div class="input-group-append">
                           <button id="search-members-btn" class="btn btn-secondary search py-0 px-1" type="submit" style="height: 26px;">
                             <span id="search-members-span"></span>Go
@@ -601,7 +601,7 @@
         <div class="lightgrey lineheight text-sm text-center">
           <i class="fas fa-info-circle orangecolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
         </div>
-        <div class="card-body hr2 mx-3">
+        <div class="card-body hr1 mx-3">
           <div class="lightgrey lineheight text-sm text-center">
             <% if(!sentMemberReq){ %>
               <button id="memberReq-btn" class="btn btn-sm btn-white" onclick="toggle_display('memberReq-div')" style="border-width: 1px;">Ask</button>
