@@ -826,16 +826,15 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundOrgPage){
-      req.flash('error', 'College page does not exist :(');
+      req.flash('error', 'College page either does not exist or has no listed clubs :(');
       return res.redirect('back');
     } else{
-      var Clubs_50_clubAvatar = []; var match = false; var allMembersCount = 0;
+      var Clubs_50_clubAvatar = []; var match = false;
       for(var i=0;i<foundOrgPage.allClubs.length;i++){
         var arr2D = [];
         for(var j=0;j<foundOrgPage.allClubs[i].categoryClubIds.length;j++){
           arr2D[j] = cloudinary.url(foundOrgPage.allClubs[i].categoryClubIds[j].avatarId,
           {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
-          allMembersCount = allMembersCount + foundOrgPage.allClubs[i].categoryClubIds[j].membersCount;
         }
         Clubs_50_clubAvatar[i] = arr2D;
       }
@@ -844,7 +843,7 @@ module.exports = {
           match = true;
         }
       }
-      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allMembersCount, match});
+      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, match});
     }
     });
   }

@@ -8,7 +8,7 @@
 			<div class="card searchcard2">
 				<div class="d-flex flex-row">
 			    <div class="card-body3 lineheight1 fullwidth" style="overflow: hidden;">
-			    	<div class="px-2 py-1 organization d-flex flex-column">
+			    	<div class="notification px-2 py-1 organization d-flex flex-column">
 							<div class="boldtext text-xxl">
 								<div class="orgname-search">
 									<a href="/org_pages/<%= org_pages[k].name %>" class="black">
@@ -16,9 +16,10 @@
 									</a>
 								</div>
 							</div>
+							<span class="badge text-sm"><%= org_pages[k].userCount %></span>
 						</div>
 					  <br>
-			      <div class="darkgrey text-sm text-right">
+			      <div class="darkgrey text-sm">
 			      	<span><span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
 			      </div>
 			    </div>

@@ -3,6 +3,11 @@ const mongoose = require('mongoose'),
 
 const orgPageSchema = new Schema({
   name: {type: String, unique: true, required: true},
+  userCount: {type: Number, default: 0},
+  allUsers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   clubCount: {type: Number, default: 0},
   allClubs: [{
     category: String,

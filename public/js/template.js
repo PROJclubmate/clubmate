@@ -1,5 +1,4 @@
 if(location.pathname == '/home'){
-  // Client side rendering
   window.onload=function(){
     document.getElementById('load-more-btn').click();
   }
@@ -14,12 +13,7 @@ if(location.pathname == '/home'){
       success: function (response){
         var arr = response.foundPostIds;
         if(arr && arr != '' && response.arrLength){
-          // If server + client side rendering is used
           if($('#load-more-btn').val() != ''){
-          //   $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-          //   var div = document.getElementById('client-posts');
-          //   div.innerHTML += index_posts_template(response);
-          // Only client side rendering
           $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
           var div = document.getElementById('client-posts');
           div.innerHTML += index_posts_template(response);
@@ -429,7 +423,6 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
     e.preventDefault();
     var value = $(this).attr('value'); 
     var url = $(this).attr('href'); 
-    // history.pushState({url: url, value: value}, '', url);
     load_subPost_page(url,value);
   });
   // OR
@@ -437,18 +430,10 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
     e.preventDefault();
     var value = $('#page-index-input').val()-1;
     var url = $('#page-index-input').attr('href'); 
-    // history.pushState({url: url, value: value}, '', url);
     load_subPost_page(url,value);
   });
 }
 
-// window.addEventListener('popstate', e => {
-//   if(e.state != null){
-//     load_subPost_page(e.state.url,e.state.value);
-//   } else{
-//     load_subPost_page(null,null);
-//   }
-// })
 
 function load_subPost_page(url,value){
   $.ajax({
@@ -2980,16 +2965,20 @@ function search_org_pages_template(response){
 <% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2">
     <div class="d-flex flex-row">
-      <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
-        <div class="valign organization p-2">
-          <a href="/org_pages/<%= org_pages[k].name %>" class="black">
-            <span class="nothing text-md searchname boldtext text-lg"><%= org_pages[k].name %></span>
-          </a>
+      <div class="card-body3 lineheight1 fullwidth" style="overflow: hidden;">
+        <div class="notification px-2 py-1 organization d-flex flex-column">
+          <div class="boldtext text-xxl">
+            <div class="orgname-search">
+              <a href="/org_pages/<%= org_pages[k].name %>" class="black">
+                <i class="fas fa-university lightgrey mr-2"></i><%= org_pages[k].name %>
+              </a>
+            </div>
+          </div>
+          <span class="badge text-sm"><%= org_pages[k].userCount %></span>
         </div>
         <br>
-        <div class="darkgrey text-sm text-right">
-          <span>[<span class="boldtext"><%= org_pages[k].clubCount %></span> clubs</span>
-          <span><span class="boldtext"><%= org_pages[k].userCount %></span> members]</span>
+        <div class="darkgrey text-sm">
+          <span><span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
         </div>
       </div>
     </div>

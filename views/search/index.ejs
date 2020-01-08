@@ -99,15 +99,16 @@
 						<div class="card searchcard">
 							<div class="d-inline-flex">
 						    <div class="card-body3 lineheight fullwidth">
-						    	<div class="px-2 py-1 organization d-flex flex-column">
+						    	<div class="notification px-2 py-1 organization d-flex flex-column">
 										<div class="boldtext text-xxl">
 											<div class="orgname-search">
 												<a href="/org_pages/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>
 											</div>
 										</div>
+										<span class="badge text-sm"><%= org_pages[k].userCount %></span>
 									</div>
 						      <br>
-						      <div class="text-sm text-right">
+						      <div class="text-sm">
 						      	<span>
 						      		<span class="lightgrey"></span><span class="boldtext lightgrey nothing text-md"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
 						      	</span>

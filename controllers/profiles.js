@@ -551,7 +551,39 @@ module.exports = {
             foundUser.userKeys.sex = req.body.userKeys.sex;
           }
         } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-          foundUser.userKeys.college = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          // COLLEGE PAGE(OrgPage)
+          if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
+            var oldCollegeName = foundUser.userKeys.college;
+            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+            OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
+              if(foundOldOrgPage && foundOldOrgPage.allUsers.length){
+                for(var i=foundOldOrgPage.allUsers.length-1;i>=0;i--){
+                  if(foundOldOrgPage.allUsers[i].equals(foundUser._id)){
+                    foundOldOrgPage.allUsers.splice(i,1);
+                    break;
+                  }
+                }
+                foundOldOrgPage.userCount -= 1;
+                foundOldOrgPage.save();
+              }
+            });
+            OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
+              if(foundNewOrgPage){
+                foundNewOrgPage.allUsers.push(foundUser._id);
+                foundNewOrgPage.userCount += 1;
+                foundNewOrgPage.save();
+              } else{
+                if(newCollegeName && newCollegeName != ''){
+                  OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
+                    createdNewOrgPage.allUsers.push(foundUser._id);
+                    createdNewOrgPage.userCount += 1;
+                    createdNewOrgPage.save();
+                  });
+                }
+              }
+            });
+            foundUser.userKeys.college = newCollegeName;
+          }
           foundUser.userKeys.major = req.body.userKeys.major.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '').trim();
           foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
