@@ -1395,7 +1395,7 @@ module.exports = {
         profilePic: null,
         profilePicId: null
       });
-      var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+      var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{6,18}$/;
       if(req.body.password.match(pass)){
         User.register(newUser, req.body.password, function(err, user){
         if(err || !user){
@@ -1633,7 +1633,7 @@ module.exports = {
   },
 
   profilesResetPass(req, res, next){
-    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{6,18}$/;
     if(req.body.password.match(pass)){
       async.waterfall([
         function(done){

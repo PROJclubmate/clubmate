@@ -12,7 +12,7 @@
 }
 .sidebar a{
   display: block;
-  color: #080808;
+  color: #262626;
   padding: 9px;
   text-decoration: none;
 }
@@ -112,7 +112,7 @@ div.content{
     -webkit-text-stroke-width: 0.65px;
     -webkit-text-stroke-color: #169c5e;
   }
-  .badge-mobile{background: #f8f9fa !important; color: #212529 !important; top: -0.25rem !important;
+  .badge-mobile{background: #f8f9fa !important; color: #262626 !important; top: -0.25rem !important;
   right: -0.5rem !important;}
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
@@ -160,6 +160,9 @@ div.content{
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
+  .orgdiv-name{padding: 0.25rem 0.25rem !important;}
+  .orgdiv-usercnt{margin-top: auto 0 !important; margin-bottom: 0 !important; margin-left: 0.25rem !important;}
+  .orgdiv-clubcnt{margin: 0.25rem 0 !important; padding: 0 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
@@ -556,7 +559,7 @@ li.nav-item{
   text-align: center;
 }
 .organization{
-  color: #212529;
+  color: #262626;
   background: repeating-linear-gradient(
     45deg,
     rgba(0,75,255,0.25),
@@ -582,6 +585,16 @@ li.nav-item{
   border-radius: 0.5rem !important;
 }
 .orgpad{padding: 0.25rem 1rem;}
+.orgdiv-name{
+  padding: 0.25rem 1rem;
+}
+.orgdiv-usercnt{
+  margin: auto 0;
+}
+.orgdiv-clubcnt{
+  margin: 1rem 0;
+  padding: 0 1rem;
+}
 .category{
   font-size: 0.875rem;
   color: black;
@@ -1013,7 +1026,7 @@ input[type="file"]#inputavatar{
 }
 .hidesidebar:hover{
   transition: ease-in-out 0.15s;
-  color: #212529;
+  color: #262626;
 }
 .btnxs{
   padding: 1px 4px !important;
@@ -1061,7 +1074,7 @@ a.red:hover{color: #d6312e;}
   color: #009f5e !important;
 }
 .redcolor{
-  color: #d6312e !important;
+  color: #ed4950 !important;
 }
 .bluecolor{
   color: #007bff !important;
@@ -1076,7 +1089,7 @@ a.red:hover{color: #d6312e;}
   color: white !important;
 }
 .darkgrey{
-  color: #212529 !important;
+  color: #262626 !important;
 }
 .lightgrey{
   color: grey;
@@ -1094,7 +1107,7 @@ div.alert{
   text-decoration: none !important;
 }
 a .nolink{
-  color: #212529;
+  color: #262626;
   text-decoration: none;
 }
 a .nolink:hover{
@@ -1172,7 +1185,7 @@ a .nolink:hover{
   outline: none;
 }
 .link-button:active{
-  color:red;
+  color: red;
 }
 .carousel-control{
   top: 5rem;
@@ -1248,7 +1261,7 @@ img.cover{
   background-color: transparent;
 }
 .yellowback{
-  background-color: #ffeed9;
+  background-color: #ffead9;
   background-image: url(/images/doodleBack.png);
   background-size: 350px 350px;
   background-repeat: repeat;
@@ -1910,13 +1923,13 @@ select.select1::-ms-expand{
   border-left: 1px solid rgba(0,0,0,0.1);
   background-color: whitesmoke;
 }
-h5.topic-h5{font-family: 'Bitter', serif; color: #212529 !important; font-weight: 400;}
+h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight: 400;}
 .topic{
   border-radius: 0.5rem 0.5rem 0 0;
   font-family: 'Bitter', serif;
   font-weight: 600;
   font-size: 0.875rem;
-  background-color: #ffeed9;
+  background-color: #ffead9;
 }
 .topic2{
   border-radius: 0.5rem 0.5rem 0 0;
@@ -1956,13 +1969,13 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #212529 !important; font-weight
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffeed9 inset !important;
+  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
 input.shadow:-webkit-autofill,
 input.shadow:-webkit-autofill:hover, 
 input.shadow:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffeed9 inset !important;
+  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
 .page-index-back{

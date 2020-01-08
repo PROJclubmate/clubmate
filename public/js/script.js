@@ -134,7 +134,7 @@ $('#inputPassword').on('input', function(e){
   } else{
     $('#pass_show').css('display','none');
   }
-  var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+  var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{6,18}$/;
   if($(this).val().match(pass)){
     $('#pass_info').css('display','none');
   } else{

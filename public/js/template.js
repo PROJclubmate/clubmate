@@ -2866,7 +2866,7 @@ function search_people_template(response){
         <div class="valign">
           <div>
             <a href="/users/<%= users[k]._id %>" class="grey">
-              <span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
+              <span class="nothing text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
             </a>
           </div>
           <div>
@@ -2885,15 +2885,26 @@ function search_people_template(response){
         <br>
         <div class="valign">
           <div>
-            <div class="text-sm boldtext darkgrey"><%= users[k].email %></div>
+            <div class="text-sm mobilebold darkgrey"><%= users[k].userKeys.college %></div>
             <% if(users[k].userKeys){ %>
+              <% if(users[k].userKeys.college){ %>
+                <div class="lightgrey text-xs">
+                  <span class="nothing"><%= users[k].userKeys.major %></span>
+                  <% if(users[k].userKeys.batch){ %>
+                    <span class="nothing">(<%= users[k].userKeys.batch %>)</span>
+                  <% } %>
+                  <% if(users[k].userKeys.section){ %>
+                    <span class="nothing">(<%= users[k].userKeys.section %>)</span>
+                  <% } %>
+                </div>
+              <% } %>
               <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
-              <div class="lightgrey text-xs"><%= users[k].userKeys.college %></div>
               <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
+              <div class="lightgrey text-xs boldtext"><%= users[k].email %></div>
             <% } %>
           </div>
           <% if(users[k].userKeys){ %>
-            <div class="darkgrey text-sm mt-auto"><%= users[k].userKeys.residence %></div>
+            <div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= users[k].userKeys.residence %></div>
           <% } %>
         </div>
       </div>
