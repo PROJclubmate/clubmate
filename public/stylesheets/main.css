@@ -45,13 +45,14 @@ div.content{
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
+  .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px; z-index: 3;
+    box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
   .navbar{padding: 1px 10px !important;}
   .navback{background-color: #3e3d3c !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
     box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
   a.hr2{border: none;}
-  .sidebar{z-index: 5; width: 100%; height: auto; position: fixed;
-    box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
+  .sidebar{z-index: 5; width: max-content; height: auto; position: fixed; box-shadow: none !important;}
   html{scroll-behavior: smooth;}
   .sidebar a{float: left;}
   a.hr2.active{border:2px inset white; padding-top: 7px; padding-bottom: 7px;}
@@ -171,6 +172,7 @@ div.content{
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
+  .sidebar-back{height: 46px !important;}
   .navbar{padding: 3px 10px !important;}
   #sidebar-dropbox{top: 46px; left: 108px;}
   .sidebar a{padding: 11px 21px; font-size: 1rem;}
@@ -213,6 +215,7 @@ div.content{
 }
 /*Asus Max Pro M-1 => 360px*/
 @media screen and (max-width: 361px){
+  .sidebar-back{height: 42px !important;}
   .navbar{padding: 1px 10px !important;}
   #sidebar-dropbox{top: 42px; left: 78px;}
   .sidebar a{padding: 9px 6px;}
