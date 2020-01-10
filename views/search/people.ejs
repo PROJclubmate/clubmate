@@ -12,8 +12,8 @@
 			<% if(filterKeys.college){ %>
 				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
-			<% if(filterKeys.major){ %>
-				<span class="lightgrey text-xs">Major=</span><span class="boldtext text-sm nothing"><%= filterKeys.major %></span>
+			<% if(filterKeys.branch){ %>
+				<span class="lightgrey text-xs">Branch=</span><span class="boldtext text-sm nothing"><%= filterKeys.branch %></span>
 			<% } %>
 			<% if(filterKeys.batch){ %>
 				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
@@ -71,7 +71,7 @@
 				      	<% if(users[k].userKeys){ %>
 						      <% if(users[k].userKeys.college){ %>
 					      		<div class="lightgrey text-xs">
-					      			<span class="nothing"><%= users[k].userKeys.major %></span>
+					      			<span class="nothing"><%= users[k].userKeys.branch %></span>
 					      			<% if(users[k].userKeys.batch){ %>
 					      				<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
 					      			<% } %>
@@ -147,8 +147,8 @@
 				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
 			</div>
       <div>
-      	<label for="major" class="sr-only">Major</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Major" name="major" id="major" value="<%= query.major %>">
+      	<label for="branch" class="sr-only">Branch</label>
+				<input class="form-control form-control-sm" type="text" placeholder="Branch" name="branch" id="branch" value="<%= query.branch %>">
       </div>
       <div>
       	<label for="batch" class="sr-only">Batch</label>

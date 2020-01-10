@@ -2874,7 +2874,7 @@ function search_people_template(response){
             <% if(users[k].userKeys){ %>
               <% if(users[k].userKeys.college){ %>
                 <div class="lightgrey text-xs">
-                  <span class="nothing"><%= users[k].userKeys.major %></span>
+                  <span class="nothing"><%= users[k].userKeys.branch %></span>
                   <% if(users[k].userKeys.batch){ %>
                     <span class="nothing">(<%= users[k].userKeys.batch %>)</span>
                   <% } %>

@@ -584,7 +584,7 @@ module.exports = {
             });
             foundUser.userKeys.college = newCollegeName;
           }
-          foundUser.userKeys.major = req.body.userKeys.major.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          foundUser.userKeys.branch = req.body.userKeys.branch.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '').trim();
           foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
@@ -1427,7 +1427,7 @@ module.exports = {
         profilePic: null,
         profilePicId: null
       });
-      var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{6,18}$/;
+      var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*+/.()?& -]{6,18}$/;
       if(req.body.password.match(pass)){
         User.register(newUser, req.body.password, function(err, user){
         if(err || !user){
@@ -1665,7 +1665,7 @@ module.exports = {
   },
 
   profilesResetPass(req, res, next){
-    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{6,18}$/;
+    var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*+/.()?& -]{6,18}$/;
     if(req.body.password.match(pass)){
       async.waterfall([
         function(done){

@@ -169,10 +169,10 @@ module.exports = {
         college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var major = urlEqualsSplit[3];
-      if(major.split('&')[0]){
-        major = new RegExp(escapeRegExp(major.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.major': major});
+      var branch = urlEqualsSplit[3];
+      if(branch.split('&')[0]){
+        branch = new RegExp(escapeRegExp(branch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.branch': branch});
       }
       var batch = urlEqualsSplit[4];
       if(batch.split('&')[0]){

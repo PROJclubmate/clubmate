@@ -120,23 +120,23 @@
             <hr class="hr-light">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <% if(user.userKeys.college && user.userKeys.major){ %>
-                <div class="info1">Major: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=<%= user.userKeys.major %>&batch=&section=&workplace=&school=&location="><%= user.userKeys.major %></a></div></div>
+              <% if(user.userKeys.college && user.userKeys.branch){ %>
+                <div class="info1">Branch: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=<%= user.userKeys.branch %>&batch=&section=&workplace=&school=&location="><%= user.userKeys.branch %></a></div></div>
               <% } %>
               <% if(user.userKeys.college && user.userKeys.batch){ %>
-                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=<%= user.userKeys.batch %>&section=&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
+                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=<%= user.userKeys.batch %>&section=&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
               <% } %>
               <% if(user.userKeys.college && user.userKeys.section){ %>
-                <div class="info1">Section: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=<%= user.userKeys.section %>&workplace=&school=&location="><%= user.userKeys.section %></a></div></div>
+                <div class="info1">Section: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=<%= user.userKeys.section %>&workplace=&school=&location="><%= user.userKeys.section %></a></div></div>
               <% } %>
               <% if(user.userKeys.workplace){ %>
-                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
+                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
               <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
               <% } %>
               <% if(user.userKeys.residence){ %>
-                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&major=&batch=&section=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -149,8 +149,8 @@
                 <br>
                 <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
                 <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
-                <label for="major" class="sr-only">Major</label>
-                <input type="text" id="major" class="form-control form-control-sm" name="userKeys[major]" value="<%= user.userKeys.major %>" placeholder="Subject Major e.g. CSE">
+                <label for="branch" class="sr-only">Branch</label>
+                <input type="text" id="branch" class="form-control form-control-sm" name="userKeys[branch]" value="<%= user.userKeys.branch %>" placeholder="Subject Branch e.g. CSE">
                 <label for="batch" class="sr-only">Batch</label>
                 <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch (First year) e.g. 2016">
                 <label for="section" class="sr-only">Section</label>

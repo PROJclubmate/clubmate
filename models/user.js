@@ -22,7 +22,7 @@ const userSchema = new Schema({
     sex: String,
     birthdate: Date,
     college: String,
-    major: String,
+    branch: String,
     batch: String,
     section: String,
     workplace: String,

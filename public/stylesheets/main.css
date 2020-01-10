@@ -161,12 +161,13 @@ div.content{
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .orgdiv-name{padding: 0.25rem 0.25rem !important;}
-  .orgdiv-usercnt{margin-top: auto 0 !important; margin-bottom: 0 !important; margin-left: 0.25rem !important;}
+  .orgdiv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1rem !important;}
   .orgdiv-clubcnt{margin: 0.25rem 0 !important; padding: 0 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
   .helppad2{padding: 0 2.5rem;}
+  .yellowback{background-size: 250px 250px !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -1263,7 +1264,7 @@ img.cover{
 .yellowback{
   background-color: #ffead9;
   background-image: url(/images/doodleBack.png);
-  background-size: 350px 350px;
+  background-size: 450px 450px;
   background-repeat: repeat;
 }
 .whiteback{
