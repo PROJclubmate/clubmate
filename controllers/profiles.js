@@ -6,6 +6,7 @@ const express          = require('express'),
   Post                 = require('../models/post'),
   OrgPage              = require('../models/organization-page'),
   Conversation         = require('../models/conversation'),
+  ClubConversation = require('../models/club-conversation'),
   Token                = require('../models/token'),
   async                = require('async'),
   nodemailer           = require('nodemailer'),
@@ -1253,6 +1254,16 @@ module.exports = {
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');          }
         });
+        if(foundClub.conversationId){
+          ClubConversation.updateOne({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
+          function(err, foundClubConversation){
+          if(err || !foundClubConversation){
+            console.log(req.user._id+' => (profiles-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          }
+          });
+        }
         foundClub.isActive = false;
         foundClub.deActivatedOn = Date.now();
         foundClub.save();

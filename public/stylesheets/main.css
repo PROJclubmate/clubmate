@@ -1710,11 +1710,11 @@ select.select1::-ms-expand{
 .intercom-composer-popover.active{
   visibility: visible;
   opacity:1;
-  height: 350px;
+  height: 320px;
 }
 .intercom-emoji-picker{
   width: 265px;
-  height: 350px;
+  height: 320px;
 }
 .intercom-composer-popover-header{
   position: absolute;
@@ -1883,7 +1883,6 @@ select.select1::-ms-expand{
 .chat-msg3{
   text-align: center;
   font-size: 0.875rem;
-  border: 2px solid darkgrey;
   background-color: white;
   border-radius: 0.5rem;
   padding: 0 0.15rem;

@@ -2,6 +2,7 @@ const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const clubConversationSchema = new Schema({
+  isActive: {type: Boolean, default: true},
   clubId: {
     type: Schema.Types.ObjectId,
     ref: 'Club'
