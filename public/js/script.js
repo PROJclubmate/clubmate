@@ -1,3 +1,9 @@
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(function(){
+    // console.log('Service worker registered!');
+  });
+}
+
 /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function(){
