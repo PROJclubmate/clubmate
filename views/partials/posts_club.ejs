@@ -260,10 +260,10 @@
         </div>
       </div>
     </div>
-  <!-- TOPIC POSTS -->
   <% } else{ %>
+    <!-- TOPIC POSTS -->
     <div class="card noborder d-flex flex-row">
-      <div>
+      <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
@@ -401,10 +401,10 @@
             <div class="d-flex flex-column">
               <% if(currentUser){ %>
                 <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                     <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>

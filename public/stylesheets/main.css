@@ -342,6 +342,9 @@ hr{
   display: inline-block;
   overflow-wrap: break-word !important;
 }
+.topic-break{
+  min-width: 40%;
+}
 .my-15{
   margin: 0.15rem 0;
 }
@@ -1919,9 +1922,11 @@ select.select1::-ms-expand{
   border-top: 1px solid #dcdcdc;
   border-left: 1px solid #dcdcdc;
 }
+.topic-heart{
+  margin-bottom: -0.25rem; 
+}
 .topic-head{
   min-height: 3rem;
-  /*border: 1px dotted #fcd7a4;*/
 }
 .topic-column{
   border-left: 1px solid rgba(0,0,0,0.1);

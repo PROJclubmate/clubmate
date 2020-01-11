@@ -15,18 +15,18 @@ module.exports = function(io){
 		if(req.user){
 		  Conversation.findOne({_id: req.params.conversationId})
 		  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
-		  .exec(function(err, foundMessages){ 
-		  if(err || !foundMessages){
-		    console.log(req.user._id+' => (conversations-1)foundMessages err:- '+JSON.stringify(err, null, 2));
+		  .exec(function(err, foundConversation){ 
+		  if(err || !foundConversation){
+		    console.log(req.user._id+' => (conversations-1)foundConversation err:- '+JSON.stringify(err, null, 2));
 		    req.flash('error', 'Something went wrong :(');
 		    return res.redirect('back');
 		  } else{
-	      if(contains(foundMessages.participants,req.user._id)){
-	      	var foundMessageIds = foundMessages.messageBuckets.map(function(messages){
+	      if(contains(foundConversation.participants,req.user._id)){
+	      	var foundMessageIds = foundConversation.messageBuckets.map(function(messages){
 		        return messages._id;
 		      });
 	        var currentUser = req.user._id;
-	        res.send({messages: foundMessages, currentUser, foundMessageIds});
+	        res.send({messages: foundConversation, currentUser, foundMessageIds});
 	      } else{console.log('(conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  });
@@ -253,21 +253,21 @@ module.exports = function(io){
 	// ================================ CLUB-CHAT ROUTES =====================================
 	router.get('/club-chat/:conversationId', function(req, res){
 		if(req.user){
-		  ClubConversation.findOne({_id: req.params.conversationId})
+		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
 		  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
-		  .exec(function(err, foundMessages){
-		  if(err || !foundMessages){
-		    console.log(req.user._id+' => (conversations-16)foundMessages err:- '+JSON.stringify(err, null, 2));
+		  .exec(function(err, foundClubConversation){
+		  if(err){
+		    console.log(req.user._id+' => (conversations-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
 		    req.flash('error', 'Something went wrong :(');
 		    return res.redirect('back');
-		  } else{
-	      if(contains2(req.user.userClubs,foundMessages.clubId)){
-	      	var foundMessageIds = foundMessages.messageBuckets.map(function(messages){
+		  } else if(foundClubConversation){
+	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
+	      	var foundMessageIds = foundClubConversation.messageBuckets.map(function(messages){
 		        return messages._id;
 		      });
 	        var currentUser = req.user._id;
 	        var firstName = req.user.firstName;
-	        res.send({messages: foundMessages, currentUser, firstName, foundMessageIds});
+	        res.send({messages: foundClubConversation, currentUser, firstName, foundMessageIds});
 	      } else{console.log('(conversations-17)Not a club member: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  });
@@ -281,13 +281,13 @@ module.exports = function(io){
 	    } else{
 	      var seenIds = [];
 	    }
-		  ClubConversation.findOne({_id: req.params.conversationId})
+		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
 		  .exec(function(err, foundClubConversation){
-		  if(err || !foundClubConversation){
+		  if(err){
 		    console.log(req.user._id+' => (conversations-18)foundClubConversation err:- '+JSON.stringify(err, null, 2));
 		    req.flash('error', 'Something went wrong :(');
 		    return res.redirect('back');
-		  } else{
+		  } else if(foundClubConversation){
 	    	var bucket = foundClubConversation.messageBuckets;
 	    	for(var i=bucket.length-1;i>=0;i--){
 	    		for(var j=seenIds.length-1;j>=0;j--){
@@ -317,15 +317,15 @@ module.exports = function(io){
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
 		  }
-		  ClubConversation.findOne({_id: req.params.conversationId})
-		  .exec(function(err, foundConversation){
-		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-20)foundConversation err:- '+JSON.stringify(err, null, 2));
+		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
+		  .exec(function(err, foundClubConversation){
+		  if(err){
+		    console.log(req.user._id+' => (conversations-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
 		    req.flash('error', 'Something went wrong :(');
 		    return res.redirect('back');
-		  } else{
-	      if(contains2(req.user.userClubs,foundConversation.clubId)){
-	        Message.findOneAndUpdate({conversationId: foundConversation._id, bucket: foundConversation.bucketNum},
+		  } else if(foundClubConversation){
+	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
+	        Message.findOneAndUpdate({conversationId: foundClubConversation._id, bucket: foundClubConversation.bucketNum},
 	        {$inc: {count: 1},
 	          $push: {messages: {authorId: req.user._id, authorName: req.user.fullName, 
 	            text: req.body.composedMessage}
@@ -337,13 +337,13 @@ module.exports = function(io){
 	          return res.redirect('back');
 	        } else{
 	          if(newMessageBucket.count == 1){
-	            foundConversation.messageBuckets.push(newMessageBucket._id);
-	            foundConversation.save();
+	            foundClubConversation.messageBuckets.push(newMessageBucket._id);
+	            foundClubConversation.save();
 	          } else if(newMessageBucket.count >= 50){
-	            foundConversation.bucketNum += 1;
-	            foundConversation.save();
+	            foundClubConversation.bucketNum += 1;
+	            foundClubConversation.save();
 	          } else{
-	            foundConversation.save();
+	            foundClubConversation.save();
 	          }
 	          if(err){
 	            console.log(req.user._id+' => (conversations-22) err:- '+JSON.stringify(err, null, 2));
@@ -385,8 +385,8 @@ module.exports = function(io){
 	    clubConversation.messageBuckets.push(message._id);
 	    clubConversation.save();
 	    // Insert conversationId into clubUsers
-	    Club.updateOne({_id: req.body.clubId},{$set: {conversationId: clubConversation._id}}, function(err, foundClub){
-	      if(err || !foundClub){
+	    Club.updateOne({_id: req.body.clubId, isActive: true},{$set: {conversationId: clubConversation._id}}, function(err, foundClub){
+	      if(err){
 	        console.log(req.user._id+' => (conversations-24)foundClub err:- '+JSON.stringify(err, null, 2));
 	        req.flash('error', 'Something went wrong :(');
 	        return res.redirect('back');

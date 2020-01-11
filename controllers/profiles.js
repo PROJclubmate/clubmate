@@ -445,6 +445,7 @@ module.exports = {
             "image": 1,
             "imageId": 1,
             "description": 1,
+            "hyperlink": 1,
             "privacy": 1,
             "moderation": 1,
             "descEdit": 1,

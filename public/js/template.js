@@ -877,10 +877,10 @@ function index_posts_template(response){
       </div>
     </div>
     <hr>
-  <!-- TOPIC POSTS -->
   <% } else{ %>
+    <!-- TOPIC POSTS -->
     <div class="card d-flex flex-row">
-      <div>
+      <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
@@ -1012,10 +1012,10 @@ function index_posts_template(response){
             <div class="d-flex flex-column">
               <% if(currentUser){ %>
                 <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                     <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
@@ -1300,10 +1300,11 @@ function club_posts_template(response){
         </div>
       </div>
     </div>
-  <!-- TOPIC POSTS -->
+    <hr>
   <% } else{ %>
+    <!-- TOPIC POSTS -->
     <div class="card noborder d-flex flex-row">
-      <div>
+      <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
@@ -1441,10 +1442,10 @@ function club_posts_template(response){
             <div class="d-flex flex-column">
               <% if(currentUser){ %>
                 <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                     <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
@@ -1456,6 +1457,7 @@ function club_posts_template(response){
         </div>
       </div>
     </div>
+    <hr>
   <% } %>
 <% } %>
 
@@ -1712,10 +1714,11 @@ function user_posts_template(response){
         </div>
       </div>
     </div>
-  <!-- TOPIC POSTS -->
+    <hr>
   <% } else{ %>
+    <!-- TOPIC POSTS -->
     <div class="card noborder d-flex flex-row">
-      <div>
+      <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign lineheight">
@@ -1842,10 +1845,10 @@ function user_posts_template(response){
             <div class="d-flex flex-column">
               <% if(currentUser){ %>
                 <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= posts[k].heartCount %></div>
+                  <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                     <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
@@ -1857,6 +1860,7 @@ function user_posts_template(response){
         </div>
       </div>
     </div>
+    <hr>
   <% } %>
 <% } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, match: response.match,
@@ -2104,10 +2108,11 @@ function heart_posts_template(response){
         </div>
       </div>
     </div>
-  <!-- TOPIC POSTS -->
+    <hr>
   <% } else{ %>
+    <!-- TOPIC POSTS -->
     <div class="card noborder d-flex flex-row">
-      <div>
+      <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign lineheight">
@@ -2234,10 +2239,10 @@ function heart_posts_template(response){
             <div class="d-flex flex-column">
               <% if(currentUser){ %>
                 <% if(hasVoteH[l] == 3){ %>
-                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= postsH[l].heartCount %></div>
+                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= postsH[l].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                 <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1 || hasVoteH[l] == -1){ %>
-                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= postsH[l].heartCount %></div>
+                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= postsH[l].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                     <div class="nodisplay" id="modVisibility<%= postsH[l]._id %>"></div>
@@ -2249,6 +2254,7 @@ function heart_posts_template(response){
         </div>
       </div>
     </div>
+    <hr>
   <% } %>
 <% } %>
 `,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, match: response.match,
@@ -2512,7 +2518,7 @@ function post_subPosts_template(response){
       <div class="valign">
         <div class="mb-auto d-flex flex-column">
           <div>
-            <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+            <a href="/users/<%= currentUser._id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
           </div>
           <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
         </div>
