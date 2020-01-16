@@ -183,8 +183,8 @@
                   <a href="/users/<%= foundFriends[i]._id %>">
                     <img class="friends-dp" src="<%= foundFriends[i].profilePic || '/images/noUser.png' %>">
                   </a>
-                  <div class="lineheight3 friends-text">
-                    <span class="text-xs boldtext nopad"><%= foundFriends[i].fullName %></span>
+                  <div class="lineheight3">
+                    <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>
                   </div>
                 </div>
               <% } %>
@@ -287,6 +287,9 @@
                       <button class="btn btn-white btnxxs text-sm" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
                     </form>
                   <% } else if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
+                    <button id="enable-notifications" class="btn btn-white btn-primary btn-ask btnxxs text-sm" style="border-radius: 0.25rem;" title="Enable notifications on this device">
+                      <i class="fas fa-bell"></i>
+                    </button>
                     <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
                     <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
                   <% } %>
@@ -623,7 +626,7 @@
                     <label for="name" class="sr-only">Club name</label>
                     <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
                     <label for="banner" class="sr-only">Club banner</label>
-                    <input id="banner" class="form-control form-control-sm shadow" type="text" name="banner" placeholder="Banner" required>
+                    <input id="banner" class="form-control form-control-sm shadow" type="text" name="banner" placeholder="Banner">
                     <label for="inputavatar" class="custom-file-upload fullwidth text-center" title="Upload club avatar">
                       <i class="fas fa-upload"></i> Club avatar
                     </label>

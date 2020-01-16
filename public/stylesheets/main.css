@@ -45,14 +45,14 @@ div.content{
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
-  .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px; z-index: 3;
-    box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
+  .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
+    z-index: 8; box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
   .navbar{padding: 1px 10px !important;}
   .navback{background-color: #3e3d3c !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
     box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
   a.hr2{border: none;}
-  .sidebar{z-index: 5; width: max-content; height: auto; position: fixed; box-shadow: none !important;}
+  .sidebar{z-index: 9; width: max-content; height: auto; position: fixed; box-shadow: none !important;}
   html{scroll-behavior: smooth;}
   .sidebar a{float: left;}
   a.hr2.active{border:2px inset white; padding-top: 7px; padding-bottom: 7px;}
@@ -270,7 +270,7 @@ div.content{
     transparent 75%, 
     transparent
   );
-  z-index: 1;
+  z-index: 10;
   background-size: 50px 50px;
   animation: move 2s linear infinite;
   border-radius: 2px;
@@ -624,6 +624,10 @@ li.nav-item{
   text-shadow: 0 0 3px rgba(0,0,0,0.5);
   padding: 0.15rem;
 }
+.friends-text:hover{
+  color: white; 
+  text-decoration: none;
+}
 .searchdp{
   margin: 0 0.5rem;
   height: 100px !important;
@@ -686,7 +690,7 @@ span.nopad{
 .navbar{
   will-change: transform;
   transition: top 0.3s;
-  z-index: 6;
+  z-index: 10;
   padding: 0px 50px;
   justify-content: space-between;
 }
@@ -803,6 +807,7 @@ input[type="file"]#inputavatar{
 #searchMember_form{display: none;}
 #hyperlink{display: none;}
 #memberReq-div{display: none;}
+#enable-notifications{display: none;}
 /*--------------*/
 .dropctn{
   width: 100% !important;
@@ -886,6 +891,11 @@ input[type="file"]#inputavatar{
 }
 .btn.btn-round{
   border-radius: 2rem;
+}
+.btn-ask{
+  color: #007bff !important;
+  border-color: #007bff !important;
+  background-color: white!important;
 }
 .btn.btn-dark{
   background-color: white;
@@ -1323,7 +1333,7 @@ ul{
   background: #ea0027;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
-  z-index: 6;
+  z-index: 9;
 }
 .notification{
   position: relative;

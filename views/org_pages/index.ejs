@@ -21,10 +21,10 @@
 			<% for(var i=org_page.allClubs.length-1;i>=0;i--){ %>
 				<% if(org_page.allClubs[i].category != '' && org_page.allClubs[i].categoryCount>0){ %>
 					<div class="boldtext mobiletext3 category"><%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)</div>
-				<% } else if(org_page.allClubs[i].category != '' && org_page.allClubs[i].categoryCount<=0){ %>
-					<!-- don't print -->
-				<% } else{ %>
+				<% } else if(org_page.allClubs[i].category != '' && org_page.allClubs[i].categoryCount>0){ %>
 						<div class="boldtext mobiletext3 category"><span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)</div>
+				<% } else if(org_page.allClubs[i].categoryCount<=0){ %>
+					<!-- don't print -->
 				<% } %>
 				<div class="my-2 lineheight2">
 			  <% for(var j=org_page.allClubs[i].categoryClubIds.length-1;j>=0;j--){ %>

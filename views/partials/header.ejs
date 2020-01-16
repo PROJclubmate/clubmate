@@ -135,8 +135,8 @@
     <hr>
     <% for(var i=0;i<clubInviteRequests.length;i++){ %>
       <div class="pop-container">
-        <div class="valign py-1 w-100">
-          <div class="d-inline-flex">
+        <div class="valign py-1">
+          <div class="d-inline-flex wordwrap">
             <span>
               <a href="/clubs/<%= clubInviteRequests[i]._id %>">
                 <img class="navdp" src="<%= CI_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
@@ -150,7 +150,7 @@
             </span>
           </div>
           <div class="mb-auto">
-            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: 114px;">
+            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: max-content;">
               <span>
                 <button class="btn btnxs btn-primary text-sm" name="acceptInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Accept</button>
               </span>
@@ -174,7 +174,7 @@
     <% for(var j=0;j<friendRequests.length;j++){ %>
       <div class="pop-container">
         <div class="valign py-1">
-          <div class="d-inline-flex">
+          <div class="d-inline-flex wordwrap">
             <span>
               <a href="/users/<%= friendRequests[j]._id %>">
                 <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUser.png' %>"></a>
@@ -188,7 +188,7 @@
             </span>
           </div>
           <div class="mb-auto">
-            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: 114px;">
+            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: max-content;">
               <span>
                 <button class="btn btnxs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
               </span>

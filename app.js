@@ -1,5 +1,6 @@
 const express      = require('express'),
   app              = express(),
+  bodyParser       = require('body-parser'),
   http             = require('http').Server(app),
   io               = require('socket.io')(http),
   mongoose         = require('mongoose'),
@@ -37,6 +38,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 app.use(flash());
+app.use(bodyParser.json());
 
 app.locals.moment = require('moment');
 
@@ -67,7 +69,7 @@ app.use(async function(req, res, next){
       .populate({path: 'userChats.userId', select: 'fullName profilePic profilePicId'})
       .exec();
       // check security of theese local variables & check for no variable overwriting
-      res.locals.userClubs = foundUser.userClubs;
+      res.locals.userClubs = foundUser.userClubs.reverse();
       res.locals.clubUpdates = foundUser.clubUpdates;
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
       res.locals.friendRequests = foundUser.friendRequests.reverse();
@@ -120,7 +122,8 @@ db.once('open', () => {
 });
 
 // Connect to database
-mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false}, function(err, client){
+mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
+useUnifiedTopology: true}, function(err, client){
   if(err){
     return console.log('(app-17)'+JSON.stringify(err, null, 2));
   }

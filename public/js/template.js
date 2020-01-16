@@ -2795,14 +2795,14 @@ function moreClubs_template(response){
             <% if(clubs[i].rank != 0){ %>
               <hr>
               <li>
-                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= user._id %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
+                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= userId %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
               </li>
             <% } %>
           </div>
         </ul>
       </span>
       <!-- Modal HTML -->
-      <div id="leaveClubModal<%= user._id %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
+      <div id="leaveClubModal<%= userId %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
         <div class="modal-dialog modal-confirm">
           <div class="modal-content">
             <div class="d-flex">
@@ -2818,7 +2818,7 @@ function moreClubs_template(response){
             <div class="my-2">
               <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
               <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
-                <button type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+                <button type="submit" name="leave" value="<%= userId %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
               </form>
             </div>
           </div>
@@ -2926,7 +2926,7 @@ function search_clubs_template(response){
           <div>
             <% if(currentUser){ 
               currentUser.userClubs.forEach(function(userClub){ 
-                if(clubs[k]._id == userClub.id){ %>
+                if(clubs[k]._id.equals(userClub.id)){ %>
                 <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
                   <i class="fas fa-check"></i> Member</button>
             <% }})} %>
@@ -2935,14 +2935,14 @@ function search_clubs_template(response){
         <div class="lightgrey text-xs"><%= clubs[k].banner %></div>
         <br>
         <% if(clubs[k].clubKeys){ %>
-          <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.weblink %></div>
-          <div class="lightgrey text-xs"><%= clubs[k].clubKeys.grouptype %></div>
-          <div class="lightgrey text-xs"><%= clubs[k].clubKeys.organization %></div>
+          <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
+          <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
+          <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
         <% } %>
         <div class="valign">
-          <div class="lightgrey text-xs"><%= break_arr(clubs[k].categories) %></div>
+          <div class="lightgrey text-xxs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
           <% if(clubs[k].clubKeys){ %>
-            <div class="darkgrey text-sm mt-auto"><%= clubs[k].clubKeys.location %></div>
+            <div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= clubs[k].clubKeys.organization %></div>
           <% } %>
         </div>
       </div>
@@ -2952,14 +2952,18 @@ function search_clubs_template(response){
 
 <%
 function break_arr(arr){
-  for(i=0;i<arr.length;i++){
-    if(i == 0){
-      var str = arr[i];
-    } else{
-      var str = str +', '+ arr[i];
+  if(arr && arr.length){
+    for(i=0;i<arr.length;i++){
+      if(i == 0){
+        var str = arr[i];
+      } else{
+        var str = str +', '+ arr[i];
+      }
     }
+    return str;
+  } else{
+    return '';
   }
-  return str;
 }
 %>
 `,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, currentUser: response.currentUser});

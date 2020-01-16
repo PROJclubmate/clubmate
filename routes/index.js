@@ -1,12 +1,17 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs,
-  indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople,
-  indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends,
-  indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage} = require('../controllers/index');
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople,
+  indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
+  indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
+  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage}
+  = require('../controllers/index');
 
 
+
+
+// New notification subscription
+router.post('/api/save-subscription/', middleware.isLoggedIn, indexSubscription);
 
 // Root(Landing) page
 router.get('/', indexRoot);

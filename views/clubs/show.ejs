@@ -599,12 +599,12 @@
     <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="m-0">
         <div class="lightgrey lineheight text-sm text-center">
-          <i class="fas fa-info-circle orangecolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
+          <i class="fas fa-exclamation redcolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
         </div>
         <div class="card-body hr1 mx-3">
           <div class="lightgrey lineheight text-sm text-center">
             <% if(!sentMemberReq){ %>
-              <button id="memberReq-btn" class="btn btn-sm btn-white" onclick="toggle_display('memberReq-div')" style="border-width: 1px;">Ask</button>
+              <button id="memberReq-btn" class="btn btn-white btn-primary btn-ask boldtext" onclick="toggle_display('memberReq-div')" style="border-width: 1px;">Ask</button>
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
