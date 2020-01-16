@@ -25,7 +25,7 @@ module.exports = {
       .populate({path: 'clubInvites', select: 'name clubUsers'})
       .exec(function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (profiles-1)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-1)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -40,7 +40,7 @@ module.exports = {
           ])
         .exec(function(err, foundFriends){
         if(err || !foundUser){
-          console.log(req.user._id+' => (profiles-2)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-2)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -130,7 +130,7 @@ module.exports = {
             Conversation.findOne({_id: conversationId})
             .exec(function(err, foundConversation){
             if(err || !foundConversation){
-              console.log(req.user._id+' => (profiles-3)foundConversation err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-3)foundConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -172,7 +172,7 @@ module.exports = {
       .populate({path: 'clubInvites', select: 'name clubUsers'})
       .exec(function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (profiles-4)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-4)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -186,7 +186,7 @@ module.exports = {
           ])
         .exec(function(err, foundFriends){
         if(err || !foundUser){
-          console.log(req.user._id+' => (profiles-5)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-5)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -255,7 +255,7 @@ module.exports = {
     } else if(!req.user){
       User.findById(req.params.id, function(err, foundUser){
       if(err || !foundUser){
-        console.log('(profiles-6)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(profiles-6)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -269,7 +269,7 @@ module.exports = {
           ])
         .exec(function(err, foundFriends){
         if(err || !foundUser){
-          console.log(req.user._id+' => (profiles-7)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-7)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -291,7 +291,7 @@ module.exports = {
     .populate({path: 'userClubs.id', select: 'name avatar avatarId'})
     .exec(function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-8)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-8)foundUser err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.user){
@@ -339,7 +339,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, foundUserPosts){
       if(err || !foundUserPosts){
-        console.log(req.user._id+' => (profiles-9)foundUserPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-9)foundUserPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = foundUserPosts.length;
@@ -375,7 +375,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, foundUserPosts){
       if(err || !foundUserPosts){
-        console.log('(profiles-10)foundUserPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(profiles-10)foundUserPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = foundUserPosts.length;
@@ -470,7 +470,7 @@ module.exports = {
         ])
       .exec(function(err, foundHeartPosts){
       if(err || !foundHeartPosts){
-        console.log(req.user._id+' => (profiles-11)foundHeartPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-11)foundHeartPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = foundHeartPosts.length;
@@ -501,7 +501,7 @@ module.exports = {
   profilesUpdateUserProfile(req, res, next){
     User.findById(req.params.id, async function(err, foundUser){
     if(err || !foundUser){
-      console.log(req.user._id+' => (profiles-12)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (profiles-12)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -517,7 +517,7 @@ module.exports = {
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
         } catch(err){
-          console.log(req.user._id+' => (profiles-13)profilePicUpload err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-13)profilePicUpload err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -649,7 +649,7 @@ module.exports = {
       height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'},
     function(err, result){
     if(err){
-      console.log(req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -657,13 +657,13 @@ module.exports = {
       req.body.avatarId = result.public_id;
       User.findById(req.params.id).populate('userClubs.id').exec(function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (profiles-15)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-15)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
         Club.create(req.body, function(err, newClub){
         if (err || !newClub){
-          console.log(req.user._id+' => (profiles-16)newClub err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-16)newClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -680,13 +680,13 @@ module.exports = {
           newClub.clubUsers.push(obja);
           newClub.save(function(err, newClub){
           if (err || !newClub){
-            console.log(req.user._id+' => (profiles-17)newClub err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-17)newClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
             newClub.populate('clubUsers.id', function(err, populatedClub){
             if (err || !populatedClub){
-              console.log(req.user._id+' => (profiles-18)populatedClub err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-18)populatedClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -717,7 +717,7 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err){
-      console.log('(profiles-19)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-19)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundClub){
@@ -754,7 +754,7 @@ module.exports = {
           .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
           postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
-          console.log(req.user._id+' => (profiles-20)topTopicPosts err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-20)topTopicPosts err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
           } else{
@@ -801,7 +801,7 @@ module.exports = {
         .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
         postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
         if(err || !topTopicPosts){
-        console.log(req.user._id+' => (profiles-21)topTopicPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-21)topTopicPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
         } else{
           var modTopTopicPosts = postModeration(topTopicPosts,req.user);
@@ -821,7 +821,7 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-22)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-22)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.user){
@@ -854,7 +854,7 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-23)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-23)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.user){
@@ -894,7 +894,7 @@ module.exports = {
     .populate({path: 'memberRequests.userId', select: 'fullName profilePic profilePicId'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-24)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-24)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       var endpoints = req.query.endpoints.split(',');
@@ -927,7 +927,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log(req.user._id+' => (profiles-25)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-25)clubPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
@@ -963,7 +963,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
       if(err || !clubPosts){
-        console.log('(profiles-26)clubPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(profiles-26)clubPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = clubPosts.length;
@@ -990,7 +990,7 @@ module.exports = {
   profilesUpdateClubProfile(req, res, next){
     Club.findById(req.params.club_id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log(req.user._id+' => (profiles-27)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (profiles-27)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1016,7 +1016,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
           {$push: {clubUpdates: userUpdate}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-28)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-28)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1036,7 +1036,7 @@ module.exports = {
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
           }catch(err){
-            console.log(req.user._id+' => (profiles-29)avatarUpload err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-29)avatarUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1055,7 +1055,7 @@ module.exports = {
                   $set: {'clubUpdates.$': update}
                 }, function(err, foundUser){
                   if(err || !foundUser){
-                    console.log(req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
+                    console.log(Date.now()+' : '+req.user._id+' => (profiles-30)foundUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1191,7 +1191,7 @@ module.exports = {
           User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
           {$set: {'userClubs.$.clubName': req.body.name}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (profiles-31)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-31)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1204,7 +1204,7 @@ module.exports = {
         req.flash('success', 'Successfully updated');
         res.redirect('/clubs/' + req.params.club_id);
       } else{
-        console.log(req.user._id+' => (profiles-32)rankCheck fail :Update Club');
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-32)rankCheck fail :Update Club');
         req.flash('error', "You don't have enough admin privileges :(");
         return res.redirect('back');
       }
@@ -1215,7 +1215,7 @@ module.exports = {
   profilesDeleteClubProfile(req, res, next){
     Club.findById(req.params.club_id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log(req.user._id+' => (profiles-33)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (profiles-33)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1250,7 +1250,7 @@ module.exports = {
         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
         {$pull: {userClubs: {id: req.params.club_id}}}, function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (profiles-34)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-34)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');          }
         });
@@ -1258,7 +1258,7 @@ module.exports = {
           ClubConversation.updateOne({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
           function(err, foundClubConversation){
           if(err || !foundClubConversation){
-            console.log(req.user._id+' => (profiles-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1270,7 +1270,7 @@ module.exports = {
         req.flash('success', 'Club deleted successfully!');
         res.redirect('/users/'+req.user._id);
       } else{
-        console.log('rankCheck fail :Destroy Club');
+        console.log(Date.now()+' : '+'rankCheck fail :Destroy Club');
         req.flash('error', "Only owners can delete their clubs!");
         return res.redirect('back');
       }
@@ -1281,7 +1281,7 @@ module.exports = {
   profilesGetUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-35)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-35)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1296,7 +1296,7 @@ module.exports = {
   profilesUpdateUsersFeaturedPhotos(req, res, next){
     User.findById(req.params.id, async function(err, foundUser){
     if(err || !foundUser){
-      console.log('(profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1354,7 +1354,7 @@ module.exports = {
   profilesGetClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-37)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-37)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1369,7 +1369,7 @@ module.exports = {
   profilesUpdateClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log('(profiles-38)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-38)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1446,7 +1446,7 @@ module.exports = {
           if(err.code == 11000 || err.name == 'UserExistsError'){
             req.flash('error', 'A user with the given email is already registered, Please verify or Login to continue..');
           } else{
-            console.log('(profiles-39)user err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(profiles-39)user err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
           return res.redirect('back');
@@ -1456,7 +1456,7 @@ module.exports = {
 
           // Save the verification token
           token.save(function(err){
-            if(err){return console.log('(profiles-40)user err:- '+JSON.stringify(err, null, 2));}
+            if(err){return console.log(Date.now()+' : '+'(profiles-40)user err:- '+JSON.stringify(err, null, 2));}
 
             // Send the email
             var smtpTransport = nodemailer.createTransport({
@@ -1521,9 +1521,9 @@ module.exports = {
         // Verify and save the user
         user.isVerified = true;
         user.save(function(err){
-          if(err){return console.log('(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log(Date.now()+' : '+'(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
           res.status(200);
-          console.log(user._id+' <= VERIFIED '+user.fullName);
+          console.log(Date.now()+' : '+user._id+' <= VERIFIED '+user.fullName);
           req.flash('success', 'Thank you for verification, you may now log in :)');
           return res.redirect('/discover');
         });
@@ -1550,7 +1550,7 @@ module.exports = {
 
       // Save the verification token
       token.save(function (err){
-        if(err){return console.log('(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
+        if(err){return console.log(Date.now()+' : '+'(profiles-42)user err:- '+JSON.stringify(err, null, 2));}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1616,7 +1616,7 @@ module.exports = {
       function(token, done){
         User.findOne({email: req.body.email}, function(err, user){
         if(err || !user){
-          console.log('(profiles-43)forgot err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(profiles-43)forgot err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         } else{
@@ -1654,7 +1654,7 @@ module.exports = {
           }
         };
         smtpTransport.sendMail(mailOptions, function(err){
-          console.log('mail sent('+ user.email +' requested a password change)');
+          console.log(Date.now()+' : '+'mail sent('+ user.email +' requested a password change)');
           req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
           done(err, 'done');
         });
@@ -1667,7 +1667,7 @@ module.exports = {
   profilesForgotToken(req, res, next){
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
     if (err || !user){
-      console.log('(profiles-44)token invalid err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-44)token invalid err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     } else{
@@ -1683,7 +1683,7 @@ module.exports = {
         function(done){
           User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
           if(err || !user){
-            console.log('(profiles-45)token invalid err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(profiles-45)token invalid err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('back');
           } else{
@@ -1699,7 +1699,7 @@ module.exports = {
                 });
               })
             } else{
-              console.log('(profiles-46)pass dont match err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(profiles-46)pass dont match err:- '+JSON.stringify(err, null, 2));
               req.flash("error", "Passwords do not match.");
               return res.redirect('back');
             }
@@ -1729,7 +1729,7 @@ module.exports = {
             }
           };
           smtpTransport.sendMail(mailOptions, function(err){
-            console.log('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
+            console.log(Date.now()+' : '+'mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
             req.flash('success', 'Success! Your password has been changed.');
             done(err, 'done');
           });

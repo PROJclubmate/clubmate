@@ -8,7 +8,7 @@ module.exports = {
   commentsCreate(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(req.user._id+' => (comments-1)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (comments-1)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -19,7 +19,7 @@ module.exports = {
         }
       }, {fields: {count:1} , upsert: true, new: true}, function(err, newCommentBucket){
       if(err || !newCommentBucket){
-        console.log(req.user._id+' => (comments-2)newCommentBucket err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (comments-2)newCommentBucket err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -47,7 +47,7 @@ module.exports = {
     Comment.findOne({_id: req.params.bucket_id}, {comments: {$elemMatch: {_id: req.params.comment_id}}},
     function(err, foundBucket){
     if(err || !foundBucket){
-      console.log(req.user._id+' => (comments-3)foundBucket err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (comments-3)foundBucket err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -62,7 +62,7 @@ module.exports = {
     Comment.updateOne({_id: req.params.bucket_id, 'comments._id': req.params.comment_id}, 
     {$set: {'comments.$.text': req.body.text}}, function(err, updateBucket){
     if(err || !updateBucket){
-      console.log(req.user._id+' => (comments-4)updateBucket err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (comments-4)updateBucket err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -75,7 +75,7 @@ module.exports = {
   commentsDelete(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(req.user._id+' => (comments-5)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (comments-5)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -83,7 +83,7 @@ module.exports = {
       {$inc: {count: -1}, $pull: {comments: {_id: req.params.comment_id}}}, {fields: {count:1} , new: true}, 
       function(err, deleteBucket){
       if(err || !deleteBucket){
-        console.log(req.user._id+' => (comments-6)deleteBucket err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (comments-6)deleteBucket err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -111,7 +111,7 @@ module.exports = {
     Post.findById(req.params.post_id).select({topic: 1, commentBuckets: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log('(comments-7)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(comments-7)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(foundPost.topic == '' && foundPost.commentBuckets != ''){
@@ -119,7 +119,7 @@ module.exports = {
         .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
-          console.log('(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));
           return res.sendStatus(500);
         } else if(!err && foundBucket != ''){
           var CA_50_profilePic = [];
@@ -154,7 +154,7 @@ module.exports = {
     {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}}, new: true},
     function(err, notFoundComment){
     if(err){
-      console.log(req.user._id+' => (comments-9)notFoundComment err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (comments-9)notFoundComment err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(notFoundComment){
@@ -166,7 +166,7 @@ module.exports = {
         {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}}, new: true},
         function(err, foundComment){
         if(err){
-          console.log(req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
           return res.sendStatus(500);
         } else{
           res.json(foundComment);

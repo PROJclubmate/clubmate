@@ -96,7 +96,7 @@ app.use(async function(req, res, next){
       res.locals.FR_50_profilePic = fUFR_50_profilePic;
       res.locals.UC_50_profilePic = fUUC_50_profilePic;
     } catch(err){
-      console.log(req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
@@ -118,20 +118,20 @@ app.use('/', conversationRoutes);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log("clubmate server has started on port "+port+"!!");
+  console.log(Date.now()+' : '+"clubmate server has started on port "+port+"!!");
 });
 
 // Connect to database
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
 useUnifiedTopology: true}, function(err, client){
   if(err){
-    return console.log('(app-17)'+JSON.stringify(err, null, 2));
+    return console.log(Date.now()+' : '+'(app-17)'+JSON.stringify(err, null, 2));
   }
-  console.log('MongoDB connected...');
+  console.log(Date.now()+' : '+'MongoDB connected...');
 
   // Connect to Socket.io
   io.on('connection', function(socket){
-    // console.log('socket: '+ socket.id +' connected');
+    // console.log(Date.now()+' : '+'socket: '+ socket.id +' connected');
 
     // Create function to send status
     sendStatus = function(s){
@@ -170,6 +170,6 @@ useUnifiedTopology: true}, function(err, client){
   });
 
   http.listen(port, function(){
-    console.log('socket is listening');
+    console.log(Date.now()+' : '+'socket is listening');
   });
 });

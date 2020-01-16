@@ -9,7 +9,7 @@ module.exports = {
     if((req.body.text && req.body.text != '') || (req.files && req.files != '')){
       Post.findById(req.params.post_id, async function(err, foundPost){
       if(err || !foundPost){
-        console.log(req.user._id+' => (discussions-1)foundPost err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (discussions-1)foundPost err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -34,7 +34,7 @@ module.exports = {
           text: req.body.text, images: multiImagesArr, quoteNum: req.body.quoteNum, quoteText: req.body.quoteText}}
         }, {fields: {count:1} , upsert: true, new: true}, function(err, newSubPostBucket){
         if(err || !newSubPostBucket){
-          console.log(req.user._id+' => (discussions-2)newSubPostBucket err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (discussions-2)newSubPostBucket err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -69,7 +69,7 @@ module.exports = {
     .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log('(discussions-3)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(discussions-3)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(foundPost.topic != '' && foundPost.subpostBuckets != ''){
@@ -82,7 +82,7 @@ module.exports = {
         .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
-          console.log('(discussions-4)foundBucket err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(discussions-4)foundBucket err:- '+JSON.stringify(err, null, 2));
           return res.sendStatus(500);
         } else{
           var sPA_50_profilePic = [];
@@ -121,7 +121,7 @@ module.exports = {
       {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: {$ne: req.user._id}}}}, new: true},
       function(err, foundClickId){
       if(err){
-        console.log(req.user._id+' => (discussions-5)foundClickId err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (discussions-5)foundClickId err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         if(foundClickId){
@@ -133,7 +133,7 @@ module.exports = {
           {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: {$ne: req.user._id}}}}, new: true},
           function(err, foundSecondId){
           if(err){
-            console.log(req.user._id+' => (discussions-6)foundSecondId err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (discussions-6)foundSecondId err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -142,7 +142,7 @@ module.exports = {
             {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: req.user._id}}}, new: true},
             function(err, notFoundClickId){
             if(err){
-              console.log(req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
               return res.json(notFoundClickId);
@@ -160,7 +160,7 @@ module.exports = {
       {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: {$ne: req.user._id}}}}, new: true},
       function(err, foundClickId){
       if(err){
-        console.log(req.user._id+' => (discussions-8)foundClickId err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (discussions-8)foundClickId err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         if(foundClickId){
@@ -172,7 +172,7 @@ module.exports = {
           {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: {$ne: req.user._id}}}}, new: true},
           function(err, foundSecondId){
           if(err){
-            console.log(req.user._id+' => (discussions-9)foundSecondId err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (discussions-9)foundSecondId err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -181,7 +181,7 @@ module.exports = {
             {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: req.user._id}}}, new: true},
             function(err, notFoundClickId){
             if(err){
-              console.log(req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
               return res.json(notFoundClickId);
