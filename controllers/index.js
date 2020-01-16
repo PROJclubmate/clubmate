@@ -502,17 +502,17 @@ module.exports = {
             'BIlA75fh7DBK0PTVj3oMSnSEVfP8M7HHM6wZFvcUYr_CWnMiQPrZAjP34V-iMGJMCKhBIXlOnfUK5PfR__kjcwM',
             'JVEoDpfY8snHhRhwWhx7gThMWNBxohn9CcdXE0yAqgU');
             Subscription.find({userId: invitedUserId}).sort({'createdAt': -1}).limit(1)
-            .exec(function(err, foundSubscription){
-            if(err || !foundSubscription){
-              console.log(req.user._id+' => (index-18)foundUser err:- '+JSON.stringify(err, null, 2));
+            .exec(function(err, foundSubscriptions){
+            if(err || !foundSubscriptions){
+              console.log(req.user._id+' => (index-18)foundSubscriptions err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             } else{
-                var foundSubscriptionObj = foundSubscription[0];
+              for(var i=0;i<foundSubscriptions.length;i++){
                 var pushConfig = {
-                  endpoint: foundSubscriptionObj.endpoint,
+                  endpoint: foundSubscriptions[i].endpoint,
                   keys: {
-                    auth: foundSubscriptionObj.keys.auth,
-                    p256dh: foundSubscriptionObj.keys.p256dh
+                    auth: foundSubscriptions[i].keys.auth,
+                    p256dh: foundSubscriptions[i].keys.p256dh
                   }
                 };
                 webpush.sendNotification(pushConfig, JSON.stringify({
@@ -521,12 +521,20 @@ module.exports = {
                   openUrl: openUrl
                 }))
                 .catch(function(err){
-                  if(err.statusCode != 410){
-                    // Error 410 || 404 => Delete subscription
+                  if(err.statusCode === 404 || err.statusCode === 410){
+                    Subscription.deleteOne({endpoint: foundSubscriptions[i].endpoint}, function(err){
+                    if(err){
+                      console.log(req.user._id+' => (index-19)foundSubscription err:- '+JSON.stringify(err, null, 2));
+                      req.flash('error', 'Something went wrong :(');
+                      return res.redirect('back');
+                    }
+                    });
+                  } else{
                     console.log(err);
                   }
                 })
               }
+            }
             });
           }
           });
@@ -539,7 +547,7 @@ module.exports = {
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
       User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-19)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-20)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -548,7 +556,7 @@ module.exports = {
       var removeInvite = mongoose.Types.ObjectId(req.body.removeInvite);
       User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-20)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -557,12 +565,12 @@ module.exports = {
       var acceptInvite = mongoose.Types.ObjectId(req.body.acceptInvite);
       User.findOneAndUpdate({_id: req.user._id},{$pull: {clubInvites: acceptInvite}}, {new: true}, function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-22)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         Club.findById(acceptInvite, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-22)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-23)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           //pushing user details into club
@@ -589,13 +597,13 @@ module.exports = {
       var friendReq = mongoose.Types.ObjectId(req.body.friendReq);
       User.updateOne({_id: friendReq},{$push: {friendRequests: req.user._id}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-23)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-24)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           User.findById(req.user._id).select({fullName: 1, profilePic: 1, profilePicId: 1})
           .exec(function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (index-24)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (index-25)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           } else{
             var FR_50_profilePic = cloudinary.url(foundUser.profilePicId, {width: 100, height: 100, 
@@ -605,18 +613,18 @@ module.exports = {
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
             'BIlA75fh7DBK0PTVj3oMSnSEVfP8M7HHM6wZFvcUYr_CWnMiQPrZAjP34V-iMGJMCKhBIXlOnfUK5PfR__kjcwM',
             'JVEoDpfY8snHhRhwWhx7gThMWNBxohn9CcdXE0yAqgU');
-            Subscription.find({userId: friendReq}).sort({'createdAt': -1}).limit(1)
-            .exec(function(err, foundSubscription){
-            if(err || !foundSubscription){
-              console.log(req.user._id+' => (index-25)foundUser err:- '+JSON.stringify(err, null, 2));
+            Subscription.find({userId: friendReq}).sort({'createdAt': -1})
+            .exec(function(err, foundSubscriptions){
+            if(err || !foundSubscriptions){
+              console.log(req.user._id+' => (index-26)foundSubscriptions err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             } else{
-                var foundSubscriptionObj = foundSubscription[0];
+              for(var i=0;i<foundSubscriptions.length;i++){
                 var pushConfig = {
-                  endpoint: foundSubscriptionObj.endpoint,
+                  endpoint: foundSubscriptions[i].endpoint,
                   keys: {
-                    auth: foundSubscriptionObj.keys.auth,
-                    p256dh: foundSubscriptionObj.keys.p256dh
+                    auth: foundSubscriptions[i].keys.auth,
+                    p256dh: foundSubscriptions[i].keys.p256dh
                   }
                 };
                 webpush.sendNotification(pushConfig, JSON.stringify({
@@ -625,11 +633,20 @@ module.exports = {
                   openUrl: openUrl
                 }))
                 .catch(function(err){
-                  if(err.statusCode != 410){
+                  if(err.statusCode === 404 || err.statusCode === 410){
+                    Subscription.deleteOne({endpoint: foundSubscriptions[i].endpoint}, function(err){
+                    if(err){
+                      console.log(req.user._id+' => (index-27)foundSubscription err:- '+JSON.stringify(err, null, 2));
+                      req.flash('error', 'Something went wrong :(');
+                      return res.redirect('back');
+                    }
+                    });
+                  } else{
                     console.log(err);
                   }
                 })
-              };
+              }
+            };
             });
           }
           });
@@ -640,7 +657,7 @@ module.exports = {
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
       User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-26)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-28)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -649,7 +666,7 @@ module.exports = {
       var removeReq = mongoose.Types.ObjectId(req.body.removeReq);
       User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-27)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-29)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -660,13 +677,13 @@ module.exports = {
       {$pull: {friendRequests: acceptReq}, $push: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
       function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-28)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-30)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: acceptReq}, 
         {$push: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (index-29)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (index-31)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
         });
@@ -678,13 +695,13 @@ module.exports = {
       User.updateOne({_id: req.user._id}, 
       {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err, foundUser){
       if(err || !foundUser){
-        console.log(req.user._id+' => (index-30)foundUser err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-32)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: unFriendReq}, 
         {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, foundUser){
           if(err || !foundUser){
-            console.log(req.user._id+' => (index-31)foundUser err:- '+JSON.stringify(err, null, 2));
+            console.log(req.user._id+' => (index-33)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
         });
@@ -703,7 +720,7 @@ module.exports = {
       var memberReq = mongoose.Types.ObjectId(req.body.memberReq);
       Club.updateOne({_id: memberReq}, {$push: {memberRequests: obj}}, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-32)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-34)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -711,7 +728,7 @@ module.exports = {
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
       Club.updateOne({_id: cancelReq}, {$pull: {memberRequests: {userId: req.user._id}}}, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-33)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-35)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -720,12 +737,12 @@ module.exports = {
       var clubId = mongoose.Types.ObjectId(req.params.id);
       Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: acceptReq}}}, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-34)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-36)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           User.updateOne({_id: acceptReq}, {$push: {clubInvites: clubId}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(req.user._id+' => (index-35)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (index-37)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             }
           });
@@ -736,7 +753,7 @@ module.exports = {
       var clubId = mongoose.Types.ObjectId(req.params.id);
       Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: declineReq}}}, function(err, foundClub){
         if(err || !foundClub){
-          console.log(req.user._id+' => (index-36)foundClub err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-38)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -752,7 +769,7 @@ module.exports = {
       var clubId = userRankuserIdclubIdRank[2];
       Club.findById(clubId, function(err, foundClub){
       if(err || !foundClub){
-        console.log(req.user._id+' => (index-37)foundClub err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-39)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         var owner, admin, ownerTransfer = false;
@@ -767,7 +784,7 @@ module.exports = {
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
                   {$set: {'userClubs.$.rank': 1}}, function(err, foundUser){
                   if(err || !foundUser){
-                    console.log(req.user._id+' => (index-38)foundUser err:- '+JSON.stringify(err, null, 2));
+                    console.log(req.user._id+' => (index-40)foundUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                   } else{
                     console.log('Double ownership of'+userId+
@@ -781,7 +798,7 @@ module.exports = {
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
                   {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
                   if(err || !foundUser){
-                    console.log(req.user._id+' => (index-39)foundUser err:- '+JSON.stringify(err, null, 2));
+                    console.log(req.user._id+' => (index-41)foundUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                   } else{
                     for(var j=0;j<foundClub.clubUsers.length;j++){
@@ -790,7 +807,7 @@ module.exports = {
                         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: clubId}}}, 
                         {$set: {'userClubs.$.rank': 1}}, function(err, foundUser){
                         if(err || !foundUser){
-                          console.log(req.user._id+' => (index-40)foundUser err:- '+JSON.stringify(err, null, 2));
+                          console.log(req.user._id+' => (index-42)foundUser err:- '+JSON.stringify(err, null, 2));
                           req.flash('error', 'Something went wrong :(');
                         } else{
                           foundClub.save();
@@ -817,7 +834,7 @@ module.exports = {
                 User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
                 {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
                 if(err || !foundUser){
-                  console.log(req.user._id+' => (index-41)foundUser err:- '+JSON.stringify(err, null, 2));
+                  console.log(req.user._id+' => (index-43)foundUser err:- '+JSON.stringify(err, null, 2));
                   req.flash('error', 'Something went wrong :(');
                 } else{
                   foundClub.save();
@@ -847,13 +864,13 @@ module.exports = {
         User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
         {$set: {'userClubs.$.status': status}}, function(err, foundUser){
         if(err || !foundUser){
-          console.log(req.user._id+' => (index-42)foundUser err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           Club.updateOne({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
           {$set: {'clubUsers.$.userStatus': status}}, function(err, foundClub){
             if(err || !foundClub){
-              console.log(req.user._id+' => (index-43)foundClub err:- '+JSON.stringify(err, null, 2));
+              console.log(req.user._id+' => (index-45)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             }
           });
@@ -870,7 +887,7 @@ module.exports = {
       var clubId = userIdclubId[1];
       Club.findById(clubId, function(err, foundClub){
       if(err || !foundClub){
-        console.log(req.user._id+' => (index-44)foundClub err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-46)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         var admin = checkRank(foundClub.clubUsers,req.user._id,1);
@@ -882,7 +899,7 @@ module.exports = {
               User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
               {$pull: {userClubs: {id: clubId}}}, function(err, foundUser){
               if(err || !foundUser){
-                console.log(req.user._id+' => (index-45)foundUser err:- '+JSON.stringify(err, null, 2));
+                console.log(req.user._id+' => (index-47)foundUser err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
               } else{
                 foundClub.save();
@@ -908,7 +925,7 @@ module.exports = {
     User.findById(req.params.id)
     .exec(function(err, foundUser){
     if(err || !foundUser){
-      console.log('(index-46)foundUser err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-48)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -917,7 +934,7 @@ module.exports = {
         .skip((perPage * pageNumber) - perPage).limit(perPage)
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
-          console.log('(index-47)foundFriends err:- '+JSON.stringify(err, null, 2));
+          console.log('(index-49)foundFriends err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -944,7 +961,7 @@ module.exports = {
     .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount'})
     .exec(function(err, foundOrgPage){
     if(err){
-      console.log('(index-48)foundOrgPage err:- '+JSON.stringify(err, null, 2));
+      console.log('(index-50)foundOrgPage err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundOrgPage){
