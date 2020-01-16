@@ -147,7 +147,7 @@ if(socket !== undefined){
     if(message.conversationId == ''){
       $.post('/new/chat', message);
       setStatus('Conversation started!');
-      location.reload();
+      location.reload(true);
     } else if(message.recipientId == ''){
       $.post('/chat/'+message.conversationId, message);
     }
@@ -242,6 +242,12 @@ if(socket !== undefined){
             <div><div class="chat-msg"><div class="chat-head bluecolor"> ${message.authorName} 
              ${moment(message.createdAt).format('LT')} </div><div> ${message.text}</div> </div></div>`);
         }
+        if($(window).width() < 768){
+          var latestMessage = "\""+message.text+"\"";
+          $('#latestMsg').addClass("nodisplay");
+          $('#latestMsg-hidden').text(latestMessage);
+          $('#latestMsg-hidden').removeClass("nodisplay");
+        }
       });
     }
   }
@@ -258,6 +264,10 @@ if(socket !== undefined){
            ${data.composedMessage} </div></div>`);
       }
     scrollToNext();
+    if($(window).width() < 768){
+      var latestMessage = "\""+data.composedMessage+"\"";
+      $('#latestMsg-hidden').text(latestMessage);
+    }
   }
   function getClubMessages(conversation){
     if(conversation.conversationId == ''){
@@ -274,7 +284,7 @@ if(socket !== undefined){
     if(message.conversationId == ''){
       $.post('/new/club-chat', message);
       setClubStatus('Conversation started!');
-      location.reload();
+      location.reload(true);
     } else if(message.clubId == ''){
       $.post('/club-chat/'+message.conversationId, message);
     }

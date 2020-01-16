@@ -68,6 +68,13 @@ if(location.pathname == '/home'){
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  // Latest message mobile
+  if($(window).width() < 768){
+    $('#drop-chat').on('click', function(e){
+      $('#latestMsg').toggleClass("nodisplay");
+      $('#latestMsg-hidden').toggleClass("nodisplay");
+    });
+  }
   // Ask for club invite
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");

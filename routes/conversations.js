@@ -96,7 +96,6 @@ module.exports = function(io){
 		        } else{
 		          if(newMessageBucket.count == 1){
 		            foundConversation.messageBuckets.push(newMessageBucket._id);
-		            // HIIIIIIII
 		            foundConversation.save();
 		          } else if(newMessageBucket.count >= 50){
 		            foundConversation.bucketNum += 1;
@@ -325,6 +324,7 @@ module.exports = function(io){
 		    return res.redirect('back');
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
+	      	foundClubConversation.latestMessage = req.body.composedMessage;
 	        Message.findOneAndUpdate({conversationId: foundClubConversation._id, bucket: foundClubConversation.bucketNum},
 	        {$inc: {count: 1},
 	          $push: {messages: {authorId: req.user._id, authorName: req.user.fullName, 
@@ -383,6 +383,7 @@ module.exports = function(io){
 	    });
 	    message.save();
 	    clubConversation.messageBuckets.push(message._id);
+	    clubConversation.latestMessage = req.body.composedMessage;
 	    clubConversation.save();
 	    // Insert conversationId into clubUsers
 	    Club.updateOne({_id: req.body.clubId, isActive: true},{$set: {conversationId: clubConversation._id}}, function(err, foundClub){

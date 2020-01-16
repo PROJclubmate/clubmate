@@ -242,28 +242,32 @@
                 <input type="text" id="organization" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="College name">
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
-                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" value="" placeholder="Club category">
+                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" 
+                  pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Events and Sponsor management|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual" value="" placeholder="Club category">
                 <% } else{ %>
-                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" value="<%= club.clubKeys.category %>" placeholder="Club category">
+                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Events and Sponsor management|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual" value="<%= club.clubKeys.category %>" placeholder="Club category">
                 <% } %>
                 <datalist id="category">
-                  <option value="Academic and Educational">
-                  <option value="Programming and Development">
-                  <option value="Robotics">
-                  <option value="Entreprenurship">
                   <option value="Student bodies">
-                  <option value="Bussiness and Management">
-                  <option value="Dance and Music">
+                  <option value="TV Shows and Movies">
                   <option value="Theatre and Literature">
                   <option value="Film and Photography">
-                  <option value="Graphics and Animation">
                   <option value="Sports and Recreational">
                   <option value="Events and Sponsor management">
-                  <option value="Magazines and Newspaper">
+                  <option value="Dance and Music">
+                  <option value="Graphics and Animation">
+                  <option value="Memes and Video games">
+                  <option value="Trips and Travel">
+                  <option value="Food and Beverage">
+                  <option value="Political and Community service">
+                  <option value="Personal Care">
+                  <option value="Academic and Educational">
+                  <option value="Programming and Development">
+                  <option value="Bussiness and Management">
                   <option value="Placement and Career">
                   <option value="Hostelers">
                   <option value="Day scholars">
-                  <option value="Community service">
+                  <option value="Alumni and Staff">
                   <option value="Religious and Spiritual">
                 </datalist>
                 <label for="weblink" class="sr-only">Weblink</label>
