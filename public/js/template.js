@@ -2864,7 +2864,7 @@ function search_people_template(response){
             <% if(currentUser && users[k]._id == currentUser._id){ %>
               <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
                 <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
-            <% } else if(currentUser && !users[k]._id == currentUser._id){ 
+            <% } else if(currentUser && !(users[k]._id == currentUser._id)){ 
               currentUser.friends.forEach(function(friend){ 
                 if(users[k]._id == friend){ %>
                 <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
@@ -2926,7 +2926,7 @@ function search_clubs_template(response){
           <div>
             <% if(currentUser){ 
               currentUser.userClubs.forEach(function(userClub){ 
-                if(clubs[k]._id.equals(userClub.id)){ %>
+                if(clubs[k]._id == userClub.id){ %>
                 <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
                   <i class="fas fa-check"></i> Member</button>
             <% }})} %>
@@ -2975,25 +2975,37 @@ function search_org_pages_template(response){
 <% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2">
     <div class="d-flex flex-row">
-      <div class="card-body3 lineheight1 fullwidth" style="overflow: hidden;">
+      <div class="card-body3 lineheight1 fullwidth">
         <div class="notification px-2 py-1 organization d-flex flex-column">
           <div class="boldtext text-xxl">
-            <div class="orgname-search">
-              <a href="/org_pages/<%= org_pages[k].name %>" class="black">
-                <i class="fas fa-university lightgrey mr-2"></i><%= org_pages[k].name %>
-              </a>
+            <div class="orgname-search d-flex">
+              <span>
+                <% if(matchArr[k]){ %>
+                  <sup class="greencolor text-xs pb-auto">My </sup>
+                <% } %>
+                <a href="/org_pages/<%= org_pages[k].name %>" class="black">
+                  <i class="fas fa-university lightgrey"></i>
+                  <span id="copyTxt"><%= org_pages[k].name %></span>
+                </a>
+              </span>
+              <div class="tooltip">
+              <button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+                <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                <i class="far fa-copy lightgrey"></i>
+                </button>
+              </div>
             </div>
           </div>
           <span class="badge text-sm"><%= org_pages[k].userCount %></span>
         </div>
         <br>
-        <div class="darkgrey text-sm">
+        <div class="lightgrey text-sm">
           <span><span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
         </div>
       </div>
     </div>
   </div>
 <% } %>
-`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, currentUser: response.currentUser});
+`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, matchArr: response.matchArr});
   return html;
 }

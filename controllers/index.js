@@ -33,7 +33,6 @@ module.exports = {
       }));
       return false;
     }
-
     req.body.userId = mongoose.Types.ObjectId(req.user._id);
     const subscription = new Subscription(req.body);
     // Save the verification token
@@ -42,7 +41,6 @@ module.exports = {
         return console.log(Date.now()+' : '+'(index-1)foundUsers err:- '+JSON.stringify(err, null, 2));
       }
     });
-
     // Send 201-resource created
     res.status(201).json({});
   },
@@ -283,7 +281,8 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
-      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false});
+      var currentUser = req.user;
+      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser});
     }
     });
   },
@@ -433,7 +432,8 @@ module.exports = {
       var foundUserIds = foundClubs.map(function(user){
         return user._id;
       });
-      res.json({clubs: foundClubs, query, foundUserIds, filter: true});
+      var currentUser = req.user;
+      res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser});
     }
     });
   },
@@ -450,7 +450,15 @@ module.exports = {
       var foundOrgPageIds = foundOrgPages.map(function(orgPage){
         return orgPage._id;
       });
-      res.render('search/org_pages',{org_pages: foundOrgPages, query, foundOrgPageIds, moreClubsUrl: ''});
+      var matchArr = [];
+      if(req.user){
+        for(var i=0;i<foundOrgPages.length;i++){
+          if(req.user.userKeys.college == foundOrgPages[i].name){
+            matchArr[i] = true;
+          }
+        }
+      }
+      res.render('search/org_pages',{org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
     }
     });
   },
@@ -471,8 +479,16 @@ module.exports = {
       var foundOrgPageIds = foundOrgPages.map(function(orgPage){
         return orgPage._id;
       });
+      var matchArr = [];
+      if(req.user){
+        for(var i=0;i<foundOrgPages.length;i++){
+          if(req.user.userKeys.college == foundOrgPages[i].name){
+            matchArr[i] = true;
+          }
+        }
+      }
       var currentUser = req.user;
-      res.json({org_pages: foundOrgPages, query, foundOrgPageIds, currentUser});
+      res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
     }
     });
   },

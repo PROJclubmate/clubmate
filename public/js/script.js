@@ -464,6 +464,38 @@ $(function (){
 if(location.pathname == '/help/'){
   $(".navhelp").addClass('requests-active');
 }
+
+// Copy college name
+function copyTxtFn() {
+  var range, selection, worked;
+  var copyText = document.getElementById('copyTxt');
+  if (document.body.createTextRange) {
+    range = document.body.createTextRange();
+    range.moveToElementText(copyText);
+    range.select();
+  } else if (window.getSelection) {
+    selection = window.getSelection();        
+    range = document.createRange();
+    range.selectNodeContents(copyText);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+  
+  try {
+    document.execCommand('copy');
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied: " + $('#copyTxt').text();
+  }
+  catch (err) {
+    alert('unable to copy text');
+  }
+}
+
+function outCopyTxtFn() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+
 //================================================================================
 // AJAX
 //================================================================================

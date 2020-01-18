@@ -5,11 +5,33 @@
 		<div class="organization valign orgdiv-name">
 			<% if(match){ %>
 				<div class="boldtext text-xxl">
-					<div class="orgname"><sup class="greencolor text-xs pb-auto">My </sup><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+					<div class="orgname d-flex">
+						<span>
+							<sup class="greencolor text-xs pb-auto">My </sup>
+							<i class="fas fa-university lightgrey"></i>
+							<span id="copyTxt"><%= org_page.name %></span>
+						</span>
+						<div class="tooltip">
+						<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+						  <i class="far fa-copy lightgrey"></i>
+						  </button>
+						</div>
+					</div>
 				</div>
 			<% } else{ %>
 				<div class="boldtext text-xxl">
-					<div class="orgname"><i class="fas fa-university lightgrey mr-2"></i><%= org_page.name %></div>
+					<div class="orgname d-flex">
+						<span>
+							<i class="fas fa-university lightgrey mr-1"></i><span id="copyTxt"><%= org_page.name %></span>
+						</span>
+						<div class="tooltip">
+						<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+						  <i class="far fa-copy lightgrey"></i>
+						  </button>
+						</div>
+					</div>
 					</div>
 			<% } %>
 			<div class="boldtext text-md badge badge-danger orgdiv-usercnt"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
