@@ -60,7 +60,7 @@ app.use(async function(req, res, next){
   if(req.user){
     try{
       res.locals.CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       //REQUESTS
       let foundUser = await User.findById(req.user._id)
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
@@ -78,16 +78,16 @@ app.use(async function(req, res, next){
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = []; var fUUC_50_profilePic = []; var fUUCTemp;
       for(var i=0;i<foundUser.clubInvites.length;i++){
         fUCI_50_clubAvatar[i] = cloudinary.url(foundUser.clubInvites[i].avatarId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
       for(var j=0;j<foundUser.friendRequests.length;j++){
         fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
       for(var k=0;k<foundUser.userChats.length;k++){
         if(foundUser.userChats[k].lastMessage && foundUser.userChats[k].lastMessage != ''){
           fUUCTemp = cloudinary.url(foundUser.userChats[k].userId.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           fUUC_50_profilePic.push(fUUCTemp);
           res.locals.userChats.push(foundUser.userChats[k]);
         }

@@ -75,7 +75,7 @@ module.exports = {
             var limitedClubs = clubs.slice(0,9);
             for(var k=0;k<limitedClubs.length;k++){
               Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             }
           } else{
             var clubs = [], Clubs_50_clubAvatar = [];
@@ -200,7 +200,7 @@ module.exports = {
           var limitedClubs = clubs.slice(0,9);
           for(var k=0;k<limitedClubs.length;k++){
             Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           // requests
           var adminClubs = []; var clubInvites = []; var mutualClubs = [];
@@ -312,7 +312,7 @@ module.exports = {
           var limitedClubs = clubs.slice(start,end);
           for(var k=0;k<limitedClubs.length;k++){
             Clubs_50_clubAvatar[k] = cloudinary.url(limitedClubs[k].id.avatarId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
@@ -327,7 +327,7 @@ module.exports = {
   profilesUserMorePosts(req, res, next){
     if(req.user){
       var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       if(req.query.ids != ''){
         var seenIds = req.query.ids.split(',');
       } else{
@@ -354,7 +354,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = modPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
@@ -388,7 +388,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = userPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatar[k] = cloudinary.url(userPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,userPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,userPosts[k]);
         }
@@ -402,7 +402,7 @@ module.exports = {
   profilesUserMoreHeartPosts(req, res, next){
     if(req.user){
       var CU_50_profilePicH = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       if(req.query.heartIds != ''){
         var seenIds = req.query.heartIds.split(',');
       } else{
@@ -485,7 +485,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PC_50_clubAvatarH = []; var k=0; var len = modPosts.length;
         for(k;k<len;k++){
           PC_50_clubAvatarH[k] = cloudinary.url(modPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
@@ -511,8 +511,8 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
           }
           var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
-            effect: 'sharpen:50', crop: 'limit'});
+            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
+            effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
           //replace original information with new information
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
@@ -646,7 +646,7 @@ module.exports = {
 
   profilesNewClub(req, res, next){
     cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, 
-      height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'},
+      height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'},
     function(err, result){
     if(err){
       console.log(Date.now()+' : '+req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -732,7 +732,7 @@ module.exports = {
         var limitedUsers = users.slice(0,1);
         for(var k=0;k<limitedUsers.length;k++){
           Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         }
         var rank = currentRank(users,req.user._id);
         if(0 <= rank && rank <= 4){
@@ -761,7 +761,7 @@ module.exports = {
             var modTopTopicPosts = postModeration(topTopicPosts,req.user);
             for(var l=0;l<modTopTopicPosts.length;l++){
               Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             }
             res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
             club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
@@ -781,7 +781,7 @@ module.exports = {
         var limitedUsers = users.slice(0,1);
         for(var k=0;k<limitedUsers.length;k++){
           Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         }
         var rank, currentUser = null; var topTopicPosts = []; var sentMemberReq = false;
         foundClub.updates = '';
@@ -807,7 +807,7 @@ module.exports = {
           var modTopTopicPosts = postModeration(topTopicPosts,req.user);
           for(var l=0;l<modTopTopicPosts.length;l++){
             Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts});
         }
@@ -838,7 +838,7 @@ module.exports = {
           var rank = currentRank(users,req.user._id);
           for(var k=0;k<limitedUsers.length;k++){
             Users_50_profilePic[k] = cloudinary.url(limitedUsers[k].id.profilePicId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
@@ -875,7 +875,7 @@ module.exports = {
             }
             for(var j=0;j<matchingUsers.length;j++){
                 Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
-                {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
               }
             res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
           } else{
@@ -903,7 +903,7 @@ module.exports = {
       var limitedUsers = foundClub.memberRequests.slice(start,end);
       for(var k=0;k<limitedUsers.length;k++){
         MemberRequests_50_profilePic[k] = cloudinary.url(limitedUsers[k].userId.profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
       var newStart = (start+10).toString(), newEnd = (end+10).toString();
       var newEndpoints = newStart+','+newEnd;
@@ -915,7 +915,7 @@ module.exports = {
   profilesClubMorePosts(req, res, next){
     if(req.user){
       var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       if(req.query.ids != ''){
         var seenIds = req.query.ids.split(',');
       } else{
@@ -940,7 +940,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PA_50_profilePic = []; var k=0; var len = modPosts.length;
         for(k;k<len;k++){
           PA_50_profilePic[k] = cloudinary.url(modPosts[k].postAuthor.id.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
@@ -975,7 +975,7 @@ module.exports = {
         var hasVote = [], hasModVote = [], PA_50_profilePic = []; var k=0; var len = posts.length;
         for(k;k<len;k++){
           PA_50_profilePic[k] = cloudinary.url(posts[k].postAuthor.id.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,posts[k]);
           hasModVote[k] = modVoteCheck(req.user,posts[k]);
         }
@@ -1030,8 +1030,8 @@ module.exports = {
           try{
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
-              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
-              effect: 'sharpen:50', crop: 'limit'});
+              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
+              effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1302,7 +1302,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1331,7 +1331,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1375,7 +1375,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
+        use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1404,7 +1404,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1024, height: 1024, quality: 'auto', effect: 'sharpen:50', crop: 'limit'});
+              use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;

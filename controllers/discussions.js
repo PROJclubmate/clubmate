@@ -19,8 +19,8 @@ module.exports = {
           // upload images
           for(const file of req.files){
             let result = await cloudinary.v2.uploader.upload(file.path,
-            {folder: 'subPostImages/', use_filename: true, width: 1024, height: 1024, quality: 'auto', 
-            effect: 'sharpen:50', crop: 'limit'});
+            {folder: 'subPostImages/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
+            effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
             // add images to multiImagesArr array
             multiImagesArr.push({
               image: result.secure_url,
@@ -64,7 +64,7 @@ module.exports = {
 
   discussionsPagination(req, res, next){
     var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-    {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+    {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
     .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
@@ -88,7 +88,7 @@ module.exports = {
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
             sPA_50_profilePic[j] = cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           var currentUser = req.user, index = page;
           if(req.user && foundBucket != ''){

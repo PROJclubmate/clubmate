@@ -511,7 +511,7 @@ module.exports = {
             req.flash('error', 'Something went wrong :(');
           } else{
             var CI_50_clubAvatar = cloudinary.url(foundClub.avatarId, {width: 100, height: 100, 
-              quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+              quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             var title = foundClub.name+' sent you an invite';
             var openUrl = 'https://www.clubmate.co.in/clubs/'+clubIduserId[0];
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
@@ -623,7 +623,7 @@ module.exports = {
             req.flash('error', 'Something went wrong :(');
           } else{
             var FR_50_profilePic = cloudinary.url(foundUser.profilePicId, {width: 100, height: 100, 
-              quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+              quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             var title = foundUser.fullName+' sent you a request';
             var openUrl = 'https://www.clubmate.co.in/users/'+req.user._id;
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
@@ -992,7 +992,7 @@ module.exports = {
         var arr2D = [];
         for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
           arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:35', secure: true, crop: 'fill', format: 'jpg'});
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         }
         Clubs_50_clubAvatar[i] = arr2D;
       }
