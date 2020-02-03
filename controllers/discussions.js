@@ -19,8 +19,8 @@ module.exports = {
           // upload images
           for(const file of req.files){
             let result = await cloudinary.v2.uploader.upload(file.path,
-            {folder: 'subPostImages/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
-            effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+            {folder: 'subPostImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
+            effect: 'sharpen:50', format: 'webp', crop: 'limit'});
             // add images to multiImagesArr array
             multiImagesArr.push({
               image: result.secure_url,

@@ -181,7 +181,7 @@
               <% if(foundFriends[i]){ %>
                 <div class="col-3 pl-1 py-1">
                   <a href="/users/<%= foundFriends[i]._id %>">
-                    <img class="friends-dp" src="<%= foundFriends[i].profilePic || '/images/noUser.png' %>">
+                    <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUser.png' %>">
                   </a>
                   <div class="lineheight3">
                     <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>

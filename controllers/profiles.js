@@ -6,7 +6,7 @@ const express          = require('express'),
   Post                 = require('../models/post'),
   OrgPage              = require('../models/organization-page'),
   Conversation         = require('../models/conversation'),
-  ClubConversation = require('../models/club-conversation'),
+  ClubConversation     = require('../models/club-conversation'),
   Token                = require('../models/token'),
   async                = require('async'),
   nodemailer           = require('nodemailer'),
@@ -126,6 +126,11 @@ module.exports = {
               }
             }
           }
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
+            {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          }
           if(hasConversation == true){
             Conversation.findOne({_id: conversationId})
             .exec(function(err, foundConversation){
@@ -154,14 +159,16 @@ module.exports = {
               }
               return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
               clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage});
+              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
+              Friends_100_profilePic});
             }
             });
           } else{
             var recipientId = foundUser._id; var lastMessage = '';
             return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
             clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage});
+            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
+            Friends_100_profilePic});
           }
         }
         });
@@ -245,9 +252,15 @@ module.exports = {
               }
             }
           }
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
+            {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          }
           return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
           clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage});
+          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
+          Friends_100_profilePic});
         }
         });
       }
@@ -277,8 +290,13 @@ module.exports = {
           var clubCount = foundUser.userClubs.length;
           var sentRequest = haveRequest = isFriend = false;
           var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
+            {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          }
           return res.render("users/show", {haveRequest, sentRequest, isFriend, user: foundUser, match, adminClubs,
-          clubInvites, mutualClubs, foundFriends, clubCount, lastMessage});
+          clubInvites, mutualClubs, foundFriends, clubCount, lastMessage, Friends_100_profilePic});
         }
         });
       }
@@ -511,8 +529,8 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
           }
           var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
-            effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+            {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
+            effect: 'sharpen:50', format: 'webp', crop: 'limit'});
           //replace original information with new information
           foundUser.profilePicId = result.public_id;
           foundUser.profilePic = result.secure_url;
@@ -645,8 +663,8 @@ module.exports = {
   },
 
   profilesNewClub(req, res, next){
-    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1024, 
-      height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'},
+    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1080, 
+      height: 1080, quality: 'auto:eco', effect: 'sharpen:50', format: 'webp', crop: 'limit'},
     function(err, result){
     if(err){
       console.log(Date.now()+' : '+req.user._id+' => (profiles-14)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -1030,8 +1048,8 @@ module.exports = {
           try{
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
-              {folder: 'clubAvatars/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
-              effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+              {folder: 'clubAvatars/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
+              effect: 'sharpen:50', format: 'webp', crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1302,7 +1320,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:50', format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1331,7 +1349,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:50', format: 'webp', crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1375,7 +1393,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:50', format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1404,7 +1422,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1024, height: 1024, quality: 'auto:good', effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'});
+              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:50', format: 'webp', crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;
@@ -1472,7 +1490,7 @@ module.exports = {
               subject: 'Account Verification Token',
               text: 'Welcome to clubmate '+req.body.firstName+'!  ,\n\n' + 
               'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-              '\/confirmation\/' + token.token + '.\n\n' +
+              '\/confirmation\/' + token.token + '\n\n' +
               'Thanks,\n' +
               'Team clubmate',
               dkim: {
@@ -1485,7 +1503,7 @@ module.exports = {
               done(err, 'done');
             });
           });
-          req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to your account for verification.');
+          req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to "'+req.body.email+'" for verification.');
           return res.redirect('/discover');
         }
         });
@@ -1510,11 +1528,11 @@ module.exports = {
       // If we found a token, find a matching user
       User.findOne({_id: token.userId}, function (err, user){
         if(!user){
-          req.flash('error', 'We were unable to find a user with that email');
+          req.flash('error', 'We were unable to find a user with that email.');
           return res.redirect('back');
         }
         if(user.isVerified){
-          req.flash('error', 'This account has already been verified. Please log in');
+          req.flash('error', 'This account has already been verified. Please log in.');
           return res.redirect('/login');
         }
 
@@ -1524,8 +1542,13 @@ module.exports = {
           if(err){return console.log(Date.now()+' : '+'(profiles-41)user err:- '+JSON.stringify(err, null, 2));}
           res.status(200);
           console.log(Date.now()+' : '+user._id+' <= VERIFIED '+user.fullName);
-          req.flash('success', 'Thank you for verification, you may now log in :)');
-          return res.redirect('/discover');
+          req.logIn(user, function(err){
+            if (err){
+              return next(err);
+            }
+            req.flash('success', 'Thank you for verification, you are now logged in :)');
+            return res.redirect('/users/' + req.user._id);
+          });
         });
       });
     });
@@ -1538,11 +1561,11 @@ module.exports = {
   profilesVerificationToken(req, res, next){
     User.findOne({ email: req.body.email }, function (err, user) {
       if(!user){
-        req.flash('error', 'We were unable to find a user with that email');
+        req.flash('error', 'We were unable to find a user with that email.');
         return res.redirect('back');
       }
       if(user.isVerified){
-        req.flash('error', 'This account has already been verified. Please log in');
+        req.flash('error', 'This account has already been verified. Please log in.');
         return res.redirect('/login');
       }
       // Create a verification token for this user
@@ -1565,7 +1588,7 @@ module.exports = {
           from: '"Clubmate"team@clubmate.co.in',
           subject: 'Account Verification Token',
           text: 'Hello '+user.firstName+',\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-          '\/confirmation\/' + token.token + '.\n\n' +
+          '\/confirmation\/' + token.token + '\n\n' +
             'Thanks,\n' +
             'Team clubmate',
           dkim: {
@@ -1688,12 +1711,12 @@ module.exports = {
             return res.redirect('back');
           } else{
             if(req.body.password === req.body.confirm){
-              user.setPassword(req.body.password, function(err) {
+              user.setPassword(req.body.password, function(err){
                 user.resetPasswordToken = undefined;
                 user.resetPasswordExpires = undefined;
 
-                user.save(function(err) {
-                  req.logIn(user, function(err) {
+                user.save(function(err){
+                  req.logIn(user, function(err){
                     done(err, user);
                   });
                 });
@@ -1734,11 +1757,11 @@ module.exports = {
             done(err, 'done');
           });
         }
-      ], function(err) {
+      ], function(err){
         res.redirect('/discover');
       });
     } else{
-      req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number');
+      req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number.');
       return res.redirect('back');
     }
   }

@@ -2850,7 +2850,7 @@ function search_people_template(response){
     <div class="d-flex flex-row">
       <div>
         <a href="/users/<%= users[k]._id %>">
-          <img class="searchdp" src="<%= users[k].profilePic || '/images/noUser.png' %>">
+          <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
         </a>
       </div>
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
@@ -2863,12 +2863,12 @@ function search_people_template(response){
           <div>
             <% if(currentUser && users[k]._id == currentUser._id){ %>
               <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-                <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+                <i class="fas fa-ghost" aria-hidden="true"></i></button>
             <% } else if(currentUser && !(users[k]._id == currentUser._id)){ 
               currentUser.friends.forEach(function(friend){ 
                 if(users[k]._id == friend){ %>
                 <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-                  <i class="fas fa-check"></i> Friends</button>
+                  <i class="fas fa-check"></i></button>
             <% }})} %>
           </div>
         </div>
@@ -2902,7 +2902,7 @@ function search_people_template(response){
     </div>
   </div>
 <% } %>
-`,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, currentUser: response.currentUser});
+`,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, currentUser: response.currentUser, Users_100_profilePic: response.Users_100_profilePic});
   return html;
 }
 
@@ -2913,7 +2913,7 @@ function search_clubs_template(response){
     <div class="d-flex flex-row">
       <div>
         <a href="/clubs/<%= clubs[k]._id %>">
-          <img class="searchdp" src="<%= clubs[k].avatar || '/images/noClub.png' %>">
+          <img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
         </a>
       </div>
       <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
@@ -2928,7 +2928,7 @@ function search_clubs_template(response){
               currentUser.userClubs.forEach(function(userClub){ 
                 if(clubs[k]._id == userClub.id){ %>
                 <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-                  <i class="fas fa-check"></i> Member</button>
+                  <i class="fas fa-check"></i></button>
             <% }})} %>
           </div>
         </div>
@@ -2966,7 +2966,7 @@ function break_arr(arr){
   }
 }
 %>
-`,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, currentUser: response.currentUser});
+`,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, currentUser: response.currentUser, Clubs_100_Avatar: response.Clubs_100_Avatar});
   return html;
 }
 

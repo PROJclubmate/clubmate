@@ -163,7 +163,7 @@ div.content{
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .orgdiv-name{padding: 0.25rem 0.25rem !important;}
   .orgdiv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
-  .orgdiv-clubcnt{margin: 0.25rem 0 !important; padding: 0 0.5rem !important;}
+  .orgdiv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
@@ -1363,6 +1363,12 @@ ul{
 }
 .badge{
   padding: 0.15rem 0.25rem;
+}
+.badge-white{
+  background: #f8f9fa !important;
+  color: #262626 !important;
+  top: -0.25rem !important;
+  right: -0.25rem !important;
 }
 .badge-light{
   background-color: #dcdcdc;

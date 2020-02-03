@@ -41,7 +41,7 @@
 				<div class="d-flex flex-row">
 					<div>
 			      <a href="/users/<%= users[k]._id %>">
-            	<img class="searchdp" src="<%= users[k].profilePic || '/images/noUser.png' %>">
+            	<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
           	</a>
 			    </div>
 			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
@@ -54,12 +54,12 @@
 			    		<div>
 					    	<% if(currentUser && users[k]._id.equals(currentUser._id)){ %>
 					    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-			              <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+			              <i class="fas fa-ghost" aria-hidden="true"></i></button>
 					    	<% } else if(currentUser && !users[k]._id.equals(currentUser._id)){ 
 					    		currentUser.friends.forEach(function(friend){ 
 					    			if(users[k]._id.equals(friend)){ %>
 						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
-			                <i class="fas fa-check"></i> Friends</button>
+			                <i class="fas fa-check"></i></button>
 					    	<% }})} %>
 					    </div>
 				    </div>

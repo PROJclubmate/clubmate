@@ -71,6 +71,11 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
       Club.find({$text: {$search: query}, isActive: true}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
       .select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1}).limit(3)
       .exec(function(err, foundClubs){
@@ -79,6 +84,11 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var Clubs_100_Avatar = [];
+        for(var l=0;l<foundClubs.length;l++){
+          Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
+          {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        }
         OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
         .sort({score: {$meta: 'textScore'}}).exec(function(err, foundOrgPages){
         if(err || !foundOrgPages){
@@ -86,7 +96,8 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          res.render('search/index',{users: foundUsers, clubs: foundClubs, org_pages: foundOrgPages, query});
+          res.render('search/index',{users: foundUsers, clubs: foundClubs, org_pages: foundOrgPages, query,
+          Users_100_profilePic, Clubs_100_Avatar});
         }
         });
       }
@@ -108,8 +119,13 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
-      emailSearch: true});
+      emailSearch: true, Users_100_profilePic});
     }
     });
   },
@@ -127,8 +143,13 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
-      emailSearch: false});
+      emailSearch: false, Users_100_profilePic});
     }
     });
   },
@@ -151,7 +172,13 @@ module.exports = {
         return user._id;
       });
       var currentUser = req.user;
-      res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, emailSearch: false});
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, emailSearch: false,
+      Users_100_profilePic});
     }
     });
   },
@@ -177,8 +204,13 @@ module.exports = {
       var foundUserIds = foundUsers.map(function(user){
         return user._id;
       });
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys,
-      emailSearch: false});
+      emailSearch: false, Users_100_profilePic});
     }
     });
   },
@@ -282,7 +314,13 @@ module.exports = {
         return user._id;
       });
       var currentUser = req.user;
-      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser});
+      var Users_100_profilePic = [];
+      for(var l=0;l<foundUsers.length;l++){
+        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser,
+      Users_100_profilePic});
     }
     });
   },
@@ -300,7 +338,13 @@ module.exports = {
       var foundClubIds = foundClubs.map(function(club){
         return club._id;
       });
-      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: false, moreClubsUrl: ''});
+      var Clubs_100_Avatar = [];
+      for(var l=0;l<foundClubs.length;l++){
+        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: false, moreClubsUrl: '',
+      Clubs_100_Avatar});
     }
     });
   },
@@ -323,7 +367,12 @@ module.exports = {
         return club._id;
       });
       var currentUser = req.user;
-      res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false});
+      var Clubs_100_Avatar = [];
+      for(var l=0;l<foundClubs.length;l++){
+        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, Clubs_100_Avatar});
     }
     });
   },
@@ -349,7 +398,13 @@ module.exports = {
       var foundClubIds = foundClubs.map(function(user){
         return user._id;
       });
-      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: true, moreClubsUrl, filterKeys});
+      var Clubs_100_Avatar = [];
+      for(var l=0;l<foundClubs.length;l++){
+        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: true, moreClubsUrl, filterKeys,
+      Clubs_100_Avatar});
     }
     });
   },
@@ -433,7 +488,12 @@ module.exports = {
         return user._id;
       });
       var currentUser = req.user;
-      res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser});
+      var Clubs_100_Avatar = [];
+      for(var l=0;l<foundClubs.length;l++){
+        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
+        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar});
     }
     });
   },
@@ -499,17 +559,24 @@ module.exports = {
       var clubIduserId = req.body.clubId.split(',');
       var adminClubId = mongoose.Types.ObjectId(clubIduserId[0]);
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
-      User.updateOne({_id: invitedUserId},{$push: {clubInvites: adminClubId}}, function(err, foundUser){
+      User.updateOne({_id: invitedUserId},{$addToSet: {clubInvites: adminClubId}}, function(err, foundUser){
         if(err || !foundUser){
           console.log(Date.now()+' : '+req.user._id+' => (index-16)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
-          Club.findById(adminClubId).select({name: 1, avatar: 1, avatarId: 1})
-          .exec(function(err, foundClub){
+          Club.findById(adminClubId, function(err, foundClub){
           if(err || !foundClub){
             console.log(Date.now()+' : '+req.user._id+' => (index-17)foundClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           } else{
+            // Check & remove Member request
+            for(var i=0;i<foundClub.memberRequests.length;i++){
+              if(foundClub.memberRequests[i].userId.equals(invitedUserId)){
+                foundClub.memberRequests.splice(i,1);
+              }
+            }
+            foundClub.save();
+            // Send CI notification
             var CI_50_clubAvatar = cloudinary.url(foundClub.avatarId, {width: 100, height: 100, 
               quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             var title = foundClub.name+' sent you an invite';
@@ -590,19 +657,35 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
         } else{
           //pushing user details into club
-          var obja = {};
+          var obja = {}; var oka = true;
           obja['id'] = foundUser._id;
           obja['userRank'] = 4;
-          foundClub.clubUsers.push(obja);
-          foundClub.membersCount += 1;
+          for(var i=0;i<foundClub.clubUsers.length;i++){
+            if(foundClub.clubUsers[i].id.equals(foundUser._id)){
+              oka = false;
+              break;
+            }
+          }
+          if(oka == true){
+            foundClub.clubUsers.push(obja);
+            foundClub.membersCount += 1;
+            foundClub.save();
+          }
           //pushing club details into users
-          var objb = {};
+          var objb = {}; var okb = true;
           objb['id'] = foundClub._id;
           objb['rank'] = 4;
           objb['clubName'] = foundClub.name;
-          foundUser.userClubs.push(objb);
-          foundUser.save();
-          foundClub.save();
+          for(var j=0;j<foundUser.userClubs.length;j++){
+            if(foundUser.userClubs[j].id.equals(foundClub._id)){
+              okb = false;
+              break;
+            }
+          }
+          if(okb == true){
+            foundUser.userClubs.push(objb);
+            foundUser.save();
+          }
         }
         });
       }
@@ -611,7 +694,7 @@ module.exports = {
     // FRIEND REQUESTS
     if(req.body.friendReq){
       var friendReq = mongoose.Types.ObjectId(req.body.friendReq);
-      User.updateOne({_id: friendReq},{$push: {friendRequests: req.user._id}}, function(err, foundUser){
+      User.updateOne({_id: friendReq},{$addToSet: {friendRequests: req.user._id}}, function(err, foundUser){
         if(err || !foundUser){
           console.log(Date.now()+' : '+req.user._id+' => (index-24)foundUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
@@ -690,14 +773,14 @@ module.exports = {
     if(req.body.acceptReq){
       var acceptReq = mongoose.Types.ObjectId(req.body.acceptReq);
       User.updateOne({_id: req.user._id}, 
-      {$pull: {friendRequests: acceptReq}, $push: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
+      {$pull: {friendRequests: acceptReq}, $addToSet: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
       function(err, foundUser){
       if(err || !foundUser){
         console.log(Date.now()+' : '+req.user._id+' => (index-30)foundUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: acceptReq}, 
-        {$push: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
+        {$addToSet: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
           if(err || !foundUser){
             console.log(Date.now()+' : '+req.user._id+' => (index-31)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
@@ -734,7 +817,7 @@ module.exports = {
         obj['userId'] = req.user._id;
         obj['message'] = req.body.message;
       var memberReq = mongoose.Types.ObjectId(req.body.memberReq);
-      Club.updateOne({_id: memberReq}, {$push: {memberRequests: obj}}, function(err, foundClub){
+      Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err, foundClub){
         if(err || !foundClub){
           console.log(Date.now()+' : '+req.user._id+' => (index-34)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
@@ -756,7 +839,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (index-36)foundClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
-          User.updateOne({_id: acceptReq}, {$push: {clubInvites: clubId}}, function(err, foundUser){
+          User.updateOne({_id: acceptReq}, {$addToSet: {clubInvites: clubId}}, function(err, foundUser){
             if(err || !foundUser){
               console.log(Date.now()+' : '+req.user._id+' => (index-37)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -947,7 +1030,7 @@ module.exports = {
     } else{
       if(foundUser._id.equals(req.user._id) || foundUser.friends.includes(req.user._id)){
         User.find({_id: {$in: foundUser.friends}})
-        .skip((perPage * pageNumber) - perPage).limit(perPage)
+        .skip((perPage * pageNumber) - perPage).limit(perPage).sort({fullName: 1})
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
           console.log(Date.now()+' : '+'(index-49)foundFriends err:- '+JSON.stringify(err, null, 2));
@@ -958,9 +1041,14 @@ module.exports = {
           var foundFriendIds = foundFriends.map(function(user){
             return user._id;
           });
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
+            {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          }
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
           res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
-          current: pageNumber, pages: Math.ceil(count / perPage)});
+          current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage)});
         }
         });
       } else{

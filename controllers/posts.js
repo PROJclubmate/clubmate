@@ -201,8 +201,8 @@ module.exports = {
       if(req.file){
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           cloudinary.v2.uploader.upload(req.file.path,
-          {folder: 'postImages/', use_filename: true, width: 1024, height: 1024, quality: 'auto:good', 
-          effect: 'sharpen:50', fetch_format: 'webp', crop: 'limit'},
+          {folder: 'postImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
+          effect: 'sharpen:50', format: 'webp', crop: 'limit'},
           function(err, result){
           if(err){
             console.log(Date.now()+' : '+req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
@@ -494,7 +494,6 @@ module.exports = {
   },
 
   postsDelete(req, res, next){
-    // console.log(Date.now()+' : '+'HAHAHAHAH'+JSON.stringify(req.params.post_id, null, 2));
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
       console.log(Date.now()+' : '+req.user._id+' => (posts-23)foundPost err:- '+JSON.stringify(err, null, 2));

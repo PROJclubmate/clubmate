@@ -243,9 +243,9 @@
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" 
-                  pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Events and Sponsor management|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual" value="" placeholder="Club category">
+                  pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="" placeholder="Club category">
                 <% } else{ %>
-                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Events and Sponsor management|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual" value="<%= club.clubKeys.category %>" placeholder="Club category">
+                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="<%= club.clubKeys.category %>" placeholder="Club category">
                 <% } %>
                 <datalist id="category">
                   <option value="Student bodies">
@@ -253,7 +253,7 @@
                   <option value="Theatre and Literature">
                   <option value="Film and Photography">
                   <option value="Sports and Recreational">
-                  <option value="Events and Sponsor management">
+                  <option value="Automobile and Tech">
                   <option value="Dance and Music">
                   <option value="Graphics and Animation">
                   <option value="Memes and Video games">
@@ -269,6 +269,7 @@
                   <option value="Day scholars">
                   <option value="Alumni and Staff">
                   <option value="Religious and Spiritual">
+                  <option value="Miscellaneous">
                 </datalist>
                 <label for="weblink" class="sr-only">Weblink</label>
                 <input type="text" id="weblink" class="form-control form-control-sm" name="clubKeys[weblink]" value="<%= club.clubKeys.weblink %>" placeholder="Weblink">
@@ -353,7 +354,12 @@
               </li>
               <% if(0 <= rank && rank <= 1){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="requests-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">Requests</a>
+                  <a class="nav-link boldtext black notification" id="requests-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">
+                    Requests
+                      <% if(memberRequestsLength > 0){ %>
+                        <span class="badge badge-white text-xxs"><%= memberRequestsLength %></span>
+                      <% } %>
+                  </a>
                 </li>
               <% } %>
             </ul>
