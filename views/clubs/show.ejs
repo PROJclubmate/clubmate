@@ -243,9 +243,9 @@
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" 
-                  pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="" placeholder="Club category">
+                  pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Art and Creative|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="" placeholder="Club category">
                 <% } else{ %>
-                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="<%= club.clubKeys.category %>" placeholder="Club category">
+                  <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" pattern="Student bodies|TV Shows and Movies|Theatre and Literature|Film and Photography|Sports and Recreational|Automobile and Tech|Dance and Music|Art and Creative|Graphics and Animation|Memes and Video games|Trips and Travel|Food and Beverage|Political and Community service|Personal Care|Academic and Educational|Programming and Development|Bussiness and Management|Bussiness and Management|Placement and Career|Hostelers|Day scholars|Alumni and Staff|Religious and Spiritual|Miscellaneous" value="<%= club.clubKeys.category %>" placeholder="Club category">
                 <% } %>
                 <datalist id="category">
                   <option value="Student bodies">
@@ -255,6 +255,7 @@
                   <option value="Sports and Recreational">
                   <option value="Automobile and Tech">
                   <option value="Dance and Music">
+                  <option value="Art and Creative">
                   <option value="Graphics and Animation">
                   <option value="Memes and Video games">
                   <option value="Trips and Travel">
