@@ -175,7 +175,7 @@ div.content{
   .sidebar-back{height: 46px !important;}
   .navbar{padding: 3px 10px !important;}
   #sidebar-dropbox{top: 46px; left: 108px;}
-  .sidebar a{padding: 11px 21px; font-size: 1rem;}
+  .sidebar a{padding: 11px 12.5px; font-size: 1rem;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   body{padding-top: 4px;}
   .friends-dp{height: 7.25rem !important;}
@@ -183,7 +183,6 @@ div.content{
 /*Pixel 2/2XL => 411px iphone 8 => 414*/
 @media screen and (max-width: 415px){
   #sidebar-dropbox{top: 46px; left: 91px;}
-  .sidebar a{padding: 11px 12.5px;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   .friends-dp{height: 6.1rem !important;}
   .commentpad{padding-left: 0rem;}
@@ -1405,10 +1404,10 @@ div.carousel-img{
   box-shadow: inset 0px 0px 3px -1px rgba(0,0,0,0.5);
 }
 div.carousel-img2{
-  border-top: 1px solid #555;
+  border-top: 1px solid #333;
   border-right: 1px solid #666;
   border-bottom: 1px solid #666;
-  border-left: 1px solid #555;
+  border-left: 1px solid #333;
   box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.5);
 }
 .overlay{
@@ -1609,6 +1608,10 @@ button.dislikebtn:hover{
 }
 button.likebtn:hover{
   color: #009f5e;
+}
+.fcomments-btn:hover{
+  color: black;
+  cursor: pointer;
 }
 button.upVotebtn{
   z-index: 2;

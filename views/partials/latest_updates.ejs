@@ -30,7 +30,7 @@
               </form>
             </div>
           </div>
-          <% if(arr[i].news == 'This update has been deleted'){ %>
+          <% if(arr[i].deleterName && arr[i].news == 'This update has been deleted'){ %>
             <div class="desktoptext3 mobiletext3 redcolor"><em><%= arr[i].news %> by <%= arr[i].deleterName %></em></div>
           <% } else{ %>
             <div class="lightgrey desktoptext3 mobiletext3 mobilebold"><%= arr[i].news %></div>

@@ -140,31 +140,30 @@ useUnifiedTopology: true}, function(err, client){
 
     socket.on('joinRoom', room =>{
       socket.join(room);
-      /* << BUG >> SOCKET EMITING RANDOMLY
-      Current exec:- Client side validation
+      /* Current exec:- Client side validation
       Desired :- Server side acknowledgement that the msg is sent */
-      // msgStatus = function(s){
-      //   socket.emit('status', s);
-      // }
       // Join a room and then broadcast
-      socket.on('userOnline', function(data){
-        socket.broadcast.to(room).emit('userOnline', data);
+      socket.on('userOnChatbox', function(data){
+        socket.broadcast.to(room).emit('userOnChatbox', data);
       })
-      socket.on('userOffline', function(data){
-        socket.broadcast.to(room).emit('userOffline', data);
+      socket.on('userOffChatbox', function(data){
+        socket.broadcast.to(room).emit('userOffChatbox', data);
       })
       socket.on('typing', function(data){
         socket.broadcast.to(room).emit('typing', data);
+      })
+      socket.on('newConvoReload', function(data){
+        socket.broadcast.to(room).emit('newConvoReload', data);
       })
     })
     
     socket.on('joinClubRoom', clubRoom =>{
       socket.join(clubRoom);
-      // clubMsgStatus = function(s){
-      //   socket.emit('clubStatus', s);
-      // }
       socket.on('clubTyping', function(data){
         socket.broadcast.to(clubRoom).emit('clubTyping', data);
+      })
+      socket.on('newClubConvoReload', function(data){
+        socket.broadcast.to(clubRoom).emit('newClubConvoReload', data);
       })
     })
   });

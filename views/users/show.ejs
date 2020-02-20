@@ -224,7 +224,6 @@
           </div>
           <div class="tab-content" id="myTabContent">
             <!-- **********************Info START************************ -->
-            <!-- **********************DRY UP CODE*********************** -->
             <% if(currentUser && match){ %>
               <div class="tab-pane fade cardpad show active" id="info" role="tabpanel" aria-labelledby="info-tab">
             <% } else{ %>
@@ -321,21 +320,31 @@
                   <br>
                   Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
                   <br>
-                  <!-- Total fad, does not work xD -->
-                  Last update: <span class="info30"><%= moment(user.updatedAt).format('ll') %></span>
-                  <% if(mutualClubs.length != 0){ %>
-                    <div class="info1">Mutal clubs: <div class="info30">
-                      <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
-                      <% if(i==0 && i==len-1){ %>
-                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
-                        <% }else if(i==0){ %>
-                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
-                        <% }else if(i>0 && i<len-1){ %>
-                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
-                        <% }else if(i=len-1){ %>
-                        <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
-                      <% }} %>
-                    </div></div>
+                  <% if(!match){ %>
+                    <% if(mutualClubs.length != 0){ %>
+                      <div class="info1">Mutal clubs: <div class="info30">
+                        <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
+                        <% if(i==0 && i==len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                          <% }else if(i==0){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                          <% }else if(i>0 && i<len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                          <% }else if(i=len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                        <% }} %>
+                      </div></div>
+                    <% } %>
+                    <% if(user.isLoggedIn){ %>
+                      <span>
+                        <svg height="16" width="16">
+                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                        </svg>
+                      </span>
+                      <span class="greencolor">Logged in</span>
+                    <% } else{ %>
+                      Last logout: <span class="info30"><%= moment(user.lastLoggedOut).format('lll') %></span>
+                    <% } %>
                   <% } %>
                   <div class="info30">
                     <div id="account_info_form_div" class="greyback">

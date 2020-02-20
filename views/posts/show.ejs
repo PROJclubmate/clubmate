@@ -32,7 +32,12 @@
                 <div>
                   <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
                   <% if(0 <= post.moderation && post.moderation <= 1){ %>
-                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs"><%= post.moderation %></div>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
+                      <% if(post.isAdminLock){ %>
+                        <i class="fas fa-lock"></i> 
+                      <% } %>
+                      <%= post.moderation %>
+                    </div>
                   <% } else if(post.moderation == -1){ %>
                     <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
                   <% } %>
@@ -118,9 +123,9 @@
               <% }%>
             </div>
 
-            <div class="valign">
+            <div class="valign" title="Comments">
               <span class="lightgrey nothing boldtext text-sm"><%= post.commentsCount %></span>
-              <span class="lightgrey text-xl d-flex mr-2"><i class="fas fa-comments"></i></span>
+              <span id="fcomments-btn" class="lightgrey text-xl d-flex ml-1 mr-3 fcomments-btn"><i class="fas fa-comments"></i></span>
               <% if(currentUser){ %>
                 <% if(hasVote == 3){ %>
                   <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= post.heartCount %></span>

@@ -134,7 +134,7 @@
             </div>
             <!-- Tags -->
             <div class="valign">
-              <div class="boldtext">Tags</div>
+              <div class="boldtext">Discover tags</div>
               <% if(0 <= rank && rank <= 1){ %>
                 <div>
                   <button onclick="toggle_display('tags_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
@@ -222,7 +222,7 @@
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
-                <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank"><%= club.clubKeys.weblink %></a></div></div>
+                <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank" rel="noopener"><%= club.clubKeys.weblink.replace(/^https?\:\/\//i, "") %></a></div></div>
               <% } %>
               <% if(club.clubKeys.location){ %>
                 <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&category=&organization="><%= club.clubKeys.location %></a></div></div>

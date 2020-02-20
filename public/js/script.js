@@ -496,6 +496,11 @@ function outCopyTxtFn() {
   tooltip.innerHTML = "Copy to clipboard";
 }
 
+$('#fcomments-btn').on('click', function(){
+  console.log('CLICK');
+  $('#commentbox').focus().click();
+});
+
 //================================================================================
 // AJAX
 //================================================================================

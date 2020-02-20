@@ -19,6 +19,7 @@ const orgPageSchema = new Schema({
     _id: false
   }]
 });
+
 // for find queries(match exact strings)
 orgPageSchema.index({name:1}, {unique: true});
 // for search

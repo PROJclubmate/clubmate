@@ -3,7 +3,7 @@ const express  = require('express'),
   middleware   = require('../middleware'),
   {upload}     = require('../public/js/cloudinary.js'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts, postsDiscover,
-  postsDiscoverMorePosts, postsCreate, postsShow, postsQuote, postsUpdate, postsDelete, postsVote,
+  postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, postsUpdate, postsDelete, postsVote,
 	postsModVote} = require('../controllers/posts');
 
 
@@ -32,7 +32,7 @@ router.post('/clubs/:club_id/posts', middleware.isLoggedIn, upload.single('image
 router.get('/clubs/:club_id/posts/:post_id', postsShow);
 
 // Quote a subPost
-router.get('/clubs/:club_id/posts/:post_id/subPost/:bucket_id', middleware.isLoggedIn, postsQuote);
+router.get('/clubs/:club_id/posts/:post_id/subPost/:bucket_id', middleware.isLoggedIn, subPostQuote);
 
 // Update post
 router.put('/clubs/:club_id/posts/:post_id', middleware.checkPostOwnership, postsUpdate);

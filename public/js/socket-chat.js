@@ -59,19 +59,19 @@ if(socket !== undefined){
   }
   // Emit online/offline
   $("#user-message").focus(function(){
-    socket.emit('userOnline');
+    socket.emit('userOnChatbox');
     var conversationId = $("#user-convoId").attr("value").split(',')[0];
     $.post('/read/'+conversationId);
   });
   $("#user-message").blur(function(){
-    socket.emit('userOffline');
+    socket.emit('userOffChatbox');
   });
   // Listen
-  socket.on('userOnline', function(data){
-    $("#isUserOnline").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
+  socket.on('userOnChatbox', function(data){
+    $("#isUserOnChatbox").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
   })
-  socket.on('userOffline', function(data){
-    $("#isUserOnline").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");
+  socket.on('userOffChatbox', function(data){
+    $("#isUserOnChatbox").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
   })
 
   // Emit typing
@@ -147,6 +147,7 @@ if(socket !== undefined){
     if(message.conversationId == ''){
       $.post('/new/chat', message);
       setStatus('Conversation started!');
+      socket.emit('newConvoReload', message.authorId);
       location.reload(true);
     } else if(message.recipientId == ''){
       $.post('/chat/'+message.conversationId, message);
@@ -211,14 +212,18 @@ if(socket !== undefined){
   });
   socket.on('clubTyping', function(data){
     setClubStatus(data + ' is typing...');
-  })
-  // socket.on('clubStatus', function(data){
-  //   setClubStatus((typeof data === 'object')? data.message : data);
-  //   if(data.clear){
-  //     $('#club-message').val('');
-  //   }
-  // });
-  socket.on('clubMessage', newClubMessage)
+  });
+  socket.on('newConvoReload', function(data){
+    if(location.pathname.split('/').pop() == data){
+      location.reload(true);
+    }
+  });
+  socket.on('newClubConvoReload', function(data){
+    if(location.pathname.split('/').pop() == data){
+      location.reload(true);
+    }
+  });
+  socket.on('clubMessage', newClubMessage);
 
   function addClubMessages(data){
     var prevDate;
@@ -284,6 +289,7 @@ if(socket !== undefined){
     if(message.conversationId == ''){
       $.post('/new/club-chat', message);
       setClubStatus('Conversation started!');
+      socket.emit('newClubConvoReload', message.clubId);
       location.reload(true);
     } else if(message.clubId == ''){
       $.post('/club-chat/'+message.conversationId, message);

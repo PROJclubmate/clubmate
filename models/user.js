@@ -4,6 +4,8 @@ const mongoose          = require('mongoose'),
 
 const userSchema = new Schema({
   isVerified: {type: Boolean, default: false},
+  isLoggedIn: Boolean,
+  lastLoggedOut: Date,
   firstName: {type: String, required: true},
   lastName: String,
   fullName: {type: String, required: true},
@@ -18,6 +20,7 @@ const userSchema = new Schema({
     heading: String,
     description: String
   }],
+  discoverTags: [String],
   userKeys: {
     sex: String,
     birthdate: Date,

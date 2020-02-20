@@ -40,6 +40,7 @@ const discussionSchema = new Schema({
     }]
   }]
 });
+
 discussionSchema.index({postId: 1, bucket: 1}, {unique: true});
 
 module.exports = mongoose.model('Discussion', discussionSchema);

@@ -22,6 +22,7 @@ const messageSchema = new Schema({
     text: String
   }]
 });
+
 messageSchema.index({conversationId: 1, bucket: 1}, {unique: true});
 
 module.exports = mongoose.model('Message', messageSchema);

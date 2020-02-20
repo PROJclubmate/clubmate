@@ -20,7 +20,7 @@ module.exports = {
           for(const file of req.files){
             let result = await cloudinary.v2.uploader.upload(file.path,
             {folder: 'subPostImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-            effect: 'sharpen:50', format: 'webp', crop: 'limit'});
+            effect: 'sharpen:35', format: 'webp', crop: 'limit'});
             // add images to multiImagesArr array
             multiImagesArr.push({
               image: result.secure_url,

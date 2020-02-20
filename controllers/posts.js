@@ -36,7 +36,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, homePosts){
       if(err || !homePosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-2)homePosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (posts-1)homePosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = homePosts.length;
@@ -44,16 +44,24 @@ module.exports = {
         var foundPostIds = homePosts.map(function(post){
           return post._id;
         });
-        var posts = postPrivacy(homePosts, req.user);
-        var modPosts = postModeration(posts,req.user);
+        var posts = postsPrivacyFilter(homePosts, req.user);
+        var modPosts = postsModerationFilter(posts,req.user);
         sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = modPosts.length;
-        for(k;k<len;k++){
+        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+        for(var k=0;k<modPosts.length;k++){
           PC_50_clubAvatar[k] = cloudinary.url(modPosts[k].postClub.avatarId,
           {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+          seenPostIds.push(modPosts[k]._id);
         }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err, updatePosts){
+          if(err || !updatePosts){
+            console.log(Date.now()+' => (posts-2)updatePosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          }
+        });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
@@ -90,7 +98,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, friendsPosts){
       if(err || !friendsPosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-4)friendsPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (posts-3)friendsPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = friendsPosts.length;
@@ -98,16 +106,24 @@ module.exports = {
         var foundPostIds = friendsPosts.map(function(post){
           return post._id;
         });
-        var posts = postPrivacy(friendsPosts, req.user);
-        var modPosts = postModeration(posts,req.user);
+        var posts = postsPrivacyFilter(friendsPosts, req.user);
+        var modPosts = postsModerationFilter(posts,req.user);
         sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PA_50_profilePic = []; var k=0; var len = modPosts.length;
-        for(k;k<len;k++){
+        var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
+        for(var k=0;k<modPosts.length;k++){
           PA_50_profilePic[k] = cloudinary.url(modPosts[k].postAuthor.id.profilePicId,
           {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,modPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+          seenPostIds.push(modPosts[k]._id);
         }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err, updatePosts){
+          if(err || !updatePosts){
+            console.log(Date.now()+' => (posts-4)updatePosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          }
+        });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
@@ -140,7 +156,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-7)discoverPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
@@ -149,13 +165,21 @@ module.exports = {
           return post._id;
         });
         sortComments(discoverPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
-        for(k;k<len;k++){
+        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+        for(var k=0;k<discoverPosts.length;k++){
           PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
           {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+          seenPostIds.push(discoverPosts[k]._id);
         }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err, updatePosts){
+          if(err || !updatePosts){
+            console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          }
+        });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
@@ -169,7 +193,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
-        console.log(Date.now()+' : '+'(posts-8)discoverPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(posts-7)discoverPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
@@ -178,13 +202,21 @@ module.exports = {
           return post._id;
         });
         sortComments(discoverPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = []; var k=0; var len = discoverPosts.length;
-        for(k;k<len;k++){
+        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+        for(var k=0;k<discoverPosts.length;k++){
           PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
           {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+          seenPostIds.push(discoverPosts[k]._id);
         }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err, updatePosts){
+          if(err || !updatePosts){
+            console.log(Date.now()+' => (posts-8)updatePosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          }
+        });
         res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar,
         arrLength});
       }
@@ -202,7 +234,7 @@ module.exports = {
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           cloudinary.v2.uploader.upload(req.file.path,
           {folder: 'postImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-          effect: 'sharpen:50', format: 'webp', crop: 'limit'},
+          effect: 'sharpen:35', format: 'webp', crop: 'limit'},
           function(err, result){
           if(err){
             console.log(Date.now()+' : '+req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
@@ -212,22 +244,33 @@ module.exports = {
             req.body.image = result.secure_url;
             req.body.imageId = result.public_id;
             req.body.moderation = 1;
-            Post.create(req.body, function(err, newPost){
-            if(err || !newPost){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-10)newPost err:- '+JSON.stringify(err, null, 2));
+            Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
+            if(err || !foundClub){
+              console.log(Date.now()+' : '+req.user._id+' => (posts-10)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              newPost.postClub = req.params.club_id;
-              newPost.postAuthor.id = req.user._id;
-              newPost.postAuthor.authorName = req.user.fullName;
-              newPost.save(function(err, newPost){
+              Post.create(req.body, function(err, newPost){
               if(err || !newPost){
                 console.log(Date.now()+' : '+req.user._id+' => (posts-11)newPost err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                res.redirect('/clubs/'+req.params.club_id+'/posts/'+newPost._id);
+                newPost.clubOrgKey = foundClub.clubKeys.organization;
+                newPost.clubTags = foundClub.clubKeys.tags;
+                newPost.postClub = req.params.club_id;
+                newPost.postAuthor.id = req.user._id;
+                newPost.postAuthor.authorName = req.user.fullName;
+                newPost.save(function(err, newPost){
+                if(err || !newPost){
+                  console.log(Date.now()+' : '+req.user._id+' => (posts-12)newPost err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                } else{
+                  req.flash('success', 'Post created.');
+                  res.redirect('/clubs/'+req.params.club_id);
+                }
+                });
               }
               });
             }
@@ -241,22 +284,33 @@ module.exports = {
       } else{
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           req.body.moderation = 1;
-          Post.create(req.body, function(err, newPost){
-          if(err || !newPost){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-12)newPost err:- '+JSON.stringify(err, null, 2));
+          Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
+          if(err || !foundClub){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-13)foundClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
-            newPost.postClub = req.params.club_id;
-            newPost.postAuthor.id = req.user._id;
-            newPost.postAuthor.authorName = req.user.fullName;
-            newPost.save(function(err, newPost){
+            Post.create(req.body, function(err, newPost){
             if(err || !newPost){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-13)newPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-14)newPost err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              res.redirect('/clubs/'+req.params.club_id+'/posts/'+newPost._id);
+              newPost.clubOrgKey = foundClub.clubKeys.organization;
+              newPost.clubTags = foundClub.clubKeys.tags;
+              newPost.postClub = req.params.club_id;
+              newPost.postAuthor.id = req.user._id;
+              newPost.postAuthor.authorName = req.user.fullName;
+              newPost.save(function(err, newPost){
+              if(err || !newPost){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-15)newPost err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                req.flash('success', 'Post created.');
+                res.redirect('/clubs/'+req.params.club_id);
+              }
+              });
             }
             });
           }
@@ -273,10 +327,10 @@ module.exports = {
   },
 
   postsShow(req, res, next){
-    Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
-    .exec(function (err, foundPost){
+    Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
+    .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+'(posts-14)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(posts-16)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -300,7 +354,7 @@ module.exports = {
         .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
         .exec(function(err, foundBuckets){
         if(err || !foundBuckets){
-          console.log(Date.now()+' : '+'(posts-15)foundBuckets err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(posts-17)foundBuckets err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -334,7 +388,7 @@ module.exports = {
           .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
           .exec(function(err, foundBucket){
           if(err || !foundBucket){
-            console.log(Date.now()+' : '+'(posts-16)foundBucket err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(posts-18)foundBucket err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -344,11 +398,11 @@ module.exports = {
               {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             }
             // Push conversationId to clubUsers
-            // If conversationId == null then find
+            // If conversationId == null then find clubid
             Club.findById(req.params.club_id).select({conversationId: 1})
             .exec(function(err, foundClub){
             if(err || !foundClub){
-              console.log(Date.now()+' : '+'(posts-17)foundClub err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(posts-19)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -368,7 +422,7 @@ module.exports = {
           Club.findById(req.params.club_id).select({conversationId: 1})
           .exec(function(err, foundClub){
           if(err || !foundClub){
-            console.log(Date.now()+' : '+'(posts-18)foundClub err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(posts-20)foundClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -394,12 +448,12 @@ module.exports = {
     });
   },
 
-  postsQuote(req, res, next){
+  subPostQuote(req, res, next){
     if(req.query.quote){
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
       .exec(function (err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+'(posts-19)foundPost err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(posts-21)foundPost err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -424,7 +478,7 @@ module.exports = {
             .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
             .exec(function(err, foundBucket){
             if(err || !foundBucket){
-              console.log(Date.now()+' : '+'(posts-20)foundBucket err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(posts-22)foundBucket err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -436,7 +490,7 @@ module.exports = {
               var subVotes = subVoteCheck(req.user._id,foundBucket);
               Discussion.findOne({_id: req.params.bucket_id}, function(err, foundQuoteBucket){
               if(err || !foundQuoteBucket){
-                console.log(Date.now()+' : '+'(posts-21)foundQuoteBucket err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+'(posts-23)foundQuoteBucket err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -465,7 +519,7 @@ module.exports = {
   postsUpdate(req, res, next){
     Post.findById(req.params.post_id, function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-22)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-24)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -496,7 +550,7 @@ module.exports = {
   postsDelete(req, res, next){
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-23)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-25)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -507,14 +561,14 @@ module.exports = {
           //deletes all comments associated with the post
           Comment.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-24)foundPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-26)foundPost err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           Discussion.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-25)foundPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-27)foundPost err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -522,7 +576,7 @@ module.exports = {
           req.flash('success', 'Post deleted successfully!');
           res.redirect('back');
         }catch(err){
-          console.log(Date.now()+' : '+'(posts-26)foundPost catch err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(posts-28)foundPost catch err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -531,14 +585,14 @@ module.exports = {
         //deletes all comments associated with the post
         Comment.deleteMany({postId: foundPost._id}, function(err){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-27)foundPost err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-29)foundPost err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
         });
         Discussion.deleteMany({postId: foundPost._id}, function(err){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-28)foundPost err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-30)foundPost err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -553,7 +607,7 @@ module.exports = {
   postsVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-29)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-31)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.body.visibility){
@@ -607,7 +661,7 @@ module.exports = {
           if(thirdIdFound == true){
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
               if(err || !foundUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-30)foundUser err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+req.user._id+' => (posts-32)foundUser err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -652,7 +706,7 @@ module.exports = {
           if(thirdIdFound == true){
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
               if(err || !foundUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-31)foundUser err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+req.user._id+' => (posts-33)foundUser err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -678,7 +732,7 @@ module.exports = {
         if(clickIdFound == true){
           User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-32)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-34)foundUser err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             }
           });
@@ -708,7 +762,7 @@ module.exports = {
           foundPost.heartCount +=1;
           User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, foundUser){
             if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-33)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-35)foundUser err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             }
           });
@@ -723,7 +777,7 @@ module.exports = {
   postsModVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-34)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-36)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;
@@ -906,7 +960,7 @@ function sortComments(posts){
   return topCommentPosts;
 };
 
-function postPrivacy(foundPosts, foundUser){
+function postsPrivacyFilter(foundPosts, foundUser){
   var posts = [];
   var postsLen = foundPosts.length;
   var friendsLen = foundUser.friends.length;
@@ -985,7 +1039,7 @@ function postPrivacy(foundPosts, foundUser){
   return posts;
 };
 
-function postModeration(foundPosts, foundUser){
+function postsModerationFilter(foundPosts, foundUser){
   var posts = [];
   var postsLen = foundPosts.length;
   var clubLen = foundUser.userClubs.length;

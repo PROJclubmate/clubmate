@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const postSchema = new Schema({
-  description: String,
+  description: {type: String, required: true},
   hyperlink: String,
   descEdit: [{
     desc: String,
@@ -11,6 +11,10 @@ const postSchema = new Schema({
   }],
   image: String,
   imageId: String,
+  clubTags: [String],
+  clubOrgKey: String,
+  // +1 for minified view (Load more), +5 for expand; open in modal JSON to prevent page refresh & +5
+  viewsCount: {type: Number, default: 0},
   privacy: {
     type: Number,
     min: 0,
@@ -31,6 +35,7 @@ const postSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
+  isAdminLock: {type: Boolean, default: false},
   likeCount: {type: Number, default: 0},
   dislikeCount: {type: Number, default: 0},
   heartCount: {type: Number, default: 0},
@@ -91,6 +96,8 @@ const postSchema = new Schema({
   timestamps: true
 });
 
+postSchema.index({clubTags: 'text'});
+postSchema.index({clubOrgKey:1});
 postSchema.index({postClub:1});
 postSchema.index({postAuthor:1});
 

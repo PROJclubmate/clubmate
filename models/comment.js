@@ -29,6 +29,7 @@ const commentSchema = new Schema({
 		}]
 	}]
 });
+
 commentSchema.index({postId: 1, bucket: 1}, {unique: true});
 
 module.exports = mongoose.model('Comment', commentSchema);
