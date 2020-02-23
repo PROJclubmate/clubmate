@@ -235,7 +235,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {users, college, branch, batch, section, workplace, school, location, distance} = req.query;
+    let {users, college, workplace, school, location, distance} = req.query;
     if(users){
       filterKeys['users'] = users;
       users = new RegExp(escapeRegExp(users), 'gi');
@@ -245,20 +245,6 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       filterKeys['college'] = college;
       college = new RegExp(escapeRegExp(college), 'gi');
       dbQueries.push({'userKeys.college': college});
-    }
-    if(branch){
-      filterKeys['branch'] = branch;
-      branch = new RegExp(escapeRegExp(branch), 'gi');
-      dbQueries.push({'userKeys.branch': branch});
-    }
-    if(batch){
-      filterKeys['batch'] = batch;
-      dbQueries.push({'userKeys.batch': batch});
-    }
-    if(section){
-      filterKeys['section'] = section;
-      section = new RegExp(escapeRegExp(section), 'gi');
-      dbQueries.push({'userKeys.section': section});
     }
     if(workplace){
       filterKeys['workplace'] = workplace;

@@ -2,24 +2,38 @@
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function(){
   var currentScrollPos = window.pageYOffset;
+  var navbar = document.getElementById("navbar");
+  var pop_box_requests = document.getElementById("pop_box_requests");
+  var pop_box_notifications = document.getElementById("pop_box_notifications");
+  var discover_nav = document.getElementById("discover_nav");
+  var scroll = document.documentElement.scrollTop;
+
   if($(window).width() > 1199 && prevScrollpos > currentScrollPos) {
-    document.getElementById("navbar").style.top = "0";
-    document.getElementById("pop_box_requests").style.top = "40px";
-    document.getElementById("pop_box_notifications").style.top = "40px";
+    navbar.style.top = "0";
+    pop_box_requests.style.top = "40px";
+    pop_box_notifications.style.top = "40px";
   } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
-    document.getElementById("navbar").style.top = "0px";
-    document.getElementById("pop_box_requests").style.top = "42px";
-    document.getElementById("pop_box_notifications").style.top = "42px";
+    navbar.style.top = "0px";
+    pop_box_requests.style.top = "42px";
+    pop_box_notifications.style.top = "42px";
   } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
-    document.getElementById("navbar").style.top = "-40px";
-    document.getElementById("pop_box_requests").style.top = "-600px";
-    document.getElementById("pop_box_notifications").style.top = "-600px";
+    navbar.style.top = "-40px";
+    pop_box_requests.style.top = "-600px";
+    pop_box_notifications.style.top = "-600px";
   } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
-    document.getElementById("navbar").style.top = "-50px";
-    document.getElementById("pop_box_requests").style.top = "-600px";
-    document.getElementById("pop_box_notifications").style.top = "-600px";
+    navbar.style.top = "-50px";
+    pop_box_requests.style.top = "-600px";
+    pop_box_notifications.style.top = "-600px";
   }
   prevScrollpos = currentScrollPos;
+
+  if(discover_nav){
+    if(scroll > 40){
+      discover_nav.classList.add("nav-hidden");
+    } else{
+      discover_nav.classList.remove("nav-hidden");
+    }
+  }
 }
 
 //Sidebar dropdown
@@ -441,9 +455,7 @@ $('.intercom-composer-popover-input2').on('input', function() {
 });
 
 $(function (){
-  $('#datetimepicker4').datetimepicker({
-    format: 'L'
-  });
+  $('#datetimepicker4').datetimepicker({format: 'L'});
   setTimeout(function(){
     var divUtc = $('#timeUTC');
     var divLocal = $('#timeLocal');
@@ -457,7 +469,6 @@ $(function (){
     var localTimeNow  = moment.utc(divUtcNow.text()).toDate();
     localTimeNow = moment(localTimeNow).format('LT');
     divLocalNow.text(localTimeNow);
-
   }, 1000);
 });
 

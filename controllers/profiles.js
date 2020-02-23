@@ -334,7 +334,7 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, userId: foundUser._id,
+          return res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, userId: foundUser._id,
           rank, currentUserId, match});
         }
       }
@@ -398,7 +398,7 @@ module.exports = {
       } else{
         var seenIds = [];
       }
-      Post.find({'postAuthor.id': req.params.id, privacy: 0, moderation: 0, _id: {$nin: seenIds}})
+      Post.find({'postAuthor.id': req.params.id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
@@ -460,10 +460,32 @@ module.exports = {
         {
           "$unwind": "$postClub"
         },
+        { "$lookup": {
+          "from": "comments",
+          "as": "commentBuckets",
+          "let": { "id": "$_id" },
+          "pipeline": [
+            { "$match": { 
+              "$expr": { "$eq": [ "$$id", "$postId" ] }
+            }},
+            { "$sort": { "_id": -1 } },
+            { "$limit": 1 }
+          ]
+        }},
         {
         "$project": {
             "_id": 1,
-            "postAuthor": 1,
+            "description": 1,
+            "hyperlink": 1,
+            "descEdit": 1,
+            "image": 1,
+            "imageId": 1,
+            "discoverTags": 1,
+            "clubOrgKey": 1,
+            "viewsCount": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "isAdminModerationLock": 1,
             "likeCount": 1,
             "dislikeCount": 1,
             "heartCount": 1,
@@ -473,6 +495,12 @@ module.exports = {
             "commentsCount": 1,
             "bucketNum": 1,
             "commentBuckets": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1,
+            "postAuthor": 1,
+            "topic": 1,
             "subpostsCount": 1,
             "subpostbucketNum": 1,
             "subpostBuckets": 1,
@@ -480,29 +508,10 @@ module.exports = {
             "downVoteCount": 1,
             "upVoteUserIds": 1,
             "downVoteUserIds": 1,
-            "image": 1,
-            "imageId": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "descEdit": 1,
             "createdAt": 1,
-            "updatedAt": 1,
             "__v": 1,
-            "topic": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1
           }
         },
-        { "$lookup": {
-          "from": "comments",
-          "foreignField": "_id",
-          "localField": "commentBuckets",
-          "as": "commentBuckets"
-        }},
         {$limit: 10}
         ])
       .exec(function(err, foundHeartPosts){
@@ -544,149 +553,148 @@ module.exports = {
   },
 
   profilesUpdateUserProfile(req, res, next){
-    User.findById(req.params.id, async function(err, foundUser){
-    if(err || !foundUser){
-      console.log(Date.now()+' : '+req.user._id+' => (profiles-15)foundUser err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    } else{
-      if(req.file){
-        try{
-          if(foundUser.profilePicId != null){
-            await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
-          }
-          var result = await cloudinary.v2.uploader.upload(req.file.path,
-            {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-            effect: 'sharpen:35', format: 'webp', crop: 'limit'});
-          //replace original information with new information
-          foundUser.profilePicId = result.public_id;
-          foundUser.profilePic = result.secure_url;
-        } catch(err){
-          console.log(Date.now()+' : '+req.user._id+' => (profiles-16)profilePicUpload err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        }
-      }
-      if(req.body.delUpdate){
-        if(foundUser.clubUpdates.length != 0){
-          for(i=foundUser.clubUpdates.length-1;i>=0;i--){
-            if(foundUser.clubUpdates[i]._id.equals(req.body.delUpdate)){
-              foundUser.clubUpdates.splice(i,1);
+    if(req.user && req.user._id.equals(req.params.id)){
+      User.findById(req.params.id, async function(err, foundUser){
+      if(err || !foundUser){
+        console.log(Date.now()+' : '+req.user._id+' => (profiles-15)foundUser err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        if(req.file){
+          try{
+            if(foundUser.profilePicId != null){
+              await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
             }
+            var result = await cloudinary.v2.uploader.upload(req.file.path,
+              {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
+              effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+            //replace original information with new information
+            foundUser.profilePicId = result.public_id;
+            foundUser.profilePic = result.secure_url;
+          } catch(err){
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-16)profilePicUpload err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
           }
-        };
-      }
-      if(req.body.note && foundUser.note != req.body.note){
-        foundUser.note = req.body.note;
-      }
-      if(req.body.firstName || req.body.lastName){
-        var newFirstName = req.body.firstName.trim();
-        var newLastName = req.body.lastName.trim();
-        if(newFirstName != '' && ((newFirstName != foundUser.firstName) || (newLastName != foundUser.lastName))){
-          foundUser.firstName = newFirstName;
-          foundUser.lastName = newLastName;
-          foundUser.fullName = newFirstName+' '+newLastName;
         }
-      }
-      if(req.body.userKeys){
-        if(req.body.userKeys.birthdate && req.body.userKeys.sex){
-          var newDate = moment(req.body.userKeys.birthdate, 'MM-DD-YYYY').toDate();
-          if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
-            foundUser.userKeys.birthdate = newDate;
+        if(req.body.delUpdate){
+          if(foundUser.clubUpdates.length != 0){
+            for(i=foundUser.clubUpdates.length-1;i>=0;i--){
+              if(foundUser.clubUpdates[i]._id.equals(req.body.delUpdate)){
+                foundUser.clubUpdates.splice(i,1);
+              }
+            }
+          };
+        }
+        if(req.body.note && foundUser.note != req.body.note){
+          foundUser.note = req.body.note;
+        }
+        if(req.body.firstName || req.body.lastName){
+          var newFirstName = req.body.firstName.trim();
+          var newLastName = req.body.lastName.trim();
+          if(newFirstName != '' && ((newFirstName != foundUser.firstName) || (newLastName != foundUser.lastName))){
+            foundUser.firstName = newFirstName;
+            foundUser.lastName = newLastName;
+            foundUser.fullName = newFirstName+' '+newLastName;
           }
-          if(req.body.userKeys.sex != foundUser.userKeys.sex){
-            foundUser.userKeys.sex = req.body.userKeys.sex;
-          }
-        } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-          // COLLEGE PAGE(OrgPage)
-          if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
-            var oldCollegeName = foundUser.userKeys.college;
-            var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
-            OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
-              if(foundOldOrgPage && foundOldOrgPage.allUsers.length){
-                for(var i=foundOldOrgPage.allUsers.length-1;i>=0;i--){
-                  if(foundOldOrgPage.allUsers[i].equals(foundUser._id)){
-                    foundOldOrgPage.allUsers.splice(i,1);
-                    break;
+        }
+        if(req.body.userKeys){
+          if(req.body.userKeys.birthdate && req.body.userKeys.sex){
+            var newDate = moment(req.body.userKeys.birthdate, 'MM-DD-YYYY').toDate();
+            if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
+              foundUser.userKeys.birthdate = newDate;
+            }
+            if(req.body.userKeys.sex != foundUser.userKeys.sex){
+              foundUser.userKeys.sex = req.body.userKeys.sex;
+            }
+          } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
+            // COLLEGE PAGE(OrgPage)
+            if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
+              var oldCollegeName = foundUser.userKeys.college;
+              var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+              OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
+                if(foundOldOrgPage && foundOldOrgPage.allUserIds.length){
+                  for(var i=foundOldOrgPage.allUserIds.length-1;i>=0;i--){
+                    if(foundOldOrgPage.allUserIds[i].equals(foundUser._id)){
+                      foundOldOrgPage.allUserIds.splice(i,1);
+                      break;
+                    }
+                  }
+                  foundOldOrgPage.userCount -= 1;
+                  foundOldOrgPage.save();
+                }
+              });
+              OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
+                if(foundNewOrgPage){
+                  foundNewOrgPage.allUserIds.push(foundUser._id);
+                  foundNewOrgPage.userCount += 1;
+                  foundNewOrgPage.save();
+                } else{
+                  if(newCollegeName && newCollegeName != ''){
+                    OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
+                      createdNewOrgPage.allUserIds.push(foundUser._id);
+                      createdNewOrgPage.userCount += 1;
+                      createdNewOrgPage.save();
+                    });
                   }
                 }
-                foundOldOrgPage.userCount -= 1;
-                foundOldOrgPage.save();
-              }
-            });
-            OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
-              if(foundNewOrgPage){
-                foundNewOrgPage.allUsers.push(foundUser._id);
-                foundNewOrgPage.userCount += 1;
-                foundNewOrgPage.save();
+              });
+              foundUser.userKeys.college = newCollegeName;
+            }
+            foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+            foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+            if(foundUser.userKeys.residence != req.body.userKeys.residence){
+              if(req.body.userKeys.residence != ''){
+                let response = await geocodingClient
+                .forwardGeocode({
+                  query: req.body.userKeys.residence,
+                  limit: 1
+                })
+                .send();
+                foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, '');
+                foundUser.geometry = response.body.features[0].geometry;
               } else{
-                if(newCollegeName && newCollegeName != ''){
-                  OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
-                    createdNewOrgPage.allUsers.push(foundUser._id);
-                    createdNewOrgPage.userCount += 1;
-                    createdNewOrgPage.save();
-                  });
-                }
+                foundUser.userKeys.residence = '';
+                foundUser.geometry = undefined;
               }
-            });
-            foundUser.userKeys.college = newCollegeName;
-          }
-          foundUser.userKeys.branch = req.body.userKeys.branch.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-          foundUser.userKeys.batch = req.body.userKeys.batch.replace(/[^0-9 ]/g, '').trim();
-          foundUser.userKeys.section = req.body.userKeys.section.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-          foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-          foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-          if(foundUser.userKeys.residence != req.body.userKeys.residence){
-            if(req.body.userKeys.residence != ''){
-              let response = await geocodingClient
-              .forwardGeocode({
-                query: req.body.userKeys.residence,
-                limit: 1
-              })
-              .send();
-              foundUser.userKeys.residence = req.body.userKeys.residence.replace(/[^a-zA-Z',0-9 .]/g, '');
-              foundUser.geometry = response.body.features[0].geometry;
-            } else{
-              foundUser.userKeys.residence = '';
-              foundUser.geometry = undefined;
             }
           }
         }
-      }
-      editinfo(0,req.body.interests,foundUser.interests);
-      editinfo(1,req.body.music,foundUser.favourites.music);
-      editinfo(2,req.body.movies,foundUser.favourites.movies);
-      editinfo(3,req.body.tvshows,foundUser.favourites.tvshows);
-      editinfo(4,req.body.places,foundUser.favourites.places);
-      editinfo(5,req.body.books,foundUser.favourites.books);
-      editinfo(6,req.body.videogames,foundUser.favourites.videogames);
+        editinfo(0,req.body.interests,foundUser.interests);
+        editinfo(1,req.body.music,foundUser.favourites.music);
+        editinfo(2,req.body.movies,foundUser.favourites.movies);
+        editinfo(3,req.body.tvshows,foundUser.favourites.tvshows);
+        editinfo(4,req.body.places,foundUser.favourites.places);
+        editinfo(5,req.body.books,foundUser.favourites.books);
+        editinfo(6,req.body.videogames,foundUser.favourites.videogames);
 
-      function editinfo(count,newData,oldData){
-        if(newData){
-          oldData=[];
-          if(Array.isArray(newData)){
-            var oldData = newData.filter(Boolean);
-          } else{
-            var oldData = [newData].filter(Boolean);;
+        function editinfo(count,newData,oldData){
+          if(newData){
+            oldData=[];
+            if(Array.isArray(newData)){
+              var oldData = newData.filter(Boolean);
+            } else{
+              var oldData = [newData].filter(Boolean);;
+            }
+            var len = oldData.length; for(var i=len-1;i>=0;i--){
+              var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
+              oldData.splice(i,1,inputstring);
+            }
+            if(count==0){foundUser.interests=oldData;}
+            else if(count==1){foundUser.favourites.music=oldData;}
+            else if(count==2){foundUser.favourites.movies=oldData;}
+            else if(count==3){foundUser.favourites.tvshows=oldData;}
+            else if(count==4){foundUser.favourites.places=oldData;}
+            else if(count==5){foundUser.favourites.books=oldData;}
+            else if(count==6){foundUser.favourites.videogames=oldData;}
           }
-          var len = oldData.length; for(var i=len-1;i>=0;i--){
-            var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
-            oldData.splice(i,1,inputstring);
-          }
-          if(count==0){foundUser.interests=oldData;}
-          else if(count==1){foundUser.favourites.music=oldData;}
-          else if(count==2){foundUser.favourites.movies=oldData;}
-          else if(count==3){foundUser.favourites.tvshows=oldData;}
-          else if(count==4){foundUser.favourites.places=oldData;}
-          else if(count==5){foundUser.favourites.books=oldData;}
-          else if(count==6){foundUser.favourites.videogames=oldData;}
-        }
-      };
-      foundUser.save();
-      req.flash('success', 'Successfully updated');
-      res.redirect('/users/' + req.params.id);
+        };
+        foundUser.save();
+        req.flash('success', 'Successfully updated');
+        res.redirect('/users/' + req.params.id);
+      }
+      });
     }
-    });
   },
 
   profilesNewClub(req, res, next){
@@ -854,7 +862,7 @@ module.exports = {
             Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
-          res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts});
+          return res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts});
         }
         });
       }
@@ -887,7 +895,7 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          res.json({users: limitedUsers, Users_50_profilePic, newEndpoints, clubId: foundClub._id, rank});
+          return res.json({users: limitedUsers, Users_50_profilePic, newEndpoints, clubId: foundClub._id, rank});
         }
       }
     }
@@ -910,9 +918,8 @@ module.exports = {
             var matchingUsers = []; var Users_50_profilePic = [];
             var rank = currentRank(foundClub.clubUsers,req.user._id);
             var query = req.query.name.replace(/[^a-zA-Z ]/g, '');
-            var regexQuery = new RegExp("\\b" + query + "\\b", 'gi');
+            var regexQuery = new RegExp(escapeRegExp(query), 'gi');
             for(var i=0;i<foundClub.clubUsers.length;i++){
-              // var match = regexQuery.test(foundClub.clubUsers[i].id.fullName);
               var match = foundClub.clubUsers[i].id.fullName.match(regexQuery);
               if(match){
                 matchingUsers.push(foundClub.clubUsers[i]); 
@@ -922,7 +929,7 @@ module.exports = {
                 Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
                 {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
               }
-            res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
+            return res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank});
           } else{
             return res.sendStatus(400);
           }
@@ -952,7 +959,7 @@ module.exports = {
       }
       var newStart = (start+10).toString(), newEnd = (end+10).toString();
       var newEndpoints = newStart+','+newEnd;
-      res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub});
+      return res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub});
     }
     });
   },
@@ -999,7 +1006,7 @@ module.exports = {
         });
         var currentUser = req.user;
         var rank = currentRank2(req.params.club_id,req.user.userClubs);
-        res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, PA_50_profilePic,
+        return res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, PA_50_profilePic,
         CU_50_profilePic, arrLength});
       }
       });
@@ -1010,7 +1017,7 @@ module.exports = {
       } else{
         var seenIds = [];
       }
-      Post.find({postClub: req.params.club_id, privacy: 0, moderation: 0, _id: {$nin: seenIds}})
+      Post.find({postClub: req.params.club_id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
       .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
@@ -1041,7 +1048,7 @@ module.exports = {
           }
         });
         var rank, currentUser = null;
-        res.json({hasVote, hasModVote, posts, rank, currentUser, foundPostIds, PA_50_profilePic,
+        return res.json({hasVote, hasModVote, posts, rank, currentUser, foundPostIds, PA_50_profilePic,
         CU_50_profilePic, arrLength});
       }
       });
@@ -1841,6 +1848,9 @@ module.exports = {
 };
 
 //*******************FUNCTIONS***********************
+function escapeRegExp(str){
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function checkRank(clubUsers,userId,rank){
   var ok;
@@ -1873,25 +1883,22 @@ function currentRank2(clubId,userClubs){
 };
 
 function voteCheck(user,post){
-  var i=0; var j=0; var k=0; var hasVote = 0;
+  var hasVote = 0;
   if(user){
-    var likeIds = post.likeUserIds; var len1 = post.likeCount;
-    var dislikeIds = post.dislikeUserIds; var len2 = post.dislikeCount;
-    var heartIds = post.heartUserIds; var len3 = post.heartCount;
-    for(i;i<len1;i++){
-      if(likeIds[i].equals(user._id)){
+    for(var i=post.likeCount-1;i>=0;i--){
+      if(post.likeUserIds[i].equals(user._id)){
         hasVote = 1;
         break;
       }
     }
-    for(j;j<len2;j++){
-      if(dislikeIds[j].equals(user._id)){
+    for(var j=post.dislikeCount-1;j>=0;j--){
+      if(post.dislikeUserIds[j].equals(user._id)){
         hasVote = -1;
         break;
       }
     }
-    for(k;k<len3;k++){
-      if(heartIds[k].equals(user._id)){
+    for(var k=post.heartCount-1;k>=0;k--){
+      if(post.heartUserIds[k].equals(user._id)){
         hasVote = 3;
         break;
       }
@@ -1901,18 +1908,16 @@ function voteCheck(user,post){
 };
 
 function modVoteCheck(user,post){
-  var i=0; var j=0; var hasModVote = 0;
+  var hasModVote = 0;
   if(user){
-    var upVoteIds = post.upVoteUserIds; var len1 = post.upVoteCount;
-    var downVoteIds = post.downVoteUserIds; var len2 = post.downVoteCount;
-    for(i;i<len1;i++){
-      if(upVoteIds[i].equals(user._id)){
+    for(var i=post.upVoteCount-1;i>=0;i--){
+      if(post.upVoteUserIds[i].equals(user._id)){
         hasModVote = 1;
         break;
       }
     }
-    for(j;j<len2;j++){
-      if(downVoteIds[j].equals(user._id)){
+    for(var j=post.downVoteCount-1;j>=0;j--){
+      if(post.downVoteUserIds[j].equals(user._id)){
         hasModVote = -1;
         break;
       }

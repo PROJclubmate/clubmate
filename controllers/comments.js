@@ -134,10 +134,10 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
-          res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, CA_50_profilePic});
+          return res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, CA_50_profilePic});
         // Close else block if problem
         } else{
-          res.json({buckets: []});
+          return res.json({buckets: []});
         }
         });
       } else{

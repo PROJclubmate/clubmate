@@ -3,9 +3,9 @@ const mongoose          = require('mongoose'),
   Schema                = mongoose.Schema;
 
 const clubSchema = new Schema({
+  name: String,
   isActive: {type: Boolean, default: true},
   deActivatedOn: Date,
-  name: String,
   banner: String,
   avatar: String,
   avatarId: String,

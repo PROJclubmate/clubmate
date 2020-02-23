@@ -2,9 +2,9 @@ const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
   {upload}     = require('../public/js/cloudinary.js'),
-  {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts, postsDiscover,
-  postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, postsUpdate, postsDelete, postsVote,
-	postsModVote} = require('../controllers/posts');
+  {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
+  postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, postsUpdate, postsDelete, 
+  postsVote, postsModVote} = require('../controllers/posts');
 
 
 // Home
@@ -21,6 +21,9 @@ router.get('/friends_posts-morePosts', postsFriends_postsMorePosts);
 
 // Discover
 router.get('/discover', postsDiscover);
+
+// Discover settings
+router.put('/discover/settings/user/:id', postsDiscoverSettings);
 
 // Discover load more posts(AJAX)
 router.get('/discover-morePosts', postsDiscoverMorePosts);

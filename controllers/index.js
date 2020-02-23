@@ -177,7 +177,7 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, emailSearch: false,
+      return res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, emailSearch: false,
       Users_100_profilePic});
     }
     });
@@ -236,32 +236,17 @@ module.exports = {
         college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var branch = urlEqualsSplit[3];
-      if(branch.split('&')[0]){
-        branch = new RegExp(escapeRegExp(branch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.branch': branch});
-      }
-      var batch = urlEqualsSplit[4];
-      if(batch.split('&')[0]){
-        batch = batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ');
-        dbQueries.push({'userKeys.batch': batch});
-      }
-      var section = urlEqualsSplit[5];
-      if(section.split('&')[0]){
-        section = new RegExp(escapeRegExp(section.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.section': section});
-      }
-      var workplace = urlEqualsSplit[6];
+      var workplace = urlEqualsSplit[3];
       if(workplace.split('&')[0]){
         workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.workplace': workplace});
       }
-      var school = urlEqualsSplit[7];
+      var school = urlEqualsSplit[4];
       if(school.split('&')[0]){
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[8];
+      var location = urlEqualsSplit[5];
       if(location.split('&')[0]){
         let coordinates;
         try{
@@ -281,7 +266,7 @@ module.exports = {
           }).send();
           coordinates = response.body.features[0].geometry.coordinates;
         }
-        if(urlEqualsSplit[9]){
+        if(urlEqualsSplit[6]){
           var distance = Number(urlEqualsSplit[9]);
         }
         let maxDistance = distance || 25;
@@ -319,7 +304,7 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser,
+      return res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser,
       Users_100_profilePic});
     }
     });
@@ -372,7 +357,7 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, Clubs_100_Avatar});
+      return res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, Clubs_100_Avatar});
     }
     });
   },
@@ -493,7 +478,7 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar});
+      return res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar});
     }
     });
   },
@@ -548,7 +533,7 @@ module.exports = {
         }
       }
       var currentUser = req.user;
-      res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
+      return res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
     }
     });
   },
@@ -1021,8 +1006,7 @@ module.exports = {
     var perPage = 12;
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
-    User.findById(req.params.id)
-    .exec(function(err, foundUser){
+    User.findById(req.params.id, function(err, foundUser){
     if(err || !foundUser){
       console.log(Date.now()+' : '+'(index-48)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
@@ -1072,7 +1056,7 @@ module.exports = {
       req.flash('error', 'College page either does not exist or has no listed clubs :(');
       return res.redirect('back');
     } else{
-      var Clubs_50_clubAvatar = []; var match = false;
+      var Clubs_50_clubAvatar = []; var match = false; var following = false;
       var allClubsArr = foundOrgPage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
@@ -1088,10 +1072,79 @@ module.exports = {
         if(req.user.userKeys.college == foundOrgPage.name){
           match = true;
         }
+        for(var k=0;k<foundOrgPage.allFollowerIds.length;k++){
+          if(foundOrgPage.allFollowerIds[k].equals(req.user._id)){
+            for(var l=0;l<req.user.followingOrgKeys.length;l++){
+              if(req.user.followingOrgKeys[l] == foundOrgPage.name){
+                following = true;
+                break;
+              }
+            }
+            if(following === true){
+              break;
+            }
+          }
+        }
       }
-      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match});
+      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+      following});
     }
     });
+  },
+
+  indexFollowOrgPage(req, res, next){
+    if(req.user && req.user._id.equals(req.params.user_id)){
+      OrgPage.findOne({_id: req.params.org_id, clubCount: {$gt: 0}})
+      .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount'})
+      .exec(function(err, foundOrgPage){
+      if(err || !foundOrgPage){
+        console.log(Date.now()+' : '+'(index-50)foundOrgPage err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        if(req.body.follow == 'true'){
+          // LoopCheck for duplicate followerIds, if found return back to page
+          for(var i=0;i<foundOrgPage.allFollowerIds.length;i++){
+            if(foundOrgPage.allFollowerIds[i].equals(req.user._id)){
+              req.flash('success', 'Succesfully following this page');
+              return res.redirect(/org_pages/+foundOrgPage.name);
+              break;
+            }
+          }
+          User.updateOne({_id: req.user._id}, {$addToSet: {followingOrgKeys: foundOrgPage.name}}, 
+          function(err, foundUser){
+          if(err || !foundUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+          } else{
+            foundOrgPage.followerCount += 1;
+            foundOrgPage.allFollowerIds.push(req.user._id);
+            foundOrgPage.save();
+            res.redirect(/org_pages/+foundOrgPage.name);
+          }
+          });
+        } else if(req.body.follow == 'false'){
+          User.updateOne({_id: req.user._id}, {$pull: {followingOrgKeys: foundOrgPage.name}}, 
+          function(err, foundUser){
+          if(err || !foundUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+          } else{
+            for(var i=0;i<foundOrgPage.allFollowerIds.length;i++){
+              if(foundOrgPage.allFollowerIds[i].equals(req.user._id)){
+                foundOrgPage.allFollowerIds.splice(i,1);
+                break;
+              }
+            }
+            foundOrgPage.followerCount -= 1;
+            foundOrgPage.save();
+            res.redirect(/org_pages/+foundOrgPage.name);
+          }
+          });
+        }
+      }
+      });
+    }
   }
 };
 

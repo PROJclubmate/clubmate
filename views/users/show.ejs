@@ -120,23 +120,14 @@
             <hr class="hr-light">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <% if(user.userKeys.college && user.userKeys.branch){ %>
-                <div class="info1">Branch: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=<%= user.userKeys.branch %>&batch=&section=&workplace=&school=&location="><%= user.userKeys.branch %></a></div></div>
-              <% } %>
-              <% if(user.userKeys.college && user.userKeys.batch){ %>
-                <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=<%= user.userKeys.batch %>&section=&workplace=&school=&location="><%= user.userKeys.batch %></a></div></div>
-              <% } %>
-              <% if(user.userKeys.college && user.userKeys.section){ %>
-                <div class="info1">Section: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=<%= user.userKeys.section %>&workplace=&school=&location="><%= user.userKeys.section %></a></div></div>
-              <% } %>
               <% if(user.userKeys.workplace){ %>
-                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
+                <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
               <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&workplace=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
               <% } %>
               <% if(user.userKeys.residence){ %>
-                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&branch=&batch=&section=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&workplace=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -147,14 +138,8 @@
                 <label for="note" class="sr-only">Note</label>
                 <input type="text" id="note" class="form-control form-control-sm commentbox2 text-center" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
                 <br>
-                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college name (Avoid duplicate pages)</label>
-                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College">
-                <label for="branch" class="sr-only">Branch</label>
-                <input type="text" id="branch" class="form-control form-control-sm" name="userKeys[branch]" value="<%= user.userKeys.branch %>" placeholder="Subject Branch e.g. CSE">
-                <label for="batch" class="sr-only">Batch</label>
-                <input type="number" id="batch" class="form-control form-control-sm" name="userKeys[batch]" value="<%= user.userKeys.batch %>" placeholder="Batch (First year) e.g. 2016">
-                <label for="section" class="sr-only">Section</label>
-                <input type="text" id="section" class="form-control form-control-sm" name="userKeys[section]" value="<%= user.userKeys.section %>" placeholder="Section e.g. B4">
+                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
+                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College name [paste exact string here]">
                 <label for="workplace" class="sr-only">Workplace</label>
                 <input type="text" id="workplace" class="form-control form-control-sm" name="userKeys[workplace]" value="<%= user.userKeys.workplace %>" placeholder="Workplace">
                 <label for="school" class="sr-only">School</label>
@@ -323,14 +308,14 @@
                   <% if(!match){ %>
                     <% if(mutualClubs.length != 0){ %>
                       <div class="info1">Mutal clubs: <div class="info30">
-                        <% var len = mutualClubs.length; var i=0; for(i;i<len;i++){ %>
+                        <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
                         <% if(i==0 && i==len-1){ %>
                           <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
-                          <% }else if(i==0){ %>
+                          <% } else if(i==len-1){ %>
                           <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
-                          <% }else if(i>0 && i<len-1){ %>
+                          <% } else if(i>0 && i<len){ %>
                           <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
-                          <% }else if(i=len-1){ %>
+                          <% } else if(i==0){ %>
                           <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
                         <% }} %>
                       </div></div>
@@ -345,6 +330,21 @@
                     <% } else{ %>
                       Last logout: <span class="info30"><%= moment(user.lastLoggedOut).format('lll') %></span>
                     <% } %>
+                  <% } %>
+                  <br>
+                  <% if(match){ %>
+                    <div class="info1">Following: <div class="info30">
+                      <% var keysArr = currentUser.followingOrgKeys; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
+                        <% if(i==0 && i==len-1){ %>
+                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= keysArr[i] %></a></span>
+                          <% } else if(i==len-1){ %>
+                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= keysArr[i] %></a>,</span>
+                          <% } else if(i>0 && i<len){ %>
+                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a>,</span>
+                          <% } else if(i==0){ %>
+                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a></span>
+                      <% }} %>
+                    </div></div>
                   <% } %>
                   <div class="info30">
                     <div id="account_info_form_div" class="greyback">
@@ -380,7 +380,7 @@
                           </div>
                         </div>
                         <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
-                          <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
+                          <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
                           <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                           </div>

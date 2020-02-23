@@ -34,10 +34,24 @@
 					</div>
 					</div>
 			<% } %>
-			<div class="boldtext text-md badge badge-danger orgdiv-usercnt"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
+			<% if(following){ %>
+				<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+					<button class="btn btn-light btn-org2 orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+				</form>
+			<% } else{ %>
+				<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+					<button class="btn btn-org orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
+				</form>
+			<% } %>
 		</div>
-		<div class="orgdiv-clubcnt">
-			<div class="boldtext lightgrey text-md"><span class=" mobilebold"><%= org_page.clubCount %></span> clubs</div>
+		<div class="orgdiv-count valign">
+			<div class="boldtext lightgrey text-md">
+				<span><span class="mobilebold"><%= org_page.clubCount %></span> clubs,</span>
+				<span><span class="mobilebold"><%= org_page.userCount %></span> users</span>
+			</div>
+			<!-- <div>
+				<span class=" mobilebold text-md"><%= org_page.followerCount %></span>
+			</div> -->
 		</div>
 		<div class="orgpad py-1">
 			<% for(var i=org_page.allClubs.length-1;i>=0;i--){ %>

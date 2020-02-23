@@ -44,8 +44,6 @@
                   <% if(post.descEdit.length != 0){ %>
                     <div class="badge badge-warning text-xxs">Edited</div>
                   <% } %>
-                  <span><em id="timeUTC" class="text-xxs lightgrey nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                  <span class="lightgrey nothing">. <em id="timeLocal" class="text-xxs"></em></span>
                 </div>
               </div>
             </div>
@@ -77,6 +75,10 @@
         <% } %>
           <p class="nothing mobiletext linewrap"><%= post.description %></p>
           <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+          <div>
+            <span class="lightgrey nothing"><em id="timeLocal" class="text-xxs"></em></span>
+            <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+          </div>
         </div>
         <hr>
         <div class="card-body">
@@ -276,9 +278,9 @@
         <div id="post_edit_history">
           <hr>
           <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
-          <div class="card-body3 greyback2 notext-shadow valign">
+          <div class="card-body3 greyback2">
+            <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
             <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
-            <div class="text-xs righttext"><em><%= moment(edits[i].createdAt).format('l'); %></em></div>
           </div>
           <br>
           <% } %>

@@ -11,9 +11,9 @@ const postSchema = new Schema({
   }],
   image: String,
   imageId: String,
-  clubTags: [String],
+  discoverTags: [String],
   clubOrgKey: String,
-  // +1 for minified view (Load more), +5 for expand; open in modal JSON to prevent page refresh & +5
+  // +1 for minified view (Load more), +5 for expand; open in modal JSON to prevent page refresh => +5s
   viewsCount: {type: Number, default: 0},
   privacy: {
     type: Number,
@@ -35,7 +35,7 @@ const postSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  isAdminLock: {type: Boolean, default: false},
+  isAdminModerationLock: {type: Boolean, default: false},
   likeCount: {type: Number, default: 0},
   dislikeCount: {type: Number, default: 0},
   heartCount: {type: Number, default: 0},
@@ -71,7 +71,7 @@ const postSchema = new Schema({
     },
     authorName: String
   },
-  // ======================================== DISCUSSION =======================================
+  // =============================== DISCUSSION (TOPIC POSTS) i.e. if topic != '' ================================
   topic: String,
   subpostsCount: {type: Number, default: 0},
   subpostbucketNum: {type: Number, default: 1},
@@ -90,15 +90,14 @@ const postSchema = new Schema({
   downVoteUserIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }]
-},
-{
-  timestamps: true
+  }],
+  createdAt: {type: Date, default: Date.now}
 });
 
-postSchema.index({clubTags: 'text'});
-postSchema.index({clubOrgKey:1});
-postSchema.index({postClub:1});
-postSchema.index({postAuthor:1});
+postSchema.index({discoverTags: 'text'});
+postSchema.index({clubOrgKey: 1});
+postSchema.index({postClub: 1});
+postSchema.index({'postAuthor.id': 1});
+postSchema.index({createdAt: 1});
 
 module.exports = mongoose.model('Post', postSchema);

@@ -12,15 +12,6 @@
 			<% if(filterKeys.college){ %>
 				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
-			<% if(filterKeys.branch){ %>
-				<span class="lightgrey text-xs">Branch=</span><span class="boldtext text-sm nothing"><%= filterKeys.branch %></span>
-			<% } %>
-			<% if(filterKeys.batch){ %>
-				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
-			<% } %>
-			<% if(filterKeys.section){ %>
-				<span class="lightgrey text-xs">Section=</span><span class="boldtext text-sm nothing"><%= filterKeys.section %></span>
-			<% } %>
 			<% if(filterKeys.workplace){ %>
 				<span class="lightgrey text-xs">Workplace=</span><span class="boldtext text-sm nothing"><%= filterKeys.workplace %></span>
 			<% } %>
@@ -69,17 +60,6 @@
 			      	<div>
 			      		<div class="text-sm mobilebold darkgrey"><%= users[k].userKeys.college %></div>
 				      	<% if(users[k].userKeys){ %>
-						      <% if(users[k].userKeys.college){ %>
-					      		<div class="lightgrey text-xs">
-					      			<span class="nothing"><%= users[k].userKeys.branch %></span>
-					      			<% if(users[k].userKeys.batch){ %>
-					      				<span class="nothing">(<%= users[k].userKeys.batch %>)</span>
-					      			<% } %>
-					      			<% if(users[k].userKeys.section){ %>
-					      				<span class="nothing">(<%= users[k].userKeys.section %>)</span>
-					      			<% } %>
-					      		</div>
-					      	<% } %>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
 						      <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
 						      <div class="lightgrey text-xs boldtext"><%= users[k].email %></div>
@@ -146,18 +126,6 @@
       	<label for="college" class="sr-only">College</label>
 				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
 			</div>
-      <div>
-      	<label for="branch" class="sr-only">Branch</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Branch" name="branch" id="branch" value="<%= query.branch %>">
-      </div>
-      <div>
-      	<label for="batch" class="sr-only">Batch</label>
-				<input class="form-control form-control-sm" type="number" placeholder="Batch" name="batch" id="batch" value="<%= query.batch %>">
-      </div>
-      <div>
-      	<label for="section" class="sr-only">Section</label>
-				<input class="form-control form-control-sm" type="text" placeholder="Section" name="section" id="section" value="<%= query.section %>">
-      </div>
       <div>
       	<label for="workplace" class="sr-only">Workplace</label>
 				<input class="form-control form-control-sm" type="text" placeholder="Workplace" name="workplace" id="workplace" value="<%= query.workplace %>">

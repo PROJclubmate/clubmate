@@ -77,7 +77,7 @@
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
           <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
         </div>
         <hr>
@@ -85,7 +85,7 @@
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
-            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
             <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
           </a>
         </div>
@@ -278,14 +278,14 @@
           </div>
           <% if(posts[k].image){ %>
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
               <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
               <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             </a>
           <% } %>
         </div>

@@ -102,7 +102,7 @@ module.exports = {
           } else{
             var subVotes = [];
           }
-          res.json({post: foundPost, subVotes, bucket: foundBucket, index, rank, currentUser,
+          return res.json({post: foundPost, subVotes, bucket: foundBucket, index, rank, currentUser,
           clubId: req.params.club_id, CU_50_profilePic, sPA_50_profilePic});
         }
         });

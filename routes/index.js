@@ -4,7 +4,7 @@ const express  = require('express'),
   {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople,
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
-  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage}
+  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexFollowOrgPage}
   = require('../controllers/index');
 
 
@@ -72,5 +72,8 @@ router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends)
 
 // View organization page
 router.get('/org_pages/:org_name', indexViewOrgPage);
+
+// Follow organization page
+router.put('/org_pages/:org_id/follow/:user_id', indexFollowOrgPage);
 
 module.exports = router;

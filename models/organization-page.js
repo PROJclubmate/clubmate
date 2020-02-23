@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 const orgPageSchema = new Schema({
   name: {type: String, unique: true, required: true},
   userCount: {type: Number, default: 0},
-  allUsers: [{
+  allUserIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
@@ -17,11 +17,16 @@ const orgPageSchema = new Schema({
       ref: 'Club'
     }],
     _id: false
+  }],
+  followerCount:{type: Number, default: 0},
+  allFollowerIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }]
 });
 
 // for find queries(match exact strings)
-orgPageSchema.index({name:1}, {unique: true});
+orgPageSchema.index({name: 1}, {unique: true});
 // for search
 orgPageSchema.index({name: 'text'});
 

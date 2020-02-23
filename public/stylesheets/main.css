@@ -60,6 +60,7 @@ div.content{
   div.content{margin-left: 0;}
   div.content{padding: 0.5rem 0;}
   .hidesidebar{visibility: hidden;}
+  .discoverswitch{padding: 1rem 1rem !important;}
 }
 /* MIN WIDTH */
 @media screen and (min-width: 1200px){
@@ -162,8 +163,8 @@ div.content{
   .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .orgdiv-name{padding: 0.25rem 0.25rem !important;}
-  .orgdiv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
-  .orgdiv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important;}
+  .orgdiv-follow{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
+  .orgdiv-count{margin: 0.5rem 0 !important; padding: 0 0.5rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
@@ -418,6 +419,7 @@ button.btn.btn-secondary.search{
 .text-xl{font-size: 1.25rem !important;}
 .text-xxl{font-size: 1.375rem !important;}
 .text-xxxl{font-size: 1.5625rem !important;}
+.text-xxxxl{font-size: 1.625rem !important;}
 label{
   margin: 0;
 }
@@ -427,6 +429,73 @@ input{
 }
 .underline {
   text-decoration: underline;
+}
+.sortBykey{
+  color: grey;
+  padding: 0.25rem 0.5rem;
+  border: none !important;
+  background-color: #dcdcdc;
+}
+.sortBykey:hover{
+  color: black;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 1rem;
+}
+.sortBykey.active{
+  color: black;
+  cursor: default;
+  background-color: white;
+  border-radius: 1rem;
+}
+.sortBykey.logout:hover{
+  color: grey;
+  cursor: default;
+  background-color: #dcdcdc;
+}
+.discover-navback{
+  box-shadow: 0px -1px 5px -2px rgba(0,0,0,0.4);
+}
+.nav-hidden{
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.25s, opacity 0.25s linear !important;
+}
+.discoverswitch{
+  font-size: 1.375rem;
+  padding: 1rem 2rem;
+}
+.discoverswitch-mobile{
+  font-size: 1.375rem;
+  padding: 0rem 2rem;
+  border: none !important;
+  box-shadow: none !important;
+}
+#following-switch{
+  color: white;
+  background: rgb(244,128,36);
+  background: linear-gradient(90deg, rgba(244,128,36,1) 0%, rgba(138,43,226,1) 50%, rgba(110,59,232,1) 75%, rgba(0,123,255,1) 100%);
+  cursor: default;
+  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+#explore-switch{
+  color: white;
+  background: rgb(100,149,237);
+  background: linear-gradient(90deg, rgba(100,149,237,1) 0%, rgba(125,220,31,1) 100%);
+  cursor: default;
+  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+#following-switch-mobile{
+  background: linear-gradient(90deg, rgba(244,128,36,1) 0%, rgba(138,43,226,1) 50%, rgba(110,59,232,1) 75%, rgba(0,123,255,1) 100%);
+  cursor: default;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#explore-switch-mobile{
+  background: linear-gradient(90deg, rgba(100,149,237,1) 0%, rgba(125,220,31,1) 100%);
+  cursor: default;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 /* Card styles 
 ------------------------------------------------------*/
@@ -484,7 +553,7 @@ input{
   padding: 0.5rem !important;
 }
 .noborder{
-  border: none;
+  border: none !important;
 }
 .card{
   margin-top: 1rem;
@@ -594,10 +663,40 @@ li.nav-item{
 .orgdiv-name{
   padding: 0.25rem 1rem;
 }
-.orgdiv-usercnt{
+.orgdiv-follow{
   margin: auto 0;
 }
-.orgdiv-clubcnt{
+.btn-org{
+  color: white;
+  border: 1px solid red;
+  background-color: #dc3545;
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.5);
+  font-size: 0.9375rem !important;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-org.focus, .btn-org:focus{
+  box-shadow: 0 0 0 0.2rem rgba(225,83,97,.5);
+}
+.btn-org2{
+  color: #dc3545 !important;
+  border: 1px solid #c8c8c8 !important;
+  background-color: white !important;
+  font-size: 0.9375rem !important;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-org2:hover{
+  transition: .15s ease-in-out;
+  border-color: #b8b8b8 !important;
+  background-color: whitesmoke !important;
+  color: red !important;
+}
+.orgdiv-count{
   margin: 1rem 0;
   padding: 0 1rem;
 }
@@ -1147,6 +1246,9 @@ a.red:hover{color: #d6312e;}
 .orangecolor{
   color: #f48024 !important;
 }
+.purplecolor{
+  color: #8a2be2 !important;
+}
 .blackcolor{
   color: black !important;
 }
@@ -1610,7 +1712,7 @@ button.likebtn:hover{
   color: #009f5e;
 }
 .fcomments-btn:hover{
-  color: black;
+  color: #8a2be2;
   cursor: pointer;
 }
 button.upVotebtn{

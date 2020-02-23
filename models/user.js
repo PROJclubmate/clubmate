@@ -3,15 +3,38 @@ const mongoose          = require('mongoose'),
   Schema                = mongoose.Schema;
 
 const userSchema = new Schema({
-  isVerified: {type: Boolean, default: false},
-  isLoggedIn: Boolean,
-  lastLoggedOut: Date,
   firstName: {type: String, required: true},
   lastName: String,
   fullName: {type: String, required: true},
   email: {type: String, unique: true, required: true},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  isVerified: {type: Boolean, default: false},
+  isLoggedIn: Boolean,
+  lastLoggedOut: Date,
+  discoverSwitch: {
+    type: Number,
+    default: 1,
+    min: 1,
+    max: 2,
+    required: '1-Org. followed, 2-Explore & tags',
+    validate: {
+      validator: Number.isInteger,
+      message: '{VALUE} is not an integer value.'
+    }
+  },
+  sortByKey: {
+    type: Number,
+    default: 1,
+    min: 1,
+    max: 3,
+    required: '1-HOT, 2-NEW, 3-TOP',
+    validate: {
+      validator: Number.isInteger,
+      message: '{VALUE} is not an integer value.'
+    }
+  },
+  followingOrgKeys: [String],
   profilePic: String,
   profilePicId: String,
   featuredPhotos:[{
@@ -25,9 +48,6 @@ const userSchema = new Schema({
     sex: String,
     birthdate: Date,
     college: String,
-    branch: String,
-    batch: String,
-    section: String,
     workplace: String,
     school: String,
     residence: String

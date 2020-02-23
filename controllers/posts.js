@@ -1,5 +1,6 @@
 const express          = require('express'),
   router               = express.Router(),
+  mongoose             = require('mongoose'),
   Post                 = require('../models/post'),
   User                 = require('../models/user'),
   Club                 = require('../models/club'),
@@ -64,7 +65,7 @@ module.exports = {
         });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
+        return res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
       }
       });
@@ -126,7 +127,7 @@ module.exports = {
         });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
+        return res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
         CU_50_profilePic, PA_50_profilePic, arrLength});
       }
       });
@@ -135,65 +136,646 @@ module.exports = {
     }
   },
 
+  postsDiscoverSettings(req, res, next){
+    if(req.user && req.user._id.equals(req.params.id)){
+      if(req.body.discoverSwitch){
+        User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
+        async function(err, foundUser){
+        if(err || !foundUser){
+          console.log(Date.now()+' : '+req.user._id+' => (posts-15)foundUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+        });
+      }
+      if(req.body.sortByKey){
+        User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
+        async function(err, foundUser){
+        if(err || !foundUser){
+          console.log(Date.now()+' : '+req.user._id+' => (posts-15)foundUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+        });
+      }
+      res.redirect('/discover');
+    }
+  },
+
   postsDiscover(req, res, next){
     if(req.user){
-      res.render('posts/index');
+      res.render('posts/discover', {currentUserId: req.user._id});
     } else{
-      res.render('posts/index');
+      res.render('posts/discover');
     }
   },
 
   postsDiscoverMorePosts(req, res, next){
     if(req.query.ids != ''){
-      var seenIds = req.query.ids.split(',');
+      var seenIdsArr = req.query.ids.split(',');
     } else{
-      var seenIds = [];
+      var seenIdsArr = [];
+    }
+    var seenIds = [];
+    for(var i=0;i<seenIdsArr.length;i++){
+      seenIds.push(mongoose.Types.ObjectId(seenIdsArr[i]));
     }
     if(req.user){
-      Post.find({privacy: 0, moderation: 0, _id: {$nin: seenIds}})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
+      // Show (Orgs. followed)
+      if(req.user.discoverSwitch === 1){
+        if(req.user.sortByKey === 1){
+          Post.aggregate([
+          {$match: {$and: [{_id: {$nin: seenIds}}, 
+          {createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}}, 
+          {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
+          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
+          { "$lookup": {
+            "from": "clubs",
+            "foreignField": "_id",
+            "localField": "postClub",
+            "as": "postClub"
+          }},
+          {
+            "$unwind": "$postClub"
+          },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
+          {$project: {
+          "_id": 1,
+          "description": 1,
+          "hyperlink": 1,
+          "descEdit": 1,
+          "image": 1,
+          "imageId": 1,
+          "discoverTags": 1,
+          "clubOrgKey": 1,
+          "viewsCount": 1,
+          "privacy": 1,
+          "moderation": 1,
+          "isAdminModerationLock": 1,
+          "likeCount": 1,
+          "dislikeCount": 1,
+          "heartCount": 1,
+          "likeUserIds": 1,
+          "dislikeUserIds": 1,
+          "heartUserIds": 1,
+          "commentsCount": 1,
+          "bucketNum": 1,
+          "commentBuckets": 1,
+          "postClub._id": 1,
+          "postClub.name": 1,
+          "postClub.avatar": 1,
+          "postClub.avatarId": 1,
+          "postAuthor": 1,
+          "topic": 1,
+          "createdAt": 1,
+          "__v": 1,
+          // Based on (400 views == 40 likes == 10 hearts == 10 dislikes == 5 comments == 1 shares & T = 4hr units)
+          "ranking": {
+            $divide: [
+              { $add: [
+                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$dislikeCount", 0.5] },
+                { $multiply: ["$heartCount", 0.5] },
+                { $multiply: ["$commentsCount", 1] },
+                // { $multiply: ["$shareCount", 5] },
+                0.75
+              ] },
+              { $add: [
+                1,
+                { $pow: [
+                  { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+                  1.8
+                ] },
+              ] }
+            ] }
+          }},
+          {$sort: {"ranking": -1}},
+          {$limit: 10}        
+          ])
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        } else if(req.user.sortByKey === 2){
+          Post.find({_id: {$nin: seenIds}, 
+          createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))},
+          clubOrgKey: {$in: req.user.followingOrgKeys}, 
+          moderation: 0, privacy: 0, topic: ''})
+          .populate({path: 'postClub', select: 'name avatar avatarId'})
+          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+          .sort({createdAt: -1}).limit(10)
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        } else if(req.user.sortByKey === 3){
+          Post.aggregate([
+          {$match: {$and: [{_id: {$nin: seenIds}}, 
+          {createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}}, 
+          {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
+          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
+          { "$lookup": {
+            "from": "clubs",
+            "foreignField": "_id",
+            "localField": "postClub",
+            "as": "postClub"
+          }},
+          {
+            "$unwind": "$postClub"
+          },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
+          {$project: {
+          "_id": 1,
+          "description": 1,
+          "hyperlink": 1,
+          "descEdit": 1,
+          "image": 1,
+          "imageId": 1,
+          "discoverTags": 1,
+          "clubOrgKey": 1,
+          "viewsCount": 1,
+          "privacy": 1,
+          "moderation": 1,
+          "isAdminModerationLock": 1,
+          "likeCount": 1,
+          "dislikeCount": 1,
+          "heartCount": 1,
+          "likeUserIds": 1,
+          "dislikeUserIds": 1,
+          "heartUserIds": 1,
+          "commentsCount": 1,
+          "bucketNum": 1,
+          "commentBuckets": 1,
+          "postClub._id": 1,
+          "postClub.name": 1,
+          "postClub.avatar": 1,
+          "postClub.avatarId": 1,
+          "postAuthor": 1,
+          "topic": 1,
+          "createdAt": 1,
+          "__v": 1,
+          // Based on (400 views == 40 likes == 10 hearts == 10 dislikes == 5 comments == 1 shares & T = 4hr units)
+          "ranking": {
+            $add: [
+              { $multiply: ["$viewsCount", 0.0125] },
+              { $multiply: ["$likeCount", 0.125] },
+              { $multiply: ["$dislikeCount", 0.5] },
+              { $multiply: ["$heartCount", 0.5] },
+              { $multiply: ["$commentsCount", 1] },
+              0.75
+            ]
+          }}},
+          {$sort: {"ranking": -1}},
+          {$limit: 10}        
+          ])
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        }
+      // Show (Explore & Tags)
+      } else if(req.user.discoverSwitch === 2){
+        if(req.user.sortByKey === 1){
+          Post.aggregate([
+          {$match: {$and: [{_id: {$nin: seenIds}}, 
+          {createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}}, 
+          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
+          { "$lookup": {
+            "from": "clubs",
+            "foreignField": "_id",
+            "localField": "postClub",
+            "as": "postClub"
+          }},
+          {
+            "$unwind": "$postClub"
+          },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
+          {$project: {
+          "_id": 1,
+          "description": 1,
+          "hyperlink": 1,
+          "descEdit": 1,
+          "image": 1,
+          "imageId": 1,
+          "discoverTags": 1,
+          "clubOrgKey": 1,
+          "viewsCount": 1,
+          "privacy": 1,
+          "moderation": 1,
+          "isAdminModerationLock": 1,
+          "likeCount": 1,
+          "dislikeCount": 1,
+          "heartCount": 1,
+          "likeUserIds": 1,
+          "dislikeUserIds": 1,
+          "heartUserIds": 1,
+          "commentsCount": 1,
+          "bucketNum": 1,
+          "commentBuckets": 1,
+          "postClub._id": 1,
+          "postClub.name": 1,
+          "postClub.avatar": 1,
+          "postClub.avatarId": 1,
+          "postAuthor": 1,
+          "topic": 1,
+          "createdAt": 1,
+          "__v": 1,
+          "ranking": {
+            $divide: [
+              { $add: [
+                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$dislikeCount", 0.5] },
+                { $multiply: ["$heartCount", 0.5] },
+                { $multiply: ["$commentsCount", 1] },
+                0.75
+              ] },
+              { $add: [
+                1,
+                { $pow: [
+                  { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+                  1.8
+                ] },
+              ] }
+            ] }
+          }},
+          {$sort: {"ranking": -1}},
+          {$limit: 10}        
+          ])
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        } else if(req.user.sortByKey === 2){
+          Post.find({_id: {$nin: seenIds}, 
+          createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}, 
+          moderation: 0, privacy: 0, topic: ''})
+          .populate({path: 'postClub', select: 'name avatar avatarId'})
+          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+          .sort({createdAt: -1}).limit(10)
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        } else if(req.user.sortByKey === 3){
+          Post.aggregate([
+          {$match: {$and: [{_id: {$nin: seenIds}}, 
+          {createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}}, 
+          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
+          { "$lookup": {
+            "from": "clubs",
+            "foreignField": "_id",
+            "localField": "postClub",
+            "as": "postClub"
+          }},
+          {
+            "$unwind": "$postClub"
+          },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
+          {$project: {
+          "_id": 1,
+          "description": 1,
+          "hyperlink": 1,
+          "descEdit": 1,
+          "image": 1,
+          "imageId": 1,
+          "discoverTags": 1,
+          "clubOrgKey": 1,
+          "viewsCount": 1,
+          "privacy": 1,
+          "moderation": 1,
+          "isAdminModerationLock": 1,
+          "likeCount": 1,
+          "dislikeCount": 1,
+          "heartCount": 1,
+          "likeUserIds": 1,
+          "dislikeUserIds": 1,
+          "heartUserIds": 1,
+          "commentsCount": 1,
+          "bucketNum": 1,
+          "commentBuckets": 1,
+          "postClub._id": 1,
+          "postClub.name": 1,
+          "postClub.avatar": 1,
+          "postClub.avatarId": 1,
+          "postAuthor": 1,
+          "topic": 1,
+          "createdAt": 1,
+          "__v": 1,
+          "ranking": {
+            $add: [
+              { $multiply: ["$viewsCount", 0.0125] },
+              { $multiply: ["$likeCount", 0.125] },
+              { $multiply: ["$dislikeCount", 0.5] },
+              { $multiply: ["$heartCount", 0.5] },
+              { $multiply: ["$commentsCount", 1] },
+              0.75
+            ]
+          }}},
+          {$sort: {"ranking": -1}},
+          {$limit: 10}        
+          ])
+          .exec(function(err, discoverPosts){
+          if(err || !discoverPosts){
+            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            return res.sendStatus(500);
+          } else{
+            var arrLength = discoverPosts.length;
+            var friendsPostUrl = false; var currentUser2 = req.user;
+            var foundPostIds = discoverPosts.map(function(post){
+              return post._id;
+            });
+            sortComments(discoverPosts);
+            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+            for(var k=0;k<discoverPosts.length;k++){
+              PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+              seenPostIds.push(discoverPosts[k]._id);
+            }
+            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+            function(err, updatePosts){
+              if(err || !updatePosts){
+                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+          }
+          });
+        }
+      }
+    // LOGGED OUT
+    } else{
+      Post.aggregate([
+      {$match: {$and: [{_id: {$nin: seenIds}}, 
+      {createdAt: {$gte: new Date(new Date() - (28*60*60*24*1000))}}, 
+      {moderation: 0}, {privacy: 0}, {topic: ''}]}},
+      { "$lookup": {
+        "from": "clubs",
+        "foreignField": "_id",
+        "localField": "postClub",
+        "as": "postClub"
+      }},
+      {
+        "$unwind": "$postClub"
+      },
+      { "$lookup": {
+        "from": "comments",
+        "as": "commentBuckets",
+        "let": { "id": "$_id" },
+        "pipeline": [
+          { "$match": { 
+            "$expr": { "$eq": [ "$$id", "$postId" ] }
+          }},
+          { "$sort": { "_id": -1 } },
+          { "$limit": 1 }
+        ]
+      }},
+      {$project: {
+      "_id": 1,
+      "description": 1,
+      "hyperlink": 1,
+      "descEdit": 1,
+      "image": 1,
+      "imageId": 1,
+      "discoverTags": 1,
+      "clubOrgKey": 1,
+      "viewsCount": 1,
+      "privacy": 1,
+      "moderation": 1,
+      "isAdminModerationLock": 1,
+      "likeCount": 1,
+      "dislikeCount": 1,
+      "heartCount": 1,
+      "likeUserIds": 1,
+      "dislikeUserIds": 1,
+      "heartUserIds": 1,
+      "commentsCount": 1,
+      "bucketNum": 1,
+      "commentBuckets": 1,
+      "postClub._id": 1,
+      "postClub.name": 1,
+      "postClub.avatar": 1,
+      "postClub.avatarId": 1,
+      "postAuthor": 1,
+      "topic": 1,
+      "createdAt": 1,
+      "__v": 1,
+      "ranking": {
+        $divide: [
+          { $add: [
+            { $multiply: ["$viewsCount", 0.0125] },
+            { $multiply: ["$likeCount", 0.125] },
+            { $multiply: ["$dislikeCount", 0.5] },
+            { $multiply: ["$heartCount", 0.5] },
+            { $multiply: ["$commentsCount", 1] },
+            0.75
+          ] },
+          { $add: [
+            1,
+            { $pow: [
+              { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+              1.8
+            ] },
+          ] }
+        ] }
+      }},
+      {$sort: {"ranking": -1}},
+      {$limit: 10}        
+      ])
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
         console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
-        return res.sendStatus(500);
-      } else{
-        var arrLength = discoverPosts.length;
-        var friendsPostUrl = false; var currentUser2 = req.user;
-        var foundPostIds = discoverPosts.map(function(post){
-          return post._id;
-        });
-        sortComments(discoverPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-        for(var k=0;k<discoverPosts.length;k++){
-          PC_50_clubAvatar[k] = cloudinary.url(discoverPosts[k].postClub.avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-          hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-          seenPostIds.push(discoverPosts[k]._id);
-        }
-        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
-            console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
-            return res.sendStatus(500);
-          }
-        });
-        var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
-      }
-      });
-    } else{
-      Post.find({privacy: 0, moderation: 0, _id: {$nin: seenIds}})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, discoverPosts){
-      if(err || !discoverPosts){
-        console.log(Date.now()+' : '+'(posts-7)discoverPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
@@ -217,7 +799,7 @@ module.exports = {
             return res.sendStatus(500);
           }
         });
-        res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar,
+        return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar,
         arrLength});
       }
       });
@@ -257,7 +839,9 @@ module.exports = {
                 return res.redirect('back');
               } else{
                 newPost.clubOrgKey = foundClub.clubKeys.organization;
-                newPost.clubTags = foundClub.clubKeys.tags;
+                if(req.body.topic == ''){
+                  newPost.discoverTags = foundClub.clubKeys.tags;
+                }
                 newPost.postClub = req.params.club_id;
                 newPost.postAuthor.id = req.user._id;
                 newPost.postAuthor.authorName = req.user.fullName;
@@ -297,7 +881,9 @@ module.exports = {
               return res.redirect('back');
             } else{
               newPost.clubOrgKey = foundClub.clubKeys.organization;
-              newPost.clubTags = foundClub.clubKeys.tags;
+              if(req.body.topic == ''){
+                newPost.discoverTags = foundClub.clubKeys.tags;
+              }
               newPost.postClub = req.params.club_id;
               newPost.postAuthor.id = req.user._id;
               newPost.postAuthor.authorName = req.user.fullName;
@@ -853,27 +1439,30 @@ function currentRank2(clubId,userClubs){
 };
 
 function voteCheck(user,post){
-  var i=0; var j=0; var k=0; var hasVote = 0;
+  var hasVote = 0;
   if(user){
-    var likeIds = post.likeUserIds; var len1 = post.likeCount;
-    var dislikeIds = post.dislikeUserIds; var len2 = post.dislikeCount;
-    var heartIds = post.heartUserIds; var len3 = post.heartCount;
-    for(i;i<len1;i++){
-      if(likeIds[i].equals(user._id)){
-        hasVote = 1;
-        break;
+    if(hasVote == 0){
+      for(var i=post.likeCount-1;i>=0;i--){
+        if(post.likeUserIds[i].equals(user._id)){
+          hasVote = 1;
+          break;
+        }
       }
     }
-    for(j;j<len2;j++){
-      if(dislikeIds[j].equals(user._id)){
-        hasVote = -1;
-        break;
+    if(hasVote == 0){
+      for(var j=post.dislikeCount-1;j>=0;j--){
+        if(post.dislikeUserIds[j].equals(user._id)){
+          hasVote = -1;
+          break;
+        }
       }
     }
-    for(k;k<len3;k++){
-      if(heartIds[k].equals(user._id)){
-        hasVote = 3;
-        break;
+    if(hasVote == 0){
+      for(var k=post.heartCount-1;k>=0;k--){
+        if(post.heartUserIds[k].equals(user._id)){
+          hasVote = 3;
+          break;
+        }
       }
     }
     return hasVote;
@@ -881,20 +1470,22 @@ function voteCheck(user,post){
 };
 
 function modVoteCheck(user,post){
-  var i=0; var j=0; var hasModVote = 0;
+  var hasModVote = 0;
   if(user){
-    var upVoteIds = post.upVoteUserIds; var len1 = post.upVoteCount;
-    var downVoteIds = post.downVoteUserIds; var len2 = post.downVoteCount;
-    for(i;i<len1;i++){
-      if(upVoteIds[i].equals(user._id)){
-        hasModVote = 1;
-        break;
+    if(hasModVote == 0){
+      for(var i=post.upVoteCount-1;i>=0;i--){
+        if(post.upVoteUserIds[i].equals(user._id)){
+          hasModVote = 1;
+          break;
+        }
       }
     }
-    for(j;j<len2;j++){
-      if(downVoteIds[j].equals(user._id)){
-        hasModVote = -1;
-        break;
+    if(hasModVote == 0){
+      for(var j=post.downVoteCount-1;j>=0;j--){
+        if(post.downVoteUserIds[j].equals(user._id)){
+          hasModVote = -1;
+          break;
+        }
       }
     }
     return hasModVote;
