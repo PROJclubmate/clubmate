@@ -247,6 +247,15 @@ div.content{
   .name{padding: 0.25rem 0 !important; font-size: 1.35rem !important; -webkit-text-stroke-width: 0.6px;}
 }
 /*----------------------------------------------------------------*/
+.font-lato{
+  font-family: 'Lato', sans-serif;
+}
+.img-help{
+  width: 25px; height: 25px;
+}
+.img-faq{
+  width: 15px; height: 15px;
+}
 .meter{
   height: 2px;
   position: relative;
@@ -668,9 +677,8 @@ li.nav-item{
 }
 .btn-org{
   color: white;
-  border: 1px solid red;
+  border: 1px solid #cc0000;
   background-color: #dc3545;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.5);
   font-size: 0.9375rem !important;
   font-weight: 600;
   display: inline-block;
@@ -1681,7 +1689,7 @@ div.carousel-img2{
   color: red;
 }
 button.vote{
-  font-size: 1.25rem;
+  font-size: 1.3125rem;
   padding: 0;
   border: none;
   background-color: rgba(0,0,0,0);
@@ -1689,7 +1697,7 @@ button.vote{
   cursor: pointer;
 }
 button.vote2{
-  font-size: 16px;
+  font-size: 1.125rem;
   padding: 0;
   border: none;
   background-color: rgba(0,0,0,0);
@@ -1697,7 +1705,7 @@ button.vote2{
   cursor: pointer;
 }
 button.modvote{
-  font-size: 32px;
+  font-size: 2.125rem;
   line-height: 0;
   padding: 0;
   border: none;
@@ -2098,7 +2106,7 @@ select.select1::-ms-expand{
   min-height: 3rem;
 }
 .topic-column{
-  border-left: 1px solid rgba(0,0,0,0.1);
+  /*border-left: 1px solid rgba(0,0,0,0.1);*/
   background-color: whitesmoke;
 }
 h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight: 400;}

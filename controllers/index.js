@@ -1015,6 +1015,7 @@ module.exports = {
       if(foundUser._id.equals(req.user._id) || foundUser.friends.includes(req.user._id)){
         User.find({_id: {$in: foundUser.friends}})
         .skip((perPage * pageNumber) - perPage).limit(perPage).sort({fullName: 1})
+        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, isLoggedIn: 1})
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
           console.log(Date.now()+' : '+'(index-49)foundFriends err:- '+JSON.stringify(err, null, 2));

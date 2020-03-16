@@ -34,20 +34,24 @@
 					</div>
 					</div>
 			<% } %>
-			<% if(following){ %>
-				<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-					<button class="btn btn-light btn-org2 orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-				</form>
+			<% if(currentUser){ %>
+				<% if(following){ %>
+					<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+						<button class="btn btn-light btn-org2 orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+					</form>
+				<% } else{ %>
+					<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+						<button class="btn btn-org orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
+					</form>
+				<% } %>
 			<% } else{ %>
-				<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-					<button class="btn btn-org orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
-				</form>
+				<a href="/login" class="btn btn-org orgdiv-follow py-1 px-2">Follow</a>
 			<% } %>
 		</div>
 		<div class="orgdiv-count valign">
-			<div class="boldtext lightgrey text-md">
-				<span><span class="mobilebold"><%= org_page.clubCount %></span> clubs,</span>
-				<span><span class="mobilebold"><%= org_page.userCount %></span> users</span>
+			<div class="mobilebold lightgrey text-md">
+				<span><span class="boldtext"><%= org_page.clubCount %></span> clubs,</span>
+				<span><span class="boldtext"><%= org_page.userCount %></span> users</span>
 			</div>
 			<!-- <div>
 				<span class=" mobilebold text-md"><%= org_page.followerCount %></span>

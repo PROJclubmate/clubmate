@@ -230,10 +230,10 @@
                       <ul class="dropdown-menu dropdown-menu-right dropbox">
                         <div class="container drop-shadow1 drop-items text-sm">
                           <li>
-                            <button class="dropitems2 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
+                            <button class="dropitems2 py-1 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
                           </li>
                           <hr>
-                          <li><a class="dropitems2 text-sm" href="#">Help ?</a></li>
+                          <li><a class="dropitems2 py-1 text-sm" href="#">Help ?</a></li>
                         </div>
                       </ul>
                     </div>
@@ -328,11 +328,12 @@
                       </span>
                       <span class="greencolor">Logged in</span>
                     <% } else{ %>
-                      Last logout: <span class="info30"><%= moment(user.lastLoggedOut).format('lll') %></span>
+                      Last logout: <span id="timeLocal" class="info30 nothing"></span>
+                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
                     <% } %>
                   <% } %>
                   <br>
-                  <% if(match){ %>
+                  <% if(match && currentUser.followingOrgKeys.length>0){ %>
                     <div class="info1">Following: <div class="info30">
                       <% var keysArr = currentUser.followingOrgKeys; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
                         <% if(i==0 && i==len-1){ %>

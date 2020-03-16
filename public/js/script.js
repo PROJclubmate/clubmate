@@ -469,7 +469,7 @@ $(function (){
     var localTimeNow  = moment.utc(divUtcNow.text()).toDate();
     localTimeNow = moment(localTimeNow).format('LT');
     divLocalNow.text(localTimeNow);
-  }, 1000);
+  }, 500);
 });
 
 if(location.pathname == '/help/'){
