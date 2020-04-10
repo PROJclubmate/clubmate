@@ -4,9 +4,21 @@
   <div class="col-lg-2 col-md-2 px-2 mobileNone mt-5">
     <div class="list-group">
       <li class="list-group-item bluecolor text-sm boldtext mt-3"><i class="fas fa-question-circle"></i> Did you..</li>
-      <li class="list-group-item text-sm darkgrey">... have a <a href="https://www.facebook.com/groups/2660887327313418/" target="_blank" class="black underline">question</a>?</li>
-      <li class="list-group-item text-sm darkgrey">... find a <a href="https://www.facebook.com/groups/400084017547657/" target="_blank" class="black underline">bug</a>?</li>
-      <li class="list-group-item text-sm darkgrey">... have a <a href="https://www.facebook.com/groups/1351554461692986/" target="_blank" class="black underline">feature suggestion</a>?</li>
+      <li class="list-group-item text-sm darkgrey">
+        <a href="https://www.facebook.com/groups/2660887327313418/" target="_blank" class="lightgrey nounderline">
+          <div>... have a <span class="boldtext">question</span>?</div>
+        </a>
+      </li>
+      <li class="list-group-item text-sm darkgrey">
+        <a href="https://www.facebook.com/groups/400084017547657/" target="_blank" class="lightgrey nounderline">
+          <div>... find a <span class="boldtext">bug</span>?</div>
+        </a>
+      </li>
+      <li class="list-group-item text-sm darkgrey">
+        <a href="https://www.facebook.com/groups/1351554461692986/" target="_blank" class="lightgrey nounderline">
+          <div>... have a feature <span class="boldtext">suggestion</span>?</div>
+        </a>
+      </li>
     </div>
   </div>
   <div id="delegated-posts" class="col-lg-7 col-md-10">
@@ -85,14 +97,14 @@
         <% if(currentUser.discoverSwitch == 1){ %>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
             <div><i id="following-switch-mobile" class="fas fa-university text-xxxxl"></i></div>
-            <div class="text-sm pl-2">Following..</div>
+            <div class="text-sm pl-2 mobilebold darkgrey">Following..</div>
           </div>
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas text-xxxxl"></i></button>
         <% } else if(currentUser.discoverSwitch == 2){ %>
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university text-xxxxl"></i></button>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
             <div><i id="explore-switch-mobile" class="fas fa-globe-americas text-xxxxl"></i></div>
-            <div class="text-sm pl-2 my-auto">Explore!</div>
+            <div class="text-sm pl-2 my-auto mobilebold darkgrey">Explore!</div>
           </div>
         <% } %>
       </form>
@@ -101,7 +113,7 @@
         <a href="/login" class="btn btn-light discoverswitch-mobile"><i class="fas fa-university text-xxxxl"></i></a>
         <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
           <div><i id="explore-switch-mobile" class="fas fa-globe-americas text-xxxxl"></i></div>
-          <div class="text-sm pl-2">Explore!</div>
+          <div class="text-sm pl-2 mobilebold darkgrey">Explore!</div>
         </div>
       </div>
     <% } %>

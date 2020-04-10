@@ -201,8 +201,8 @@
       </div>
     <% } %>
   <% } else if(currentUser && (currentUser.friendRequests.length == 0 && currentUser.clubInvites.length == 0)){ %>
-    <div class="pop-container valign">
-      <span class="nothing lightgrey text-xs">No pending requests</span>
+    <div class="pop-header valign">
+      <span class="nothing lightgrey boldtext text-xs">No pending requests</span>
       <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
     </div>
   <% } %>
@@ -214,12 +214,12 @@
     <div class="pop-header valign">
       <% if(userChats.length != 0){ %>
         <h6 class="nothing lightgrey text-xs">New message (Direct Chat)</h6>
+        <hr>
       <% } else{ %>
         <h6 class="nothing lightgrey text-xs">No new messages.</h6>
       <% } %>
       <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_notifications'); toggle_requests('notification');"><i class="fas fa-times"></i></button>
     </div>
-    <hr>
     <% for(var k=0;k<userChats.length;k++){ %>
       <div class="pop-container">
         <div class="valign py-1">

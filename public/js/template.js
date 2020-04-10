@@ -2577,13 +2577,13 @@ function moreMembers_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight2">
   <% for(var i=0;i<users.length;i++){ %>
-    <div class="col-md-1 col-2 py-1 mb-auto">
+    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
       <a href="/users/<%= users[i].id._id %>">
       <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUser.png' %>"></a>
     </div>
     <div class="col-md-8 col-8 my-auto">
       <span>
-        <a href="/users/<%= users[i].id._id %>" class="mobiletext2 grey">
+        <a href="/users/<%= users[i].id._id %>" class="grey">
           <strong><%= users[i].id.fullName %></strong>
         </a>
       </span>
@@ -2603,7 +2603,7 @@ function moreMembers_template(response){
       <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
         <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
           <label for="userRank" class="sr-only">User rank</label>
-          <select id="userRank" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
+          <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
             <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
             <% if(rank == 0){ %>
               <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="Owner">Owner</option>
@@ -2752,13 +2752,13 @@ function moreClubs_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight2">
   <% for(var i=0;i<clubs.length;i++){ %>
-    <div class="col-md-1 col-2 py-1 mb-auto">
+    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
       <a href="/clubs/<%= clubs[i].id._id %>">
       <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext2 grey">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="grey">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>

@@ -1,12 +1,12 @@
 <div class="row no-gutters mt-2 lineheight2">
   <% for(var i=0;i<clubs.length;i++){ %>
-    <div class="col-md-1 col-2 py-1 mb-auto">
+    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
       <a href="/clubs/<%= clubs[i].id._id %>">
       <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="mobiletext2 grey">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="grey">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>

@@ -8,7 +8,7 @@
   <div id="latestUpdates" class="collapse show scroll moz-scroll hr1">
     <% var arr = latestUpdates();
     for(i=0;i<arr.length;i++){ %>
-      <div class="searchcard d-flex flex-row" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
+      <div class="searchcard d-flex flex-row pt-1" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
         <div class="eventD text-md mx-2 my-1 lineheight">
           <% if(arr[i].eventDate){ %>
             <span><strong><%= moment(arr[i].eventDate).format('D') %></strong>

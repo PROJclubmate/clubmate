@@ -66,7 +66,6 @@ div.content{
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
   #side-home{height: 40px;}
-  .btn-search:hover{text-decoration: underline;}
 }
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
@@ -82,9 +81,9 @@ div.content{
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
   .mobileNoneFlex{display: flex !important;}
-  .scroll::-webkit-scrollbar{width: 0.5rem;}
-  .scroll::-webkit-scrollbar-track{background: lightgrey;}
-  .scroll::-webkit-scrollbar-thumb{background-color: darkgrey; outline: 1px solid slategrey; border-radius: 3px;}
+  .scroll::-webkit-scrollbar{width: 0.25rem;}
+  .scroll::-webkit-scrollbar-track{background: rgba(0,0,0,0);}
+  .scroll::-webkit-scrollbar-thumb{background-color: darkgrey; outline: 1px solid slategrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
@@ -160,11 +159,11 @@ div.content{
   div.carousel-div{height: 142px !important;}
   img.postimg{width: 100%; max-height: 25rem;object-fit: cover;}
   .navbar-brand{margin: 0;}
-  .orgname{font-size: 1.15rem; border-radius: 0.5rem !important;}
+  .orgname{font-size: 1.325rem !important; border-radius: 0.5rem !important; line-height: 1.375rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
   .orgdiv-name{padding: 0.25rem 0.25rem !important;}
-  .orgdiv-follow{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
-  .orgdiv-count{margin: 0.5rem 0 !important; padding: 0 0.5rem !important;}
+  .orgdiv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
+  .orgdiv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important; margin-bottom: 2rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
@@ -175,7 +174,7 @@ div.content{
 @media screen and (max-width: 481px){
   .sidebar-back{height: 46px !important;}
   .navbar{padding: 3px 10px !important;}
-  #sidebar-dropbox{top: 46px; left: 108px;}
+  #sidebar-dropbox{top: 46px; left: 91px;}
   .sidebar a{padding: 11px 12.5px; font-size: 1rem;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   body{padding-top: 4px;}
@@ -208,6 +207,7 @@ div.content{
 }
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
+  .orgname{font-size: 1.25rem !important;}
   #sidebar-dropbox{top: 46px; left: 82px;}
   .sidebar a{padding: 11px 8px;}
   .friends-dp{height: 5.5rem !important;}
@@ -654,6 +654,7 @@ li.nav-item{
   border-bottom: 1px solid lightgrey;
 }
 .orgname{
+  font-size: 1.5rem;
   background-color: white;
   border-radius: 2.5rem;
   padding: 0.25rem 0.5rem;
@@ -672,12 +673,9 @@ li.nav-item{
 .orgdiv-name{
   padding: 0.25rem 1rem;
 }
-.orgdiv-follow{
-  margin: auto 0;
-}
 .btn-org{
   color: white;
-  border: 1px solid #cc0000;
+  border: 1px solid whitesmoke !important;
   background-color: #dc3545;
   font-size: 0.9375rem !important;
   font-weight: 600;
@@ -685,12 +683,14 @@ li.nav-item{
   white-space: nowrap;
   line-height: 1;
 }
-.btn-org.focus, .btn-org:focus{
-  box-shadow: 0 0 0 0.2rem rgba(225,83,97,.5);
+.btn-org:hover{
+  transition: .15s ease-in-out;
+  border-color: #b8b8b8 !important;
+  background-color: whitesmoke !important;
 }
 .btn-org2{
+  box-shadow: 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
   color: #dc3545 !important;
-  border: 1px solid #c8c8c8 !important;
   background-color: white !important;
   font-size: 0.9375rem !important;
   font-weight: 600;
@@ -700,17 +700,25 @@ li.nav-item{
 }
 .btn-org2:hover{
   transition: .15s ease-in-out;
-  border-color: #b8b8b8 !important;
+  border-color: #b8b8b8;
   background-color: whitesmoke !important;
   color: red !important;
 }
-.orgdiv-count{
+.btn-org2.focus, .btn-org2:focus{
+  border-color: white !important;
+  box-shadow: 0 0 0 0.2rem rgba(225,83,97,.5) !important;
+}
+.orgdiv-usercnt{
+  margin: auto 0;
+}
+.orgdiv-clubcnt{
   margin: 1rem 0;
   padding: 0 1rem;
+  margin-bottom: 2rem;
 }
 .category{
-  font-size: 0.875rem;
-  color: black;
+  font-size: 0.75rem;
+  color: grey;
   background-color: #ededed;
 }
 .news{
@@ -808,7 +816,7 @@ a.nav-link{
   cursor: pointer;
   color: grey;
   opacity: 0.75;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.65);
   padding: 0 0.25rem;
   margin: 0 0.1rem;
 }
@@ -817,12 +825,15 @@ a.nav-link{
   background-color: #505050 !important;
   color: #4aac71 !important;
   text-shadow: none;
+  padding: 0 0.5rem;
+  border-radius: 1rem;
 }
 .nav-link.requests-active{
   transition: ease-in-out 0.15s;
   background-color: #505050 !important;
   color: #009f5e !important;
   opacity: 1;
+  padding: 0 0.5rem;
   border-radius: 1rem;
   text-shadow: none;
 }
@@ -985,12 +996,22 @@ input[type="file"]#inputavatar{
 .btn-search{
   font-weight: 600;
   font-size: 1.375rem;
-  background:none!important;
+  background-color: #dcdcdc;
   border: none; 
   padding: 0 0.25rem !important;
-  cursor:pointer;
+  cursor: pointer;
   border: 2px dotted #cc0000;
   border-radius: 2.5rem;
+  box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3);
+}
+.btn-search:hover{
+  transition: .15s ease-in-out;
+  background-color: whitesmoke;
+  box-shadow: none;
+}
+/*poor accesebility*/
+.btn-search:focus{
+  outline: none !important;
 }
 .copyBtn{
   background: none!important;
@@ -1100,7 +1121,16 @@ input[type="file"]#inputavatar{
   box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.25);
 }
 .btn.btncollapse:hover{
-  outline: 2px solid rgba(0,0,0,0.25);
+  border-left: 2px;
+  border-right: 2px;
+  border-style: solid;
+  border-image: 
+    linear-gradient(
+      to right, 
+      rgba(255,200,0,0.75), 
+      rgba(255,50,0,0.75)
+    ) 1 100%;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
 }
 .btn-primary{
   border-color: #2d6da4;
@@ -1279,6 +1309,9 @@ div.alert{
   box-shadow: 1px 2px 2px -1px rgba(0,0,0,0.15);
 }
 .nounderline a:hover{
+  text-decoration: none !important;
+}
+.nounderline{
   text-decoration: none !important;
 }
 a .nolink{
@@ -1849,7 +1882,7 @@ select.select1::-ms-expand{
 }
 .pop-header{
   width: 100%;
-  padding: 0.1rem 0.25rem;
+  padding: 0.15rem 0.25rem;
   background-color: white;
 }
 .pop-container{
@@ -2015,7 +2048,7 @@ select.select1::-ms-expand{
   margin-bottom: 2.4rem;
 }
 .messages-long{
-  min-height: 72.5vh !important;
+  min-height: 100vh !important;
 }
 #messages:hover{
   overflow-y: scroll;
@@ -2061,7 +2094,7 @@ select.select1::-ms-expand{
 .chat-msg3{
   text-align: center;
   font-size: 0.875rem;
-  background-color: white;
+  background-color: rgba(255,255,255,0.75);
   border-radius: 0.5rem;
   padding: 0 0.15rem;
   padding-bottom: 0.1rem;
@@ -2138,7 +2171,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
   object-fit: cover;
 }
 .subpost-left{
-  float: left;
+  float: left;   
   border: 1px solid #d0d0d0;
   background: repeating-linear-gradient(
     45deg,

@@ -4,11 +4,11 @@
 	<div class="col-lg-9 order-md-first order-last card" style="min-height: 75vh;">
 		<div class="organization valign orgdiv-name">
 			<% if(match){ %>
-				<div class="boldtext text-xxl">
+				<div class="boldtext">
 					<div class="orgname d-flex">
 						<span>
 							<sup class="greencolor text-xs pb-auto">My </sup>
-							<i class="fas fa-university lightgrey"></i>
+							<i class="fas fa-university lightgrey text-xxl"></i>
 							<span id="copyTxt"><%= org_page.name %></span>
 						</span>
 						<div class="tooltip">
@@ -20,10 +20,10 @@
 					</div>
 				</div>
 			<% } else{ %>
-				<div class="boldtext text-xxl">
+				<div class="boldtext">
 					<div class="orgname d-flex">
 						<span>
-							<i class="fas fa-university lightgrey mr-1"></i><span id="copyTxt"><%= org_page.name %></span>
+							<i class="fas fa-university lightgrey text-xxl mr-2 ml-1"></i><span id="copyTxt"><%= org_page.name %></span>
 						</span>
 						<div class="tooltip">
 						<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
@@ -34,40 +34,42 @@
 					</div>
 					</div>
 			<% } %>
-			<% if(currentUser){ %>
-				<% if(following){ %>
-					<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-						<button class="btn btn-light btn-org2 orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-					</form>
-				<% } else{ %>
-					<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-						<button class="btn btn-org orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
-					</form>
-				<% } %>
-			<% } else{ %>
-				<a href="/login" class="btn btn-org orgdiv-follow py-1 px-2">Follow</a>
-			<% } %>
+			<div class="boldtext text-md badge badge-danger orgdiv-usercnt"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
 		</div>
-		<div class="orgdiv-count valign">
-			<div class="mobilebold lightgrey text-md">
-				<span><span class="boldtext"><%= org_page.clubCount %></span> clubs,</span>
-				<span><span class="boldtext"><%= org_page.userCount %></span> users</span>
+		<div class="orgdiv-clubcnt valign">
+			<div class="d-flex flex-row">
+				<div class="mobilebold lightgrey text-md mx-1">
+					<span><span class="boldtext"><%= org_page.clubCount %></span> clubs</span>
+				</div>
+				<div class="mx-1">
+					<% if(currentUser){ %>
+						<% if(following){ %>
+							<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+								<button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+							</form>
+						<% } else{ %>
+							<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+								<button class="btn btn-org2 orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
+							</form>
+						<% } %>
+					<% } else{ %>
+						<a href="/login" class="btn btn-org2 orgdiv-follow py-1 px-2">Follow</a>
+					<% } %>
+				</div>
 			</div>
-			<!-- <div>
-				<span class=" mobilebold text-md"><%= org_page.followerCount %></span>
-			</div> -->
+			<div></div>
 		</div>
 		<div class="orgpad py-1">
 			<% for(var i=org_page.allClubs.length-1;i>=0;i--){ %>
 				<% if(org_page.allClubs[i].category != ''){ %>
 					<% if(org_page.allClubs[i].categoryCount>0){ %>
-						<div class="boldtext mobiletext3 category">
+						<div class="boldtext category">
 							<%= org_page.allClubs[i].category %> (<%= org_page.allClubs[i].categoryCount %>)
 						</div>
 					<% } %>
 				<% } else{ %>
 					<% if(org_page.allClubs[i].categoryCount>0){ %>
-						<div class="boldtext mobiletext3 category">
+						<div class="boldtext category">
 							<span class="redcolor">*</span>[Uncategorized] (<%= org_page.allClubs[i].categoryCount %>)
 						</div>
 					<% } %>
