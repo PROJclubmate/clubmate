@@ -1550,7 +1550,7 @@ module.exports = {
               'Thanks,\n' +
               'Team clubmate',
               dkim: {
-                domainName: 'www.clubmate.co.in',
+                domainName: 'clubmate.co.in',
                 keySelector: 'dkimkey1',
                 privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
               }
@@ -1648,7 +1648,7 @@ module.exports = {
             'Thanks,\n' +
             'Team clubmate',
           dkim: {
-            domainName: 'www.clubmate.co.in',
+            domainName: 'clubmate.co.in',
             keySelector: 'dkimkey1',
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
@@ -1751,7 +1751,7 @@ module.exports = {
             'Thanks,\n' +
             'Team clubmate',
           dkim: {
-            domainName: 'www.clubmate.co.in',
+            domainName: 'clubmate.co.in',
             keySelector: 'dkimkey1',
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
@@ -1826,7 +1826,7 @@ module.exports = {
             'Thanks,\n' +
             'Team clubmate',
             dkim: {
-              domainName: 'www.clubmate.co.in',
+              domainName: 'clubmate.co.in',
               keySelector: 'dkimkey1',
               privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
             }

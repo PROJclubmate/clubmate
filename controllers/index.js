@@ -565,7 +565,7 @@ module.exports = {
             var CI_50_clubAvatar = cloudinary.url(foundClub.avatarId, {width: 100, height: 100, 
               quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             var title = foundClub.name+' sent you an invite';
-            var openUrl = 'https://www.clubmate.co.in/clubs/'+clubIduserId[0];
+            var openUrl = 'https://clubmate.co.in/clubs/'+clubIduserId[0];
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
             'BIlA75fh7DBK0PTVj3oMSnSEVfP8M7HHM6wZFvcUYr_CWnMiQPrZAjP34V-iMGJMCKhBIXlOnfUK5PfR__kjcwM',
             'JVEoDpfY8snHhRhwWhx7gThMWNBxohn9CcdXE0yAqgU');
@@ -693,7 +693,7 @@ module.exports = {
             var FR_50_profilePic = cloudinary.url(foundUser.profilePicId, {width: 100, height: 100, 
               quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             var title = foundUser.fullName+' sent you a request';
-            var openUrl = 'https://www.clubmate.co.in/users/'+req.user._id;
+            var openUrl = 'https://clubmate.co.in/users/'+req.user._id;
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
             'BIlA75fh7DBK0PTVj3oMSnSEVfP8M7HHM6wZFvcUYr_CWnMiQPrZAjP34V-iMGJMCKhBIXlOnfUK5PfR__kjcwM',
             'JVEoDpfY8snHhRhwWhx7gThMWNBxohn9CcdXE0yAqgU');
