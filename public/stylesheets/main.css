@@ -19,6 +19,12 @@
 .side-drop-elem{
   width: 100%;
 }
+.sidebar-label{
+  margin-left: 0.25rem;
+}
+.sidebar-icon{
+  font-size: 1.25rem;
+}
 #sidebar-dropbox{
   max-height: 350px;
   overflow-y: hidden;
@@ -36,43 +42,36 @@
   transition: ease-in-out 0.15s;
   background-color: grey;
   color: white;
+  border-bottom: 1px solid #777;
 }
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.content{
   margin-left: 10rem;
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   height: inherit;
 }
-/* On screens that are less than 1200px wide, make the sidebar into a topbar */
-@media screen and (max-width: 1199px){
-  .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
-    z-index: 8; box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
-  .navbar{padding: 1px 10px !important;}
-  .navback{background-color: #3e3d3c !important;}
-  #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
-    box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
-  a.hr2{border: none;}
-  .sidebar{z-index: 9; width: max-content; height: auto; position: fixed; box-shadow: none !important;}
-  html{scroll-behavior: smooth;}
-  .sidebar a{float: left;}
-  a.hr2.active{border:2px inset white; padding-top: 7px; padding-bottom: 7px;}
-  #side-discover{border-right: none;}
-  div.content{margin-left: 0;}
-  div.content{padding: 0.5rem 0;}
-  .hidesidebar{visibility: hidden;}
-  .discoverswitch{padding: 1rem 1rem !important;}
+.content-toppad{
+  padding-top: 0.25rem;
 }
-/* MIN WIDTH */
+.sidebar-iconmar{
+  margin-right: 0.25rem;
+}
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
   #side-home{height: 40px;}
 }
+/* iPad Pro */
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
 }
+/* iPad */
 @media screen and (min-width: 768px) and (max-width: 992px){
   .mobileNone.tabletNone{display: none !important;}
+  .desktopNone.tabletShow{display: block !important;}
+  .discover-icon{font-size: 1.75rem;}
+  .discoverswitch-mobile{padding: 0 3.5rem !important;}
 }
+/* Anything bigger than phones */
 @media screen and (min-width: 768px){
   .name{color: white !important; background-color: #3e3d3c;}
   .navbar{box-shadow: 0px 2px 7px -2px rgba(0,0,0,0.4);}
@@ -91,7 +90,7 @@ div.content{
     transition: ease-in-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
   .nav-link.requests{color: grey !important;}
   .pl-2.mobilepad{padding: 0 !important;}
-  .topic-head{box-shadow: -3px 0px 0px 0px #dc3545;}
+  .topic-head{box-shadow: -3px 0px 0px 0px #cb5a5e;}
   .helppad{padding-left: 3rem;}
   .helppad2{padding-left: 2.5rem;}
   .desktoptext3{font-size: 0.75rem !important;}
@@ -99,7 +98,30 @@ div.content{
   .commentpad{padding-left: 0.25rem;}
   .popup-box-notifications{right: 6.5rem !important;}
 }
-/* MAX WIDTH */
+/* On screens that are less than 1200px wide, make the sidebar into a topbar */
+@media screen and (max-width: 1199px){
+  .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
+    z-index: 8; box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
+  .navbar{padding: 1px 10px !important;}
+  .navback{background-color: #3e3d3c !important;}
+  #sidebar-dropbox{position: fixed; top: 42px; left: 84px; border: 3px solid #f1f1f1;
+    box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.25);}
+  a.hr2{border: none;}
+  .sidebar{z-index: 9; width: max-content; height: auto; position: fixed; box-shadow: none !important;}
+  html{scroll-behavior: smooth;}
+  .sidebar a{float: left;}
+  a.hr2.active{border:2px inset white; padding-top: 7px; padding-bottom: 7px;}
+  div.content{margin-left: 0; padding: 0;}
+  .content-toppad{padding-top: 0.5rem;}
+  .sidebar-iconmar{margin-right: 0;}
+  .hidesidebar{visibility: hidden;}
+  .discoverswitch{padding: 1rem 1rem !important;}
+  .sidebar-label{font-size: 0.9375rem !important; margin: 0;}
+  .sidebar-icon{font-size: 1.45rem;}
+  .sidebar a{padding: 7.5px 11px; font-size: 1rem;}
+  a.hr2.active{padding-top: 5.5px; padding-bottom: 5.5px;}
+}
+/* Mobile Phones */
 @media screen and (max-width: 767px){
   .navbar{box-shadow: none;}
   .navbar-toggler{border-color: #eaecf0 !important; padding: 0.25rem 0.5rem !important;}
@@ -113,6 +135,7 @@ div.content{
     -webkit-text-stroke-width: 0.65px;
     -webkit-text-stroke-color: #169c5e;
   }
+  .discover-icon{font-size: 1.75rem;}
   .badge-mobile{background: #f8f9fa !important; color: #262626 !important; top: -0.25rem !important;
   right: -0.5rem !important;}
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
@@ -157,7 +180,7 @@ div.content{
   div.carousel-frame{height: 150px !important;}
   div.carousel-frame2{height: 150px !important;}
   div.carousel-div{height: 142px !important;}
-  img.postimg{width: 100%; max-height: 25rem;object-fit: cover;}
+  img.postimg{width: 100%; max-height: 35rem;object-fit: cover;}
   .navbar-brand{margin: 0;}
   .orgname{font-size: 1.325rem !important; border-radius: 0.5rem !important; line-height: 1.375rem !important;}
   .orgpad{padding: 0.25rem 0.5rem !important;}
@@ -175,29 +198,39 @@ div.content{
   .sidebar-back{height: 46px !important;}
   .navbar{padding: 3px 10px !important;}
   #sidebar-dropbox{top: 46px; left: 91px;}
-  .sidebar a{padding: 11px 12.5px; font-size: 1rem;}
-  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
+  .sidebar a{padding: 9.5px 13.25px;}
+  a.hr2.active{padding-top: 7.5px; padding-bottom: 7.5px;}
+  .sidebar-label{font-size: 0.75rem !important;}
   body{padding-top: 4px;}
   .friends-dp{height: 7.25rem !important;}
 }
-/*Pixel 2/2XL => 411px iphone 8 => 414*/
+/* iphone 8 => 414*/
 @media screen and (max-width: 415px){
+
+}
+/*Google Pixel => 411px*/
+@media screen and (max-width: 412px){
   #sidebar-dropbox{top: 46px; left: 91px;}
-  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
+  .sidebar a{padding: 9.5px 13px;}
+  a.hr2.active{padding-top: 7.5px; padding-bottom: 7.5px;}
   .friends-dp{height: 6.1rem !important;}
   .commentpad{padding-left: 0rem;}
 }
-/*Pixel 3/3XL => 393px*/
+/*Redmi Note 7 => 393px*/
 @media screen and (max-width: 394px){
   #sidebar-dropbox{top: 46px; left: 86px;}
-  .sidebar a{padding: 11px 10px;}
+  .sidebar a{padding: 10px 11.25px;}
+  a.hr2.active{padding-top: 8px; padding-bottom: 8px;}
+  .sidebar-icon{font-size: 1.375rem;}
   .friends-dp{height: 6rem !important;}
   .commentpad2{padding-left: 0.25rem;}
+  .discover-icon{font-size: 1.625rem;}
 }
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
   #sidebar-dropbox{top: 46px; left: 84px;}
-  .sidebar a{padding: 11px 9px;}
+  .sidebar a{padding: 10px 10px;}
+  a.hr2.active{padding-top: 8px; padding-bottom: 8px;}
   .friends-dp{height: 5.65rem !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
@@ -209,17 +242,21 @@ div.content{
 @media screen and (max-width: 376px){
   .orgname{font-size: 1.25rem !important;}
   #sidebar-dropbox{top: 46px; left: 82px;}
-  .sidebar a{padding: 11px 8px;}
+  .sidebar a{padding: 10.5px 9.5px;}
+  a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
+  .sidebar-label{font-size: 0.75rem !important;}
+  .sidebar-icon{font-size: 1.325rem;}
   .friends-dp{height: 5.5rem !important;}
   .name{padding: 0.22rem 0 !important; font-size: 1.4rem !important; -webkit-text-stroke-width: 0.65px;}
 }
-/*Asus Max Pro M-1 => 360px*/
+/*Asus Max Pro M-1/ Galaxy S9 => 360px*/
 @media screen and (max-width: 361px){
   .sidebar-back{height: 42px !important;}
   .navbar{padding: 1px 10px !important;}
   #sidebar-dropbox{top: 42px; left: 78px;}
-  .sidebar a{padding: 9px 6px;}
-  a.hr2.active{padding-top: 7px; padding-bottom: 7px;}
+  .sidebar a{padding: 8.5px 9px;}
+  a.hr2.active{padding-top: 6.5px; padding-bottom: 6.5px;}
+  .sidebar-label{font-size: 0.6875rem !important;}
   body{padding-top: 0;}
   .mobile-cover{height: 160px !important;}
   div.lpcov{width: 168px; padding-bottom: 0 !important;}
@@ -242,7 +279,8 @@ div.content{
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
   #sidebar-dropbox{top: 38px; left: 70px;}
-  .sidebar a{padding: 9px 6px; font-size: 0.8725rem;}
+  .sidebar a{padding: 8.5px 4px;}
+  .discover-icon{font-size: 1.5rem;}
   .friends-dp{height: 4.75rem !important;}
   .name{padding: 0.25rem 0 !important; font-size: 1.35rem !important; -webkit-text-stroke-width: 0.6px;}
 }
@@ -427,8 +465,8 @@ button.btn.btn-secondary.search{
 .text-lg{font-size: 1.125rem !important;}
 .text-xl{font-size: 1.25rem !important;}
 .text-xxl{font-size: 1.375rem !important;}
-.text-xxxl{font-size: 1.5625rem !important;}
-.text-xxxxl{font-size: 1.625rem !important;}
+.text-xxxl{font-size: 1.625rem !important;}
+.text-xxxxl{font-size: 2rem !important;}
 label{
   margin: 0;
 }
@@ -476,7 +514,7 @@ input{
 }
 .discoverswitch-mobile{
   font-size: 1.375rem;
-  padding: 0rem 2rem;
+  padding: 0 2rem;
   border: none !important;
   box-shadow: none !important;
 }
@@ -1070,7 +1108,7 @@ input[type="file"]#inputavatar{
 }
 .btn-ask{
   color: #007bff !important;
-  border-color: #007bff !important;
+  border-color: grey !important;
   background-color: white!important;
 }
 .btn.btn-dark{
@@ -1119,17 +1157,13 @@ input[type="file"]#inputavatar{
   color: inherit;
   z-index: 2;
   box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.25);
+  padding: 0 .25rem;
+  border: 5px solid white;
 }
 .btn.btncollapse:hover{
-  border-left: 2px;
-  border-right: 2px;
+  border-width: 6px;
   border-style: solid;
-  border-image: 
-    linear-gradient(
-      to right, 
-      rgba(255,200,0,0.75), 
-      rgba(255,50,0,0.75)
-    ) 1 100%;
+  border-image: repeating-linear-gradient(to left top, blue, red 20px);
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
 }
 .btn-primary{

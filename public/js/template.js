@@ -902,7 +902,7 @@ function index_posts_template(response){
                       <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                     </span>
                   <% } %>
-                  <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).fromNow() %></em>
+                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).fromNow() %></em>
                 </div>
               </div>
             </div>
@@ -1316,7 +1316,7 @@ function club_posts_template(response){
                   <span class="mobiletext2">
                     <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                   </span>
-                  <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
                 </div>
                 <div>
                 <% if(0 <= rank && rank <= 2){ %>
@@ -1730,7 +1730,7 @@ function user_posts_template(response){
                   <span class="mobiletext2">
                     <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
                   </span>
-                  <em class="text-xxs lightgrey">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
                 </div>
                 <div>
                   <% if(currentUser && match){ %>
@@ -2124,7 +2124,7 @@ function heart_posts_template(response){
                   <span class="mobiletext2">
                     <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
                   </span>
-                  <em class="text-xxs lightgrey">. <%= moment(postsH[l].createdAt).calendar() %></em>
+                  <em class="text-xxs lightgrey2">. <%= moment(postsH[l].createdAt).calendar() %></em>
                 </div>
                 <div>
                   <% if(currentUser && match){ %>

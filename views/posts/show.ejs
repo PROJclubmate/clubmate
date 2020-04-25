@@ -1,6 +1,6 @@
 <% include ../partials/header %>
 
-<div class="row no-gutters">
+<div class="row no-gutters content-toppad">
   <div class="col-lg-2 col-md-2 px-2 mobileNone">
     <div class="list-group">
       <li class="list-group-item bluecolor text-sm boldtext mt-3"><i class="fas fa-question-circle"></i> Did you..</li>
@@ -186,8 +186,8 @@
                       <% if(post.descEdit.length != 0){ %>
                         <div class="badge badge-warning text-xxs">Edited</div>
                       <% } %>
-                      <span><em id="timeUTC" class="text-xxs lightgrey nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                      <span class="lightgrey nothing">. <em id="timeLocal" class="text-xxs"></em></span>
+                      <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                      <span class="lightgrey2 nothing">. <em id="timeLocal" class="text-xxs"></em></span>
                     </div>
                   </div>
                 </div>

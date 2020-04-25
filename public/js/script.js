@@ -55,10 +55,10 @@ for (var i=0;i<dropdown.length;i++){
     var club = document.getElementById('club-door');
     if(this.classList.contains('active')){
       drop.innerHTML = '<i class="fa fa-caret-up"></i>';
-      club.innerHTML = '<i class="fas fa-door-open"></i> Clubs';
+      club.innerHTML = '<i class="fas fa-door-open sidebar-icon px-1"></i>';
     } else{
       drop.innerHTML = '<i class="fa fa-caret-down"></i>';
-      club.innerHTML = '<i class="fas fa-door-closed"></i> Clubs';
+      club.innerHTML = '<i class="fas fa-door-closed sidebar-icon px-1"></i>';
     }
     var dropdownContent = document.getElementById('sidebar-dropbox');
     if (dropdownContent.style.display == 'block'){

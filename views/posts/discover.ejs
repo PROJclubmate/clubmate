@@ -35,12 +35,12 @@
               <button class="sortBykey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
             <% } %>
             <% if(currentUser.sortByKey == 2){ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-stopwatch purplecolor"></i> NEW</div>
+              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor"></i> NEW</div>
             <% } else{ %>
               <button class="sortBykey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
             <% } %>
             <% if(currentUser.sortByKey == 3){ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-award greencolor"></i> TOP</div>
+              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-award purplecolor"></i> TOP</div>
             <% } else{ %>
               <button class="sortBykey text-sm mx-2" name="sortByKey" value="3" type="submit"><i class="fas fa-award"></i> TOP</button>
             <% } %>
@@ -90,29 +90,29 @@
   <% } %>
 </div>
 <!-- <div class="desktopNone" style="height: 43px;"></div> -->
-<nav id="discover_nav" class="navbar fixed-bottom navbar-light bg-light desktopNone discover-navback">
+<nav id="discover_nav" class="navbar fixed-bottom navbar-light bg-light desktopNone tabletShow discover-navback">
   <div style="width: 100vw; padding: 0.125rem 0;">
     <% if(currentUser){ %>
       <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
         <% if(currentUser.discoverSwitch == 1){ %>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
-            <div><i id="following-switch-mobile" class="fas fa-university text-xxxxl"></i></div>
+            <div><i id="following-switch-mobile" class="fas fa-university discover-icon"></i></div>
             <div class="text-sm pl-2 mobilebold darkgrey">Following..</div>
           </div>
-          <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas text-xxxxl"></i></button>
+          <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas discover-icon"></i></button>
         <% } else if(currentUser.discoverSwitch == 2){ %>
-          <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university text-xxxxl"></i></button>
+          <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university discover-icon"></i></button>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
-            <div><i id="explore-switch-mobile" class="fas fa-globe-americas text-xxxxl"></i></div>
+            <div><i id="explore-switch-mobile" class="fas fa-globe-americas discover-icon"></i></div>
             <div class="text-sm pl-2 my-auto mobilebold darkgrey">Explore!</div>
           </div>
         <% } %>
       </form>
     <% } else{ %>
       <div class="valign">
-        <a href="/login" class="btn btn-light discoverswitch-mobile"><i class="fas fa-university text-xxxxl"></i></a>
+        <a href="/login" class="btn btn-light discoverswitch-mobile"><i class="fas fa-university discover-icon"></i></a>
         <div class="btn btn-light discoverswitch-mobile noshadow noborder valign">
-          <div><i id="explore-switch-mobile" class="fas fa-globe-americas text-xxxxl"></i></div>
+          <div><i id="explore-switch-mobile" class="fas fa-globe-americas discover-icon"></i></div>
           <div class="text-sm pl-2 mobilebold darkgrey">Explore!</div>
         </div>
       </div>
