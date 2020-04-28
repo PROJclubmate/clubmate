@@ -44,7 +44,7 @@
           </div>
           <div><span class="text-xs">#</span><span class="boldtext blackcolor nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
           <hr>
-          <div class="d-flex flex-row mx-auto">
+          <div class="d-flex flex-row mx-auto whiteback">
             <% if(0 <= rank && rank <= 4){ %>
               <form action="/subposts/<%= bucket._id %>/<%= subPosts[j]._id %>/vote" method="POST">
                 <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
@@ -196,14 +196,14 @@
               <% } %>
             </div>
             <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="images/*" multiple>
               <div class="emoji-panel subpostbtn pt-2 px-2">
-                <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
                   <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                     <% include ../partials/emoji_picker %>
                   </div>

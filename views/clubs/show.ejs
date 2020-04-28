@@ -373,7 +373,7 @@
                     <form class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);">
                       <% } else{ %>
                         <label for="topic" class="sr-only">Topic</label>
                         <input type="text" name="topic" class="form-control topic2" placeholder="discussion [topic]" readonly="readonly" value="" style="border: none;">
@@ -385,7 +385,7 @@
                       <div class="righttext d-flex my-auto">
                         <span>
                           <div class="emoji-panel">
-                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md pt-1" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
+                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md" style="margin-top: 0.25rem;" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
                               <i class="fas fa-link"></i>
                             </button>
                           </div>
@@ -396,7 +396,7 @@
                               <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                                 <% include ../partials/emoji_picker %>
                               </div>
-                              <i class="far fa-laugh-wink" style="padding-top: 0.35rem;"></i>
+                              <i class="far fa-laugh-wink" style="padding-top: 0.35rem; padding-right: 0.5rem;"></i>
                             </button>
                           </div>
                         </span>
@@ -481,16 +481,17 @@
                     <% for(i=club.updates.length-1;i>=0;i--){ %>
                       <div class="d-flex flex-row">
                         <% if(club.updates[i].eventDate){ %>
-                          <div class="eventD text-md mx-2 my-1 lineheight">
-                            <span><strong><%= moment(club.updates[i].eventDate).format('D') %></strong>
-                            <br>
-                            <%= moment(club.updates[i].eventDate).format('MMM') %>, 
-                              <%= moment(club.updates[i].eventDate).format('YY') %></span>
+                          <div class="text-md mx-2 my-1 lineheight">
+                            <time datetime="<%= moment(club.updates[i].eventDate).format('LL') %>" class="calendar">
+                              <em><%= moment(club.updates[i].eventDate).format('dddd') %></em>
+                              <strong><%= moment(club.updates[i].eventDate).format('MMM') %></strong>
+                              <span><%= moment(club.updates[i].eventDate).format('D') %></span>
+                            </time>
                           </div>
                         <% } else{ %>
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% } %>
-                        <div class="mx-2 pb-3 my-auto news mobiletext hr2 fullwidth">
+                        <div class="mx-2 pb-3 my-auto news mobiletext fullwidth">
                           <%= club.updates[i].news %>
                           <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
                           <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
@@ -547,7 +548,7 @@
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
-                <div class="greyback valign" style="height: 22px;">
+                <div class="greyback valign" style="height: 23px;">
                   <div class="d-flex flex-row">
                     <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                   </div>
@@ -582,7 +583,7 @@
               <% if(0 <= rank && rank <= 1){ %>
                 <!-- Member Requests Tab -->
                 <div class="tab-pane fade cardpad" id="requests" role="tabpanel" aria-labelledby="requests-tab">
-                  <div class="greyback" style="height: 22px;">
+                  <div class="greyback" style="height: 23px;">
                     <div class="d-flex flex-row">
                       <span class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Member Reqs.</span>
                     </div>

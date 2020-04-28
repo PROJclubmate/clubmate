@@ -34,11 +34,11 @@
               <div class="lineheight2">
                 <div class="mobiletext2">
                   <span>
-                    <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
+                    <a href="/clubs/<%= post.postClub._id %>" class="darkgrey text-sm"><strong><%= post.postClub.name %></strong></a>
                   </span>
                   <i class="fas fa-caret-left lightgrey"></i>
                   <span>
-                    <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
+                    <a class="darkgrey text-sm" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
                   </span>
                 </div>
                 <div>
@@ -93,7 +93,7 @@
           </div>
         </div>
         <hr>
-        <div class="card-body">
+        <div class="card-body3">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">
               <% if(currentUser){ %>
@@ -139,7 +139,7 @@
 
             <div class="valign" title="Comments">
               <span class="lightgrey nothing boldtext text-sm"><%= post.commentsCount %></span>
-              <span id="fcomments-btn" class="lightgrey text-xl d-flex ml-1 mr-3 fcomments-btn"><i class="fas fa-comments"></i></span>
+              <span id="fcomments-btn" class="lightgrey d-flex ml-1 mr-3 fcomments-btn"><i class="fas fa-comments"></i></span>
               <% if(currentUser){ %>
                 <% if(hasVote == 3){ %>
                   <span id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= post.heartCount %></span>
@@ -210,14 +210,13 @@
                 </div>
               <% } %>
             </div>
-            <hr>
             <!-- Vote bar -->
-            <div class="card-body3">
+            <div class="card-body">
               <div class="d-flex flex-row">
-                <div class="lightgrey nothing boldtext text-sm"><%= post.subpostsCount %></div>
-                <div class="lightgrey text-xl d-flex ml-1 mr-2 mt-1"><i class="fas fa-comment-alt"></i></div>
+                <div class="lightgrey nothing boldtext text-sm" style="margin-top: 0.125rem;"><%= post.subpostsCount %></div>
+                <div class="lightgrey text-xxl d-flex ml-1 mr-2 mt-1"><i class="fas fa-comment-alt"></i></div>
                 <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                  <div class="darkgrey boldtext text-sm nopad">(<%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>% upVotes)</div>
+                  <div class="lightgrey2 boldtext nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</div>
                 <% } %>
               </div>
             </div>
@@ -270,10 +269,10 @@
                 <div class="d-flex flex-column">
                   <% if(currentUser){ %>
                     <% if(hasVote == 3){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto"><%= post.heartCount %></div>
+                      <div id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
                       <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
                     <% } else if(hasVote == 0 || hasVote == 1 || hasVote == -1){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm mx-auto"><%= post.heartCount %></div>
+                      <div id="heart-count<%= post._id %>" class="boldtext lightgrey nothing text-sm mx-auto" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
                       <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                       <% } %>
                         <div class="invisible" id="modVisibility<%= post._id %>"></div>
@@ -382,14 +381,14 @@
                       <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4"></textarea>
                     </div>
                     <div class="d-flex flex-row-reverse">
-                      <button class="btn btn-success subpostbtn btnxs text-sm ml-2 mt-2">Submit</button>
-                      <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+                      <button class="btn btn-success subpostbtn btnshadow btnxs text-sm ml-2 mt-2">Submit</button>
+                      <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
                       <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                         <i class="fas fa-upload"></i> Image(s)
                       </label>
                       <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
                       <div class="emoji-panel subpostbtn pt-2 px-2">
-                        <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                        <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
                           <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                             <% include ../partials/emoji_picker %>
                           </div>
@@ -423,8 +422,8 @@
                   <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
                 </div>
                 <div class="d-flex flex-row-reverse">
-                  <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
-                  <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="button">Cancel</button>
+                  <button class="btn btn-sm btn-success commentbtn btnshadow btnxs ml-2 mt-2">Submit</button>
+                  <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnshadow btnxs text-sm mt-2" type="button">Cancel</button>
                 </div>
               </form>
             </div>

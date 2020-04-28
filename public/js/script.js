@@ -464,7 +464,8 @@ $(function (){
     
     //get text from timeUTC and conver to local timezone  
     var localTime  = moment.utc(divUtc.text()).toDate();
-    localTime = moment(localTime).format('lll');
+    // localTime = moment(localTime).format('lll');
+    localTime = moment(localTime).format('LT');
     divLocal.text(localTime);
     var localTimeNow  = moment.utc(divUtcNow.text()).toDate();
     localTimeNow = moment(localTimeNow).format('LT');
@@ -603,12 +604,12 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
     success: function(data){
       if(formData[0].name == 'published'){
         $('#moderation'+data._id).removeClass('btn-light').addClass('btn-info').text('Published')
-        .attr('name','exclusive').attr('value',1);
+        .attr('name','exclusive').attr('value',1).blur();
         $('#mod-badge'+data._id).text('0');
       }
       if(formData[0].name == 'exclusive'){
         $('#moderation'+data._id).removeClass('btn-info').addClass('btn-light').text('Exclusive')
-        .attr('name','published').attr('value',0);
+        .attr('name','published').attr('value',0).blur();
         $('#mod-badge'+data._id).text('1');
       }
       if(formData[0].name == 'visibility'){
@@ -621,7 +622,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
           $('#visibility'+data._id).text('Visibility(Hide)').val('-1');
           $('#mod-badge'+data._id).removeClass('badge-danger').addClass('badge-light').text('1');
           var mySpan = document.getElementById('modVisibility'+data._id);
-            if(!$('#modVisibility'+data._id).hasClass('createdButton')){
+            if(data.topic == '' && !$('#modVisibility'+data._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');
               btnVisibility.setAttribute('id', 'moderation'+data._id);
               btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','noshadow','text-sm','ml-2');

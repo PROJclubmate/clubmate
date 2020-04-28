@@ -935,7 +935,6 @@ function index_posts_template(response){
             </a>
           <% } %>
         </div>
-        <hr>
         <div class="card-body3">
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
@@ -1354,7 +1353,6 @@ function club_posts_template(response){
             </a>
           <% } %>
         </div>
-        <hr>
         <div class="card-body3">
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
@@ -1768,7 +1766,6 @@ function user_posts_template(response){
             </a>
           <% } %>
         </div>
-        <hr>
         <div class="card-body3">
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
@@ -2162,7 +2159,6 @@ function heart_posts_template(response){
             </a>
           <% } %>
         </div>
-        <hr>
         <div class="card-body3">
           <div>
             <span class="lightgrey text-sm"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
@@ -2402,7 +2398,7 @@ function post_subPosts_template(response){
           </div>
           <div><span class="text-xs">#</span><span class="boldtext blackcolor nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
           <hr>
-          <div class="d-flex flex-row mx-auto">
+          <div class="d-flex flex-row mx-auto whiteback">
             <% if(0 <= rank && rank <= 4){ %>
               <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
                 <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
@@ -2535,8 +2531,8 @@ function post_subPosts_template(response){
               <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input" name="text" placeholder="Add sub-post" rows="4"></textarea>
             </div>
             <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success subpostbtn btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
               <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>

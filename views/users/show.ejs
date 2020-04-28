@@ -405,6 +405,7 @@
                       <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.interests); %>
+                    <br>
                     <div id="interests_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="interests_form" class="form-inline d-flex justify-content-between fullwidth">
@@ -419,7 +420,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('interests_form','interests','Hobbies');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('interests_form','interests','Hobbies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -433,11 +434,12 @@
                 </div>
                 <div class="info1">
                   Music: 
-                  <div class="info30 mb-3">
+                  <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('favourites_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.music); %>
+                    <br>
                     <div id="favourites_form1_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form1" class="form-inline d-flex justify-content-between fullwidth">
@@ -452,7 +454,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -461,11 +463,12 @@
                 </div>
                 <div class="info1">
                   Movies: 
-                  <div class="info30 mb-3">
+                  <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('favourites_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.movies); %>
+                    <br>
                     <div id="favourites_form2_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form2" class="form-inline d-flex justify-content-between fullwidth">
@@ -480,7 +483,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -489,11 +492,12 @@
                 </div>
                 <div class="info1">
                   TV Shows: 
-                  <div class="info30 mb-3">
+                  <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('favourites_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.tvshows); %>
+                    <br>
                     <div id="favourites_form3_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form3" class="form-inline d-flex justify-content-between fullwidth">
@@ -508,7 +512,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -517,11 +521,12 @@
                 </div>
                 <div class="info1">
                   Places: 
-                  <div class="info30 mb-3">
+                  <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('favourites_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.places); %>
+                    <br>
                     <div id="favourites_form4_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form4" class="form-inline d-flex justify-content-between fullwidth">
@@ -536,7 +541,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -545,11 +550,12 @@
                 </div>
                 <div class="info1">
                   Books: 
-                  <div class="info30 mb-3">
+                  <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('favourites_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.books); %>
+                    <br>
                     <div id="favourites_form5_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form5" class="form-inline d-flex justify-content-between fullwidth">
@@ -564,7 +570,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -578,6 +584,7 @@
                       <button onclick="toggle_display('favourites_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% favourites_split(user.favourites.videogames); %>
+                    <br>
                     <div id="favourites_form6_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="favourites_form6" class="form-inline d-flex justify-content-between fullwidth">
@@ -592,7 +599,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -604,7 +611,7 @@
             </div>
             <!-- Clubs Tab -->
             <div class="tab-pane fade cardpad" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
-              <div class="greyback valign my-auto" style="height: 22px;">
+              <div class="greyback valign my-auto" style="height: 23px;">
                 <div class="d-flex flex-row">
                   <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
                 </div>

@@ -9,14 +9,17 @@
     <% var arr = latestUpdates();
     for(i=0;i<arr.length;i++){ %>
       <div class="searchcard d-flex flex-row pt-1" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
-        <div class="eventD text-md mx-2 my-1 lineheight">
-          <% if(arr[i].eventDate){ %>
-            <span><strong><%= moment(arr[i].eventDate).format('D') %></strong>
-            <br>
-            <%= moment(arr[i].eventDate).format('MMM') %>, 
-            <%= moment(arr[i].eventDate).format('YY') %></span>
-          <% } %>
-        </div>
+        <% if(arr[i].eventDate){ %>
+          <div class="text-md mx-2 my-1 lineheight">
+            <time datetime="<%= moment(arr[i].eventDate).format('LL') %>" class="calendar">
+              <em><%= moment(arr[i].eventDate).format('dddd') %></em>
+              <strong><%= moment(arr[i].eventDate).format('MMM') %></strong>
+              <span><%= moment(arr[i].eventDate).format('D') %></span>
+            </time>
+          </div>
+        <% } else{ %>
+          <div class="eventD text-md mx-2 my-1 lineheight"></div>
+        <% } %>
         <div class="mr-1 fullwidth">
           <div class="boldtext desktoptext2 mobiletext3 valign">
             <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
