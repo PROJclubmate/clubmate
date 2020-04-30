@@ -37,13 +37,8 @@ const postSchema = new Schema({
   },
   isAdminModerationLock: {type: Boolean, default: false},
   likeCount: {type: Number, default: 0},
-  dislikeCount: {type: Number, default: 0},
   heartCount: {type: Number, default: 0},
   likeUserIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  dislikeUserIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],

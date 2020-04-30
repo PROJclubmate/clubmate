@@ -5,7 +5,7 @@ $('#drop-info').click(()=>{
 		if(club.geometry && club.geometry!=undefined){
 			var map = new mapboxgl.Map({
 			  container: 'map',
-			  style: 'mapbox://styles/mapbox/light-v9',
+			  style: 'mapbox://styles/mapbox/dark-v10',
 			  center: club.geometry.coordinates,
 			  zoom: 10
 			});
@@ -18,7 +18,7 @@ $('#drop-info').click(()=>{
 		new mapboxgl.Marker(el)
 		.setLngLat(club.geometry.coordinates)
 		.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-		.setHTML('<h6>' + club.name + '</h6><p>' + club.clubKeys.location + '</p>'))
+		.setHTML('<h6>' + club.name + '</h6><p class="nothing">' + club.clubKeys.location + '</p>'))
 		.addTo(map);
 		}
 	}

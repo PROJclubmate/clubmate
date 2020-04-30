@@ -224,10 +224,8 @@ module.exports = {
           "moderation": 1,
           "isAdminModerationLock": 1,
           "likeCount": 1,
-          "dislikeCount": 1,
           "heartCount": 1,
           "likeUserIds": 1,
-          "dislikeUserIds": 1,
           "heartUserIds": 1,
           "commentsCount": 1,
           "bucketNum": 1,
@@ -240,13 +238,12 @@ module.exports = {
           "topic": 1,
           "createdAt": 1,
           "__v": 1,
-          // Based on (400 views == 40 likes == 10 hearts == 10 dislikes == 5 comments == 1 shares & T = 4hr units)
+          // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
           "ranking": {
             $divide: [
               { $add: [
                 { $multiply: ["$viewsCount", 0.0125] },
                 { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$dislikeCount", 0.5] },
                 { $multiply: ["$heartCount", 0.5] },
                 { $multiply: ["$commentsCount", 1] },
                 // { $multiply: ["$shareCount", 5] },
@@ -377,10 +374,8 @@ module.exports = {
           "moderation": 1,
           "isAdminModerationLock": 1,
           "likeCount": 1,
-          "dislikeCount": 1,
           "heartCount": 1,
           "likeUserIds": 1,
-          "dislikeUserIds": 1,
           "heartUserIds": 1,
           "commentsCount": 1,
           "bucketNum": 1,
@@ -393,12 +388,11 @@ module.exports = {
           "topic": 1,
           "createdAt": 1,
           "__v": 1,
-          // Based on (400 views == 40 likes == 10 hearts == 10 dislikes == 5 comments == 1 shares & T = 4hr units)
+          // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
           "ranking": {
             $add: [
               { $multiply: ["$viewsCount", 0.0125] },
               { $multiply: ["$likeCount", 0.125] },
-              { $multiply: ["$dislikeCount", 0.5] },
               { $multiply: ["$heartCount", 0.5] },
               { $multiply: ["$commentsCount", 1] },
               0.75
@@ -482,10 +476,8 @@ module.exports = {
           "moderation": 1,
           "isAdminModerationLock": 1,
           "likeCount": 1,
-          "dislikeCount": 1,
           "heartCount": 1,
           "likeUserIds": 1,
-          "dislikeUserIds": 1,
           "heartUserIds": 1,
           "commentsCount": 1,
           "bucketNum": 1,
@@ -503,7 +495,6 @@ module.exports = {
               { $add: [
                 { $multiply: ["$viewsCount", 0.0125] },
                 { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$dislikeCount", 0.5] },
                 { $multiply: ["$heartCount", 0.5] },
                 { $multiply: ["$commentsCount", 1] },
                 0.75
@@ -631,10 +622,8 @@ module.exports = {
           "moderation": 1,
           "isAdminModerationLock": 1,
           "likeCount": 1,
-          "dislikeCount": 1,
           "heartCount": 1,
           "likeUserIds": 1,
-          "dislikeUserIds": 1,
           "heartUserIds": 1,
           "commentsCount": 1,
           "bucketNum": 1,
@@ -651,7 +640,6 @@ module.exports = {
             $add: [
               { $multiply: ["$viewsCount", 0.0125] },
               { $multiply: ["$likeCount", 0.125] },
-              { $multiply: ["$dislikeCount", 0.5] },
               { $multiply: ["$heartCount", 0.5] },
               { $multiply: ["$commentsCount", 1] },
               0.75
@@ -735,10 +723,8 @@ module.exports = {
       "moderation": 1,
       "isAdminModerationLock": 1,
       "likeCount": 1,
-      "dislikeCount": 1,
       "heartCount": 1,
       "likeUserIds": 1,
-      "dislikeUserIds": 1,
       "heartUserIds": 1,
       "commentsCount": 1,
       "bucketNum": 1,
@@ -756,7 +742,6 @@ module.exports = {
           { $add: [
             { $multiply: ["$viewsCount", 0.0125] },
             { $multiply: ["$likeCount", 0.125] },
-            { $multiply: ["$dislikeCount", 0.5] },
             { $multiply: ["$heartCount", 0.5] },
             { $multiply: ["$commentsCount", 1] },
             0.75
@@ -1211,9 +1196,8 @@ module.exports = {
         foundPost.save();
         res.json(foundPost);
       }
-      var i, j, k; var clickIdFound = false, secondIdFound = false, thirdIdFound = false;
+      var i, k; var clickIdFound = false, otherIdFound = false;
       var likeIds = foundPost.likeUserIds; var len1 = foundPost.likeCount;
-      var dislikeIds = foundPost.dislikeUserIds; var len2 = foundPost.dislikeCount;
       var heartIds = foundPost.heartUserIds; var len3 = foundPost.heartCount;
       // Like button
       if(req.body.like == 'like'){
@@ -1226,25 +1210,15 @@ module.exports = {
           }
         }
         if(clickIdFound == false){
-          for(j=len2-1;j>=0;j--){
-            if(dislikeIds[j].equals(req.user._id)){
-              dislikeIds.splice(j,1);
-              foundPost.dislikeCount -= 1;
-              secondIdFound = true;
-              break;
-            }
-          }
-        }
-        if(clickIdFound == false && secondIdFound == false){
           for(k=len3-1;k>=0;k--){
             if(heartIds[k].equals(req.user._id)){
               heartIds.splice(k,1);
               foundPost.heartCount -= 1;
-              thirdIdFound = true;
+              otherIdFound = true;
               break;
             }
           }
-          if(thirdIdFound == true){
+          if(otherIdFound == true){
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
               if(err || !foundUser){
                 console.log(Date.now()+' : '+req.user._id+' => (posts-32)foundUser err:- '+JSON.stringify(err, null, 2));
@@ -1256,51 +1230,6 @@ module.exports = {
         if(clickIdFound == false){
           likeIds.push(req.user._id);
           foundPost.likeCount += 1;
-        }
-        foundPost.save();
-        res.json(foundPost);
-      }
-      // Dislike button
-      else if(req.body.dislike == 'dislike'){
-        for(j=len2-1;j>=0;j--){
-          if(dislikeIds[j].equals(req.user._id)){
-            dislikeIds.splice(j,1);
-            foundPost.dislikeCount -=1;
-            clickIdFound = true;
-            break;                   
-          }
-        }
-        if(clickIdFound == false){
-          for(i=len1-1;i>=0;i--){
-            if(likeIds[i].equals(req.user._id)){
-              likeIds.splice(i,1);
-              foundPost.likeCount -= 1;
-              secondIdFound = true;
-              break;
-            }
-          }
-        }
-        if(clickIdFound == false && secondIdFound == false){
-          for(k=len3-1;k>=0;k--){
-            if(heartIds[k].equals(req.user._id)){
-              heartIds.splice(k,1);
-              foundPost.heartCount -= 1;
-              thirdIdFound = true;
-              break;
-            }
-          }
-          if(thirdIdFound == true){
-            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
-              if(err || !foundUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-33)foundUser err:- '+JSON.stringify(err, null, 2));
-                return res.sendStatus(500);
-              }
-            });
-          }
-        }
-        if(clickIdFound == false){
-          dislikeIds.push(req.user._id);
-          foundPost.dislikeCount +=1;
         }
         foundPost.save();
         res.json(foundPost);
@@ -1328,17 +1257,6 @@ module.exports = {
             if(likeIds[i].equals(req.user._id)){
               likeIds.splice(i,1);
               foundPost.likeCount -= 1;
-              secondIdFound = true;
-              break;
-            }
-          }
-        }
-        if(clickIdFound == false && secondIdFound == false){
-          for(j=len2-1;j>=0;j--){
-            if(dislikeIds[j].equals(req.user._id)){
-              dislikeIds.splice(j,1);
-              foundPost.dislikeCount -= 1;
-              thirdIdFound = true;
               break;
             }
           }
@@ -1445,14 +1363,6 @@ function voteCheck(user,post){
       for(var i=post.likeCount-1;i>=0;i--){
         if(post.likeUserIds[i].equals(user._id)){
           hasVote = 1;
-          break;
-        }
-      }
-    }
-    if(hasVote == 0){
-      for(var j=post.dislikeCount-1;j>=0;j--){
-        if(post.dislikeUserIds[j].equals(user._id)){
-          hasVote = -1;
           break;
         }
       }

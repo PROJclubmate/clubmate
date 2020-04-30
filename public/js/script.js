@@ -508,11 +508,6 @@ function outCopyTxtFn() {
   tooltip.innerHTML = "Copy to clipboard";
 }
 
-$('#fcomments-btn').on('click', function(){
-  console.log('CLICK');
-  $('#commentbox').focus().click();
-});
-
 //================================================================================
 // AJAX
 //================================================================================
@@ -532,7 +527,6 @@ $("div#delegated-posts").on('click', '.vote', function(e){
     success: function(data){
       // Process the expected results...
       $('#like-count'+data._id).text(data.likeCount);
-      $('#dislike-count'+data._id).text(data.dislikeCount);
       $('#heart-count'+data._id).text(data.heartCount);
 
       if(formData[0].name == 'like'){
@@ -540,29 +534,11 @@ $("div#delegated-posts").on('click', '.vote', function(e){
           $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
         else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-        || $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
         || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
           $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
           $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
         }
         $('#like-count'+data._id).toggleClass('greencolor');
-        $('#dislike-count'+data._id).removeClass('blackcolor');
-        $('#heart-count'+data._id).removeClass('redcolor');
-      }
-      if(formData[0].name == 'dislike'){
-        if($('#dislike-btn'+data._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
-          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
-        }
-        else if($('#dislike-btn'+data._id).html() == '<i class="far fa-thumbs-down"></i>'
-        || $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>')
-        || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
-          $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
-          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
-          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
-        }
-        $('#like-count'+data._id).removeClass('greencolor');
-        $('#dislike-count'+data._id).toggleClass('blackcolor');
         $('#heart-count'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'heart'){
@@ -570,14 +546,11 @@ $("div#delegated-posts").on('click', '.vote', function(e){
           $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
         }
         else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
-        || $('#dislike-btn'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
         || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
           $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor"></i>');
-          $('#dislike-btn'+data._id).html('<i class="far fa-thumbs-down"></i>');
           $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
         $('#like-count'+data._id).removeClass('greencolor');
-        $('#dislike-count'+data._id).removeClass('blackcolor');
         $('#heart-count'+data._id).toggleClass('redcolor');
       }
     },
@@ -703,7 +676,6 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
     success: function(data){
       // Process the expected results...
       $('#like-countH'+data._id).text(data.likeCount);
-      $('#dislike-countH'+data._id).text(data.dislikeCount);
       $('#heart-countH'+data._id).text(data.heartCount);
 
       if(formData[0].name == 'like'){
@@ -711,29 +683,11 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
           $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
         else if($('#like-btnH'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-        || $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
         || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
           $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
           $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
         }
         $('#like-countH'+data._id).toggleClass('greencolor');
-        $('#dislike-countH'+data._id).removeClass('blackcolor');
-        $('#heart-countH'+data._id).removeClass('redcolor');
-      }
-      if(formData[0].name == 'dislike'){
-        if($('#dislike-btnH'+data._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
-          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
-        }
-        else if($('#dislike-btnH'+data._id).html() == '<i class="far fa-thumbs-down"></i>'
-        || $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>')
-        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
-          $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
-          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
-          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
-        }
-        $('#like-countH'+data._id).removeClass('greencolor');
-        $('#dislike-countH'+data._id).toggleClass('blackcolor');
         $('#heart-countH'+data._id).removeClass('redcolor');
       }
       if(formData[0].name == 'heart'){
@@ -741,14 +695,11 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
           $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
         }
         else if($('#heart-btnH'+data._id).html() == '<i class="far fa-heart"></i>'
-        || $('#dislike-btnH'+data._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')
         || $('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
           $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor"></i>');
-          $('#dislike-btnH'+data._id).html('<i class="far fa-thumbs-down"></i>');
           $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
         $('#like-countH'+data._id).removeClass('greencolor');
-        $('#dislike-countH'+data._id).removeClass('blackcolor');
         $('#heart-countH'+data._id).toggleClass('redcolor');
       }
     },

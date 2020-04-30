@@ -714,7 +714,16 @@ function index_posts_template(response){
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
           <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-          <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).fromNow() %></em>
+          <div class="lightgrey2">
+            <span>
+              <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
+            </span>
+            <% if(posts[k].commentsCount > 0){ %>
+               . <span class="boldtext nothing text-xxs">
+                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+              </span>
+            <% } %>
+          </div>
         </div>
         <hr>
       <% } else{ %>
@@ -726,7 +735,16 @@ function index_posts_template(response){
           <% } %>
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-            <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).fromNow() %></em>
+            <div class="lightgrey2">
+              <span>
+                <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
+              </span>
+              <% if(posts[k].commentsCount > 0){ %>
+                 . <span class="boldtext nothing text-xxs">
+                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                </span>
+              <% } %>
+            </div>
           </a>
         </div>
         <hr>
@@ -740,38 +758,17 @@ function index_posts_template(response){
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
                 <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm greencolor"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
-              <% } else if(hasVote[k] == -1){ %>
-                <span class="d-flex mr-1"> 
-                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
-                </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down blackcolor"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm blackcolor"><%= posts[k].dislikeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
                 <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
               <% } %>
             <% }else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
               <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-              <span class="d-flex ml-2 mr-1">
-                <button id="dislike-btn<%= posts[k]._id %>" class="vote" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
-              </span>
-              <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
             <% } %>
           </div>
         
@@ -780,7 +777,7 @@ function index_posts_template(response){
               <% if(hasVote[k] == 3){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></span>
-              <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
@@ -1013,7 +1010,7 @@ function index_posts_template(response){
                 <% if(hasVote[k] == 3){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
-                <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+                <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
@@ -1128,7 +1125,16 @@ function club_posts_template(response){
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
           <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-          <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
+          <div class="lightgrey2">
+            <span>
+              <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
+            </span>
+            <% if(posts[k].commentsCount > 0){ %>
+               . <span class="boldtext nothing text-xxs">
+                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+              </span>
+            <% } %>
+          </div>
         </div>
         <hr>
       <% } else{ %>
@@ -1136,7 +1142,16 @@ function club_posts_template(response){
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-            <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
+            <div class="lightgrey2">
+              <span>
+                <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
+              </span>
+              <% if(posts[k].commentsCount > 0){ %>
+                 . <span class="boldtext nothing text-xxs">
+                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                </span>
+              <% } %>
+            </div>
           </a>
         </div>
         <hr>
@@ -1150,39 +1165,16 @@ function club_posts_template(response){
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
                 <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm greencolor"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
-              <% } else if(hasVote[k] == -1){ %>
-                <span class="d-flex mr-1"> 
-                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
-                </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down blackcolor"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm blackcolor"><%= posts[k].dislikeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
-              <% } %>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>              <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-              <span class="d-flex ml-2 mr-1">
-                <button id="dislike-btn<%= posts[k]._id %>" class="vote" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
-              </span>
-              <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
-            <% } %>
+              <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>            <% } %>
           </div>
         
           <div class="valign">
@@ -1190,7 +1182,7 @@ function club_posts_template(response){
               <% if(hasVote[k] == 3){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></span>
-              <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
@@ -1442,7 +1434,7 @@ function club_posts_template(response){
                 <% if(hasVote[k] == 3){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
-                <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+                <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
@@ -1554,7 +1546,16 @@ function user_posts_template(response){
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
           <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-          <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
+          <div class="lightgrey2">
+            <span>
+              <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
+            </span>
+            <% if(posts[k].commentsCount > 0){ %>
+               . <span class="boldtext nothing text-xxs">
+                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+              </span>
+            <% } %>
+          </div>
         </div>
         <hr>
       <% } else{ %>
@@ -1562,7 +1563,16 @@ function user_posts_template(response){
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-            <em class="text-xxs lightgrey2"><%= moment(posts[k].createdAt).calendar() %></em>
+            <div class="lightgrey2">
+              <span>
+                <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
+              </span>
+              <% if(posts[k].commentsCount > 0){ %>
+                 . <span class="boldtext nothing text-xxs">
+                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                </span>
+              <% } %>
+            </div>
           </a>
         </div>
         <hr>
@@ -1576,38 +1586,17 @@ function user_posts_template(response){
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
                 <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm greencolor"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
-              <% } else if(hasVote[k] == -1){ %>
-                <span class="d-flex mr-1"> 
-                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
-                </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down blackcolor"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm blackcolor"><%= posts[k].dislikeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
                 <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btn<%= posts[k]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
               <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].likeCount %></span>
-              <span class="d-flex ml-2 mr-1">
-                <button id="dislike-btn<%= posts[k]._id %>" class="vote" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
-              </span>
-              <span id="dislike-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].dislikeCount %></span>
             <% } %>
           </div>
         
@@ -1616,7 +1605,7 @@ function user_posts_template(response){
               <% if(hasVote[k] == 3){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></span>
-              <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
@@ -1844,7 +1833,7 @@ function user_posts_template(response){
                 <% if(hasVote[k] == 3){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
-                <% } else if(hasVote[k] == 0 || hasVote[k] == 1 || hasVote[k] == -1){ %>
+                <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= posts[k].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
@@ -1947,7 +1936,16 @@ function heart_posts_template(response){
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= postsH[l].description %></p>
           <p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p>
-          <em class="text-xxs lightgrey2"><%= moment(postsH[l].createdAt).calendar() %></em>
+          <div class="lightgrey2">
+            <span>
+              <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
+            </span>
+            <% if(postsH[l].commentsCount > 0){ %>
+               . <span class="boldtext nothing text-xxs">
+                <%= postsH[l].commentsCount %><% if(postsH[l].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+              </span>
+            <% } %>
+          </div>
         </div>
         <hr>
       <% } else{ %>
@@ -1955,7 +1953,16 @@ function heart_posts_template(response){
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= postsH[l].description %></p>
             <p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p>
-            <em class="text-xxs lightgrey2"><%= moment(postsH[l].createdAt).calendar() %></em>
+            <div class="lightgrey2">
+              <span>
+                <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
+              </span>
+              <% if(postsH[l].commentsCount > 0){ %>
+                 . <span class="boldtext nothing text-xxs">
+                  <%= postsH[l].commentsCount %><% if(postsH[l].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                </span>
+              <% } %>
+            </div>
           </a>
         </div>
         <hr>
@@ -1969,38 +1976,17 @@ function heart_posts_template(response){
                   <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
                 <span id="like-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm greencolor"><%= postsH[l].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btnH<%= postsH[l]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].dislikeCount %></span>
-              <% } else if(hasVoteH[l] == -1){ %>
-                <span class="d-flex mr-1"> 
-                  <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
-                </span>
-                <span id="like-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btnH<%= postsH[l]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down blackcolor"></i></button>
-                </span>
-                <span id="dislike-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm blackcolor"><%= postsH[l].dislikeCount %></span>
               <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
                 <span id="like-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].likeCount %></span>
-                <span class="d-flex ml-2 mr-1">
-                  <button id="dislike-btnH<%= postsH[l]._id %>" class="vote dislikebtn" name="dislike" type="submit" value="dislike" title="Dislike"><i class="far fa-thumbs-down"></i></button>
-                </span>
-                <span id="dislike-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].dislikeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btnH<%= postsH[l]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
               <span id="like-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].likeCount %></span>
-              <span class="d-flex ml-2 mr-1">
-                <button id="dislike-btnH<%= postsH[l]._id %>" class="vote" name="dislike" type="submit" value="dislike" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
-              </span>
-              <span id="dislike-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].dislikeCount %></span>
             <% } %>
           </div>
         
@@ -2009,7 +1995,7 @@ function heart_posts_template(response){
               <% if(hasVoteH[l] == 3){ %>
                 <span id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm redcolor"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></span>
-              <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1 || hasVoteH[l] == -1){ %>
+              <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1){ %>
                 <span id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
@@ -2237,7 +2223,7 @@ function heart_posts_template(response){
                 <% if(hasVoteH[l] == 3){ %>
                   <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm redcolor mx-auto topic-heart"><%= postsH[l].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></div>
-                <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1 || hasVoteH[l] == -1){ %>
+                <% } else if(hasVoteH[l] == 0){ %>
                   <div id="heart-countH<%= postsH[l]._id %>" class="boldtext lightgrey nothing text-sm mx-auto topic-heart"><%= postsH[l].heartCount %></div>
                   <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>

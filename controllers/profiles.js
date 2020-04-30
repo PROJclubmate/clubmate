@@ -1891,12 +1891,6 @@ function voteCheck(user,post){
         break;
       }
     }
-    for(var j=post.dislikeCount-1;j>=0;j--){
-      if(post.dislikeUserIds[j].equals(user._id)){
-        hasVote = -1;
-        break;
-      }
-    }
     for(var k=post.heartCount-1;k>=0;k--){
       if(post.heartUserIds[k].equals(user._id)){
         hasVote = 3;
