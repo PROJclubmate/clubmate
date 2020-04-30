@@ -617,7 +617,7 @@
         <div class="card-body hr1 mx-3">
           <div class="lightgrey lineheight text-sm text-center">
             <% if(!sentMemberReq){ %>
-              <button id="memberReq-btn" class="btn btn-white btn-primary btn-ask boldtext" onclick="toggle_display('memberReq-div')" style="border-width: 1px;">Ask</button>
+              <button id="memberReq-btn" class="btn btn-white btn-primary btn-ask boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
@@ -625,14 +625,14 @@
             <% } %>
           </div>
         </div>
-        <div id="memberReq-div" class="mx-3 mb-2">
-          <div class="card-body">
-            <div class="memberRequest_form" style="outline: 2px dashed darkgrey;">
+        <div id="memberReq-div" class="mx-3 my-2 mt-3">
+          <div class="card-body mail-wrap mx-auto">
+            <div class="memberRequest_form whiteback" style="border-radius: 0.75rem;">
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <div class="form-signin">
                   <label for="message" class="sr-only">Club name</label>
-                    <textarea id="message" class="form-control form-control-sm shadow" type="text" name="message" placeholder="Message" rows="3" required></textarea>
-                  <button class="btn btn-sm btn-success d-flex ml-auto" title="member request" name="memberReq" value="<%= club._id %>">Send Request</button>
+                    <textarea id="message" class="form-control form-control-sm" type="text" name="message" placeholder="Request message" rows="3" required></textarea>
+                  <button class="btn btn-sm btn-success btnshadow d-flex ml-auto" title="member request" name="memberReq" value="<%= club._id %>">Send</button>
                 </div>
               </form>
             </div>

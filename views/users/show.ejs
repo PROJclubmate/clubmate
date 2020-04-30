@@ -271,7 +271,7 @@
                       <button class="btn btn-white btnxxs text-sm" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
                     </form>
                   <% } else if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
-                    <button id="enable-notifications" class="btn btn-white btn-primary btn-ask btnxxs text-sm" style="border-radius: 0.25rem;" title="Enable notifications on this device">
+                    <button id="enable-notifications" class="btn btn-white btn-notification btnxxs text-sm"title="Enable notifications on this device">
                       <i class="fas fa-bell"></i>
                     </button>
                     <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
