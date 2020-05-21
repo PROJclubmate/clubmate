@@ -95,8 +95,31 @@
       <div class="col-md-4 px-1 mobilepad mt-2 keys">
         <div class="card">
           <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse" data-toggle="collapse" data-target="#infobox">Info</button>
-          <!-- Description -->
           <div id="infobox" class="collapse card-body5">
+            <% if(currentUser){ %>
+              <form action="/users/<%= currentUser._id %>/unfollow/<%= club._id %>?_method=PUT" method="POST">
+                <div class="text-sm boldtext lightgrey my-3 text-center"><%= club.totalFollowerCount %></div>
+                <!-- Member have to follow seperately too -->
+                <div class="text-center my-3">
+                  <!-- Follow (Stray) club whose orgPage/college is not followed by CU-->
+                  <% if(!isFollowingOrg && !isFollowingStrayClub){ %>
+                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClubStray" value="true" type="submit">Follow</button>
+                  <!-- Unfollow Stray club -->
+                  <% } else if(!isFollowingOrg && isFollowingStrayClub){ %>
+                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClubStray" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+                  <!-- Unfollow (Org) club whoose orgPage/college is followed by CU -->
+                  <% } else if(isFollowingOrg && !isUnFollowingOrgClub){ %>
+                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClubOrg" value="false" type="submit"><i class="fas fa-minus"></i> Unfollow</button>
+                  <!-- Follow Org Club -->
+                  <% } else if(isFollowingOrg && isUnFollowingOrgClub){ %>
+                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClubOrg" value="true" type="submit">Follow again</button>
+                  <% } %>
+                </div>
+              </form>
+              <% if(isFollowingOrg){ %>
+                  <em class="text-xs lightgrey2 mt-2">Following: <%= club.clubKeys.organization %></em>
+                <% } %>
+            <% } %>
             <div>
               <div class="valign">
                 <div class="boldtext">Description</div>
@@ -114,7 +137,6 @@
                 </form>
               <% } %>
             </div>
-            <!-- Rules -->
             <div>
               <div class="valign">
                 <div class="boldtext">Rules</div>
@@ -492,7 +514,7 @@
                         <% } else{ %>
                           <div class="eventD text-md mx-2 my-1 lineheight"></div>
                         <% } %>
-                        <div class="mx-2 pb-3 my-auto news mobiletext fullwidth">
+                        <div class="mx-2 pb-3 my-auto news mobiletext">
                           <%= club.updates[i].news %>
                           <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
                           <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>

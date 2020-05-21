@@ -544,9 +544,9 @@ module.exports = {
       var clubIduserId = req.body.clubId.split(',');
       var adminClubId = mongoose.Types.ObjectId(clubIduserId[0]);
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
-      User.updateOne({_id: invitedUserId},{$addToSet: {clubInvites: adminClubId}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-16)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: invitedUserId}, {$addToSet: {clubInvites: adminClubId}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-16)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           Club.findById(adminClubId, function(err, foundClub){
@@ -613,18 +613,18 @@ module.exports = {
       var clubIduserId = req.body.cancelClubId.split(',');
       var adminClubId = mongoose.Types.ObjectId(clubIduserId[0]);
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
-      User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-20)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-20)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
     }
     if(req.body.removeInvite){
       var removeInvite = mongoose.Types.ObjectId(req.body.removeInvite);
-      User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-21)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-21)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -679,9 +679,9 @@ module.exports = {
     // FRIEND REQUESTS
     if(req.body.friendReq){
       var friendReq = mongoose.Types.ObjectId(req.body.friendReq);
-      User.updateOne({_id: friendReq},{$addToSet: {friendRequests: req.user._id}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-24)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: friendReq},{$addToSet: {friendRequests: req.user._id}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-24)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           User.findById(req.user._id).select({fullName: 1, profilePic: 1, profilePicId: 1})
@@ -739,18 +739,18 @@ module.exports = {
     };
     if(req.body.cancelReq){
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
-      User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-28)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-28)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
     };
     if(req.body.removeReq){
       var removeReq = mongoose.Types.ObjectId(req.body.removeReq);
-      User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-29)foundUser err:- '+JSON.stringify(err, null, 2));
+      User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-29)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -759,15 +759,15 @@ module.exports = {
       var acceptReq = mongoose.Types.ObjectId(req.body.acceptReq);
       User.updateOne({_id: req.user._id}, 
       {$pull: {friendRequests: acceptReq}, $addToSet: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
-      function(err, foundUser){
-      if(err || !foundUser){
-        console.log(Date.now()+' : '+req.user._id+' => (index-30)foundUser err:- '+JSON.stringify(err, null, 2));
+      function(err, updateUser){
+      if(err || !updateUser){
+        console.log(Date.now()+' : '+req.user._id+' => (index-30)updateUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: acceptReq}, 
-        {$addToSet: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-31)foundUser err:- '+JSON.stringify(err, null, 2));
+        {$addToSet: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, updateUser){
+          if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-31)updateUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
         });
@@ -777,15 +777,15 @@ module.exports = {
     if(req.body.unFriendReq){
       var unFriendReq = mongoose.Types.ObjectId(req.body.unFriendReq);
       User.updateOne({_id: req.user._id}, 
-      {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err, foundUser){
-      if(err || !foundUser){
-        console.log(Date.now()+' : '+req.user._id+' => (index-32)foundUser err:- '+JSON.stringify(err, null, 2));
+      {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err, updateUser){
+      if(err || !updateUser){
+        console.log(Date.now()+' : '+req.user._id+' => (index-32)updateUser err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: unFriendReq}, 
-        {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-33)foundUser err:- '+JSON.stringify(err, null, 2));
+        {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, updateUser){
+          if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-33)updateUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
         });
@@ -802,31 +802,31 @@ module.exports = {
         obj['userId'] = req.user._id;
         obj['message'] = req.body.message;
       var memberReq = mongoose.Types.ObjectId(req.body.memberReq);
-      Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err, foundClub){
-        if(err || !foundClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-34)foundClub err:- '+JSON.stringify(err, null, 2));
+      Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-34)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
     } else if(req.body.cancelReq){
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
-      Club.updateOne({_id: cancelReq}, {$pull: {memberRequests: {userId: req.user._id}}}, function(err, foundClub){
-        if(err || !foundClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-35)foundClub err:- '+JSON.stringify(err, null, 2));
+      Club.updateOne({_id: cancelReq}, {$pull: {memberRequests: {userId: req.user._id}}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-35)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
     } else if(req.body.acceptReq){
       var acceptReq = mongoose.Types.ObjectId(req.body.acceptReq);
       var clubId = mongoose.Types.ObjectId(req.params.id);
-      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: acceptReq}}}, function(err, foundClub){
-        if(err || !foundClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-36)foundClub err:- '+JSON.stringify(err, null, 2));
+      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: acceptReq}}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-36)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
-          User.updateOne({_id: acceptReq}, {$addToSet: {clubInvites: clubId}}, function(err, foundUser){
-            if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (index-37)foundUser err:- '+JSON.stringify(err, null, 2));
+          User.updateOne({_id: acceptReq}, {$addToSet: {clubInvites: clubId}}, function(err, updateUser){
+            if(err || !updateUser){
+              console.log(Date.now()+' : '+req.user._id+' => (index-37)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             }
           });
@@ -835,9 +835,9 @@ module.exports = {
     } else if(req.body.declineReq){
       var declineReq = mongoose.Types.ObjectId(req.body.declineReq);
       var clubId = mongoose.Types.ObjectId(req.params.id);
-      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: declineReq}}}, function(err, foundClub){
-        if(err || !foundClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-38)foundClub err:- '+JSON.stringify(err, null, 2));
+      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: declineReq}}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-38)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         }
       });
@@ -866,9 +866,9 @@ module.exports = {
                 if(foundClub.clubUsers[i].userRank == 0){
                   foundClub.clubUsers[i].userRank = 1;
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                  {$set: {'userClubs.$.rank': 1}}, function(err, foundUser){
-                  if(err || !foundUser){
-                    console.log(Date.now()+' : '+req.user._id+' => (index-40)foundUser err:- '+JSON.stringify(err, null, 2));
+                  {$set: {'userClubs.$.rank': 1}}, function(err, updateUser){
+                  if(err || !updateUser){
+                    console.log(Date.now()+' : '+req.user._id+' => (index-40)updateUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                   } else{
                     console.log(Date.now()+' : '+'Double ownership of'+userId+
@@ -880,18 +880,18 @@ module.exports = {
                 } else if(foundClub.clubUsers[i].userRank != 0 && foundClub.clubUsers[i].id.equals(userId)){
                   foundClub.clubUsers[i].userRank = newRank;
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                  {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
-                  if(err || !foundUser){
-                    console.log(Date.now()+' : '+req.user._id+' => (index-41)foundUser err:- '+JSON.stringify(err, null, 2));
+                  {$set: {'userClubs.$.rank': newRank}}, function(err, updateUser){
+                  if(err || !updateUser){
+                    console.log(Date.now()+' : '+req.user._id+' => (index-41)updateUser err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                   } else{
                     for(var j=0;j<foundClub.clubUsers.length;j++){
                       if(foundClub.clubUsers[j].id.equals(req.user._id)){
                         foundClub.clubUsers[j].userRank = 1;
                         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: clubId}}}, 
-                        {$set: {'userClubs.$.rank': 1}}, function(err, foundUser){
-                        if(err || !foundUser){
-                          console.log(Date.now()+' : '+req.user._id+' => (index-42)foundUser err:- '+JSON.stringify(err, null, 2));
+                        {$set: {'userClubs.$.rank': 1}}, function(err, updateUser){
+                        if(err || !updateUser){
+                          console.log(Date.now()+' : '+req.user._id+' => (index-42)updateUser err:- '+JSON.stringify(err, null, 2));
                           req.flash('error', 'Something went wrong :(');
                         } else{
                           foundClub.save();
@@ -916,9 +916,9 @@ module.exports = {
               if(foundClub.clubUsers[i].id.equals(userId)){
                 foundClub.clubUsers[i].userRank = newRank;
                 User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                {$set: {'userClubs.$.rank': newRank}}, function(err, foundUser){
-                if(err || !foundUser){
-                  console.log(Date.now()+' : '+req.user._id+' => (index-43)foundUser err:- '+JSON.stringify(err, null, 2));
+                {$set: {'userClubs.$.rank': newRank}}, function(err, updateUser){
+                if(err || !updateUser){
+                  console.log(Date.now()+' : '+req.user._id+' => (index-43)updateUser err:- '+JSON.stringify(err, null, 2));
                   req.flash('error', 'Something went wrong :(');
                 } else{
                   foundClub.save();
@@ -946,15 +946,15 @@ module.exports = {
           var status = req.body.status;
         }
         User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-        {$set: {'userClubs.$.status': status}}, function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
+        {$set: {'userClubs.$.status': status}}, function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-44)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
           Club.updateOne({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
-          {$set: {'clubUsers.$.userStatus': status}}, function(err, foundClub){
-            if(err || !foundClub){
-              console.log(Date.now()+' : '+req.user._id+' => (index-45)foundClub err:- '+JSON.stringify(err, null, 2));
+          {$set: {'clubUsers.$.userStatus': status}}, function(err, updateClub){
+            if(err || !updateClub){
+              console.log(Date.now()+' : '+req.user._id+' => (index-45)updateClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
             }
           });
@@ -981,9 +981,9 @@ module.exports = {
               foundClub.clubUsers.splice(i,1);
               foundClub.membersCount -= 1;
               User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-              {$pull: {userClubs: {id: clubId}}}, function(err, foundUser){
-              if(err || !foundUser){
-                console.log(Date.now()+' : '+req.user._id+' => (index-47)foundUser err:- '+JSON.stringify(err, null, 2));
+              {$pull: {userClubs: {id: clubId}}}, function(err, updateUser){
+              if(err || !updateUser){
+                console.log(Date.now()+' : '+req.user._id+' => (index-47)updateUser err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
               } else{
                 foundClub.save();
@@ -1099,47 +1099,226 @@ module.exports = {
       .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount'})
       .exec(function(err, foundOrgPage){
       if(err || !foundOrgPage){
-        console.log(Date.now()+' : '+'(index-50)foundOrgPage err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(index-51)foundOrgPage err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        if(req.body.follow == 'true'){
-          // LoopCheck for duplicate followerIds, if found return back to page
-          for(var i=0;i<foundOrgPage.allFollowerIds.length;i++){
-            if(foundOrgPage.allFollowerIds[i].equals(req.user._id)){
-              req.flash('success', 'Succesfully following this page');
-              return res.redirect(/org_pages/+foundOrgPage.name);
-              break;
+        User.findById(req.user._id, function(err, foundCurrentUser){
+        if(err || !foundCurrentUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-54)foundCurrentUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+        } else{
+
+          if(req.body.follow == 'true'){
+            foundCurrentUser.followingOrgKeys.push(foundOrgPage.name);
+            Club.updateMany({'clubKeys.organization': foundOrgPage.name, isActive: true}, 
+            {$inc: {totalFollowerCount: 1}}, function(err, updateClubs){
+            if(err || !updateClubs){
+              console.log(Date.now()+' : '+req.user._id+' => (index-53)updateClubs err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              // Restore Followed StrayClubs
+              Club.find({'clubKeys.organization': foundOrgPage.name, 
+              strayClubfollowingUserIds: {$eq: req.user._id}, isActive: true})
+              .select({_id: 1}).exec(function(err, foundClubIds){
+              if(err || !foundClubIds){
+                console.log(Date.now()+' : '+req.user._id+' => (index-55)foundClubIds err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                Club.updateMany({'clubKeys.organization': foundOrgPage.name, 
+                strayClubfollowingUserIds: {$eq: req.user._id}, isActive: true}, 
+                {$pull: {strayClubfollowingUserIds: req.params.user_id}, 
+                $inc: {strayClubfollowingUserCount: -1, totalFollowerCount: -1}}, 
+                function(err, updateClubsRestore){
+                if(err || !updateClubsRestore){
+                  console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubsRestore err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                } else{
+                  for(var i=foundCurrentUser.followingStrayClubIds.length-1;i>=0;i--){
+                    for(var j=0;j<foundClubIds.length;j++){
+                      if(foundCurrentUser.followingStrayClubIds.length && foundCurrentUser.followingStrayClubIds[i].equals(foundClubIds[j]._id)){
+                        foundCurrentUser.followingStrayClubIds.splice(i,1);
+                        foundCurrentUser.followingStrayClubCount -= 1;
+                      }
+                    }
+                  }
+                  foundCurrentUser.save();
+                  // Remove any redundant followers before push
+                  for(var k=foundOrgPage.allFollowerIds.length-1;k>=0;k--){
+                    if(foundOrgPage.allFollowerIds[k].equals(req.user._id)){
+                      foundOrgPage.allFollowerIds.splice(k,1);
+                      foundOrgPage.followerCount -= 1;
+                    }
+                  }
+                  foundOrgPage.followerCount += 1;
+                  foundOrgPage.allFollowerIds.push(req.user._id);
+                  foundOrgPage.save();
+                  res.redirect(/org_pages/+foundOrgPage.name);
+                }
+                });
+              }
+              });
             }
-          }
-          User.updateOne({_id: req.user._id}, {$addToSet: {followingOrgKeys: foundOrgPage.name}}, 
-          function(err, foundUser){
-          if(err || !foundUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-          } else{
-            foundOrgPage.followerCount += 1;
-            foundOrgPage.allFollowerIds.push(req.user._id);
-            foundOrgPage.save();
-            res.redirect(/org_pages/+foundOrgPage.name);
-          }
-          });
-        } else if(req.body.follow == 'false'){
-          User.updateOne({_id: req.user._id}, {$pull: {followingOrgKeys: foundOrgPage.name}}, 
-          function(err, foundUser){
-          if(err || !foundUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-44)foundUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-          } else{
-            for(var i=0;i<foundOrgPage.allFollowerIds.length;i++){
-              if(foundOrgPage.allFollowerIds[i].equals(req.user._id)){
-                foundOrgPage.allFollowerIds.splice(i,1);
-                break;
+            });
+
+          } else if(req.body.follow == 'false'){
+            for(var i=foundCurrentUser.followingOrgKeys.length-1;i>=0;i--){
+              if(foundCurrentUser.followingOrgKeys[i] == foundOrgPage.name){
+                foundCurrentUser.followingOrgKeys.splice(i,1);
               }
             }
-            foundOrgPage.followerCount -= 1;
-            foundOrgPage.save();
-            res.redirect(/org_pages/+foundOrgPage.name);
+            Club.updateMany({'clubKeys.organization': foundOrgPage.name, isActive: true}, 
+            {$inc: {totalFollowerCount: -1}}, function(err, updateClubs){
+            if(err || !updateClubs){
+              console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubs err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              // Restore Unfollowed OrgClubs
+              Club.find({'clubKeys.organization': foundOrgPage.name, 
+              orgClubUnfollowingUserIds: {$eq: req.user._id}, isActive: true})
+              .select({_id: 1}).exec(function(err, foundClubIds){
+              if(err || !foundClubIds){
+                console.log(Date.now()+' : '+req.user._id+' => (index-55)foundClubIds err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                Club.updateMany({'clubKeys.organization': foundOrgPage.name, 
+                orgClubUnfollowingUserIds: {$eq: req.user._id}, isActive: true}, 
+                {$pull: {orgClubUnfollowingUserIds: req.params.user_id}, 
+                $inc: {orgClubUnfollowingUserCount: -1, totalFollowerCount: 1}}, 
+                function(err, updateClubsRestore){
+                if(err || !updateClubsRestore){
+                  console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubsRestore err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                } else{
+                  for(var j=foundCurrentUser.unfollowingOrgClubIds.length-1;j>=0;j--){
+                    for(var k=0;k<foundClubIds.length;k++){
+                      if(foundCurrentUser.unfollowingOrgClubIds.length && foundCurrentUser.unfollowingOrgClubIds[j].equals(foundClubIds[k]._id)){
+                        foundCurrentUser.unfollowingOrgClubIds.splice(j,1);
+                        foundCurrentUser.unfollowingOrgClubCount -= 1;
+                      }
+                    }
+                  }
+                  foundCurrentUser.save();
+                  for(var l=foundOrgPage.allFollowerIds.length-1;l>=0;l--){
+                    if(foundOrgPage.allFollowerIds[l].equals(req.user._id)){
+                      foundOrgPage.allFollowerIds.splice(l,1);
+                      foundOrgPage.followerCount -= 1;
+                    }
+                  }
+                  foundOrgPage.followerCount -= 1;
+                  foundOrgPage.save();
+                  res.redirect(/org_pages/+foundOrgPage.name);
+                }
+                });
+              }
+              });
+            }
+            });
+          }
+        }
+        });
+      }
+      });
+    }
+  },
+
+  indexUnFollowingClub(req, res, next){
+    if(req.user && req.user._id.equals(req.params.user_id)){
+      Club.findOne({_id: req.params.club_id, isActive: true})
+      .select({_id: 1, clubKeys: 1}).exec(function(err, foundClubCheck){
+      if(err || !foundClubCheck){
+        console.log(Date.now()+' : '+req.user._id+' => (index-57)foundClubCheck err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        if(req.body.followClubStray == 'true' && followCheck(req.user,foundClubCheck,1)){
+          Club.updateOne({_id: req.params.club_id, isActive: true}, 
+          {$addToSet: {strayClubfollowingUserIds: mongoose.Types.ObjectId(req.params.user_id)}, 
+          $inc: {strayClubfollowingUserCount: 1, totalFollowerCount: 1}}, function(err, updateClub){
+          if(err || !updateClub){
+            console.log(Date.now()+' : '+req.user._id+' => (index-56)updateClub err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            User.updateOne({_id: req.user._id}, 
+            {$addToSet: {followingStrayClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
+            $inc: {followingStrayClubCount: 1}}, function(err, updateUser){
+            if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-57)updateUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            } else{
+              res.redirect(/clubs/+req.params.club_id);
+            }
+            });
+          }
+          });
+        } else if(req.body.followClubStray == 'false' && followCheck(req.user,foundClubCheck,2)){
+          Club.updateOne({_id: req.params.club_id, isActive: true}, 
+          {$pull: {strayClubfollowingUserIds: req.params.user_id}, 
+          $inc: {strayClubfollowingUserCount: -1, totalFollowerCount: -1}}, function(err, updateClub){
+          if(err || !updateClub){
+            console.log(Date.now()+' : '+req.user._id+' => (index-58)updateClub err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            User.updateOne({_id: req.user._id}, 
+            {$pull: {followingStrayClubIds: req.params.club_id}, 
+            $inc: {followingStrayClubCount: -1}}, function(err, updateUser){
+            if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-59)updateUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            } else{
+              res.redirect(/clubs/+req.params.club_id);
+            }
+            });
+          }
+          });
+        } else if(req.body.followClubOrg == 'false' && followCheck(req.user,foundClubCheck,3)){
+          Club.updateOne({_id: req.params.club_id, isActive: true}, 
+          {$addToSet: {orgClubUnfollowingUserIds: mongoose.Types.ObjectId(req.params.user_id)}, 
+          $inc: {orgClubUnfollowingUserCount: 1, totalFollowerCount: -1}}, function(err, updateClub){
+          if(err || !updateClub){
+            console.log(Date.now()+' : '+req.user._id+' => (index-60)updateClub err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            User.updateOne({_id: req.user._id}, 
+            {$addToSet: {unfollowingOrgClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
+            $inc: {unfollowingOrgClubCount: 1}}, function(err, updateUser){
+            if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-61)updateUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            } else{
+              res.redirect(/clubs/+req.params.club_id);
+            }
+            });
+          }
+          });
+        } else if(req.body.followClubOrg == 'true' && followCheck(req.user,foundClubCheck,4)){
+          Club.updateOne({_id: req.params.club_id, isActive: true}, 
+          {$pull: {orgClubUnfollowingUserIds: req.params.user_id}, 
+          $inc: {orgClubUnfollowingUserCount: -1, totalFollowerCount: 1}}, function(err, updateClub){
+          if(err || !updateClub){
+            console.log(Date.now()+' : '+req.user._id+' => (index-62)updateClub err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            User.updateOne({_id: req.user._id}, 
+            {$pull: {unfollowingOrgClubIds: req.params.club_id}, 
+            $inc: {unfollowingOrgClubCount: -1}}, function(err, updateUser){
+            if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (index-63)updateUser err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            } else{
+              res.redirect(/clubs/+req.params.club_id);
+            }
+            });
           }
           });
         }
@@ -1162,4 +1341,82 @@ function checkRank(clubUsers,userId,rank){
     }
   });
   return ok;
+};
+
+function followCheck(currentUser,foundClub,caseNum){
+  var ok; 
+  var isFollowingStrayClub = false, isUnFollowingOrgClub = false, isFollowingOrg = false;
+  if(caseNum == 1){
+    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
+      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
+        isFollowingOrg = true;
+        break;
+      }
+    }
+    for(var j=0;j<currentUser.followingStrayClubCount;j++){
+      if(currentUser.followingStrayClubIds[j].equals(foundClub._id)){
+        isFollowingStrayClub = true;
+        break;
+      }
+    }
+    if(!isFollowingOrg && !isFollowingStrayClub){
+      return ok = true;
+    } else{
+      return ok = false;
+    }
+  } else if(caseNum == 2){
+    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
+      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
+        isFollowingOrg = true;
+        break;
+      }
+    }
+    for(var j=0;j<currentUser.followingStrayClubCount;j++){
+      if(currentUser.followingStrayClubIds[j].equals(foundClub._id)){
+        isFollowingStrayClub = true;
+        break;
+      }
+    }
+    if(!isFollowingOrg && isFollowingStrayClub){
+      return ok = true;
+    } else{
+      return ok = false;
+    }
+  } else if(caseNum == 3){
+    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
+      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
+        isFollowingOrg = true;
+        break;
+      }
+    }
+    for(var j=0;j<currentUser.unfollowingOrgClubCount;j++){
+      if(currentUser.unfollowingOrgClubIds[j].equals(foundClub._id)){
+        isUnFollowingOrgClub = true;
+        break;
+      }
+    }
+    if(isFollowingOrg && !isUnFollowingOrgClub){
+      return ok = true;
+    } else{
+      return ok = false;
+    }
+  } else if(caseNum == 4){
+    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
+      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
+        isFollowingOrg = true;
+        break;
+      }
+    }
+    for(var j=0;j<currentUser.unfollowingOrgClubCount;j++){
+      if(currentUser.unfollowingOrgClubIds[j].equals(foundClub._id)){
+        isUnFollowingOrgClub = true;
+        break;
+      }
+    }
+    if(isFollowingOrg && isUnFollowingOrgClub){
+      return ok = true;
+    } else{
+      return ok = false;
+    }
+  };
 };

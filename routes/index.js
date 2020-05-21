@@ -4,8 +4,8 @@ const express  = require('express'),
   {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople,
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
-  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexFollowOrgPage}
-  = require('../controllers/index');
+  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexFollowOrgPage, 
+	indexUnFollowingClub} = require('../controllers/index');
 
 
 
@@ -75,5 +75,8 @@ router.get('/org_pages/:org_name', indexViewOrgPage);
 
 // Follow organization page
 router.put('/org_pages/:org_id/follow/:user_id', indexFollowOrgPage);
+
+// Un-Follow individual clubs
+router.put('/users/:user_id/unfollow/:club_id', indexUnFollowingClub);
 
 module.exports = router;

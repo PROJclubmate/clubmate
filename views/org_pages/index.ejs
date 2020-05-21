@@ -43,15 +43,13 @@
 				</div>
 				<div class="mx-1">
 					<% if(currentUser){ %>
-						<% if(following){ %>
-							<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+						<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
+							<% if(following){ %>
 								<button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-							</form>
-						<% } else{ %>
-							<form action="/org_pages/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-								<button class="btn btn-org2 orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow</button>
-							</form>
-						<% } %>
+							<% } else{ %>
+								<button class="btn btn-org2 orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow all</button>
+							<% } %>
+						</form>
 					<% } else{ %>
 						<a href="/login" class="btn btn-org2 orgdiv-follow py-1 px-2">Follow</a>
 					<% } %>

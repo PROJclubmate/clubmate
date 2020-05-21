@@ -42,6 +42,17 @@ const clubSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
+  totalFollowerCount: {type: Number, default: 0},
+  strayClubfollowingUserIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  strayClubfollowingUserCount: {type: Number, default: 0},
+  orgClubUnfollowingUserIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  orgClubUnfollowingUserCount: {type: Number, default: 0},
   memberRequests: [{
     message: String,
     userId: {
@@ -79,6 +90,7 @@ const clubSchema = new Schema({
   timestamps: true
 });
 
+clubSchema.index({'clubKeys.organization': 1});
 clubSchema.index({name: 'text'});
 clubSchema.index({geometry: '2dsphere'});
 

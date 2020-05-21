@@ -89,7 +89,7 @@ const postSchema = new Schema({
   createdAt: {type: Date, default: Date.now}
 });
 
-postSchema.index({discoverTags: 'text'});
+// postSchema.index({discoverTags: 'text'});
 postSchema.index({clubOrgKey: 1});
 postSchema.index({postClub: 1});
 postSchema.index({'postAuthor.id': 1});

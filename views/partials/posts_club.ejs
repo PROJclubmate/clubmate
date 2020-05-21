@@ -262,7 +262,7 @@
     </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="card noborder d-flex flex-row">
+    <div class="card noborder d-flex flex-row justify-content-between">
       <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
@@ -376,7 +376,7 @@
               </div>
             <% } %>
           </div>
-          <div>
+          <div style="margin-top: -0.25rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>

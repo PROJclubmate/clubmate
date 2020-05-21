@@ -448,71 +448,74 @@ module.exports = {
       var seenIdsArr = seenIds.map(s => mongoose.Types.ObjectId(s));
       var postHeartsArr = req.user.postHearts.reverse();
       Post.aggregate([
-        {$match: {$and: [{_id: {$in: postHeartsArr}}, {_id: {$nin: seenIdsArr}}]}},
-        {$addFields: {"__order": {$indexOfArray: [postHeartsArr, "$_id" ]}}},
-        {$sort: {"__order": 1}},
-        { "$lookup": {
-          "from": "clubs",
-          "foreignField": "_id",
-          "localField": "postClub",
-          "as": "postClub"
-        }},
-        {
-          "$unwind": "$postClub"
-        },
-        { "$lookup": {
-          "from": "comments",
-          "as": "commentBuckets",
-          "let": { "id": "$_id" },
-          "pipeline": [
-            { "$match": { 
-              "$expr": { "$eq": [ "$$id", "$postId" ] }
-            }},
-            { "$sort": { "_id": -1 } },
-            { "$limit": 1 }
-          ]
-        }},
-        {
-        "$project": {
-            "_id": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "descEdit": 1,
-            "image": 1,
-            "imageId": 1,
-            "discoverTags": 1,
-            "clubOrgKey": 1,
-            "viewsCount": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "isAdminModerationLock": 1,
-            "likeCount": 1,
-            "dislikeCount": 1,
-            "heartCount": 1,
-            "likeUserIds": 1,
-            "dislikeUserIds": 1,
-            "heartUserIds": 1,
-            "commentsCount": 1,
-            "bucketNum": 1,
-            "commentBuckets": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1,
-            "postAuthor": 1,
-            "topic": 1,
-            "subpostsCount": 1,
-            "subpostbucketNum": 1,
-            "subpostBuckets": 1,
-            "upVoteCount": 1,
-            "downVoteCount": 1,
-            "upVoteUserIds": 1,
-            "downVoteUserIds": 1,
-            "createdAt": 1,
-            "__v": 1,
-          }
-        },
-        {$limit: 10}
+          {$match: {$and: [
+            {_id: {$in: postHeartsArr}}, 
+            {_id: {$nin: seenIdsArr}}
+          ]}},
+          {$addFields: {"__order": {$indexOfArray: [postHeartsArr, "$_id" ]}}},
+          {$sort: {"__order": 1}},
+          { "$lookup": {
+            "from": "clubs",
+            "foreignField": "_id",
+            "localField": "postClub",
+            "as": "postClub"
+          }},
+          {
+            "$unwind": "$postClub"
+          },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
+          {
+          "$project": {
+              "_id": 1,
+              "description": 1,
+              "hyperlink": 1,
+              "descEdit": 1,
+              "image": 1,
+              "imageId": 1,
+              "discoverTags": 1,
+              "clubOrgKey": 1,
+              "viewsCount": 1,
+              "privacy": 1,
+              "moderation": 1,
+              "isAdminModerationLock": 1,
+              "likeCount": 1,
+              "dislikeCount": 1,
+              "heartCount": 1,
+              "likeUserIds": 1,
+              "dislikeUserIds": 1,
+              "heartUserIds": 1,
+              "commentsCount": 1,
+              "bucketNum": 1,
+              "commentBuckets": 1,
+              "postClub._id": 1,
+              "postClub.name": 1,
+              "postClub.avatar": 1,
+              "postClub.avatarId": 1,
+              "postAuthor": 1,
+              "topic": 1,
+              "subpostsCount": 1,
+              "subpostbucketNum": 1,
+              "subpostBuckets": 1,
+              "upVoteCount": 1,
+              "downVoteCount": 1,
+              "upVoteUserIds": 1,
+              "downVoteUserIds": 1,
+              "createdAt": 1,
+              "__v": 1,
+            }
+          },
+          {$limit: 10}
         ])
       .exec(function(err, foundHeartPosts){
       if(err || !foundHeartPosts){
@@ -567,7 +570,7 @@ module.exports = {
             }
             var result = await cloudinary.v2.uploader.upload(req.file.path,
               {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-              effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+              effect: 'sharpen:25', format: 'webp', crop: 'limit'});
             //replace original information with new information
             foundUser.profilePicId = result.public_id;
             foundUser.profilePic = result.secure_url;
@@ -699,7 +702,7 @@ module.exports = {
 
   profilesNewClub(req, res, next){
     cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1080, 
-      height: 1080, quality: 'auto:eco', effect: 'sharpen:35', format: 'webp', crop: 'limit'},
+      height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'},
     function(err, result){
     if(err){
       console.log(Date.now()+' : '+req.user._id+' => (profiles-17)avatarUpload err:- '+JSON.stringify(err, null, 2));
@@ -778,6 +781,25 @@ module.exports = {
       return res.redirect('back');
     } else{
       if(req.user){
+        var isFollowingStrayClub = false, isUnFollowingOrgClub = false, isFollowingOrg = false;
+        for(var k=0;k<req.user.followingStrayClubCount;k++){
+          if(req.user.followingStrayClubIds[k].equals(foundClub._id)){
+            isFollowingStrayClub = true;
+            break;
+          }
+        }
+        for(var l=0;l<req.user.unfollowingOrgClubCount;l++){
+          if(req.user.unfollowingOrgClubIds[l].equals(foundClub._id)){
+            isUnFollowingOrgClub = true;
+            break;
+          }
+        }
+        for(var m=0;m<req.user.followingOrgKeys.length;m++){
+          if(req.user.followingOrgKeys[m] == foundClub.clubKeys.organization){
+            isFollowingOrg = true;
+            break;
+          }
+        }
         var users = foundClub.clubUsers.sort(function(a, b){
           return parseFloat(a.userRank) - parseFloat(b.userRank);
         });
@@ -818,13 +840,13 @@ module.exports = {
             }
             res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
             club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
-            memberRequestsLength});
+            memberRequestsLength, isFollowingStrayClub, isUnFollowingOrgClub, isFollowingOrg});
           }
           });
         } else{
           res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
           club: foundClub, Users_50_profilePic, Posts_50_Image: [], topTopicPosts: [], sentMemberReq, 
-          memberRequestsLength});
+          memberRequestsLength, isFollowingStrayClub, isUnFollowingOrgClub, isFollowingOrg});
         }
       } else{
         var PA_50_profilePic = [], Users_50_profilePic = [];
@@ -1082,9 +1104,9 @@ module.exports = {
           var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
           'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
           User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
-          {$push: {clubUpdates: userUpdate}}, function(err, foundUser){
-            if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (profiles-33)foundUser err:- '+JSON.stringify(err, null, 2));
+          {$push: {clubUpdates: userUpdate}}, function(err, updateUsers){
+            if(err || !updateUsers){
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-33)updateUsers err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1099,7 +1121,7 @@ module.exports = {
             await cloudinary.v2.uploader.destroy(foundClub.avatarId);
             var result = await cloudinary.v2.uploader.upload(req.file.path,
               {folder: 'clubAvatars/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-              effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+              effect: 'sharpen:25', format: 'webp', crop: 'limit'});
             //replace original information with new information
             foundClub.avatarId = result.public_id;
             foundClub.avatar = result.secure_url;
@@ -1121,9 +1143,9 @@ module.exports = {
                 User.updateMany({clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
                 {
                   $set: {'clubUpdates.$': update}
-                }, function(err, foundUsers){
-                  if(err || !foundUsers){
-                    console.log(Date.now()+' : '+req.user._id+' => (profiles-35)foundUsers err:- '+JSON.stringify(err, null, 2));
+                }, function(err, updateUsers){
+                  if(err || !updateUsers){
+                    console.log(Date.now()+' : '+req.user._id+' => (profiles-35)updateUsers err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1263,9 +1285,9 @@ module.exports = {
         if(req.body.name && foundClub.name != req.body.name){
           foundClub.name = req.body.name;
           User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
-          {$set: {'userClubs.$.clubName': req.body.name}}, function(err, foundUser){
-            if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (profiles-36)foundUser err:- '+JSON.stringify(err, null, 2));
+          {$set: {'userClubs.$.clubName': req.body.name}}, function(err, updateUsers){
+            if(err || !updateUsers){
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-36)updateUsers err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1322,17 +1344,17 @@ module.exports = {
           });
         }
         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
-        {$pull: {userClubs: {id: req.params.club_id}}}, function(err, foundUser){
-          if(err || !foundUser){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-39)foundUser err:- '+JSON.stringify(err, null, 2));
+        {$pull: {userClubs: {id: req.params.club_id}}}, function(err, updateUser){
+          if(err || !updateUser){
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-39)updateUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');          }
         });
         if(foundClub.conversationId){
           ClubConversation.updateOne({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
-          function(err, foundClubConversation){
-          if(err || !foundClubConversation){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-40)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+          function(err, updateClubConversation){
+          if(err || !updateClubConversation){
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-40)updateClubConversation err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1376,7 +1398,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1405,7 +1427,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
               foundUser.featuredPhotos[i].image = result.secure_url;
               foundUser.featuredPhotos[i].imageId = result.public_id;
               foundUser.featuredPhotos[i].heading = req.body.heading;
@@ -1449,7 +1471,7 @@ module.exports = {
     } else{
       if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
         var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
         var obj = {};
         obj['image'] = result.secure_url;
         obj['imageId'] = result.public_id;
@@ -1478,7 +1500,7 @@ module.exports = {
             if(req.file){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
               var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:35', format: 'webp', crop: 'limit'});
+              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
               foundClub.featuredPhotos[i].image = result.secure_url;
               foundClub.featuredPhotos[i].imageId = result.public_id;
               foundClub.featuredPhotos[i].heading = req.body.heading;
@@ -1689,9 +1711,9 @@ module.exports = {
   profilesLogout(req, res, next){
     if(req.user){
       User.updateOne({_id: req.user._id}, {isLoggedIn: false, lastLoggedOut: Date.now()}, 
-      function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (profiles-49)foundUser err:- '+JSON.stringify(err, null, 2));
+      function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-49)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }

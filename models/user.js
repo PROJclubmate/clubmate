@@ -35,6 +35,16 @@ const userSchema = new Schema({
     }
   },
   followingOrgKeys: [String],
+  followingStrayClubIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Club'
+  }],
+  followingStrayClubCount: {type: Number, default: 0},
+  unfollowingOrgClubIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Club'
+  }],
+  unfollowingOrgClubCount: {type: Number, default: 0},
   profilePic: String,
   profilePicId: String,
   featuredPhotos:[{

@@ -140,9 +140,9 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       if(req.body.discoverSwitch){
         User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
-        async function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (posts-15)foundUser err:- '+JSON.stringify(err, null, 2));
+        async function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (posts-5)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -150,9 +150,9 @@ module.exports = {
       }
       if(req.body.sortByKey){
         User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
-        async function(err, foundUser){
-        if(err || !foundUser){
-          console.log(Date.now()+' : '+req.user._id+' => (posts-15)foundUser err:- '+JSON.stringify(err, null, 2));
+        async function(err, updateUser){
+        if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (posts-6)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -185,85 +185,93 @@ module.exports = {
       if(req.user.discoverSwitch === 1){
         if(req.user.sortByKey === 1){
           Post.aggregate([
-          {$match: {$and: [{_id: {$nin: seenIds}}, 
-          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
-          {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
-          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
-          { "$lookup": {
-            "from": "clubs",
-            "foreignField": "_id",
-            "localField": "postClub",
-            "as": "postClub"
-          }},
-          {
-            "$unwind": "$postClub"
-          },
-          { "$lookup": {
-            "from": "comments",
-            "as": "commentBuckets",
-            "let": { "id": "$_id" },
-            "pipeline": [
-              { "$match": { 
-                "$expr": { "$eq": [ "$$id", "$postId" ] }
-              }},
-              { "$sort": { "_id": -1 } },
-              { "$limit": 1 }
-            ]
-          }},
-          {$project: {
-          "_id": 1,
-          "description": 1,
-          "hyperlink": 1,
-          "descEdit": 1,
-          "image": 1,
-          "imageId": 1,
-          "discoverTags": 1,
-          "clubOrgKey": 1,
-          "viewsCount": 1,
-          "privacy": 1,
-          "moderation": 1,
-          "isAdminModerationLock": 1,
-          "likeCount": 1,
-          "heartCount": 1,
-          "likeUserIds": 1,
-          "heartUserIds": 1,
-          "commentsCount": 1,
-          "bucketNum": 1,
-          "commentBuckets": 1,
-          "postClub._id": 1,
-          "postClub.name": 1,
-          "postClub.avatar": 1,
-          "postClub.avatarId": 1,
-          "postAuthor": 1,
-          "topic": 1,
-          "createdAt": 1,
-          "__v": 1,
-          // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
-          "ranking": {
-            $divide: [
-              { $add: [
-                { $multiply: ["$viewsCount", 0.0125] },
-                { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
-                // { $multiply: ["$shareCount", 5] },
-                0.75
-              ] },
-              { $add: [
-                1,
-                { $pow: [
-                  { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-                  1.8
+            {$match: {$and: [
+              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {$or: [
+                {postClub: {$in: req.user.followingStrayClubIds}}, 
+                {$and: [
+                  {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
+                  {postClub: {$nin: req.user.unfollowingOrgClubIds}}
+                ]}
+              ]},
+              {_id: {$nin: seenIds}}, 
+              {moderation: 0}, {privacy: 0}, {topic: ''}
+            ]}},
+            { "$lookup": {
+              "from": "clubs",
+              "foreignField": "_id",
+              "localField": "postClub",
+              "as": "postClub"
+            }},
+            {
+              "$unwind": "$postClub"
+            },
+            { "$lookup": {
+              "from": "comments",
+              "as": "commentBuckets",
+              "let": { "id": "$_id" },
+              "pipeline": [
+                { "$match": { 
+                  "$expr": { "$eq": [ "$$id", "$postId" ] }
+                }},
+                { "$sort": { "_id": -1 } },
+                { "$limit": 1 }
+              ]
+            }},
+            {$project: {
+            "_id": 1,
+            "description": 1,
+            "hyperlink": 1,
+            "descEdit": 1,
+            "image": 1,
+            "imageId": 1,
+            "discoverTags": 1,
+            "clubOrgKey": 1,
+            "viewsCount": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "isAdminModerationLock": 1,
+            "likeCount": 1,
+            "heartCount": 1,
+            "likeUserIds": 1,
+            "heartUserIds": 1,
+            "commentsCount": 1,
+            "bucketNum": 1,
+            "commentBuckets": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1,
+            "postAuthor": 1,
+            "topic": 1,
+            "createdAt": 1,
+            "__v": 1,
+            // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
+            "ranking": {
+              $divide: [
+                { $add: [
+                  { $multiply: ["$viewsCount", 0.0125] },
+                  { $multiply: ["$likeCount", 0.125] },
+                  { $multiply: ["$heartCount", 0.5] },
+                  { $multiply: ["$commentsCount", 1] },
+                  // { $multiply: ["$shareCount", 5] },
+                  0.75
                 ] },
+                { $add: [
+                  1,
+                  { $pow: [
+                    { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+                    1.8
+                  ] },
+                ] }
               ] }
-            ] }
-          }},
-          {$sort: {"ranking": -1}},
-          {$limit: 10}        
+            }},
+            {$sort: {"ranking": -1}},
+            {$limit: 10}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-7)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -283,7 +291,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-8)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -294,16 +302,23 @@ module.exports = {
           }
           });
         } else if(req.user.sortByKey === 2){
-          Post.find({_id: {$nin: seenIds}, 
-          createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))},
-          clubOrgKey: {$in: req.user.followingOrgKeys}, 
-          moderation: 0, privacy: 0, topic: ''})
+          Post.find({
+            createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))},
+            $or: [
+              {postClub: {$in: req.user.followingStrayClubIds}}, 
+              {$and: [
+                {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
+                {postClub: {$nin: req.user.unfollowingOrgClubIds}}
+              ]}
+            ], 
+            _id: {$nin: seenIds}, 
+            moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
           .sort({createdAt: -1}).limit(10)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-9)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -323,7 +338,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-10)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -335,75 +350,83 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
-          {$match: {$and: [{_id: {$nin: seenIds}}, 
-          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
-          {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
-          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
-          { "$lookup": {
-            "from": "clubs",
-            "foreignField": "_id",
-            "localField": "postClub",
-            "as": "postClub"
-          }},
-          {
-            "$unwind": "$postClub"
-          },
-          { "$lookup": {
-            "from": "comments",
-            "as": "commentBuckets",
-            "let": { "id": "$_id" },
-            "pipeline": [
-              { "$match": { 
-                "$expr": { "$eq": [ "$$id", "$postId" ] }
-              }},
-              { "$sort": { "_id": -1 } },
-              { "$limit": 1 }
-            ]
-          }},
-          {$project: {
-          "_id": 1,
-          "description": 1,
-          "hyperlink": 1,
-          "descEdit": 1,
-          "image": 1,
-          "imageId": 1,
-          "discoverTags": 1,
-          "clubOrgKey": 1,
-          "viewsCount": 1,
-          "privacy": 1,
-          "moderation": 1,
-          "isAdminModerationLock": 1,
-          "likeCount": 1,
-          "heartCount": 1,
-          "likeUserIds": 1,
-          "heartUserIds": 1,
-          "commentsCount": 1,
-          "bucketNum": 1,
-          "commentBuckets": 1,
-          "postClub._id": 1,
-          "postClub.name": 1,
-          "postClub.avatar": 1,
-          "postClub.avatarId": 1,
-          "postAuthor": 1,
-          "topic": 1,
-          "createdAt": 1,
-          "__v": 1,
-          // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
-          "ranking": {
-            $add: [
-              { $multiply: ["$viewsCount", 0.0125] },
-              { $multiply: ["$likeCount", 0.125] },
-              { $multiply: ["$heartCount", 0.5] },
-              { $multiply: ["$commentsCount", 1] },
-              0.75
-            ]
-          }}},
-          {$sort: {"ranking": -1}},
-          {$limit: 10}        
+            {$match: {$and: [
+              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {$or: [
+                {postClub: {$in: req.user.followingStrayClubIds}}, 
+                {$and: [
+                  {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
+                  {postClub: {$nin: req.user.unfollowingOrgClubIds}}
+                ]}
+              ]},
+              {_id: {$nin: seenIds}}, 
+              {moderation: 0}, {privacy: 0}, {topic: ''}
+            ]}},
+            { "$lookup": {
+              "from": "clubs",
+              "foreignField": "_id",
+              "localField": "postClub",
+              "as": "postClub"
+            }},
+            {
+              "$unwind": "$postClub"
+            },
+            { "$lookup": {
+              "from": "comments",
+              "as": "commentBuckets",
+              "let": { "id": "$_id" },
+              "pipeline": [
+                { "$match": { 
+                  "$expr": { "$eq": [ "$$id", "$postId" ] }
+                }},
+                { "$sort": { "_id": -1 } },
+                { "$limit": 1 }
+              ]
+            }},
+            {$project: {
+            "_id": 1,
+            "description": 1,
+            "hyperlink": 1,
+            "descEdit": 1,
+            "image": 1,
+            "imageId": 1,
+            "discoverTags": 1,
+            "clubOrgKey": 1,
+            "viewsCount": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "isAdminModerationLock": 1,
+            "likeCount": 1,
+            "heartCount": 1,
+            "likeUserIds": 1,
+            "heartUserIds": 1,
+            "commentsCount": 1,
+            "bucketNum": 1,
+            "commentBuckets": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1,
+            "postAuthor": 1,
+            "topic": 1,
+            "createdAt": 1,
+            "__v": 1,
+            // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
+            "ranking": {
+              $add: [
+                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$heartCount", 0.5] },
+                { $multiply: ["$commentsCount", 1] },
+                0.75
+              ]
+            }}},
+            {$sort: {"ranking": -1}},
+            {$limit: 10}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-11)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -423,7 +446,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-12)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -438,82 +461,84 @@ module.exports = {
       } else if(req.user.discoverSwitch === 2){
         if(req.user.sortByKey === 1){
           Post.aggregate([
-          {$match: {$and: [{_id: {$nin: seenIds}}, 
-          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
-          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
-          { "$lookup": {
-            "from": "clubs",
-            "foreignField": "_id",
-            "localField": "postClub",
-            "as": "postClub"
-          }},
-          {
-            "$unwind": "$postClub"
-          },
-          { "$lookup": {
-            "from": "comments",
-            "as": "commentBuckets",
-            "let": { "id": "$_id" },
-            "pipeline": [
-              { "$match": { 
-                "$expr": { "$eq": [ "$$id", "$postId" ] }
-              }},
-              { "$sort": { "_id": -1 } },
-              { "$limit": 1 }
-            ]
-          }},
-          {$project: {
-          "_id": 1,
-          "description": 1,
-          "hyperlink": 1,
-          "descEdit": 1,
-          "image": 1,
-          "imageId": 1,
-          "discoverTags": 1,
-          "clubOrgKey": 1,
-          "viewsCount": 1,
-          "privacy": 1,
-          "moderation": 1,
-          "isAdminModerationLock": 1,
-          "likeCount": 1,
-          "heartCount": 1,
-          "likeUserIds": 1,
-          "heartUserIds": 1,
-          "commentsCount": 1,
-          "bucketNum": 1,
-          "commentBuckets": 1,
-          "postClub._id": 1,
-          "postClub.name": 1,
-          "postClub.avatar": 1,
-          "postClub.avatarId": 1,
-          "postAuthor": 1,
-          "topic": 1,
-          "createdAt": 1,
-          "__v": 1,
-          "ranking": {
-            $divide: [
-              { $add: [
-                { $multiply: ["$viewsCount", 0.0125] },
-                { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
-                0.75
-              ] },
-              { $add: [
-                1,
-                { $pow: [
-                  { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-                  1.8
+            {$match: {$and: [
+              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {_id: {$nin: seenIds}}, 
+              {moderation: 0}, {privacy: 0}, {topic: ''}
+            ]}},
+            { "$lookup": {
+              "from": "clubs",
+              "foreignField": "_id",
+              "localField": "postClub",
+              "as": "postClub"
+            }},
+            {
+              "$unwind": "$postClub"
+            },
+            { "$lookup": {
+              "from": "comments",
+              "as": "commentBuckets",
+              "let": { "id": "$_id" },
+              "pipeline": [
+                { "$match": { 
+                  "$expr": { "$eq": [ "$$id", "$postId" ] }
+                }},
+                { "$sort": { "_id": -1 } },
+                { "$limit": 1 }
+              ]
+            }},
+            {$project: {
+            "_id": 1,
+            "description": 1,
+            "hyperlink": 1,
+            "descEdit": 1,
+            "image": 1,
+            "imageId": 1,
+            "discoverTags": 1,
+            "clubOrgKey": 1,
+            "viewsCount": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "isAdminModerationLock": 1,
+            "likeCount": 1,
+            "heartCount": 1,
+            "likeUserIds": 1,
+            "heartUserIds": 1,
+            "commentsCount": 1,
+            "bucketNum": 1,
+            "commentBuckets": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1,
+            "postAuthor": 1,
+            "topic": 1,
+            "createdAt": 1,
+            "__v": 1,
+            "ranking": {
+              $divide: [
+                { $add: [
+                  { $multiply: ["$viewsCount", 0.0125] },
+                  { $multiply: ["$likeCount", 0.125] },
+                  { $multiply: ["$heartCount", 0.5] },
+                  { $multiply: ["$commentsCount", 1] },
+                  0.75
                 ] },
+                { $add: [
+                  1,
+                  { $pow: [
+                    { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+                    1.8
+                  ] },
+                ] }
               ] }
-            ] }
-          }},
-          {$sort: {"ranking": -1}},
-          {$limit: 10}        
+            }},
+            {$sort: {"ranking": -1}},
+            {$limit: 10}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-13)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -533,7 +558,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-14)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -544,15 +569,16 @@ module.exports = {
           }
           });
         } else if(req.user.sortByKey === 2){
-          Post.find({_id: {$nin: seenIds}, 
-          createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}, 
-          moderation: 0, privacy: 0, topic: ''})
+          Post.find({
+            createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}, 
+            _id: {$nin: seenIds}, 
+            moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
           .sort({createdAt: -1}).limit(10)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-15)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -572,7 +598,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-16)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -584,73 +610,75 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
-          {$match: {$and: [{_id: {$nin: seenIds}}, 
-          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
-          {moderation: 0}, {privacy: 0}, {topic: ''}]}},
-          { "$lookup": {
-            "from": "clubs",
-            "foreignField": "_id",
-            "localField": "postClub",
-            "as": "postClub"
-          }},
-          {
-            "$unwind": "$postClub"
-          },
-          { "$lookup": {
-            "from": "comments",
-            "as": "commentBuckets",
-            "let": { "id": "$_id" },
-            "pipeline": [
-              { "$match": { 
-                "$expr": { "$eq": [ "$$id", "$postId" ] }
-              }},
-              { "$sort": { "_id": -1 } },
-              { "$limit": 1 }
-            ]
-          }},
-          {$project: {
-          "_id": 1,
-          "description": 1,
-          "hyperlink": 1,
-          "descEdit": 1,
-          "image": 1,
-          "imageId": 1,
-          "discoverTags": 1,
-          "clubOrgKey": 1,
-          "viewsCount": 1,
-          "privacy": 1,
-          "moderation": 1,
-          "isAdminModerationLock": 1,
-          "likeCount": 1,
-          "heartCount": 1,
-          "likeUserIds": 1,
-          "heartUserIds": 1,
-          "commentsCount": 1,
-          "bucketNum": 1,
-          "commentBuckets": 1,
-          "postClub._id": 1,
-          "postClub.name": 1,
-          "postClub.avatar": 1,
-          "postClub.avatarId": 1,
-          "postAuthor": 1,
-          "topic": 1,
-          "createdAt": 1,
-          "__v": 1,
-          "ranking": {
-            $add: [
-              { $multiply: ["$viewsCount", 0.0125] },
-              { $multiply: ["$likeCount", 0.125] },
-              { $multiply: ["$heartCount", 0.5] },
-              { $multiply: ["$commentsCount", 1] },
-              0.75
-            ]
-          }}},
-          {$sort: {"ranking": -1}},
-          {$limit: 10}        
+            {$match: {$and: [
+              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {_id: {$nin: seenIds}}, 
+              {moderation: 0}, {privacy: 0}, {topic: ''}
+            ]}},
+            { "$lookup": {
+              "from": "clubs",
+              "foreignField": "_id",
+              "localField": "postClub",
+              "as": "postClub"
+            }},
+            {
+              "$unwind": "$postClub"
+            },
+            { "$lookup": {
+              "from": "comments",
+              "as": "commentBuckets",
+              "let": { "id": "$_id" },
+              "pipeline": [
+                { "$match": { 
+                  "$expr": { "$eq": [ "$$id", "$postId" ] }
+                }},
+                { "$sort": { "_id": -1 } },
+                { "$limit": 1 }
+              ]
+            }},
+            {$project: {
+            "_id": 1,
+            "description": 1,
+            "hyperlink": 1,
+            "descEdit": 1,
+            "image": 1,
+            "imageId": 1,
+            "discoverTags": 1,
+            "clubOrgKey": 1,
+            "viewsCount": 1,
+            "privacy": 1,
+            "moderation": 1,
+            "isAdminModerationLock": 1,
+            "likeCount": 1,
+            "heartCount": 1,
+            "likeUserIds": 1,
+            "heartUserIds": 1,
+            "commentsCount": 1,
+            "bucketNum": 1,
+            "commentBuckets": 1,
+            "postClub._id": 1,
+            "postClub.name": 1,
+            "postClub.avatar": 1,
+            "postClub.avatarId": 1,
+            "postAuthor": 1,
+            "topic": 1,
+            "createdAt": 1,
+            "__v": 1,
+            "ranking": {
+              $add: [
+                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$heartCount", 0.5] },
+                { $multiply: ["$commentsCount", 1] },
+                0.75
+              ]
+            }}},
+            {$sort: {"ranking": -1}},
+            {$limit: 10}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-17)discoverPosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -670,7 +698,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-6)updatePosts err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' => (posts-18)updatePosts err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -685,82 +713,84 @@ module.exports = {
     // LOGGED OUT
     } else{
       Post.aggregate([
-      {$match: {$and: [{_id: {$nin: seenIds}}, 
-      {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
-      {moderation: 0}, {privacy: 0}, {topic: ''}]}},
-      { "$lookup": {
-        "from": "clubs",
-        "foreignField": "_id",
-        "localField": "postClub",
-        "as": "postClub"
-      }},
-      {
-        "$unwind": "$postClub"
-      },
-      { "$lookup": {
-        "from": "comments",
-        "as": "commentBuckets",
-        "let": { "id": "$_id" },
-        "pipeline": [
-          { "$match": { 
-            "$expr": { "$eq": [ "$$id", "$postId" ] }
-          }},
-          { "$sort": { "_id": -1 } },
-          { "$limit": 1 }
-        ]
-      }},
-      {$project: {
-      "_id": 1,
-      "description": 1,
-      "hyperlink": 1,
-      "descEdit": 1,
-      "image": 1,
-      "imageId": 1,
-      "discoverTags": 1,
-      "clubOrgKey": 1,
-      "viewsCount": 1,
-      "privacy": 1,
-      "moderation": 1,
-      "isAdminModerationLock": 1,
-      "likeCount": 1,
-      "heartCount": 1,
-      "likeUserIds": 1,
-      "heartUserIds": 1,
-      "commentsCount": 1,
-      "bucketNum": 1,
-      "commentBuckets": 1,
-      "postClub._id": 1,
-      "postClub.name": 1,
-      "postClub.avatar": 1,
-      "postClub.avatarId": 1,
-      "postAuthor": 1,
-      "topic": 1,
-      "createdAt": 1,
-      "__v": 1,
-      "ranking": {
-        $divide: [
-          { $add: [
-            { $multiply: ["$viewsCount", 0.0125] },
-            { $multiply: ["$likeCount", 0.125] },
-            { $multiply: ["$heartCount", 0.5] },
-            { $multiply: ["$commentsCount", 1] },
-            0.75
-          ] },
-          { $add: [
-            1,
-            { $pow: [
-              { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-              1.8
+        {$match: {$and: [
+          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+          {_id: {$nin: seenIds}}, 
+          {moderation: 0}, {privacy: 0}, {topic: ''}
+        ]}},
+        { "$lookup": {
+          "from": "clubs",
+          "foreignField": "_id",
+          "localField": "postClub",
+          "as": "postClub"
+        }},
+        {
+          "$unwind": "$postClub"
+        },
+        { "$lookup": {
+          "from": "comments",
+          "as": "commentBuckets",
+          "let": { "id": "$_id" },
+          "pipeline": [
+            { "$match": { 
+              "$expr": { "$eq": [ "$$id", "$postId" ] }
+            }},
+            { "$sort": { "_id": -1 } },
+            { "$limit": 1 }
+          ]
+        }},
+        {$project: {
+        "_id": 1,
+        "description": 1,
+        "hyperlink": 1,
+        "descEdit": 1,
+        "image": 1,
+        "imageId": 1,
+        "discoverTags": 1,
+        "clubOrgKey": 1,
+        "viewsCount": 1,
+        "privacy": 1,
+        "moderation": 1,
+        "isAdminModerationLock": 1,
+        "likeCount": 1,
+        "heartCount": 1,
+        "likeUserIds": 1,
+        "heartUserIds": 1,
+        "commentsCount": 1,
+        "bucketNum": 1,
+        "commentBuckets": 1,
+        "postClub._id": 1,
+        "postClub.name": 1,
+        "postClub.avatar": 1,
+        "postClub.avatarId": 1,
+        "postAuthor": 1,
+        "topic": 1,
+        "createdAt": 1,
+        "__v": 1,
+        "ranking": {
+          $divide: [
+            { $add: [
+              { $multiply: ["$viewsCount", 0.0125] },
+              { $multiply: ["$likeCount", 0.125] },
+              { $multiply: ["$heartCount", 0.5] },
+              { $multiply: ["$commentsCount", 1] },
+              0.75
             ] },
+            { $add: [
+              1,
+              { $pow: [
+                { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+                1.8
+              ] },
+            ] }
           ] }
-        ] }
-      }},
-      {$sort: {"ranking": -1}},
-      {$limit: 10}        
+        }},
+        {$sort: {"ranking": -1}},
+        {$limit: 10}
       ])
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-5)discoverPosts err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+req.user._id+' => (posts-19)discoverPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
@@ -780,7 +810,7 @@ module.exports = {
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
         function(err, updatePosts){
           if(err || !updatePosts){
-            console.log(Date.now()+' => (posts-8)updatePosts err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' => (posts-20)updatePosts err:- '+JSON.stringify(err, null, 2));
             return res.sendStatus(500);
           }
         });
@@ -801,10 +831,10 @@ module.exports = {
         if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
           cloudinary.v2.uploader.upload(req.file.path,
           {folder: 'postImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-          effect: 'sharpen:35', format: 'webp', crop: 'limit'},
+          effect: 'sharpen:25', format: 'webp', crop: 'limit'},
           function(err, result){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-9)imageUpload err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-21)imageUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -813,13 +843,13 @@ module.exports = {
             req.body.moderation = 1;
             Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
             if(err || !foundClub){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-10)foundClub err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-22)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
               Post.create(req.body, function(err, newPost){
               if(err || !newPost){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-11)newPost err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+req.user._id+' => (posts-23)newPost err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -832,7 +862,7 @@ module.exports = {
                 newPost.postAuthor.authorName = req.user.fullName;
                 newPost.save(function(err, newPost){
                 if(err || !newPost){
-                  console.log(Date.now()+' : '+req.user._id+' => (posts-12)newPost err:- '+JSON.stringify(err, null, 2));
+                  console.log(Date.now()+' : '+req.user._id+' => (posts-24)newPost err:- '+JSON.stringify(err, null, 2));
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
@@ -855,13 +885,13 @@ module.exports = {
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
           if(err || !foundClub){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-13)foundClub err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-25)foundClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
             Post.create(req.body, function(err, newPost){
             if(err || !newPost){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-14)newPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-26)newPost err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -874,7 +904,7 @@ module.exports = {
               newPost.postAuthor.authorName = req.user.fullName;
               newPost.save(function(err, newPost){
               if(err || !newPost){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-15)newPost err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+req.user._id+' => (posts-27)newPost err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -901,7 +931,7 @@ module.exports = {
     Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
     .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+'(posts-16)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(posts-28)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -925,7 +955,7 @@ module.exports = {
         .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
         .exec(function(err, foundBuckets){
         if(err || !foundBuckets){
-          console.log(Date.now()+' : '+'(posts-17)foundBuckets err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -959,7 +989,7 @@ module.exports = {
           .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
           .exec(function(err, foundBucket){
           if(err || !foundBucket){
-            console.log(Date.now()+' : '+'(posts-18)foundBucket err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(posts-30)foundBucket err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -973,7 +1003,7 @@ module.exports = {
             Club.findById(req.params.club_id).select({conversationId: 1})
             .exec(function(err, foundClub){
             if(err || !foundClub){
-              console.log(Date.now()+' : '+'(posts-19)foundClub err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(posts-31)foundClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -993,7 +1023,7 @@ module.exports = {
           Club.findById(req.params.club_id).select({conversationId: 1})
           .exec(function(err, foundClub){
           if(err || !foundClub){
-            console.log(Date.now()+' : '+'(posts-20)foundClub err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(posts-32)foundClub err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -1024,7 +1054,7 @@ module.exports = {
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
       .exec(function (err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+'(posts-21)foundPost err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(posts-33)foundPost err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -1049,7 +1079,7 @@ module.exports = {
             .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
             .exec(function(err, foundBucket){
             if(err || !foundBucket){
-              console.log(Date.now()+' : '+'(posts-22)foundBucket err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(posts-34)foundBucket err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -1061,7 +1091,7 @@ module.exports = {
               var subVotes = subVoteCheck(req.user._id,foundBucket);
               Discussion.findOne({_id: req.params.bucket_id}, function(err, foundQuoteBucket){
               if(err || !foundQuoteBucket){
-                console.log(Date.now()+' : '+'(posts-23)foundQuoteBucket err:- '+JSON.stringify(err, null, 2));
+                console.log(Date.now()+' : '+'(posts-35)foundQuoteBucket err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -1090,7 +1120,7 @@ module.exports = {
   postsUpdate(req, res, next){
     Post.findById(req.params.post_id, function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-24)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-36)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1121,7 +1151,7 @@ module.exports = {
   postsDelete(req, res, next){
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-25)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-37)foundPost err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1132,14 +1162,14 @@ module.exports = {
           //deletes all comments associated with the post
           Comment.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-26)foundPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-38)foundComment err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           Discussion.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-27)foundPost err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-39)foundDiscussion err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1147,7 +1177,7 @@ module.exports = {
           req.flash('success', 'Post deleted successfully!');
           res.redirect('back');
         }catch(err){
-          console.log(Date.now()+' : '+'(posts-28)foundPost catch err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(posts-40)foundPost catch err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1156,14 +1186,14 @@ module.exports = {
         //deletes all comments associated with the post
         Comment.deleteMany({postId: foundPost._id}, function(err){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-29)foundPost err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-41)foundComment err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
         });
         Discussion.deleteMany({postId: foundPost._id}, function(err){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-30)foundPost err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+req.user._id+' => (posts-42)foundDiscussion err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1178,7 +1208,7 @@ module.exports = {
   postsVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-31)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-43)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       if(req.body.visibility){
@@ -1219,9 +1249,9 @@ module.exports = {
             }
           }
           if(otherIdFound == true){
-            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
-              if(err || !foundUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-32)foundUser err:- '+JSON.stringify(err, null, 2));
+            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
+              if(err || !updateUser){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-44)updateUser err:- '+JSON.stringify(err, null, 2));
                 return res.sendStatus(500);
               }
             });
@@ -1245,9 +1275,9 @@ module.exports = {
           }
         }
         if(clickIdFound == true){
-          User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, foundUser){
-            if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-34)foundUser err:- '+JSON.stringify(err, null, 2));
+          User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
+            if(err || !updateUser){
+              console.log(Date.now()+' : '+req.user._id+' => (posts-45)updateUser err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             }
           });
@@ -1264,9 +1294,9 @@ module.exports = {
         if(clickIdFound == false){
           heartIds.push(req.user._id);
           foundPost.heartCount +=1;
-          User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, foundUser){
-            if(err || !foundUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-35)foundUser err:- '+JSON.stringify(err, null, 2));
+          User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
+            if(err || !updateUser){
+              console.log(Date.now()+' : '+req.user._id+' => (posts-46)updateUser err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             }
           });
@@ -1281,7 +1311,7 @@ module.exports = {
   postsModVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-36)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-47)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;

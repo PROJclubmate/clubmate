@@ -725,7 +725,7 @@ function index_posts_template(response){
             <% } %>
           </div>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <% if(!friendsPostUrl){ %>
@@ -747,7 +747,7 @@ function index_posts_template(response){
             </div>
           </a>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } %>
       <div class="card-body3">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -876,7 +876,7 @@ function index_posts_template(response){
     <hr>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="card d-flex flex-row">
+    <div class="card d-flex flex-row justify-content-between">
       <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
@@ -983,7 +983,7 @@ function index_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div>
+          <div style="margin-top: -0.25rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -1136,7 +1136,7 @@ function club_posts_template(response){
             <% } %>
           </div>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } else{ %>
         <div class="nounderline nothing card-body2">
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
@@ -1154,7 +1154,7 @@ function club_posts_template(response){
             </div>
           </a>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } %>
       <div class="card-body3">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -1294,7 +1294,7 @@ function club_posts_template(response){
     <hr>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="card noborder d-flex flex-row">
+    <div class="card noborder d-flex flex-row justify-content-between">
       <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
@@ -1407,7 +1407,7 @@ function club_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div>
+          <div style="margin-top: -0.25rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -1557,7 +1557,7 @@ function user_posts_template(response){
             <% } %>
           </div>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -1575,7 +1575,7 @@ function user_posts_template(response){
             </div>
           </a>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } %>
       <div class="card-body3">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -1704,7 +1704,7 @@ function user_posts_template(response){
     <hr>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="card noborder d-flex flex-row">
+    <div class="card noborder d-flex flex-row justify-content-between">
       <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
@@ -1806,7 +1806,7 @@ function user_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div>
+          <div style="margin-top: -0.25rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -1947,7 +1947,7 @@ function heart_posts_template(response){
             <% } %>
           </div>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
@@ -1965,7 +1965,7 @@ function heart_posts_template(response){
             </div>
           </a>
         </div>
-        <hr>
+        <hr class="hr-light">
       <% } %>
       <div class="card-body3">
         <form class="valign" action="/posts/<%= postsH[l]._id %>/vote" method="POST">
@@ -2094,7 +2094,7 @@ function heart_posts_template(response){
     <hr>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="card noborder d-flex flex-row">
+    <div class="card noborder d-flex flex-row justify-content-between">
       <div class="topic-break">
         <div class="card-body">
           <div class="dropctn">
@@ -2196,7 +2196,7 @@ function heart_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div>
+          <div style="margin-top: -0.25rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= postsH[l]._id %>/modvote" method="POST">
                 <% if(hasModVoteH[l] == 1){%>
