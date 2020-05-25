@@ -110,8 +110,15 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       $('#lastMsg').toggleClass("nodisplay");
       $('#lastMsg-hidden').toggleClass("nodisplay");
     });
+    if($('#mypage').length){
+      $('#brandname').addClass("name-green");
+    }
   }
 }
+
+if($(window).width() > 768){
+  $("#latestUpdates").addClass('show');
+};
 
 // Fake Progress bar (Nanobar)
 var options = {

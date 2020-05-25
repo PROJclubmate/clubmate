@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 		<% if(query){ %>
-			<div class="ml-2 mobiletext">Search results for: <span class="boldtext"><%= query %></span></div>
+			<div class="ml-2 mt-2 mobiletext">Search results for: <span class="boldtext"><%= query %></span></div>
 		<% } else{ %>
-			<div class="ml-2 mobiletext boldtext">Search for :-</div>
+			<div class="ml-2 mt-2 mobiletext boldtext">Search for :-</div>
 		<% } %>
 		<br>
 		<form action="/find_people/search" method="GET">
@@ -15,7 +15,7 @@
 		<div class="row no-gutters">
 			<% if(users.length == 0){ %>
 				<% if(query){ %>
-					<h6 class="lightgrey ml-2">No matching users found :(</h6>
+					<h6 class="lightgrey ml-2 mt-1">No matching users found :(</h6>
 				<% } %>
 			<% }else{ %>
 				<% var len = users.length; var k=0; for(k;k<len;k++){ %>
@@ -54,7 +54,7 @@
 		<div class="row no-gutters">
 			<% if(clubs.length == 0){ %>
 				<% if(query){ %>
-					<h6 class="lightgrey ml-2">No matching clubs found :(</h6>
+					<h6 class="lightgrey ml-2 mt-1">No matching clubs found :(</h6>
 				<% } %>
 			<% }else{ %>
 				<% var len = clubs.length; var k=0; for(k;k<len;k++){ %>
@@ -91,7 +91,7 @@
 		<div class="row no-gutters">
 			<% if(org_pages.length == 0){ %>
 				<% if(query){ %>
-					<h6 class="lightgrey ml-2">No matching colleges found :(</h6>
+					<h6 class="lightgrey ml-2 mt-1">No matching colleges found :(</h6>
 				<% } %>
 			<% }else{ %>
 				<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>

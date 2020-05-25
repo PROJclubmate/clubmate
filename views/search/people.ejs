@@ -100,7 +100,7 @@
 	<div class="col-lg-3 px-2">
 		<br class="mobileNone">
 		<div id="user_email" style="display: block;">
-	    <div class="mx-2 text-sm boldtext">Search user by email:</div>
+	    <div class="mx-2 mt-3 text-sm boldtext">Search user by email:</div>
 			<form  action="/find_email/search" method="GET" class="form-signin">
 	      <div class="input-group input-group-sm">
 	        <input type="email" name="email" class="form-control search" placeholder="simon@riley.com" autofocus required>
@@ -112,8 +112,10 @@
 	      </div>
 	    </form>
 	  </div>
-    <span><i class="fas fa-filter ml-2"></i></span>
-    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter'); toggle_display('user_email');">Filter search</button></span>
+	  <div class="mt-3">
+	    <span><i class="fas fa-filter ml-2"></i></span>
+	    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter'); toggle_display('user_email');">Filter search</button></span>
+	  </div>
     <% if(query){ %>
     	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
     <% } else{ %>

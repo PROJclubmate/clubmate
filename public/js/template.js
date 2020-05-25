@@ -790,7 +790,8 @@ function index_posts_template(response){
       </div>
     </div>
     <!-- COMMENTS -->
-    <div class="card indexcard2">
+    <div class="mt-1"></div>
+    <div class="card m-0">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){ %>
@@ -806,7 +807,7 @@ function index_posts_template(response){
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id == currentUser._id){ %>
                   <span class="dropdown">
-                    <button class="btn btn-sm dropdown-toggle editprofile valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xs"></i></button>
+                    <button class="btn btn-sm dropdown-toggle editprofile valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right dropbox">
                       <div class="container drop-shadow1">
                         <li>
@@ -848,7 +849,6 @@ function index_posts_template(response){
             <% } %>
           <% } %>
         </div>
-        <hr>
       <% } %>
       <div class="card-body3">
         <div class="valign">
@@ -1208,7 +1208,8 @@ function club_posts_template(response){
       </div>
     </div>
     <!-- COMMENTS -->
-    <div class="card noborder indexcard2">
+    <div class="mt-1"></div>
+    <div class="card noborder m-0">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -1224,7 +1225,7 @@ function club_posts_template(response){
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id == currentUser._id){ %>
                   <span class="dropdown">
-                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
+                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right dropbox">
                       <div class="container drop-shadow1">
                         <li>
@@ -1266,7 +1267,6 @@ function club_posts_template(response){
             <% } %>
           <% } %>
         </div>
-        <hr>
       <% } %>
       <div class="card-body3">
         <div class="valign">
@@ -1618,7 +1618,8 @@ function user_posts_template(response){
       </div>
     </div>
     <!-- COMMENTS -->
-    <div class="card noborder indexcard2">
+    <div class="mt-1"></div>
+    <div class="card noborder m-0">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -1634,7 +1635,7 @@ function user_posts_template(response){
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id == currentUser._id){ %>
                   <span class="dropdown nopad">
-                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs ellipsis-sm"></i></button>
+                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs ellipsis-sm"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right dropbox">
                       <div class="container drop-shadow1">
                         <li>
@@ -1676,7 +1677,6 @@ function user_posts_template(response){
             <% } %>
           <% } %>
         </div>
-        <hr>
       <% } %>
       <div class="card-body3">
         <div class="valign">
@@ -2008,7 +2008,8 @@ function heart_posts_template(response){
       </div>
     </div>
     <!-- COMMENTS -->
-    <div class="card noborder indexcard2">
+    <div class="mt-1"></div>
+    <div class="card noborder m-0">
       <% if(postsH[l].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = postsH[l].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -2024,7 +2025,7 @@ function heart_posts_template(response){
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id == currentUser._id){ %>
                   <span class="dropdown nopad">
-                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs ellipsis-sm"></i></button>
+                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs ellipsis-sm"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right dropbox">
                       <div class="container drop-shadow1">
                         <li>
@@ -2066,7 +2067,6 @@ function heart_posts_template(response){
             <% } %>
           <% } %>
         </div>
-        <hr>
       <% } %>
       <div class="card-body3">
         <div class="valign">
@@ -2264,7 +2264,7 @@ function post_comments_template(response){
           <div class="d-flex flex-row mb-auto">
             <% if(currentUser && comments[j].commentAuthor.id._id == currentUser){ %>
               <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle editprofile nothing px-1 pt-1" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
+                <button class="btn btn-sm dropdown-toggle editprofile nothing px-1 pt-1" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>
@@ -2439,7 +2439,7 @@ function post_subPosts_template(response){
             <div class="d-flex flex-column">
               <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
               <div class="dropdown ml-auto">
-                <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
+                <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>

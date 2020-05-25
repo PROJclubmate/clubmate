@@ -2,7 +2,7 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
-	<div class="ml-2 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+	<div class="ml-2 mt-3 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<div id="server-search-org_pages">
 		<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
 			<div class="card searchcard2">
@@ -21,7 +21,7 @@
 										</a>
 									</span>
 									<div class="tooltip">
-									<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+									<button class="copyBtn ml-2" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
 									  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
 									  <i class="far fa-copy lightgrey"></i>
 									  </button>
@@ -51,7 +51,7 @@
   </div>
 	</div>
 	<div class="col-lg-3 px-2">
-		<br class="mobileNone">
+		<br>
     <div class="mx-2 text-sm boldtext">Search colleges:</div>
 		<form action="/find_org_pages/search" method="GET" class="form-signin">
       <div class="input-group input-group-sm">

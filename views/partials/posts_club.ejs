@@ -177,7 +177,8 @@
       </div>
     </div>
     <!-- COMMENTS -->
-    <div class="card noborder indexcard2">
+    <div class="mt-1"></div>
+    <div class="card noborder m-0">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -193,7 +194,7 @@
                   <span class="text-xs text-center boldtext lightgrey"><%= comments[j].upvotesCount %></span>
                 <% if(currentUser && comments[j].commentAuthor.id.equals(currentUser._id)){ %>
                   <span class="dropdown">
-                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxs"></i></button>
+                    <button class="btn btn-sm dropdown-toggle valign" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right dropbox">
                       <div class="container drop-shadow1">
                         <li>
@@ -235,7 +236,6 @@
             <% } %>
           <% } %>
         </div>
-        <hr>
       <% } %>
       <div class="card-body3">
         <div class="valign">

@@ -90,10 +90,12 @@
 	<% } %>
 	</div>
 	<div class="col-lg-3 px-2 mb-3">
+    <br>
     <br class="mobileNone">
-    <br class="mobileNone">
-    <span><i class="fas fa-filter ml-2"></i></span>
-    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('club_filter')">Filter search</button></span>
+    <div>
+	    <span><i class="fas fa-filter ml-2"></i></span>
+	    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('club_filter')">Filter search</button></span>
+	  </div>
     <% if(query){ %>
     	<form id="club_filter" class="form-signin" action="/find_clubs/filter_search" method="GET">
     <% } else{ %>

@@ -1031,9 +1031,10 @@ module.exports = {
             Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
             {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
+          var match = foundUser._id.equals(req.user._id);
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
           res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
-          current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage)});
+          current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match});
         }
         });
       } else{
