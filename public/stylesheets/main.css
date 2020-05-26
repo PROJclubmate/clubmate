@@ -547,7 +547,7 @@ input{
   -webkit-text-fill-color: transparent;
 }
 #explore-switch-mobile{
-  background: linear-gradient(80deg, rgba(0,123,255,1) 0%, rgba(100,149,237,1) 60%, rgba(125,220,31,1) 85%, rgba(246,215,176,1) 90%);
+  background: linear-gradient(80deg, rgba(0,123,255,1) 0%, rgba(100,149,237,1) 70%, rgba(125,220,31,1) 85%, rgba(246,215,176,1) 90%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -583,8 +583,16 @@ input{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
-.search-right{
-  max-width: 35%;
+.search-bottomright{
+  padding: 0 0.25rem;
+  position: absolute;
+  right: 0.25rem;
+  bottom: 0.5rem;
+}
+.search-topright{
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
 }
 .card img {
   align-self: center;
@@ -1008,7 +1016,6 @@ input[type="file"]#inputavatar{
 #favourites_form4_div{display: none;}
 #favourites_form5_div{display: none;}
 #favourites_form6_div{display: none;}
-#tags_form_div{display: none;}
 #interests_display{display: block;}
 #toggle_club_form{display: none;}
 #post_edit_form{display: none;}
@@ -1797,6 +1804,7 @@ div.carousel-img{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
+  margin-top: 0.25rem;
 }
 .line-clamp{
   display            : -webkit-box;

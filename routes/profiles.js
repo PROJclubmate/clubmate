@@ -5,11 +5,11 @@ const express  = require('express'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
   profilesClubMoreMembers, profilesClubSearchMembers, profilesClubMoreMemberRequests, profilesClubMorePosts, 
-  profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetUsersFeaturedPhotos, 
-  profilesUpdateUsersFeaturedPhotos, profilesGetClubsFeaturedPhotos,  profilesUpdateClubsFeaturedPhotos, 
-  profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, profilesReVerify,  profilesVerificationToken, 
-  profilesLoginPage, profilesLoginUser, profilesLogout, profilesForgotPage, profilesForgotPass, profilesForgotToken, 
-  profilesResetPass} = require('../controllers/profiles');
+  profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetClubsFeaturedPhotos, 
+  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, 
+  profilesReVerify,  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, 
+  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass} = 
+  require('../controllers/profiles');
   
 
 // Show user profile
@@ -53,12 +53,6 @@ router.put('/clubs/:club_id', middleware.isLoggedIn, upload.single('avatar'), pr
 
 // Delete club profile
 router.put('/clubs/:club_id/delete', middleware.isLoggedIn, profilesDeleteClubProfile);
-
-// Get user featured photos page
-router.get('/users/:id/featured_photos', middleware.checkAccountOwnership, profilesGetUsersFeaturedPhotos);
-
-// Update user featured photos
-router.put('/users/:id/featured_photos', middleware.checkAccountOwnership, upload.single('image'), profilesUpdateUsersFeaturedPhotos);
 
 // Get club featured photos page
 router.get('/clubs/:id/featured_photos', middleware.checkClubModeratorship, profilesGetClubsFeaturedPhotos);

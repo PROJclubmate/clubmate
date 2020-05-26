@@ -385,6 +385,21 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       }
     });
   });
+
+  $('#show-following-server').on('click', function(e){
+    e.preventDefault();
+    $.ajax({
+      type: 'GET',
+      url: '/show_following/'+location.pathname.split('/')[2],
+      timeout: 3000,
+      success: function (response){
+        $('#show-following-server').addClass('nodisplay');
+        $('#show-following-client').removeClass('nodisplay');
+        var div = document.getElementById('show-following-client');
+        div.innerHTML = showFollowing_template(response);
+      }
+    });
+  });
 }
 
 if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] == 'clubs' && 
@@ -562,14 +577,14 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   });
 }
 
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_org_pages'){
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_colleges'){
   $('#load-more-search-org_pages-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-search-org_pages-span').addClass("spinner-border spinner-border-sm mr-1");
     var query = $('#query').attr('value');
     $.ajax({
       type: 'GET',
-      url: '/org_pages-moreResults/search/'+query,
+      url: '/colleges-moreResults/search/'+query,
       data: {ids: $('#load-more-search-org_pages-btn').val()},
       timeout: 3000,
       success: function (response){
@@ -2844,12 +2859,12 @@ function search_people_template(response){
           </div>
           <div>
             <% if(currentUser && users[k]._id == currentUser._id){ %>
-              <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+              <button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
                 <i class="fas fa-ghost" aria-hidden="true"></i></button>
             <% } else if(currentUser && !(users[k]._id == currentUser._id)){ 
               currentUser.friends.forEach(function(friend){ 
                 if(users[k]._id == friend){ %>
-                <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+                <button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
                   <i class="fas fa-check"></i></button>
             <% }})} %>
           </div>
@@ -2858,26 +2873,14 @@ function search_people_template(response){
         <br>
         <div class="valign">
           <div>
-            <div class="text-sm mobilebold darkgrey"><%= users[k].userKeys.college %></div>
+            <div class="text-xs mobilebold darkgrey"><%= users[k].userKeys.college %></div>
             <% if(users[k].userKeys){ %>
-              <% if(users[k].userKeys.college){ %>
-                <div class="lightgrey text-xs">
-                  <span class="nothing"><%= users[k].userKeys.branch %></span>
-                  <% if(users[k].userKeys.batch){ %>
-                    <span class="nothing">(<%= users[k].userKeys.batch %>)</span>
-                  <% } %>
-                  <% if(users[k].userKeys.section){ %>
-                    <span class="nothing">(<%= users[k].userKeys.section %>)</span>
-                  <% } %>
-                </div>
-              <% } %>
               <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
               <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
-              <div class="lightgrey text-xs boldtext"><%= users[k].email %></div>
             <% } %>
           </div>
           <% if(users[k].userKeys){ %>
-            <div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= users[k].userKeys.residence %></div>
+            <div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= users[k].userKeys.residence %></div>
           <% } %>
         </div>
       </div>
@@ -2909,22 +2912,23 @@ function search_clubs_template(response){
             <% if(currentUser){ 
               currentUser.userClubs.forEach(function(userClub){ 
                 if(clubs[k]._id == userClub.id){ %>
-                <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+                <button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
                   <i class="fas fa-check"></i></button>
             <% }})} %>
           </div>
         </div>
         <div class="lightgrey text-xs"><%= clubs[k].banner %></div>
         <br>
-        <% if(clubs[k].clubKeys){ %>
-          <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
-          <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
-          <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
-        <% } %>
         <div class="valign">
-          <div class="lightgrey text-xxs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div>
+          <div>
+            <% if(clubs[k].clubKeys){ %>
+              <div class="text-xs boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
+              <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
+              <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
+            <% } %>
+          </div>
           <% if(clubs[k].clubKeys){ %>
-            <div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= clubs[k].clubKeys.organization %></div>
+            <div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.organization %></div>
           <% } %>
         </div>
       </div>
@@ -2989,5 +2993,80 @@ function search_org_pages_template(response){
   </div>
 <% } %>
 `,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, matchArr: response.matchArr});
+  return html;
+}
+
+function showFollowing_template(response){
+  html = ejs.render(`
+<% if(followingOrgKeys.length){ %>
+<div class="lightgrey text">
+  <span>+ College page: </span>
+  <br>
+  <span>
+    <% var keysArr = followingOrgKeys; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
+      <% if(i==0 && i==len-1){ %>
+        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= keysArr[i] %></a></span>
+        <br>
+        <% } else if(i==len-1){ %>
+        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= keysArr[i] %></a>,</span>
+        <br>
+        <% } else if(i>0 && i<len){ %>
+        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a>,</span>
+        <br>
+        <% } else if(i==0){ %>
+        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a></span>
+        <br>
+    <% }} %>
+  </span>
+  <br>
+</div>
+<% } %>
+<% if(followingStrayClubs.length){ %>
+<div class="lightgrey text">
+  <span>+ Following stray clubs: </span>
+  <br>
+  <span>
+    <% var keysArr = followingStrayClubs; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
+      <% if(i==0 && i==len-1){ %>
+        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a></span>
+        <br>
+        <% } else if(i==len-1){ %>
+        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a>,</span>
+        <br>
+        <% } else if(i>0 && i<len){ %>
+        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a>,</span>
+        <br>
+        <% } else if(i==0){ %>
+        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a></span>
+        <br>
+    <% }} %>
+  </span>
+  <br>
+</div>
+<% } %>
+<% if(unfollowingOrgClubs.length){ %>
+  <div class="lightgrey text">
+    <span><span class="text-xxl" style="margin-left: 0.125rem;">-</span> Unfollowing college clubs: </span>
+    <br>
+    <span>
+      <% var keysArr = unfollowingOrgClubs; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
+        <% if(i==0 && i==len-1){ %>
+          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a></span>
+          <br>
+          <% } else if(i==len-1){ %>
+          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a>,</span>
+          <br>
+          <% } else if(i>0 && i<len){ %>
+          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a>,</span>
+          <br>
+          <% } else if(i==0){ %>
+          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a></span>
+          <br>
+      <% }} %>
+    </span>
+    <br>
+  </div>
+<% } %>
+`,{followingStrayClubs: response.followingStrayClubs, unfollowingOrgClubs: response.unfollowingOrgClubs, followingOrgKeys: response.followingOrgKeys});
   return html;
 }

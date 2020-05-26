@@ -31,7 +31,7 @@
             <% } else{ %>
               <div class="d-flex flex-column" style="height: 100%;">
             <% } %>
-              <div class="my-auto ml-5" style="margin-bottom: -0.5rem;">
+              <div class="my-auto" style="margin-left: 2.75rem;">
                 <div>
                   <% if(user.isVerified){ %>
                     <h5 class="profilename"><%= user.fullName %></h5>
@@ -44,7 +44,7 @@
             </div>
             <% if(currentUser && match){ %>
               <div class="story-container">
-                <div class="d-flex ml-5 story-container2 scroll moz-scroll" style="height: 50%;">
+                <div class="d-flex story-container2 scroll moz-scroll" style="height: 50%; margin-left: 2.75rem;">
                   <div class="d-flex flex-column mr-3">
                     <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
@@ -156,7 +156,7 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
               <% if(user.userKeys.workplace){ %>
                 <div class="info1">Workplace: <div class="info30"><a href="/find_people/filter_search?users=&college=&workplace=<%= user.userKeys.workplace %>&school=&location="><%= user.userKeys.workplace %></a></div></div>
               <% } %>
@@ -345,8 +345,21 @@
                   Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
                   <br>
                   <% if(!match){ %>
+                    <% if(user.isLoggedIn){ %>
+                      <span>
+                        <svg height="16" width="16">
+                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                        </svg>
+                      </span>
+                      <span class="greencolor">Logged in</span>
+                    <% } else{ %>
+                      Last logout: <span id="timeLocalRelative" class="info30 nothing"></span>
+                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                    <% } %>
+                  <br>
+                  <br>
                     <% if(mutualClubs.length != 0){ %>
-                      <div class="info1">Mutal clubs: <div class="info30">
+                      <div class="info1">Mutual clubs: <div class="info30">
                         <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
                         <% if(i==0 && i==len-1){ %>
                           <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
@@ -359,31 +372,12 @@
                         <% }} %>
                       </div></div>
                     <% } %>
-                    <% if(user.isLoggedIn){ %>
-                      <span>
-                        <svg height="16" width="16">
-                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-                        </svg>
-                      </span>
-                      <span class="greencolor">Logged in</span>
-                    <% } else{ %>
-                      Last logout: <span id="timeLocal" class="info30 nothing"></span>
-                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                    <% } %>
                   <% } %>
-                  <br>
                   <% if(match && currentUser.followingOrgKeys.length>0){ %>
+                    <br>
                     <div class="info1">Following: <div class="info30">
-                      <% var keysArr = currentUser.followingOrgKeys; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
-                        <% if(i==0 && i==len-1){ %>
-                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= keysArr[i] %></a></span>
-                          <% } else if(i==len-1){ %>
-                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= keysArr[i] %></a>,</span>
-                          <% } else if(i>0 && i<len){ %>
-                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a>,</span>
-                          <% } else if(i==0){ %>
-                          <span class="nothing"><a href="/org_pages/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a></span>
-                      <% }} %>
+                      <div id="show-following-server" class="nothing"><a href="#">Show ++</a></div>
+                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
                     </div></div>
                   <% } %>
                   <div class="info30">

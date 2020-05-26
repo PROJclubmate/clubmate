@@ -483,7 +483,6 @@ module.exports = {
               "descEdit": 1,
               "image": 1,
               "imageId": 1,
-              "discoverTags": 1,
               "clubOrgKey": 1,
               "viewsCount": 1,
               "privacy": 1,
@@ -827,7 +826,7 @@ module.exports = {
           // for HOT TOPIC posts made in past week
           Post.find({postClub: req.params.club_id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
           .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
-          postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
+          postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           console.log(Date.now()+' : '+req.user._id+' => (profiles-23)topTopicPosts err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
@@ -874,7 +873,7 @@ module.exports = {
         var Posts_50_Image = [];
         Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
         .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
-        postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(5).exec(function(err, topTopicPosts){
+        postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
         if(err || !topTopicPosts){
         console.log(Date.now()+' : '+req.user._id+' => (profiles-24)topTopicPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
@@ -1156,20 +1155,7 @@ module.exports = {
             }
           }
         }
-        if(req.body.clubKeys && req.body.clubKeys.tags){
-          editinfo(req.body.clubKeys.tags,foundClub.clubKeys.tags);
-          function editinfo(newData,oldData){
-            if(newData){
-              oldData=[];
-              var oldData = newData.filter(Boolean);
-              var len = oldData.length; for(var i=len-1;i>=0;i--){
-                var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
-                oldData.splice(i,1,inputstring);
-              }
-              foundClub.clubKeys.tags = oldData;
-            }
-          }
-        } else if(req.body.clubKeys && !req.body.clubKeys.tags){
+        if(req.body.clubKeys){
           const oldOrgName = foundClub.clubKeys.organization;
           const oldCategory = foundClub.clubKeys.category;
           const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
@@ -1374,83 +1360,10 @@ module.exports = {
     });
   },
 
-  profilesGetUsersFeaturedPhotos(req, res, next){
-    User.findById(req.params.id, function(err, foundUser){
-    if(err || !foundUser){
-      console.log(Date.now()+' : '+'(profiles-41)foundUser err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    } else{
-      featuredPhotos = foundUser.featuredPhotos;
-      firstName = foundUser.firstName;
-      userId = foundUser._id;
-      res.render('users/featured_photos', {featuredPhotos, firstName, userId});
-    }
-    });
-  },
-
-  profilesUpdateUsersFeaturedPhotos(req, res, next){
-    User.findById(req.params.id, async function(err, foundUser){
-    if(err || !foundUser){
-      console.log(Date.now()+' : '+'(profiles-42)foundUser err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    } else{
-      if(req.body.button == 'submit' && req.file && foundUser.featuredPhotos.length < 3){
-        var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-        var obj = {};
-        obj['image'] = result.secure_url;
-        obj['imageId'] = result.public_id;
-        obj['heading'] = req.body.heading;
-        obj['description'] = req.body.description;
-        foundUser.featuredPhotos.push(obj);
-        foundUser.save();
-        req.flash('success', 'Successfully submitted');
-        return res.redirect('/users/'+req.params.id+'/featured_photos');
-      }
-      if(req.body.delete && foundUser.featuredPhotos.length > 0){
-        for(var i=foundUser.featuredPhotos.length-1;i>=0;i--){
-          if(foundUser.featuredPhotos[i]._id.equals(req.body.delete)){
-            await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
-            foundUser.featuredPhotos.splice(i,1);
-            foundUser.save();
-            break;
-          }
-        }
-        req.flash('success', 'Successfully deleted');
-        return res.redirect('/users/'+req.params.id+'/featured_photos');
-      }
-      if(req.body.update && foundUser.featuredPhotos.length > 0){
-        for(var i=foundUser.featuredPhotos.length-1;i>=0;i--){
-          if(foundUser.featuredPhotos[i]._id.equals(req.body.update)){
-            if(req.file){
-              await cloudinary.v2.uploader.destroy(foundUser.featuredPhotos[i].imageId);
-              var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredPhotos/',
-              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-              foundUser.featuredPhotos[i].image = result.secure_url;
-              foundUser.featuredPhotos[i].imageId = result.public_id;
-              foundUser.featuredPhotos[i].heading = req.body.heading;
-              foundUser.featuredPhotos[i].description = req.body.description;
-              foundUser.save();
-            } else{
-              foundUser.featuredPhotos[i].heading = req.body.heading;
-              foundUser.featuredPhotos[i].description = req.body.description;
-              foundUser.save();
-            }
-          }
-        }
-        req.flash('success', 'Successfully updated');
-        return res.redirect('/users/'+req.params.id+'/featured_photos');
-      }
-    }
-    });
-  },
-
   profilesGetClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, function(err, foundClub){
     if(err || !foundClub){
-      console.log(Date.now()+' : '+'(profiles-43)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-41)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1465,7 +1378,7 @@ module.exports = {
   profilesUpdateClubsFeaturedPhotos(req, res, next){
     Club.findById(req.params.id, async function(err, foundClub){
     if(err || !foundClub){
-      console.log(Date.now()+' : '+'(profiles-44)foundClub err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-42)foundClub err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1542,7 +1455,7 @@ module.exports = {
           if(err.code == 11000 || err.name == 'UserExistsError'){
             req.flash('error', 'A user with the given email is already registered, Please verify or Login to continue..');
           } else{
-            console.log(Date.now()+' : '+'(profiles-45)user err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(profiles-43)user err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
           return res.redirect('back');
@@ -1552,7 +1465,7 @@ module.exports = {
 
           // Save the verification token
           token.save(function(err){
-            if(err){return console.log(Date.now()+' : '+'(profiles-46)user err:- '+JSON.stringify(err, null, 2));}
+            if(err){return console.log(Date.now()+' : '+'(profiles-44)user err:- '+JSON.stringify(err, null, 2));}
 
             // Send the email
             var smtpTransport = nodemailer.createTransport({
@@ -1617,7 +1530,7 @@ module.exports = {
         // Verify and save the user
         user.isVerified = true;
         user.save(function(err){
-          if(err){return console.log(Date.now()+' : '+'(profiles-47)user err:- '+JSON.stringify(err, null, 2));}
+          if(err){return console.log(Date.now()+' : '+'(profiles-45)user err:- '+JSON.stringify(err, null, 2));}
           res.status(200);
           console.log(Date.now()+' : '+user._id+' <= VERIFIED '+user.fullName);
           req.logIn(user, function(err){
@@ -1651,7 +1564,7 @@ module.exports = {
 
       // Save the verification token
       token.save(function (err){
-        if(err){return console.log(Date.now()+' : '+'(profiles-48)user err:- '+JSON.stringify(err, null, 2));}
+        if(err){return console.log(Date.now()+' : '+'(profiles-46)user err:- '+JSON.stringify(err, null, 2));}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1713,7 +1626,7 @@ module.exports = {
       User.updateOne({_id: req.user._id}, {isLoggedIn: false, lastLoggedOut: Date.now()}, 
       function(err, updateUser){
         if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (profiles-49)updateUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-47)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1741,7 +1654,7 @@ module.exports = {
       function(token, done){
         User.findOne({email: req.body.email}, function(err, user){
         if(err || !user){
-          console.log(Date.now()+' : '+'(profiles-50)forgot err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+'(profiles-48)forgot err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         } else{
@@ -1792,7 +1705,7 @@ module.exports = {
   profilesForgotToken(req, res, next){
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
     if (err || !user){
-      console.log(Date.now()+' : '+'(profiles-51)token invalid err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(profiles-49)token invalid err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     } else{
@@ -1808,7 +1721,7 @@ module.exports = {
         function(done){
           User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
           if(err || !user){
-            console.log(Date.now()+' : '+'(profiles-52)token invalid err:- '+JSON.stringify(err, null, 2));
+            console.log(Date.now()+' : '+'(profiles-50)token invalid err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('back');
           } else{
@@ -1824,7 +1737,7 @@ module.exports = {
                 });
               })
             } else{
-              console.log(Date.now()+' : '+'(profiles-53)pass dont match err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(profiles-51)pass dont match err:- '+JSON.stringify(err, null, 2));
               req.flash("error", "Passwords do not match.");
               return res.redirect('back');
             }

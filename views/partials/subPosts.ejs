@@ -172,8 +172,8 @@
                 <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
               </div>
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
-                <span><em id="timeUTCNow" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                <span class="lightgrey nothing"><em id="timeLocalNow" class="text-xxs"></em></span>
+                <span><em id="timeUTC" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                <span class="lightgrey nothing"><em id="timeLocal" class="text-xxs"></em></span>
               </div>
             </div>
             <% if(quote){ %>

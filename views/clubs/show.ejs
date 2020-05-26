@@ -156,30 +156,6 @@
                 </form>
               <% } %>
             </div>
-            <!-- Tags -->
-            <div class="valign">
-              <div class="boldtext">Discover tags</div>
-              <% if(0 <= rank && rank <= 1){ %>
-                <div>
-                  <button onclick="toggle_display('tags_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                </div>
-              <% } %>
-            </div>
-            <div class="text-sm mb-2"><em><% if(club.clubKeys.tags && club.clubKeys.tags.length){tags_split(club.clubKeys.tags)} %></em></div>
-            <div id="tags_form_div" class="greyback mb-2">
-              <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                <% var tags = club.clubKeys.tags; %>
-                  <% for(var i=0;i<10;i++){ %>
-                    <% if(club.clubKeys.tags && club.clubKeys.tags.length){ %>
-                      <input type="text" class="form-control form-control-sm info-form" name="clubKeys[tags]" placeholder="tag [<%= Number(i+1) %>]" value="<%= club.clubKeys.tags[i] %>">
-                    <% } else{ %>
-                      <input type="text" class="form-control form-control-sm info-form" name="clubKeys[tags]" placeholder="tag [<%= Number(i+1) %>]" value="">
-                    <% } %>
-                  <% } %>
-                <br>
-                <button class="btn btn-sm btnxs btn-primary d-flex ml-auto" type="submit">Update</button>
-              </form>
-            </div>
             <% if((club.clubKeys.location && club.clubKeys.location != '') && club.geometry){ %>
               <div>
                 <div id='map' style="border: 1px solid lightgrey;"></div>
@@ -242,7 +218,7 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/org_pages/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
                 <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank" rel="noopener"><%= club.clubKeys.weblink.replace(/^https?\:\/\//i, '') %></a></div></div>
@@ -668,20 +644,6 @@
 </script>
 <% include ../partials/footer %>
 <script src="/js/mapbox.js"></script>
-
-
-<% function tags_split(arr){ %>
-  <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
-  <% if(i==0 && i==len-1){ %>
-    <%= arr[i] %>
-    <% }else if(i==0){ %>
-    <%= arr[i] %><%= ',' %>
-    <% }else if(i>0 && i<len-1){ %>
-    <%= ' ' %><%= arr[i] %><%= ',' %>
-    <% }else if(i=len-1){ %>
-    <%= ' ' %><%= arr[i] %>
-  <% }} %>
-<% } %>
 
 <%
   function rankTitle(rank){

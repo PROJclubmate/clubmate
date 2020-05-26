@@ -10,7 +10,7 @@
 		<br>
 		<form action="/find_people/search" method="GET">
 			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
-			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="people">People</button>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="user">People</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(users.length == 0){ %>
@@ -37,7 +37,7 @@
 							    </div>
 						      <div class="lightgrey text-xs"><%= users[k].note %></div>
 						      <br>
-						      <div class="darkgrey text-sm text-right"><%= users[k].userKeys.residence %></div>
+						      <div class="darkgrey text-xs search-bottomright"><%= users[k].userKeys.residence %></div>
 						    </div>
 						  </div>
 					  </div>
@@ -49,7 +49,7 @@
 		<br>
 		<form action="/find_clubs/search" method="GET">
 			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
-			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="clubs">Clubs</button>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="club">Clubs</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(clubs.length == 0){ %>
@@ -74,7 +74,7 @@
 							    </div>
 						      <div class="lightgrey text-xs"><%= clubs[k].banner %></div>
 						      <br>
-						      <div class="darkgrey text-sm text-right"><%= clubs[k].clubKeys.location %></div>
+						      <div class="darkgrey text-xs search-bottomright"><%= clubs[k].clubKeys.location %></div>
 						    </div>
 						  </div>
 					  </div>
@@ -84,9 +84,9 @@
 		</div>
 
 		<br>
-		<form action="/find_org_pages/search" method="GET">
+		<form action="/find_colleges/search" method="GET">
 			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
-			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="org_pages">College</button>
+			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="college">College</button>
 		</form>
 		<div class="row no-gutters">
 			<% if(org_pages.length == 0){ %>
@@ -102,7 +102,7 @@
 						    	<div class="notification px-2 py-1 organization d-flex flex-column">
 										<div class="boldtext text-xxl">
 											<div class="orgname-search">
-												<a href="/org_pages/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>
+												<a href="/colleges/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>
 											</div>
 										</div>
 										<span class="badge text-sm"><%= org_pages[k].userCount %></span>

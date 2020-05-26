@@ -131,7 +131,7 @@ module.exports = {
   },
 
   indexSearchPeople(req, res, next){
-    const query = req.query.people;
+    const query = req.query.user;
     User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
@@ -311,7 +311,7 @@ module.exports = {
   },
 
   indexSearchClubs(req, res, next){
-    const query = req.query.clubs;
+    const query = req.query.club;
     Club.find({$text: {$search: query}, isActive: true}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({name: 1, avatar: 1, avatarId: 1, categories: 1, clubKeys: 1, banner: 1}).limit(10)
     .exec(function(err, foundClubs){
@@ -484,7 +484,7 @@ module.exports = {
   },
 
   indexSearchOrgPages(req, res, next){
-    const query = req.query.org_pages;
+    const query = req.query.college;
     OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
     .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
     if(err || !foundOrgPages){
@@ -1157,7 +1157,7 @@ module.exports = {
                   foundOrgPage.followerCount += 1;
                   foundOrgPage.allFollowerIds.push(req.user._id);
                   foundOrgPage.save();
-                  res.redirect(/org_pages/+foundOrgPage.name);
+                  res.redirect(/colleges/+foundOrgPage.name);
                 }
                 });
               }
@@ -1214,7 +1214,7 @@ module.exports = {
                   }
                   foundOrgPage.followerCount -= 1;
                   foundOrgPage.save();
-                  res.redirect(/org_pages/+foundOrgPage.name);
+                  res.redirect(/colleges/+foundOrgPage.name);
                 }
                 });
               }
@@ -1324,6 +1324,18 @@ module.exports = {
           });
         }
       }
+      });
+    }
+  },
+
+  indexShowFollowingClubs(req, res, next){
+    if(req.user && req.user._id.equals(req.params.id)){
+      Club.find({_id: {$in: req.user.followingStrayClubIds}})
+      .select({_id: 1, name: 1}).exec(function(err, followingStrayClubs){
+        Club.find({_id: {$in: req.user.unfollowingOrgClubIds}})
+        .select({_id: 1, name: 1}).exec(function(err, unfollowingOrgClubs){
+          return res.json({followingStrayClubs, unfollowingOrgClubs, followingOrgKeys: req.user.followingOrgKeys});
+        });
       });
     }
   }

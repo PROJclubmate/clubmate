@@ -24,7 +24,6 @@ const clubSchema = new Schema({
     category: String,
     weblink: String,
     location: String,
-    tags: [String]
   },
   geometry: {
     type: {

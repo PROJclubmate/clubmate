@@ -5,9 +5,11 @@ const express  = require('express'),
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
   indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexFollowOrgPage, 
-	indexUnFollowingClub} = require('../controllers/index');
+	indexUnFollowingClub, indexShowFollowingClubs} = require('../controllers/index');
 
-
+// ==================================================
+// FOR NOW in urls, org_pages is replaced by colleges
+// ==================================================
 
 
 // New notification subscription
@@ -53,10 +55,10 @@ router.get('/find_clubs/filter_search', middleware.searchAndFilterClubs, indexFi
 router.get('/clubs-moreResults/filter_search', indexFilterSearchMoreClubs);
 
 // Search organization pages
-router.get('/find_org_pages/search', indexSearchOrgPages);
+router.get('/find_colleges/search', indexSearchOrgPages);
 
 // Search organization pages(Load more using AJAX)
-router.get('/org_pages-moreResults/search/:query', indexSearchMoreOrgPages);
+router.get('/colleges-moreResults/search/:query', indexSearchMoreOrgPages);
 
 // Friend requests / Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);
@@ -71,12 +73,15 @@ router.put('/status-rank', indexMemberInfo);
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 // View organization page
-router.get('/org_pages/:org_name', indexViewOrgPage);
+router.get('/colleges/:org_name', indexViewOrgPage);
 
 // Follow organization page
-router.put('/org_pages/:org_id/follow/:user_id', indexFollowOrgPage);
+router.put('/colleges/:org_id/follow/:user_id', indexFollowOrgPage);
 
 // Un-Follow individual clubs
 router.put('/users/:user_id/unfollow/:club_id', indexUnFollowingClub);
+
+// Show my followed clubs
+router.get('/show_following/:id', indexShowFollowingClubs);
 
 module.exports = router;

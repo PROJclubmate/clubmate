@@ -466,17 +466,16 @@ $(function (){
   setTimeout(function(){
     var divUtc = $('#timeUTC');
     var divLocal = $('#timeLocal');
-    var divUtcNow = $('#timeUTCNow');
-    var divLocalNow = $('#timeLocalNow');
+    var divLocalRelative = $('#timeLocalRelative');
     
-    //get text from timeUTC and conver to local timezone  
+    //get text from timeUTC and convert to local timezone  
     var localTime  = moment.utc(divUtc.text()).toDate();
-    // localTime = moment(localTime).format('lll');
     localTime = moment(localTime).format('LT');
     divLocal.text(localTime);
-    var localTimeNow  = moment.utc(divUtcNow.text()).toDate();
-    localTimeNow = moment(localTimeNow).format('LT');
-    divLocalNow.text(localTimeNow);
+
+    var localTimeRelative  = moment.utc(divUtc.text()).toDate();
+    localTimeRelative = moment(localTimeRelative).fromNow();
+    divLocalRelative.text(localTimeRelative);
   }, 500);
 });
 

@@ -15,7 +15,7 @@
 										<% if(matchArr[k]){ %>
 											<sup class="greencolor text-xs pb-auto boldtext">My </sup>
 										<% } %>
-										<a href="/org_pages/<%= org_pages[k].name %>" class="black">
+										<a href="/colleges/<%= org_pages[k].name %>" class="black">
 											<i class="fas fa-university lightgrey"></i>
 											<span id="copyTxt"><%= org_pages[k].name %></span>
 										</a>
@@ -53,9 +53,9 @@
 	<div class="col-lg-3 px-2">
 		<br>
     <div class="mx-2 text-sm boldtext">Search colleges:</div>
-		<form action="/find_org_pages/search" method="GET" class="form-signin">
+		<form action="/find_colleges/search" method="GET" class="form-signin">
       <div class="input-group input-group-sm">
-        <input type="text" name="org_pages" class="form-control search" placeholder="College name" autofocus required>
+        <input type="text" name="college" class="form-control search" placeholder="College name" autofocus required>
         <div class="input-group-append">
           <button class="btn btn-secondary search" type="submit">
             Go

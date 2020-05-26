@@ -17,7 +17,7 @@ const userSchema = new Schema({
     default: 1,
     min: 1,
     max: 2,
-    required: '1-Org. followed, 2-Explore & tags',
+    required: '1-Org. followed, 2-Explore',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'
@@ -47,13 +47,6 @@ const userSchema = new Schema({
   unfollowingOrgClubCount: {type: Number, default: 0},
   profilePic: String,
   profilePicId: String,
-  featuredPhotos:[{
-    image: String,
-    imageId: String,
-    heading: String,
-    description: String
-  }],
-  discoverTags: [String],
   userKeys: {
     sex: String,
     birthdate: Date,

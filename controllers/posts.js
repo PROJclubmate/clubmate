@@ -225,7 +225,6 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "discoverTags": 1,
             "clubOrgKey": 1,
             "viewsCount": 1,
             "privacy": 1,
@@ -390,7 +389,6 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "discoverTags": 1,
             "clubOrgKey": 1,
             "viewsCount": 1,
             "privacy": 1,
@@ -457,7 +455,7 @@ module.exports = {
           }
           });
         }
-      // Show (Explore & Tags)
+      // Show (Explore)
       } else if(req.user.discoverSwitch === 2){
         if(req.user.sortByKey === 1){
           Post.aggregate([
@@ -494,7 +492,6 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "discoverTags": 1,
             "clubOrgKey": 1,
             "viewsCount": 1,
             "privacy": 1,
@@ -643,7 +640,6 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "discoverTags": 1,
             "clubOrgKey": 1,
             "viewsCount": 1,
             "privacy": 1,
@@ -746,7 +742,6 @@ module.exports = {
         "descEdit": 1,
         "image": 1,
         "imageId": 1,
-        "discoverTags": 1,
         "clubOrgKey": 1,
         "viewsCount": 1,
         "privacy": 1,
@@ -854,9 +849,6 @@ module.exports = {
                 return res.redirect('back');
               } else{
                 newPost.clubOrgKey = foundClub.clubKeys.organization;
-                if(req.body.topic == ''){
-                  newPost.discoverTags = foundClub.clubKeys.tags;
-                }
                 newPost.postClub = req.params.club_id;
                 newPost.postAuthor.id = req.user._id;
                 newPost.postAuthor.authorName = req.user.fullName;
@@ -896,9 +888,6 @@ module.exports = {
               return res.redirect('back');
             } else{
               newPost.clubOrgKey = foundClub.clubKeys.organization;
-              if(req.body.topic == ''){
-                newPost.discoverTags = foundClub.clubKeys.tags;
-              }
               newPost.postClub = req.params.club_id;
               newPost.postAuthor.id = req.user._id;
               newPost.postAuthor.authorName = req.user.fullName;

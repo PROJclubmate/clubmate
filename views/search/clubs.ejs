@@ -43,24 +43,25 @@
 					    	<% if(currentUser){ 
 					    		currentUser.userClubs.forEach(function(userClub){ 
 					    			if(clubs[k]._id.equals(userClub.id)){ %>
-						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
 			                <i class="fas fa-check"></i></button>
 					    	<% }})} %>
 					    </div>
 					  </div>
 					  <div class="lightgrey text-xs"><%= clubs[k].banner %></div>
 			      <br>
-			      <% if(clubs[k].clubKeys){ %>
-				      <div class="text-sm boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
-				      <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
-				      <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
-				    <% } %>
 			      <div class="valign">
-				      <!-- <div class="lightgrey text-xxs"><em><%= break_arr(clubs[k].clubKeys.tags) %></em></div> -->
+			      	<div>
+					      <% if(clubs[k].clubKeys){ %>
+						      <div class="text-xs boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
+						      <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
+						      <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
+						    <% } %>
+						  </div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-sm mt-auto text-right search-right ml-1"><%= clubs[k].clubKeys.organization %></div>
+				      	<div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.organization %></div>
 				      <% } %>
-				    </div>
+					  </div>
 			    </div>
 			  </div>
 		  </div>
@@ -169,20 +170,3 @@
 
 <script src="/js/use-my-location.js"></script>
 <% include ../partials/footer %>
-
-<%
-function break_arr(arr){
-	if(arr && arr.length){
-		for(i=0;i<arr.length;i++){
-			if(i == 0){
-				var str = arr[i];
-			} else{
-				var str = str +', '+ arr[i];
-			}
-		}
-		return str;
-	} else{
-		return '';
-	}
-}
-%>
