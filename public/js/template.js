@@ -79,6 +79,7 @@ if(location.pathname == '/discover'){
     $.ajax({
       type: 'GET',
       url: '/discover-morePosts',
+      async: false,
       data: {ids: $('#load-more-btn').val()},
       timeout: 3000,
       success: function (response){
@@ -87,13 +88,24 @@ if(location.pathname == '/discover'){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
-            div.innerHTML += index_posts_template(response);
+            div.innerHTML += discover_posts_template(response);
           } else{
             $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
             var div = document.getElementById('client-posts');
-            div.innerHTML += index_posts_template(response);
+            div.innerHTML += discover_posts_template(response);
           }
+          // 2 column masonry
+          var left_column_height = 0;
+          var right_column_height = 0;
+          var items = $('.discovercard');
+          for (var i=0;i<items.length;i++){
+            if (left_column_height > right_column_height) {
+              right_column_height+= items.eq(i).addClass('right').outerHeight(true);
+            } else{
+              left_column_height+= items.eq(i).outerHeight(true);
+            }
+          };
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
           $('#load-more-btn').addClass('nodisplay');
@@ -1043,6 +1055,114 @@ function index_posts_template(response){
 <% } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   friendsPostUrl: response.friendsPostUrl, currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
+  PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic});
+  return html;
+}
+
+function discover_posts_template(response){
+  html = ejs.render(`
+<% var len = posts.length; var k=0; for(k;k<len;k++){ %>
+  <!-- SIMPLE POSTS -->
+  <% if(posts[k].topic == ''){ %>
+    <div class="card discovercard">
+      <div class="card-body">
+        <div class="dropctn">
+          <div class="valign">
+            <div>
+              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+            </div>
+            <div>
+              <div>
+                <span class="mobiletext2">
+                  <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey mobiletext3"><strong><%= posts[k].postClub.name %></strong></a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if(posts[k].image){ %>
+        <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+        </a>
+        <div class="card-body">
+          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <div class="lightgrey2">
+            <span>
+              <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
+            </span>
+            <% if(posts[k].commentsCount > 0){ %>
+               . <span class="boldtext nothing text-xxs">
+                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+              </span>
+            <% } %>
+          </div>
+        </div>
+        <hr class="hr-light">
+      <% } else{ %>
+        <div class="card-body2 nounderline nothing">
+          <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+            <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <div class="lightgrey2">
+              <span>
+                <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
+              </span>
+              <% if(posts[k].commentsCount > 0){ %>
+                 . <span class="boldtext nothing text-xxs">
+                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                </span>
+              <% } %>
+            </div>
+          </a>
+        </div>
+        <hr class="hr-light">
+      <% } %>
+      <div class="card-body3">
+        <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
+          <div class="valign">
+            <% if(currentUser){ %>
+              <% if(hasVote[k] == 1){ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs greencolor"><%= posts[k].likeCount %></span>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs"><%= posts[k].likeCount %></span>
+              <% } %>
+            <% }else{ %>
+              <span class="d-flex mr-1"> 
+                <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+              </span>
+              <span id="like-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs"><%= posts[k].likeCount %></span>
+            <% } %>
+          </div>
+        
+          <div class="valign">
+            <% if(currentUser){ %>
+              <% if(hasVote[k] == 3){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs redcolor"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor"></i></button></span>
+              <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+                <% } %>
+            <% }else{ %>
+              <span id="heart-count<%= posts[k]._id %>" class="boldtext lightgrey nothing text-xs"><%= posts[k].heartCount %></span>
+              <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+            <% } %>
+          </div>
+        </form>
+      </div>
+    </div>
+  <% } %>
+<% } %>
+`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
+  currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
   PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic});
   return html;
 }
@@ -2464,7 +2584,7 @@ function post_subPosts_template(response){
                     </li>
                     <li>
                       <form class="delete-form inline" action="" method="POST">
-                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate &#127988;</button>
+                        <button class="dropitems pl-3 link-button text-sm" type="submit" disabled style="color: darkgrey !important;">Flag inappropriate &#127988;</button>
                       </form>
                     </li>
                   </div>
@@ -2476,7 +2596,7 @@ function post_subPosts_template(response){
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
           <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
-            <span class="linewrap text-xs boldtext redcolor">Quote:</span>
+            <span class="linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>

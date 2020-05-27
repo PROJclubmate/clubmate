@@ -109,7 +109,7 @@
                     </li>
                     <li>
                       <form class="delete-form inline" action="" method="POST">
-                        <button class="dropitems pl-3 link-button text-sm greyback lightgrey" type="submit" disabled>Flag inappropriate &#127988;</button>
+                        <button class="dropitems pl-3 link-button text-sm" type="submit" disabled style="color: darkgrey !important;">Flag inappropriate &#127988;</button>
                       </form>
                     </li>
                   </div>
@@ -121,7 +121,7 @@
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
           <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
-            <span class="linewrap text-xs boldtext redcolor">Quote:</span>
+            <span class="linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>

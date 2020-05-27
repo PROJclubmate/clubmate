@@ -462,6 +462,8 @@ button.btn.btn-secondary.search{
   background-color: white;
   z-index: 2;
 }
+.text-lato{font-family: 'Lato', sans-serif;}
+.text-bitter{font-family: 'Bitter', serif;}
 .text-xxxxs{font-size: 0.4375rem !important;}
 .text-xxxs{font-size: 0.5625rem !important;}
 .text-xxs{font-size: 0.6875rem !important;}
@@ -541,13 +543,13 @@ input{
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
 }
 #following-switch-mobile{
-  background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 25%, rgba(0,123,255,1) 45%, rgb(0,51,102,1) 100%);
+  background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 15%, rgba(0,123,255,1) 35%, rgb(0,51,102,1) 80%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 #explore-switch-mobile{
-  background: linear-gradient(80deg, rgba(0,123,255,1) 0%, rgba(100,149,237,1) 70%, rgba(125,220,31,1) 85%, rgba(246,215,176,1) 90%);
+  background: linear-gradient(80deg, rgba(0,123,255,1) 0%, rgba(100,149,237,1) 65%, rgba(125,220,31,1) 80%, rgba(246,215,176,1) 95%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -598,6 +600,22 @@ input{
   align-self: center;
   padding: 0;
   border-radius: 0;
+}
+.card.discovercard{
+  border-radius: 0.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  border-right: 1px solid rgba(0,0,0,0.2);
+  margin: 0 0.25rem 1rem 0.25rem;
+  padding: 0 0.25rem;
+  width: calc(50% - 0.5rem);
+}
+.discovercard{
+  float: left;
+  clear: left;
+}
+.discovercard.right{
+  float: right;
+  clear: right;
 }
 .card.indexcard{
   border: none;

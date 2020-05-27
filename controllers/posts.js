@@ -186,7 +186,7 @@ module.exports = {
         if(req.user.sortByKey === 1){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
               {$or: [
                 {postClub: {$in: req.user.followingStrayClubIds}}, 
                 {$and: [
@@ -266,7 +266,7 @@ module.exports = {
               ] }
             }},
             {$sort: {"ranking": -1}},
-            {$limit: 10}
+            {$limit: 20}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -302,7 +302,7 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 2){
           Post.find({
-            createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))},
+            createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))},
             $or: [
               {postClub: {$in: req.user.followingStrayClubIds}}, 
               {$and: [
@@ -314,7 +314,7 @@ module.exports = {
             moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(10)
+          .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
             console.log(Date.now()+' : '+req.user._id+' => (posts-9)discoverPosts err:- '+JSON.stringify(err, null, 2));
@@ -350,7 +350,7 @@ module.exports = {
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
               {$or: [
                 {postClub: {$in: req.user.followingStrayClubIds}}, 
                 {$and: [
@@ -420,7 +420,7 @@ module.exports = {
               ]
             }}},
             {$sort: {"ranking": -1}},
-            {$limit: 10}
+            {$limit: 20}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -460,7 +460,7 @@ module.exports = {
         if(req.user.sortByKey === 1){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},
@@ -531,7 +531,7 @@ module.exports = {
               ] }
             }},
             {$sort: {"ranking": -1}},
-            {$limit: 10}
+            {$limit: 20}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -567,12 +567,12 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 2){
           Post.find({
-            createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}, 
+            createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}, 
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-          .sort({createdAt: -1}).limit(10)
+          .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
             console.log(Date.now()+' : '+req.user._id+' => (posts-15)discoverPosts err:- '+JSON.stringify(err, null, 2));
@@ -608,7 +608,7 @@ module.exports = {
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},
@@ -670,7 +670,7 @@ module.exports = {
               ]
             }}},
             {$sort: {"ranking": -1}},
-            {$limit: 10}
+            {$limit: 20}
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -710,7 +710,7 @@ module.exports = {
     } else{
       Post.aggregate([
         {$match: {$and: [
-          {createdAt: {$gte: new Date(new Date() - (120*60*60*24*1000))}}, 
+          {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
           {_id: {$nin: seenIds}}, 
           {moderation: 0}, {privacy: 0}, {topic: ''}
         ]}},
@@ -781,7 +781,7 @@ module.exports = {
           ] }
         }},
         {$sort: {"ranking": -1}},
-        {$limit: 10}
+        {$limit: 20}
       ])
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
