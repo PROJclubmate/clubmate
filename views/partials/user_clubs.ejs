@@ -6,11 +6,11 @@
     </div>
     <div class="col-md-9 col-8 my-auto">
       <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="grey">
+        <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
           <strong><%= clubs[i].id.name %></strong>
         </a>
       </span>
-      <span class="my-auto lightgrey text-xs">
+      <span class="my-auto lightgrey text-xs mobiletext4">
         <%= clubs[i].status %>
         <div class="status" id="status<%= clubs[i].id._id %>">
           <form action="/status-rank?_method=PUT" method="POST">
@@ -30,7 +30,7 @@
           <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
         </span>
         <span class="mobileShow">
-          <em class="darkgrey text-sm boldtext"><%= clubs[i].rank %></em>
+          <em class="darkgrey text-sm boldtext"><%= rankTitle2(clubs[i].rank) %></em>
         </span>
       </div>
       <span class="dropdown">

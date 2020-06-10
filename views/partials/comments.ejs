@@ -57,11 +57,11 @@
               <form action="/comments/<%= buckets[i]._id %>/<%= comments[j]._id %>/vote" method="POST">
                 <div class="commentwrap lineheight0 mt-1">
                   <% if(upComments.includes(comments[j]._id)){ %>
-                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn greencolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn bluecolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                       <div>
                         <i class="fas fa-arrow-alt-circle-up"></i>
                       </div>
-                      <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs greencolor ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
+                      <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
                         <%= comments[j].upvotesCount %>
                     </div>
                     </button>

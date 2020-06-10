@@ -1,4 +1,4 @@
-<div class="card mt-0">
+<div class="card mt-0 border-light">
   <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#latestUpdates">
     <div class="valign">
       <div>
@@ -13,7 +13,7 @@
       <div><span class="lightgrey text-sm nopad"><%= latestUpdates().arr.length %></span></div>
     </div>
   </button>
-  <div id="latestUpdates" class="collapse scroll moz-scroll hr1">
+  <div id="latestUpdates" class="collapse scroll moz-scroll">
     <% var arr = latestUpdates().arr;
     for(i=0;i<arr.length;i++){ %>
       <div class="searchcard d-flex flex-row py-1" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">

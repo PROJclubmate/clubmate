@@ -1,31 +1,12 @@
 <% include ../partials/header %>
     
 <div class="row no-gutters">
-  <div class="col-lg-2 col-md-2 px-2 mobileNone mt-5">
-    <div class="list-group">
-      <li class="list-group-item bluecolor text-sm boldtext mt-3"><i class="fas fa-question-circle"></i> Did you..</li>
-      <li class="list-group-item text-sm darkgrey">
-        <a href="https://www.facebook.com/groups/2660887327313418/" target="_blank" class="lightgrey nounderline">
-          <div>... have a <span class="boldtext">question</span>?</div>
-        </a>
-      </li>
-      <li class="list-group-item text-sm darkgrey">
-        <a href="https://www.facebook.com/groups/400084017547657/" target="_blank" class="lightgrey nounderline">
-          <div>... find a <span class="boldtext">bug</span>?</div>
-        </a>
-      </li>
-      <li class="list-group-item text-sm darkgrey">
-        <a href="https://www.facebook.com/groups/1351554461692986/" target="_blank" class="lightgrey nounderline">
-          <div>... have a feature <span class="boldtext">suggestion</span>?</div>
-        </a>
-      </li>
-    </div>
-  </div>
+  <div class="col-lg-2 col-md-2 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
   <div id="delegated-posts" class="col-lg-7 col-md-10">
     <div id="server-posts">
       <% //include ../partials/posts_index %>
     </div>
-    <div class="my-3">
+    <div class="my-4">
       <div class="d-inline-flex">
         <% if(currentUser){ %>
           <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
@@ -51,11 +32,8 @@
           <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-award"></i> TOP</div>
         <% } %>
       </div>
-      <!-- <% if(!currentUser){ %>
-        <div class="righttext my-1 mx-2 desktopNone text-sm"><em class="lightgrey">Logged out</em></div>
-      <% } %> -->
     </div>
-    <div id="client-posts"></div>
+    <div id="client-posts" style="overflow: hidden;"></div>
     <div class="text-center pt-2">
       <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
         <span id="load-more-span"></span>Load
@@ -63,26 +41,23 @@
     </div>
   </div>
   <% if(currentUser){ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 2.75rem;">
-      <% include ../partials/latest_updates %>
+    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.75rem;">
       <div>
-        <div class="mt-3">
-          <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-            <% if(currentUser.discoverSwitch == 1){ %>
-              <div id="following-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
-              <button class="btn btn-light discoverswitch" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas"></i></button>
-            <% } else if(currentUser.discoverSwitch == 2){ %>
-              <button class="btn btn-light discoverswitch" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university"></i></button>
-              <div id="explore-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
-            <% } %>
-          </form>
-        </div>
+        <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+          <% if(currentUser.discoverSwitch == 1){ %>
+            <div id="following-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
+            <button class="btn btn-light discoverswitch" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas"></i></button>
+          <% } else if(currentUser.discoverSwitch == 2){ %>
+            <button class="btn btn-light discoverswitch" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university"></i></button>
+            <div id="explore-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
+          <% } %>
+        </form>
       </div>
     </div>
   <% } else{ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone">
+    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 0.65rem;">
       <div><em class="lightgrey">Logged out</em></div>
-      <div class="mt-3 pt-1 valign">
+      <div class="mt-3 valign" style="padding-top: 0.65rem;">
         <a href="/login" class="btn btn-light discoverswitch noshadow noborder noback"><i class="fas fa-university"></i></a>
         <div id="explore-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
       </div>

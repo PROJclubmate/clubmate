@@ -12,7 +12,7 @@
       <div class="col-md-12">
         <div class="d-flex flex-row mobileNoneFlex">
           <div>
-            <div class="container p-1 ml-1 card coverback profilePic-frame indexcard lcov" style="overflow: hidden;">
+            <div class="container p-1 ml-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
               <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
               <% if(currentUser && match){ %>
                 <form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
@@ -34,9 +34,9 @@
               <div class="my-auto" style="margin-left: 2.75rem;">
                 <div>
                   <% if(user.isVerified){ %>
-                    <h5 class="profilename"><%= user.fullName %></h5>
+                    <h5 class="profilename text-left text-left"><%= user.fullName %></h5>
                   <% } else{ %>
-                    <h5 class="profilename"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                    <h5 class="profilename text-left text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
                   <% } %>
                 </div>
                 <div class="text-sm mb-2 boldtext lineheight"><%= user.note %></div>
@@ -46,7 +46,7 @@
               <div class="story-container">
                 <div class="d-flex story-container2 scroll moz-scroll" style="height: 50%; margin-left: 2.75rem;">
                   <div class="d-flex flex-column mr-3">
-                    <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey"></i></div>
+                    <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
                   </div>
                   <!-- <div class="d-flex flex-column mr-3">
@@ -74,7 +74,7 @@
           <div class="d-flex flex-column">
             <div class="d-flex flex-row">
               <div class="ml-2">
-                <div class="container p-1 card coverback profilePic-frame indexcard lcov" style="overflow: hidden;">
+                <div class="container p-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
                   <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
                   <% if(currentUser && match){ %>
                     <form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
@@ -92,9 +92,9 @@
                   <div class="my-auto pl-3">
                     <div>
                       <% if(user.isVerified){ %>
-                        <h5 class="profilename"><%= user.fullName %></h5>
+                        <h5 class="profilename text-left"><%= user.fullName %></h5>
                       <% } else{ %>
-                        <h5 class="profilename"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                        <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
                       <% } %>
                     </div>
                     <div class="text-sm mb-2 boldtext lineheight"><%= user.note %></div>
@@ -106,7 +106,7 @@
               <div class="story-container">
                 <div class="d-flex px-3" style="overflow: hidden; overflow-x: scroll;">
                   <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3 text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey"></i></div>
+                    <div class="story mt-3 text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
                   </div>
                   <!-- <div class="d-flex flex-column mr-3">
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="col-md-4 px-1 mobilepad desktop-mt-2">
-        <div class="card"> 
+        <div class="card border-light"> 
           <div class="card-body">
             <div class="dropctn">
               <h5>Keys</h5>      
@@ -189,7 +189,7 @@
           <% } %>
         </div>
         <div class="mt-2">
-          <div class="card mt-0">
+          <div class="card mt-0 border-light">
             <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#friends">
               <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
               <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
@@ -318,7 +318,7 @@
               </div>
               <div class="d-flex flex-column px-1 mobilepad">
                 <div class="info1">
-                  <strong>Account info:</strong>
+                  <strong class="info-size">Account info:</strong>
                 </div>
                 <div class="info1">
                   Name: <span class="info30"><%= user.fullName %></span>
@@ -428,11 +428,8 @@
                 </div>
               </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
-                <div class="dropctn">
-                  <strong>Interests:</strong>
-                </div>
                 <div class="info1">
-                  Hobbies: 
+                  <strong class="info-size">Interests:</strong> 
                   <div class="info30">
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
@@ -444,16 +441,12 @@
                         <div id="interests_form" class="form-inline d-flex justify-content-between fullwidth">
                           <% var interests = user.interests; var len = interests.length; var i=0;
                           for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Photography" value="<%= interests[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Photography" value="<%= interests[i] %>">
-                            <% } %>
+                            <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Interests" value="<%= interests[i] %>">
                           <% } %>
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('interests_form','interests','Hobbies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="favourites_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                       </form>
                     </div>
@@ -463,182 +456,194 @@
               </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
                 <div class="dropctn">
-                  <strong>Favourite:</strong>
+                  <strong class="info-size">Favourite:</strong>
                 </div>
-                <div class="info1">
-                  Music: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.music); %>
-                    <br>
-                    <div id="favourites_form1_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form1" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var music = user.favourites.music; var len = music.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>">
+                <% if(user.favourites.music.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Music: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.music); %>
+                      <br>
+                      <div id="favourites_form1_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form1" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var music = user.favourites.music; var len = music.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
-                <div class="info1">
-                  Movies: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.movies); %>
-                    <br>
-                    <div id="favourites_form2_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form2" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var movies = user.favourites.movies; var len = movies.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>">
+                <% } %>
+                <% if(user.favourites.movies.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Movies: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.movies); %>
+                      <br>
+                      <div id="favourites_form2_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form2" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var movies = user.favourites.movies; var len = movies.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
-                <div class="info1">
-                  TV Shows: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.tvshows); %>
-                    <br>
-                    <div id="favourites_form3_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form3" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var tvshows = user.favourites.tvshows; var len = tvshows.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>">
+                <% } %>
+                <% if(user.favourites.tvshows.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    TV Shows: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.tvshows); %>
+                      <br>
+                      <div id="favourites_form3_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form3" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var tvshows = user.favourites.tvshows; var len = tvshows.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="TV Shows" value="<%= tvshows[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
-                <div class="info1">
-                  Places: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.places); %>
-                    <br>
-                    <div id="favourites_form4_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form4" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var places = user.favourites.places; var len = places.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Dehradun valley" value="<%= places[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Dehradun valley" value="<%= places[i] %>">
+                <% } %>
+                <% if(user.favourites.places.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Places: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.places); %>
+                      <br>
+                      <div id="favourites_form4_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form4" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var places = user.favourites.places; var len = places.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Rio de Janeiro" value="<%= places[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Places" value="<%= places[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
-                <div class="info1">
-                  Books: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.books); %>
-                    <br>
-                    <div id="favourites_form5_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form5" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var books = user.favourites.books; var len = books.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One : Peter Thiel" value="<%= books[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One : Peter Thiel" value="<%= books[i] %>">
+                <% } %>
+                <% if(user.favourites.books.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Books: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.books); %>
+                      <br>
+                      <div id="favourites_form5_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form5" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var books = user.favourites.books; var len = books.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One (Peter Thiel)" value="<%= books[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Books" value="<%= books[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
-                <div class="info1">
-                  Video Games: 
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('favourites_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                    <% favourites_split(user.favourites.videogames); %>
-                    <br>
-                    <div id="favourites_form6_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="favourites_form6" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var videogames = user.favourites.videogames; var len = videogames.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <% if(i == len){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>" autofocus>
-                            <% }else{ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>">
+                <% } %>
+                <% if(user.favourites.videogames.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Video Games: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('favourites_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% favourites_split(user.favourites.videogames); %>
+                      <br>
+                      <div id="favourites_form6_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="favourites_form6" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var videogames = user.favourites.videogames; var len = videogames.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="Video Games" value="<%= videogames[i] %>">
+                              <% } %>
                             <% } %>
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                      </form>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                        </form>
+                      </div>
+                      <br>
                     </div>
-                    <br>
                   </div>
-                </div>
+                <% } %>
                 <!-- *********************info END********************* -->
               </div>
             </div>
@@ -695,7 +700,7 @@
                 <% if(clubCount > 10){ %>
                   <div class="text-center">
                     <button id="load-more-clubs-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="10,20">
-                      <span id="load-more-clubs-span"></span>Load
+                      <span id="load-more-clubs-span"></span>Load More
                     </button>
                   </div>
                 <% } %>
@@ -703,15 +708,15 @@
             </div>
             <!-- Activity Tab -->
             <% if(currentUser && !match){ %>
-              <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+              <div class="tab-pane fade greyback textureback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
             <% } else{ %>
-              <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+              <div class="tab-pane fade greyback textureback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
             <% } %>
               <div id="delegated-posts">
                 <div id="server-posts">
                   <% //include ../partials/posts_user %>
                 </div>
-                <div id="client-posts"></div>
+                <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
                 <div class="text-center">
                   <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">
                     <span id="load-more-span"></span>Load
@@ -721,9 +726,9 @@
             </div>
             <% if(currentUser && match){ %>
               <!-- Hearts Tab -->
-              <div class="tab-pane fade greyback" id="hearts" role="tabpanel" aria-labelledby="hearts-tab">
+              <div class="tab-pane fade greyback textureback" id="hearts" role="tabpanel" aria-labelledby="hearts-tab">
                 <div id="delegated-heart-posts">
-                  <div id="client-heart-posts"></div>
+                  <div id="client-heart-posts" class="topnotch-left topnotch-right nodisplay"></div>
                   <div class="text-center">
                     <button id="load-more-heart-btn" class="btn btn-danger btn-sm mt-2" type="button" value="">
                       <span id="load-more-heart-span"></span>Load
@@ -772,6 +777,14 @@
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
     else if(rank == 4){return 'Jr. member';}
+  }
+
+  function rankTitle2(rank){
+    if(rank == 0){return 'O';}
+    else if(rank == 1){return 'A';}
+    else if(rank == 2){return 'M';}
+    else if(rank == 3){return 'S';}
+    else if(rank == 4){return 'J';}
   }
 
   function privacyText(privacy){

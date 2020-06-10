@@ -245,15 +245,14 @@ module.exports = {
             "topic": 1,
             "createdAt": 1,
             "__v": 1,
-            // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
+            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
             "ranking": {
               $divide: [
                 { $add: [
-                  { $multiply: ["$viewsCount", 0.0125] },
+                  { $multiply: ["$viewsCount", 0.00125] },
                   { $multiply: ["$likeCount", 0.125] },
                   { $multiply: ["$heartCount", 0.5] },
                   { $multiply: ["$commentsCount", 1] },
-                  // { $multiply: ["$shareCount", 5] },
                   0.75
                 ] },
                 { $add: [
@@ -409,10 +408,10 @@ module.exports = {
             "topic": 1,
             "createdAt": 1,
             "__v": 1,
-            // Based on (400 views == 40 likes == 10 hearts == 5 comments == 1 shares & T = 4hr units)
+            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
             "ranking": {
               $add: [
-                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$viewsCount", 0.00125] },
                 { $multiply: ["$likeCount", 0.125] },
                 { $multiply: ["$heartCount", 0.5] },
                 { $multiply: ["$commentsCount", 1] },
@@ -515,7 +514,7 @@ module.exports = {
             "ranking": {
               $divide: [
                 { $add: [
-                  { $multiply: ["$viewsCount", 0.0125] },
+                  { $multiply: ["$viewsCount", 0.00125] },
                   { $multiply: ["$likeCount", 0.125] },
                   { $multiply: ["$heartCount", 0.5] },
                   { $multiply: ["$commentsCount", 1] },
@@ -662,7 +661,7 @@ module.exports = {
             "__v": 1,
             "ranking": {
               $add: [
-                { $multiply: ["$viewsCount", 0.0125] },
+                { $multiply: ["$viewsCount", 0.00125] },
                 { $multiply: ["$likeCount", 0.125] },
                 { $multiply: ["$heartCount", 0.5] },
                 { $multiply: ["$commentsCount", 1] },
@@ -765,7 +764,7 @@ module.exports = {
         "ranking": {
           $divide: [
             { $add: [
-              { $multiply: ["$viewsCount", 0.0125] },
+              { $multiply: ["$viewsCount", 0.00125] },
               { $multiply: ["$likeCount", 0.125] },
               { $multiply: ["$heartCount", 0.5] },
               { $multiply: ["$commentsCount", 1] },
@@ -917,125 +916,254 @@ module.exports = {
   },
 
   postsShow(req, res, next){
-    Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
-    .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
-    if(err || !foundPost){
-      console.log(Date.now()+' : '+'(posts-28)foundPost err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    } else{
-      var PC_50_clubAvatar = cloudinary.url(foundPost.postClub.avatarId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-      var hasVote = voteCheck(req.user,foundPost);
-      var hasModVote = modVoteCheck(req.user,foundPost);
-      if(req.user){
-        for(var i=0;i<req.user.userClubs.length;i++){
-          if(req.user.userClubs[i].id.equals(req.params.club_id)){
-            var rank = req.user.userClubs[i].rank;
-            break;
-          }
-        }
-      }
-      if(foundPost.topic == '' && foundPost.commentBuckets != ''){
-        var lastTwoBuckets = [], len = foundPost.commentBuckets.length;
-        lastTwoBuckets.push(foundPost.commentBuckets[len-1]);
-        lastTwoBuckets.push(foundPost.commentBuckets[len-2]);
-        Comment.find({_id: {$in: lastTwoBuckets}})
-        .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
-        .exec(function(err, foundBuckets){
-        if(err || !foundBuckets){
-          console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var CA_50_profilePic = [], numBuckets = foundBuckets.length;
-          for(var i=0;i<numBuckets;i++){
-            CA_50_profilePic[i] = [];
-            for(var j=0;j<foundBuckets[i].comments.length;j++){
-              CA_50_profilePic[i][j] = cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            }
-          }
-          var index = len-3;
+    if(req.user){
+      Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
+      .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
+      if(err || !foundPost){
+        console.log(Date.now()+' : '+'(posts-28)foundPost err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        var unfilteredPost = [];
+        unfilteredPost.push(foundPost);
+        var post = postsPrivacyFilter(unfilteredPost, req.user);
+        var modPost = postsModerationFilter(post,req.user);
+        if(modPost.length){
+          var modPost = modPost[0];
+          var PC_50_clubAvatar = cloudinary.url(modPost.postClub.avatarId,
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          var hasVote = voteCheck(req.user,modPost);
+          var hasModVote = modVoteCheck(req.user,modPost);
           if(req.user){
-            var upComments = commentCheck(req.user._id,foundBuckets);
-            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-          } else{
-            var upComments = [];
-            var CU_50_profilePic = null;
-          }
-          res.render("posts/show", {hasVote, hasModVote, post: foundPost, upComments, rank, buckets: foundBuckets,
-          index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic});
-        }
-        });
-      } else if(foundPost.topic != '' && req.user){
-        var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        if(foundPost.subpostBuckets != ''){
-          var len = index = foundPost.subpostBuckets.length;
-          Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
-          .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
-          .exec(function(err, foundBucket){
-          if(err || !foundBucket){
-            console.log(Date.now()+' : '+'(posts-30)foundBucket err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            var sPA_50_profilePic = [];
-            for(var j=0;j<foundBucket.subPosts.length;j++){
-              sPA_50_profilePic[j] = cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            for(var i=0;i<req.user.userClubs.length;i++){
+              if(req.user.userClubs[i].id.equals(req.params.club_id)){
+                var rank = req.user.userClubs[i].rank;
+                break;
+              }
             }
-            // Push conversationId to clubUsers
-            // If conversationId == null then find clubid
-            Club.findById(req.params.club_id).select({conversationId: 1})
-            .exec(function(err, foundClub){
-            if(err || !foundClub){
-              console.log(Date.now()+' : '+'(posts-31)foundClub err:- '+JSON.stringify(err, null, 2));
+          }
+          if(modPost.topic == '' && modPost.commentBuckets != ''){
+            var lastTwoBuckets = [], len = modPost.commentBuckets.length;
+            lastTwoBuckets.push(modPost.commentBuckets[len-1]);
+            lastTwoBuckets.push(modPost.commentBuckets[len-2]);
+            Comment.find({_id: {$in: lastTwoBuckets}})
+            .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+            .exec(function(err, foundBuckets){
+            if(err || !foundBuckets){
+              console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              var subVotes = subVoteCheck(req.user._id,foundBucket);
+              var CA_50_profilePic = [], numBuckets = foundBuckets.length;
+              for(var i=0;i<numBuckets;i++){
+                CA_50_profilePic[i] = [];
+                for(var j=0;j<foundBuckets[i].comments.length;j++){
+                  CA_50_profilePic[i][j] = cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId,
+                  {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                }
+              }
+              var index = len-3;
+              if(req.user){
+                var upComments = commentCheck(req.user._id,foundBuckets);
+                var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              } else{
+                var upComments = [];
+                var CU_50_profilePic = null;
+              }
+              res.render("posts/show", {hasVote, hasModVote, post: modPost, upComments, rank, buckets: foundBuckets,
+              index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic});
+            }
+            });
+          } else if(modPost.topic != '' && req.user){
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(modPost.subpostBuckets != ''){
+              var len = index = modPost.subpostBuckets.length;
+              Discussion.findOne({_id: modPost.subpostBuckets[len-1]})
+              .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
+              .exec(function(err, foundBucket){
+              if(err || !foundBucket){
+                console.log(Date.now()+' : '+'(posts-30)foundBucket err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                var sPA_50_profilePic = [];
+                for(var j=0;j<foundBucket.subPosts.length;j++){
+                  sPA_50_profilePic[j] = cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId,
+                  {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                }
+                // Push conversationId to clubUsers
+                // If conversationId == null then find clubid
+                Club.findById(req.params.club_id).select({conversationId: 1})
+                .exec(function(err, foundClub){
+                if(err || !foundClub){
+                  console.log(Date.now()+' : '+'(posts-31)foundClub err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                } else{
+                  var subVotes = subVoteCheck(req.user._id,foundBucket);
+                  var conversationId = '', convClubId = '', quote = false;
+                  if(foundClub.conversationId){
+                    var conversationId = foundClub.conversationId;
+                  } else{var convClubId = foundClub._id;}
+                  res.render("posts/show", {hasVote, hasModVote, post: modPost, subVotes, rank, bucket: foundBucket,
+                  conversationId, convClubId, index, clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar,
+                  sPA_50_profilePic, quote});
+                }
+                });
+              }
+              });
+            } else{
+              Club.findById(req.params.club_id).select({conversationId: 1})
+              .exec(function(err, foundClub){
+              if(err || !foundClub){
+                console.log(Date.now()+' : '+'(posts-32)foundClub err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                var conversationId = '', convClubId = '', quote = false;
+                if(foundClub.conversationId){
+                  var conversationId = foundClub.conversationId;
+                } else{var convClubId = foundClub._id;}
+                res.render("posts/show", {hasVote, hasModVote, post: modPost, rank, conversationId, convClubId,
+                clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar, quote});
+              }
+              });
+            }
+          } else{
+            if(req.user){
+              var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            }
+            var index = null;
+            res.render("posts/show", {hasVote, hasModVote, post: modPost, rank, index, PC_50_clubAvatar,
+            CU_50_profilePic});
+          }
+        }
+      }
+      });
+    } else{
+      Post.findOne({_id: req.params.post_id, moderation: 0, privacy: 0})
+      .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
+      if(err || !foundPost){
+        console.log(Date.now()+' : '+'(posts-28)foundPost err:- '+JSON.stringify(err, null, 2));
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        var PC_50_clubAvatar = cloudinary.url(foundPost.postClub.avatarId,
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        var hasVote = voteCheck(req.user,foundPost);
+        var hasModVote = modVoteCheck(req.user,foundPost);
+        if(req.user){
+          for(var i=0;i<req.user.userClubs.length;i++){
+            if(req.user.userClubs[i].id.equals(req.params.club_id)){
+              var rank = req.user.userClubs[i].rank;
+              break;
+            }
+          }
+        }
+        if(foundPost.topic == '' && foundPost.commentBuckets != ''){
+          var lastTwoBuckets = [], len = foundPost.commentBuckets.length;
+          lastTwoBuckets.push(foundPost.commentBuckets[len-1]);
+          lastTwoBuckets.push(foundPost.commentBuckets[len-2]);
+          Comment.find({_id: {$in: lastTwoBuckets}})
+          .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+          .exec(function(err, foundBuckets){
+          if(err || !foundBuckets){
+            console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            var CA_50_profilePic = [], numBuckets = foundBuckets.length;
+            for(var i=0;i<numBuckets;i++){
+              CA_50_profilePic[i] = [];
+              for(var j=0;j<foundBuckets[i].comments.length;j++){
+                CA_50_profilePic[i][j] = cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId,
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              }
+            }
+            var index = len-3;
+            if(req.user){
+              var upComments = commentCheck(req.user._id,foundBuckets);
+              var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            } else{
+              var upComments = [];
+              var CU_50_profilePic = null;
+            }
+            res.render("posts/show", {hasVote, hasModVote, post: foundPost, upComments, rank, buckets: foundBuckets,
+            index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic});
+          }
+          });
+        } else if(foundPost.topic != '' && req.user){
+          var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          if(foundPost.subpostBuckets != ''){
+            var len = index = foundPost.subpostBuckets.length;
+            Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
+            .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
+            .exec(function(err, foundBucket){
+            if(err || !foundBucket){
+              console.log(Date.now()+' : '+'(posts-30)foundBucket err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              var sPA_50_profilePic = [];
+              for(var j=0;j<foundBucket.subPosts.length;j++){
+                sPA_50_profilePic[j] = cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId,
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              }
+              // Push conversationId to clubUsers
+              // If conversationId == null then find clubid
+              Club.findById(req.params.club_id).select({conversationId: 1})
+              .exec(function(err, foundClub){
+              if(err || !foundClub){
+                console.log(Date.now()+' : '+'(posts-31)foundClub err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                var subVotes = subVoteCheck(req.user._id,foundBucket);
+                var conversationId = '', convClubId = '', quote = false;
+                if(foundClub.conversationId){
+                  var conversationId = foundClub.conversationId;
+                } else{var convClubId = foundClub._id;}
+                res.render("posts/show", {hasVote, hasModVote, post: foundPost, subVotes, rank, bucket: foundBucket,
+                conversationId, convClubId, index, clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar,
+                sPA_50_profilePic, quote});
+              }
+              });
+            }
+            });
+          } else{
+            Club.findById(req.params.club_id).select({conversationId: 1})
+            .exec(function(err, foundClub){
+            if(err || !foundClub){
+              console.log(Date.now()+' : '+'(posts-32)foundClub err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
               var conversationId = '', convClubId = '', quote = false;
               if(foundClub.conversationId){
                 var conversationId = foundClub.conversationId;
               } else{var convClubId = foundClub._id;}
-              res.render("posts/show", {hasVote, hasModVote, post: foundPost, subVotes, rank, bucket: foundBucket,
-              conversationId, convClubId, index, clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar,
-              sPA_50_profilePic, quote});
+              res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, conversationId, convClubId,
+              clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar, quote});
             }
             });
           }
-          });
         } else{
-          Club.findById(req.params.club_id).select({conversationId: 1})
-          .exec(function(err, foundClub){
-          if(err || !foundClub){
-            console.log(Date.now()+' : '+'(posts-32)foundClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            var conversationId = '', convClubId = '', quote = false;
-            if(foundClub.conversationId){
-              var conversationId = foundClub.conversationId;
-            } else{var convClubId = foundClub._id;}
-            res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, conversationId, convClubId,
-            clubId: foundClub._id, CU_50_profilePic, PC_50_clubAvatar, quote});
+          if(req.user){
+            var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
-          });
+          var index = null;
+          res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, index, PC_50_clubAvatar,
+          CU_50_profilePic});
         }
-      } else{
-        if(req.user){
-          var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        }
-        var index = null;
-        res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, index, PC_50_clubAvatar,
-        CU_50_profilePic});
       }
+      });
     }
-    });
   },
 
   subPostQuote(req, res, next){

@@ -51,14 +51,14 @@
                   <span> 
                     <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up greencolor"></i></button>
                   </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor"><%= subPosts[j].likeCount %></span>
+                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="far fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
                 <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="far fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
                   <span>
@@ -67,11 +67,11 @@
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
                 <% } else{ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="far fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="far fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
@@ -121,7 +121,7 @@
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
           <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
-            <span class="linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
+            <span class="linewrap text-xs boldtext redcolor text-bitter text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
@@ -172,13 +172,13 @@
                 <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
               </div>
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
-                <span><em id="timeUTC" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                <span class="lightgrey nothing"><em id="timeLocal" class="text-xxs"></em></span>
+                <span><em id="timeUTC2" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                <span class="lightgrey nothing"><em id="timeLocal2" class="text-xxs"></em></span>
               </div>
             </div>
             <% if(quote){ %>
               <div class="quote px-1 pb-1 my-1 lineheight2">
-                <span class="mobiletext linewrap text-xs boldtext redcolor">Quote:</span>
+                <span class="mobiletext linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
                 <span class="mobiletext linewrap text-xs"><strong># <%= quoteNum %></strong></span>
                 <span class="mobiletext linewrap text-xs boldtext"><%= quoteText %></span>
               </div>
@@ -198,7 +198,7 @@
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-              <label for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
+              <label id="input-10" for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="images/*" multiple>

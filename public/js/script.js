@@ -466,12 +466,18 @@ $(function (){
   setTimeout(function(){
     var divUtc = $('#timeUTC');
     var divLocal = $('#timeLocal');
+    var divUtc2 = $('#timeUTC2');
+    var divLocal2 = $('#timeLocal2');
     var divLocalRelative = $('#timeLocalRelative');
     
     //get text from timeUTC and convert to local timezone  
     var localTime  = moment.utc(divUtc.text()).toDate();
     localTime = moment(localTime).format('LT');
     divLocal.text(localTime);
+
+    var localTime2  = moment.utc(divUtc2.text()).toDate();
+    localTime2 = moment(localTime2).format('LT');
+    divLocal2.text(localTime2);
 
     var localTimeRelative  = moment.utc(divUtc.text()).toDate();
     localTimeRelative = moment(localTimeRelative).fromNow();
@@ -518,56 +524,111 @@ function outCopyTxtFn() {
 // AJAX
 //================================================================================
 // Expensive event delegation?
-$("div#delegated-posts").on('click', '.vote', function(e){
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  var formData = $(this).closest('form').serializeArray();
-  formData.push({ name: this.name, value: this.value });
-  //now use formData, it includes the submit button
-  var formAction = $(this).closest('form').attr('action');
-  $.ajax({
-    url: formAction,
-    timeout: 3000,
-    data: formData,
-    type: 'PUT',
-    success: function(data){
-      // Process the expected results...
-      $('#like-count'+data._id).text(data.likeCount);
-      $('#heart-count'+data._id).text(data.heartCount);
+if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] == 'clubs' && 
+  location.pathname.split('/')[3] == 'posts' && location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/))){
+  $("div#delegated-posts").on('click', '.vote', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var formData = $(this).closest('form').serializeArray();
+    formData.push({ name: this.name, value: this.value });
+    var formAction = $(this).closest('form').attr('action');
+    $.ajax({
+      url: formAction,
+      timeout: 3000,
+      data: formData,
+      type: 'PUT',
+      success: function(data){
+        $('#like-count'+data._id).text(data.likeCount);
+        $('#heart-count'+data._id).text(data.heartCount);
 
-      if(formData[0].name == 'like'){
-        if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        if(formData[0].name == 'like'){
+          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          }
+          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
+          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+          }
+          $('#like-count'+data._id).toggleClass('greencolor3');
+          $('#heart-count'+data._id).removeClass('redcolor3');
         }
-        else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-        || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
-          $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+        if(formData[0].name == 'heart'){
+          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+          }
+          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
+          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          }
+          $('#like-count'+data._id).removeClass('greencolor3');
+          $('#heart-count'+data._id).toggleClass('redcolor3');
         }
-        $('#like-count'+data._id).toggleClass('greencolor');
-        $('#heart-count'+data._id).removeClass('redcolor');
+      },
+      error: function(xhr) {
+        if(xhr.status == 404){
+          alert("Please Login first");
+          location = "/login";
+        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
       }
-      if(formData[0].name == 'heart'){
-        if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
-          $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+    })
+  });
+} else{
+  $("div#delegated-posts").on('click', '.vote', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var formData = $(this).closest('form').serializeArray();
+    formData.push({ name: this.name, value: this.value });
+    //now use formData, it includes the submit button
+    var formAction = $(this).closest('form').attr('action');
+    $.ajax({
+      url: formAction,
+      timeout: 3000,
+      data: formData,
+      type: 'PUT',
+      success: function(data){
+        $('#like-count'+data._id).text(data.likeCount);
+        $('#heart-count'+data._id).text(data.heartCount);
+
+        if(formData[0].name == 'like'){
+          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+            $('#like-count'+data._id).addClass('nodisplay');
+          }
+          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
+          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+            $('#like-count'+data._id).removeClass('nodisplay');
+            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+          }
+          $('#like-count'+data._id).toggleClass('greencolor3');
+          $('#heart-count'+data._id).removeClass('redcolor3').addClass('nodisplay');
         }
-        else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
-        || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor"></i>');
-          $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        if(formData[0].name == 'heart'){
+          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+            $('#heart-count'+data._id).addClass('nodisplay');
+          }
+          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
+          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
+            $('#heart-count'+data._id).removeClass('nodisplay');
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          }
+          $('#like-count'+data._id).removeClass('greencolor3').addClass('nodisplay');
+          $('#heart-count'+data._id).toggleClass('redcolor3');
         }
-        $('#like-count'+data._id).removeClass('greencolor');
-        $('#heart-count'+data._id).toggleClass('redcolor');
+      },
+      error: function(xhr) {
+        if(xhr.status == 404){
+          alert("Please Login first");
+          location = "/login";
+        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
       }
-    },
-    error: function(xhr) {
-      if(xhr.status == 404){
-        alert("Please Login first");
-        location = "/login";
-      } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
-    }
-  })
-});
+    })
+  });
+}
 
 $("div#delegated-posts").on('click', '.moderation', function(e){
   e.preventDefault();
@@ -641,10 +702,10 @@ $("div#delegated-posts").on('click', '.modvote', function(e){
 
       if(formData[0].name == 'upVote'){
         $('#upVote-btn'+data._id).toggleClass('bluecolor');
-        if($('#modVote-count'+data._id).hasClass('bluecolor')){
-          $('#modVote-count'+data._id).removeClass('bluecolor');
+        if($('#modVote-count'+data._id).hasClass('bluecolor3')){
+          $('#modVote-count'+data._id).removeClass('bluecolor3');
         } else{
-          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor');
+          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
         }
         $('#downVote-btn'+data._id).removeClass('orangecolor');
       }
@@ -653,7 +714,7 @@ $("div#delegated-posts").on('click', '.modvote', function(e){
         if($('#modVote-count'+data._id).hasClass('orangecolor')){
           $('#modVote-count'+data._id).removeClass('orangecolor');
         } else{
-          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('bluecolor').addClass('orangecolor');
+          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
         }
         $('#upVote-btn'+data._id).removeClass('bluecolor');
       }
@@ -689,24 +750,24 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
           $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
         else if($('#like-btnH'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
           $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
           $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
         }
-        $('#like-countH'+data._id).toggleClass('greencolor');
-        $('#heart-countH'+data._id).removeClass('redcolor');
+        $('#like-countH'+data._id).toggleClass('greencolor3');
+        $('#heart-countH'+data._id).removeClass('redcolor3');
       }
       if(formData[0].name == 'heart'){
-        if($('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor"></i>'){
+        if($('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
           $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
         }
         else if($('#heart-btnH'+data._id).html() == '<i class="far fa-heart"></i>'
         || $('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor"></i>');
+          $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
           $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
         }
-        $('#like-countH'+data._id).removeClass('greencolor');
-        $('#heart-countH'+data._id).toggleClass('redcolor');
+        $('#like-countH'+data._id).removeClass('greencolor3');
+        $('#heart-countH'+data._id).toggleClass('redcolor3');
       }
     },
     error: function(xhr) {
@@ -734,10 +795,10 @@ $('div#delegated-heart-posts').on('click', '.modvote', function(e){
 
       if(formData[0].name == 'upVote'){
         $('#upVote-btnH'+data._id).toggleClass('bluecolor');
-        if($('#modVote-countH'+data._id).hasClass('bluecolor')){
-          $('#modVote-countH'+data._id).removeClass('bluecolor');
+        if($('#modVote-countH'+data._id).hasClass('bluecolor3')){
+          $('#modVote-countH'+data._id).removeClass('bluecolor3');
         } else{
-          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor');
+          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
         }
         $('#downVote-btnH'+data._id).removeClass('orangecolor');
       }
@@ -746,7 +807,7 @@ $('div#delegated-heart-posts').on('click', '.modvote', function(e){
         if($('#modVote-countH'+data._id).hasClass('orangecolor')){
           $('#modVote-countH'+data._id).removeClass('orangecolor');
         } else{
-          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('bluecolor').addClass('orangecolor');
+          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
         }
         $('#upVote-btnH'+data._id).removeClass('bluecolor');
       }
@@ -776,8 +837,8 @@ $('div#delegated-comments').on('click', '.commentvote', function(e){
       $('#comment-up-count'+data.comments[0]._id).text(data.comments[0].upvotesCount);
 
       if(formData[0].name == 'commentUp'){
-        $('#comment-up-btn'+data.comments[0]._id).toggleClass('greencolor');
-        $('#comment-up-count'+data.comments[0]._id).toggleClass('greencolor');
+        $('#comment-up-btn'+data.comments[0]._id).toggleClass('bluecolor');
+        $('#comment-up-count'+data.comments[0]._id).toggleClass('bluecolor3');
       }
     },
     error: function(xhr) {
@@ -806,26 +867,26 @@ $('div#dynamic-subPosts').on('click', '.vote2', function(e){
 
       if(formData[0].name == 'subLike'){
         if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#like-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-up"></i>');
+          $('#like-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
         }
-        else if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="far fa-thumbs-up"></i>'
+        else if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-up"></i>'
         || $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')){
           $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
         }
-        $('#like-count'+data.subPosts[0]._id).toggleClass('greencolor');
+        $('#like-count'+data.subPosts[0]._id).toggleClass('greencolor3');
         $('#dislike-count'+data.subPosts[0]._id).removeClass('blackcolor');
       }
       if(formData[0].name == 'subDislike'){
         if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
-          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-down"></i>');
+          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
         }
-        else if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="far fa-thumbs-down"></i>'
+        else if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-down"></i>'
         || $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>')){
           $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
-          $('#like-btn'+data.subPosts[0]._id).html('<i class="far fa-thumbs-up"></i>');
+          $('#like-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
         }
-        $('#like-count'+data.subPosts[0]._id).removeClass('greencolor');
+        $('#like-count'+data.subPosts[0]._id).removeClass('greencolor3');
         $('#dislike-count'+data.subPosts[0]._id).toggleClass('blackcolor');
       }
     },

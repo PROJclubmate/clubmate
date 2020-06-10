@@ -81,11 +81,11 @@
                     </a>
                   <% } %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs btn-secondary overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs btn-primary overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs btn-secondary overlay3 opaque" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs btn-primary overlay3 opaque" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } %>
               </div>
@@ -93,7 +93,7 @@
           </div>
       </div>
       <div class="col-md-4 px-1 mobilepad mt-2 keys">
-        <div class="card">
+        <div class="card border-light">
           <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse" data-toggle="collapse" data-target="#infobox">Info</button>
           <div id="infobox" class="collapse card-body5">
             <% if(currentUser){ %>
@@ -282,7 +282,7 @@
         </div>
         <% if(currentUser && (rank >= 0 && rank <=4)){ %>
           <div class="mt-2">
-            <div class="card mt-0">
+            <div class="card mt-0 border-light">
               <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#hot_topics">
                 <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
               </button>
@@ -364,10 +364,10 @@
           </div>
             <div class="tab-content" id="myTabContent">
               <!-- Activity Tab -->
-              <div class="tab-pane fade show active greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+              <div class="tab-pane fade show active greyback textureback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
-                    <form class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
+                    <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
                         <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);">
@@ -426,7 +426,7 @@
                   <div id="server-posts">
                     <% //include ../partials/posts_club %>
                   </div>
-                  <div id="client-posts"></div>
+                  <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
                   <div class="text-center">
                     <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">
                       <span id="load-more-span"></span>Load
@@ -572,7 +572,7 @@
                 <% if(0 <= rank && rank <= 4){ %>
                   <div class="text-center">
                     <button id="load-more-members-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="1,11">
-                      <span id="load-more-members-span"></span>Load
+                      <span id="load-more-members-span"></span>Load More
                     </button>
                   </div>
                 <% } %>
@@ -652,6 +652,14 @@
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
     else if(rank == 4){return 'Jr. member';}
+  }
+
+  function rankTitle2(rank){
+    if(rank == 0){return 'O';}
+    else if(rank == 1){return 'A';}
+    else if(rank == 2){return 'M';}
+    else if(rank == 3){return 'S';}
+    else if(rank == 4){return 'J';}
   }
 
   function privacyText(privacy){

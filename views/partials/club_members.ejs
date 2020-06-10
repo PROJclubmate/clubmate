@@ -6,11 +6,11 @@
     </div>
     <div class="col-md-8 col-8 my-auto">
       <span>
-        <a href="/users/<%= users[i].id._id %>" class="grey">
+        <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
           <strong><%= users[i].id.fullName %></strong>
         </a>
       </span>
-      <span class="my-auto lightgrey text-xs">
+      <span class="my-auto lightgrey text-xs mobiletext4">
         <%= users[i].userStatus %>
       </span>
     </div>
@@ -20,7 +20,7 @@
           <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
         </span>
         <span class="mobileShow">
-          <em class="darkgrey text-sm boldtext"><%= users[i].userRank %></em>
+          <em class="darkgrey text-sm boldtext"><%= rankTitle2(users[i].userRank) %></em>
         </span>
       </div>
       <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
