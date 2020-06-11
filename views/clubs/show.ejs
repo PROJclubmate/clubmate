@@ -28,7 +28,7 @@
               </div>
             </div>
             <% if(club.featuredPhotos.length != 0){ %>
-              <div class="col-md-9 p-1 card coverback clubback indexcard rcov">
+              <div id="gradient-wrap" class="col-md-9 p-1 card coverback clubback indexcard rcov gradient-wrap">
             <% } else{ %>
               <div class="col-md-9 p-1 card coverback clubback indexcard rcov carousel-frame2">
             <% } %>
@@ -51,7 +51,7 @@
                   <div class="carousel-inner d-flex">
                     <% if(club.featuredPhotos.length >= 1){ %>
                       <div class="carousel-item active">
-                        <img class="cover mobile-cover" src="<%= club.featuredPhotos[0].image %>">
+                        <img class="cover mobile-cover" src="<%= club.featuredPhotos[0].image %>" crossorigin="anonymous">
                         <div class="carousel-caption">
                           <h6 class="carousel-caption-heading"><%= club.featuredPhotos[0].heading %></h6>
                           <div><%= club.featuredPhotos[0].description %></div>
@@ -61,7 +61,7 @@
                     <% if(club.featuredPhotos.length >= 2){ %>
                       <% for(var i=1;i<club.featuredPhotos.length;i++){ %>
                         <div class="carousel-item">
-                          <img class="cover mobile-cover" src="<%= club.featuredPhotos[i].image %>">
+                          <img class="cover mobile-cover" src="<%= club.featuredPhotos[i].image %>" crossorigin="anonymous">
                           <div class="carousel-caption">
                             <h6 class="carousel-caption-heading"><%= club.featuredPhotos[i].heading %></h6>
                             <div><%= club.featuredPhotos[i].description %></div>

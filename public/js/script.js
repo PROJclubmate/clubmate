@@ -515,10 +515,23 @@ function copyTxtFn() {
   }
 }
 
-function outCopyTxtFn() {
+function outCopyTxtFn(){
   var tooltip = document.getElementById("myTooltip");
   tooltip.innerHTML = "Copy to clipboard";
 }
+
+clubbackGradientFn();
+function clubbackGradientFn(){
+  // window.addEventListener('load', function(){
+    Grade(document.querySelectorAll('.gradient-wrap'))
+  // })
+}
+
+// // Change frame gradient color on new image in carousel >>>>>>>> NOT WORKING <<<<<<<<
+// $('#carouselControls').on('slide.bs.carousel', function () {
+//   var grad = document.getElementById("gradient-wrap");
+//   clubbackGradientFn();
+// })
 
 //================================================================================
 // AJAX

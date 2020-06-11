@@ -253,7 +253,7 @@
         </div>
       </a>
     <% if(!currentUser){ %>
-      <a class="hr2" href="#clubs">
+      <a id="side-clubs" class="hr2" href="#clubs">
         <div class="valign">
           <div class="d-flex justify-content-start">
             <div id="club-door" class="nocaretmar"><i class="fas fa-door-closed pl-2 mobilepad sidebar-icon px-1 mx-1"></i></div>
@@ -263,20 +263,20 @@
         </div>
       </a>
     <% } else { %>
-    <a class="hr2 dropdown-sidebar" href="#clubs">
-      <div class="valign">
-        <div class="d-flex justify-content-start">
-          <div id="club-door"><i class="fas fa-door-closed sidebar-icon px-1"></i></div>
-          <div class="sidebar-label my-auto">Clubs</div>
+      <a id="side-clubs" class="hr2 dropdown-sidebar" href="#clubs">
+        <div class="valign">
+          <div class="d-flex justify-content-start">
+            <div id="club-door"><i class="fas fa-door-closed sidebar-icon px-1"></i></div>
+            <div class="sidebar-label my-auto">Clubs</div>
+          </div>
+          <div id="side-drop" class="mx-1"><i class="fa fa-caret-down"></i></div>
         </div>
-        <div id="side-drop" class="mx-1"><i class="fa fa-caret-down"></i></div>
+      </a>
+      <div id="sidebar-dropbox" class="scroll moz-scroll">
+        <% userClubs.forEach(function(club){ %>
+          <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
+        <% }); %>
       </div>
-    </a>
-    <div id="sidebar-dropbox" class="scroll moz-scroll">
-      <% userClubs.forEach(function(club){ %>
-        <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
-      <% }); %>
-    </div>
     <% } %>
       <a class="hr2" id="side-friends" href="/friends_posts">
         <div class="d-flex justify-content-start">
