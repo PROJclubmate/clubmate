@@ -186,14 +186,8 @@ module.exports = {
         if(req.user.sortByKey === 1){
           Post.aggregate([
             {$match: {$and: [
+              {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
-              {$or: [
-                {postClub: {$in: req.user.followingStrayClubIds}}, 
-                {$and: [
-                  {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
-                  {postClub: {$nin: req.user.unfollowingOrgClubIds}}
-                ]}
-              ]},
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},
@@ -301,14 +295,8 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 2){
           Post.find({
+            postClub: {$in: req.user.followingClubIds},
             createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))},
-            $or: [
-              {postClub: {$in: req.user.followingStrayClubIds}}, 
-              {$and: [
-                {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
-                {postClub: {$nin: req.user.unfollowingOrgClubIds}}
-              ]}
-            ], 
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
@@ -349,14 +337,8 @@ module.exports = {
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
             {$match: {$and: [
+              {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (365*60*60*24*1000))}}, 
-              {$or: [
-                {postClub: {$in: req.user.followingStrayClubIds}}, 
-                {$and: [
-                  {clubOrgKey: {$in: req.user.followingOrgKeys}}, 
-                  {postClub: {$nin: req.user.unfollowingOrgClubIds}}
-                ]}
-              ]},
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},

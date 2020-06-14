@@ -780,22 +780,10 @@ module.exports = {
       return res.redirect('back');
     } else{
       if(req.user){
-        var isFollowingStrayClub = false, isUnFollowingOrgClub = false, isFollowingOrg = false;
-        for(var k=0;k<req.user.followingStrayClubCount;k++){
-          if(req.user.followingStrayClubIds[k].equals(foundClub._id)){
-            isFollowingStrayClub = true;
-            break;
-          }
-        }
-        for(var l=0;l<req.user.unfollowingOrgClubCount;l++){
-          if(req.user.unfollowingOrgClubIds[l].equals(foundClub._id)){
-            isUnFollowingOrgClub = true;
-            break;
-          }
-        }
-        for(var m=0;m<req.user.followingOrgKeys.length;m++){
-          if(req.user.followingOrgKeys[m] == foundClub.clubKeys.organization){
-            isFollowingOrg = true;
+        var isFollowingClub = false;
+        for(var k=0;k<req.user.followingClubCount;k++){
+          if(req.user.followingClubIds[k].equals(foundClub._id)){
+            isFollowingClub = true;
             break;
           }
         }
@@ -839,13 +827,13 @@ module.exports = {
             }
             res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
             club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
-            memberRequestsLength, isFollowingStrayClub, isUnFollowingOrgClub, isFollowingOrg});
+            memberRequestsLength, isFollowingClub});
           }
           });
         } else{
           res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
           club: foundClub, Users_50_profilePic, Posts_50_Image: [], topTopicPosts: [], sentMemberReq, 
-          memberRequestsLength, isFollowingStrayClub, isUnFollowingOrgClub, isFollowingOrg});
+          memberRequestsLength, isFollowingClub});
         }
       } else{
         var PA_50_profilePic = [], Users_50_profilePic = [];
@@ -1140,9 +1128,7 @@ module.exports = {
                 var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
                 'clubId': foundClub._id, 'deleterName': req.user.fullName};
                 User.updateMany({clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
-                {
-                  $set: {'clubUpdates.$': update}
-                }, function(err, updateUsers){
+                {$set: {'clubUpdates.$': update}}, function(err, updateUsers){
                   if(err || !updateUsers){
                     console.log(Date.now()+' : '+req.user._id+' => (profiles-35)updateUsers err:- '+JSON.stringify(err, null, 2));
                     req.flash('error', 'Something went wrong :(');
@@ -1164,7 +1150,7 @@ module.exports = {
           if(oldOrgName != newOrgName || oldCategory != newCategory){
             if(oldOrgName != newOrgName){
               // 1) IF an orgPage of OLD ORG name exists => SPLICE clubId from old category of old org & dec. count
-              OrgPage.findOne({name: oldOrgName}, function (err, foundOldOrgPage){
+              await OrgPage.findOne({name: oldOrgName}, function (err, foundOldOrgPage){
                 if(foundOldOrgPage && foundOldOrgPage.allClubs.length){
                   for(var i=foundOldOrgPage.allClubs.length-1;i>=0;i--){
                     if(foundOldOrgPage.allClubs[i].category == oldCategory){
@@ -1183,19 +1169,19 @@ module.exports = {
               });
             }
             // 2) IF an orgPage of NEW ORG name "exists" => PUSH clubId into category(upsert) & inc. count
-            OrgPage.findOne({name: newOrgName}, function (err, foundNewOrgPage){
+            await OrgPage.findOne({name: newOrgName}, function (err, foundNewOrgPage){
               if(foundNewOrgPage){
                 var foundNewCategory = false;
                 if(foundNewOrgPage.allClubs.length){
                   for(var i=foundNewOrgPage.allClubs.length-1;i>=0;i--){
-                    // orgPage different
+                    // => orgPage different
                     if(oldOrgName != newOrgName && foundNewOrgPage.allClubs[i].category == newCategory){
                       foundNewOrgPage.allClubs[i].categoryCount += 1;
                       foundNewOrgPage.allClubs[i].categoryClubIds.push(foundClub._id);
                       foundNewCategory = true;
                       foundNewOrgPage.clubCount += 1;
                     }
-                    // orgPage same
+                    // => orgPage same
                     // Remove club from old category
                     if(oldOrgName == newOrgName && oldCategory != newCategory && foundNewOrgPage.allClubs[i].category == oldCategory){
                       foundNewOrgPage.allClubs[i].categoryCount -= 1;

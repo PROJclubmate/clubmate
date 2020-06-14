@@ -9,6 +9,7 @@ const orgPageSchema = new Schema({
     ref: 'User'
   }],
   clubCount: {type: Number, default: 0},
+  // Not 'allClubIds' (clubCount != allClubs.length)
   allClubs: [{
     category: String,
     categoryCount: {type: Number, default: 0},
@@ -17,12 +18,7 @@ const orgPageSchema = new Schema({
       ref: 'Club'
     }],
     _id: false
-  }],
-  followerCount:{type: Number, default: 0},
-  allFollowerIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }]
+  }]  
 });
 
 // for find queries(match exact strings)

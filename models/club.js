@@ -41,17 +41,11 @@ const clubSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
-  totalFollowerCount: {type: Number, default: 0},
-  strayClubfollowingUserIds: [{
+  followerCount:{type: Number, default: 0},
+  allFollowerIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
-  strayClubfollowingUserCount: {type: Number, default: 0},
-  orgClubUnfollowingUserIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  orgClubUnfollowingUserCount: {type: Number, default: 0},
   memberRequests: [{
     message: String,
     userId: {

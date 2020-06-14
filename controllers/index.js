@@ -799,8 +799,8 @@ module.exports = {
   indexMemberRequests(req, res, next){
     if(req.body.memberReq){
       var obj = {};
-        obj['userId'] = req.user._id;
-        obj['message'] = req.body.message;
+      obj['userId'] = req.user._id;
+      obj['message'] = req.body.message;
       var memberReq = mongoose.Types.ObjectId(req.body.memberReq);
       Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err, updateClub){
         if(err || !updateClub){
@@ -1074,268 +1074,204 @@ module.exports = {
         if(req.user.userKeys.college == foundOrgPage.name){
           match = true;
         }
-        for(var k=0;k<foundOrgPage.allFollowerIds.length;k++){
-          if(foundOrgPage.allFollowerIds[k].equals(req.user._id)){
-            for(var l=0;l<req.user.followingOrgKeys.length;l++){
-              if(req.user.followingOrgKeys[l] == foundOrgPage.name){
-                following = true;
-                break;
-              }
-            }
-            if(following === true){
+        currentUserId = req.user._id;
+        var keyValue = 0;
+        if(req.user.orgPageKeys){
+          for(var i=0;i<req.user.orgPageKeys.length;i++){
+            if(req.user.orgPageKeys[i].id.equals(foundOrgPage._id)){
+              keyValue = req.user.orgPageKeys[i].key;
               break;
             }
           }
         }
+        var thisOrgPageFollowingClubIdsArr = [];
+        for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
+          for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+            for(var l=0;l<req.user.followingClubCount;l++){
+              if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                break;
+              }
+            }
+          }
+        }
+      } else{
+        currentUserId = '';
       }
       res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-      following});
+      currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
     }
     });
   },
 
-  indexFollowOrgPage(req, res, next){
+  indexFollowAllOrgPage(req, res, next){
     if(req.user && req.user._id.equals(req.params.user_id)){
-      OrgPage.findOne({_id: req.params.org_id, clubCount: {$gt: 0}})
-      .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount'})
-      .exec(function(err, foundOrgPage){
+      OrgPage.findOne({_id: req.params.org_id, clubCount: {$gt: 0}}, function(err, foundOrgPage){
       if(err || !foundOrgPage){
         console.log(Date.now()+' : '+'(index-51)foundOrgPage err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        User.findById(req.user._id, function(err, foundCurrentUser){
-        if(err || !foundCurrentUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-54)foundCurrentUser err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-        } else{
-
-          if(req.body.follow == 'true'){
-            foundCurrentUser.followingOrgKeys.push(foundOrgPage.name);
-            Club.updateMany({'clubKeys.organization': foundOrgPage.name, isActive: true}, 
-            {$inc: {totalFollowerCount: 1}}, function(err, updateClubs){
-            if(err || !updateClubs){
-              console.log(Date.now()+' : '+req.user._id+' => (index-53)updateClubs err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
-            } else{
-              // Restore Followed StrayClubs
-              Club.find({'clubKeys.organization': foundOrgPage.name, 
-              strayClubfollowingUserIds: {$eq: req.user._id}, isActive: true})
-              .select({_id: 1}).exec(function(err, foundClubIds){
-              if(err || !foundClubIds){
-                console.log(Date.now()+' : '+req.user._id+' => (index-55)foundClubIds err:- '+JSON.stringify(err, null, 2));
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              } else{
-                Club.updateMany({'clubKeys.organization': foundOrgPage.name, 
-                strayClubfollowingUserIds: {$eq: req.user._id}, isActive: true}, 
-                {$pull: {strayClubfollowingUserIds: req.params.user_id}, 
-                $inc: {strayClubfollowingUserCount: -1, totalFollowerCount: -1}}, 
-                function(err, updateClubsRestore){
-                if(err || !updateClubsRestore){
-                  console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubsRestore err:- '+JSON.stringify(err, null, 2));
-                  req.flash('error', 'Something went wrong :(');
-                  return res.redirect('back');
-                } else{
-                  for(var i=foundCurrentUser.followingStrayClubIds.length-1;i>=0;i--){
-                    for(var j=0;j<foundClubIds.length;j++){
-                      if(foundCurrentUser.followingStrayClubIds.length && foundCurrentUser.followingStrayClubIds[i].equals(foundClubIds[j]._id)){
-                        foundCurrentUser.followingStrayClubIds.splice(i,1);
-                        foundCurrentUser.followingStrayClubCount -= 1;
-                      }
-                    }
-                  }
-                  foundCurrentUser.save();
-                  // Remove any redundant followers before push
-                  for(var k=foundOrgPage.allFollowerIds.length-1;k>=0;k--){
-                    if(foundOrgPage.allFollowerIds[k].equals(req.user._id)){
-                      foundOrgPage.allFollowerIds.splice(k,1);
-                      foundOrgPage.followerCount -= 1;
-                    }
-                  }
-                  foundOrgPage.followerCount += 1;
-                  foundOrgPage.allFollowerIds.push(req.user._id);
-                  foundOrgPage.save();
-                  res.redirect(/colleges/+foundOrgPage.name);
-                }
-                });
-              }
-              });
-            }
-            });
-
-          } else if(req.body.follow == 'false'){
-            for(var i=foundCurrentUser.followingOrgKeys.length-1;i>=0;i--){
-              if(foundCurrentUser.followingOrgKeys[i] == foundOrgPage.name){
-                foundCurrentUser.followingOrgKeys.splice(i,1);
+        var notFollowingClubIdsArr = []; var thisOrgFollowingClubIdsArr = [];
+        for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
+          for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+            notFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundOrgPage.allClubs[j].categoryClubIds[k]));
+            for(var l=0;l<req.user.followingClubCount;l++){
+              if(foundOrgPage.allClubs[j].categoryClubIds[k].equals(req.user.followingClubIds[l])){
+                thisOrgFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundOrgPage.allClubs[j].categoryClubIds[k]));
+                notFollowingClubIdsArr.pop();
+                break;
               }
             }
-            Club.updateMany({'clubKeys.organization': foundOrgPage.name, isActive: true}, 
-            {$inc: {totalFollowerCount: -1}}, function(err, updateClubs){
-            if(err || !updateClubs){
-              console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubs err:- '+JSON.stringify(err, null, 2));
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
-            } else{
-              // Restore Unfollowed OrgClubs
-              Club.find({'clubKeys.organization': foundOrgPage.name, 
-              orgClubUnfollowingUserIds: {$eq: req.user._id}, isActive: true})
-              .select({_id: 1}).exec(function(err, foundClubIds){
-              if(err || !foundClubIds){
-                console.log(Date.now()+' : '+req.user._id+' => (index-55)foundClubIds err:- '+JSON.stringify(err, null, 2));
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              } else{
-                Club.updateMany({'clubKeys.organization': foundOrgPage.name, 
-                orgClubUnfollowingUserIds: {$eq: req.user._id}, isActive: true}, 
-                {$pull: {orgClubUnfollowingUserIds: req.params.user_id}, 
-                $inc: {orgClubUnfollowingUserCount: -1, totalFollowerCount: 1}}, 
-                function(err, updateClubsRestore){
-                if(err || !updateClubsRestore){
-                  console.log(Date.now()+' : '+req.user._id+' => (index-55)updateClubsRestore err:- '+JSON.stringify(err, null, 2));
-                  req.flash('error', 'Something went wrong :(');
-                  return res.redirect('back');
-                } else{
-                  for(var j=foundCurrentUser.unfollowingOrgClubIds.length-1;j>=0;j--){
-                    for(var k=0;k<foundClubIds.length;k++){
-                      if(foundCurrentUser.unfollowingOrgClubIds.length && foundCurrentUser.unfollowingOrgClubIds[j].equals(foundClubIds[k]._id)){
-                        foundCurrentUser.unfollowingOrgClubIds.splice(j,1);
-                        foundCurrentUser.unfollowingOrgClubCount -= 1;
-                      }
-                    }
-                  }
-                  foundCurrentUser.save();
-                  for(var l=foundOrgPage.allFollowerIds.length-1;l>=0;l--){
-                    if(foundOrgPage.allFollowerIds[l].equals(req.user._id)){
-                      foundOrgPage.allFollowerIds.splice(l,1);
-                      foundOrgPage.followerCount -= 1;
-                    }
-                  }
-                  foundOrgPage.followerCount -= 1;
-                  foundOrgPage.save();
-                  res.redirect(/colleges/+foundOrgPage.name);
-                }
-                });
-              }
-              });
-            }
-            });
           }
         }
-        });
+        var notFollowingClubsLength = notFollowingClubIdsArr.length;
+        var thisOrgFollowingClubsLength = thisOrgFollowingClubIdsArr.length;
+
+        if(req.body.followAllClubs == 'true'){
+          Club.updateMany({_id: {$in: notFollowingClubIdsArr}, isActive: true}, 
+          {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, $inc: {followerCount: 1}}, 
+          function(err, updateClubs){
+            if(err || !updateClubs){
+              console.log(Date.now()+' => (profiles-10)updateClubs err:- '+JSON.stringify(err, null, 2));
+              return res.sendStatus(500);
+            } else{
+              User.updateOne({_id: req.params.user_id}, 
+              {$addToSet: {followingClubIds: {$each: notFollowingClubIdsArr}}, 
+              $inc: {followingClubCount: notFollowingClubsLength}}, function(err, updateUser){
+              if(err || !updateUser){
+              console.log(Date.now()+' : '+req.params.user_id+' => (index-52)updateUser err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              } else{
+                res.redirect('back');
+              }
+              });
+            }
+          });
+        } else if(req.body.followAllClubs == 'false'){
+          Club.updateMany({_id: {$in: thisOrgFollowingClubIdsArr}, isActive: true}, 
+          {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClubs){
+            if(err || !updateClubs){
+              console.log(Date.now()+' => (profiles-10)updateClubs err:- '+JSON.stringify(err, null, 2));
+              return res.sendStatus(500);
+            } else{
+              User.updateOne({_id: req.params.user_id}, 
+              {$pull: {followingClubIds: {$in: thisOrgFollowingClubIdsArr}}, 
+              $inc: {followingClubCount: -thisOrgFollowingClubsLength}}, function(err, updateUser){
+              if(err || !updateUser){
+              console.log(Date.now()+' : '+req.params.user_id+' => (index-53)updateUser err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              } else{
+                res.redirect('back');
+              }
+              });
+            }
+          });
+        }
       }
       });
     }
   },
 
-  indexUnFollowingClub(req, res, next){
+  indexOrgPageSettings(req, res, next){
     if(req.user && req.user._id.equals(req.params.user_id)){
-      Club.findOne({_id: req.params.club_id, isActive: true})
-      .select({_id: 1, clubKeys: 1}).exec(function(err, foundClubCheck){
-      if(err || !foundClubCheck){
-        console.log(Date.now()+' : '+req.user._id+' => (index-57)foundClubCheck err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        if(req.body.followClubStray == 'true' && followCheck(req.user,foundClubCheck,1)){
-          Club.updateOne({_id: req.params.club_id, isActive: true}, 
-          {$addToSet: {strayClubfollowingUserIds: mongoose.Types.ObjectId(req.params.user_id)}, 
-          $inc: {strayClubfollowingUserCount: 1, totalFollowerCount: 1}}, function(err, updateClub){
-          if(err || !updateClub){
-            console.log(Date.now()+' : '+req.user._id+' => (index-56)updateClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            User.updateOne({_id: req.user._id}, 
-            {$addToSet: {followingStrayClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
-            $inc: {followingStrayClubCount: 1}}, function(err, updateUser){
-            if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-57)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            } else{
-              res.redirect(/clubs/+req.params.club_id);
+      if(req.body.initialCheckboxValue){
+        if(req.body.initialCheckboxValue == 1){
+          var toggleOrgPageViewKey = 2;
+        } else if(req.body.initialCheckboxValue == 2){
+          var toggleOrgPageViewKey = 1;
+        } else{
+          var toggleOrgPageViewKey = 1;
+        }
+        var orgPageKeyId = mongoose.Types.ObjectId(req.params.org_id);
+        var keyExists = false;
+        if(req.user.orgPageKeys){
+          for(var i=0;i<req.user.orgPageKeys.length;i++){
+            if(req.user.orgPageKeys[i].id.equals(orgPageKeyId)){
+              keyExists = true;
+              break;
             }
-            });
+          }
+        }
+        if(keyExists){
+          User.updateOne({_id: req.user._id, orgPageKeys: {$elemMatch: {id: orgPageKeyId}}},
+          {$set: {'orgPageKeys.$.key': toggleOrgPageViewKey}}, function(err, updateUser){
+          if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-54)updateUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          } else{
+            res.redirect('back');
           }
           });
-        } else if(req.body.followClubStray == 'false' && followCheck(req.user,foundClubCheck,2)){
-          Club.updateOne({_id: req.params.club_id, isActive: true}, 
-          {$pull: {strayClubfollowingUserIds: req.params.user_id}, 
-          $inc: {strayClubfollowingUserCount: -1, totalFollowerCount: -1}}, function(err, updateClub){
-          if(err || !updateClub){
-            console.log(Date.now()+' : '+req.user._id+' => (index-58)updateClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+        } else{
+          var obj = {};
+          obj['id'] = orgPageKeyId;
+          obj['key'] = toggleOrgPageViewKey;
+          User.updateOne({_id: req.user._id},
+          {$push: {orgPageKeys: obj}}, function(err, updateUser){
+          if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-55)updateUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
           } else{
-            User.updateOne({_id: req.user._id}, 
-            {$pull: {followingStrayClubIds: req.params.club_id}, 
-            $inc: {followingStrayClubCount: -1}}, function(err, updateUser){
-            if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-59)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            } else{
-              res.redirect(/clubs/+req.params.club_id);
-            }
-            });
-          }
-          });
-        } else if(req.body.followClubOrg == 'false' && followCheck(req.user,foundClubCheck,3)){
-          Club.updateOne({_id: req.params.club_id, isActive: true}, 
-          {$addToSet: {orgClubUnfollowingUserIds: mongoose.Types.ObjectId(req.params.user_id)}, 
-          $inc: {orgClubUnfollowingUserCount: 1, totalFollowerCount: -1}}, function(err, updateClub){
-          if(err || !updateClub){
-            console.log(Date.now()+' : '+req.user._id+' => (index-60)updateClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            User.updateOne({_id: req.user._id}, 
-            {$addToSet: {unfollowingOrgClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
-            $inc: {unfollowingOrgClubCount: 1}}, function(err, updateUser){
-            if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-61)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            } else{
-              res.redirect(/clubs/+req.params.club_id);
-            }
-            });
-          }
-          });
-        } else if(req.body.followClubOrg == 'true' && followCheck(req.user,foundClubCheck,4)){
-          Club.updateOne({_id: req.params.club_id, isActive: true}, 
-          {$pull: {orgClubUnfollowingUserIds: req.params.user_id}, 
-          $inc: {orgClubUnfollowingUserCount: -1, totalFollowerCount: 1}}, function(err, updateClub){
-          if(err || !updateClub){
-            console.log(Date.now()+' : '+req.user._id+' => (index-62)updateClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            User.updateOne({_id: req.user._id}, 
-            {$pull: {unfollowingOrgClubIds: req.params.club_id}, 
-            $inc: {unfollowingOrgClubCount: -1}}, function(err, updateUser){
-            if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-63)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            } else{
-              res.redirect(/clubs/+req.params.club_id);
-            }
-            });
+            res.redirect('back');
           }
           });
         }
       }
-      });
+    }
+  },
+
+  indexFollowClubs(req, res, next){
+    if(req.user && req.user._id.equals(req.params.user_id)){
+      if(req.body.followClub == 'true' && followCheck(req.user,req.params.club_id,1)){
+        Club.updateOne({_id: req.params.club_id, isActive: true}, 
+        {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, 
+        $inc: {followerCount: 1}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-56)updateClub err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          User.updateOne({_id: req.params.user_id}, 
+          {$addToSet: {followingClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
+          $inc: {followingClubCount: 1}}, function(err, updateUser){
+          if(err || !updateUser){
+          console.log(Date.now()+' : '+req.params.user_id+' => (index-57)updateUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          } else{
+            res.redirect('back');
+          }
+          });
+        }
+        });
+      } else if(req.body.followClub == 'false' && followCheck(req.user,req.params.club_id,2)){
+        Club.updateOne({_id: req.params.club_id, isActive: true}, 
+        {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClub){
+        if(err || !updateClub){
+          console.log(Date.now()+' : '+req.user._id+' => (index-58)updateClub err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          User.updateOne({_id: req.params.user_id}, 
+          {$pull: {followingClubIds: req.params.club_id}, $inc: {followingClubCount: -1}}, function(err, updateUser){
+          if(err || !updateUser){
+          console.log(Date.now()+' : '+req.user._id+' => (index-59)updateUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          } else{
+            res.redirect('back');
+          }
+          });
+        }
+        });
+      }
     }
   },
 
   indexShowFollowingClubs(req, res, next){
     if(req.user && req.user._id.equals(req.params.id)){
-      Club.find({_id: {$in: req.user.followingStrayClubIds}})
-      .select({_id: 1, name: 1}).exec(function(err, followingStrayClubs){
-        Club.find({_id: {$in: req.user.unfollowingOrgClubIds}})
-        .select({_id: 1, name: 1}).exec(function(err, unfollowingOrgClubs){
-          return res.json({followingStrayClubs, unfollowingOrgClubs, followingOrgKeys: req.user.followingOrgKeys});
-        });
+      Club.find({_id: {$in: req.user.followingClubIds}})
+      .select({_id: 1, name: 1}).exec(function(err, followingClubs){
+        return res.json({followingClubs});
       });
     }
   }
@@ -1356,80 +1292,25 @@ function checkRank(clubUsers,userId,rank){
   return ok;
 };
 
-function followCheck(currentUser,foundClub,caseNum){
-  var ok; 
-  var isFollowingStrayClub = false, isUnFollowingOrgClub = false, isFollowingOrg = false;
+function followCheck(currentUser,clubId,caseNum){
+  var ok; var isFollowingClub = false;
+  for(var i=0;i<currentUser.followingClubCount;i++){
+    if(currentUser.followingClubIds[i].equals(clubId)){
+      isFollowingClub = true;
+      break;
+    }
+  }
   if(caseNum == 1){
-    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
-      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
-        isFollowingOrg = true;
-        break;
-      }
-    }
-    for(var j=0;j<currentUser.followingStrayClubCount;j++){
-      if(currentUser.followingStrayClubIds[j].equals(foundClub._id)){
-        isFollowingStrayClub = true;
-        break;
-      }
-    }
-    if(!isFollowingOrg && !isFollowingStrayClub){
+    if(!isFollowingClub){
       return ok = true;
     } else{
       return ok = false;
     }
-  } else if(caseNum == 2){
-    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
-      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
-        isFollowingOrg = true;
-        break;
-      }
-    }
-    for(var j=0;j<currentUser.followingStrayClubCount;j++){
-      if(currentUser.followingStrayClubIds[j].equals(foundClub._id)){
-        isFollowingStrayClub = true;
-        break;
-      }
-    }
-    if(!isFollowingOrg && isFollowingStrayClub){
+  } else if (caseNum == 2){
+    if(isFollowingClub){
       return ok = true;
     } else{
       return ok = false;
     }
-  } else if(caseNum == 3){
-    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
-      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
-        isFollowingOrg = true;
-        break;
-      }
-    }
-    for(var j=0;j<currentUser.unfollowingOrgClubCount;j++){
-      if(currentUser.unfollowingOrgClubIds[j].equals(foundClub._id)){
-        isUnFollowingOrgClub = true;
-        break;
-      }
-    }
-    if(isFollowingOrg && !isUnFollowingOrgClub){
-      return ok = true;
-    } else{
-      return ok = false;
-    }
-  } else if(caseNum == 4){
-    for(var i=0;i<currentUser.followingOrgKeys.length;i++){
-      if(currentUser.followingOrgKeys[i] == foundClub.clubKeys.organization){
-        isFollowingOrg = true;
-        break;
-      }
-    }
-    for(var j=0;j<currentUser.unfollowingOrgClubCount;j++){
-      if(currentUser.unfollowingOrgClubIds[j].equals(foundClub._id)){
-        isUnFollowingOrgClub = true;
-        break;
-      }
-    }
-    if(isFollowingOrg && isUnFollowingOrgClub){
-      return ok = true;
-    } else{
-      return ok = false;
-    }
-  };
-};
+  }
+}

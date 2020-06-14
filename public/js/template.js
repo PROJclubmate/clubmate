@@ -2907,75 +2907,29 @@ function search_org_pages_template(response){
 
 function showFollowing_template(response){
   html = ejs.render(`
-<% if(followingOrgKeys.length){ %>
-<div class="lightgrey text">
-  <span>+ College page: </span>
-  <br>
-  <span>
-    <% var keysArr = followingOrgKeys; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
-      <% if(i==0 && i==len-1){ %>
-        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= keysArr[i] %></a></span>
-        <br>
-        <% } else if(i==len-1){ %>
-        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= keysArr[i] %></a>,</span>
-        <br>
-        <% } else if(i>0 && i<len){ %>
-        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a>,</span>
-        <br>
-        <% } else if(i==0){ %>
-        <span class="nothing"><a href="/colleges/<%= keysArr[i] %>"><%= ' '+keysArr[i] %></a></span>
-        <br>
-    <% }} %>
-  </span>
-  <br>
-</div>
-<% } %>
-<% if(followingStrayClubs.length){ %>
-<div class="lightgrey text">
-  <span>+ Following stray clubs: </span>
-  <br>
-  <span>
-    <% var keysArr = followingStrayClubs; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
-      <% if(i==0 && i==len-1){ %>
-        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a></span>
-        <br>
-        <% } else if(i==len-1){ %>
-        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a>,</span>
-        <br>
-        <% } else if(i>0 && i<len){ %>
-        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a>,</span>
-        <br>
-        <% } else if(i==0){ %>
-        <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a></span>
-        <br>
-    <% }} %>
-  </span>
-  <br>
-</div>
-<% } %>
-<% if(unfollowingOrgClubs.length){ %>
+<% if(followingClubs.length){ %>
   <div class="lightgrey text">
-    <span><span class="text-xxl" style="margin-left: 0.125rem;">-</span> Unfollowing college clubs: </span>
+    <span>+ Clubs: </span>
     <br>
     <span>
-      <% var keysArr = unfollowingOrgClubs; var len = keysArr.length; for(var i=len-1;i>=0;i--){ %>
+      <% var len = followingClubs.length; for(var i=len-1;i>=0;i--){ %>
         <% if(i==0 && i==len-1){ %>
-          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a></span>
+          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
           <br>
           <% } else if(i==len-1){ %>
-          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= keysArr[i].name %></a>,</span>
+          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
           <br>
           <% } else if(i>0 && i<len){ %>
-          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a>,</span>
+          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
           <br>
           <% } else if(i==0){ %>
-          <span class="nothing"><a href="/clubs/<%= keysArr[i]._id %>"><%= ' '+keysAr.namer[i] %></a></span>
+          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
           <br>
       <% }} %>
     </span>
     <br>
   </div>
 <% } %>
-`,{followingStrayClubs: response.followingStrayClubs, unfollowingOrgClubs: response.unfollowingOrgClubs, followingOrgKeys: response.followingOrgKeys});
+`,{followingClubs: response.followingClubs});
   return html;
 }

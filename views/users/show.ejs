@@ -337,7 +337,7 @@
                     <%= moment(user.userKeys.birthdate).format('MMM Do YY'); %>
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
                       <% } %>
                     </div>
                   </span>
@@ -373,10 +373,10 @@
                       </div></div>
                     <% } %>
                   <% } %>
-                  <% if(match && currentUser.followingOrgKeys.length>0){ %>
+                  <% if(match){ %>
                     <br>
                     <div class="info1">Following: <div class="info30">
-                      <div id="show-following-server" class="nothing"><a href="#">Show ++</a></div>
+                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
                       <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
                     </div></div>
                   <% } %>

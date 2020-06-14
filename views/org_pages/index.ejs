@@ -36,26 +36,71 @@
 			<% } %>
 			<div class="boldtext text-md badge badge-danger orgdiv-usercnt"><%= org_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
 		</div>
-		<div class="orgdiv-clubcnt valign">
-			<div class="d-flex flex-row">
-				<div class="mobilebold lightgrey text-md mx-1">
-					<span><span class="boldtext"><%= org_page.clubCount %></span> clubs</span>
-				</div>
-				<div class="mx-1">
-					<% if(currentUser){ %>
-						<form action="/colleges/<%= org_page._id %>/follow/<%= currentUser._id %>?_method=PUT" method="POST">
-							<% if(following){ %>
-								<button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="follow" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-							<% } else{ %>
-								<button class="btn btn-org2 orgdiv-follow py-1 px-2" name="follow" value="true" type="submit">Follow all</button>
-							<% } %>
+		<div class="orgdiv-clubcnt">
+			<div class="valign">
+				<div class="d-flex flex-row">
+					<div class="mobilebold lightgrey text-md mx-1">
+						<span><span class="boldtext"><%= org_page.clubCount %></span> clubs</span>
+					</div>
+					<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+						<form id="toggleOrgPage-form" action="/colleges/<%= org_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+							<div id="container-orgPage">
+							  <div class="toggleOrgPage">
+							    <input type="checkbox" name="toggleOrgPage" class="check-checkbox" id="toggleOrgPageViewKey">
+							    <label class="check-label" for="toggleOrgPageViewKey">
+							      <div id="background"></div>
+							      <span class="face">
+							        <span class="face-container">
+							          <span class="eye left"></span>
+							          <span class="eye right"></span>
+							          <span class="mouth"></span>
+							        </span>
+							      </span>
+							    </label>
+							  </div>
+							</div>
 						</form>
-					<% } else{ %>
-						<a href="/login" class="btn btn-org2 orgdiv-follow py-1 px-2">Follow</a>
+					<% } else if(currentUser && keyValue == 2){ %>
+						<form id="toggleOrgPage-form" action="/colleges/<%= org_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+							<div id="container-orgPage">
+							  <div class="toggleOrgPage">
+							    <input type="checkbox" name="toggleOrgPage" class="check-checkbox" id="toggleOrgPageViewKey" checked>
+							    <label class="check-label" for="toggleOrgPageViewKey">
+							      <div id="background"></div>
+							      <span class="face">
+							        <span class="face-container">
+							          <span class="eye left"></span>
+							          <span class="eye right"></span>
+							          <span class="mouth"></span>
+							        </span>
+							      </span>
+							    </label>
+							  </div>
+							</div>
+						</form>
 					<% } %>
 				</div>
+				<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+					<div></div>
+				<% } else if(currentUser && keyValue == 2){ %>
+					<form action="/colleges/<%= org_page._id %>/followall/user/<%= currentUserId %>?_method=PUT" method="POST">
+						<% if(org_page.clubCount-thisOrgPageFollowingClubIdsArr.length > 0){ %>
+							<div style="height: 22px;">
+								<button class="btn btn-org2 btn-followall py-1 px-0 noshadow text-xs" name="followAllClubs" value="true" type="submit">Follow all <i class="fas fa-arrow-down"></i></button>
+							</div>
+						<% } else{ %>
+							<div style="height: 22px;">
+								<button class="btn btn-org2 btn-followall py-1 px-0 noshadow text-xs lightgrey2" name="followAllClubs" value="false" type="submit">Unfollow all <i class="fas fa-arrow-down"></i></button>
+							</div>
+						<% } %>
+					</form>
+				<% } %>
 			</div>
-			<div></div>
+			<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+				<div class="text-xxs boldtext lightgrey2 p-1 invisible">Not following: <%= org_page.clubCount-thisOrgPageFollowingClubIdsArr.length %></div>
+			<% } else if(currentUser && keyValue == 2){ %>
+				<div class="text-xxs boldtext lightgrey2 p-1">Not following: <%= org_page.clubCount-thisOrgPageFollowingClubIdsArr.length %></div>
+			<% } %>
 		</div>
 		<div class="orgpad py-1">
 			<% for(var i=org_page.allClubs.length-1;i>=0;i--){ %>
@@ -68,7 +113,7 @@
 				<% } else{ %>
 					<% if(org_page.allClubs[i].categoryCount>0){ %>
 						<div class="boldtext category">
-							<span class="redcolor">*</span>[Miscellaneous] (<%= org_page.allClubs[i].categoryCount %>)
+							<span class="redcolor">*</span><em>Miscellaneous</em> (<%= org_page.allClubs[i].categoryCount %>)
 						</div>
 					<% } %>
 				<% } %>
@@ -86,12 +131,28 @@
 					          <strong><%= org_page.allClubs[i].categoryClubIds[j].name %></strong>
 					        </a>
 					      </span>
-					      <span class="my-auto lightgrey text-xs mobiletext4"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
+					      <% if(keyValue == 0 || keyValue == 1){ %>
+					      	<span class="my-auto lightgrey text-xs mobiletext4"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
+					      <% } %>
 					    </div>
 					  </div>
-					  <div class="darkgrey text-sm px-1 nowrap">
-			        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
-			      </div>
+					  <% if(keyValue == 0 || keyValue == 1){ %>
+						  <div class="darkgrey text-sm px-1 nowrap">
+				        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
+				      </div>
+				    <% } else if(keyValue == 2){ %>
+				    	<form action="/users/<%= currentUser._id %>/follow/<%= org_page.allClubs[i].categoryClubIds[j]._id %>?_method=PUT" method="POST">
+					    	<% if(thisOrgPageFollowingClubIdsArr.includes(org_page.allClubs[i].categoryClubIds[j]._id)){ %>
+					    		<div>
+					    			<button class="btn btn-light btn-org orgdiv-follow py-1 px-2 mobiletext3" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+					    		</div>
+					    	<% } else{ %>
+					    		<div>
+					    			<button class="btn btn-org2 orgdiv-follow py-1 px-2 mobiletext3" name="followClub" value="true" type="submit">Follow</button>
+					    		</div>
+					    	<% } %>
+					    </form>
+				    <% } %>
 			    </div>
 			  <% } %>
 			</div>

@@ -94,31 +94,20 @@
       </div>
       <div class="col-md-4 px-1 mobilepad mt-2 keys">
         <div class="card border-light">
-          <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse" data-toggle="collapse" data-target="#infobox">Info</button>
+          <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info" data-toggle="collapse" data-target="#infobox">Info</button>
           <div id="infobox" class="collapse card-body5">
             <% if(currentUser){ %>
-              <form action="/users/<%= currentUser._id %>/unfollow/<%= club._id %>?_method=PUT" method="POST">
-                <div class="text-sm boldtext lightgrey my-3 text-center"><%= club.totalFollowerCount %></div>
+              <form action="/users/<%= currentUser._id %>/follow/<%= club._id %>?_method=PUT" method="POST">
+                <div class="text-sm boldtext lightgrey my-3 text-center"><%= club.followerCount %></div>
                 <!-- Member have to follow seperately too -->
                 <div class="text-center my-3">
-                  <!-- Follow (Stray) club whose orgPage/college is not followed by CU-->
-                  <% if(!isFollowingOrg && !isFollowingStrayClub){ %>
-                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClubStray" value="true" type="submit">Follow</button>
-                  <!-- Unfollow Stray club -->
-                  <% } else if(!isFollowingOrg && isFollowingStrayClub){ %>
-                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClubStray" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-                  <!-- Unfollow (Org) club whoose orgPage/college is followed by CU -->
-                  <% } else if(isFollowingOrg && !isUnFollowingOrgClub){ %>
-                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClubOrg" value="false" type="submit"><i class="fas fa-minus"></i> Unfollow</button>
-                  <!-- Follow Org Club -->
-                  <% } else if(isFollowingOrg && isUnFollowingOrgClub){ %>
-                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClubOrg" value="true" type="submit">Follow again</button>
+                  <% if(!isFollowingClub){ %>
+                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClub" value="true" type="submit">Follow</button>
+                  <% } else{ %>
+                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
                   <% } %>
                 </div>
               </form>
-              <% if(isFollowingOrg){ %>
-                  <em class="text-xs lightgrey2 mt-2">Following: <%= club.clubKeys.organization %></em>
-                <% } %>
             <% } %>
             <div>
               <div class="text-sm my-2 boldtext lineheight"><%= club.banner %></div>

@@ -17,7 +17,7 @@ module.exports = {
         $push: {comments: {commentAuthor: {id: req.user._id, authorName: req.user.fullName}, 
           text: req.body.text}
         }
-      }, {fields: {count:1} , upsert: true, new: true}, function(err, newCommentBucket){
+      }, {fields: {count:1}, upsert: true, new: true}, function(err, newCommentBucket){
       if(err || !newCommentBucket){
         console.log(Date.now()+' : '+req.user._id+' => (comments-2)newCommentBucket err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');

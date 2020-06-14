@@ -4,8 +4,8 @@ const express  = require('express'),
   {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople,
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
-  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexFollowOrgPage, 
-	indexUnFollowingClub, indexShowFollowingClubs} = require('../controllers/index');
+  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexOrgPageSettings, 
+  indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs} = require('../controllers/index');
 
 // ==================================================
 // FOR NOW in urls, org_pages is replaced by colleges
@@ -75,11 +75,14 @@ router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends)
 // View organization page
 router.get('/colleges/:org_name', indexViewOrgPage);
 
-// Follow organization page
-router.put('/colleges/:org_id/follow/:user_id', indexFollowOrgPage);
+// Follow all clubs at once in OrgPage
+router.put('/colleges/:org_id/followall/user/:user_id', middleware.isLoggedIn, indexFollowAllOrgPage);
 
-// Un-Follow individual clubs
-router.put('/users/:user_id/unfollow/:club_id', indexUnFollowingClub);
+// Organization page settings
+router.put('/colleges/:org_id/settings/user/:user_id', middleware.isLoggedIn, indexOrgPageSettings);
+
+// Follow clubs
+router.put('/users/:user_id/follow/:club_id', middleware.isLoggedIn, indexFollowClubs);
 
 // Show my followed clubs
 router.get('/show_following/:id', indexShowFollowingClubs);

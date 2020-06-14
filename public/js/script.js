@@ -533,6 +533,26 @@ function clubbackGradientFn(){
 //   clubbackGradientFn();
 // })
 
+$('#toggleOrgPageViewKey').change(function(e){
+  e.stopPropagation();
+  var valueNum;
+  if ($(this).is(':checked')){
+    valueNum = 1;
+  } else{
+    valueNum = 2;
+  }
+  var input = $("<input>").attr("type", "hidden").attr("name", "initialCheckboxValue").val(valueNum);
+  $('#toggleOrgPage-form').append(input);
+  setTimeout(function(){
+    var form = document.getElementById("toggleOrgPage-form");
+    form.submit();
+  }, 1000);
+  $(this).prop('disabled', true);
+  setTimeout(function(){
+    btn.prop('disabled', false);
+  }, 10000);
+});
+
 //================================================================================
 // AJAX
 //================================================================================

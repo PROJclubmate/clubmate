@@ -34,17 +34,28 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  followingOrgKeys: [String],
-  followingStrayClubIds: [{
+  orgPageKeys: [{
+    id: {
+      type: Schema.Types.ObjectId,
+      ref: 'OrgPage'
+    },
+    key: {
+      type: Number,
+      default: 1,
+      min: 1,
+      max: 2,
+      required: '1-Members, 2-Followers',
+      validate: {
+        validator: Number.isInteger,
+        message: '{VALUE} is not an integer value.'
+      }
+    }
+  }],
+  followingClubCount:{type: Number, default: 0},
+  followingClubIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'
   }],
-  followingStrayClubCount: {type: Number, default: 0},
-  unfollowingOrgClubIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Club'
-  }],
-  unfollowingOrgClubCount: {type: Number, default: 0},
   profilePic: String,
   profilePicId: String,
   userKeys: {
