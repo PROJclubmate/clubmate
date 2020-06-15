@@ -86,12 +86,12 @@ if(location.pathname == '/discover'){
         if(arr && arr != '' && response.arrLength && response.posts.length){
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-            var div = document.getElementById('client-posts');
+            var div = document.getElementById('client-posts-discover');
             div.innerHTML += discover_posts_template(response);
           } else{
             $('#load-more-btn').removeClass('btn-load');
             $('#load-more-btn').val(arr);
-            var div = document.getElementById('client-posts');
+            var div = document.getElementById('client-posts-discover');
             div.innerHTML += discover_posts_template(response);
           }
           // 2 column masonry
@@ -1027,17 +1027,70 @@ function discover_posts_template(response){
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
-    <div class="card discovercard">
+    <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
+      <div class="discovertop-left lineheight2">
+        <% if(posts[k].commentsCount > 0){ %>
+          <span class="boldtext">
+            <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+          </span>
+        <% } %>
+      </div>
+      <div class="discovertop lineheight2">
+        <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>">&gt;</a>
+      </div>
+      <div class="overlay-content">
+        <div>
+          <form class="d-flex justify-content-around" action="/posts/<%= posts[k]._id %>/vote" method="POST">
+            <div class="valign">
+              <% if(currentUser){ %>
+                <% if(hasVote[k] == 1){ %>
+                  <span class="d-flex mr-1"> 
+                    <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote greencolor"></i></button>
+                  </span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3 greencolor2"><%= posts[k].likeCount %></span>
+                <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
+                  <span class="d-flex mr-1"> 
+                    <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up discover-vote"></i></button>
+                  </span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].likeCount %></span>
+                <% } %>
+              <% }else{ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote"></i></button>
+                </span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].likeCount %></span>
+              <% } %>
+            </div>
+          
+            <div class="valign">
+              <% if(currentUser){ %>
+                <% if(hasVote[k] == 3){ %>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm mobiletext3 redcolor2"><%= posts[k].heartCount %></span>
+                  <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote redcolor2"></i></button></span>
+                <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                  <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart discover-vote"></i></button></span>
+                  <% } %>
+              <% }else{ %>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote"></i></button></span>
+              <% } %>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
       <div class="card-body">
         <div class="dropctn">
           <div class="valign">
             <div>
-              <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
+              <span><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
             </div>
             <div>
               <div>
                 <span class="mobiletext3">
-                  <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey truncate1"><strong><%= posts[k].postClub.name %></strong></a>
+                  <span class="darkgrey truncate1"><strong><%= posts[k].postClub.name %></strong></span>
                 </span>
               </div>
             </div>
@@ -1045,19 +1098,19 @@ function discover_posts_template(response){
         </div>
       </div>
       <% if(posts[k].image){ %>
-        <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+        <span>
           <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
-        </a>
+        </span>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><span class="truncate1"><%= posts[k].hyperlink %></span></p>
         </div>
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
-          <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+          <span>
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
-            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
-          </a>
+            <p class="nothing mobiletext linewrap"><span class="truncate1"><%= posts[k].hyperlink %></span></p>
+          </span>
         </div>
       <% } %>
     </div>

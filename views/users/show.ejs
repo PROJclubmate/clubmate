@@ -321,66 +321,28 @@
                   <strong class="info-size">Account info:</strong>
                 </div>
                 <div class="info1">
-                  Name: <span class="info30"><%= user.fullName %></span>
-                  <% if(currentUser && match){ %>
-                    <br>
-                    Email: <span class="info30"><%= user.email %>
-                      <% if(!user.isVerified){ %>
-                        <span class="text-xs orangecolor">Not Verified</span>
-                      <% } %>
-                    </span>
-                  <% } %>
-                  <br>
-                  Sex: <span class="info30"><%= user.userKeys.sex %></span>
-                  <br>
-                  Birthday: <span class="info30">
-                    <%= moment(user.userKeys.birthdate).format('MMM Do YY'); %>
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                    </div>
-                  </span>
-                  <br>
-                  Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
-                  <br>
-                  <% if(!match){ %>
-                    <% if(user.isLoggedIn){ %>
-                      <span>
-                        <svg height="16" width="16">
-                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-                        </svg>
+                    Name: <span class="info30"><%= user.fullName %></span>
+                    <% if(currentUser && match){ %>
+                      <br>
+                      Email: <span class="info30"><%= user.email %>
+                        <% if(!user.isVerified){ %>
+                          <span class="text-xs orangecolor">Not Verified</span>
+                        <% } %>
                       </span>
-                      <span class="greencolor">Logged in</span>
-                    <% } else{ %>
-                      Last logout: <span id="timeLocalRelative" class="info30 nothing"></span>
-                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
                     <% } %>
-                  <br>
-                  <br>
-                    <% if(mutualClubs.length != 0){ %>
-                      <div class="info1">Mutual clubs: <div class="info30">
-                        <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
-                        <% if(i==0 && i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
-                          <% } else if(i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
-                          <% } else if(i>0 && i<len){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
-                          <% } else if(i==0){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
-                        <% }} %>
-                      </div></div>
-                    <% } %>
-                  <% } %>
-                  <% if(match){ %>
                     <br>
-                    <div class="info1">Following: <div class="info30">
-                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
-                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
-                    </div></div>
-                  <% } %>
-                  <div class="info30">
+                    Sex: <span class="info30"><%= user.userKeys.sex %></span>
+                    <br>
+                    Birthday: <span class="info30">
+                      <%= moment(user.userKeys.birthdate).format('MMM Do YY'); %>
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                      </div>
+                    </span>
+                    <br>
+                    <div class="info30">
                     <div id="account_info_form_div" class="greyback">
                       <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div class="valign">
@@ -425,6 +387,46 @@
                       </form>
                     </div>
                   </div>
+                </div>
+                <div class="info1">
+                  Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
+                  <br>
+                  <% if(!match){ %>
+                    <% if(user.isLoggedIn){ %>
+                      <span>
+                        <svg height="16" width="16">
+                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                        </svg>
+                      </span>
+                      <span class="greencolor">Logged in</span>
+                    <% } else{ %>
+                      Last logout: <span id="timeLocalRelative" class="info30 nothing"></span>
+                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                    <% } %>
+                  <br>
+                  <br>
+                    <% if(mutualClubs.length != 0){ %>
+                      <div class="info1">Mutual clubs: <div class="info30">
+                        <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
+                        <% if(i==0 && i==len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                          <% } else if(i==len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                          <% } else if(i>0 && i<len){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                          <% } else if(i==0){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                        <% }} %>
+                      </div></div>
+                    <% } %>
+                  <% } %>
+                  <% if(match){ %>
+                    <br>
+                    <div class="info1">Following: <div class="info30">
+                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
+                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
+                    </div></div>
+                  <% } %>
                 </div>
               </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">

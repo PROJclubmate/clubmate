@@ -2,10 +2,7 @@
     
 <div class="row no-gutters">
   <div class="col-lg-2 col-md-2 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
-  <div id="delegated-posts" class="col-lg-7 col-md-10">
-    <div id="server-posts">
-      <% //include ../partials/posts_index %>
-    </div>
+  <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
     <div class="my-4">
       <div class="d-inline-flex">
         <% if(currentUser){ %>
@@ -33,7 +30,10 @@
         <% } %>
       </div>
     </div>
-    <div id="client-posts" style="overflow: hidden;"></div>
+    <div id="server-posts-discover">
+      <% //include ../partials/posts_index %>
+    </div>
+    <div id="client-posts-discover" style="overflow: hidden;"></div>
     <div class="text-center pt-2">
       <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
         <span id="load-more-span"></span>Load

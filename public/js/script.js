@@ -553,6 +553,30 @@ $('#toggleOrgPageViewKey').change(function(e){
   }, 10000);
 });
 
+$('#client-posts-discover').on('click', '.discovercard', function(){
+  var id = $(this).attr('id');
+  var votecard = '#votecard'+id.substring(12);
+  var top = $(this).position().top;
+  var left = $(this).position().left;
+  var width = $(this).width();
+  var height = $(this).height();
+
+  $(votecard).css({top: top, left: left, position:'absolute'}).width(width).height(height);
+  $(votecard).css('display', 'block');
+});
+
+$('#client-posts-discover').on('click', '.discover-overlay', function(e){
+  var id = $(this).attr('id');
+  var votecard = '#votecard'+id.substring(8);
+  var likeBtnId = 'like-btn'+id.substring(8);
+  var heartBtnId = 'heart-btn'+id.substring(8);
+  if(e.target.parentElement.id == likeBtnId || e.target.parentElement.id == heartBtnId){
+    return;
+  } else{
+    $(votecard).css('display', 'none');
+  }
+});
+
 //================================================================================
 // AJAX
 //================================================================================
@@ -598,6 +622,60 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
           $('#like-count'+data._id).removeClass('greencolor3');
           $('#heart-count'+data._id).toggleClass('redcolor3');
         }
+      },
+      error: function(xhr) {
+        if(xhr.status == 404){
+          alert("Please Login first");
+          location = "/login";
+        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
+      }
+    })
+  });
+} else if(location.pathname.split('/').length == 2 && location.pathname.split('/').pop() == 'discover'){
+  $("div#delegated-posts-discover").on('click', '.vote', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var formData = $(this).closest('form').serializeArray();
+    formData.push({ name: this.name, value: this.value });
+    var formAction = $(this).closest('form').attr('action');
+    $.ajax({
+      url: formAction,
+      timeout: 3000,
+      data: formData,
+      type: 'PUT',
+      success: function(data){
+        $('#like-count'+data._id).text(data.likeCount);
+        $('#heart-count'+data._id).text(data.heartCount);
+
+        if(formData[0].name == 'like'){
+          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
+          }
+          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up discover-vote"></i>'
+          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
+            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up discover-vote greencolor"></i>');
+            $('#heart-btn'+data._id).html('<i class="far fa-heart discover-vote"></i>');
+          }
+          $('#like-count'+data._id).toggleClass('greencolor2');
+          $('#heart-count'+data._id).removeClass('redcolor2');
+        }
+        if(formData[0].name == 'heart'){
+          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
+            $('#heart-btn'+data._id).html('<i class="far fa-heart discover-vote"></i>');
+          }
+          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart discover-vote"></i>'
+          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
+            $('#heart-btn'+data._id).html('<i class="fas fa-heart discover-vote redcolor2"></i>');
+            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
+          }
+          $('#like-count'+data._id).removeClass('greencolor2');
+          $('#heart-count'+data._id).toggleClass('redcolor2');
+        }
+
+        setTimeout(function(){
+          var votecard = '#votecard'+data._id;
+          $(votecard).css('display', 'none');
+        }, 1000);
       },
       error: function(xhr) {
         if(xhr.status == 404){
