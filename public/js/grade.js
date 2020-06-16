@@ -5,8 +5,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var prefixes = ['webkit'];
-
 var Grade = function () {
     function Grade(container, img_selector, callback) {
         _classCallCheck(this, Grade);
@@ -69,16 +67,14 @@ var Grade = function () {
         key: 'getRGBAGradientValues',
         value: function getRGBAGradientValues(top) {
             return top.map(function (color, index) {
-                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.9' + ') ' + (index == 0 ? '0%' : '75%');
+                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.85' + ') ' + (index == 0 ? '0%' : '75%');
             }).join(',');
         }
     }, {
         key: 'getCSSGradientProperty',
         value: function getCSSGradientProperty(top) {
             var val = this.getRGBAGradientValues(top);
-            return prefixes.map(function (prefix) {
-                return 'background-image: -' + prefix + '-linear-gradient(\n                        135deg,\n                        ' + val + '\n                    )';
-            }).concat(['background-image: linear-gradient(\n                    135deg,\n                    ' + val + '\n                )']).join(';');
+            return 'background-image: linear-gradient(135deg, ' + val + ')';
         }
     }, {
         key: 'getMiddleRGB',
@@ -145,16 +141,17 @@ var Grade = function () {
             var item_name = 'grade-' + this.image.getAttribute('src');
             var top = null;
 
-            if (ls && ls.getItem(item_name)) {
-                top = JSON.parse(ls.getItem(item_name));
-            } else {
+            // localstorage PROBLEM?? gives null value sometimes
+            // if (ls && ls.getItem(item_name)) {
+            //     top = JSON.parse(ls.getItem(item_name));
+            // } else {
                 var chunked = this.getChunkedImageData();
                 top = this.getTopValues(this.getUniqValues(chunked));
-
-                if (ls) {
-                    ls.setItem(item_name, JSON.stringify(top));
-                }
-            }
+                // console.log('VALUES'+JSON.stringify(top, null, 2))
+                // if (ls) {
+                //     ls.setItem(item_name, JSON.stringify(top));
+                // }
+            // }
 
             if (this.callback) {
                 this.gradientData = top;

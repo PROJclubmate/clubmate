@@ -32,7 +32,7 @@
           <div class="boldtext desktoptext2 mobiletext3 valign">
             <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
               <% if((Date.now() - arr[i].pushedAt) < 3600000*24){ %>
-              <sup class="badge badge-light text-xxxxs">NEW</sup>
+              <sup class="badge badge-white text-xxxxs">NEW</sup>
               <% } %>
             </div>
             <div id="clear_update<%= i %>" class="nounderline clear_update">

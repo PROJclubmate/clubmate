@@ -1035,7 +1035,7 @@ function discover_posts_template(response){
           </span>
         <% } %>
       </div>
-      <div class="discovertop lineheight2">
+      <div class="discovertop lineheight2 boldtext">
         <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>">&gt;</a>
       </div>
       <div class="overlay-content">

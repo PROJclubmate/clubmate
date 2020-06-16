@@ -1075,6 +1075,9 @@ module.exports = {
       var admin = checkRank(rankUsers,req.user._id,1); 
       var moder = checkRank(rankUsers,req.user._id,2);
       if(req.body.newsUpdate && moder == true){
+        var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+          return clubUser.id;
+        });
         if(req.body.newsDate && req.body.newsDate != ''){
           var strDate = req.body.newsDate;
           var date = moment(strDate, 'MM-DD-YYYY').toDate();
@@ -1090,7 +1093,7 @@ module.exports = {
           var len = updatedClub.updates.length;
           var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
           'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
-          User.updateMany({userClubs: {$elemMatch: {id: updatedClub._id}}},
+          User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: updatedClub._id}}},
           {$push: {clubUpdates: userUpdate}}, function(err, updateUsers){
             if(err || !updateUsers){
               console.log(Date.now()+' : '+req.user._id+' => (profiles-33)updateUsers err:- '+JSON.stringify(err, null, 2));
@@ -1119,6 +1122,9 @@ module.exports = {
           }
         }
         if(req.body.delUpdate){
+          var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+            return clubUser.id;
+          });
           var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
           for(i=foundClub.updates.length-1;i>=0;i--){
             if(foundClub.updates[i]._id.equals(delUpdateId)){
@@ -1127,7 +1133,7 @@ module.exports = {
               if(timeDiff < 3600000*24){
                 var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
                 'clubId': foundClub._id, 'deleterName': req.user.fullName};
-                User.updateMany({clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
+                User.updateMany({_id: {$in: clubUserIdsArr}, clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
                 {$set: {'clubUpdates.$': update}}, function(err, updateUsers){
                   if(err || !updateUsers){
                     console.log(Date.now()+' : '+req.user._id+' => (profiles-35)updateUsers err:- '+JSON.stringify(err, null, 2));
@@ -1255,8 +1261,11 @@ module.exports = {
           }
         }
         if(req.body.name && foundClub.name != req.body.name){
+          var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+            return clubUser.id;
+          });
           foundClub.name = req.body.name;
-          User.updateMany({userClubs: {$elemMatch: {id: foundClub._id}}},
+          User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: foundClub._id}}},
           {$set: {'userClubs.$.clubName': req.body.name}}, function(err, updateUsers){
             if(err || !updateUsers){
               console.log(Date.now()+' : '+req.user._id+' => (profiles-36)updateUsers err:- '+JSON.stringify(err, null, 2));

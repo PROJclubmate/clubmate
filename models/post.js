@@ -88,7 +88,6 @@ const postSchema = new Schema({
   createdAt: {type: Date, default: Date.now}
 });
 
-postSchema.index({clubOrgKey: 1});
 postSchema.index({postClub: 1});
 postSchema.index({'postAuthor.id': 1});
 postSchema.index({createdAt: 1});
