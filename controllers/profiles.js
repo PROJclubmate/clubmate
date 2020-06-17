@@ -1610,52 +1610,6 @@ module.exports = {
       user.save(function(err){
         req.logIn(user, function(err){
           if (err){return next(err);}
-
-
-          // TEMP
-          User.find({}).select({_id: 1, userClubs: 1}).exec(function(err, foundTempUsers){
-          if(err || !foundTempUsers){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-9)foundTempUsers err:- '+JSON.stringify(err, null, 2));
-          } else{
-            var userClubIdsArr = [];
-            for(var i=0;i<foundTempUsers.length;i++){
-              var obj = {};
-              obj['userId'] = foundTempUsers[i]._id;
-              obj['clubId'] = foundTempUsers[i].userClubs.map(function(userClub){
-                return userClub.id;
-              });
-              userClubIdsArr.push(obj);
-            }
-            // console.log('USERS'+JSON.stringify(userClubIdsArr, null, 2));
-            Club.find({}).select({_id: 1, conversationId: 1}).exec(async function(err, foundTempClubs){
-            if(err || !foundTempClubs){
-              console.log(Date.now()+' : '+req.user._id+' => (profiles-9)foundTempClubs err:- '+JSON.stringify(err, null, 2));
-            } else{
-              // console.log('CLUBS'+JSON.stringify(foundTempClubs, null, 2));
-              for(var j=0;j<userClubIdsArr.length;j++){
-                await User.findOne({_id: userClubIdsArr[j].userId})
-                .select({_id: 1, userClubs: 1, fullName: 1}).exec(function(err, updateTempUsers){
-                  // console.log('UPDATE USERS'+JSON.stringify(updateTempUsers, null, 2));
-                  for(k=0;k<updateTempUsers.userClubs.length;k++){
-                    for(l=0;l<foundTempClubs.length;l++){
-                      if(updateTempUsers.userClubs[k].id.equals(foundTempClubs[l]._id)){
-                        if(foundTempClubs[l].conversationId){
-                          updateTempUsers.userClubs[k].conversationId = mongoose.Types.ObjectId(foundTempClubs[l].conversationId);
-                        }
-                      }
-                    }
-                  }
-                  // console.log('NEW!!'+updateTempUsers);
-                  updateTempUsers.save();
-                });
-              }
-            }
-            });
-          }
-          });
-
-
-
           return res.redirect('/home');
         });
       });
