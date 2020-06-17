@@ -1610,48 +1610,6 @@ module.exports = {
       user.save(function(err){
         req.logIn(user, function(err){
           if (err){return next(err);}
-
-
-          // TEMP 1
-          Conversation.find({}, async function(err, foundConversations){
-            for(var j=0;j<foundConversations.length;j++){
-              await Conversation.findOne({_id: foundConversations[j]._id}, function(err, updateConversation){
-                var paricipantIdsArr = [];
-                for(k=0;k<updateConversation.participants.length;k++){
-                  paricipantIdsArr.push(updateConversation.participants[k]);
-                }
-                updateConversation.seenMsgCursors = []; var obj = {};
-                for(var l=0;l<paricipantIdsArr.length;l++){
-                  obj['id'] = paricipantIdsArr[l];
-                  updateConversation.seenMsgCursors.push(obj);
-                }
-                updateConversation.save();
-              });
-            }
-          });
-
-          // TEMP 2
-          ClubConversation.find({}, async function(err, foundClubConversations){
-            for(var j=0;j<foundClubConversations.length;j++){
-              await Club.findOne({_id: foundClubConversations[j].clubId})
-              .select({_id: 1, clubUsers: 1, conversationId: 1}).exec(async function(err, foundTempClub){
-                var clubMemberIdsArr = foundTempClub.clubUsers.map(function(clubUsers){
-                  return clubUsers.id;
-                });
-                await ClubConversation.findOne({_id: foundTempClub.conversationId}, function(err, updateClubConversation){
-                  updateClubConversation.seenMsgCursors = []; var obj = {};
-                  for(k=0;k<clubMemberIdsArr.length;k++){
-                    obj['id'] = clubMemberIdsArr[k];
-                    updateClubConversation.seenMsgCursors.push(obj);
-                  }
-                  updateClubConversation.save();
-                });
-              });
-            }
-          });
-
-
-
           return res.redirect('/home');
         });
       });
