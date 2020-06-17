@@ -3,11 +3,21 @@ const mongoose = require('mongoose'),
 
 const clubConversationSchema = new Schema({
   isActive: {type: Boolean, default: true},
-  latestMessage: String,
   clubId: {
     type: Schema.Types.ObjectId,
     ref: 'Club'
   },
+  latestMessage: String,
+  messageCount: {type: Number, default: 1},
+  seenMsgCursors: [{
+    id: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    cursor: {type: Number, default: 0},
+    lastSeen: Date,
+    _id: false
+  }],
   bucketNum: {type: Number, default: 1},
   messageBuckets: [
     {

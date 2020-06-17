@@ -18,8 +18,7 @@ module.exports = function(io){
 		  .exec(function(err, foundConversation){ 
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-1)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 	      if(contains(foundConversation.participants,req.user._id)){
 	      	var foundMessageIds = foundConversation.messageBuckets.map(function(messages){
@@ -44,8 +43,7 @@ module.exports = function(io){
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-3)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 	    	var bucket = foundConversation.messageBuckets;
 	    	for(var i=bucket.length-1;i>=0;i--){
@@ -75,12 +73,10 @@ module.exports = function(io){
 		  if(!req.body.composedMessage || req.body.composedMessage == ''){
 		  	return res.sendStatus(400);
 		  }
-		  Conversation.findOne({_id: req.params.conversationId, isBlocked: false})
-		  .exec(function(err, foundConversation){
+		  Conversation.findOne({_id: req.params.conversationId, isBlocked: false}, function(err, foundConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-5)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 		    if(foundConversation){
 		      if(contains(foundConversation.participants,req.user._id)){
@@ -92,23 +88,23 @@ module.exports = function(io){
 		        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 		        if(err || !newMessageBucket){
 		          console.log(req.user._id+' => (conversations-6)newMessageBucket err:- '+JSON.stringify(err, null, 2));
-		          req.flash('error', 'Something went wrong :(');
-		          return res.redirect('back');
+		          return res.sendStatus(500);
 		        } else{
 		          if(newMessageBucket.count == 1){
 		            foundConversation.messageBuckets.push(newMessageBucket._id);
+		            foundConversation.messageCount += 1;
 		            foundConversation.save();
 		          } else if(newMessageBucket.count >= 50){
 		            foundConversation.bucketNum += 1;
+		            foundConversation.messageCount += 1;
 		            foundConversation.save();
 		          } else{
+		          	foundConversation.messageCount += 1;
 		            foundConversation.save();
 		          }
 		          if(err){
 		            console.log(req.user._id+' => (conversations-7) err:- '+JSON.stringify(err, null, 2));
-		            req.flash('error', 'Something went wrong :(');
-		            return res.redirect('back');
-		            sendStatus(500);
+		            return res.sendStatus(500);
 		          }
 		          var reciever;
 		          io.to(req.params.conversationId).emit('message', req.body);
@@ -123,8 +119,7 @@ module.exports = function(io){
 			        {$set: {'userChats.$.lastMessage': req.body.composedMessage}}, function(err, foundReceivingUser){
 					      if(err || !foundReceivingUser){
 					        console.log(req.user._id+' => (conversations-8)foundReceivingUser err:- '+JSON.stringify(err, null, 2));
-					        req.flash('error', 'Something went wrong :(');
-					        return res.redirect('back');
+					        return res.sendStatus(500);
 					      }
 					      // Close pending xhr request
 			        	return res.sendStatus(200);
@@ -144,8 +139,7 @@ module.exports = function(io){
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-10)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 				var reciever;
 		    for(var j=0;j<foundConversation.participants.length;j++){
@@ -158,8 +152,7 @@ module.exports = function(io){
 		    {$set: {'userChats.$.lastMessage': ''}}, function(err, foundCurrentUser){
 		      if(err || !foundCurrentUser){
 		        console.log(req.user._id+' => (conversations-11)foundCurrentUser err:- '+JSON.stringify(err, null, 2));
-		        req.flash('error', 'Something went wrong :(');
-		        return res.redirect('back');
+		        return res.sendStatus(500);
 		      }
 		    	return res.sendStatus(200);
 		    });
@@ -174,8 +167,7 @@ module.exports = function(io){
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-12)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 	    	foundConversation.isBlocked = true;
     		foundConversation.blockedBy = req.user._id;
@@ -188,8 +180,7 @@ module.exports = function(io){
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-13)foundConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else{
 	    	foundConversation.isBlocked = false;
     		foundConversation.blockedBy = undefined;
@@ -236,15 +227,13 @@ module.exports = function(io){
 	    User.updateOne({_id: req.user._id},{$push: {userChats: currentUserUserChats}}, function(err, currentUser){
 	      if(err || !currentUser){
 	        console.log(req.user._id+' => (conversations-14)currentUser err:- '+JSON.stringify(err, null, 2));
-	        req.flash('error', 'Something went wrong :(');
-	        return res.redirect('back');
+	        return res.sendStatus(500);
 	      }
 	    });
 	    User.updateOne({_id: req.body.recipientId}, {$push: {userChats: foundUserUserChats}}, function(err, foundUser){
 	      if(err || !foundUser){
 	        console.log(req.user._id+' => (conversations-15)foundUser err:- '+JSON.stringify(err, null, 2));
-	        req.flash('error', 'Something went wrong :(');
-	        return res.redirect('back');
+	        return res.sendStatus(500);
 	      }
 		    res.sendStatus(200);
 	    });
@@ -259,8 +248,7 @@ module.exports = function(io){
 		  .exec(function(err, foundClubConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
 	      	var foundMessageIds = foundClubConversation.messageBuckets.map(function(messages){
@@ -286,8 +274,7 @@ module.exports = function(io){
 		  .exec(function(err, foundClubConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-18)foundClubConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	    	var bucket = foundClubConversation.messageBuckets;
 	    	for(var i=bucket.length-1;i>=0;i--){
@@ -322,8 +309,7 @@ module.exports = function(io){
 		  .exec(function(err, foundClubConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
-		    req.flash('error', 'Something went wrong :(');
-		    return res.redirect('back');
+		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
 	      	foundClubConversation.latestMessage = req.body.composedMessage;
@@ -335,23 +321,23 @@ module.exports = function(io){
 	        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 	        if(err || !newMessageBucket){
 	          console.log(req.user._id+' => (conversations-21)newMessageBucket err:- '+JSON.stringify(err, null, 2));
-	          req.flash('error', 'Something went wrong :(');
-	          return res.redirect('back');
+	          return res.sendStatus(500);
 	        } else{
 	          if(newMessageBucket.count == 1){
 	            foundClubConversation.messageBuckets.push(newMessageBucket._id);
+	            foundClubConversation.messageCount += 1;
 	            foundClubConversation.save();
 	          } else if(newMessageBucket.count >= 50){
 	            foundClubConversation.bucketNum += 1;
+	            foundClubConversation.messageCount += 1;
 	            foundClubConversation.save();
 	          } else{
+	          	foundClubConversation.messageCount += 1;
 	            foundClubConversation.save();
 	          }
 	          if(err){
 	            console.log(req.user._id+' => (conversations-22) err:- '+JSON.stringify(err, null, 2));
-	            req.flash('error', 'Something went wrong :(');
-	            return res.redirect('back');
-	            sendStatus(500);
+	            return res.sendStatus(500);
 	          }
 	          io.to(req.params.conversationId).emit('clubMessage', req.body); 
 	          return res.sendStatus(200);
@@ -388,12 +374,23 @@ module.exports = function(io){
 	    clubConversation.latestMessage = req.body.composedMessage;
 	    clubConversation.save();
 	    // Insert conversationId into clubUsers
-	    Club.updateOne({_id: req.body.clubId, isActive: true},{$set: {conversationId: clubConversation._id}}, function(err, foundClub){
+	    Club.findOneAndUpdate({_id: req.body.clubId, isActive: true}, 
+	    {$set: {conversationId: clubConversation._id}}, function(err, foundClub){
 	      if(err){
 	        console.log(req.user._id+' => (conversations-24)foundClub err:- '+JSON.stringify(err, null, 2));
-	        req.flash('error', 'Something went wrong :(');
-	        return res.redirect('back');
+	        return res.sendStatus(500);
 	      }
+	      var clubMembersArr = foundClub.clubUsers.map(function(clubUser){
+          return clubUser.id;
+        });
+	      // Insert conversationId into userClubs
+		    User.updateMany({_id: {$in: clubMembersArr}, userClubs: {$elemMatch: {id: foundClub._id}}}, 
+		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err, updateUsers){
+		      if(err){
+		        console.log(req.user._id+' => (conversations-25)updateUsers err:- '+JSON.stringify(err, null, 2));
+		        return res.sendStatus(500);
+		      }
+		    });
 	    });
 	    res.sendStatus(200);
 	  }
