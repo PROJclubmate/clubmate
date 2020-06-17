@@ -1318,7 +1318,6 @@ input[type="file"]#inputavatar{
 }
 .btn.btn-round:focus{
   border-radius: 2rem;
-  box-shadow: none;
 }
 .btn-notification{
   color: #007bff !important;

@@ -84,6 +84,7 @@ module.exports = function(io){
 		  } else{
 		    if(foundConversation){
 		      if(contains(foundConversation.participants,req.user._id)){
+		      	foundConversation.latestMessage = req.body.composedMessage;
 		        Message.findOneAndUpdate({conversationId: foundConversation._id, bucket: foundConversation.bucketNum},
 		        {$inc: {count: 1},
 		          $push: {messages: {authorId: req.user._id, text: req.body.composedMessage}
@@ -117,7 +118,7 @@ module.exports = function(io){
 		          		break;
 		          	}
 			        }
-			        // Seems very expensive, 2 db operations for each msg(but then Nodejs is fast right? lel)
+			        // Seems very expensive, 3 db operations for each msg(but then Nodejs is fast right? lel)
 			        User.updateOne({_id: reciever, 'userChats.userId': req.user._id},
 			        {$set: {'userChats.$.lastMessage': req.body.composedMessage}}, function(err, foundReceivingUser){
 					      if(err || !foundReceivingUser){
@@ -220,6 +221,7 @@ module.exports = function(io){
 	    });
 	    message.save();
 	    conversation.messageBuckets.push(message._id);
+	    conversation.latestMessage = req.body.composedMessage;
 	    conversation.save();
 	    var foundUserObj={}, currentUserObj={}, foundUserUserChats=[], currentUserUserChats=[];
 	    // foundUser userChats push

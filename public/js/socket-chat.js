@@ -34,7 +34,6 @@ if(socket !== undefined){
           authorId: authorId
         });
       } else{
-        // TEMPORARY 'till server function(msgStatus)/event 'status' is not working
         setStatus('Pl. enter a message');
       }
       $("#user-send").blur();
@@ -82,15 +81,7 @@ if(socket !== undefined){
   // Listen on typing (status from server)
   socket.on('typing', function(data){
     setStatus(data + ' is typing...');
-  })
-  // socket.on('status', function(data){
-  //   // get message status
-  //   setStatus((typeof data === 'object')? data.message : data);
-  //   // If status is clear, clear text
-  //   if(data.clear){
-  //     $('#user-message').val('');
-  //   }
-  // });
+  });
   // From routes.js
   socket.on('message', newMessage)
 

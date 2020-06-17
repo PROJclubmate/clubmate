@@ -94,6 +94,10 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Club'
     },
+    conversationId: {
+      type: Schema.Types.ObjectId,
+      ref: 'ClubConversation'
+    },
     clubName: String,
     rank: {
       type: Number,

@@ -13,6 +13,7 @@ const conversationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  latestMessage: String,
   bucketNum: {type: Number, default: 1},
   messageBuckets: [
     {

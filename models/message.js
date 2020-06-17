@@ -3,8 +3,7 @@ const mongoose = require('mongoose'),
 
 const messageSchema = new Schema({
 	conversationId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Conversation'
+    type: Schema.Types.ObjectId
   },
   bucket: {type: Number, default: 1},
   count: {
