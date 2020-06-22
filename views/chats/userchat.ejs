@@ -1,5 +1,5 @@
 <div class="card mt-0 border-light">
-  <div id="drop-chat" onclick="none_display('pushmsg'); minimise();" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
+  <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
     <div class="text-sm mobilebold">
       <span id="lastMsg">Direct chat</span>
       <% if(lastMessage && lastMessage != ''){ %>
@@ -13,7 +13,7 @@
     </div>
     <div class="boldtext text-xxxs ml-2">
       <% if(conversationId && conversationId != ''){ %>
-        <% if(user.isLoggedIn){ %>
+        <% if(recepient.isLoggedIn){ %>
           <svg id="isUserOnChatbox" height="12" width="12">
             <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
           </svg>
@@ -30,7 +30,31 @@
     </div>
   </div>
   <div id="chatbox" class="yellowback collapse">
-    <div id="messages" class="card-body3 scroll moz-scroll">
+    <div id="messages" class="messages2 card-body3 scroll moz-scroll">
+      <div class="pushmsg card mt-0 chat-status">
+        <div class="text-sm darkgrey valign ml-1">
+          <div id="msg-status">Status: Idle</div>
+          <div class="text-xs darkgrey chat-input-tool">
+            <span class="emoji-panel">
+              <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
+                  <% include ../partials/emoji_picker2 %>
+                </div>
+                <i class="far fa-laugh-wink"></i>
+              </button>
+            </span>
+            <% if(conversationId && conversationId != '' && !isBlocked){ %>
+              <span id="block-user-span">
+                <span id="block-user" class="btn btn-sm chat-input-tool" title="Block user" value="true"><i class="fas fa-ban"></i></span>
+              </span>
+            <% } else if(conversationId && conversationId != '' && isBlocked && !isBlockedByFoundUser){ %>
+              <span id="block-user-span">
+                <span id="block-user" class="btn btn-sm chat-input-tool redcolor" title="Unblock user" value="false"><i class="fas fa-ban"></i></span>
+              </span>
+            <% } %>
+          </div>
+        </div>
+      </div>
       <div class="text-center">
         <button id="load-prevMsgs-btn" class="chat-head4 nodisplay" value="" type="button">
           <span id="load-prevMsgs-span"></span>LOAD PREV
@@ -47,32 +71,6 @@
       <% if(currentUser){ %>
         <div class="pushmsg"><button id="user-send" class="btn btn-sm btn-success btn-round ml-1" title="Send club message"><i class="fab fa-telegram-plane"></i></button></div>
       <% } %>
-    </div>
-  </div>
-</div>
-<div class="pushmsg card mt-0" style="border-top: none;">
-  <div class="text-sm darkgrey valign ml-1">
-    <div id="msg-status">Status: Idle</div>
-    <div class="text-xs darkgrey chat-input-tool">
-      <span class="emoji-panel">
-        <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
-            <% include ../partials/emoji_picker2 %>
-          </div>
-          <i class="far fa-laugh-wink"></i>
-        </button>
-      </span>
-      <% if(conversationId && conversationId != '' && !isBlocked){ %>
-        <span id="block-user-span">
-          <span id="block-user" class="btn btn-sm chat-input-tool" title="Block user" value="true"><i class="fas fa-ban"></i></span>
-        </span>
-      <% } else if(conversationId && conversationId != '' && isBlocked && !isBlockedByFoundUser){ %>
-        <span id="block-user-span">
-          <span id="block-user" class="btn btn-sm chat-input-tool redcolor" title="Unblock user" value="false"><i class="fas fa-ban"></i></span>
-        </span>
-      <% } %>
-      <span id="thumbstack" class="nopad btn btn-sm chat-input-tool" title="Pin chatbox"><i class="fas fa-thumbtack"></i></span>
-      <span id="arrows-v" class="nopad btn btn-sm chat-input-tool" title="Expand chatbox"><i class="fas fa-arrows-alt-v"></i></span>
     </div>
   </div>
 </div>

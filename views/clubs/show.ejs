@@ -85,7 +85,7 @@
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs btn-primary overlay3 opaque" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs btn-primary overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } %>
               </div>
@@ -588,7 +588,7 @@
     </div>
   </div>
   <% if(currentUser && 0 <= rank && rank <=4){ %>
-    <div id="pin-chatbox" class="col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
+    <div id="pin-chatbox" class="chatbox-club col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
       <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
         <% include ../partials/clubchat %>
       </div>

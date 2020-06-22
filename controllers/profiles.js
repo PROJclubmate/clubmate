@@ -132,8 +132,7 @@ module.exports = {
             {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           if(hasConversation == true){
-            Conversation.findOne({_id: conversationId})
-            .exec(function(err, foundConversation){
+            Conversation.findOne({_id: conversationId}, function(err, foundConversation){
             if(err || !foundConversation){
               console.log(Date.now()+' : '+req.user._id+' => (profiles-3)foundConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -700,69 +699,73 @@ module.exports = {
   },
 
   profilesNewClub(req, res, next){
-    cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1080, 
-      height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'},
-    function(err, result){
-    if(err){
-      console.log(Date.now()+' : '+req.user._id+' => (profiles-17)avatarUpload err:- '+JSON.stringify(err, null, 2));
+    User.findById(req.params.id).populate('userClubs.id').exec(function(err, foundUser){
+    if(err || !foundUser){
+      console.log(Date.now()+' : '+req.user._id+' => (profiles-17)foundUser err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      req.body.avatar = result.secure_url;
-      req.body.avatarId = result.public_id;
-      User.findById(req.params.id).populate('userClubs.id').exec(function(err, foundUser){
-      if(err || !foundUser){
-        console.log(Date.now()+' : '+req.user._id+' => (profiles-18)foundUser err:- '+JSON.stringify(err, null, 2));
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else{
-        Club.create(req.body, function(err, newClub){
-        if (err || !newClub){
-          console.log(Date.now()+' : '+req.user._id+' => (profiles-19)newClub err:- '+JSON.stringify(err, null, 2));
+      if(req.user && req.user._id.equals(req.params.id)){
+        cloudinary.v2.uploader.upload(req.file.path, {folder: 'clubAvatars/', use_filename: true, width: 1080, 
+          height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'},
+        function(err, result){
+        if(err){
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-18)avatarUpload err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          newClub.info.rules = `1). PLAY AN ACTIVE ROLE
+          req.body.avatar = result.secure_url;
+          req.body.avatarId = result.public_id;
+          Club.create(req.body, function(err, newClub){
+          if (err || !newClub){
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-19)newClub err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            newClub.info.rules = `1). PLAY AN ACTIVE ROLE
 2). RESPECT THE OTHER MEMBERS OF THE CLUB
 3). NO VULGAR PICS TO BE UPLOADED
 4). NO USE OF ABUSIVE LANGUAGE
 5). ENJOY!`;
-          newClub.info.description = newClub.name;
-          //pushing user details into clubs
-          var obja = {};
-          obja['id'] = foundUser._id;
-          obja['userRank'] = 0;
-          newClub.clubUsers.push(obja);
-          newClub.save(function(err, newClub){
-          if (err || !newClub){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-20)newClub err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            newClub.populate('clubUsers.id', function(err, populatedClub){
-            if (err || !populatedClub){
-              console.log(Date.now()+' : '+req.user._id+' => (profiles-21)populatedClub err:- '+JSON.stringify(err, null, 2));
+            newClub.info.description = newClub.name;
+            //pushing user details into clubs
+            var obja = {};
+            obja['id'] = foundUser._id;
+            obja['userRank'] = 0;
+            newClub.clubUsers.push(obja);
+            newClub.save(function(err, newClub){
+            if (err || !newClub){
+              console.log(Date.now()+' : '+req.user._id+' => (profiles-20)newClub err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              clubUsers = populatedClub.clubUsers;
-              //pushing club details into users
-              var objb = {};
-              objb['id'] = newClub._id;
-              objb['rank'] = 0;
-              objb['clubName'] = newClub.name;
-              foundUser.userClubs.push(objb);
-              foundUser.save();
-              req.flash('success', 'Successfully updated');
-              res.redirect('/clubs/' + newClub._id);
+              newClub.populate('clubUsers.id', function(err, populatedClub){
+              if (err || !populatedClub){
+                console.log(Date.now()+' : '+req.user._id+' => (profiles-21)populatedClub err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                clubUsers = populatedClub.clubUsers;
+                //pushing club details into users
+                var objb = {};
+                objb['id'] = newClub._id;
+                objb['rank'] = 0;
+                objb['clubName'] = newClub.name;
+                foundUser.userClubs.push(objb);
+                foundUser.save();
+                req.flash('success', 'Successfully updated');
+                res.redirect('/clubs/' + newClub._id);
+              }
+              });
             }
             });
           }
           });
         }
         });
+      } else{
+        res.redirect('back');
       }
-      });
     }
     });
   },
@@ -958,17 +961,22 @@ module.exports = {
       console.log(Date.now()+' : '+'(profiles-27)foundClub err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
-      var endpoints = req.query.endpoints.split(',');
-      var start = Number(endpoints[0]), end = Number(endpoints[1]);
-      var MemberRequests_50_profilePic = [];
-      var limitedUsers = foundClub.memberRequests.slice(start,end);
-      for(var k=0;k<limitedUsers.length;k++){
-        MemberRequests_50_profilePic[k] = cloudinary.url(limitedUsers[k].userId.profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      var admin = checkRank(foundClub.clubUsers,req.user._id,1);
+      if(admin){
+        var endpoints = req.query.endpoints.split(',');
+        var start = Number(endpoints[0]), end = Number(endpoints[1]);
+        var MemberRequests_50_profilePic = [];
+        var limitedUsers = foundClub.memberRequests.slice(start,end);
+        for(var k=0;k<limitedUsers.length;k++){
+          MemberRequests_50_profilePic[k] = cloudinary.url(limitedUsers[k].userId.profilePicId,
+          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        }
+        var newStart = (start+10).toString(), newEnd = (end+10).toString();
+        var newEndpoints = newStart+','+newEnd;
+        return res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub});
+      } else{
+        res.redirect('back');
       }
-      var newStart = (start+10).toString(), newEnd = (end+10).toString();
-      var newEndpoints = newStart+','+newEnd;
-      return res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub});
     }
     });
   },
@@ -1362,10 +1370,15 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      featuredPhotos = foundClub.featuredPhotos;
-      clubName = foundClub.name;
-      clubId = foundClub._id;
-      res.render('clubs/featured_photos', {featuredPhotos, clubName, clubId});
+      var moder = checkRank(foundClub.clubUsers,req.user._id,2);
+      if(moder){
+        featuredPhotos = foundClub.featuredPhotos;
+        clubName = foundClub.name;
+        clubId = foundClub._id;
+        res.render('clubs/featured_photos', {featuredPhotos, clubName, clubId});
+      } else{
+        res.redirect('back');
+      }
     }
     });
   },
@@ -1377,52 +1390,57 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
-        var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-        use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-        var obj = {};
-        obj['image'] = result.secure_url;
-        obj['imageId'] = result.public_id;
-        obj['heading'] = req.body.heading;
-        obj['description'] = req.body.description;
-        foundClub.featuredPhotos.push(obj);
-        foundClub.save();
-        req.flash('success', 'Successfully submitted');
-        return res.redirect('/clubs/'+req.params.id+'/featured_photos');
-      }
-      if(req.body.delete && foundClub.featuredPhotos.length > 0){
-        for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
-          if(foundClub.featuredPhotos[i]._id.equals(req.body.delete)){
-            await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
-            foundClub.featuredPhotos.splice(i,1);
-            foundClub.save();
-            break;
-          }
+      var moder = checkRank(foundClub.clubUsers,req.user._id,2);
+      if(moder){
+        if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
+          var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
+          use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
+          var obj = {};
+          obj['image'] = result.secure_url;
+          obj['imageId'] = result.public_id;
+          obj['heading'] = req.body.heading;
+          obj['description'] = req.body.description;
+          foundClub.featuredPhotos.push(obj);
+          foundClub.save();
+          req.flash('success', 'Successfully submitted');
+          return res.redirect('/clubs/'+req.params.id+'/featured_photos');
         }
-        req.flash('success', 'Successfully deleted');
-        return res.redirect('/clubs/'+req.params.id+'/featured_photos');
-      }
-      if(req.body.update && foundClub.featuredPhotos.length > 0){
-        for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
-          if(foundClub.featuredPhotos[i]._id.equals(req.body.update)){
-            if(req.file){
+        if(req.body.delete && foundClub.featuredPhotos.length > 0){
+          for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
+            if(foundClub.featuredPhotos[i]._id.equals(req.body.delete)){
               await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
-              var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
-              use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-              foundClub.featuredPhotos[i].image = result.secure_url;
-              foundClub.featuredPhotos[i].imageId = result.public_id;
-              foundClub.featuredPhotos[i].heading = req.body.heading;
-              foundClub.featuredPhotos[i].description = req.body.description;
+              foundClub.featuredPhotos.splice(i,1);
               foundClub.save();
-            } else{
-              foundClub.featuredPhotos[i].heading = req.body.heading;
-              foundClub.featuredPhotos[i].description = req.body.description;
-              foundClub.save();
+              break;
             }
           }
+          req.flash('success', 'Successfully deleted');
+          return res.redirect('/clubs/'+req.params.id+'/featured_photos');
         }
-        req.flash('success', 'Successfully updated');
-        return res.redirect('/clubs/'+req.params.id+'/featured_photos');
+        if(req.body.update && foundClub.featuredPhotos.length > 0){
+          for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
+            if(foundClub.featuredPhotos[i]._id.equals(req.body.update)){
+              if(req.file){
+                await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
+                var result = await cloudinary.v2.uploader.upload(req.file.path, {folder: 'featuredClubPhotos/',
+                use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'});
+                foundClub.featuredPhotos[i].image = result.secure_url;
+                foundClub.featuredPhotos[i].imageId = result.public_id;
+                foundClub.featuredPhotos[i].heading = req.body.heading;
+                foundClub.featuredPhotos[i].description = req.body.description;
+                foundClub.save();
+              } else{
+                foundClub.featuredPhotos[i].heading = req.body.heading;
+                foundClub.featuredPhotos[i].description = req.body.description;
+                foundClub.save();
+              }
+            }
+          }
+          req.flash('success', 'Successfully updated');
+          return res.redirect('/clubs/'+req.params.id+'/featured_photos');
+        }
+      } else{
+        res.redirect('back');
       }
     }
     });
@@ -1783,7 +1801,7 @@ function escapeRegExp(str){
 }
 
 function checkRank(clubUsers,userId,rank){
-  var ok;
+  var ok = false;
   clubUsers.forEach(function(user){
     if(user.id.equals(userId) && user.userRank <= rank){
       ok = true;

@@ -8,8 +8,8 @@ const express  = require('express'),
 //	================================	/posts/:post_id/discussions  ====================================
 
 // Create a new subPost in discussion
-router.post('/clubs/:club_id/posts/:post_id/discussions', upload.array('images', 10),
-middleware.isLoggedIn, discussionsNew);
+router.post('/clubs/:club_id/posts/:post_id/discussions', middleware.isLoggedIn, upload.array('images', 10), 
+discussionsNew);
 
 // Navigate pages(AJAX)
 router.get('/clubs/:club_id/posts/:post_id/m-sP', middleware.isLoggedIn, discussionsPagination);

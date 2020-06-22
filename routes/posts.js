@@ -38,10 +38,10 @@ router.get('/clubs/:club_id/posts/:post_id', postsShow);
 router.get('/clubs/:club_id/posts/:post_id/subPost/:bucket_id', middleware.isLoggedIn, subPostQuote);
 
 // Update post
-router.put('/clubs/:club_id/posts/:post_id', middleware.checkPostOwnership, postsUpdate);
+router.put('/clubs/:club_id/posts/:post_id', middleware.isLoggedIn, postsUpdate);
 
 // Delete post
-router.delete('/clubs/:club_id/posts/:post_id', middleware.checkPostOwnership, postsDelete);
+router.delete('/clubs/:club_id/posts/:post_id', middleware.isLoggedIn, postsDelete);
 
 // Vote (AJAX)
 router.put('/posts/:post_id/vote', middleware.isLoggedIn, postsVote);

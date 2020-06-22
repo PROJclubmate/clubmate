@@ -9,7 +9,7 @@ const express  = require('express'),
 router.post('/posts/:post_id/comments', middleware.isLoggedIn, commentsCreate);
 
 // Get commments edit page
-router.get('/posts/:post_id/comments/:bucket_id/:comment_id/edit', middleware.checkCommentOwnership, commentsEditPage);
+router.get('/posts/:post_id/comments/:bucket_id/:comment_id/edit', middleware.isLoggedIn, commentsEditPage);
 
 // Update comments
 router.put('/comments/:bucket_id/:comment_id', middleware.checkCommentOwnership, commentsUpdate);

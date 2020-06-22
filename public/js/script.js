@@ -111,7 +111,13 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       $('#lastMsg-hidden').toggleClass("nodisplay");
     });
     if($('#mypage').length){
+      $('#mobile_toggler').addClass("nodisplay");
+      $('#chat_list_mobile').removeClass("nodisplay");
       $('#brandname').addClass("name-green");
+    }
+  } else{
+    if($('#mypage').length){
+      $('#chat_list').removeClass("nodisplay");
     }
   }
 }
@@ -271,7 +277,7 @@ function toggleclass_display(id){
 }
 //Block element display
 function block_display(id){
-    var x = document.getElementsByClassName(id);
+  var x = document.getElementsByClassName(id);
 	var i;
 	for (i = 0; i < x.length; i++){
 		x[i].style.display = 'block';
@@ -279,7 +285,7 @@ function block_display(id){
 }
 //None element display
 function none_display(id){
-    var x = document.getElementsByClassName(id);
+  var x = document.getElementsByClassName(id);
 	var i;
 	for (i = 0; i < x.length; i++){
 		x[i].style.display = 'none';
@@ -374,12 +380,18 @@ $('#inputprofilePic').change(function(){
 	$(this).prev('label').text(truncated);
 	$('.overlay2').css('display','block');
 });
+$('#inputprofilePic2').change(function(){
+  var i = $(this).prev('label').clone();
+  var file = $('#inputprofilePic2')[0].files[0].name;
+  var truncated = file.trunc(15);
+  $(this).prev('label').text(truncated);
+  $('.overlay2').css('display','block');
+});
 $('#inputavatar').change(function(){
 	var i = $(this).prev('label').clone();
 	var file = $('#inputavatar')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
-	$('.overlay2').css('display','block');
 });
 
 // Privacy select button
@@ -568,6 +580,15 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
   }
 });
 
+$('.chat-item').click(function(){
+  var id = $(this).attr('id').substring(9);
+  var type = $(this).attr('value');
+  $('.chat-form').append('<input type="hidden" name="'+type+'" value="'+id+'">').submit();
+});
+
+function minimise(){
+  $('.pin-chatbox').toggleClass("width-inherit");
+}
 //================================================================================
 // AJAX
 //================================================================================

@@ -78,10 +78,10 @@
                   <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
                   <% if(currentUser && match){ %>
                     <form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-                      <label for="inputavatar" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
+                      <label for="inputprofilePic2" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
                         <i class="fas fa-upload"></i> Update profile pic
                       </label>
-                      <input type="file" id="inputavatar" class="text-sm" name="profilePic" accept="image/*" required>
+                      <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
                       <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                     </form>
                   <% } %>
@@ -745,7 +745,7 @@
     </div>
   </div>
   <% if(currentUser && !match){ %>
-    <div id="pin-chatbox" class="col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
+    <div id="pin-chatbox" class="chatbox-user col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
       <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUser._id %>">
         <% include ../partials/userchat %>
       </div>

@@ -60,7 +60,7 @@ if(socket !== undefined){
   $("#user-message").focus(function(){
     socket.emit('userOnChatbox');
     var conversationId = $("#user-convoId").attr("value").split(',')[0];
-    $.post('/read/'+conversationId);
+    $.post('/seen_msg/'+conversationId);
   });
   $("#user-message").blur(function(){
     socket.emit('userOffChatbox');
@@ -198,6 +198,10 @@ if(socket !== undefined){
       }
     }
   }
+  $("#club-message").focus(function(){
+    var conversationId = $("#club-convoId").attr("value").split(',')[0];
+    $.post('/seen_clubmsg/'+conversationId);
+  });
   $("#club-message").on('input', function(){
     socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
   });

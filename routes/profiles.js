@@ -25,10 +25,10 @@ router.get('/users-morePosts/:id', profilesUserMorePosts);
 router.get('/heart-morePosts/:id', profilesUserMoreHeartPosts);
 
 // Update user profile
-router.put('/users/:id', middleware.checkAccountOwnership, upload.single('profilePic'), profilesUpdateUserProfile);
+router.put('/users/:id', middleware.isLoggedIn, upload.single('profilePic'), profilesUpdateUserProfile);
 
 // Create new club profile
-router.post('/users/:id/clubs', middleware.checkAccountOwnership, upload.single('avatar'), profilesNewClub);
+router.post('/users/:id/clubs', middleware.isLoggedIn, upload.single('avatar'), profilesNewClub);
 
 // Show club profile
 router.get('/clubs/:club_id', profilesClubProfile);
@@ -43,7 +43,7 @@ router.get('/clubs-moreMembers/:club_id', profilesClubMoreMembers);
 router.get('/clubs-searchMembers/:club_id', profilesClubSearchMembers);
 
 // Load users with member-requests(AJAX)
-router.get('/clubs-moreMemberRequests/:id', middleware.checkClubAdminship, profilesClubMoreMemberRequests);
+router.get('/clubs-moreMemberRequests/:id', middleware.isLoggedIn, profilesClubMoreMemberRequests);
 
 // Load club posts(AJAX)
 router.get('/clubs-morePosts/:club_id', profilesClubMorePosts);
@@ -55,10 +55,10 @@ router.put('/clubs/:club_id', middleware.isLoggedIn, upload.single('avatar'), pr
 router.put('/clubs/:club_id/delete', middleware.isLoggedIn, profilesDeleteClubProfile);
 
 // Get club featured photos page
-router.get('/clubs/:id/featured_photos', middleware.checkClubModeratorship, profilesGetClubsFeaturedPhotos);
+router.get('/clubs/:id/featured_photos', middleware.isLoggedIn, profilesGetClubsFeaturedPhotos);
 
 // Update club featured photos
-router.put('/clubs/:id/featured_photos', middleware.checkClubModeratorship, upload.single('image'), profilesUpdateClubsFeaturedPhotos);
+router.put('/clubs/:id/featured_photos', middleware.isLoggedIn, upload.single('image'), profilesUpdateClubsFeaturedPhotos);
 
 //============================================
 //AUTH ROUTES

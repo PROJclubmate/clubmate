@@ -155,37 +155,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     });
   });
 
-  $('#load-prevMsgs-btn').on('click', function(e){
-    e.preventDefault();
-    const conversationId = $("#club-convoId").attr("value").split(',')[0];
-    if(conversationId){
-      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-      $.ajax({
-        type: 'GET',
-        url: '/prev-clubChatMsgs/'+conversationId,
-        data: {ids: $('#load-prevMsgs-btn').val()},
-        timeout: 3000,
-        success: function (response){
-          if(response.foundMessageId){
-              var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
-              if($('#load-prevMsgs-btn').val() != ''){
-                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-                $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
-              } else{
-                $('#load-prevMsgs-btn').val(arr);
-              }
-            } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
-            }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
-        }
-      });
-    } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
-    }
-  });
-
   $('#alltime-posts-btn').on('click', function(e){
     if(!$('#alltime-posts-btn').hasClass('done')){
       $.ajax({
@@ -348,37 +317,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
         $('#load-more-heart-btn').html('<span id="load-more-heart-span"></span>Load More').blur();
       }
     });
-  });
-
-  $('#load-prevMsgs-btn').on('click', function(e){
-    e.preventDefault();
-    const conversationId = $("#user-convoId").attr("value").split(',')[0];
-    if(conversationId){
-      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-      $.ajax({
-        type: 'GET',
-        url: '/prev-chatMsgs/'+conversationId,
-        data: {ids: $('#load-prevMsgs-btn').val()},
-        timeout: 3000,
-        success: function (response){
-          if(response.foundMessageId){
-              var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
-              if($('#load-prevMsgs-btn').val() != ''){
-                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-                $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
-              } else{
-                $('#load-prevMsgs-btn').val(arr);
-              }
-            } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
-            }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
-        }
-      });
-    } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
-    }
   });
 
   $('#load-more-clubs-btn').on('click', function(e){
@@ -623,6 +561,67 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     });
   });
 }
+
+$('#load-prevMsgs-btn').on('click', function(e){
+  e.preventDefault();
+  if($("#pin-chatbox").hasClass("chatbox-user")){
+    const conversationId = $("#user-convoId").attr("value").split(',')[0];
+    if(conversationId){
+      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+      $.ajax({
+        type: 'GET',
+        url: '/prev-chatMsgs/'+conversationId,
+        data: {ids: $('#load-prevMsgs-btn').val()},
+        timeout: 3000,
+        success: function (response){
+          if(response.foundMessageId){
+              var arr = response.foundMessageId;
+              $('#prevMessage-div').removeClass('nodisplay');
+              if($('#load-prevMsgs-btn').val() != ''){
+                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+                $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
+              } else{
+                $('#load-prevMsgs-btn').val(arr);
+              }
+            } else{
+              $('#load-prevMsgs-btn').addClass('nodisplay');
+            }
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
+        }
+      });
+    } else{
+      $('#load-prevMsgs-btn').addClass('nodisplay');
+    }
+  } else if($("#pin-chatbox").hasClass("chatbox-club")){
+    const conversationId = $("#club-convoId").attr("value").split(',')[0];
+    if(conversationId){
+      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
+      $.ajax({
+        type: 'GET',
+        url: '/prev-clubChatMsgs/'+conversationId,
+        data: {ids: $('#load-prevMsgs-btn').val()},
+        timeout: 3000,
+        success: function (response){
+          if(response.foundMessageId){
+              var arr = response.foundMessageId;
+              $('#prevMessage-div').removeClass('nodisplay');
+              if($('#load-prevMsgs-btn').val() != ''){
+                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
+                $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
+              } else{
+                $('#load-prevMsgs-btn').val(arr);
+              }
+            } else{
+              $('#load-prevMsgs-btn').addClass('nodisplay');
+            }
+          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
+        }
+      });
+    } else{
+      $('#load-prevMsgs-btn').addClass('nodisplay');
+    }
+  }
+});
 
 function load_prevMsgs_template(response){
   html = ejs.render(`
@@ -2215,7 +2214,7 @@ function post_comments_template(response){
           <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
         </a>
       </div>
-      <div class="commentdiv my-1 pb-2 lineheight hr2">
+      <div class="commentdiv my-1 pb-1 lineheight hr2">
         <div class="valign commentpad commentpad2">
           <div>
             <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -2265,7 +2264,7 @@ function post_comments_template(response){
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
               <div class="commentwrap lineheight0 mt-1">
                 <% if(upComments.includes(comments[j]._id)){ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn bluecolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote bluecolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
                       <i class="fas fa-arrow-alt-circle-up"></i>
                     </div>
@@ -2274,7 +2273,7 @@ function post_comments_template(response){
                   </div>
                   </button>
                 <% } else{ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote likebtn commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
                       <i class="fas fa-arrow-alt-circle-up"></i>
                     </div>

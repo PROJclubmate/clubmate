@@ -90,16 +90,29 @@ module.exports = function(io){
 		          console.log(req.user._id+' => (conversations-6)newMessageBucket err:- '+JSON.stringify(err, null, 2));
 		          return res.sendStatus(500);
 		        } else{
+		        	for(var i=0;i<foundConversation.seenMsgCursors.length;i++){
+					    	if(foundConversation.seenMsgCursors[i].id.equals(req.user._id)){
+					    		foundConversation.seenMsgCursors[i].cursor = foundConversation.messageCount+1;
+					    		foundConversation.seenMsgCursors[i].lastSeen = Date.now();
+					    		break;
+					    	}
+					    }
 		          if(newMessageBucket.count == 1){
 		            foundConversation.messageBuckets.push(newMessageBucket._id);
 		            foundConversation.messageCount += 1;
+		            foundConversation.lastMsgOn = Date.now();
+		            foundConversation.lastMsgBy = req.user._id;
 		            foundConversation.save();
 		          } else if(newMessageBucket.count >= 50){
 		            foundConversation.bucketNum += 1;
 		            foundConversation.messageCount += 1;
+		            foundConversation.lastMsgOn = Date.now();
+		            foundConversation.lastMsgBy = req.user._id;
 		            foundConversation.save();
 		          } else{
 		          	foundConversation.messageCount += 1;
+		          	foundConversation.lastMsgOn = Date.now();
+		          	foundConversation.lastMsgBy = req.user._id;
 		            foundConversation.save();
 		          }
 		          if(err){
@@ -133,14 +146,21 @@ module.exports = function(io){
 		}
 	});
 
-	router.post('/read/:conversationId', function(req, res, next){
+	router.post('/seen_msg/:conversationId', function(req, res, next){
 		if(req.user){
-			Conversation.findOne({_id: req.params.conversationId})
-		  .exec(function(err, foundConversation){
+			Conversation.findOne({_id: req.params.conversationId}, function(err, foundConversation){
 		  if(err || !foundConversation){
 		    console.log(req.user._id+' => (conversations-10)foundConversation err:- '+JSON.stringify(err, null, 2));
 		    return res.sendStatus(500);
 		  } else{
+		  	for(var i=0;i<foundConversation.seenMsgCursors.length;i++){
+		    	if(foundConversation.seenMsgCursors[i].id.equals(req.user._id)){
+		    		foundConversation.seenMsgCursors[i].cursor = foundConversation.messageCount;
+		    		foundConversation.seenMsgCursors[i].lastSeen = Date.now();
+		    		break;
+		    	}
+		    }
+		    foundConversation.save();
 				var reciever;
 		    for(var j=0;j<foundConversation.participants.length;j++){
 		    	if(!foundConversation.participants[j].equals(req.user._id)){
@@ -202,15 +222,20 @@ module.exports = function(io){
 	    const conversation = new Conversation({
 	      participants: [req.user._id, mongoose.Types.ObjectId(req.body.recipientId)]
 	    });
-	    var obj={}; var newMessage=[];
-	    obj['authorId'] = req.user._id;
-	    obj['text'] = req.body.composedMessage;
-	    newMessage.push(obj);
+	    var obja={}; var newMessage=[];
+	    obja['authorId'] = req.user._id;
+	    obja['text'] = req.body.composedMessage;
+	    newMessage.push(obja);
 	    const message = new Message({
 	      conversationId: conversation._id,
 	      messages: newMessage
 	    });
 	    message.save();
+	    var objb = {};
+	    for(var i=0;i<conversation.participants.length;i++){
+	    	objb['id'] = conversation.participants[i];
+	    	conversation.seenMsgCursors.push(objb);
+	    }
 	    conversation.messageBuckets.push(message._id);
 	    conversation.latestMessage = req.body.composedMessage;
 	    conversation.save();
@@ -323,16 +348,29 @@ module.exports = function(io){
 	          console.log(req.user._id+' => (conversations-21)newMessageBucket err:- '+JSON.stringify(err, null, 2));
 	          return res.sendStatus(500);
 	        } else{
+	        	for(var i=0;i<foundClubConversation.seenMsgCursors.length;i++){
+				    	if(foundClubConversation.seenMsgCursors[i].id.equals(req.user._id)){
+				    		foundClubConversation.seenMsgCursors[i].cursor = foundClubConversation.messageCount+1;
+				    		foundClubConversation.seenMsgCursors[i].lastSeen = Date.now();
+				    		break;
+				    	}
+				    }
 	          if(newMessageBucket.count == 1){
 	            foundClubConversation.messageBuckets.push(newMessageBucket._id);
 	            foundClubConversation.messageCount += 1;
+	            foundClubConversation.lastMsgOn = Date.now();
+	            foundClubConversation.lastMsgBy = req.user._id;
 	            foundClubConversation.save();
 	          } else if(newMessageBucket.count >= 50){
 	            foundClubConversation.bucketNum += 1;
 	            foundClubConversation.messageCount += 1;
+	            foundClubConversation.lastMsgOn = Date.now();
+	            foundClubConversation.lastMsgBy = req.user._id;
 	            foundClubConversation.save();
 	          } else{
 	          	foundClubConversation.messageCount += 1;
+	          	foundClubConversation.lastMsgOn = Date.now();
+	          	foundClubConversation.lastMsgBy = req.user._id;
 	            foundClubConversation.save();
 	          }
 	          if(err){
@@ -349,6 +387,26 @@ module.exports = function(io){
 		}
 	});
 
+	router.post('/seen_clubmsg/:conversationId', function(req, res, next){
+		if(req.user){
+			ClubConversation.findOne({_id: req.params.conversationId}, function(err, foundClubConversation){
+		  if(err || !foundClubConversation){
+		    console.log(req.user._id+' => (conversations-24)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+		    return res.sendStatus(500);
+		  } else{
+		  	for(var i=0;i<foundClubConversation.seenMsgCursors.length;i++){
+		    	if(foundClubConversation.seenMsgCursors[i].id.equals(req.user._id)){
+		    		foundClubConversation.seenMsgCursors[i].cursor = foundClubConversation.messageCount;
+		    		foundClubConversation.seenMsgCursors[i].lastSeen = Date.now();
+		    		break;
+		    	}
+		    }
+		    foundClubConversation.save();
+			}
+			});
+		}
+	});
+
 	router.post('/new/club-chat', function(req, res, next){
 		if(req.user){
 		  if(!req.body.clubId || req.body.clubId == ''){
@@ -360,34 +418,37 @@ module.exports = function(io){
 	    const clubConversation = new ClubConversation({
 	      clubId: mongoose.Types.ObjectId(req.body.clubId)
 	    });
-	    var obj={}; var newMessage=[];
-	    obj['authorId'] = req.user._id;
-	    obj['authorName'] = req.user.fullName;
-	    obj['text'] = req.body.composedMessage;
-	    newMessage.push(obj);
+	    var obja={}; var newMessage=[];
+	    obja['authorId'] = req.user._id;
+	    obja['authorName'] = req.user.fullName;
+	    obja['text'] = req.body.composedMessage;
+	    newMessage.push(obja);
 	    const message = new Message({
 	      conversationId: clubConversation._id,
 	      messages: newMessage
 	    });
 	    message.save();
-	    clubConversation.messageBuckets.push(message._id);
-	    clubConversation.latestMessage = req.body.composedMessage;
-	    clubConversation.save();
-	    // Insert conversationId into clubUsers
 	    Club.findOneAndUpdate({_id: req.body.clubId, isActive: true}, 
 	    {$set: {conversationId: clubConversation._id}}, function(err, foundClub){
 	      if(err){
-	        console.log(req.user._id+' => (conversations-24)foundClub err:- '+JSON.stringify(err, null, 2));
+	        console.log(req.user._id+' => (conversations-25)foundClub err:- '+JSON.stringify(err, null, 2));
 	        return res.sendStatus(500);
 	      }
 	      var clubMembersArr = foundClub.clubUsers.map(function(clubUser){
           return clubUser.id;
         });
-	      // Insert conversationId into userClubs
+        var objb = {};
+        for(var i=0;i<clubMembersArr.length;i++){
+		    	objb['id'] = clubMembersArr[i];
+		    	clubConversation.seenMsgCursors.push(objb);
+		    }
+		    clubConversation.messageBuckets.push(message._id);
+		    clubConversation.latestMessage = req.body.composedMessage;
+		    clubConversation.save();
 		    User.updateMany({_id: {$in: clubMembersArr}, userClubs: {$elemMatch: {id: foundClub._id}}}, 
 		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err, updateUsers){
 		      if(err){
-		        console.log(req.user._id+' => (conversations-25)updateUsers err:- '+JSON.stringify(err, null, 2));
+		        console.log(req.user._id+' => (conversations-26)updateUsers err:- '+JSON.stringify(err, null, 2));
 		        return res.sendStatus(500);
 		      }
 		    });

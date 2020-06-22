@@ -51,9 +51,13 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var bucket = foundBucket;
-      var foundComment = foundBucket.comments[0];
-      res.render('comments/edit', {bucket, comment: foundComment});
+      if(foundBucket.comments[0].commentAuthor.id.equals(req.user._id)){
+        var bucket = foundBucket;
+        var foundComment = foundBucket.comments[0];
+        res.render('comments/edit', {bucket, comment: foundComment});
+      } else{
+        res.redirect('back');
+      }
     }
     });
   },

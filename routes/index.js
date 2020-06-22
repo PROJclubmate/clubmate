@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople,
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexSearch, indexSearchEmail, indexSearchPeople,
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
   indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexOrgPageSettings, 
@@ -23,6 +23,12 @@ router.get('/help', indexHelp);
 
 // FAQ page
 router.get('/FAQ', indexFAQ);
+
+// Chats list
+router.get('/chats', middleware.isLoggedIn, indexChats);
+
+// Chats list
+router.put('/chats', middleware.isLoggedIn, indexChatsOpen);
 
 // Search
 router.get('/search', indexSearch);
@@ -67,7 +73,7 @@ router.put('/requests', middleware.isLoggedIn, indexRequests);
 router.put('/clubs/:id/member_requests', middleware.isLoggedIn, indexMemberRequests);
 
 // Edit member-info(status/rank)
-router.put('/status-rank', indexMemberInfo);
+router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 
 // View all friends
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
@@ -85,6 +91,6 @@ router.put('/colleges/:org_id/settings/user/:user_id', middleware.isLoggedIn, in
 router.put('/users/:user_id/follow/:club_id', middleware.isLoggedIn, indexFollowClubs);
 
 // Show my followed clubs
-router.get('/show_following/:id', indexShowFollowingClubs);
+router.get('/show_following/:id', middleware.isLoggedIn, indexShowFollowingClubs);
 
 module.exports = router;

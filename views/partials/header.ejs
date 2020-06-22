@@ -49,13 +49,20 @@
         </a>
       </div>
       <div>
-        <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon notification">
-            <% if (currentUser && userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
-              <span class="badge badge-mobile text-xxs"><%= userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
-            <% } %>
-          </span>
-        </button>
+        <% if(currentUser){ %>
+          <div>
+            <a href="/chats" id="chat_list_mobile" class="nodisplay" title="Chats" onclick="toggle_requests('chat_list');"><i class="far fa-paper-plane"></i></a>
+          </div>
+        <% } %>
+        <div>
+          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon notification">
+              <% if (currentUser && userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
+                <span class="badge badge-mobile text-xxs"><%= userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% } %>
+            </span>
+          </button>
+        </div>
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
@@ -88,6 +95,9 @@
               <a href="/register" class="nav-link">Sign Up</a>
             </li>
           <% } else{ %>
+            <li class="nav-item">
+              <a href="/chats" id="chat_list" class="text-lg nav-link requests nodisplay" title="Chats" onclick="toggle_requests('chat_list');"><i class="far fa-paper-plane"></i></a>
+            </li>
             <li class="nav-item">
               <a href="/help" id="help_online" class="text-lg nav-link requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>

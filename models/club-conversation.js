@@ -8,13 +8,18 @@ const clubConversationSchema = new Schema({
     ref: 'Club'
   },
   latestMessage: String,
+  lastMsgOn: {type: Date, default: Date.now},
+  lastMsgBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   messageCount: {type: Number, default: 1},
   seenMsgCursors: [{
     id: {
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    cursor: {type: Number, default: 0},
+    cursor: {type: Number, default: 1},
     lastSeen: Date,
     _id: false
   }],

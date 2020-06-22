@@ -1223,26 +1223,30 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      if(foundPost.description.localeCompare(req.body.description) != 0){
-        var editobj = {};
-        editobj['desc'] = foundPost.description;
-        foundPost.descEdit.push(editobj);
-        foundPost.description = req.body.description;
-      };
-      foundPost.hyperlink = req.body.hyperlink;
-      foundPost.privacy = req.body.privacy;
-      var hasVote = voteCheck(req.user,foundPost);
-      var hasModVote = modVoteCheck(req.user,foundPost);
-      var upComments = commentCheck(req.user,foundPost);
-      var subVotes = subVoteCheck(req.user,foundPost);
-      foundPost.save();
-      for(var i=0;i<req.user.userClubs.length;i++){
-        if(req.user.userClubs[i].id.equals(req.params.club_id)){
-          var rank = req.user.userClubs[i].rank;
-          break;
+      if(foundPost.postAuthor.id.equals(req.user._id)){
+        if(foundPost.description.localeCompare(req.body.description) != 0){
+          var editobj = {};
+          editobj['desc'] = foundPost.description;
+          foundPost.descEdit.push(editobj);
+          foundPost.description = req.body.description;
+        };
+        foundPost.hyperlink = req.body.hyperlink;
+        foundPost.privacy = req.body.privacy;
+        var hasVote = voteCheck(req.user,foundPost);
+        var hasModVote = modVoteCheck(req.user,foundPost);
+        var upComments = commentCheck(req.user,foundPost);
+        var subVotes = subVoteCheck(req.user,foundPost);
+        foundPost.save();
+        for(var i=0;i<req.user.userClubs.length;i++){
+          if(req.user.userClubs[i].id.equals(req.params.club_id)){
+            var rank = req.user.userClubs[i].rank;
+            break;
+          }
         }
+        res.redirect('/clubs/'+req.params.club_id+'/posts/'+req.params.post_id);
+      } else{
+        res.redirect('back');
       }
-      res.redirect('/clubs/'+req.params.club_id+'/posts/'+req.params.post_id);
     }
     });
   },
@@ -1254,50 +1258,54 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      if(foundPost.image && foundPost.imageId){
-        try{
-          await cloudinary.v2.uploader.destroy(foundPost.imageId);
+      if(foundPost.postAuthor.id.equals(req.user._id)){
+        if(foundPost.image && foundPost.imageId){
+          try{
+            await cloudinary.v2.uploader.destroy(foundPost.imageId);
+            foundPost.remove();
+            //deletes all comments associated with the post
+            Comment.deleteMany({postId: foundPost._id}, function(err){
+              if(err){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-38)foundComment err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
+            Discussion.deleteMany({postId: foundPost._id}, function(err){
+              if(err){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-39)foundDiscussion err:- '+JSON.stringify(err, null, 2));
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
+            req.flash('success', 'Post deleted successfully!');
+            res.redirect('back');
+          }catch(err){
+            console.log(Date.now()+' : '+'(posts-40)foundPost catch err:- '+JSON.stringify(err, null, 2));
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          }
+        } else{
           foundPost.remove();
           //deletes all comments associated with the post
           Comment.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-38)foundComment err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-41)foundComment err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           Discussion.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-39)foundDiscussion err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.user._id+' => (posts-42)foundDiscussion err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           req.flash('success', 'Post deleted successfully!');
           res.redirect('back');
-        }catch(err){
-          console.log(Date.now()+' : '+'(posts-40)foundPost catch err:- '+JSON.stringify(err, null, 2));
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
         }
       } else{
-        foundPost.remove();
-        //deletes all comments associated with the post
-        Comment.deleteMany({postId: foundPost._id}, function(err){
-          if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-41)foundComment err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
-        });
-        Discussion.deleteMany({postId: foundPost._id}, function(err){
-          if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-42)foundDiscussion err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
-        });
-        req.flash('success', 'Post deleted successfully!');
         res.redirect('back');
       }
     }
