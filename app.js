@@ -65,15 +65,12 @@ app.use(async function(req, res, next){
       let foundUser = await User.findById(req.user._id)
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
       .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId note'})
-      // NON-PERFORMANT? , match: {'userChats.lastMessage': {$ne: ''}} 2level match does not work?
-      .populate({path: 'userChats.userId', select: 'fullName profilePic profilePicId'})
       .exec();
       // check security of theese local variables & check for no variable overwriting
       res.locals.userClubs = foundUser.userClubs.reverse();
       res.locals.clubUpdates = foundUser.clubUpdates;
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
       res.locals.friendRequests = foundUser.friendRequests.reverse();
-      res.locals.userChats = [];
 
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = []; var fUUC_50_profilePic = []; var fUUCTemp;
       for(var i=0;i<foundUser.clubInvites.length;i++){
@@ -84,17 +81,8 @@ app.use(async function(req, res, next){
         fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      for(var k=0;k<foundUser.userChats.length;k++){
-        if(foundUser.userChats[k].lastMessage && foundUser.userChats[k].lastMessage != ''){
-          fUUCTemp = cloudinary.url(foundUser.userChats[k].userId.profilePicId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-          fUUC_50_profilePic.push(fUUCTemp);
-          res.locals.userChats.push(foundUser.userChats[k]);
-        }
-      }
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
       res.locals.FR_50_profilePic = fUFR_50_profilePic;
-      res.locals.UC_50_profilePic = fUUC_50_profilePic;
     } catch(err){
       console.log(Date.now()+' : '+req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');

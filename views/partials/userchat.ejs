@@ -1,11 +1,11 @@
 <div class="card mt-0 border-light">
   <div id="drop-chat" onclick="none_display('pushmsg'); minimise();" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
     <div class="text-sm mobilebold">
-      <span id="lastMsg">Direct chat</span>
-      <% if(lastMessage && lastMessage != ''){ %>
-        <span id="lastMsg-hidden" class="truncate1 lightgrey nodisplay">"<%= lastMessage %>"</span>
+      <span id="latestMsg">Direct chat</span>
+      <% if(conversationId && conversationId != ''){ %>
+        <span id="latestMsg-hidden" class="truncate1 lightgrey nodisplay"></span>
       <% } else{ %>
-        <span id="lastMsg-hidden" class="nodisplay">Direct chat</span>
+        <span id="latestMsg-hidden" class="nodisplay">Direct chat</span>
       <% } %>
       <% if(conversationId && conversationId != '' && isBlocked && isBlockedByFoundUser){ %>
         <span class="text-xxxs boldtext redcolor">(BLOCKED)</span>

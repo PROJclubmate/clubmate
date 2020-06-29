@@ -127,16 +127,8 @@ module.exports = function(io){
 		          		break;
 		          	}
 			        }
-			        // Seems very expensive, 3 db operations for each msg(but then Nodejs is fast right? lel)
-			        User.updateOne({_id: reciever, 'userChats.userId': req.user._id},
-			        {$set: {'userChats.$.lastMessage': req.body.composedMessage}}, function(err, foundReceivingUser){
-					      if(err || !foundReceivingUser){
-					        console.log(req.user._id+' => (conversations-8)foundReceivingUser err:- '+JSON.stringify(err, null, 2));
-					        return res.sendStatus(500);
-					      }
-					      // Close pending xhr request
-			        	return res.sendStatus(200);
-					    });
+			        // Close pending xhr request
+			        return res.sendStatus(200);
 		        }
 		        });
 		      } else{console.log('(conversations-9)Not a participant: ('+req.user._id+') '+req.user.fullName);}
@@ -168,14 +160,7 @@ module.exports = function(io){
 		    		break;
 		    	}
 		    }
-				User.updateOne({_id: req.user._id, 'userChats.userId': reciever},
-		    {$set: {'userChats.$.lastMessage': ''}}, function(err, foundCurrentUser){
-		      if(err || !foundCurrentUser){
-		        console.log(req.user._id+' => (conversations-11)foundCurrentUser err:- '+JSON.stringify(err, null, 2));
-		        return res.sendStatus(500);
-		      }
-		    	return res.sendStatus(200);
-		    });
+		    return res.sendStatus(200);
 			}
 			});
 		}
@@ -243,7 +228,6 @@ module.exports = function(io){
 	    // foundUser userChats push
 	    foundUserObj['userId'] = req.user._id;
 	    foundUserObj['conversationId'] = conversation._id;
-	    foundUserObj['lastMessage'] = req.body.composedMessage;
 	    foundUserUserChats.push(foundUserObj);
 	    // currentUser userChats push
 	    currentUserObj['userId'] = mongoose.Types.ObjectId(req.body.recipientId);
@@ -260,7 +244,7 @@ module.exports = function(io){
 	        console.log(req.user._id+' => (conversations-15)foundUser err:- '+JSON.stringify(err, null, 2));
 	        return res.sendStatus(500);
 	      }
-		    res.sendStatus(200);
+		    return res.sendStatus(200);
 	    });
 	  }
 	});
@@ -402,6 +386,7 @@ module.exports = function(io){
 		    	}
 		    }
 		    foundClubConversation.save();
+		    return res.sendStatus(200);
 			}
 			});
 		}
@@ -453,7 +438,7 @@ module.exports = function(io){
 		      }
 		    });
 	    });
-	    res.sendStatus(200);
+	    return res.sendStatus(200);
 	  }
 	});
 

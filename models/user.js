@@ -89,6 +89,20 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post'
   }],
+  clubUpdates: [{
+    clubId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Club'
+    },
+    clubName: String,
+    pusherName: String,
+    deleterName: String,
+    updateId: Schema.Types.ObjectId,
+    news: String,
+    eventDate: Date,
+    pushedAt: {type: Date, default: Date.now}
+  }],
+  inboxMsgCount: {type: Number, default: 0},
   userClubs: [{
     id: {
       type: Schema.Types.ObjectId,
@@ -113,26 +127,12 @@ const userSchema = new Schema({
     memberSince: {type: Date, default: Date.now},
     _id: false
   }],
-  clubUpdates: [{
-    clubId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Club'
-    },
-    clubName: String,
-    pusherName: String,
-    deleterName: String,
-    updateId: Schema.Types.ObjectId,
-    news: String,
-    eventDate: Date,
-    pushedAt: {type: Date, default: Date.now}
-  }],
   userChats: [{
     userId: this,
     conversationId: {
       type: Schema.Types.ObjectId,
       ref: 'Conversation'
     },
-    lastMessage: String,
     _id: false
   }]
 },

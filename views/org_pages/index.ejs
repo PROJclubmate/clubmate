@@ -12,7 +12,7 @@
 							<span id="copyTxt"><%= org_page.name %></span>
 						</span>
 						<div class="tooltip">
-						<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
 						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
 						  <i class="far fa-copy lightgrey"></i>
 						  </button>
@@ -26,7 +26,7 @@
 							<i class="fas fa-university lightgrey text-xxl mr-2 ml-1"></i><span id="copyTxt"><%= org_page.name %></span>
 						</span>
 						<div class="tooltip">
-						<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
 						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
 						  <i class="far fa-copy lightgrey"></i>
 						  </button>
@@ -42,7 +42,7 @@
 					<div class="mobilebold lightgrey text-md mx-1">
 						<span><span class="boldtext"><%= org_page.clubCount %></span> clubs</span>
 					</div>
-					<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+					<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 						<form id="toggleOrgPage-form" action="/colleges/<%= org_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
 							<div id="container-orgPage">
 							  <div class="toggleOrgPage">
@@ -80,7 +80,7 @@
 						</form>
 					<% } %>
 				</div>
-				<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+				<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 					<div></div>
 				<% } else if(currentUser && keyValue == 2){ %>
 					<form action="/colleges/<%= org_page._id %>/followall/user/<%= currentUserId %>?_method=PUT" method="POST">
@@ -96,7 +96,7 @@
 					</form>
 				<% } %>
 			</div>
-			<% if(currentUser && (keyValue == 0 || keyValue ==1)){ %>
+			<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 				<div class="text-xxs boldtext lightgrey2 p-1 invisible">Not following: <%= org_page.clubCount-thisOrgPageFollowingClubIdsArr.length %></div>
 			<% } else if(currentUser && keyValue == 2){ %>
 				<div class="text-xxs boldtext lightgrey2 p-1">Not following: <%= org_page.clubCount-thisOrgPageFollowingClubIdsArr.length %></div>
@@ -131,12 +131,12 @@
 					          <strong><%= org_page.allClubs[i].categoryClubIds[j].name %></strong>
 					        </a>
 					      </span>
-					      <% if(keyValue == 0 || keyValue == 1){ %>
+					      <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 					      	<span class="my-auto lightgrey text-xs mobiletext4"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
 					      <% } %>
 					    </div>
 					  </div>
-					  <% if(keyValue == 0 || keyValue == 1){ %>
+					  <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 						  <div class="darkgrey text-sm px-1 nowrap">
 				        <em><%= org_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
 				      </div>

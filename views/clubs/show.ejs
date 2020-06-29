@@ -81,11 +81,11 @@
                     </a>
                   <% } %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs btn-primary overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs btn-primary overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } %>
               </div>
@@ -353,7 +353,7 @@
           </div>
             <div class="tab-content" id="myTabContent">
               <!-- Activity Tab -->
-              <div class="tab-pane fade show active greyback textureback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+              <div class="tab-pane fade show active greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
                     <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">

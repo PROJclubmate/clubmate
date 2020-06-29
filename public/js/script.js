@@ -4,26 +4,21 @@ window.onscroll = function(){
   var currentScrollPos = window.pageYOffset;
   var navbar = document.getElementById("navbar");
   var pop_box_requests = document.getElementById("pop_box_requests");
-  var pop_box_notifications = document.getElementById("pop_box_notifications");
   var discover_nav = document.getElementById("discover_nav");
   var scroll = document.documentElement.scrollTop;
 
   if($(window).width() > 1199 && prevScrollpos > currentScrollPos) {
     navbar.style.top = "0";
     pop_box_requests.style.top = "40px";
-    pop_box_notifications.style.top = "40px";
   } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
     navbar.style.top = "0px";
     pop_box_requests.style.top = "42px";
-    pop_box_notifications.style.top = "42px";
   } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
     navbar.style.top = "-40px";
     pop_box_requests.style.top = "-600px";
-    pop_box_notifications.style.top = "-600px";
   } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
     navbar.style.top = "-50px";
     pop_box_requests.style.top = "-600px";
-    pop_box_notifications.style.top = "-600px";
   }
   prevScrollpos = currentScrollPos;
 
@@ -82,13 +77,6 @@ if(location.pathname == '/home'){
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  // Latest message mobile
-  if($(window).width() < 768){
-    $('#drop-chat').on('click', function(e){
-      $('#latestMsg').toggleClass("nodisplay");
-      $('#latestMsg-hidden').toggleClass("nodisplay");
-    });
-  }
   // Ask for club invite
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");
@@ -100,25 +88,14 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  // Last message mobile
   if($(window).width() < 768){
-    if($('#lastMsg-hidden') && $('#lastMsg-hidden').text() != ''){
-      $('#lastMsg').addClass("nodisplay");
-      $('#lastMsg-hidden').removeClass("nodisplay");
-    }
-    $('#drop-chat').on('click', function(e){
-      $('#lastMsg').toggleClass("nodisplay");
-      $('#lastMsg-hidden').toggleClass("nodisplay");
-    });
     if($('#mypage').length){
       $('#mobile_toggler').addClass("nodisplay");
-      $('#chat_list_mobile').removeClass("nodisplay");
+      $('.inbox_mobile').removeClass("nodisplay");
       $('#brandname').addClass("name-green");
     }
   } else{
-    if($('#mypage').length){
-      $('#chat_list').removeClass("nodisplay");
-    }
+
   }
 }
 
@@ -268,7 +245,7 @@ function closeForm(id){
 function toggleclass_display(id){
   var x = document.getElementsByClassName(id);
 	var i;
-	for (i = 0; i < x.length; i++){
+	for (i=0;i<x.length;i++){
 		if(x[i].style.display == 'block')
       x[i].style.display = 'none';
     else
@@ -279,7 +256,7 @@ function toggleclass_display(id){
 function block_display(id){
   var x = document.getElementsByClassName(id);
 	var i;
-	for (i = 0; i < x.length; i++){
+	for (i=0;i<x.length;i++){
 		x[i].style.display = 'block';
 	}
 }
@@ -287,7 +264,7 @@ function block_display(id){
 function none_display(id){
   var x = document.getElementsByClassName(id);
 	var i;
-	for (i = 0; i < x.length; i++){
+	for (i=0;i<x.length;i++){
 		x[i].style.display = 'none';
 	}
 }
@@ -483,22 +460,55 @@ $(function (){
     var divLocalRelative = $('#timeLocalRelative');
     
     //get text from timeUTC and convert to local timezone  
-    var localTime  = moment.utc(divUtc.text()).toDate();
+    var localTime = moment.utc(divUtc.text()).toDate();
     localTime = moment(localTime).format('LT');
     divLocal.text(localTime);
 
-    var localTime2  = moment.utc(divUtc2.text()).toDate();
+    var localTime2 = moment.utc(divUtc2.text()).toDate();
     localTime2 = moment(localTime2).format('LT');
     divLocal2.text(localTime2);
 
-    var localTimeRelative  = moment.utc(divUtc.text()).toDate();
+    var localTimeRelative = moment.utc(divUtc.text()).toDate();
     localTimeRelative = moment(localTimeRelative).fromNow();
     divLocalRelative.text(localTimeRelative);
   }, 500);
+
+  var divUtc1 = document.getElementsByClassName('timeUTC1');
+  var divLocal1 = document.getElementsByClassName('timeLocal1');
+  var divUtc3 = document.getElementsByClassName('timeUTC3');
+  var divLocal3 = document.getElementsByClassName('timeLocal3');
+  var divUtc7 = document.getElementsByClassName('timeUTC7');
+  var divLocal7 = document.getElementsByClassName('timeLocal7');
+  var divUtc365 = document.getElementsByClassName('timeUTC365');
+  var divLocal365 = document.getElementsByClassName('timeLocal365');
+
+  for(var i=0;i<divUtc1.length;i++){
+    var localTime = moment.utc($('#'+divUtc1[i].id).text()).toDate();
+    localTime = moment(localTime).format('LT');
+    $('#'+divLocal1[i].id).text(localTime);
+  }
+  for(var i=0;i<divUtc3.length;i++){
+    var localTime = moment.utc($('#'+divUtc3[i].id).text()).toDate();
+    localTime = moment(localTime).fromNow();
+    $('#'+divLocal3[i].id).text(localTime);
+  }
+  for(var j=0;j<divUtc7.length;j++){
+    var localTime = moment.utc($('#'+divUtc7[j].id).text()).toDate();
+    localTime = moment(localTime).format('dddd');
+    $('#'+divLocal7[j].id).text(localTime);
+  }
+  for(var k=0;k<divUtc365.length;k++){
+    var localTime = moment.utc($('#'+divUtc365[k].id).text()).toDate();
+    localTime = moment(localTime).format('l');
+    $('#'+divLocal365[k].id).text(localTime);
+  }
 });
 
 if(location.pathname == '/help/'){
   $(".navhelp").addClass('requests-active');
+}
+if(location.pathname == '/chats'){
+  $("#inbox").addClass('requests-active');
 }
 
 // Copy college name
@@ -583,11 +593,26 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
 $('.chat-item').click(function(){
   var id = $(this).attr('id').substring(9);
   var type = $(this).attr('value');
+  if(type == 'user'){
+    $.post('/seen_msg/'+id);
+  } else if(type == 'club'){
+    $.post('/seen_clubmsg/'+id);
+  }
   $('.chat-form').append('<input type="hidden" name="'+type+'" value="'+id+'">').submit();
 });
 
 function minimise(){
   $('.pin-chatbox').toggleClass("width-inherit");
+}
+
+function dec_height(){
+  if($('#pin-chatbox').hasClass("pin-chatbox2")){
+    if($('.pushmsg').css('display') == 'block'){
+      $('#messages').addClass("msg_dec");
+    } else{
+      $('#messages').removeClass("msg_dec");
+    }
+  }
 }
 //================================================================================
 // AJAX

@@ -1,60 +1,80 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-4 card chatlist-box scroll moz-scroll">
-		<% for(var i=0;i<chatList.length;i++){ %>
-			<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
-				<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId)){ %>
-					<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
-				<% } else{ %>
-					<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
-				<% } %>
-					<div>
-						<div class="py-3 px-1 mb-auto">
-							<% if(chatList[i].type == 'user'){ %>
-				      	<img class="orgdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
-				      <% } else if(chatList[i].type == 'club'){ %>
-				      	<img class="orgdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
-				     	<% } %>
-				    </div>
-					</div>
-					<div class="d-flex justify-content-between fullwidth">
-						<div class="my-auto mx-2">
-				    	<div class="d-flex flex-column lineheight">
-					      <div class="grey text-sm mobiletext2">
-					      	<% if(chatList[i].type == 'user'){ %>
-					          <strong><%= chatList[i].name %></strong>
-					        <% } else if(chatList[i].type == 'club'){ %>
-					          <strong><%= chatList[i].name %></strong>
-					       	<% } %>
-					      </div>
-					      <div class="my-auto lightgrey mobiletext2 truncate1">
-					        <%= chatList[i].latestMessage %>
-					      </div>
+	<div class="col-lg-4 col-md-4 col-12 chatlist-box scroll moz-scroll">
+		<div class="greyback">
+			<h3 class="chatpad mt-3">Chats</h3>
+		</div>
+		<div class="card mt-0 chatlist-margin" style="min-height: 100%;">
+			<% for(var i=0;i<chatList.length;i++){ %>
+				<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
+					<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
+						<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
+					<% } else{ %>
+						<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
+					<% } %>
+						<div>
+							<div class="py-2 my-1 px-1">
+								<% if(chatList[i].type == 'user'){ %>
+					      	<img class="orgdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
+					      <% } else if(chatList[i].type == 'club'){ %>
+					      	<img class="orgdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
+					     	<% } %>
 					    </div>
-					  </div>
-					  <div class="my-auto pb-1 lineheight">
-							<div class="d-flex flex-column">
-								<div>
-									<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
-										<em class="text-xxs lightgrey"><%= moment(chatList[i].lastMsgOn).fromNow().slice(0, -4) %></em>
-									<% } %>
-								</div>
-								<div>
-									<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
-										<span class="badge badge-success float-right"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
-									<% } else{ %>
-										<span class="badge badge-success float-right invisible">0</span>
-									<% } %>
+						</div>
+						<div class="d-flex justify-content-between fullwidth chatlist-content">
+							<div class="my-auto mx-2">
+					    	<div class="d-flex flex-column lineheight">
+						      <div class="grey boldtext">
+						      	<% if(chatList[i].type == 'user'){ %>
+						          <span><%= chatList[i].name %></span>
+						        <% } else if(chatList[i].type == 'club'){ %>
+						          <span><%= chatList[i].name %></span>
+						       	<% } %>
+						      </div>
+						      <div class="my-auto lightgrey mobiletext2 truncate1">
+						      	<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
+						      		<span class="bluecolor boldtext">></span>
+						      	<% } %>
+						        <%= chatList[i].latestMessage %>
+						      </div>
+						    </div>
+						  </div>
+						  <div class="my-auto pb-1 lineheight quarterwidth">
+								<div class="d-flex flex-column">
+									<div>
+										<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
+											<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
+												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap float-right"></em>
+												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+											<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
+												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap float-right"></em>
+												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+											<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
+												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap float-right"></em>
+												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+											<% } else{ %>
+												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap float-right"></em>
+												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+											<% } %>
+										<% } %>
+									</div>
+									<div>
+										<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
+											<span class="badge badge-success float-right"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
+										<% } else{ %>
+											<span class="badge badge-success float-right invisible">0</span>
+										<% } %>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</form>
-		<% } %>
+				</form>
+			<% } %>
+		</div>
 	</div>
-	<div class="col-lg-8">
+	<div class="col-lg-8 col-md-8 col-12">
 		<div>
 			<% if(chatType == 'user'){ %>
 				<div id="pin-chatbox" class="chatbox-user pin-chatbox2 col-md-4 col-lg-3 col-12" value="<%= currentUser.firstName %>">

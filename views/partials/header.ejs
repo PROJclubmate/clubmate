@@ -50,15 +50,20 @@
       </div>
       <div>
         <% if(currentUser){ %>
-          <div>
-            <a href="/chats" id="chat_list_mobile" class="nodisplay" title="Chats" onclick="toggle_requests('chat_list');"><i class="far fa-paper-plane"></i></a>
+          <div class="inbox_mobile nodisplay">
+            <span class="notification">
+              <a href="/chats" id="inbox_mobile" class="inbox_mobile nodisplay" title="Inbox" onclick="toggle_requests('inbox_mobile');"><i class="far fa-envelope"></i></a>
+              <% if(currentUser.inboxMsgCount > 0){ %>
+                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.inboxMsgCount %></span>
+              <% } %>
+            </span>
           </div>
         <% } %>
         <div>
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
-              <% if (currentUser && userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
-                <span class="badge badge-mobile text-xxs"><%= userChats.length + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
+                <span class="badge badge-mobile text-xxs"><%= currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
               <% } %>
             </span>
           </button>
@@ -96,15 +101,12 @@
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <a href="/chats" id="chat_list" class="text-lg nav-link requests nodisplay" title="Chats" onclick="toggle_requests('chat_list');"><i class="far fa-paper-plane"></i></a>
-            </li>
-            <li class="nav-item">
               <a href="/help" id="help_online" class="text-lg nav-link requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
-            <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
-              <span id="notification" class="text-xl nav-link requests" title="Inbox"><i class="fas fa-envelope" onclick="toggle_requests('notification'); toggle_display('pop_box_notifications');"></i></span>
-              <% if (userChats && userChats.length!=0){ %>
-                <span class="badge text-xxs"><%= userChats.length %></span>
+            <li class="nav-item notification">
+              <span><a href="/chats" id="inbox" class="text-xl nav-link requests" title="Inbox"><i class="fas fa-envelope" onclick="toggle_requests('inbox');"></i></a></span>
+              <% if(currentUser.inboxMsgCount > 0){ %>
+                <span class="inbox_count badge text-xxs"><%= currentUser.inboxMsgCount %></span>
               <% } %>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
@@ -218,40 +220,6 @@
   <% } %>
 </div>
 
-<!-- Pop_box_notifications -->
-<div class="popup-box popup-box-notifications scroll moz-scroll" id="pop_box_notifications">
-  <% if(currentUser && currentUser.userChats.length != 0){ %>
-    <div class="pop-header valign">
-      <% if(userChats.length != 0){ %>
-        <h6 class="nothing lightgrey text-xs">New message (Direct Chat)</h6>
-        <hr>
-      <% } else{ %>
-        <h6 class="nothing lightgrey text-xs">No new messages.</h6>
-      <% } %>
-      <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_notifications'); toggle_requests('notification');"><i class="fas fa-times"></i></button>
-    </div>
-    <% for(var k=0;k<userChats.length;k++){ %>
-      <div class="pop-container">
-        <div class="valign py-1">
-          <div class="d-inline-flex">
-            <span>
-              <a href="/users/<%= userChats[k].userId._id %>">
-                <img class="navdp" src="<%= UC_50_profilePic[k] || '/images/noUser.png' %>"></a>
-            </span>
-            <span>
-              <div class="d-flex flex-column lineheight2 mx-2">
-                <a href="/users/<%= userChats[k].userId._id %>" class="grey">
-                  <strong class="text-sm"><%= userChats[k].userId.fullName %></strong></a>
-                <span class="lightgrey text-xs"><%= userChats[k].lastMessage %></span>
-              </div>
-            </span>
-          </div>
-        </div>
-      </div>
-    <% } %>
-  <% } %>
-</div>
-
 
     <!-- The sidebar -->
     <div class="sidebar-back"></div>
@@ -263,7 +231,7 @@
         </div>
       </a>
     <% if(!currentUser){ %>
-      <a id="side-clubs" class="hr2" href="#clubs">
+      <a id="side-clubs" class="hr2">
         <div class="valign">
           <div class="d-flex justify-content-start">
             <div id="club-door" class="nocaretmar"><i class="fas fa-door-closed pl-2 mobilepad sidebar-icon px-1 mx-1"></i></div>
@@ -273,7 +241,7 @@
         </div>
       </a>
     <% } else { %>
-      <a id="side-clubs" class="hr2 dropdown-sidebar" href="#clubs">
+      <a id="side-clubs" class="hr2 dropdown-sidebar">
         <div class="valign">
           <div class="d-flex justify-content-start">
             <div id="club-door"><i class="fas fa-door-closed sidebar-icon px-1"></i></div>

@@ -1,11 +1,12 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexSearch, indexSearchEmail, indexSearchPeople,
-  indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo,
-  indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs,
-  indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, indexViewOrgPage, indexOrgPageSettings, 
-  indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs} = require('../controllers/index');
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexCurrentUserInboxCount, 
+  indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, 
+  indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, 
+  indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, 
+  indexViewOrgPage, indexOrgPageSettings, indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs} 
+  = require('../controllers/index');
 
 // ==================================================
 // FOR NOW in urls, org_pages is replaced by colleges
@@ -29,6 +30,9 @@ router.get('/chats', middleware.isLoggedIn, indexChats);
 
 // Chats list
 router.put('/chats', middleware.isLoggedIn, indexChatsOpen);
+
+// Update inbox notifications count
+router.put('/user/:id/inbox', middleware.isLoggedIn, indexCurrentUserInboxCount);
 
 // Search
 router.get('/search', indexSearch);

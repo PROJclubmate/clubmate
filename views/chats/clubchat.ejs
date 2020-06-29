@@ -22,21 +22,6 @@
   </div>
   <div id="chatbox" class="yellowback collapse">
     <div id="messages" class="messages2 card-body3 scroll moz-scroll">
-      <div class="pushmsg card mt-0 chat-status">
-        <div class="text-sm darkgrey valign ml-1">
-          <div id="club-msg-status">Status: Idle</div>
-          <div class="text-xs darkgrey chat-input-tool">
-            <span class="emoji-panel">
-              <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-                <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
-                  <% include ../partials/emoji_picker2 %>
-                </div>
-                <i class="far fa-laugh-wink"></i>
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
       <div class="text-center">
         <button id="load-prevMsgs-btn" class="chat-head4 nodisplay" value="" type="button">
           <span id="load-prevMsgs-span"></span>LOAD PREV
@@ -48,11 +33,26 @@
     </div>
     <div class="input-bottom valign px-1">
       <div class="input-group">
-        <input id="club-message" onfocus="block_display('pushmsg');" class="emoji-input2 commentbox text-sm form-control search2 form-control-sm shadow" type="text" name="msgText" placeholder="Write a message" required>
+        <input id="club-message" onfocus="block_display('pushmsg'); dec_height();" class="emoji-input2 commentbox text-sm form-control search2 form-control-sm shadow" type="text" name="msgText" placeholder="Write a message" required>
       </div>
       <% if(currentUser){ %>
         <div class="pushmsg"><button id="club-send" class="btn btn-sm btn-success btn-round ml-1" title="Send club message"><i class="fab fa-telegram-plane"></i></button></div>
       <% } %>
+    </div>
+  </div>
+</div>
+<div class="pushmsg card mt-0" style="border-top: none;">
+  <div class="text-sm darkgrey valign ml-1">
+    <div id="club-msg-status">Status: Idle</div>
+    <div class="text-xs darkgrey chat-input-tool">
+      <span class="emoji-panel">
+        <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
+            <% include ../partials/emoji_picker2 %>
+          </div>
+          <i class="far fa-laugh-wink"></i>
+        </button>
+      </span>
     </div>
   </div>
 </div>

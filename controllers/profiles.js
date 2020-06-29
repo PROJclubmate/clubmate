@@ -47,7 +47,7 @@ module.exports = {
           var currentUser = req.user;
           // Is conversation initiated/NOT..?
           var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = false;
-          var conversationId = '', recipientId = '', lastMessage = '';
+          var conversationId = '', recipientId = '';
           if(foundUser.userChats.length != 0){
             for(var i=0;i<foundUser.userChats.length;i++){
               if(foundUser.userChats[i].userId.equals(req.user._id)){
@@ -149,25 +149,16 @@ module.exports = {
                 var isBlocked = false;
                 var isBlockedByFoundUser = false;
               }
-              for(var k=0;k<req.user.userChats.length;k++){
-                if(req.user.userChats[k].userId.equals(foundUser._id) && 
-                  (req.user.userChats[k].lastMessage && req.user.userChats[k].lastMessage != '')){
-                  lastMessage = req.user.userChats[k].lastMessage;
-                  break;
-                }
-              }
               return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
               clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
-              Friends_100_profilePic});
+              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
             }
             });
           } else{
-            var recipientId = foundUser._id; var lastMessage = '';
+            var recipientId = foundUser._id;
             return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
             clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
-            Friends_100_profilePic});
+            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
           }
         }
         });
@@ -198,7 +189,7 @@ module.exports = {
         } else{
           var currentUser = req.user;
           var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = true;
-          var conversationId = '', recipientId = ''; var lastMessage = '';
+          var conversationId = '', recipientId = '';
           var clubs = foundUser.userClubs.sort(function(a, b) {
             return parseFloat(a.rank) - parseFloat(b.rank);
           });
@@ -258,8 +249,7 @@ module.exports = {
           }
           return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
           clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, lastMessage,
-          Friends_100_profilePic});
+          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
         }
         });
       }
@@ -285,7 +275,7 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          var match = false; var lastMessage = '';
+          var match = false;
           var clubCount = foundUser.userClubs.length;
           var sentRequest = haveRequest = isFriend = false;
           var adminClubs = []; var clubInvites = []; var mutualClubs = [];
@@ -295,7 +285,7 @@ module.exports = {
             {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
           return res.render("users/show", {haveRequest, sentRequest, isFriend, user: foundUser, match, adminClubs,
-          clubInvites, mutualClubs, foundFriends, clubCount, lastMessage, Friends_100_profilePic});
+          clubInvites, mutualClubs, foundFriends, clubCount, Friends_100_profilePic});
         }
         });
       }

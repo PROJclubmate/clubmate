@@ -257,6 +257,16 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   window.onload=function(){
     document.getElementById('load-more-btn').click();
+    if($('#mypage').length){
+      $.ajax({
+        url: '/user/'+location.pathname.split('/')[2]+'/inbox',
+        timeout: 3000,
+        type: 'PUT',
+        success: function(data){
+          $('.inbox_count').text(data.count);
+        }
+      })
+    }
   }
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();
@@ -741,7 +751,7 @@ function index_posts_template(response){
         <% } else{ %>
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
         <% } %>
-          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -866,8 +876,8 @@ function index_posts_template(response){
     </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="d-flex flex-row justify-content-between mt-3">
-      <div class="card topic-break">
+    <div class="d-flex flex-row justify-content-between">
+      <div class="card topic-break mt-3">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
@@ -909,7 +919,7 @@ function index_posts_template(response){
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <% } %>
-              <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <% if(!friendsPostUrl){ %>
@@ -929,7 +939,7 @@ function index_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column">
+      <div class="d-flex flex-column topic-column mt-3">
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
@@ -1126,7 +1136,7 @@ function club_posts_template(response){
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
-    <div class="card noborder post-head">
+    <div class="card post-head">
       <div class="card-body">
         <div class="dropctn">
           <div class="valign">
@@ -1209,7 +1219,7 @@ function club_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -1298,7 +1308,7 @@ function club_posts_template(response){
     </div>
     <!-- COMMENTS -->
     <div class="mt-1"></div>
-    <div class="card noborder m-0 post-tail">
+    <div class="card m-0 post-tail">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -1341,8 +1351,8 @@ function club_posts_template(response){
     </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="noborder d-flex flex-row justify-content-between mt-3">
-      <div class="card topic-break">
+    <div class="noborder d-flex flex-row justify-content-between">
+      <div class="card topic-break mt-3">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
@@ -1383,7 +1393,7 @@ function club_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-              <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
@@ -1399,7 +1409,7 @@ function club_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column">
+      <div class="d-flex flex-column topic-column mt-3">
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
@@ -1515,7 +1525,11 @@ function user_posts_template(response){
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
-    <div class="card noborder post-head">
+    <% if(k == 0){ %>
+      <div class="card mt-0 pt-3 post-head">
+    <% } else{ %>
+      <div class="card post-head">
+    <% } %>
       <div class="card-body">
         <div class="dropctn">
           <div class="valign lineheight">
@@ -1587,7 +1601,7 @@ function user_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -1665,7 +1679,7 @@ function user_posts_template(response){
     </div>
     <!-- COMMENTS -->
     <div class="mt-1"></div>
-    <div class="card noborder m-0 post-tail">
+    <div class="card m-0 post-tail">
       <% if(posts[k].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -1708,8 +1722,12 @@ function user_posts_template(response){
     </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="noborder d-flex flex-row justify-content-between mt-3">
-      <div class="card topic-break">
+    <div class="noborder d-flex flex-row justify-content-between">
+      <% if(k == 0){ %>
+        <div class="card mt-0 pt-3 topic-break">
+      <% } else{ %>
+        <div class="card topic-break mt-3">
+      <% } %>
         <div class="card-body">
           <div class="dropctn">
             <div class="valign lineheight">
@@ -1750,7 +1768,7 @@ function user_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-              <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -1766,7 +1784,11 @@ function user_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column">
+      <% if(k == 0){ %>
+        <div class="d-flex flex-column topic-column mt-0 pt-3">
+      <% } else{ %>
+        <div class="d-flex flex-column topic-column mt-3">
+      <% } %>
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
@@ -1862,7 +1884,11 @@ function heart_posts_template(response){
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
   <!-- SIMPLE POSTS -->
   <% if(postsH[l].topic == ''){ %>
-    <div class="card noborder post-head">
+    <% if(l == 0){ %>
+      <div class="card mt-0 pt-3 post-head">
+    <% } else{ %>
+      <div class="card post-head">
+    <% } %>
       <div class="card-body">
         <div class="dropctn">
           <div class="valign lineheight">
@@ -1934,7 +1960,7 @@ function heart_posts_template(response){
       </div>
       <% if(postsH[l].image){ %>
         <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-          <div><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= postsH[l].description %></p>
@@ -2012,7 +2038,7 @@ function heart_posts_template(response){
     </div>
     <!-- COMMENTS -->
     <div class="mt-1"></div>
-    <div class="card noborder m-0 post-tail">
+    <div class="card m-0 post-tail">
       <% if(postsH[l].commentsCount != 0){ %>
         <div class="card-body3">
           <% var z=1; var buckets = postsH[l].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
@@ -2055,8 +2081,12 @@ function heart_posts_template(response){
     </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
-    <div class="noborder d-flex flex-row justify-content-between mt-3">
-      <div class="card topic-break">
+    <div class="noborder d-flex flex-row justify-content-between">
+      <% if(l == 0){ %>
+        <div class="card mt-0 pt-3 topic-break">
+      <% } else{ %>
+        <div class="card topic-break mt-3">
+      <% } %>
         <div class="card-body">
           <div class="dropctn">
             <div class="valign lineheight">
@@ -2097,7 +2127,7 @@ function heart_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p></div>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-              <div><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
@@ -2113,7 +2143,11 @@ function heart_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column">
+      <% if(l == 0){ %>
+        <div class="d-flex flex-column topic-column mt-0 pt-3">
+      <% } else{ %>
+        <div class="d-flex flex-column topic-column mt-3">
+      <% } %>
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
