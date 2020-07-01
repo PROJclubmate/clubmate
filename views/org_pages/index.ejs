@@ -126,13 +126,33 @@
 					      <img class="orgdp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
 					    </div>
 					    <div class="my-auto ml-2">
-					      <span>
-					        <a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
+					    	<% if(currentUser && keyValue == 2){ %>
+					      	<span class="mr-1 lineheight" style="vertical-align: top;">
+					      <% } else{ %>
+					      	<span class="lineheight" style="vertical-align: baseline;">
+					      <% } %>
+					       	<a href="/clubs/<%= org_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
 					          <strong><%= org_page.allClubs[i].categoryClubIds[j].name %></strong>
 					        </a>
 					      </span>
 					      <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-					      	<span class="my-auto lightgrey text-xs mobiletext4"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
+					      	<span class="ml-1 mr-3 lightgrey text-xs mobiletext4"><%= org_page.allClubs[i].categoryClubIds[j].banner %></span>
+					      <% } else if(currentUser && keyValue == 2){ %>
+					      	<% if(clubUserIdsArr[i][j].length){ %>
+					      		<span class="px-2 pr-3 nowrap d-inline-flex" style="margin-left: -2px;">
+					      			<% var count = 0; %>
+						      		<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
+				      					<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
+				      						<% if(count<5 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
+				      							<span class="smalldppad d-inline-flex" title="<%= foundFriendsPicArr[l].name %>" style="z-index: <%= 4-count %>;">
+						      						<img class="smalldp rounded-circle" src="<%= foundFriendsPicArr[l].url %>">
+						      					</span>
+						      					<% count++; %>
+					      					<% } %>
+				      					<% } %>
+						      		<% } %>
+						      	</span>
+					      	<% } %>
 					      <% } %>
 					    </div>
 					  </div>

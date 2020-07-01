@@ -1,20 +1,21 @@
 <div class="card mt-0 border-light">
   <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
-    <div class="text-sm mobilebold">
+    <div class="text-sm mobilebold d-inline-flex">
       <span id="latestMsg">Club chat</span>
       <% if(conversationId && conversationId != ''){ %>
         <span id="latestMsg-hidden" class="truncate1 lightgrey nodisplay"></span>
       <% } else{ %>
         <span id="latestMsg-hidden" class="nodisplay">Club chat</span>
       <% } %>
+      <span id="clubRoomConnectionsNum" class="boldtext text-sm bluecolor"></span>
     </div>
     <div class="boldtext text-xxxs ml-2">
       <% if(conversationId && conversationId != ''){ %>
-        <svg height="12" width="12">
+        <svg id="isUserInClubRoom" height="12" width="12">
           <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
         </svg>
       <% } else{ %>
-        <svg height="12" width="12">
+        <svg id="isUserInClubRoom" height="12" width="12">
           <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="white"/>
         </svg>
       <% } %>
@@ -47,7 +48,7 @@
     <div class="text-xs darkgrey chat-input-tool">
       <span class="emoji-panel">
         <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
+          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2 emoji-up">
             <% include ../partials/emoji_picker2 %>
           </div>
           <i class="far fa-laugh-wink"></i>

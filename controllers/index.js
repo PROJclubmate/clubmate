@@ -1383,7 +1383,7 @@ module.exports = {
   indexViewOrgPage(req, res, next){
     var nameEsc = req.params.org_name.replace(/\+/g, ' ').replace(/\%20/g, ' ');
     OrgPage.findOne({name: nameEsc, clubCount: {$gt: 0}})
-    .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount'})
+    .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount clubUsers.id'})
     .exec(function(err, foundOrgPage){
     if(err){
       console.log(Date.now()+' : '+'(index-62)foundOrgPage err:- '+JSON.stringify(err, null, 2));
@@ -1393,18 +1393,11 @@ module.exports = {
       req.flash('error', 'College page either does not exist or has no listed clubs :(');
       return res.redirect('back');
     } else{
-      var Clubs_50_clubAvatar = []; var match = false; var following = false;
+      var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
+      var match = false; var following = false;
       var allClubsArr = foundOrgPage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
-      for(var i=0;i<allClubsArr.length;i++){
-        var arr2D = [];
-        for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-          arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-          {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        }
-        Clubs_50_clubAvatar[i] = arr2D;
-      }
       if(req.user){
         if(req.user.userKeys.college == foundOrgPage.name){
           match = true;
@@ -1419,22 +1412,95 @@ module.exports = {
             }
           }
         }
-        var thisOrgPageFollowingClubIdsArr = [];
-        for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
-          for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
-            for(var l=0;l<req.user.followingClubCount;l++){
-              if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
-                thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
-                break;
+        if(keyValue == 1){
+          for(var i=0;i<allClubsArr.length;i++){
+            var arr2D = [];
+            for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
+              arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            }
+            Clubs_50_clubAvatar[i] = arr2D;
+          }
+          var thisOrgPageFollowingClubIdsArr = [];
+          for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
+            for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+              for(var l=0;l<req.user.followingClubCount;l++){
+                if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                  thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                  break;
+                }
               }
             }
           }
+          var foundFriendsPicArr = []; var clubUserIdsArr = [];
+          return res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+          currentUserId, keyValue, thisOrgPageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+        } else if(keyValue == 2){
+          for(var i=0;i<allClubsArr.length;i++){
+            var arr12D = []; var arr22D = [];
+            for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
+              var arr23D = [];
+              arr12D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              // Very heavy (4 nested loops O_o)
+              for(var k=0;k<allClubsArr[i].categoryClubIds[j].clubUsers.length;k++){
+                for(var l=0;l<req.user.friends.length;l++){
+                  if(req.user.friends[l].equals(allClubsArr[i].categoryClubIds[j].clubUsers[k].id)){
+                    arr23D.push(allClubsArr[i].categoryClubIds[j].clubUsers[k].id);
+                    friendsInClubArr.push(req.user.friends[l]);
+                  }
+                }
+              }
+            arr22D[j] = arr23D;
+            }
+            clubUserIdsArr[i] = arr22D;
+            Clubs_50_clubAvatar[i] = arr12D;
+          }
+          User.find({_id: {$in: friendsInClubArr}})
+          .select({_id: 1, fullName: 1, profilePic: 1, profilePicId: 1}).exec(function(err, foundFriends){
+            if(err || !foundFriends){
+              console.log(Date.now()+' : '+'(index-60)foundUser err:- '+JSON.stringify(err, null, 2));
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              var thisOrgPageFollowingClubIdsArr = [];
+              for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
+                for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+                  for(var l=0;l<req.user.followingClubCount;l++){
+                    if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                      thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                      break;
+                    }
+                  }
+                }
+              }
+              var foundFriendsPicArr = [];
+              for(var i=0;i<foundFriends.length;i++){
+                var obj = {};
+                obj['id'] = foundFriends[i]._id;
+                obj['name'] = foundFriends[i].fullName;
+                obj['url'] = cloudinary.url(foundFriends[i].profilePicId,
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                foundFriendsPicArr.push(obj);
+              }
+              return res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+              currentUserId, keyValue, thisOrgPageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+            }
+          });
         }
       } else{
+        for(var i=0;i<allClubsArr.length;i++){
+          var arr2D = [];
+          for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
+            arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          }
+          Clubs_50_clubAvatar[i] = arr2D;
+        }
         currentUserId = '';
+        res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+        currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
       }
-      res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-      currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
     }
     });
   },

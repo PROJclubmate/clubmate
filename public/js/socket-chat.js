@@ -58,19 +58,15 @@ if(socket !== undefined){
   }
   // Emit online/offline
   $("#user-message").focus(function(){
-    socket.emit('userOnChatbox');
     var conversationId = $("#user-convoId").attr("value").split(',')[0];
     $.post('/seen_msg/'+conversationId);
   });
-  $("#user-message").blur(function(){
-    socket.emit('userOffChatbox');
-  });
   // Listen
-  socket.on('userOnChatbox', function(data){
-    $("#isUserOnChatbox").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
+  socket.on('userJoinedRoom', function(){
+    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
   })
-  socket.on('userOffChatbox', function(data){
-    $("#isUserOnChatbox").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
+  socket.on('userLeftRoom', function(){
+    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
   })
 
   // Emit typing
@@ -212,6 +208,16 @@ if(socket !== undefined){
     var conversationId = $("#club-convoId").attr("value").split(',')[0];
     $.post('/seen_clubmsg/'+conversationId);
   });
+
+  socket.on('updateClubRoomConnectionsNum', function(data){
+    $("#clubRoomConnectionsNum").text(data);
+  });
+  socket.on('userJoinedClubRoom', function(){
+    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
+  })
+  socket.on('allUsersLeftClubRoom', function(){
+    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");
+  })
   $("#club-message").on('input', function(){
     socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
   });
@@ -245,11 +251,11 @@ if(socket !== undefined){
         prevDate = moment(message.createdAt).format("MMM Do YY");
         if(message.authorId == data.currentUser){
           $("#messages").append(`
-            <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"> ${data.firstName} 
+            <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.firstName} 
              ${moment(message.createdAt).format('LT')} </div><div> ${message.text}</div> </div></div>`);
         } else{
           $("#messages").append(`
-            <div><div class="chat-msg"><div class="chat-head bluecolor"> ${message.authorName} 
+            <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${message.authorName} 
              ${moment(message.createdAt).format('LT')} </div><div> ${message.text}</div> </div></div>`);
         }
         if($(window).width() < 768 && !$('#pin-chatbox').hasClass('pin-chatbox2')){
@@ -266,11 +272,11 @@ if(socket !== undefined){
     var currentUserId = convIdclubIdcurrId[2];
     if(currentUserId == data.authorId){
         $("#messages").append(`
-          <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"> ${data.authorName} </div>
+          <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.authorName} </div>
            ${data.composedMessage} </div></div>`);
       } else{
         $("#messages").append(`
-          <div><div class="chat-msg"><div class="chat-head bluecolor"> ${data.authorName} </div>
+          <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${data.authorName} </div>
            ${data.composedMessage} </div></div>`);
       }
     scrollToNext();

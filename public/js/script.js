@@ -607,6 +607,7 @@ function minimise(){
 
 function dec_height(){
   if($('#pin-chatbox').hasClass("pin-chatbox2")){
+    $('#messages').animate({scrollTop: 5000}, 1500);
     if($('.pushmsg').css('display') == 'block'){
       $('#messages').addClass("msg_dec");
     } else{

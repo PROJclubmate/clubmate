@@ -121,21 +121,13 @@ useUnifiedTopology: true}, function(err, client){
   io.on('connection', function(socket){
     // console.log(Date.now()+' : '+'socket: '+ socket.id +' connected');
 
-    // Create function to send status
-    sendStatus = function(s){
-      socket.emit('status', s);
-    }
-
     socket.on('joinRoom', room =>{
       socket.join(room);
-      /* Current exec:- Client side validation
-      Desired :- Server side acknowledgement that the msg is sent */
-      // Join a room and then broadcast
-      socket.on('userOnChatbox', function(data){
-        socket.broadcast.to(room).emit('userOnChatbox', data);
-      })
-      socket.on('userOffChatbox', function(data){
-        socket.broadcast.to(room).emit('userOffChatbox', data);
+      if(io.sockets.adapter.rooms[room] && io.sockets.adapter.rooms[room].length > 1){
+        io.sockets.in(room).emit('userJoinedRoom');
+      }
+      socket.on('disconnect', function(){
+        socket.broadcast.to(room).emit('userLeftRoom');
       })
       socket.on('typing', function(data){
         socket.broadcast.to(room).emit('typing', data);
@@ -147,6 +139,18 @@ useUnifiedTopology: true}, function(err, client){
     
     socket.on('joinClubRoom', clubRoom =>{
       socket.join(clubRoom);
+      if(io.sockets.adapter.rooms[clubRoom] && io.sockets.adapter.rooms[clubRoom].length > 1){
+        io.sockets.in(clubRoom).emit('userJoinedClubRoom');
+        io.sockets.in(clubRoom).emit('updateClubRoomConnectionsNum', io.sockets.adapter.rooms[clubRoom].length);
+      }
+      socket.on('disconnect', function(){
+        if(io.sockets.adapter.rooms[clubRoom] && io.sockets.adapter.rooms[clubRoom].length > 1){
+          socket.broadcast.to(clubRoom).emit('updateClubRoomConnectionsNum', io.sockets.adapter.rooms[clubRoom].length);
+        } else{
+          socket.broadcast.to(clubRoom).emit('allUsersLeftClubRoom');
+          socket.broadcast.to(clubRoom).emit('updateClubRoomConnectionsNum', '');
+        }
+      })
       socket.on('clubTyping', function(data){
         socket.broadcast.to(clubRoom).emit('clubTyping', data);
       })
