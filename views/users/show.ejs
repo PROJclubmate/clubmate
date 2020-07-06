@@ -241,6 +241,10 @@
                 <li class="nav-item">
                  <a class="nav-link boldtext black" id="hearts-tab" data-toggle="tab" href="#hearts" role="tab" aria-controls="hearts" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Hearts</a>
                 </li>
+              <% } else if(currentUser && !match){ %>
+                <li class="nav-item">
+                 <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chats</a>
+                </li>
               <% } %>
             </ul>
           </div>
@@ -253,66 +257,15 @@
             <% } %>
               <div class="d-flex flex-row">
                 <span class="ml-auto">
-                  <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
-                    <form action="/requests?_method=PUT" method="POST" class="form-inline">
-                      <button class="btn btn-white btnxxs text-sm" name="friendReq" type="submit" value="<%= user._id %>">
-                        <i class="fas fa-user-plus"></i> Add Friend
-                      </button>
-                    </form>
-                  <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
-                    <div class="dropdown">
-                      <button class="btn btn-white btnxxs text-sm dropdown-toggle2" type="button" data-toggle="dropdown">
-                        <i class="fas fa-check"></i> Friends
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-right dropbox">
-                        <div class="container drop-shadow1 drop-items text-sm">
-                          <li>
-                            <button class="dropitems2 py-1 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
-                          </li>
-                          <hr>
-                          <li><a class="dropitems2 py-1 text-sm" href="#">Help ?</a></li>
-                        </div>
-                      </ul>
-                    </div>
-                    <!-- Modal HTML -->
-                    <div id="unfriendModal<%= user._id %>" class="fixed-padding modal fade">
-                      <div class="modal-dialog modal-confirm">
-                        <div class="modal-content">
-                          <div class="d-flex">
-                            <span class="icon-box">
-                              <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                            </span>              
-                            <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          </div>
-                          <div>
-                            <p>Do you really want to unfriend <%= user.firstName %>? This cannot be undone.</p>
-                          </div>
-                          <div class="my-2">
-                            <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                            <form action="/requests?_method=PUT" method="POST" class="delete-form inline">
-                              <button name="unFriendReq" type="submit" value="<%= user._id %>" class="btn btn-danger btn-sm ml-1">Unfriend</button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
-                    <form action="/requests?_method=PUT" method="POST" class="form-inline">
-                      <button class="btn btn-white btnxxs text-sm" name="cancelReq" type="submit" value="<%= user._id %>">
-                        <i class="fas fa-minus"></i> Request Pending
-                      </button>
-                    </form>
-                  <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
-                    <form action="/requests?_method=PUT" method="POST" class="form-inline">
-                      <button class="btn btn-white btnxxs text-sm" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
-                    </form>
-                  <% } else if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
+                  <% if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
                     <button id="enable-notifications" class="btn btn-white btn-notification btnxxs text-sm"title="Enable notifications on this device">
                       <i class="fas fa-bell"></i>
                     </button>
-                    <button id="mypage" class="btn btn-white btnxxs text-sm noshadow nopoint nowrap" type="button">
+                    <button id="mypage" class="btn btn-white btnxxs text-sm noshadow nopoint nowrap nodisplay" type="button">
                     <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+                  <% } else{ %>
+                    <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap invisible" type="button">
+                    Not Me</button>
                   <% } %>
                 </span>
               </div>
@@ -738,6 +691,10 @@
                   </div>
                 </div>
               </div>
+            <% } else if(currentUser && !match){ %>
+              <!-- Chats Tab -->
+              <div class="tab-pane fade greyback" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+              </div>
             <% } %>
           </div>
         </div>
@@ -745,9 +702,82 @@
     </div>
   </div>
   <% if(currentUser && !match){ %>
-    <div id="pin-chatbox" class="chatbox-user col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
-      <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUser._id %>">
-        <% include ../partials/userchat %>
+    <div class="col-md-4 col-lg-3 px-2 pb-2">
+      <div class="valign" style="padding: 0.75rem 0.5rem;">
+        <div>
+          <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
+            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="friendReq" type="submit" value="<%= user._id %>">
+                <i class="fas fa-user-plus"></i> Add Friend
+              </button>
+            </form>
+          <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
+            <div class="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" type="button" data-toggle="dropdown">
+                <i class="fas fa-check"></i> Friends
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right dropbox">
+                <div class="container drop-shadow1 drop-items text-sm">
+                  <li>
+                    <button class="dropitems2 py-1 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
+                  </li>
+                  <hr>
+                  <li><a class="dropitems2 py-1 text-sm" href="#">Help ?</a></li>
+                </div>
+              </ul>
+            </div>
+            <!-- Modal HTML -->
+            <div id="unfriendModal<%= user._id %>" class="fixed-padding modal fade">
+              <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                  <div class="d-flex">
+                    <span class="icon-box">
+                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                    </span>              
+                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  </div>
+                  <div>
+                    <p>Do you really want to unfriend <%= user.firstName %>? This cannot be undone.</p>
+                  </div>
+                  <div class="my-2">
+                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                    <form action="/requests?_method=PUT" method="POST" class="delete-form inline">
+                      <button name="unFriendReq" type="submit" value="<%= user._id %>" class="btn btn-danger btn-sm ml-1">Unfriend</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
+            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="cancelReq" type="submit" value="<%= user._id %>">
+                <i class="fas fa-minus"></i> Request Pending
+              </button>
+            </form>
+          <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
+            <form action="/requests?_method=PUT" method="POST" class="form-inline">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+            </form>
+          <% } %>
+        </div>
+        <div>
+          <% if(conversationId && conversationId != ''){ %>
+            <% if(user.isLoggedIn){ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+              </svg>
+            <% } else{ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
+              </svg>
+            <% } %>
+          <% } else{ %>
+            <svg id="isUserInRoom" height="12" width="12">
+              <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#d7d7d7"/>
+            </svg>
+          <% } %>
+        </div>
       </div>
     </div>
   <% } else if(currentUser && match){ %>
@@ -782,11 +812,11 @@
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'O';}
-    else if(rank == 1){return 'A';}
-    else if(rank == 2){return 'M';}
-    else if(rank == 3){return 'S';}
-    else if(rank == 4){return 'J';}
+    if(rank == 0){return 'Ow';}
+    else if(rank == 1){return 'Ad';}
+    else if(rank == 2){return 'Mo';}
+    else if(rank == 3){return 'Sr';}
+    else if(rank == 4){return 'Jr';}
   }
 
   function privacyText(privacy){

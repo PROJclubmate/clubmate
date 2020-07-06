@@ -2356,7 +2356,7 @@ function post_subPosts_template(response){
             <div class="input-group input-group-sm px-2">
               <input href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" type="number" id="page-index-input" class="form-control search text-xs px-1" placeholder="Page ..">
               <div class="input-group-append">
-                <button id="page-index-button" class="btn btn-secondary text-sm btnxs" type="submit"> Go </button>
+                <button id="page-index-button" class="btn btn-secondary text-sm btnxs btnshadow" type="submit"> Go </button>
               </div>
             </div>
           </div>
@@ -2557,7 +2557,7 @@ function moreMembers_template(response){
       <a href="/users/<%= users[i].id._id %>">
       <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUser.png' %>"></a>
     </div>
-    <div class="col-md-8 col-8 my-auto">
+    <div class="col-md-8 col-8 my-auto pt-2 pb-1">
       <span>
         <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
           <strong><%= users[i].id.fullName %></strong>
@@ -2573,7 +2573,7 @@ function moreMembers_template(response){
           <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
         </span>
         <span class="mobileShow">
-          <em class="darkgrey text-sm boldtext"><%= rankTitle2(users[i].userRank) %></em>
+          <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
         </span>
       </div>
       <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
@@ -2650,11 +2650,11 @@ function moreMembers_template(response){
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'O';}
-    else if(rank == 1){return 'A';}
-    else if(rank == 2){return 'M';}
-    else if(rank == 3){return 'S';}
-    else if(rank == 4){return 'J';}
+    if(rank == 0){return 'Ow';}
+    else if(rank == 1){return 'Ad';}
+    else if(rank == 2){return 'Mo';}
+    else if(rank == 3){return 'Sr';}
+    else if(rank == 4){return 'Jr';}
   }
 %>
 `,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, newEndpoints: response.newEndpoints,
@@ -2740,7 +2740,7 @@ function moreClubs_template(response){
       <a href="/clubs/<%= clubs[i].id._id %>">
       <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
     </div>
-    <div class="col-md-9 col-8 my-auto">
+    <div class="col-md-9 col-8 my-auto pt-2 pb-1">
       <span>
         <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
           <strong><%= clubs[i].id.name %></strong>
@@ -2750,7 +2750,7 @@ function moreClubs_template(response){
         <%= clubs[i].status %>
         <div class="status" id="status<%= clubs[i].id._id %>">
           <form action="/status-rank?_method=PUT" method="POST">
-            <div class="input-group mt-1">
+            <div class="input-group mt-1 mb-5">
               <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
               <div class="input-group-append">
                 <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= userId %>,<%= clubs[i].id._id %>">Update</button>
@@ -2766,7 +2766,7 @@ function moreClubs_template(response){
           <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
         </span>
         <span class="mobileShow">
-          <em class="darkgrey text-sm boldtext"><%= rankTitle2(clubs[i].rank) %></em>
+          <em class="darkgrey text-xs"><%= rankTitle2(clubs[i].rank) %></em>
         </span>
       </div>
       <span class="dropdown">
@@ -2822,11 +2822,11 @@ function moreClubs_template(response){
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'O';}
-    else if(rank == 1){return 'A';}
-    else if(rank == 2){return 'M';}
-    else if(rank == 3){return 'S';}
-    else if(rank == 4){return 'J';}
+    if(rank == 0){return 'Ow';}
+    else if(rank == 1){return 'Ad';}
+    else if(rank == 2){return 'Mo';}
+    else if(rank == 3){return 'Sr';}
+    else if(rank == 4){return 'Jr';}
   }
 %>
 `,{clubs: response.clubs, clubCount: response.clubCount, Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,

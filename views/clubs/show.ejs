@@ -334,7 +334,7 @@
                 <a class="nav-link boldtext active black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link boldtext black" id="updates-tab" data-toggle="tab" href="#updates" role="tab" aria-controls="updates" aria-selected="false">Updates</a>
+                <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
               </li>
               <li class="nav-item">
                <a class="nav-link boldtext black" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true">Members</a>
@@ -423,114 +423,9 @@
                   </div>
                 </div>
               </div>
-              <!-- Updates Tab -->
-              <div class="tab-pane fade cardpad greyback nothing" id="updates" role="tabpanel" aria-labelledby="updates-tab">
-                <% if(0 <= rank && rank <= 1){ %>
-                  <div class="updates-card updates-input">
-                    <form action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                      <div class="row no-gutters">
-                        <div class="col-md-3 col-4">
-                          <div class="input-group mt-1 date" id="datetimepicker4" data-target-input="nearest">
-                            <div class="input-group-prepend" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                            </div>
-                            <input name="newsDate" type="text" class="form-control datetimepicker-input commentbox4 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="mm/dd/yyyy (event date)">
-                          </div>
-                        </div>
-                        <div class="col-md-9 col-8 pl-2">
-                          <div class="input-group mt-1">
-                            <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update">
-                            <div class="input-group-append">
-                              <button class="btn btn-secondary btnxxs text-xs" type="submit">Push</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                <% } else if(rank == 2){ %>
-                  <div class="updates-card updates-input">
-                    <form action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                      <div>
-                        <div class="input-group mt-1">
-                          <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update">
-                          <div class="input-group-append">
-                            <button class="btn btn-secondary btnxxs text-xs" type="submit">Push</button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                <% } %>
-                <% if(club.updates && club.updates != ''){ %>
-                  <div class="updates-card">
-                    <% for(i=club.updates.length-1;i>=0;i--){ %>
-                      <div class="d-flex flex-row">
-                        <% if(club.updates[i].eventDate){ %>
-                          <div class="text-md mx-2 my-1 lineheight">
-                            <time datetime="<%= moment(club.updates[i].eventDate).format('LL') %>" class="calendar">
-                              <em><%= moment(club.updates[i].eventDate).format('dddd') %></em>
-                              <strong><%= moment(club.updates[i].eventDate).format('MMM') %></strong>
-                              <span><%= moment(club.updates[i].eventDate).format('D') %></span>
-                            </time>
-                          </div>
-                        <% } else{ %>
-                          <div class="eventD text-md mx-2 my-1 lineheight"></div>
-                        <% } %>
-                        <div class="mx-2 pb-3 my-auto news mobiletext">
-                          <%= club.updates[i].news %>
-                          <span class="lightgrey text-xxs boldtext">[<em><%= moment(club.updates[i].pushedAt).calendar() %></em>]</span>
-                          <span class="lightgrey text-xxs boldtext nothing">[by: <em><%= club.updates[i].pusherName %></em>]</span>
-                        </div>
-                        <div class="d-flex flex-row ml-auto mb-auto">
-                          <% if(0 <= rank && rank <= 1){ %>
-                            <span class="dropdown ml-auto mb-auto">
-                              <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                              <ul class="dropdown-menu dropdown-menu-right dropbox">
-                                <div class="container drop-shadow1">
-                                  <li>
-                                    <button class="dropitems link-button red text-sm" href="#delUpdateModal<%= club.updates[i]._id %>" data-toggle="modal">Delete update</button>
-                                  </li>
-                                </div>
-                              </ul>
-                            </span>
-                            <!-- Modal HTML -->
-                            <div id="delUpdateModal<%= club.updates[i]._id %>" class="fixed-padding modal fade">
-                              <div class="modal-dialog modal-confirm">
-                                <div class="modal-content">
-                                  <div class="d-flex">
-                                    <span class="icon-box">
-                                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                                    </span>              
-                                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                  </div>
-                                  <div>
-                                    <p>Do you really want to delete this update? This cannot be undone.</p>
-                                  </div>
-                                  <div class="my-2">
-                                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                                    <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                                      <button class="btn btn-danger btn-sm ml-1" name="delUpdate" value="<%= club.updates[i]._id %>" type="submit">Delete</button>
-                                    </form>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          <% } %>
-                        </div>
-                      </div>
-                    <% } %>
-                  </div>
-                <% } else if(0 <= rank && rank <= 4){ %>
-                  <div class="updates-card">
-                    <div class="text-center lightgrey text-sm pt-1">No updates yet.</div>
-                  </div>
-                <% } else{ %>
-                  <div class="updates-card">
-                    <div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>
-                  </div>
-                <% } %>
+              <!-- Chats Tab -->
+              <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
@@ -546,7 +441,7 @@
                       <div class="input-group input-group-sm">
                         <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 26px; width: 185px; border: none;">
                         <div class="input-group-append">
-                          <button id="search-members-btn" class="btn btn-secondary search py-0 px-1" type="submit" style="height: 26px;">
+                          <button id="search-members-btn" class="btn btn-secondary search py-0 px-1 btnshadow" type="submit" style="height: 26px;">
                             <span id="search-members-span"></span>Go
                           </button>
                         </div>
@@ -588,10 +483,8 @@
     </div>
   </div>
   <% if(currentUser && 0 <= rank && rank <=4){ %>
-    <div id="pin-chatbox" class="chatbox-club col-md-4 col-lg-3 px-2 pb-2" value="<%= currentUser.firstName %>">
-      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
-        <% include ../partials/clubchat %>
-      </div>
+    <div class="col-md-4 col-lg-3 px-2 pb-2">
+      <% include ../partials/club_updates %>
     </div>
   <% } else if(currentUser && (!rank || 0 >= rank && rank >=4)){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
@@ -602,7 +495,7 @@
         <div class="card-body hr1 mx-3">
           <div class="lightgrey lineheight text-sm text-center">
             <% if(!sentMemberReq){ %>
-              <button id="memberReq-btn" class="btn btn-white btn-primary btn-ask boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
+              <button id="memberReq-btn" class="gb gb8 gb-bordered hover-slide gb-rounded btnshadow text-sm boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
@@ -644,11 +537,11 @@
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'O';}
-    else if(rank == 1){return 'A';}
-    else if(rank == 2){return 'M';}
-    else if(rank == 3){return 'S';}
-    else if(rank == 4){return 'J';}
+    if(rank == 0){return 'Ow';}
+    else if(rank == 1){return 'Ad';}
+    else if(rank == 2){return 'Mo';}
+    else if(rank == 3){return 'Sr';}
+    else if(rank == 4){return 'Jr';}
   }
 
   function privacyText(privacy){

@@ -93,8 +93,6 @@ div.content{
   .pl-2.mobilepad{padding: 0 !important;}
   .helppad{padding-left: 3rem;}
   .helppad2{padding-left: 2.5rem;}
-  .desktoptext3{font-size: 0.75rem !important;}
-  .desktoptext2{font-size: 0.875rem !important;}
   .commentpad{padding-left: 0.25rem;}
   .popup-box-notifications{right: 6.5rem !important;}
   .desktop-mt-2{margin-top: 0.5rem;}
@@ -112,12 +110,16 @@ div.content{
   .chatlist-margin{margin-right: 0.25rem;}
   .topnotch-left:before{border-left: 1px solid #d2d2d2;}
   .topnotch-right:before{border-right: 1px solid #ccc;}
+  .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
+  .postimgpad{padding: 0 0.5rem;}
+  .topicimgpad{padding-left: 0.5rem;}
   .text-xxxxs{font-size: 0.4375rem !important;}
   .text-xxxs{font-size: 0.5625rem !important;}
   .text-xxs{font-size: 0.6875rem !important;}
   .text-xs{font-size: 0.75rem !important;}
   .text-sm{font-size: 0.875rem !important;}
   .text-md{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
   .text-lg{font-size: 1.125rem !important;}
   .text-xl{font-size: 1.25rem !important;}
   .text-xxl{font-size: 1.375rem !important;}
@@ -152,6 +154,7 @@ div.content{
   .text-xs{font-size: 0.75rem !important;}
   .text-sm{font-size: 0.875rem !important;}
   .text-md{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
   .text-lg{font-size: 1.125rem !important;}
   .text-xl{font-size: 1.25rem !important;}
   .text-xxl{font-size: 1.375rem !important;}
@@ -236,11 +239,13 @@ div.content{
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 38px) !important;}
   .chatpad{padding: 0 0.5rem; margin: 0 0.25rem 0.5rem 0.25rem;}
   .copyBtn{margin-left: 0.75rem !important;}
+  .gb11:focus:after{top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;}
   .text-xxxxs{font-size: 0.5rem !important;}
   .text-xxxs{font-size: 0.625rem !important;}
   .text-xxs{font-size: 0.75rem !important;}
   .text-xs{font-size: 0.875rem !important;}
   .text-sm{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
   .text-md{font-size: 1.125rem !important;}
   .text-lg{font-size: 1.25rem !important;}
   .text-xl{font-size: 1.375rem !important;}
@@ -410,6 +415,7 @@ div.content{
   .text-xs{font-size: 0.75rem !important;}
   .text-sm{font-size: 0.875rem !important;}
   .text-md{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
   .text-lg{font-size: 1.125rem !important;}
   .text-xl{font-size: 1.25rem !important;}
   .text-xxl{font-size: 1.375rem !important;}
@@ -546,6 +552,9 @@ hr{
 }
 .mobilebold{
   font-weight: 600;
+}
+.notbold{
+  font-weight: 400 !important;
 }
 .linewrap{
   white-space: pre-wrap;
@@ -790,14 +799,6 @@ input{
   border-top: none;
   margin-top: 0.25rem;
 }
-.updates-card{
-  padding: 0.25rem 0 !important;
-  background-color: white;
-}
-.updates-input{
-  margin-top: 0.5rem;
-  padding: 0.5rem !important;
-}
 .card{
   margin-top: 1rem;
   padding:0;
@@ -830,16 +831,6 @@ div.card-title{
   width: 100%;
   max-height: 22rem;
   object-fit: cover;
-}
-.postimgcorner{
-  border-radius: 0.2rem;
-  overflow: hidden;
-}
-.postimgpad{
-  padding: 0 0.5rem;
-}
-.topicimgpad{
-  padding-left: 0.5rem;
 }
 /*Nav styles
 ---------------------------------------------------*/
@@ -880,6 +871,9 @@ li.nav-item{
   max-height: 200px;
   overflow-y: scroll;
   overflow-y: overlay;
+}
+#updates-content{
+  min-height: 200px;
 }
 .eventD{
   color: #1976d2;
@@ -1026,10 +1020,6 @@ time.calendar span{
   font-size: 0.75rem;
   color: grey;
   background-color: #ededed;
-}
-.news{
-  min-height: 40px;
-  width: auto;
 }
 .friends-dp{
   width: 100% !important;
@@ -1207,6 +1197,9 @@ input[type="file"]#inputavatar{
   box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5);
 }
 #edit-account-info{padding: 0;}
+.clear_updatex:hover{
+  color: red !important;
+}
 /*None elements*/
 .nodisplay{display: none !important;}
 .commentbtn{display: none;}
@@ -1287,6 +1280,7 @@ input[type="file"]#inputavatar{
 }
 .bootstrap-datetimepicker-widget{
   z-index: 2;
+  border: none;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
 }
 .dropbox{
@@ -1399,7 +1393,7 @@ input[type="file"]#inputavatar{
 }
 .btn.btn-dark{
   background-color: white;
-  border: 1px solid silver;
+  border: 1px solid darkgrey;
   color: grey;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
 }
@@ -3160,6 +3154,15 @@ input.shadow:-webkit-autofill:focus{
 .gb8:after{
   background-image: linear-gradient(90deg, #f47178 0%, #f47178 14.3%, #f4da71 14.3%, #f4da71 28.6%, #9df471 28.6%, #9df471 42.9%, #71f4b5 42.9%, #71f4b5 57.2%, #71c2f4 57.2%, #71c2f4 71.5%, #9071f4 71.5%, #9071f4 85.8%, #f471e7 85.8%, #f471e7 100.1%);
 }
+.gb8:focus{
+  outline: none;
+  box-shadow: none;
+  background-color: white;
+}
+.gb8:focus:after{
+  background-size: 200% 100%;
+  background-position: 100% 0;
+}
 .gb9{
   background-color: transparent;
   color: white;
@@ -3172,6 +3175,31 @@ input.shadow:-webkit-autofill:focus{
 }
 .gb11:after{
   background-image: linear-gradient(135deg, #8ae553 0%, #8ae553 22%, #6ecb47 22%, #6ecb47 28%, #53b03b 28%, #53b03b 72%, #37962f 72%, #37962f 100%);
+}
+.gb11:hover{
+  background-color: white;
+  color: #262626;
+}
+.gb11:hover:after{
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  content: '';
+  z-index: -1;
+  border-radius: 2rem;
+  background-position: 0% 0;
+}
+.gb11:focus{
+  outline: none;
+  background-image: linear-gradient(135deg, #8ae553 0%, #8ae553 22%, #6ecb47 22%, #6ecb47 28%, #53b03b 28%, #53b03b 72%, #37962f 72%, #37962f 100%);
+  color: white;
+  background-size: 200% 100%;
+  background-position: 100% 0;
+}
+.gb11:focus:after{
+  background-position: 100% 0;
 }
 .gb12:after{
   background-image: linear-gradient(45deg, rgba(49, 74, 89, 0.45) 0%, rgba(49, 74, 89, 0.45) 12.5%, rgba(122, 86, 72, 0.45) 12.5%, rgba(122, 86, 72, 0.45) 25%, rgba(170, 94, 60, 0.45) 25%, rgba(170, 94, 60, 0.45) 37.5%, rgba(219, 102, 49, 0.45) 37.5%, rgba(219, 102, 49, 0.45) 50%, rgba(146, 90, 66, 0.45) 50%, rgba(146, 90, 66, 0.45) 62.5%, rgba(98, 82, 78, 0.45) 62.5%, rgba(98, 82, 78, 0.45) 75%, rgba(195, 98, 55, 0.45) 75%, rgba(195, 98, 55, 0.45) 87.5%, rgba(73, 78, 83, 0.45) 87.5%, rgba(73, 78, 83, 0.45) 100%), linear-gradient(135deg, #750698, #6e22fb);

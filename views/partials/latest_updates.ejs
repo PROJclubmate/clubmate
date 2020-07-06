@@ -6,7 +6,7 @@
         <span class="mobilebold">
           Latest updates
           <% if(latestUpdates().newupdate){ %>
-            <i class="fas fa-bell text-xs ml-2" style="color: #f9af4a;"></i>
+            <i class="fas fa-bell text-xs ml-2" style="color: #ffa05d;"></i>
           <% } %>
         </span>
       </div>
@@ -14,41 +14,43 @@
     </div>
   </button>
   <div id="latestUpdates" class="collapse scroll moz-scroll">
-    <% var arr = latestUpdates().arr;
-    for(i=0;i<arr.length;i++){ %>
-      <div class="searchcard d-flex flex-row py-1" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
-        <% if(arr[i].eventDate){ %>
-          <div class="text-md mx-2 my-1 lineheight">
-            <time datetime="<%= moment(arr[i].eventDate).format('LL') %>" class="calendar">
-              <em><%= moment(arr[i].eventDate).format('dddd') %></em>
-              <strong><%= moment(arr[i].eventDate).format('MMM') %></strong>
-              <span><%= moment(arr[i].eventDate).format('D') %></span>
-            </time>
-          </div>
-        <% } else{ %>
-          <div class="eventD text-md mx-2 my-1 lineheight"></div>
-        <% } %>
-        <div class="mr-1 fullwidth">
-          <div class="boldtext desktoptext2 mobiletext3 valign">
-            <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
-              <% if((Date.now() - arr[i].pushedAt) < 3600000*24){ %>
-              <sup class="badge badge-white text-xxxxs">NEW</sup>
-              <% } %>
+    <div id="updates-content">
+      <% var arr = latestUpdates().arr;
+      for(i=0;i<arr.length;i++){ %>
+        <div class="fullwidth d-flex flex-row py-2" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
+          <% if(arr[i].eventDate){ %>
+            <div class="text-md mx-2 my-1 lineheight">
+              <time datetime="<%= moment(arr[i].eventDate).format('LL') %>" class="calendar">
+                <em><%= moment(arr[i].eventDate).format('dddd') %></em>
+                <strong><%= moment(arr[i].eventDate).format('MMM') %></strong>
+                <span><%= moment(arr[i].eventDate).format('D') %></span>
+              </time>
             </div>
-            <div id="clear_update<%= i %>" class="nounderline clear_update">
-              <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
-                <button class="red lightgrey nothing link-button px-1 desktoptext2 mobiletext3" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong>&times;</strong></button>
-              </form>
-            </div>
-          </div>
-          <% if(arr[i].deleterName && arr[i].news == 'This update has been deleted'){ %>
-            <div class="desktoptext3 mobiletext3 redcolor"><em><%= arr[i].news %> by <%= arr[i].deleterName %></em></div>
           <% } else{ %>
-            <div class="lightgrey desktoptext3 mobiletext3 mobilebold"><%= arr[i].news %></div>
+            <div class="eventD text-md mx-2 my-1 lineheight"></div>
           <% } %>
+          <div class="mr-1 fullwidth">
+            <div class="boldtext text-sm mobiletext3 valign">
+              <div><a class="darkgrey" href="/clubs/<%= arr[i].clubId %>"><%= arr[i].clubName %></a>
+                <% if((Date.now() - arr[i].pushedAt) < 3600000*24){ %>
+                <sup class="badge badge-white text-xxxxs">NEW</sup>
+                <% } %>
+              </div>
+              <div id="clear_update<%= i %>" class="nounderline clear_update">
+                <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
+                  <button class="red lightgrey nothing link-button px-1 text-sm mobiletext3" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong class="clear_updatex">&times;</strong></button>
+                </form>
+              </div>
+            </div>
+            <% if(arr[i].deleterName && arr[i].news == 'This update has been deleted'){ %>
+              <div class="text-xs mobiletext3 redcolor"><em><%= arr[i].news %> by <%= arr[i].deleterName %></em></div>
+            <% } else{ %>
+              <div class="lightgrey text-xs mobiletext3 mobilebold"><%= arr[i].news %></div>
+            <% } %>
+          </div>
         </div>
-      </div>
-    <% } %>
+      <% } %>
+    </div>
   </div>
 </div>
 

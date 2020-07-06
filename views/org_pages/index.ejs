@@ -143,7 +143,7 @@
 					      			<% var count = 0; %>
 						      		<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
 				      					<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
-				      						<% if(count<5 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
+				      						<% if(count<3 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
 				      							<span class="smalldppad d-inline-flex" title="<%= foundFriendsPicArr[l].name %>" style="z-index: <%= 4-count %>;">
 						      						<img class="smalldp rounded-circle" src="<%= foundFriendsPicArr[l].url %>">
 						      					</span>

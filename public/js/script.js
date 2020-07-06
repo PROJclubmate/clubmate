@@ -99,14 +99,22 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   }
 }
 
-if($(window).width() > 768){
-  $("#latestUpdates").addClass('show');
-};
+if($(window).width() > 768 && !$('#latestUpdates').hasClass('clubupdates')){
+  $('#latestUpdates').addClass('show');
+}
+
+$('#latestUpdates').on('shown.bs.collapse', function(){
+  if($('#pushnew').hasClass('admin')){
+    $('#latestUpdates').animate({scrollTop: 92}, 500);
+  } else if($('#pushnew').hasClass('moderator')){
+    $('#latestUpdates').animate({scrollTop: 50}, 500);
+  }
+})
 
 // Fake Progress bar (Nanobar)
 var options = {
   classname: 'meter',
-    id: 'bar-id'
+  id: 'bar-id'
 };
 var nanobar = new Nanobar( options );
 nanobar.go(30);
