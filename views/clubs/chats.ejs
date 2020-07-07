@@ -1,28 +1,6 @@
 <div class="card mt-0 border-light-lr">
-  <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
-    <div class="text-sm mobilebold d-inline-flex">
-      <span id="latestMsg">Club chat</span>
-      <% if(conversationId && conversationId != ''){ %>
-        <span id="latestMsg-hidden" class="truncate1 lightgrey nodisplay"></span>
-      <% } else{ %>
-        <span id="latestMsg-hidden" class="nodisplay">Club chat</span>
-      <% } %>
-      <span id="clubRoomConnectionsNum" class="boldtext text-sm bluecolor"></span>
-    </div>
-    <div class="boldtext text-xxxs ml-2">
-      <% if(conversationId && conversationId != ''){ %>
-        <svg id="isUserInClubRoom" height="12" width="12">
-          <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
-        </svg>
-      <% } else{ %>
-        <svg id="isUserInClubRoom" height="12" width="12">
-          <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="white"/>
-        </svg>
-      <% } %>
-    </div>
-  </div>
-  <div id="chatbox" class="yellowback collapse">
-    <div id="messages" class="messages2 card-body3 scroll moz-scroll">
+  <div id="chatbox" class="yellowback">
+    <div id="messages" class="messages3 card-body3 scroll moz-scroll">
       <div class="text-center">
         <button id="load-prevMsgs-btn" class="chat-head4 nodisplay" value="" type="button">
           <span id="load-prevMsgs-span"></span>LOAD PREV

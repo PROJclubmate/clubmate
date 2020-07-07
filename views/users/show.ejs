@@ -694,6 +694,11 @@
             <% } else if(currentUser && !match){ %>
               <!-- Chats Tab -->
               <div class="tab-pane fade greyback" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                <div id="pin-chatbox" class="pin-chatbox3 chatbox-user" value="<%= currentUser.firstName %>">
+                  <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUser._id %>">
+                    <% include ../users/chats %>
+                  </div>
+                </div>
               </div>
             <% } %>
           </div>

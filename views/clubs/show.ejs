@@ -425,7 +425,11 @@
               </div>
               <!-- Chats Tab -->
               <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
-                
+                <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
+                  <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
+                    <% include ../clubs/chats %>
+                  </div>
+                </div>
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">

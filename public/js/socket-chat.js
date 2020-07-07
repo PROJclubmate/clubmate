@@ -16,7 +16,6 @@ if(socket !== undefined){
           conversationId: conversationId,
           recipientId: recipientId
         })
-        chatBoxOnLoad()
       }
     });
     // Handle input
@@ -137,6 +136,7 @@ if(socket !== undefined){
     } else{
       $.get('/chat/'+conversation.conversationId, (data) =>{
         addMessages(data);
+        chatBoxOnLoad()
       })
     }
   }
@@ -166,7 +166,6 @@ if(socket !== undefined){
           conversationId: conversationId,
           clubId: clubId
         })
-        chatBoxOnLoad()
       }
     });
     $("#club-send").click(()=>{
@@ -293,6 +292,7 @@ if(socket !== undefined){
     } else{
       $.get('/club-chat/'+conversation.conversationId, (data) =>{
         addClubMessages(data);
+        chatBoxOnLoad()
       })
     }
   }
@@ -321,22 +321,20 @@ if(socket !== undefined){
     }
     if (checkbottom == "bottom"){
       var currHeight = msgbox.scrollTop();
-      msgbox.animate({scrollTop: currHeight+500}, 1500);
+      msgbox.animate({scrollTop: currHeight+500}, 3500);
     }
   }
   function chatBoxOnLoad(){
+    $('#messages').animate({scrollTop: 5000}, 1500);
     if($(window).width() > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){
       $("#chatbox").addClass('show');
-      var msgbox = $('#messages');
-      msgbox.animate({scrollTop: 5000}, 1500);
     } else{
       $("#chatbox").removeClass('show');
       if($("#emoji-box").hasClass('right')){
         $("#emoji-box").toggleClass('emoji-right');
       }
       $("#drop-chat").click(()=>{
-        var msgbox = $('#messages');
-        msgbox.animate({scrollTop: 5000}, 1500);
+        $('#messages').animate({scrollTop: 5000}, 1500);
       });
     }
 

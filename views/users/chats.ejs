@@ -1,36 +1,6 @@
-<div class="card mt-0 border-light">
-  <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
-    <div class="text-sm mobilebold">
-      <span id="latestMsg">Direct chat</span>
-      <% if(conversationId && conversationId != ''){ %>
-        <span id="latestMsg-hidden" class="truncate1 lightgrey nodisplay"></span>
-      <% } else{ %>
-        <span id="latestMsg-hidden" class="nodisplay">Direct chat</span>
-      <% } %>
-      <% if(conversationId && conversationId != '' && isBlocked && isBlockedByFoundUser){ %>
-        <span class="text-xxxs boldtext redcolor">(BLOCKED)</span>
-      <% } %>
-    </div>
-    <div class="boldtext text-xxxs ml-2">
-      <% if(conversationId && conversationId != ''){ %>
-        <% if(user.isLoggedIn){ %>
-          <svg id="isUserInRoom" height="12" width="12">
-            <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-          </svg>
-        <% } else{ %>
-          <svg id="isUserInRoom" height="12" width="12">
-            <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
-          </svg>
-        <% } %>
-      <% } else{ %>
-        <svg id="isUserInRoom" height="12" width="12">
-          <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="white"/>
-        </svg>
-      <% } %>
-    </div>
-  </div>
-  <div id="chatbox" class="yellowback collapse">
-    <div id="messages" class="card-body3 scroll moz-scroll">
+<div class="card mt-0 border-light-lr">
+  <div id="chatbox" class="yellowback">
+    <div id="messages" class="messages3 card-body3 scroll moz-scroll">
       <div class="text-center">
         <button id="load-prevMsgs-btn" class="chat-head4 nodisplay" value="" type="button">
           <span id="load-prevMsgs-span"></span>LOAD PREV
@@ -56,7 +26,7 @@
     <div class="text-xs darkgrey chat-input-tool">
       <span class="emoji-panel">
         <button id="emoji-picker2" class="emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2">
+          <div id="emoji-box2" class="intercom-composer-popover intercom-composer-emoji-popover2 emoji-up">
             <% include ../partials/emoji_picker2 %>
           </div>
           <i class="far fa-laugh-wink"></i>
@@ -71,8 +41,6 @@
           <span id="block-user" class="btn btn-sm chat-input-tool redcolor" title="Unblock user" value="false"><i class="fas fa-ban"></i></span>
         </span>
       <% } %>
-      <span id="thumbstack" class="nopad btn btn-sm chat-input-tool" title="Pin chatbox"><i class="fas fa-thumbtack"></i></span>
-      <span id="arrows-v" class="nopad btn btn-sm chat-input-tool" title="Expand chatbox"><i class="fas fa-arrows-alt-v"></i></span>
     </div>
   </div>
 </div>

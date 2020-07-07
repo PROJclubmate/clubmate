@@ -75,30 +75,6 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  // Ask for club invite
-  if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
-    $('#memberReq-div').addClass("nodisplay");
-  }
-  if($(window).width() < 360){
-    $('#requests-tab').text('Req');
-  }
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  if($(window).width() < 768){
-    if($('#mypage').length){
-      $('#mobile_toggler').addClass("nodisplay");
-      $('.inbox_mobile').removeClass("nodisplay");
-      $('#brandname').addClass("name-green");
-    }
-  } else{
-
-  }
-}
-
 if($(window).width() > 768 && !$('#latestUpdates').hasClass('clubupdates')){
   $('#latestUpdates').addClass('show');
 }
@@ -512,22 +488,15 @@ $(function (){
   }
 });
 
-if(location.pathname == '/help/'){
-  $(".navhelp").addClass('requests-active');
-}
-if(location.pathname == '/chats'){
-  $("#inbox").addClass('requests-active');
-}
-
 // Copy college name
-function copyTxtFn() {
+function copyTxtFn(){
   var range, selection, worked;
   var copyText = document.getElementById('copyTxt');
-  if (document.body.createTextRange) {
+  if (document.body.createTextRange){
     range = document.body.createTextRange();
     range.moveToElementText(copyText);
     range.select();
-  } else if (window.getSelection) {
+  } else if (window.getSelection){
     selection = window.getSelection();        
     range = document.createRange();
     range.selectNodeContents(copyText);
@@ -535,12 +504,12 @@ function copyTxtFn() {
     selection.addRange(range);
   }
   
-  try {
+  try{
     document.execCommand('copy');
     var tooltip = document.getElementById("myTooltip");
     tooltip.innerHTML = "Copied: " + $('#copyTxt').text();
   }
-  catch (err) {
+  catch(err){
     alert('unable to copy text');
   }
 }
@@ -609,20 +578,140 @@ $('.chat-item').click(function(){
   $('.chat-form').append('<input type="hidden" name="'+type+'" value="'+id+'">').submit();
 });
 
-function minimise(){
-  $('.pin-chatbox').toggleClass("width-inherit");
+var remToPx = function(count){
+  var unit = $('html').css('font-size');
+  if (typeof count !== 'undefined' && count>0){
+    return (parseInt(unit)*count);
+  }
+  else{
+    return parseInt(unit);
+  }
 }
 
-function dec_height(){
-  if($('#pin-chatbox').hasClass("pin-chatbox2")){
-    $('#messages').animate({scrollTop: 5000}, 1500);
+function updateMessageHeight2(){
+  function updateHeight(navheight){
     if($('.pushmsg').css('display') == 'block'){
-      $('#messages').addClass("msg_dec");
+      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 38 - 35;
+      $('#messages').height(newMsgHeight); 
     } else{
-      $('#messages').removeClass("msg_dec");
+      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 38;
+      $('#messages').height(newMsgHeight); 
+    }
+  }
+  if($(window).width() <= 768){
+    updateHeight(40);
+  } else if($(window).width() <= 480){
+    updateHeight(48);
+  } else if($(window).width() <= 360){
+    updateHeight(42);
+  } else{
+    if($('.pushmsg').css('display') == 'block'){
+      $('#messages').addClass("msg_dec2");
+    } else{
+      $('#messages').removeClass("msg_dec2");
     }
   }
 }
+
+function updateMessageHeight3(){
+  function updateHeight(navheight,tabheight){
+    if($('.pushmsg').css('display') == 'block'){
+      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 38 - 35;
+      $('#messages').height(newMsgHeight); 
+    } else{
+      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 38;
+      $('#messages').height(newMsgHeight); 
+    }
+  }
+  if($(window).width() <= 768){
+    updateHeight(40,47);
+  } else if($(window).width() <= 480){
+    updateHeight(48,52);
+  } else if($(window).width() <= 360){
+    updateHeight(42,47);
+  } else{
+    if($('.pushmsg').css('display') == 'block'){
+      $('#messages').addClass("msg_dec3");
+    } else{
+      $('#messages').removeClass("msg_dec3");
+    }
+  }
+}
+
+function dec_height(){
+  $('#messages').animate({scrollTop: 5000}, 1500);
+  if($('#pin-chatbox').hasClass("pin-chatbox2")){
+    updateMessageHeight2();
+  } else if($('#pin-chatbox').hasClass("pin-chatbox3")){
+    updateMessageHeight3();
+  }
+}
+
+if(location.pathname == '/help/'){
+  $(".navhelp").addClass('requests-active');
+}
+if(location.pathname == '/chats'){
+  $("#inbox").addClass('requests-active');
+
+  updateMessageHeight2();
+  $(window).resize(function(){
+    updateMessageHeight2();
+  });
+}
+
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  // Ask for club invite
+  if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
+    $('#memberReq-div').addClass("nodisplay");
+  }
+  if($(window).width() < 360){
+    $('#requests-tab').text('Req');
+  }
+
+  updateMessageHeight3();
+  $(window).resize(function(){
+    updateMessageHeight3();
+  });
+}
+
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+  if($(window).width() < 768){
+    if($('#mypage').length){
+      $('#mobile_toggler').addClass("nodisplay");
+      $('.inbox_mobile').removeClass("nodisplay");
+      $('#brandname').addClass("name-green");
+    }
+  }
+  
+  updateMessageHeight3();
+  $(window).resize(function(){
+    updateMessageHeight3();
+  });
+}
+
+var oldMsgHeight = $('#messages').height();
+$('textarea').each(function(){
+  // this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+}).on('input', function(){
+  if(this.hasClass('chatinput')){
+    this.style.height = 'auto';
+    if(this.scrollHeight < 100){
+      this.style.height = (this.scrollHeight) + 'px';
+      $('#messages').css('margin-bottom',(this.scrollHeight + 8) + 'px');
+      $('#messages').height(oldMsgHeight - (this.scrollHeight + 8));
+    } else{
+      this.style.height = 90 + 'px';
+      $('#messages').height(oldMsgHeight - (90 + 8));
+    }
+  } else{
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+  }
+});
+
+
 //================================================================================
 // AJAX
 //================================================================================

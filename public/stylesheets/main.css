@@ -105,7 +105,6 @@ div.content{
   .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke-width: 0.5px !important;}
   .vote-subpost, .vote-subpost.fa-thumbs-up{-webkit-text-stroke: 0.25px #fafafa !important;}
   .pin-chatbox{width: inherit;}
-  .messages-long{height: calc(100vh - 2.75rem - 40px - 31px - 38px) !important;}
   .pin-chatbox2{margin-left: -0.25rem;}
   .chatlist-margin{margin-right: 0.25rem;}
   .topnotch-left:before{border-left: 1px solid #d2d2d2;}
@@ -113,6 +112,11 @@ div.content{
   .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
   .postimgpad{padding: 0 0.5rem;}
   .topicimgpad{padding-left: 0.5rem;}
+  #messages.messages2{height: calc(100vh - 1.5rem - 40px - 31px - 38px);}
+  #messages.messages2.msg_dec2{height: calc(100vh - 1.5rem - 40px - 31px - 38px - 35px);}
+  #messages.messages3{height: calc(100vh - 1.5rem - 40px - 38px);}
+  #messages.messages3.msg_dec3{height: calc(100vh - 1.5rem - 40px - 38px - 35px);}
+  .messages-long{height: calc(100vh - 2.75rem - 40px - 31px - 38px) !important;}
   .text-xxxxs{font-size: 0.4375rem !important;}
   .text-xxxs{font-size: 0.5625rem !important;}
   .text-xxs{font-size: 0.6875rem !important;}
@@ -233,13 +237,17 @@ div.content{
   .collapsing:not(#navbarCollapse){transition: none !important; display: none !important;}
   .vote-subpost{-webkit-text-stroke: 0.5px #fafafa !important;}
   .chatlist-box{height: calc(100vh - 1rem - 40px) !important;}
-  #messages.messages2{height: calc(100vh - 1rem - 40px - 31px - 38px) !important;}
-  #messages.messages2.msg_dec{height: calc(100vh - 1rem - 40px - 31px - 38px - 35px) !important;}
+  #messages.messages2{height: calc(100vh - 1rem - 40px - 31px - 38px);}
+  #messages.messages2.msg_dec2{height: calc(100vh - 1rem - 40px - 31px - 38px - 35px);}
+  #messages.messages3{height: calc(100vh - 1rem - 47px - 40px - 38px);}
+  #messages.messages3.msg_dec3{height: calc(100vh - 1rem - 47px - 40px - 38px - 35px);}
   #pin-chatbox.pin-chatbox2{bottom: 0 !important; padding: 0 !important;}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 38px) !important;}
   .chatpad{padding: 0 0.5rem; margin: 0 0.25rem 0.5rem 0.25rem;}
   .copyBtn{margin-left: 0.75rem !important;}
   .gb11:focus:after{top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;}
+  #emoji-picker2{padding-top: 0 !important; padding-bottom: 0 !important;}
+  .emoji-up{bottom: 2.125rem !important;}
   .text-xxxxs{font-size: 0.5rem !important;}
   .text-xxxs{font-size: 0.625rem !important;}
   .text-xxs{font-size: 0.75rem !important;}
@@ -283,7 +291,7 @@ div.content{
   select, .custom-file-upload{height: 36px !important; padding: 6px 8px !important;}
   select.select3{width: 82px;}
   #input-10{height: 39px !important; margin-top: 0.5rem !important; padding: 7px 8px !important;}
-  .chat-input-tool{padding: 0.15rem 0.375rem !important;}
+  .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px 4px !important; font-size: 1.125rem !important;}
   .nav-link.requests{font-size: 1.25rem !important;}
   .story{height: 75px !important; width: 75px !important;}
@@ -300,8 +308,10 @@ div.content{
   .discover-overlay .discovertop-left{font-size: 0.625rem !important; padding: 0.375rem 0.25rem !important;}
   .discover-vote{font-size: 1.875rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 48px) !important;}
-  #messages.messages2{height: calc(100vh - 1rem - 48px - 31px - 38px) !important;}
-  #messages.messages2.msg_dec{height: calc(100vh - 1rem - 48px - 31px - 38px - 35px) !important;}
+  #messages.messages2{height: calc(100vh - 1rem - 48px - 31px - 38px);}
+  #messages.messages2.msg_dec2{height: calc(100vh - 1rem - 48px - 31px - 38px - 35px);}
+  #messages.messages3{height: calc(100vh - 1rem - 52px - 48px - 38px);}
+  #messages.messages3.msg_dec3{height: calc(100vh - 1rem - 52px - 40px - 38px - 35px);}
   .chat-msg{font-size: 1rem !important;}.chat-msg2{font-size: 1rem !important;}.chat-msg3{font-size: 1rem !important;}
   .chat-head{font-size: 0.6875rem !important;}.chat-head2{font-size: 0.6875rem !important;}
   .chat-head3{font-size: 0.75rem !important;}.chat-head4{font-size: 0.75rem !important;}
@@ -397,7 +407,7 @@ div.content{
   .form-control{padding: 0.375rem 0.75rem !important;}
   select, .custom-file-upload{height: 32px !important; padding: 4px 8px !important;}
   #input-10{height: 35px !important; margin-top: 0.5rem !important;}
-  .chat-input-tool{padding: 0.25rem !important;}
+  .chat-input-tool{padding: 0 0.25rem !important;}
   .story{height: 65px !important; width: 65px !important;}
   .story-label{width: 65px !important;}
   .story-plus{padding: 1rem 0 !important;}
@@ -407,8 +417,10 @@ div.content{
   img.postimg{max-height: 22rem !important;}
   .discover-vote{font-size: 1.625rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 42px) !important;}
-  #messages.messages2{height: calc(100vh - 1rem - 42px - 31px - 38px) !important;}
-  #messages.messages2.msg_dec{height: calc(100vh - 1rem - 42px - 31px - 38px - 35px) !important;}
+  #messages.messages2{height: calc(100vh - 1rem - 42px - 31px - 38px);}
+  #messages.messages2.msg_dec2{height: calc(100vh - 1rem - 42px - 31px - 38px - 35px);}
+  #messages.messages3{height: calc(100vh - 1rem - 47px - 42px - 38px);}
+  #messages.messages3.msg_dec3{height: calc(100vh - 1rem - 47px - 40px - 38px - 35px);}
   .text-xxxxs{font-size: 0.4375rem !important;}
   .text-xxxs{font-size: 0.5625rem !important;}
   .text-xxs{font-size: 0.6875rem !important;}
@@ -520,6 +532,9 @@ body{
   margin-top: 42px;
   background-color: #d7d7d7;
 }
+textarea{
+  resize: none;
+}
 .dropdown-menu{
   z-index: 3 !important;
 }
@@ -534,6 +549,10 @@ hr{
 }
 .border-light{
   border: 1px solid #d2d2d2 !important;
+}
+.border-light-lr{
+  border-left: 1px solid #d2d2d2 !important;
+  border-right: 1px solid #d2d2d2 !important;
 }
 .lineheight0{
   line-height: 0;
@@ -1711,6 +1730,11 @@ a .nolink:hover{
   border: 1px solid #d2d2d2;
   border-radius: 0.25rem;
 }
+.chatinput{
+  margin: 0;
+  height: 30px;
+  border-radius: 1rem;
+}
 .commentbox{
   margin: 0;
   height: 30px;
@@ -2266,12 +2290,15 @@ select.select1::-ms-expand{
   background-color: white;
 }
 /*****************************************/
+#status-chin{
+  height: 35px;
+}
 .intercom-composer-popover-input{
   background-color: white;
 }
 .emoji-up{
   top: auto !important;
-  bottom: 2.5rem !important;
+  bottom: 2.25rem !important;
 }
 .emoji-right{
   right: -10rem !important;
@@ -3053,12 +3080,6 @@ input.shadow:-webkit-autofill:focus{
 }
 .chatlist-content{
   border-bottom: 1px solid whitesmoke;
-}
-#messages.messages2{
-  height: calc(100vh - 2rem - 40px - 31px - 38px);
-}
-#messages.messages2.msg_dec{
-  height: calc(100vh - 2rem - 40px - 31px - 38px - 35px) !important;
 }
 #pin-chatbox.pin-chatbox2{
   z-index: 4;
