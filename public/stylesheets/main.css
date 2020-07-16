@@ -117,18 +117,6 @@ div.content{
   #messages.messages3{height: calc(100vh - 1.5rem - 40px - 38px);}
   #messages.messages3.msg_dec3{height: calc(100vh - 1.5rem - 40px - 38px - 35px);}
   .messages-long{height: calc(100vh - 2.75rem - 40px - 31px - 38px) !important;}
-  .text-xxxxs{font-size: 0.4375rem !important;}
-  .text-xxxs{font-size: 0.5625rem !important;}
-  .text-xxs{font-size: 0.6875rem !important;}
-  .text-xs{font-size: 0.75rem !important;}
-  .text-sm{font-size: 0.875rem !important;}
-  .text-md{font-size: 0.9375rem !important;}
-  .text-index{font-size: 1rem !important;}
-  .text-lg{font-size: 1.125rem !important;}
-  .text-xl{font-size: 1.25rem !important;}
-  .text-xxl{font-size: 1.375rem !important;}
-  .text-xxxl{font-size: 1.625rem !important;}
-  .text-xxxxl{font-size: 2rem !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -152,18 +140,6 @@ div.content{
   .sidebar a{padding: 7.5px 11px; font-size: 1rem; float: left; height: 42px !important;}
   a.hr2.active{padding-top: 5.5px; padding-bottom: 5.5px;}
   .btnxxs{padding: 0 4px !important;}
-  .text-xxxxs{font-size: 0.4375rem !important;}
-  .text-xxxs{font-size: 0.5625rem !important;}
-  .text-xxs{font-size: 0.6875rem !important;}
-  .text-xs{font-size: 0.75rem !important;}
-  .text-sm{font-size: 0.875rem !important;}
-  .text-md{font-size: 0.9375rem !important;}
-  .text-index{font-size: 1rem !important;}
-  .text-lg{font-size: 1.125rem !important;}
-  .text-xl{font-size: 1.25rem !important;}
-  .text-xxl{font-size: 1.375rem !important;}
-  .text-xxxl{font-size: 1.625rem !important;}
-  .text-xxxxl{font-size: 2rem !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -202,7 +178,7 @@ div.content{
   .desktopNone{display: flex !important;}
   .desktopNoneFlex{display: flex !important;}
   span.mobileShow{display: flex;}
-  .popup-box{min-width: 300px !important; width: 100% !important; right: 0 !important; will-change: transform;}
+  .popup-box{min-width: 300px !important; width: 100% !important; right: 0 !important;}
   .px-1.mobilepad{padding: 0 !important;}
   .mobilemargin{margin: 0 !important;}
   .info1{font-size: 1rem !important;}
@@ -248,18 +224,7 @@ div.content{
   .gb11:focus:after{top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;}
   #emoji-picker2{padding-top: 0 !important; padding-bottom: 0 !important;}
   .emoji-up{bottom: 2.125rem !important;}
-  .text-xxxxs{font-size: 0.5rem !important;}
-  .text-xxxs{font-size: 0.625rem !important;}
-  .text-xxs{font-size: 0.75rem !important;}
-  .text-xs{font-size: 0.875rem !important;}
-  .text-sm{font-size: 0.9375rem !important;}
-  .text-index{font-size: 1rem !important;}
-  .text-md{font-size: 1.125rem !important;}
-  .text-lg{font-size: 1.25rem !important;}
-  .text-xl{font-size: 1.375rem !important;}
-  .text-xxl{font-size: 1.5rem !important;}
-  .text-xxxl{font-size: 1.75rem !important;}
-  .text-xxxxl{font-size: 2.25rem !important;}
+  .overlay3{transition: none !important;}
   .mobiletext{font-size: 0.9375rem !important;}
   .mobiletext2{font-size: 1rem !important;}
   .mobiletext3{font-size: 0.875rem !important;}
@@ -274,7 +239,6 @@ div.content{
   .sidebar a{padding: 10.5px 13.25px; height: 48px !important;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
-  body{padding-top: 4px;}
   .friends-dp{height: 7.25rem !important;}
   h5.topic-h5{font-size: 1.25rem !important;}
   button.modvote{font-size: 2.5rem !important;}
@@ -376,7 +340,6 @@ div.content{
   .sidebar a{padding: 8.5px 9px; height: 42px !important;}
   a.hr2.active{padding-top: 6.5px; padding-bottom: 6.5px;}
   .sidebar-label{font-size: 0.6875rem !important;}
-  body{padding-top: 0;}
   .mobile-cover{height: 160px !important;}
   div.lpcov{width: 168px; padding-bottom: 0 !important;}
   .profilename{width: 160px;}
@@ -421,18 +384,6 @@ div.content{
   #messages.messages2.msg_dec2{height: calc(100vh - 1rem - 42px - 31px - 38px - 35px);}
   #messages.messages3{height: calc(100vh - 1rem - 47px - 42px - 38px);}
   #messages.messages3.msg_dec3{height: calc(100vh - 1rem - 47px - 40px - 38px - 35px);}
-  .text-xxxxs{font-size: 0.4375rem !important;}
-  .text-xxxs{font-size: 0.5625rem !important;}
-  .text-xxs{font-size: 0.6875rem !important;}
-  .text-xs{font-size: 0.75rem !important;}
-  .text-sm{font-size: 0.875rem !important;}
-  .text-md{font-size: 0.9375rem !important;}
-  .text-index{font-size: 1rem !important;}
-  .text-lg{font-size: 1.125rem !important;}
-  .text-xl{font-size: 1.25rem !important;}
-  .text-xxl{font-size: 1.375rem !important;}
-  .text-xxxl{font-size: 1.625rem !important;}
-  .text-xxxxl{font-size: 2rem !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.875rem !important;}
   .mobiletext3{font-size: 0.75rem !important;}
@@ -501,7 +452,6 @@ div.content{
   z-index: 4;
   position: fixed !important; 
   bottom: -0.5rem !important;
-  will-change: transform;
 }
 .width-inherit{
   width: inherit;
@@ -529,20 +479,31 @@ html{
   min-height: 100%;
 }
 body{
-  margin-top: 42px;
   background-color: #d7d7d7;
 }
 textarea{
   resize: none;
 }
+hr{
+  margin: 0;
+}
+.text-xxxxs{font-size: 0.4375rem !important;}
+.text-xxxs{font-size: 0.5625rem !important;}
+.text-xxs{font-size: 0.6875rem !important;}
+.text-xs{font-size: 0.75rem !important;}
+.text-sm{font-size: 0.875rem !important;}
+.text-md{font-size: 0.9375rem !important;}
+.text-index{font-size: 1rem !important;}
+.text-lg{font-size: 1.125rem !important;}
+.text-xl{font-size: 1.25rem !important;}
+.text-xxl{font-size: 1.375rem !important;}
+.text-xxxl{font-size: 1.625rem !important;}
+.text-xxxxl{font-size: 2rem !important;}
 .dropdown-menu{
   z-index: 3 !important;
 }
 .mobileShow{
   display: none;
-}
-hr{
-  margin: 0;
 }
 .noborder{
   border: none !important;
@@ -709,19 +670,19 @@ input{
 #following-switch{
   color: white;
   background: rgb(244,128,36);
-  background: linear-gradient(270deg, rgba(138,43,226,1) 0%, rgba(244,128,36,1) 5%, rgba(0,123,255,1) 25%, rgba(0,51,102,1) 100%);
+  background: linear-gradient(270deg, rgba(138,43,226,1) 0%, rgba(244,128,36,1) 5%, rgba(0,125,213,1) 25%, rgba(0,51,102,1) 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
 }
 #explore-switch{
   color: white;
   background: rgb(100,149,237);
-  background: linear-gradient(90deg, rgba(0,123,255,1) 25%, rgba(100,149,237,1) 65%, rgba(246,215,176,1) 85%, rgba(125,220,31,1) 100%);
+  background: linear-gradient(90deg, rgba(0,125,213,1) 25%, rgba(100,149,237,1) 65%, rgba(246,215,176,1) 85%, rgba(125,220,31,1) 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
 }
 #following-switch-mobile{
-  background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 15%, rgba(0,123,255,1) 35%, rgba(0,51,102,1) 80%);
+  background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 15%, rgba(0,125,213,1) 35%, rgba(0,51,102,1) 80%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1120,7 +1081,9 @@ span.nopad{
   padding: 0.2195rem 0.55rem 0.2195rem 0.25rem;
 }
 .navbar{
-  will-change: transform;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   transition: top 0.3s;
   z-index: 10;
   padding: 0px 50px;
@@ -1402,7 +1365,7 @@ input[type="file"]#inputavatar{
 .btn-notification{
   color: #007bff !important;
   border-color: white !important;
-  border-radius: 0.25rem !important;
+  border-radius: 2rem !important;
 }
 .btn-notification:hover{
   border-color: grey !important;
@@ -1432,14 +1395,6 @@ input[type="file"]#inputavatar{
   color: #555555;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
 }
-.btn-light.discoverswitch{
-  background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
-  box-shadow: 0px 3px 8px #bbb, inset 0px 2px 3px #fff;
-  border-color: #c0c0c0;
-}
-.btn-light.discoverswitch-mobile{
-  box-shadow: 0px 3px 8px #ccc, inset 0px 2px 3px #fff;
-}
 .btn-light:hover{
   transition: .15s ease-in-out;
   border-color: darkgrey;
@@ -1448,6 +1403,14 @@ input[type="file"]#inputavatar{
 .btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle{
   border-color: #d3d9df;
   background-color: #dae0e5;
+}
+.btn-light.discoverswitch{
+  background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
+  box-shadow: 0px 3px 8px #bbb, inset 0px 2px 3px #fff;
+  border-color: #c0c0c0;
+}
+.btn-light.discoverswitch-mobile{
+  box-shadow: 0px 3px 8px #ccc, inset 0px 2px 3px #fff;
 }
 .btn.btn-white{
   padding: 0px 4px;
@@ -1522,15 +1485,18 @@ input[type="file"]#inputavatar{
 }
 .btn-info{
   border-color: #407cc4;
-  background-color: #509bff;
+  background-color: white;
+  color: #407cc4;
+  font-weight: 600;
+  border-width: 1px !important;
 }
 .btn-info:hover{
   border-color: #106ab0;
-  background-color: #2d8ad8;
+  background-color: #1a90d9;
 }
 .btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
   border-color: #1470a9;
-  background-color: #407cc4;
+  background-color: #1780c1;
 }
 .btn-success{
   border-color: #429a65 !important;
@@ -1650,7 +1616,7 @@ a.red:hover{color: #d6312e;}
   color: white !important;
 }
 .darkgrey{
-  color: #262626 !important;
+  color: #303030 !important;
 }
 .lightgrey{
   color: grey !important;
@@ -1704,7 +1670,7 @@ div.alert{
   text-decoration: none !important;
 }
 a .nolink{
-  color: #262626;
+  color: #303030;
   text-decoration: none;
 }
 a .nolink:hover{
@@ -1734,6 +1700,7 @@ a .nolink:hover{
   margin: 0;
   height: 30px;
   border-radius: 1rem;
+  padding: 0.25rem 0.5rem !important;
 }
 .commentbox{
   margin: 0;
@@ -1902,7 +1869,7 @@ ul{
 }
 .badge-white{
   background: #f8f9fa !important;
-  color: #262626 !important;
+  color: #303030 !important;
   top: -0.25rem !important;
   right: -0.25rem !important;
 }
@@ -2449,6 +2416,7 @@ select.select1::-ms-expand{
   overflow-y: scroll;
   overflow-y: overlay;
   margin-bottom: 38px;
+  will-change: transform;
 }
 #messages:hover{
   margin-right: 0;
@@ -2464,6 +2432,9 @@ select.select1::-ms-expand{
 .flex-end{
   display: flex;
   justify-content: flex-end;
+}
+.chat-msg-div{
+  white-space: pre-line;
 }
 .chat-msg{
   word-break: break-word;
@@ -3086,7 +3057,6 @@ input.shadow:-webkit-autofill:focus{
   position: fixed; 
   bottom: 0.825rem;
   width: inherit;
-  will-change: transform;
   width: 100%;
 }
 .gb{

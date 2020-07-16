@@ -96,37 +96,28 @@ if(socket !== undefined){
         prevDate = moment(message.createdAt).format("MMM Do YY");
         if(message.authorId == data.currentUser){
           $("#messages").append(`
-            <div class="flex-end"><div class="chat-msg2"><div> ${message.text} </div><div class="chat-head2">
+            <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
              ${moment(message.createdAt).format('LT')} </div></div></div>`);
         } else{
           $("#messages").append(`
-            <div><div class="chat-msg"><div> ${message.text} </div><div class="chat-head">
+            <div><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
              ${moment(message.createdAt).format('LT')} </div></div></div>`);
-        }
-        if($(window).width() < 768 && !$('#pin-chatbox').hasClass('pin-chatbox2')){
-          var latestMessage = "\""+message.text+"\"";
-          $('#latestMsg').addClass("nodisplay");
-          $('#latestMsg-hidden').text(latestMessage);
-          $('#latestMsg-hidden').removeClass("nodisplay");
         }
       });
     }
+    chatBoxOnLoad()
   }
   function newMessage(data){
     var convIdrecpIdcurrId = $("#user-convoId").attr("value").split(',');
     var currentUserId = convIdrecpIdcurrId[2];
     if(currentUserId == data.authorId){
       $("#messages").append(`
-        <div class="flex-end"><div class="chat-msg2"> ${data.composedMessage} </div></div>`);
+        <div class="flex-end"><div class="chat-msg2 chat-msg-div"> ${data.composedMessage} </div></div>`);
     } else{
       $("#messages").append(`
-        <div><div class="chat-msg"> ${data.composedMessage} </div></div>`);
+        <div><div class="chat-msg chat-msg-div"> ${data.composedMessage} </div></div>`);
     }
-    scrollToNext();
-    if($(window).width() < 768){
-      var latestMessage = "\""+data.composedMessage+"\"";
-      $('#latestMsg-hidden').text(latestMessage);
-    }
+    scrollToNext()
   }
   function getMessages(conversation){
     if(conversation.conversationId == ''){
@@ -136,7 +127,6 @@ if(socket !== undefined){
     } else{
       $.get('/chat/'+conversation.conversationId, (data) =>{
         addMessages(data);
-        chatBoxOnLoad()
       })
     }
   }
@@ -251,20 +241,15 @@ if(socket !== undefined){
         if(message.authorId == data.currentUser){
           $("#messages").append(`
             <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.firstName} 
-             ${moment(message.createdAt).format('LT')} </div><div> ${message.text}</div> </div></div>`);
+             ${moment(message.createdAt).format('LT')} </div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
         } else{
           $("#messages").append(`
             <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${message.authorName} 
-             ${moment(message.createdAt).format('LT')} </div><div> ${message.text}</div> </div></div>`);
-        }
-        if($(window).width() < 768 && !$('#pin-chatbox').hasClass('pin-chatbox2')){
-          var latestMessage = "\""+message.text+"\"";
-          $('#latestMsg').addClass("nodisplay");
-          $('#latestMsg-hidden').text(latestMessage);
-          $('#latestMsg-hidden').removeClass("nodisplay");
+             ${moment(message.createdAt).format('LT')} </div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
         }
       });
     }
+    chatBoxOnLoad()
   }
   function newClubMessage(data){
     var convIdclubIdcurrId = $("#club-convoId").attr("value").split(',');
@@ -272,17 +257,13 @@ if(socket !== undefined){
     if(currentUserId == data.authorId){
         $("#messages").append(`
           <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.authorName} </div>
-           ${data.composedMessage} </div></div>`);
+           <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
       } else{
         $("#messages").append(`
           <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${data.authorName} </div>
-           ${data.composedMessage} </div></div>`);
+           <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
       }
-    scrollToNext();
-    if($(window).width() < 768){
-      var latestMessage = "\""+data.composedMessage+"\"";
-      $('#latestMsg-hidden').text(latestMessage);
-    }
+    scrollToNext()
   }
   function getClubMessages(conversation){
     if(conversation.conversationId == ''){
@@ -292,7 +273,6 @@ if(socket !== undefined){
     } else{
       $.get('/club-chat/'+conversation.conversationId, (data) =>{
         addClubMessages(data);
-        chatBoxOnLoad()
       })
     }
   }
@@ -325,7 +305,13 @@ if(socket !== undefined){
     }
   }
   function chatBoxOnLoad(){
-    $('#messages').animate({scrollTop: 5000}, 1500);
+    setTimeout(function(){
+      if($('#messages')[0].scrollHeight == 0){
+        $('#messages').animate({scrollTop: 10000}, 1000);
+      } else{
+        $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
+      }
+    }, 100);
     if($(window).width() > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){
       $("#chatbox").addClass('show');
     } else{
@@ -333,9 +319,6 @@ if(socket !== undefined){
       if($("#emoji-box").hasClass('right')){
         $("#emoji-box").toggleClass('emoji-right');
       }
-      $("#drop-chat").click(()=>{
-        $('#messages').animate({scrollTop: 5000}, 1500);
-      });
     }
 
     $("#arrows-v").click(()=>{

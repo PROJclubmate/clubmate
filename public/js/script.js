@@ -592,15 +592,15 @@ function updateMessageHeight2(){
   function updateHeight(navheight){
     if($('.pushmsg').css('display') == 'block'){
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 38 - 35;
-      $('#messages').height(newMsgHeight); 
+      $('#messages').height(newMsgHeight);
     } else{
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 38;
-      $('#messages').height(newMsgHeight); 
+      $('#messages').height(newMsgHeight);
     }
   }
-  if($(window).width() <= 768){
+  if($(window).width() <= 768 && $(window).width() > 480){
     updateHeight(40);
-  } else if($(window).width() <= 480){
+  } else if($(window).width() <= 480 && $(window).width() > 360){
     updateHeight(48);
   } else if($(window).width() <= 360){
     updateHeight(42);
@@ -611,21 +611,22 @@ function updateMessageHeight2(){
       $('#messages').removeClass("msg_dec2");
     }
   }
+  return $('#messages').height();
 }
 
 function updateMessageHeight3(){
   function updateHeight(navheight,tabheight){
     if($('.pushmsg').css('display') == 'block'){
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 38 - 35;
-      $('#messages').height(newMsgHeight); 
+      $('#messages').height(newMsgHeight);
     } else{
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 38;
-      $('#messages').height(newMsgHeight); 
+      $('#messages').height(newMsgHeight);
     }
   }
-  if($(window).width() <= 768){
+  if($(window).width() <= 768 && $(window).width() > 480){
     updateHeight(40,47);
-  } else if($(window).width() <= 480){
+  } else if($(window).width() <= 480 && $(window).width() > 360){
     updateHeight(48,52);
   } else if($(window).width() <= 360){
     updateHeight(42,47);
@@ -636,10 +637,11 @@ function updateMessageHeight3(){
       $('#messages').removeClass("msg_dec3");
     }
   }
+  return $('#messages').height();
 }
 
 function dec_height(){
-  $('#messages').animate({scrollTop: 5000}, 1500);
+  $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
   if($('#pin-chatbox').hasClass("pin-chatbox2")){
     updateMessageHeight2();
   } else if($('#pin-chatbox').hasClass("pin-chatbox3")){
@@ -653,9 +655,9 @@ if(location.pathname == '/help/'){
 if(location.pathname == '/chats'){
   $("#inbox").addClass('requests-active');
 
-  updateMessageHeight2();
+  oldMsgHeightMobile = updateMessageHeight2();
   $(window).resize(function(){
-    updateMessageHeight2();
+    oldMsgHeightMobile = updateMessageHeight2() + 35;
   });
 }
 
@@ -669,9 +671,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     $('#requests-tab').text('Req');
   }
 
-  updateMessageHeight3();
+  oldMsgHeightMobile = updateMessageHeight3();
   $(window).resize(function(){
-    updateMessageHeight3();
+    oldMsgHeightMobile = updateMessageHeight3() + 35;
   });
 }
 
@@ -685,25 +687,32 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     }
   }
   
-  updateMessageHeight3();
+  oldMsgHeightMobile = updateMessageHeight3();
   $(window).resize(function(){
-    updateMessageHeight3();
+    oldMsgHeightMobile = updateMessageHeight3() + 35;
   });
 }
 
-var oldMsgHeight = $('#messages').height();
-$('textarea').each(function(){
-  // this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-}).on('input', function(){
-  if(this.hasClass('chatinput')){
+oldMsgHeightDesktop = $('#messages').height();
+$('textarea').on('input', function(){
+  if($(this).hasClass('chatinput')){
     this.style.height = 'auto';
     if(this.scrollHeight < 100){
       this.style.height = (this.scrollHeight) + 'px';
       $('#messages').css('margin-bottom',(this.scrollHeight + 8) + 'px');
-      $('#messages').height(oldMsgHeight - (this.scrollHeight + 8));
+      if($(window).width() > 768){
+        $('#messages').height(oldMsgHeightDesktop - (this.scrollHeight + 5));
+      } else{
+        $('#messages').height(oldMsgHeightMobile - (this.scrollHeight + 5));
+      }
     } else{
-      this.style.height = 90 + 'px';
-      $('#messages').height(oldMsgHeight - (90 + 8));
+      this.style.height = 96 + 'px';
+      $('#messages').css('margin-bottom',(96 + 8) + 'px');
+      if($(window).width() > 768){
+        $('#messages').height(oldMsgHeightDesktop - (96 + 5));
+      } else{
+        $('#messages').height(oldMsgHeightMobile - (96 + 5));
+      }
     }
   } else{
     this.style.height = 'auto';

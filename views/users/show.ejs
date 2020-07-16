@@ -711,14 +711,14 @@
       <div class="valign" style="padding: 0.75rem 0.5rem;">
         <div>
           <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="form-inline">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="friendReq" type="submit" value="<%= user._id %>">
+            <form action="/requests?_method=PUT" method="POST" class="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="friendReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-user-plus"></i> Add Friend
               </button>
             </form>
           <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
             <div class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" type="button" data-toggle="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" type="button" data-toggle="dropdown">
                 <i class="fas fa-check"></i> Friends
               </button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
@@ -755,14 +755,14 @@
               </div>
             </div>
           <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="form-inline">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="cancelReq" type="submit" value="<%= user._id %>">
+            <form action="/requests?_method=PUT" method="POST" class="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="cancelReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-minus"></i> Request Pending
               </button>
             </form>
           <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="form-inline">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder btnxs text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+            <form action="/requests?_method=PUT" method="POST" class="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
             </form>
           <% } %>
         </div>
