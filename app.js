@@ -3,7 +3,9 @@ const express      = require('express'),
   bodyParser       = require('body-parser'),
   http             = require('http').Server(app),
   io               = require('socket.io')(http),
+  session          = require('express-session'),
   mongoose         = require('mongoose'),
+  MongoStore       = require('connect-mongo')(session),
   flash            = require('connect-flash'),
   passport         = require('passport'),
   LocalStrategy    = require('passport-local'),
@@ -41,73 +43,6 @@ app.use(flash());
 app.use(bodyParser.json());
 
 app.locals.moment = require('moment');
-
-app.use(require('express-session')({
-  secret: 'Once again Rusty wins cutest dog!',
-  resave: false,
-  saveUninitialized: false
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-app.use(async function(req, res, next){
-  res.locals.currentUser = req.user;
-  if(req.user){
-    try{
-      res.locals.CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-      //REQUESTS
-      let foundUser = await User.findById(req.user._id)
-      .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
-      .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId note'})
-      .exec();
-      // check security of theese local variables & check for no variable overwriting
-      res.locals.userClubs = foundUser.userClubs.reverse();
-      res.locals.clubUpdates = foundUser.clubUpdates;
-      res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
-      res.locals.friendRequests = foundUser.friendRequests.reverse();
-
-      var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = []; var fUUC_50_profilePic = []; var fUUCTemp;
-      for(var i=0;i<foundUser.clubInvites.length;i++){
-        fUCI_50_clubAvatar[i] = cloudinary.url(foundUser.clubInvites[i].avatarId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-      }
-      for(var j=0;j<foundUser.friendRequests.length;j++){
-        fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-      }
-      res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
-      res.locals.FR_50_profilePic = fUFR_50_profilePic;
-    } catch(err){
-      console.log(Date.now()+' : '+req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    }
-  }
-  res.locals.error   = req.flash('error');
-  res.locals.success = req.flash('success');
-  next();
-});
-
-// Mount routes
-app.use('/', indexRoutes);
-app.use('/', profileRoutes);
-app.use('/', postRoutes);
-app.use('/', commentRoutes);
-app.use('/', discussionRoutes);
-app.use('/', conversationRoutes);
-
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.log(Date.now()+' : '+"clubmate server has started on port "+port+"!!");
-});
 
 // Connect to database
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
@@ -164,3 +99,70 @@ useUnifiedTopology: true}, function(err, client){
     console.log(Date.now()+' : '+'socket is listening');
   });
 });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log(Date.now()+' : '+"clubmate server has started on port "+port+"!!");
+});
+
+app.use(session({
+  secret: 'Once again Rusty wins cutest dog!',
+  saveUninitialized: false,
+  resave: false,
+  store: new MongoStore({mongooseConnection: db})
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+// passport-local-mongoose
+passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(async function(req, res, next){
+  res.locals.currentUser = req.user;
+  if(req.user){
+    try{
+      res.locals.CU_50_profilePic = cloudinary.url(req.user.profilePicId,
+      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      //REQUESTS
+      let foundUser = await User.findById(req.user._id)
+      .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
+      .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId note'})
+      .exec();
+      res.locals.userClubs = foundUser.userClubs.reverse();
+      res.locals.clubUpdates = foundUser.clubUpdates;
+      res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
+      res.locals.friendRequests = foundUser.friendRequests.reverse();
+
+      var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = []; var fUUC_50_profilePic = []; var fUUCTemp;
+      for(var i=0;i<foundUser.clubInvites.length;i++){
+        fUCI_50_clubAvatar[i] = cloudinary.url(foundUser.clubInvites[i].avatarId,
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      for(var j=0;j<foundUser.friendRequests.length;j++){
+        fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
+        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      }
+      res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
+      res.locals.FR_50_profilePic = fUFR_50_profilePic;
+    } catch(err){
+      console.log(Date.now()+' : '+req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
+  }
+  res.locals.error   = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
+});
+
+// Mount routes
+app.use('/', indexRoutes);
+app.use('/', profileRoutes);
+app.use('/', postRoutes);
+app.use('/', commentRoutes);
+app.use('/', discussionRoutes);
+app.use('/', conversationRoutes);
