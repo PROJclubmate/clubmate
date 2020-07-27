@@ -75,8 +75,17 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
-if($(window).width() > 768 && !$('#latestUpdates').hasClass('clubupdates')){
-  $('#latestUpdates').addClass('show');
+if($(window).width() > 768){
+  if(!$('#latestUpdates').hasClass('clubupdates')){
+    $('#latestUpdates').addClass('show');
+  }
+  $("#myTab").on('click', '.nav-link', function(e){
+    if($(this).attr('id') == 'chats-tab'){
+      hidesidebar(-1);
+    } else if($(this).attr('id') != 'chats-tab' && $('#chats-tab').hasClass('active')){
+      hidesidebar(1);
+    }
+  });
 }
 
 $('#latestUpdates').on('shown.bs.collapse', function(){
@@ -98,16 +107,24 @@ nanobar.go(76);
 nanobar.go(100);
 
 // Hide sidebar
-function hidesidebar(){
+function hidesidebar(hideValueNum){
   var sidebar = document.getElementById('sidebar');
   var content = document.getElementById('content');
-  if(sidebar.style.display == 'block' || sidebar.style.display != 'none'){
-    sidebar.style.display = 'none';
-    content.style.marginLeft = '0';
-  }
-  else{
+  if(hideValueNum == 0){
+    if(sidebar.style.display == 'block' || sidebar.style.display != 'none'){
+      sidebar.style.display = 'none';
+      content.style.marginLeft = '0';
+    }
+    else{
+      sidebar.style.display = 'block';
+      content.style.marginLeft = '10rem';
+    }
+  } else if(hideValueNum == 1){
     sidebar.style.display = 'block';
     content.style.marginLeft = '10rem';
+  } else if(hideValueNum == -1){
+    sidebar.style.display = 'none';
+    content.style.marginLeft = '0';
   }
 }
 

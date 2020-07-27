@@ -1487,6 +1487,28 @@ module.exports = {
               currentUserId, keyValue, thisOrgPageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
             }
           });
+        } else if(keyValue == 0){
+          for(var i=0;i<allClubsArr.length;i++){
+            var arr2D = [];
+            for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
+              arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
+              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            }
+            Clubs_50_clubAvatar[i] = arr2D;
+          }
+          var thisOrgPageFollowingClubIdsArr = [];
+          for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
+            for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+              for(var l=0;l<req.user.followingClubCount;l++){
+                if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                  thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                  break;
+                }
+              }
+            }
+          }
+          res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+          currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
         }
       } else{
         for(var i=0;i<allClubsArr.length;i++){

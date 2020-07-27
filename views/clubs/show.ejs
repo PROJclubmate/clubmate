@@ -333,9 +333,11 @@
               <li class="nav-item">
                 <a class="nav-link boldtext active black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
-              </li>
+              <% if(currentUser && 0 <= rank && rank <=4){ %>
+                <li class="nav-item">
+                  <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
+                </li>
+              <% } %>
               <li class="nav-item">
                <a class="nav-link boldtext black" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true">Members</a>
               </li>
@@ -423,14 +425,16 @@
                   </div>
                 </div>
               </div>
-              <!-- Chats Tab -->
-              <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
-                <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
-                  <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
-                    <% include ../clubs/chats %>
+              <% if(currentUser && 0 <= rank && rank <=4){ %>
+                <!-- Chats Tab -->
+                <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                  <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
+                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
+                      <% include ../clubs/chats %>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% } %>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad" id="members" role="tabpanel" aria-labelledby="members-tab">
                 <div class="greyback valign" style="height: 23px;">
