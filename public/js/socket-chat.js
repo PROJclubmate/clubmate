@@ -2,6 +2,7 @@ const socket = io();
 if(socket !== undefined){
   // console.log('Connected to socket...');
   
+  var userChatStatusReset = null; var clubChatStatusReset = null;
   // ============================================== USER CHAT ================================================= //
   // 1). DOM EVENTS
   $(() =>{
@@ -32,6 +33,7 @@ if(socket !== undefined){
           recipientId: recipientId,
           authorId: authorId
         });
+        socket.emit('notTyping', $("#pin-chatbox").attr("value"));
       } else{
         setStatus('Pl. enter a message');
       }
@@ -42,40 +44,47 @@ if(socket !== undefined){
 
   // 2). SOCKET EVENTS
   // Status
-  var msgStatus = document.getElementById("msg-status");
-  if(msgStatus){
-    var statusDefault = msgStatus.textContent;
-    var setStatus = function(s){
-      // Set 'default' status
-      msgStatus.textContent = s;
-      if(s !== statusDefault){
-        var delay = setTimeout(function(){
-          setStatus(statusDefault);
-        }, 3000);
-      }
+  var setStatus = function(s){
+    var statusPrevious = $("#msg-status").text();
+    $("#msg-status").text(s);
+    // Rollback to prev status
+    // BUG => If status update when statusPrev == Idle, stays Idle untill new msg / clear typing
+    if(s !== 'Status: Idle' && !s.endsWith('typing...')){
+      var delay = setTimeout(function(){
+        setStatus(statusPrevious);
+      }, 3000);
     }
   }
-  // Emit online/offline
   $("#user-message").focus(function(){
     var conversationId = $("#user-convoId").attr("value").split(',')[0];
     $.post('/seen_msg/'+conversationId);
   });
   // Listen
-  socket.on('userJoinedRoom', function(){
+  socket.on('someoneJoinedRoom', function(){
     $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
   })
-  socket.on('userLeftRoom', function(){
+  socket.on('someoneLeftRoom', function(){
     $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
   })
 
   // Emit typing
+  var pastInputLength = 0;
   $("#user-message").on('input', function(){
-    // Send value = firstName to server to 'broadcast'
-    socket.emit('typing', $("#pin-chatbox").attr("value"));
+    if((pastInputLength == 0 && $("#user-message").val().length > 0) || userChatStatusReset === true){
+      socket.emit('typing', $("#pin-chatbox").attr("value"));
+      userChatStatusReset = false;
+    } else if(pastInputLength != 0 && $("#user-message").val().length == 0){
+      socket.emit('notTyping', $("#pin-chatbox").attr("value"));
+    }
+    pastInputLength = $("#user-message").val().length;
   });
   // Listen on typing (status from server)
   socket.on('typing', function(data){
     setStatus(data + ' is typing...');
+  });
+  socket.on('notTyping', function(data){
+    setStatus('Status: Idle');
+    userChatStatusReset = true;
   });
   // From routes.js
   socket.on('message', newMessage)
@@ -173,6 +182,7 @@ if(socket !== undefined){
           authorId: authorId,
           authorName: authorName
         });
+        socket.emit('notClubTyping', $("#pin-chatbox").attr("value"));
       } else{
         setClubStatus('Pl. enter a message');
       }
@@ -181,16 +191,13 @@ if(socket !== undefined){
     });
   });
 
-  var clubMsgStatus = document.getElementById("club-msg-status");
-  if(clubMsgStatus){
-    var clubStatusDefault = clubMsgStatus.textContent;
-    var setClubStatus = function(s){
-      clubMsgStatus.textContent = s;
-      if(s !== clubStatusDefault){
-        var delay = setTimeout(function(){
-          setClubStatus(clubStatusDefault);
-        }, 3000);
-      }
+  var setClubStatus = function(s){
+    var clubStatusPrevious = $("#club-msg-status").text();
+    $("#club-msg-status").text(s);
+    if(s !== 'Status: Idle' && !s.endsWith('typing...')){
+      var delay = setTimeout(function(){
+        setClubStatus(clubStatusPrevious);
+      }, 3000);
     }
   }
   $("#club-message").focus(function(){
@@ -201,17 +208,29 @@ if(socket !== undefined){
   socket.on('updateClubRoomConnectionsNum', function(data){
     $("#clubRoomConnectionsNum").text(data);
   });
-  socket.on('userJoinedClubRoom', function(){
+  socket.on('someoneJoinedClubRoom', function(){
     $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
   })
-  socket.on('allUsersLeftClubRoom', function(){
+  socket.on('everyoneLeftClubRoom', function(){
     $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");
   })
+
+  var pastClubInputLength = 0;
   $("#club-message").on('input', function(){
-    socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
+    if((pastClubInputLength == 0 && $("#club-message").val().length > 0) ||  clubChatStatusReset === true){
+      socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
+      clubChatStatusReset = false;
+    } else if(pastClubInputLength != 0 && $("#club-message").val().length == 0){
+      socket.emit('notClubTyping', $("#pin-chatbox").attr("value"));
+    }
+    pastClubInputLength = $("#club-message").val().length;
   });
   socket.on('clubTyping', function(data){
     setClubStatus(data + ' is typing...');
+  });
+  socket.on('notClubTyping', function(data){
+    setClubStatus('Status: Idle');
+    clubChatStatusReset = true;
   });
   socket.on('newConvoReload', function(data){
     if(location.pathname.split('/').pop() == data){

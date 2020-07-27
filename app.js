@@ -59,13 +59,16 @@ useUnifiedTopology: true}, function(err, client){
     socket.on('joinRoom', room =>{
       socket.join(room);
       if(io.sockets.adapter.rooms[room] && io.sockets.adapter.rooms[room].length > 1){
-        io.sockets.in(room).emit('userJoinedRoom');
+        io.sockets.in(room).emit('someoneJoinedRoom');
       }
       socket.on('disconnect', function(){
-        socket.broadcast.to(room).emit('userLeftRoom');
+        socket.broadcast.to(room).emit('someoneLeftRoom');
       })
       socket.on('typing', function(data){
         socket.broadcast.to(room).emit('typing', data);
+      })
+      socket.on('notTyping', function(data){
+        io.sockets.in(room).emit('notTyping', data);
       })
       socket.on('newConvoReload', function(data){
         socket.broadcast.to(room).emit('newConvoReload', data);
@@ -75,19 +78,22 @@ useUnifiedTopology: true}, function(err, client){
     socket.on('joinClubRoom', clubRoom =>{
       socket.join(clubRoom);
       if(io.sockets.adapter.rooms[clubRoom] && io.sockets.adapter.rooms[clubRoom].length > 1){
-        io.sockets.in(clubRoom).emit('userJoinedClubRoom');
+        io.sockets.in(clubRoom).emit('someoneJoinedClubRoom');
         io.sockets.in(clubRoom).emit('updateClubRoomConnectionsNum', io.sockets.adapter.rooms[clubRoom].length);
       }
       socket.on('disconnect', function(){
         if(io.sockets.adapter.rooms[clubRoom] && io.sockets.adapter.rooms[clubRoom].length > 1){
           socket.broadcast.to(clubRoom).emit('updateClubRoomConnectionsNum', io.sockets.adapter.rooms[clubRoom].length);
         } else{
-          socket.broadcast.to(clubRoom).emit('allUsersLeftClubRoom');
+          socket.broadcast.to(clubRoom).emit('everyoneLeftClubRoom');
           socket.broadcast.to(clubRoom).emit('updateClubRoomConnectionsNum', '');
         }
       })
       socket.on('clubTyping', function(data){
         socket.broadcast.to(clubRoom).emit('clubTyping', data);
+      })
+      socket.on('notClubTyping', function(data){
+        io.sockets.in(clubRoom).emit('notClubTyping', data);
       })
       socket.on('newClubConvoReload', function(data){
         socket.broadcast.to(clubRoom).emit('newClubConvoReload', data);
@@ -107,7 +113,7 @@ db.once('open', () => {
 });
 
 app.use(session({
-  secret: 'Once again Rusty wins cutest dog!',
+  secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
   resave: false,
   store: new MongoStore({mongooseConnection: db})
@@ -115,7 +121,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-// passport-local-mongoose
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
