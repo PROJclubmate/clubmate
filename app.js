@@ -1,4 +1,5 @@
 const express      = require('express'),
+  helmet           = require('helmet'),
   app              = express(),
   bodyParser       = require('body-parser'),
   http             = require('http').Server(app),
@@ -35,6 +36,7 @@ const indexRoutes    = require('./routes/index'),
   conversationRoutes = require('./routes/conversations')(io);
 
 
+app.use(helmet());
 app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -116,6 +118,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
   resave: false,
+  cookie: {httpOnly: true, secure: true},
   store: new MongoStore({mongooseConnection: db})
 }));
 
