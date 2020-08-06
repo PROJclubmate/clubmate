@@ -12,6 +12,7 @@
 				<button class="btn btn-md btn-success btn-round btn-block" type="submit" onclick="loading_spinner('load-forgot','email');"><span id="load-forgot"></span>Send</button>
 			</div>
 			<a href="/login">Back</a>
+			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 		</form>
 	</div>
 </div>

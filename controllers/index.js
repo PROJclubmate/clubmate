@@ -363,7 +363,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (index-11)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
-            return res.json({count});
+            return res.json({count, csrfToken: res.locals.csrfToken});
           }
           });
         }
@@ -489,8 +489,8 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, emailSearch: false,
-      Users_100_profilePic});
+      return res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, 
+      emailSearch: false, Users_100_profilePic, csrfToken: res.locals.csrfToken});
     }
     });
   },
@@ -616,8 +616,8 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, currentUser,
-      Users_100_profilePic});
+      return res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, 
+      currentUser, Users_100_profilePic, csrfToken: res.locals.csrfToken});
     }
     });
   },
@@ -669,7 +669,8 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, Clubs_100_Avatar});
+      return res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, 
+      Clubs_100_Avatar, csrfToken: res.locals.csrfToken});
     }
     });
   },
@@ -790,7 +791,8 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar});
+      return res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar, 
+      csrfToken: res.locals.csrfToken});
     }
     });
   },
@@ -845,7 +847,8 @@ module.exports = {
         }
       }
       var currentUser = req.user;
-      return res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
+      return res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr, 
+      csrfToken: res.locals.csrfToken});
     }
     });
   },

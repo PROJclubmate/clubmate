@@ -20,6 +20,7 @@
                 <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= user._id %>,<%= clubs[i].id._id %>">Update</button>
               </div>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </span>
@@ -67,6 +68,7 @@
               <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
               <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
                 <button type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>

@@ -3,6 +3,7 @@ if(socket !== undefined){
   // console.log('Connected to socket...');
   
   var userChatStatusReset = null; var clubChatStatusReset = null;
+  $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
   // ============================================== USER CHAT ================================================= //
   // 1). DOM EVENTS
   $(() =>{

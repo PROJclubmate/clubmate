@@ -39,6 +39,7 @@
               <div id="clear_update<%= i %>" class="nounderline clear_update">
                 <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
                   <button class="red lightgrey nothing link-button px-1 text-sm mobiletext3" name="delUpdate" value="<%= arr[i]._id %>" type="submit"><strong class="clear_updatex">&times;</strong></button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               </div>
             </div>

@@ -48,6 +48,7 @@
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[i]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -76,6 +77,7 @@
                     </button>
                   <% } %>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>

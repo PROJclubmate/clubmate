@@ -12,16 +12,16 @@ const express  = require('express'),
   require('../controllers/profiles');
   
 
-// Show user profile
+// Show user profile page
 router.get('/users/:id', profilesUserProfile);
 
 // Load user joined clubs(AJAX)
 router.get('/users-moreClubs/:user_id', profilesUserMoreClubs);
 
-// Load user created posts
+// Load user created posts(AJAX)
 router.get('/users-morePosts/:id', profilesUserMorePosts);
 
-// Load user heart posts
+// Load user heart posts(AJAX)
 router.get('/heart-morePosts/:id', profilesUserMoreHeartPosts);
 
 // Update user profile
@@ -97,7 +97,7 @@ router.post('/forgot', profilesForgotPass);
 // Check passsword reset token
 router.get('/reset/:token', profilesForgotToken);
 
-// POST profiles create new
+// Reset user password
 router.post('/reset/:token', profilesResetPass);
 
 module.exports = router;

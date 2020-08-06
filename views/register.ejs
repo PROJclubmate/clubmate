@@ -41,6 +41,7 @@
         </div>
       </div>
       <button class="btn btn-lg btn-success btn-round btn-block mt-5" type="submit">Sign up!</button>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     </form> 
     <div class="form-signin">
       <a class="lightgrey" href="/resend_verification">Resend verification token?</a>

@@ -25,6 +25,18 @@
     </div>
   </div>
   <div id="delegated-posts" class="col-lg-7 col-md-10 centerpad-posts">
+    <% if(friendsPostUrl){ %>
+      <div class="story-container mobilepad mt-3">
+        <div class="d-flex scroll moz-scroll">
+          <% for(var i=0;i<4;i++){ %>
+            <div class="d-flex flex-column mr-3">
+              <div class="story story-dark"></div>
+              <div class="story-label lightgrey2 text-xxxs boldtext pb-2">something</div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
     <div id="server-posts">
       <% //include ../partials/posts_index %>
     </div>

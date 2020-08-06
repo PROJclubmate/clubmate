@@ -11,7 +11,7 @@ const express          = require('express'),
 module.exports = {
   postsHome(req, res, next){
     if(req.user && req.user.userClubs.length != 0){
-      res.render('posts/index');
+      res.render('posts/index', {friendsPostUrl: false});
     } else if(req.user && req.user.userClubs.length == 0){
       req.flash('success', 'Join clubs to start seeing their posts at HOME.');
       res.redirect('/discover');
@@ -66,7 +66,7 @@ module.exports = {
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         return res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
-        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken});
       }
       });
     } else{
@@ -76,7 +76,7 @@ module.exports = {
 
   postsFriends_posts(req, res, next){
     if(req.user && req.user.friendsCount != 0){
-      res.render('posts/index');
+      res.render('posts/index', {friendsPostUrl: true});
     } else if(req.user && req.user.friendsCount == 0){
       req.flash('success', 'Add friends to start seeing their posts.');
       res.redirect('/discover');
@@ -127,8 +127,8 @@ module.exports = {
         });
         var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
         {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-        return res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, foundPostIds,
-        CU_50_profilePic, PA_50_profilePic, arrLength});
+        return res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, 
+        foundPostIds, CU_50_profilePic, PA_50_profilePic, arrLength, csrfToken: res.locals.csrfToken});
       }
       });
     } else{
@@ -289,8 +289,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         } else if(req.user.sortByKey === 2){
@@ -330,8 +331,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         } else if(req.user.sortByKey === 3){
@@ -431,8 +433,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         }
@@ -542,8 +545,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         } else if(req.user.sortByKey === 2){
@@ -582,8 +586,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         } else if(req.user.sortByKey === 3){
@@ -681,8 +686,9 @@ module.exports = {
             });
             var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
-            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, currentUser: currentUser2,
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength});
+            return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
+            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            csrfToken: res.locals.csrfToken});
           }
           });
         }
@@ -790,8 +796,8 @@ module.exports = {
             return res.sendStatus(500);
           }
         });
-        return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, PC_50_clubAvatar,
-        arrLength});
+        return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, 
+        PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken});
       }
       });
     }
@@ -1321,17 +1327,17 @@ module.exports = {
       if(req.body.visibility){
         foundPost.moderation = parseInt(req.body.visibility);
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
       if(req.body.exclusive){
         foundPost.moderation = parseInt(req.body.exclusive);
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
       if(req.body.published){
         foundPost.moderation = parseInt(req.body.published);
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
       var i, k; var clickIdFound = false, otherIdFound = false;
       var likeIds = foundPost.likeUserIds; var len1 = foundPost.likeCount;
@@ -1369,7 +1375,7 @@ module.exports = {
           foundPost.likeCount += 1;
         }
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
       // Heart button
       else if(req.body.heart == 'heart'){
@@ -1409,7 +1415,7 @@ module.exports = {
           });
         }
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
     }
     });
@@ -1449,7 +1455,7 @@ module.exports = {
           foundPost.upVoteCount += 1;
         }
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       // downVote button
       } else if(req.body.downVote == 'down'){
         for(j=len2-1;j>=0;j--){
@@ -1475,7 +1481,7 @@ module.exports = {
           foundPost.downVoteCount += 1;
         }
         foundPost.save();
-        res.json(foundPost);
+        res.json({foundPost, csrfToken: res.locals.csrfToken});
       }
     }
     });

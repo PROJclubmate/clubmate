@@ -7,19 +7,19 @@ const express  = require('express'),
   postsVote, postsModVote} = require('../controllers/posts');
 
 
-// Home
+// Home page
 router.get('/home', postsHome);
 
 // Home load more posts(AJAX)
 router.get('/home-morePosts', postsHomeMorePosts);
 
-// Friends' posts
+// Friends' posts page
 router.get('/friends_posts', postsFriends_posts);
 
 // Friends' posts load more posts(AJAX)
 router.get('/friends_posts-morePosts', postsFriends_postsMorePosts);
 
-// Discover
+// Discover page
 router.get('/discover', postsDiscover);
 
 // Discover settings

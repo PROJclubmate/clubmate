@@ -12,6 +12,7 @@
 				<button class="btn btn-md btn-success btn-round btn-block" type="submit" onclick="loading_spinner('load-reverify','email');"><span id="load-reverify"></span>Send</button>
 			</div>
 			<a href="/register">Back</a>
+			<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 		</form>
 	</div>
 </div>

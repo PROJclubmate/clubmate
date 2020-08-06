@@ -31,7 +31,7 @@ router.get('/chats', middleware.isLoggedIn, indexChats);
 // Chats list
 router.put('/chats', middleware.isLoggedIn, indexChatsOpen);
 
-// Update inbox notifications count
+// Update inbox notifications count(AJAX)
 router.put('/user/:id/inbox', middleware.isLoggedIn, indexCurrentUserInboxCount);
 
 // Search

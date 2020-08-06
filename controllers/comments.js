@@ -138,7 +138,8 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
-          return res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, CA_50_profilePic});
+          return res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
+          CA_50_profilePic, csrfToken: res.locals.csrfToken});
         // Close else block if problem
         } else{
           return res.json({buckets: []});
@@ -153,7 +154,7 @@ module.exports = {
 
   commentsVote(req, res, next){
     Comment.findOneAndUpdate({_id: req.params.bucket_id, 
-      comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}},
+    comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}},
     {$push: {'comments.$.upvoteUserIds': req.user._id}, $inc: {'comments.$.upvotesCount': 1}},
     {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}}, new: true},
     function(err, notFoundComment){
@@ -162,7 +163,7 @@ module.exports = {
       return res.sendStatus(500);
     } else{
       if(notFoundComment){
-        res.json(notFoundComment);
+        res.json({foundComment: notFoundComment, csrfToken: res.locals.csrfToken});
       }else if(!notFoundComment){
         Comment.findOneAndUpdate({_id: req.params.bucket_id, 
           comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}},
@@ -173,7 +174,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
           return res.sendStatus(500);
         } else{
-          res.json(foundComment);
+          res.json({foundComment, csrfToken: res.locals.csrfToken});
         }
         });
       }

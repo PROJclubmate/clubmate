@@ -20,6 +20,7 @@
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
                     <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
               </div>
@@ -107,6 +108,7 @@
                     <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
                   <% } %>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } %>
             <div>
@@ -124,6 +126,7 @@
                 <form id="club_desc" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
                   <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update description</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               <% } %>
             </div>
@@ -142,6 +145,7 @@
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
                   <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update rules</button>
                   <br>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               <% } %>
             </div>
@@ -198,6 +202,7 @@
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline text-sm" action="/clubs/<%= club._id %>/delete?_method=PUT" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -265,6 +270,7 @@
                 <label for="location" class="sr-only">Location</label>
                 <input type="text" id="location" class="form-control form-control-sm" name="clubKeys[location]" value="<%= club.clubKeys.location %>" placeholder="Location">
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update club profile</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           <% } %>
@@ -410,6 +416,7 @@
                           </span>
                         </span>
                       </div>
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
                   </div>
                 <% } %>
@@ -507,6 +514,7 @@
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } %>
           </div>
@@ -520,6 +528,7 @@
                     <textarea id="message" class="form-control form-control-sm" type="text" name="message" placeholder="Request message" rows="3" required></textarea>
                   <button class="btn btn-sm btn-success btnshadow d-flex ml-auto" title="member request" name="memberReq" value="<%= club._id %>">Send</button>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>

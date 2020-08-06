@@ -735,6 +735,7 @@ function index_posts_template(response){
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -828,6 +829,7 @@ function index_posts_template(response){
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
     </div>
@@ -869,6 +871,7 @@ function index_posts_template(response){
                 <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
                 <button onclick="none_display('commentbtn<%= posts[k]._id %>')" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -974,6 +977,7 @@ function index_posts_template(response){
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                           <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
                         </div>
                       </div>
@@ -999,6 +1003,7 @@ function index_posts_template(response){
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -1019,6 +1024,7 @@ function index_posts_template(response){
                 <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
@@ -1026,8 +1032,9 @@ function index_posts_template(response){
   <% } %>
 <% } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
-  friendsPostUrl: response.friendsPostUrl, currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
-  PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic});
+  friendsPostUrl: response.friendsPostUrl, currentUser: response.currentUser, 
+  CU_50_profilePic: response.CU_50_profilePic, PC_50_clubAvatar: response.PC_50_clubAvatar, 
+  PA_50_profilePic: response.PA_50_profilePic, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -1085,6 +1092,7 @@ function discover_posts_template(response){
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote"></i></button></span>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
@@ -1127,7 +1135,8 @@ function discover_posts_template(response){
 <% } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
-  PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic});
+  PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -1177,6 +1186,7 @@ function club_posts_template(response){
                         <% } else if(posts[k].moderation == -1){ %>
                           <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility(Show)</button>
                         <% } %>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </li>
                   <% } %>
@@ -1207,6 +1217,7 @@ function club_posts_template(response){
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline" action="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -1303,6 +1314,7 @@ function club_posts_template(response){
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
     </div>
@@ -1344,6 +1356,7 @@ function club_posts_template(response){
                 <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
                 <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -1425,6 +1438,7 @@ function club_posts_template(response){
                           <% } else if(posts[k].moderation == -1){ %>
                             <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility(Show)</button>
                           <% } %>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </li>
                     <% } %>
@@ -1455,6 +1469,7 @@ function club_posts_template(response){
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                           <form class="delete-form inline" action="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
                         </div>
                       </div>
@@ -1480,6 +1495,7 @@ function club_posts_template(response){
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -1500,6 +1516,7 @@ function club_posts_template(response){
                 <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
@@ -1516,7 +1533,8 @@ function privacyText(privacy){
   else if(privacy == 4){return 'Private';}
 } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, rank: response.rank,
-  currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, CU_50_profilePic: response.CU_50_profilePic});
+  currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, 
+  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -1589,6 +1607,7 @@ function user_posts_template(response){
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -1674,6 +1693,7 @@ function user_posts_template(response){
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
     </div>
@@ -1715,6 +1735,7 @@ function user_posts_template(response){
                 <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
                 <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -1823,6 +1844,7 @@ function user_posts_template(response){
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                           <form class="delete-form inline" action="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
                         </div>
                       </div>
@@ -1848,6 +1870,7 @@ function user_posts_template(response){
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -1868,14 +1891,16 @@ function user_posts_template(response){
                 <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
     </div>
   <% } %>
 <% } %>
-`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, match: response.match,
-  currentUser: response.currentUser, PC_50_clubAvatar: response.PC_50_clubAvatar, CU_50_profilePic: response.CU_50_profilePic});
+`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, 
+  match: response.match, currentUser: response.currentUser, PC_50_clubAvatar: response.PC_50_clubAvatar, 
+  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -1948,6 +1973,7 @@ function heart_posts_template(response){
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                         <form class="delete-form inline" action="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>?_method=DELETE" method="POST">
                           <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                     </div>
@@ -2033,6 +2059,7 @@ function heart_posts_template(response){
               <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
     </div>
@@ -2074,6 +2101,7 @@ function heart_posts_template(response){
                 <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
                 <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
               </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -2182,6 +2210,7 @@ function heart_posts_template(response){
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                           <form class="delete-form inline" action="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
                         </div>
                       </div>
@@ -2207,6 +2236,7 @@ function heart_posts_template(response){
                   <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
                   <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -2227,14 +2257,16 @@ function heart_posts_template(response){
                 <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
     </div>
   <% } %>
 <% } %>
-`,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, match: response.match,
-  currentUser: response.currentUser, PC_50_clubAvatarH: response.PC_50_clubAvatarH, CU_50_profilePicH: response.CU_50_profilePicH});
+`,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, 
+  match: response.match, currentUser: response.currentUser, PC_50_clubAvatarH: response.PC_50_clubAvatarH, 
+  CU_50_profilePicH: response.CU_50_profilePicH, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2289,6 +2321,7 @@ function post_comments_template(response){
                       <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                       <form class="delete-form inline text-sm" action="/posts/<%= post._id %>/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>?_method=DELETE" method="POST">
                         <button class="btn btn-danger btn-sm ml-1" type="submit">Delete</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </div>
                   </div>
@@ -2317,6 +2350,7 @@ function post_comments_template(response){
                   </button>
                 <% } %>
               </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -2326,7 +2360,8 @@ function post_comments_template(response){
   </div>
 <% } %>
 `,{post: response.post, upComments: response.upComments, buckets: response.buckets, index: response.index,
-  currentUser: response.currentUser, CA_50_profilePic: response.CA_50_profilePic});
+  currentUser: response.currentUser, CA_50_profilePic: response.CA_50_profilePic, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2409,6 +2444,7 @@ function post_subPosts_template(response){
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } else{ %>
               <span class="mr-2"> 
@@ -2439,11 +2475,13 @@ function post_subPosts_template(response){
                     <li>
                       <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket[0]._id %>" method="GET">
                         <button class="dropitems pl-3 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </li>
                     <li>
                       <form class="delete-form inline" action="" method="POST">
                         <button class="dropitems pl-3 link-button text-sm" type="submit" disabled style="color: darkgrey !important;">Flag inappropriate &#127988;</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </li>
                   </div>
@@ -2518,6 +2556,7 @@ function post_subPosts_template(response){
               </label>
               <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>
@@ -2545,7 +2584,8 @@ function post_subPosts_template(response){
 %>
 `,{post: response.post, subVotes: response.subVotes, bucket: response.bucket, index: Number(response.index),
   rank: Number(response.rank), currentUser: response.currentUser, clubId: response.clubId,
-  CU_50_profilePic: response.CU_50_profilePic, sPA_50_profilePic: response.sPA_50_profilePic});
+  CU_50_profilePic: response.CU_50_profilePic, sPA_50_profilePic: response.sPA_50_profilePic, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2589,6 +2629,7 @@ function moreMembers_template(response){
             <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
             <option value="4,<%= users[i].id._id %>,<%= clubId %>" data-descr="Jr. Member">Jr. M</option>
           </select>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </span>
       <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
@@ -2630,6 +2671,7 @@ function moreMembers_template(response){
                 <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                 <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
                   <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               </div>
             </div>
@@ -2657,8 +2699,9 @@ function moreMembers_template(response){
     else if(rank == 4){return 'Jr';}
   }
 %>
-`,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, newEndpoints: response.newEndpoints,
-  clubId: response.clubId, rank: response.rank});
+`,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, 
+  newEndpoints: response.newEndpoints, clubId: response.clubId, rank: response.rank, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2689,13 +2732,14 @@ function moreMemberRequests_template(response){
           <span>
             <button class="btn btnxs btn-secondary text-sm" type="submit" name="declineReq" value="<%= club.memberRequests[m].userId._id %>">Decline</button>
           </span>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
     </div>
   <% } %>
 </div>
 `,{users: response.users, MemberRequests_50_profilePic: response.MemberRequests_50_profilePic, 
-  newEndpoints: response.newEndpoints, club: response.club});
+  newEndpoints: response.newEndpoints, club: response.club, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2728,7 +2772,8 @@ function allTimeTopTopicPosts_template(response){
 <% } else{ %>
   <div class="lightgrey mobiletext2">No discussions created yet :/</div>
 <% } %>
-`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image});
+`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2756,6 +2801,7 @@ function moreClubs_template(response){
                 <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= userId %>,<%= clubs[i].id._id %>">Update</button>
               </div>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </span>
@@ -2803,6 +2849,7 @@ function moreClubs_template(response){
               <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
               <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
                 <button type="submit" name="leave" value="<%= userId %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -2831,7 +2878,7 @@ function moreClubs_template(response){
 %>
 `,{clubs: response.clubs, clubCount: response.clubCount, Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,
   newEndpoints: response.newEndpoints, userId: response.userId, rank: response.rank,
-  currentUserId: response.currentUserId, match: response.match});
+  currentUserId: response.currentUserId, match: response.match, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2882,7 +2929,9 @@ function search_people_template(response){
     </div>
   </div>
 <% } %>
-`,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, currentUser: response.currentUser, Users_100_profilePic: response.Users_100_profilePic});
+`,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, 
+  currentUser: response.currentUser, Users_100_profilePic: response.Users_100_profilePic, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2947,7 +2996,9 @@ function break_arr(arr){
   }
 }
 %>
-`,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, currentUser: response.currentUser, Clubs_100_Avatar: response.Clubs_100_Avatar});
+`,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, 
+  currentUser: response.currentUser, Clubs_100_Avatar: response.Clubs_100_Avatar, 
+  csrfToken: response.csrfToken});
   return html;
 }
 
@@ -2987,7 +3038,8 @@ function search_org_pages_template(response){
     </div>
   </div>
 <% } %>
-`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, matchArr: response.matchArr});
+`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, 
+  matchArr: response.matchArr, csrfToken: response.csrfToken});
   return html;
 }
 
@@ -3016,6 +3068,6 @@ function showFollowing_template(response){
     <br>
   </div>
 <% } %>
-`,{followingClubs: response.followingClubs});
+`,{followingClubs: response.followingClubs, csrfToken: response.csrfToken});
   return html;
 }

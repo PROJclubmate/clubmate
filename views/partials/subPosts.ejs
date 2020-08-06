@@ -75,6 +75,7 @@
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } else{ %>
               <span class="mr-2"> 
@@ -110,6 +111,7 @@
                     <li>
                       <form class="delete-form inline" action="" method="POST">
                         <button class="dropitems pl-3 link-button text-sm" type="submit" disabled style="color: darkgrey !important;">Flag inappropriate &#127988;</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </li>
                   </div>
@@ -211,6 +213,7 @@
                 </button>
               </div>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
       </div>

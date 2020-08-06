@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="<%= csrfToken %>">
     <title>clubmate - Good company</title>
     <!-- <script src="/js/pace.min.js"></script> -->
     <!-- <link rel="stylesheet" href="/css/pace-theme-barber-shop.css"> -->
@@ -168,6 +169,7 @@
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeInvite" type="submit" value="<%= clubInviteRequests[i]._id %>">Decline</button>
               </span>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>
@@ -206,6 +208,7 @@
               <span>
                 <button class="btn btnxs btn-secondary text-sm" name="removeReq" type="submit" value="<%= friendRequests[j]._id %>">Decline</button>
               </span>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           </div>
         </div>

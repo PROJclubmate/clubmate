@@ -16,6 +16,7 @@
 	    <input type="password" name="confirm" value="" placeholder="Confirm password" class="form-control">
 	    <br>
 	    <button class="btn btn-md btn-success btn-round btn-block" type="submit" onclick="loading_spinner('load-reset','inputPassword');"><span id="load-reset"></span>Update</button>
+	    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 		</form>
 	</div>
 </div>

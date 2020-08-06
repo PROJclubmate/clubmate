@@ -140,6 +140,7 @@
                 <span><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
               <% } %>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
     <% } else{ %>
@@ -247,6 +248,7 @@
                       <span id="modVote-count<%= post._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
                       <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                     <% } %>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 </div>
               </div>
@@ -267,6 +269,7 @@
                     <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
@@ -325,6 +328,7 @@
                 </span>
               </div>
             </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
           <% } %>
         </div>
@@ -382,6 +386,7 @@
                         </button>
                       </div>
                     </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 </div>
               </div>
@@ -411,6 +416,7 @@
                   <button class="btn btn-sm btn-success commentbtn btnshadow btnxs ml-2 mt-2">Submit</button>
                   <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnshadow btnxs text-sm mt-2" type="button">Cancel</button>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>

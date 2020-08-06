@@ -756,32 +756,32 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       data: formData,
       type: 'PUT',
       success: function(data){
-        $('#like-count'+data._id).text(data.likeCount);
-        $('#heart-count'+data._id).text(data.heartCount);
+        $('#like-count'+data.foundPost._id).text(data.foundPost.likeCount);
+        $('#heart-count'+data.foundPost._id).text(data.foundPost.heartCount);
 
-        if(formData[0].name == 'like'){
-          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        if(formData[1].name == 'like'){
+          if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
           }
-          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+          else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up"></i>'
+          || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
           }
-          $('#like-count'+data._id).toggleClass('greencolor3');
-          $('#heart-count'+data._id).removeClass('redcolor3');
+          $('#like-count'+data.foundPost._id).toggleClass('greencolor3');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor3');
         }
-        if(formData[0].name == 'heart'){
-          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+        if(formData[1].name == 'heart'){
+          if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
           }
-          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
-          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-            $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart"></i>'
+          || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart redcolor2"></i>');
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
           }
-          $('#like-count'+data._id).removeClass('greencolor3');
-          $('#heart-count'+data._id).toggleClass('redcolor3');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor3');
+          $('#heart-count'+data.foundPost._id).toggleClass('redcolor3');
         }
       },
       error: function(xhr) {
@@ -805,36 +805,36 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       data: formData,
       type: 'PUT',
       success: function(data){
-        $('#like-count'+data._id).text(data.likeCount);
-        $('#heart-count'+data._id).text(data.heartCount);
+        $('#like-count'+data.foundPost._id).text(data.foundPost.likeCount);
+        $('#heart-count'+data.foundPost._id).text(data.foundPost.heartCount);
 
-        if(formData[0].name == 'like'){
-          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
+        if(formData[1].name == 'like'){
+          if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
           }
-          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up discover-vote"></i>'
-          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
-            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up discover-vote greencolor"></i>');
-            $('#heart-btn'+data._id).html('<i class="far fa-heart discover-vote"></i>');
+          else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up discover-vote"></i>'
+          || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up discover-vote greencolor"></i>');
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
           }
-          $('#like-count'+data._id).toggleClass('greencolor2');
-          $('#heart-count'+data._id).removeClass('redcolor2');
+          $('#like-count'+data.foundPost._id).toggleClass('greencolor2');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor2');
         }
-        if(formData[0].name == 'heart'){
-          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
-            $('#heart-btn'+data._id).html('<i class="far fa-heart discover-vote"></i>');
+        if(formData[1].name == 'heart'){
+          if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
           }
-          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart discover-vote"></i>'
-          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
-            $('#heart-btn'+data._id).html('<i class="fas fa-heart discover-vote redcolor2"></i>');
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
+          else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart discover-vote"></i>'
+          || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart discover-vote redcolor2"></i>');
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
           }
-          $('#like-count'+data._id).removeClass('greencolor2');
-          $('#heart-count'+data._id).toggleClass('redcolor2');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor2');
+          $('#heart-count'+data.foundPost._id).toggleClass('redcolor2');
         }
 
         setTimeout(function(){
-          var votecard = '#votecard'+data._id;
+          var votecard = '#votecard'+data.foundPost._id;
           $(votecard).css('display', 'none');
         }, 1000);
       },
@@ -860,36 +860,36 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       data: formData,
       type: 'PUT',
       success: function(data){
-        $('#like-count'+data._id).text(data.likeCount);
-        $('#heart-count'+data._id).text(data.heartCount);
+        $('#like-count'+data.foundPost._id).text(data.foundPost.likeCount);
+        $('#heart-count'+data.foundPost._id).text(data.foundPost.heartCount);
 
-        if(formData[0].name == 'like'){
-          if($('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
-            $('#like-count'+data._id).addClass('nodisplay');
+        if(formData[1].name == 'like'){
+          if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
+            $('#like-count'+data.foundPost._id).addClass('nodisplay');
           }
-          else if($('#like-btn'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-          || $('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-            $('#like-btn'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-            $('#like-count'+data._id).removeClass('nodisplay');
-            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
+          else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up"></i>'
+          || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+            $('#like-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
           }
-          $('#like-count'+data._id).toggleClass('greencolor3');
-          $('#heart-count'+data._id).removeClass('redcolor3').addClass('nodisplay');
+          $('#like-count'+data.foundPost._id).toggleClass('greencolor3');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor3').addClass('nodisplay');
         }
-        if(formData[0].name == 'heart'){
-          if($('#heart-btn'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-            $('#heart-btn'+data._id).html('<i class="far fa-heart"></i>');
-            $('#heart-count'+data._id).addClass('nodisplay');
+        if(formData[1].name == 'heart'){
+          if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
+            $('#heart-count'+data.foundPost._id).addClass('nodisplay');
           }
-          else if($('#heart-btn'+data._id).html() == '<i class="far fa-heart"></i>'
-          || $('#like-btn'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-            $('#heart-btn'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
-            $('#heart-count'+data._id).removeClass('nodisplay');
-            $('#like-btn'+data._id).html('<i class="far fa-thumbs-up"></i>');
+          else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart"></i>'
+          || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+            $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart redcolor2"></i>');
+            $('#heart-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
           }
-          $('#like-count'+data._id).removeClass('greencolor3').addClass('nodisplay');
-          $('#heart-count'+data._id).toggleClass('redcolor3');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor3').addClass('nodisplay');
+          $('#heart-count'+data.foundPost._id).toggleClass('redcolor3');
         }
       },
       error: function(xhr) {
@@ -914,29 +914,29 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      if(formData[0].name == 'published'){
-        $('#moderation'+data._id).removeClass('btn-light').addClass('btn-info').text('Published')
+      if(formData[1].name == 'published'){
+        $('#moderation'+data.foundPost._id).removeClass('btn-light').addClass('btn-info').text('Published')
         .attr('name','exclusive').attr('value',1).blur();
-        $('#mod-badge'+data._id).text('0');
+        $('#mod-badge'+data.foundPost._id).text('0');
       }
-      if(formData[0].name == 'exclusive'){
-        $('#moderation'+data._id).removeClass('btn-info').addClass('btn-light').text('Exclusive')
+      if(formData[1].name == 'exclusive'){
+        $('#moderation'+data.foundPost._id).removeClass('btn-info').addClass('btn-light').text('Exclusive')
         .attr('name','published').attr('value',0).blur();
-        $('#mod-badge'+data._id).text('1');
+        $('#mod-badge'+data.foundPost._id).text('1');
       }
-      if(formData[0].name == 'visibility'){
-        if(formData[0].value == '-1'){
-          $('#moderation'+data._id).remove();
-          $('#modVisibility'+data._id).removeClass('createdButton');
-          $('#mod-badge'+data._id).removeClass('badge-light').addClass('badge-danger').text('-1');
-          $('#visibility'+data._id).text('Visibility(Show)').val('1');
-        } else if(formData[0].value == '1'){
-          $('#visibility'+data._id).text('Visibility(Hide)').val('-1');
-          $('#mod-badge'+data._id).removeClass('badge-danger').addClass('badge-light').text('1');
-          var mySpan = document.getElementById('modVisibility'+data._id);
-            if(data.topic == '' && !$('#modVisibility'+data._id).hasClass('createdButton')){
+      if(formData[1].name == 'visibility'){
+        if(formData[1].value == '-1'){
+          $('#moderation'+data.foundPost._id).remove();
+          $('#modVisibility'+data.foundPost._id).removeClass('createdButton');
+          $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
+          $('#visibility'+data.foundPost._id).text('Visibility(Show)').val('1');
+        } else if(formData[1].value == '1'){
+          $('#visibility'+data.foundPost._id).text('Visibility(Hide)').val('-1');
+          $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
+          var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
+            if(data.foundPost.topic == '' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');
-              btnVisibility.setAttribute('id', 'moderation'+data._id);
+              btnVisibility.setAttribute('id', 'moderation'+data.foundPost._id);
               btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','noshadow','text-sm','ml-2');
               btnVisibility.setAttribute('name', 'published');
               btnVisibility.setAttribute('value', '0');
@@ -945,7 +945,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
               btnVisibility.innerHTML = 'Exclusive';
               mySpan.appendChild(btnVisibility);
             }
-          $('#modVisibility'+data._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
+          $('#modVisibility'+data.foundPost._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
         }
       }
     },
@@ -970,25 +970,25 @@ $("div#delegated-posts").on('click', '.modvote', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      $('#modVote-count'+data._id).text(data.upVoteCount - data.downVoteCount);
+      $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
 
-      if(formData[0].name == 'upVote'){
-        $('#upVote-btn'+data._id).toggleClass('bluecolor');
-        if($('#modVote-count'+data._id).hasClass('bluecolor3')){
-          $('#modVote-count'+data._id).removeClass('bluecolor3');
+      if(formData[1].name == 'upVote'){
+        $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor');
+        if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor3')){
+          $('#modVote-count'+data.foundPost._id).removeClass('bluecolor3');
         } else{
-          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
+          $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
         }
-        $('#downVote-btn'+data._id).removeClass('orangecolor');
+        $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor');
       }
-      if(formData[0].name == 'downVote'){
-        $('#downVote-btn'+data._id).toggleClass('orangecolor');
-        if($('#modVote-count'+data._id).hasClass('orangecolor')){
-          $('#modVote-count'+data._id).removeClass('orangecolor');
+      if(formData[1].name == 'downVote'){
+        $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor');
+        if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
+          $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
         } else{
-          $('#modVote-count'+data._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
+          $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
         }
-        $('#upVote-btn'+data._id).removeClass('bluecolor');
+        $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor');
       }
     },
     error: function(xhr) {
@@ -1014,32 +1014,36 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
     type: 'PUT',
     success: function(data){
       // Process the expected results...
-      $('#like-countH'+data._id).text(data.likeCount);
-      $('#heart-countH'+data._id).text(data.heartCount);
+      $('#like-countH'+data.foundPost._id).text(data.foundPost.likeCount);
+      $('#heart-countH'+data.foundPost._id).text(data.foundPost.heartCount);
 
-      if(formData[0].name == 'like'){
-        if($('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
+      if(formData[1].name == 'like'){
+        if($('#like-btnH'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#like-btnH'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
+          $('#like-countH'+data.foundPost._id).addClass('nodisplay');
         }
-        else if($('#like-btnH'+data._id).html() == '<i class="far fa-thumbs-up"></i>'
-        || $('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-          $('#like-btnH'+data._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
+        else if($('#like-btnH'+data.foundPost._id).html() == '<i class="far fa-thumbs-up"></i>'
+        || $('#heart-btnH'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+          $('#like-btnH'+data.foundPost._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+          $('#like-countH'+data.foundPost._id).removeClass('nodisplay');
+          $('#heart-btnH'+data.foundPost._id).html('<i class="far fa-heart"></i>');
         }
-        $('#like-countH'+data._id).toggleClass('greencolor3');
-        $('#heart-countH'+data._id).removeClass('redcolor3');
+        $('#like-countH'+data.foundPost._id).toggleClass('greencolor3');
+        $('#heart-countH'+data.foundPost._id).removeClass('redcolor3');
       }
-      if(formData[0].name == 'heart'){
-        if($('#heart-btnH'+data._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
-          $('#heart-btnH'+data._id).html('<i class="far fa-heart"></i>');
+      if(formData[1].name == 'heart'){
+        if($('#heart-btnH'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
+          $('#heart-btnH'+data.foundPost._id).html('<i class="far fa-heart"></i>');
+          $('#heart-countH'+data.foundPost._id).addClass('nodisplay');
         }
-        else if($('#heart-btnH'+data._id).html() == '<i class="far fa-heart"></i>'
-        || $('#like-btnH'+data._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#heart-btnH'+data._id).html('<i class="fas fa-heart redcolor2"></i>');
-          $('#like-btnH'+data._id).html('<i class="far fa-thumbs-up"></i>');
+        else if($('#heart-btnH'+data.foundPost._id).html() == '<i class="far fa-heart"></i>'
+        || $('#like-btnH'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#heart-btnH'+data.foundPost._id).html('<i class="fas fa-heart redcolor2"></i>');
+          $('#heart-countH'+data.foundPost._id).removeClass('nodisplay');
+          $('#like-btnH'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
         }
-        $('#like-countH'+data._id).removeClass('greencolor3');
-        $('#heart-countH'+data._id).toggleClass('redcolor3');
+        $('#like-countH'+data.foundPost._id).removeClass('greencolor3');
+        $('#heart-countH'+data.foundPost._id).toggleClass('redcolor3');
       }
     },
     error: function(xhr) {
@@ -1063,25 +1067,25 @@ $('div#delegated-heart-posts').on('click', '.modvote', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      $('#modVote-countH'+data._id).text(data.upVoteCount - data.downVoteCount);
+      $('#modVote-countH'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
 
-      if(formData[0].name == 'upVote'){
-        $('#upVote-btnH'+data._id).toggleClass('bluecolor');
-        if($('#modVote-countH'+data._id).hasClass('bluecolor3')){
-          $('#modVote-countH'+data._id).removeClass('bluecolor3');
+      if(formData[1].name == 'upVote'){
+        $('#upVote-btnH'+data.foundPost._id).toggleClass('bluecolor');
+        if($('#modVote-countH'+data.foundPost._id).hasClass('bluecolor3')){
+          $('#modVote-countH'+data.foundPost._id).removeClass('bluecolor3');
         } else{
-          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
+          $('#modVote-countH'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
         }
-        $('#downVote-btnH'+data._id).removeClass('orangecolor');
+        $('#downVote-btnH'+data.foundPost._id).removeClass('orangecolor');
       }
-      if(formData[0].name == 'downVote'){
-        $('#downVote-btnH'+data._id).toggleClass('orangecolor');
-        if($('#modVote-countH'+data._id).hasClass('orangecolor')){
-          $('#modVote-countH'+data._id).removeClass('orangecolor');
+      if(formData[1].name == 'downVote'){
+        $('#downVote-btnH'+data.foundPost._id).toggleClass('orangecolor');
+        if($('#modVote-countH'+data.foundPost._id).hasClass('orangecolor')){
+          $('#modVote-countH'+data.foundPost._id).removeClass('orangecolor');
         } else{
-          $('#modVote-countH'+data._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
+          $('#modVote-countH'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
         }
-        $('#upVote-btnH'+data._id).removeClass('bluecolor');
+        $('#upVote-btnH'+data.foundPost._id).removeClass('bluecolor');
       }
     },
     error: function(xhr) {
@@ -1106,11 +1110,11 @@ $('div#delegated-comments').on('click', '.commentvote', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      $('#comment-up-count'+data.comments[0]._id).text(data.comments[0].upvotesCount);
+      $('#comment-up-count'+data.foundComment.comments[0]._id).text(data.foundComment.comments[0].upvotesCount);
 
-      if(formData[0].name == 'commentUp'){
-        $('#comment-up-btn'+data.comments[0]._id).toggleClass('bluecolor');
-        $('#comment-up-count'+data.comments[0]._id).toggleClass('bluecolor3');
+      if(formData[1].name == 'commentUp'){
+        $('#comment-up-btn'+data.foundComment.comments[0]._id).toggleClass('bluecolor');
+        $('#comment-up-count'+data.foundComment.comments[0]._id).toggleClass('bluecolor3');
       }
     },
     error: function(xhr) {
@@ -1134,32 +1138,32 @@ $('div#dynamic-subPosts').on('click', '.vote2', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      $('#like-count'+data.subPosts[0]._id).text(data.subPosts[0].likeCount);
-      $('#dislike-count'+data.subPosts[0]._id).text(data.subPosts[0].dislikeCount);
+      $('#like-count'+data.foundClickId.subPosts[0]._id).text(data.foundClickId.subPosts[0].likeCount);
+      $('#dislike-count'+data.foundClickId.subPosts[0]._id).text(data.foundClickId.subPosts[0].dislikeCount);
 
-      if(formData[0].name == 'subLike'){
-        if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#like-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
+      if(formData[1].name == 'subLike'){
+        if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
         }
-        else if($('#like-btn'+data.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-up"></i>'
-        || $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')){
-          $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
+        else if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-up"></i>'
+        || $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')){
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
         }
-        $('#like-count'+data.subPosts[0]._id).toggleClass('greencolor3');
-        $('#dislike-count'+data.subPosts[0]._id).removeClass('blackcolor');
+        $('#like-count'+data.foundClickId.subPosts[0]._id).toggleClass('greencolor3');
+        $('#dislike-count'+data.foundClickId.subPosts[0]._id).removeClass('blackcolor');
       }
-      if(formData[0].name == 'subDislike'){
-        if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
-          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
+      if(formData[1].name == 'subDislike'){
+        if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
         }
-        else if($('#dislike-btn'+data.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-down"></i>'
-        || $('#like-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>')){
-          $('#dislike-btn'+data.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
-          $('#like-btn'+data.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
+        else if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-down"></i>'
+        || $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>')){
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
         }
-        $('#like-count'+data.subPosts[0]._id).removeClass('greencolor3');
-        $('#dislike-count'+data.subPosts[0]._id).toggleClass('blackcolor');
+        $('#like-count'+data.foundClickId.subPosts[0]._id).removeClass('greencolor3');
+        $('#dislike-count'+data.foundClickId.subPosts[0]._id).toggleClass('blackcolor');
       }
     },
     error: function(xhr) {

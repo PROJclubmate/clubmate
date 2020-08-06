@@ -21,6 +21,7 @@
                   </label>
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
                   <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               <% } %>
             </div>
@@ -49,22 +50,12 @@
                     <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
                   </div>
-                  <!-- <div class="d-flex flex-column mr-3">
-                    <div class="story"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div> -->
+                  <!-- <%// for(var i=0;i<3;i++){ %>
+                    <div class="d-flex flex-column mr-3">
+                      <div class="story"></div>
+                      <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
+                    </div> 
+                  <%// } %> -->
                 </div>
               </div>
             <% } %>
@@ -83,6 +74,7 @@
                       </label>
                       <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
                       <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
                   <% } %>
                 </div>
@@ -109,26 +101,12 @@
                     <div class="story mt-3 text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
                   </div>
-                  <!-- <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div> -->
+                  <!-- <%// for(var i=0;i<3;i++){ %>
+                    <div class="d-flex flex-column mr-3">
+                      <div class="story mt-3"></div>
+                      <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
+                    </div>
+                  <%// } %> -->
                 </div>
               </div>
             <% } %>
@@ -184,6 +162,7 @@
                 <label for="residence" class="sr-only">Residence</label>
                 <input type="text" id="residence" class="form-control form-control-sm" name="userKeys[residence]" value="<%= user.userKeys.residence %>" placeholder="Residence">
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           <% } %>
@@ -251,7 +230,7 @@
           <div class="tab-content" id="myTabContent">
             <!-- **********************Info START************************ -->
             <% if(currentUser && match){ %>
-              <div class="tab-pane fade cardpad show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+              <div class="tab-pane fade cardpad show active" id="info" role="tabpanel" aria-labelledby="info-tab" style="border: 1px solid #d2d2d2; border-top: none;">
             <% } else{ %>
               <div class="tab-pane fade cardpad" id="info" role="tabpanel" aria-labelledby="info-tab">
             <% } %>
@@ -337,6 +316,7 @@
                         <div class="d-flex flex-row-reverse fullwidth mt-2">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                         </div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </div>
                   </div>
@@ -403,6 +383,7 @@
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                           <button onclick="favourites_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </div>
                     <br>
@@ -438,6 +419,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -469,6 +451,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -500,6 +483,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -531,6 +515,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -562,6 +547,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -593,6 +579,7 @@
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
                       </div>
                       <br>
@@ -613,6 +600,7 @@
                     <span>
                       <form action="/requests?_method=PUT" method="POST" class="form-inline">
                         <div id="clubInvite-select" class="clubInvite-select"></div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </span>
                   <% } %>
@@ -620,6 +608,7 @@
                     <span>
                       <form action="/requests?_method=PUT" method="POST" class="form-inline">
                         <div id="inviteCancel-select" class="inviteCancel-select"></div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </span>
                   <% } %>
@@ -645,6 +634,7 @@
                     <br>
                     <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
                   </div>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               </div>
               <% if((isFriend || match) && clubs.length!=0){ %>
@@ -715,6 +705,7 @@
               <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="friendReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-user-plus"></i> Add Friend
               </button>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
             <div class="dropdown">
@@ -749,6 +740,7 @@
                     <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
                     <form action="/requests?_method=PUT" method="POST" class="delete-form inline">
                       <button name="unFriendReq" type="submit" value="<%= user._id %>" class="btn btn-danger btn-sm ml-1">Unfriend</button>
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
                   </div>
                 </div>
@@ -759,10 +751,12 @@
               <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="cancelReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-minus"></i> Request Pending
               </button>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
               <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } %>
         </div>

@@ -2,6 +2,7 @@ const express      = require('express'),
   helmet           = require('helmet'),
   app              = express(),
   bodyParser       = require('body-parser'),
+  csrf             = require('csurf'),
   http             = require('http').Server(app),
   io               = require('socket.io')(http),
   session          = require('express-session'),
@@ -35,16 +36,6 @@ const indexRoutes    = require('./routes/index'),
   discussionRoutes   = require('./routes/discussions'),
   conversationRoutes = require('./routes/conversations')(io);
 
-
-app.use(helmet());
-app.use(express.urlencoded({extended: true}));
-app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
-app.use(methodOverride('_method'));
-app.use(flash());
-app.use(bodyParser.json());
-
-app.locals.moment = require('moment');
 
 // Connect to database
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
@@ -114,14 +105,22 @@ db.once('open', () => {
   console.log(Date.now()+' : '+"clubmate server has started on port "+port+"!!");
 });
 
+app.use(helmet());
+app.use(express.urlencoded({extended: true}));
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
+app.use(flash());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
   resave: false,
-  cookie: {httpOnly: true, secure: true},
+  name: 'ghostSessionId',
   store: new MongoStore({mongooseConnection: db})
 }));
-
+app.use(csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -129,7 +128,9 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.locals.moment = require('moment');
 app.use(async function(req, res, next){
+  res.locals.csrfToken = req.csrfToken();
   res.locals.currentUser = req.user;
   if(req.user){
     try{

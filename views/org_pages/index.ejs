@@ -59,6 +59,7 @@
 							    </label>
 							  </div>
 							</div>
+							<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 						</form>
 					<% } else if(currentUser && keyValue == 2){ %>
 						<form id="toggleOrgPage-form" action="/colleges/<%= org_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
@@ -77,6 +78,7 @@
 							    </label>
 							  </div>
 							</div>
+							<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 						</form>
 					<% } %>
 				</div>
@@ -93,6 +95,7 @@
 								<button class="btn btn-org2 btn-followall py-1 px-0 noshadow text-xs lightgrey2" name="followAllClubs" value="false" type="submit">Unfollow all <i class="fas fa-arrow-down"></i></button>
 							</div>
 						<% } %>
+						<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 					</form>
 				<% } %>
 			</div>
@@ -171,6 +174,7 @@
 					    			<button class="btn btn-org2 orgdiv-follow py-1 px-2 mobiletext3" name="followClub" value="true" type="submit">Follow</button>
 					    		</div>
 					    	<% } %>
+					    	<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 					    </form>
 				    <% } %>
 			    </div>
