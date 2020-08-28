@@ -1700,6 +1700,11 @@ module.exports = {
         return res.json({followingClubs});
       });
     }
+  },
+
+  /* PRIVATE */
+  indexShowMyResume(req, res, next){
+    res.render("resume");
   }
 };
 

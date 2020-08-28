@@ -5,8 +5,8 @@ const express  = require('express'),
   indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, 
   indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, 
   indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, 
-  indexViewOrgPage, indexOrgPageSettings, indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs} 
-  = require('../controllers/index');
+  indexViewOrgPage, indexOrgPageSettings, indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs, 
+  indexShowMyResume} = require('../controllers/index');
 
 // ==================================================
 // FOR NOW in urls, org_pages is replaced by colleges
@@ -96,5 +96,8 @@ router.put('/users/:user_id/follow/:club_id', middleware.isLoggedIn, indexFollow
 
 // Show my followed clubs
 router.get('/show_following/:id', middleware.isLoggedIn, indexShowFollowingClubs);
+
+// Show my resume PRIVATE/UNLISTED
+router.get('/resume', indexShowMyResume);
 
 module.exports = router;
