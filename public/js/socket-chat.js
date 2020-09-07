@@ -332,7 +332,7 @@ if(socket !== undefined){
         $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
       }
     }, 100);
-    if($(window).width() > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){
+    if(window.innerWidth > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){
       $("#chatbox").addClass('show');
     } else{
       $("#chatbox").removeClass('show');

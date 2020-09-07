@@ -7,16 +7,16 @@ window.onscroll = function(){
   var discover_nav = document.getElementById("discover_nav");
   var scroll = document.documentElement.scrollTop;
 
-  if($(window).width() > 1199 && prevScrollpos > currentScrollPos) {
+  if(window.innerWidth > 1199 && prevScrollpos > currentScrollPos) {
     navbar.style.top = "0";
     pop_box_requests.style.top = "40px";
-  } else if($(window).width() < 1199 && prevScrollpos > currentScrollPos){
+  } else if(window.innerWidth < 1199 && prevScrollpos > currentScrollPos){
     navbar.style.top = "0px";
     pop_box_requests.style.top = "42px";
-  } else if($(window).width() > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
+  } else if(window.innerWidth > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
     navbar.style.top = "-40px";
     pop_box_requests.style.top = "-600px";
-  } else if($(window).width() < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
+  } else if(window.innerWidth < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
     navbar.style.top = "-50px";
     pop_box_requests.style.top = "-600px";
   }
@@ -75,7 +75,7 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
-if($(window).width() > 768){
+if(window.innerWidth > 768){
   if(!$('#latestUpdates').hasClass('clubupdates')){
     $('#latestUpdates').addClass('show');
   }
@@ -615,11 +615,11 @@ function updateMessageHeight2(){
       $('#messages').height(newMsgHeight);
     }
   }
-  if($(window).width() <= 768 && $(window).width() > 480){
+  if(window.innerWidth <= 768 && window.innerWidth > 480){
     updateHeight(40);
-  } else if($(window).width() <= 480 && $(window).width() > 360){
+  } else if(window.innerWidth <= 480 && window.innerWidth > 360){
     updateHeight(48);
-  } else if($(window).width() <= 360){
+  } else if(window.innerWidth <= 360){
     updateHeight(42);
   } else{
     if($('.pushmsg').css('display') == 'block'){
@@ -641,11 +641,11 @@ function updateMessageHeight3(){
       $('#messages').height(newMsgHeight);
     }
   }
-  if($(window).width() <= 768 && $(window).width() > 480){
+  if(window.innerWidth <= 768 && window.innerWidth > 480){
     updateHeight(40,47);
-  } else if($(window).width() <= 480 && $(window).width() > 360){
+  } else if(window.innerWidth <= 480 && window.innerWidth > 360){
     updateHeight(48,52);
-  } else if($(window).width() <= 360){
+  } else if(window.innerWidth <= 360){
     updateHeight(42,47);
   } else{
     if($('.pushmsg').css('display') == 'block'){
@@ -670,6 +670,10 @@ if(location.pathname == '/help/'){
   $(".navhelp").addClass('requests-active');
 }
 if(location.pathname == '/chats'){
+  if(window.innerWidth < 768){
+    $('#mobile_toggler').removeClass("nodisplay");
+    $('.inbox_mobile').addClass("nodisplay");
+  }
   $("#inbox").addClass('requests-active');
 
   oldMsgHeightMobile = updateMessageHeight2();
@@ -684,7 +688,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");
   }
-  if($(window).width() < 360){
+  if(window.innerWidth < 360){
     $('#requests-tab').text('Req');
   }
 
@@ -696,10 +700,10 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  if($(window).width() < 768){
-    if($('#mypage').length){
-      $('#mobile_toggler').addClass("nodisplay");
-      $('.inbox_mobile').removeClass("nodisplay");
+  if(window.innerWidth < 768){
+    if($('#mypage').length){ 
+      $('#mobile_toggler').removeClass("nodisplay");
+      $('.inbox_mobile').addClass("nodisplay");
       $('#brandname').addClass("name-green");
     }
   }
@@ -717,7 +721,7 @@ $('textarea').on('input', function(){
     if(this.scrollHeight < 100){
       this.style.height = (this.scrollHeight) + 'px';
       $('#messages').css('margin-bottom',(this.scrollHeight + 8) + 'px');
-      if($(window).width() > 768){
+      if(window.innerWidth > 768){
         $('#messages').height(oldMsgHeightDesktop - (this.scrollHeight + 5));
       } else{
         $('#messages').height(oldMsgHeightMobile - (this.scrollHeight + 5));
@@ -725,7 +729,7 @@ $('textarea').on('input', function(){
     } else{
       this.style.height = 96 + 'px';
       $('#messages').css('margin-bottom',(96 + 8) + 'px');
-      if($(window).width() > 768){
+      if(window.innerWidth > 768){
         $('#messages').height(oldMsgHeightDesktop - (96 + 5));
       } else{
         $('#messages').height(oldMsgHeightMobile - (96 + 5));

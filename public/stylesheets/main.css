@@ -73,6 +73,7 @@ div.content{
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
+  #inbox_mobile{display: none !important;}
   .name{color: white !important; background-color: #3e3a39;}
   .navbar{box-shadow: 0px 2px 7px -2px rgba(0,0,0,0.4);}
   .navback{background-color: rgba(54,51,50,0.95);}
@@ -82,10 +83,10 @@ div.content{
   .mobileNoneFlex{display: flex !important;}
   .scroll::-webkit-scrollbar{width: 0.25rem; height: 0.25rem;}
   .scroll::-webkit-scrollbar-track{background: rgba(0,0,0,0);}
-  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; outline: 1px solid slategrey; 
-    border-radius: 1px;}
+  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
-  .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
+  .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; 
+    scrollbar-height: thin;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     transition: ease-in-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
@@ -101,7 +102,7 @@ div.content{
   .noborder.post-head, .noborder.post-tail{border-right: 1px solid #ccc !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
-  .centerpad-posts{padding: 0 3rem !important;}
+  .centerpad-posts{padding: 0 3rem 0 0 !important;}
   .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke-width: 0.5px !important;}
   .vote-subpost, .vote-subpost.fa-thumbs-up{-webkit-text-stroke: 0.25px #fafafa !important;}
   .pin-chatbox{width: inherit;}
@@ -145,7 +146,8 @@ div.content{
 /* Mobile Phones */
 @media screen and (max-width: 767px){
   .navbar{box-shadow: none;}
-  .navbar-toggler{border-color: #eaecf0 !important; padding: 0.25rem 0.5rem !important;}
+  .navbar-toggler{border-color: transparent !important; padding: 0.25rem 0.5rem !important;}
+  .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
   .name-green{
@@ -458,13 +460,14 @@ div.content{
   width: inherit;
 }
 #inbox_mobile{
-  font-size: 1.625rem;
+  font-size: 1.6875rem;
   color: #7a7b7c;
   -webkit-text-stroke: 0.5px #fafafa;
-  padding: 0.25rem 0.6rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
 }
 #inbox_mobile:hover{
-  border-radius: 0.25rem;
   border: 1px solid #eaecf0;
 }
 .inbox_mobile.badge-mobile{
@@ -2440,7 +2443,7 @@ select.select1::-ms-expand{
 .chat-msg{
   word-break: break-word;
   line-height: 1.15rem !important;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   border: 1px solid #dcdcdc;
   border-top: none;
   border-right: none;
@@ -2452,7 +2455,7 @@ select.select1::-ms-expand{
 }
 .chat-msg2{
   line-height: 1.15rem !important;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   border: 1px solid #d0d0d0;
   border-top: none;
   border-left: none;
@@ -2464,7 +2467,7 @@ select.select1::-ms-expand{
 }
 .chat-msg3{
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   background-color: rgba(255,255,255,0.5);
   border-radius: 0.5rem;
   padding: 0 0.15rem;

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Bitter|Lato:900i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600&family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
     <!-- Mobile/PWA support -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="/images/icons/favicon-16x16.ico">
@@ -49,9 +49,9 @@
       </div>
       <div>
         <% if(currentUser){ %>
-          <div class="inbox_mobile nodisplay">
+          <div class="inbox_mobile">
             <span class="notification">
-              <a href="/chats" id="inbox_mobile" class="inbox_mobile nodisplay" title="Inbox" onclick="toggle_requests('inbox_mobile');"><i class="far fa-envelope"></i></a>
+              <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Inbox" onclick="toggle_requests('inbox_mobile');"><i class="far fa-envelope"></i></a>
               <% if(currentUser.inboxMsgCount > 0){ %>
                 <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.inboxMsgCount %></span>
               <% } %>
@@ -59,7 +59,7 @@
           </div>
         <% } %>
         <div>
-          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <button id="mobile_toggler" class="navbar-toggler nodisplay" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
               <% if (currentUser && currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
                 <span class="badge badge-mobile text-xxs"><%= currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
