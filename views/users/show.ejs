@@ -15,7 +15,7 @@
             <div class="container p-1 ml-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
               <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
               <% if(currentUser && match){ %>
-                <form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                   <label for="inputprofilePic" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
                     <i class="fas fa-upload"></i> Update profile pic
                   </label>
@@ -68,7 +68,7 @@
                 <div class="container p-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
                   <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
                   <% if(currentUser && match){ %>
-                    <form action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                       <label for="inputprofilePic2" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
                         <i class="fas fa-upload"></i> Update profile pic
                       </label>
@@ -620,7 +620,7 @@
                 </div>
               </div>
               <div class="newClub_form my-2" style="outline: 2px dashed lightgrey;">
-                <form action="/users/<%= user._id %>/clubs" method="POST" enctype="multipart/form-data">
+                <form action="/users/<%= user._id %>/clubs?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                   <div class="form-signin">
                     <label for="name" class="sr-only">Club name</label>
                     <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>

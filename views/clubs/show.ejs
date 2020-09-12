@@ -14,7 +14,7 @@
               <div class="container">
                 <img class="avatar cover image mx-auto" src="<%= club.avatar || '/images/noClub.png' %>">
                 <% if(0 <= rank && rank <= 1){ %>
-                  <form action="/clubs/<%= club._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                  <form action="/clubs/<%= club._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                     <label for="inputavatar" class="overlay">
                       <i class="fas fa-upload"></i> Update club avatar
                     </label>
@@ -364,7 +364,7 @@
               <div class="tab-pane fade show active greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
-                    <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts" method="POST" enctype="multipart/form-data">
+                    <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                       <% if(rank >= 0 && rank <=3){ %>
                         <label for="topic" class="sr-only">Topic</label>
                         <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);">

@@ -167,7 +167,7 @@
           <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
         </div>
         <div class="commentdiv d-flex flex-column">
-          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST" enctype="multipart/form-data">
+          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
             <div class="valign">
               <div class="d-flex flex-column">
                 <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
