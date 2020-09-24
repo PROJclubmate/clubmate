@@ -5,9 +5,8 @@ const express      = require('express'),
   csrf             = require('csurf'),
   http             = require('http').Server(app),
   io               = require('socket.io')(http),
-  session          = require('express-session'),
+  cookieSession    = require('cookie-session'),
   mongoose         = require('mongoose'),
-  MongoStore       = require('connect-mongo')(session),
   flash            = require('connect-flash'),
   passport         = require('passport'),
   LocalStrategy    = require('passport-local'),
@@ -109,13 +108,17 @@ app.use(methodOverride('_method'));
 app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  saveUninitialized: false,
-  resave: false,
-  name: 'ghostSessionId',
-  store: new MongoStore({mongooseConnection: db})
-}));
+app.use(
+  cookieSession({
+    name: 'ghostSessionId',
+    maxAge: 14*24*60*60*1000,
+    keys: [process.env.SESSION_SECRET_ONE, process.env.SESSION_SECRET_TWO, process.env.SESSION_SECRET_THREE],
+    cookie:{
+      secure: true,
+      httpOnly: true
+    }
+  })
+);
 app.use(csrf());
 app.use(passport.initialize());
 app.use(passport.session());

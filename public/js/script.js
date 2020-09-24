@@ -110,6 +110,7 @@ nanobar.go(100);
 function hidesidebar(hideValueNum){
   var sidebar = document.getElementById('sidebar');
   var content = document.getElementById('content');
+  $('.hamburger').toggleClass('is-active');
   if(hideValueNum == 0){
     if(sidebar.style.display == 'block' || sidebar.style.display != 'none'){
       sidebar.style.display = 'none';
@@ -666,14 +667,20 @@ function dec_height(){
   }
 }
 
+if(window.innerWidth < 768){
+  if(!((location.pathname == '/chats') || location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/) || 
+  location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
+  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/))){
+    $('#mobile_toggler').addClass("nodisplay");
+    $('.inbox_mobile').removeClass("nodisplay");
+  }
+}
+
 if(location.pathname == '/help/'){
   $(".navhelp").addClass('requests-active');
 }
 if(location.pathname == '/chats'){
-  if(window.innerWidth < 768){
-    $('#mobile_toggler').removeClass("nodisplay");
-    $('.inbox_mobile').addClass("nodisplay");
-  }
   $("#inbox").addClass('requests-active');
 
   oldMsgHeightMobile = updateMessageHeight2();
@@ -701,9 +708,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   if(window.innerWidth < 768){
-    if($('#mypage').length){ 
-      $('#mobile_toggler').removeClass("nodisplay");
-      $('.inbox_mobile').addClass("nodisplay");
+    if($('#mypage').length){
       $('#brandname').addClass("name-green");
     }
   }

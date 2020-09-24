@@ -2766,7 +2766,7 @@ function allTimeTopTopicPosts_template(response){
         </div>
       <% } %>
     </div>
-    <div class="mb-auto ml-2 mt-1 badge badge-pill badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
+    <div class="mb-auto ml-2 mt-1 badge badge-pill badge-round badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
   </div>
   <% } %>
 <% } else{ %>

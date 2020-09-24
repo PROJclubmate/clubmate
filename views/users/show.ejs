@@ -44,8 +44,8 @@
               </div>
             </div>
             <% if(currentUser && match){ %>
-              <div class="story-container">
-                <div class="d-flex story-container2 scroll moz-scroll" style="height: 50%; margin-left: 2.75rem;">
+              <div class="story-container" style="height: 50%; margin-left: 2.75rem;">
+                <div class="d-flex story-container2 scroll moz-scroll mt-3">
                   <div class="d-flex flex-column mr-3">
                     <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
                     <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
@@ -89,7 +89,7 @@
                         <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
                       <% } %>
                     </div>
-                    <div class="text-sm mb-2 boldtext lineheight"><%= user.note %></div>
+                    <div class="text-xs mb-2 boldtext lineheight"><%= user.note %></div>
                   </div>
                 </div>
               </div>

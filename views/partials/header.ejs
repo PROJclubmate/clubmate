@@ -39,9 +39,11 @@
       <div class="bar"></div>
     </div>
     <nav id="navbar" class="navbar navbar-expand-md navbar-light fixed-top navback drop-shadow">
-      <a href="#" onclick="hidesidebar(0);" class="btn hidesidebar mobileNoneFlex" id="menu-toggle">
-        <i class="fas fa-bars"></i>
-      </a>
+      <button id="menu-toggle" onclick="hidesidebar(0);" class="hamburger hamburger--arrow-r mobileNoneFlex" type="button">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
       <div>
         <a href="/">
           <span id="brandname" class="navbar-brand name"><em>clubmate</em></span>
@@ -49,7 +51,7 @@
       </div>
       <div>
         <% if(currentUser){ %>
-          <div class="inbox_mobile">
+          <div class="inbox_mobile nodisplay" style="margin-right: -0.225rem;">
             <span class="notification">
               <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Inbox" onclick="toggle_requests('inbox_mobile');"><i class="far fa-envelope"></i></a>
               <% if(currentUser.inboxMsgCount > 0){ %>
@@ -58,8 +60,8 @@
             </span>
           </div>
         <% } %>
-        <div>
-          <button id="mobile_toggler" class="navbar-toggler nodisplay" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <div style="margin-right: -0.225rem;">
+          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
               <% if (currentUser && currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
                 <span class="badge badge-mobile text-xxs"><%= currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
@@ -69,7 +71,7 @@
         </div>
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" style="margin-left: -0.25rem;">
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
             <a href="/home" class="nav-link">Home</a>
           </li>
