@@ -24,7 +24,7 @@
 							<div class="d-inline-flex">
 								<div>
 						      <a href="/users/<%= users[k]._id %>">
-			            	<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>" style="margin: 0 !important;">
+			            	<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
 			          	</a>
 						    </div>
 						    <div class="card-body3 lineheight fullwidth">
@@ -63,7 +63,7 @@
 							<div class="d-inline-flex">
 								<div>
 						      <a href="/clubs/<%= clubs[k]._id %>">
-			            	<img class="searchdp" src="<%= Clubs_100_Avatar[k] || 'https://res.cloudinary.com/dubirhea4/image/upload/v1544819201/defaults/noUser.png' %>" style="margin: 0 !important;">
+			            	<img class="searchdp" src="<%= Clubs_100_Avatar[k] || 'https://res.cloudinary.com/dubirhea4/image/upload/v1544819201/defaults/noUser.png' %>">
 			          	</a>
 						    </div>
 						    <div class="card-body3 lineheight fullwidth">
@@ -99,7 +99,7 @@
 						<div class="card searchcard border-light">
 							<div class="d-inline-flex">
 						    <div class="card-body3 lineheight fullwidth">
-						    	<div class="notification px-2 py-1 organization d-flex flex-column">
+						    	<div class="notification px-2 py-1 college d-flex flex-column">
 										<div class="boldtext text-xxl">
 											<div class="orgname-search">
 												<a href="/colleges/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>

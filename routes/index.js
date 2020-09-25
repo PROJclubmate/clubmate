@@ -64,10 +64,10 @@ router.get('/find_clubs/filter_search', middleware.searchAndFilterClubs, indexFi
 // Filter search clubs(Load more using AJAX)
 router.get('/clubs-moreResults/filter_search', indexFilterSearchMoreClubs);
 
-// Search organization pages
+// Search college pages
 router.get('/find_colleges/search', indexSearchOrgPages);
 
-// Search organization pages(Load more using AJAX)
+// Search college pages(Load more using AJAX)
 router.get('/colleges-moreResults/search/:query', indexSearchMoreOrgPages);
 
 // Friend requests / Club invites
@@ -82,13 +82,13 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 // View all friends
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
-// View organization page
+// View college page
 router.get('/colleges/:org_name', indexViewOrgPage);
 
 // Follow all clubs at once in OrgPage
 router.put('/colleges/:org_id/followall/user/:user_id', middleware.isLoggedIn, indexFollowAllOrgPage);
 
-// Organization page settings
+// College page settings
 router.put('/colleges/:org_id/settings/user/:user_id', middleware.isLoggedIn, indexOrgPageSettings);
 
 // Follow clubs

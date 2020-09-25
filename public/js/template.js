@@ -2972,7 +2972,7 @@ function search_clubs_template(response){
             <% } %>
           </div>
           <% if(clubs[k].clubKeys){ %>
-            <div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.organization %></div>
+            <div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
           <% } %>
         </div>
       </div>
@@ -3008,7 +3008,7 @@ function search_org_pages_template(response){
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
       <div class="card-body3 lineheight1 fullwidth">
-        <div class="notification px-2 py-1 organization d-flex flex-column">
+        <div class="notification px-2 py-1 college d-flex flex-column">
           <div class="boldtext text-xxl">
             <div class="orgname-search d-flex">
               <span>

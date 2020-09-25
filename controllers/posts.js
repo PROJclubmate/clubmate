@@ -835,7 +835,7 @@ module.exports = {
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                newPost.clubOrgKey = foundClub.clubKeys.organization;
+                newPost.clubOrgKey = foundClub.clubKeys.college;
                 newPost.postClub = req.params.club_id;
                 newPost.postAuthor.id = req.user._id;
                 newPost.postAuthor.authorName = req.user.fullName;
@@ -874,7 +874,7 @@ module.exports = {
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              newPost.clubOrgKey = foundClub.clubKeys.organization;
+              newPost.clubOrgKey = foundClub.clubKeys.college;
               newPost.postClub = req.params.club_id;
               newPost.postAuthor.id = req.user._id;
               newPost.postAuthor.authorName = req.user.fullName;

@@ -212,13 +212,13 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.organization %>"><%= club.clubKeys.organization %></a></div></div>
-              <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&organization="><%= club.clubKeys.category %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>"><%= club.clubKeys.college %></a></div></div>
+              <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&college="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
                 <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank" rel="noopener"><%= club.clubKeys.weblink.replace(/^https?\:\/\//i, '') %></a></div></div>
               <% } %>
               <% if(club.clubKeys.location){ %>
-                <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&category=&organization="><%= club.clubKeys.location %></a></div></div>
+                <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&category=&college="><%= club.clubKeys.location %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -231,8 +231,8 @@
                 <label for="banner" class="sr-only">Banner</label>
                 <input type="text" id="banner" class="form-control form-control-sm commentbox2 text-center" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
                 <br>
-                <label for="organization" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
-                <input type="text" id="organization" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[organization]" value="<%= club.clubKeys.organization %>" placeholder="College name [paste exact string here]">
+                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
+                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[college]" value="<%= club.clubKeys.college %>" placeholder="College name [paste exact string here]">
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" 

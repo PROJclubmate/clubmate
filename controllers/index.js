@@ -723,10 +723,10 @@ module.exports = {
         clubs = new RegExp(escapeRegExp(clubs.split('&')[0].replace(/\+/g, ' ')), 'gi');
         dbQueries.push({name: clubs});
       }
-      var organization = urlEqualsSplit[2];
-      if(organization.split('&')[0]){
-        organization = new RegExp(escapeRegExp(organization.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'clubKeys.organization': organization});
+      var college = urlEqualsSplit[2];
+      if(college.split('&')[0]){
+        college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'clubKeys.college': college});
       }
       var category = urlEqualsSplit[3];
       if(category.split('&')[0]){

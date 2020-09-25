@@ -9,8 +9,8 @@
 			<% if(filterKeys.clubs){ %>
 				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm nothing"><%= filterKeys.clubs %></span>
 			<% } %>
-			<% if(filterKeys.organization){ %>
-				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.organization %></span>
+			<% if(filterKeys.college){ %>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
 			<% if(filterKeys.category){ %>
 				<span class="lightgrey text-xs">Category=</span><span class="boldtext text-sm nothing"><%= filterKeys.category %></span>
@@ -29,7 +29,7 @@
 				<div class="d-flex flex-row">
 					<div>
 			      <a href="/clubs/<%= clubs[k]._id %>">
-            	<img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>" style="margin: 0 !important;">
+            	<img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
           	</a>
 			    </div>
 			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
@@ -59,7 +59,7 @@
 						    <% } %>
 						  </div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.organization %></div>
+				      	<div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
 				      <% } %>
 					  </div>
 			    </div>
@@ -106,8 +106,8 @@
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Club name" name="clubs" id="search" value="<%= query.clubs %>" autofocus>
 			<h6 class="nothing">Club keys</h6>
 			<div>
-      	<label for="organization" class="sr-only">College name</label>
-				<input class="form-control form-control-sm" type="text" placeholder="College name" name="organization" id="organization" value="<%= query.organization %>">
+      	<label for="college" class="sr-only">College name</label>
+				<input class="form-control form-control-sm" type="text" placeholder="College name" name="college" id="college" value="<%= query.college %>">
       </div>
 	  	<div>
         <label for="category" class="sr-only" title="Category">Category</label>

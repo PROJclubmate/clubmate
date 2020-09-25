@@ -1149,9 +1149,9 @@ module.exports = {
           }
         }
         if(req.body.clubKeys){
-          const oldOrgName = foundClub.clubKeys.organization;
+          const oldOrgName = foundClub.clubKeys.college;
           const oldCategory = foundClub.clubKeys.category;
-          const newOrgName = req.body.clubKeys.organization.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          const newOrgName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
           const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           // COLLEGE PAGE(OrgPage)
           if(oldOrgName != newOrgName || oldCategory != newCategory){
@@ -1232,7 +1232,7 @@ module.exports = {
                 }
               }
             });
-            foundClub.clubKeys.organization = newOrgName;
+            foundClub.clubKeys.college = newOrgName;
             foundClub.clubKeys.category = newCategory;
           }
 
@@ -1304,7 +1304,7 @@ module.exports = {
           await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
           foundClub.featuredPhotos.splice(i,1);
         }
-        var orgName = foundClub.clubKeys.organization;
+        var orgName = foundClub.clubKeys.college;
         var clubCategory = foundClub.clubKeys.category;
         if(orgName && orgName != ''){
           OrgPage.findOne({name: orgName}, function (err, foundOrgPage){

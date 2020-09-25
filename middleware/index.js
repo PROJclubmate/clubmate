@@ -47,16 +47,16 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {clubs, organization, category, location, distance} = req.query;
+    let {clubs, college, category, location, distance} = req.query;
     if(clubs){
       filterKeys['clubs'] = clubs;
       clubs = new RegExp(escapeRegExp(clubs), 'gi');
       dbQueries.push({name: clubs});
     }
-    if(organization){
-      filterKeys['organization'] = organization;
-      organization = new RegExp(escapeRegExp(organization), 'gi');
-      dbQueries.push({'clubKeys.organization': organization});
+    if(college){
+      filterKeys['college'] = college;
+      college = new RegExp(escapeRegExp(college), 'gi');
+      dbQueries.push({'clubKeys.college': college});
     }
     if(category){
       filterKeys['category'] = category;

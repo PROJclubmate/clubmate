@@ -238,7 +238,7 @@ div.content{
   #user-send{padding: 0.4375rem 0.75rem !important;}
   #club-send{padding: 0.4375rem 0.75rem !important;}
   #messages{margin-bottom: 42px;}
-  .searchdp{height: 100px !important; width: 100px!important;}
+  .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -926,7 +926,7 @@ time.calendar span{
   padding-top: 1.0625rem;
   color: #2f2f2f;
 }
-.organization{
+.college{
   color: #262626;
   background: repeating-linear-gradient(
     45deg,

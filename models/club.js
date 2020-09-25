@@ -20,7 +20,7 @@ const clubSchema = new Schema({
     rules: String
   },
   clubKeys: {
-    organization: String,
+    college: String,
     category: String,
     weblink: String,
     location: String,
@@ -83,7 +83,7 @@ const clubSchema = new Schema({
   timestamps: true
 });
 
-clubSchema.index({'clubKeys.organization': 1});
+clubSchema.index({'clubKeys.college': 1});
 clubSchema.index({name: 'text'});
 clubSchema.index({geometry: '2dsphere'});
 
