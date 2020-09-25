@@ -181,7 +181,7 @@ module.exports = {
       seenIds.push(mongoose.Types.ObjectId(seenIdsArr[i]));
     }
     if(req.user){
-      // Show (Orgs. followed)
+      // Show (Colleges followed)
       if(req.user.discoverSwitch === 1){
         if(req.user.sortByKey === 1){
           Post.aggregate([
@@ -219,7 +219,7 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "clubOrgKey": 1,
+            "clubCollegeKey": 1,
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
@@ -372,7 +372,7 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "clubOrgKey": 1,
+            "clubCollegeKey": 1,
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
@@ -476,7 +476,7 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "clubOrgKey": 1,
+            "clubCollegeKey": 1,
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
@@ -626,7 +626,7 @@ module.exports = {
             "descEdit": 1,
             "image": 1,
             "imageId": 1,
-            "clubOrgKey": 1,
+            "clubCollegeKey": 1,
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
@@ -729,7 +729,7 @@ module.exports = {
         "descEdit": 1,
         "image": 1,
         "imageId": 1,
-        "clubOrgKey": 1,
+        "clubCollegeKey": 1,
         "viewsCount": 1,
         "privacy": 1,
         "moderation": 1,
@@ -835,7 +835,7 @@ module.exports = {
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                newPost.clubOrgKey = foundClub.clubKeys.college;
+                newPost.clubCollegeKey = foundClub.clubKeys.college;
                 newPost.postClub = req.params.club_id;
                 newPost.postAuthor.id = req.user._id;
                 newPost.postAuthor.authorName = req.user.fullName;
@@ -874,7 +874,7 @@ module.exports = {
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              newPost.clubOrgKey = foundClub.clubKeys.college;
+              newPost.clubCollegeKey = foundClub.clubKeys.college;
               newPost.postClub = req.params.club_id;
               newPost.postAuthor.id = req.user._id;
               newPost.postAuthor.authorName = req.user.fullName;

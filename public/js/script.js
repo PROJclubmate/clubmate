@@ -545,7 +545,7 @@ window.addEventListener('load', function(){
   Grade(document.querySelectorAll('.gradient-wrap'))
 });
 
-$('#toggleOrgPageViewKey').change(function(e){
+$('#toggleCollegePageViewKey').change(function(e){
   e.stopPropagation();
   var valueNum;
   if ($(this).is(':checked')){
@@ -554,9 +554,9 @@ $('#toggleOrgPageViewKey').change(function(e){
     valueNum = 2;
   }
   var input = $("<input>").attr("type", "hidden").attr("name", "initialCheckboxValue").val(valueNum);
-  $('#toggleOrgPage-form').append(input);
+  $('#toggleCollegePage-form').append(input);
   setTimeout(function(){
-    var form = document.getElementById("toggleOrgPage-form");
+    var form = document.getElementById("toggleCollegePage-form");
     form.submit();
   }, 1000);
   $(this).prop('disabled', true);

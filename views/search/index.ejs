@@ -89,28 +89,28 @@
 			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="college">College</button>
 		</form>
 		<div class="row no-gutters">
-			<% if(org_pages.length == 0){ %>
+			<% if(college_pages.length == 0){ %>
 				<% if(query){ %>
 					<h6 class="lightgrey ml-2 mt-1">No matching colleges found :(</h6>
 				<% } %>
 			<% }else{ %>
-				<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
+				<% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
 					<div class="col-md-4 mobilepad px-1">
 						<div class="card searchcard border-light">
 							<div class="d-inline-flex">
 						    <div class="card-body3 lineheight fullwidth">
 						    	<div class="notification px-2 py-1 college d-flex flex-column">
 										<div class="boldtext text-xxl">
-											<div class="orgname-search">
-												<a href="/colleges/<%= org_pages[k].name %>" class="black"><%= org_pages[k].name %></a>
+											<div class="collegename-search">
+												<a href="/colleges/<%= college_pages[k].name %>" class="black"><%= college_pages[k].name %></a>
 											</div>
 										</div>
-										<span class="badge text-sm"><%= org_pages[k].userCount %></span>
+										<span class="badge text-sm"><%= college_pages[k].userCount %></span>
 									</div>
 						      <br>
 						      <div class="text-sm">
 						      	<span>
-						      		<span class="lightgrey"></span><span class="boldtext lightgrey nothing text-md"><%= org_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
+						      		<span class="lightgrey"></span><span class="boldtext lightgrey nothing text-md"><%= college_pages[k].clubCount %></span> <span class="lightgrey nothing">clubs</span>
 						      	</span>
 						      </div>
 						    </div>

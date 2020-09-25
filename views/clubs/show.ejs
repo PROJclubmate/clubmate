@@ -103,9 +103,9 @@
                 <!-- Member have to follow seperately too -->
                 <div class="text-center my-3">
                   <% if(!isFollowingClub){ %>
-                    <button class="btn btn-org2 orgdiv-follow py-1 px-2" name="followClub" value="true" type="submit">Follow</button>
+                    <button class="btn btn-college2 collegediv-follow py-1 px-2" name="followClub" value="true" type="submit">Follow</button>
                   <% } else{ %>
-                    <button class="btn btn-light btn-org orgdiv-follow py-1 px-2" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+                    <button class="btn btn-light btn-college collegediv-follow py-1 px-2" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
                   <% } %>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -294,7 +294,7 @@
                           </span>
                         <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
                           <div>
-                            <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="orgdp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
+                            <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
                           </div>
                           <div>
                             <span class="truncate3 mobiletext2 lineheight2 my-1">

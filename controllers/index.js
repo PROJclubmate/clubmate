@@ -3,7 +3,7 @@ const express          = require('express'),
   User                 = require('../models/user'),
   Club                 = require('../models/club'),
   Post                 = require('../models/post'),
-  OrgPage              = require('../models/organization-page'),
+  CollegePage          = require('../models/college-page'),
   Conversation         = require('../models/conversation'),
   ClubConversation     = require('../models/club-conversation'),
   Subscription         = require('../models/subscription'),
@@ -401,14 +401,14 @@ module.exports = {
           Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
           {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
         }
-        OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
-        .sort({score: {$meta: 'textScore'}}).exec(function(err, foundOrgPages){
-        if(err || !foundOrgPages){
-          console.log(Date.now()+' : '+'(index-14)foundOrgPages err:- '+JSON.stringify(err, null, 2));
+        CollegePage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
+        .sort({score: {$meta: 'textScore'}}).exec(function(err, foundCollegePages){
+        if(err || !foundCollegePages){
+          console.log(Date.now()+' : '+'(index-14)foundCollegePages err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
-          res.render('search/index',{users: foundUsers, clubs: foundClubs, org_pages: foundOrgPages, query,
+          res.render('search/index',{users: foundUsers, clubs: foundClubs, college_pages: foundCollegePages, query,
           Users_100_profilePic, Clubs_100_Avatar});
         }
         });
@@ -797,57 +797,57 @@ module.exports = {
     });
   },
 
-  indexSearchOrgPages(req, res, next){
+  indexSearchCollegePages(req, res, next){
     const query = req.query.college;
-    OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
-    .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
-    if(err || !foundOrgPages){
-      console.log(Date.now()+' : '+'(index-24)foundOrgPages err:- '+JSON.stringify(err, null, 2));
+    CollegePage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
+    .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundCollegePages){
+    if(err || !foundCollegePages){
+      console.log(Date.now()+' : '+'(index-24)foundCollegePages err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var foundOrgPageIds = foundOrgPages.map(function(orgPage){
-        return orgPage._id;
+      var foundCollegePageIds = foundCollegePages.map(function(collegePage){
+        return collegePage._id;
       });
       var matchArr = [];
       if(req.user){
-        for(var i=0;i<foundOrgPages.length;i++){
-          if(req.user.userKeys.college == foundOrgPages[i].name){
+        for(var i=0;i<foundCollegePages.length;i++){
+          if(req.user.userKeys.college == foundCollegePages[i].name){
             matchArr[i] = true;
           }
         }
       }
-      res.render('search/org_pages',{org_pages: foundOrgPages, query, foundOrgPageIds, matchArr});
+      res.render('search/college_pages',{college_pages: foundCollegePages, query, foundCollegePageIds, matchArr});
     }
     });
   },
 
-  indexSearchMoreOrgPages(req, res, next){
+  indexSearchMoreCollegePages(req, res, next){
     const query = req.params.query;
     if(req.query.ids.split(',') != ''){
       var seenIds = req.query.ids.split(',');
     } else{
       var seenIds = [];
     }
-    OrgPage.find({$text: {$search: query}, clubCount: {$gt: 0}, _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}})
-    .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundOrgPages){
-    if(err || !foundOrgPages){
-      console.log(Date.now()+' : '+'(index-25)foundOrgPages err:- '+JSON.stringify(err, null, 2));
+    CollegePage.find({$text: {$search: query}, clubCount: {$gt: 0}, _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}})
+    .sort({score: {$meta: 'textScore'}}).limit(10).exec(function(err, foundCollegePages){
+    if(err || !foundCollegePages){
+      console.log(Date.now()+' : '+'(index-25)foundCollegePages err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
-      var foundOrgPageIds = foundOrgPages.map(function(orgPage){
-        return orgPage._id;
+      var foundCollegePageIds = foundCollegePages.map(function(collegePage){
+        return collegePage._id;
       });
       var matchArr = [];
       if(req.user){
-        for(var i=0;i<foundOrgPages.length;i++){
-          if(req.user.userKeys.college == foundOrgPages[i].name){
+        for(var i=0;i<foundCollegePages.length;i++){
+          if(req.user.userKeys.college == foundCollegePages[i].name){
             matchArr[i] = true;
           }
         }
       }
       var currentUser = req.user;
-      return res.json({org_pages: foundOrgPages, query, foundOrgPageIds, matchArr, 
+      return res.json({college_pages: foundCollegePages, query, foundCollegePageIds, matchArr, 
       csrfToken: res.locals.csrfToken});
     }
     });
@@ -1383,34 +1383,34 @@ module.exports = {
     });
   },
 
-  indexViewOrgPage(req, res, next){
-    var nameEsc = req.params.org_name.replace(/\+/g, ' ').replace(/\%20/g, ' ');
-    OrgPage.findOne({name: nameEsc, clubCount: {$gt: 0}})
+  indexViewCollegePage(req, res, next){
+    var nameEsc = req.params.college_name.replace(/\+/g, ' ').replace(/\%20/g, ' ');
+    CollegePage.findOne({name: nameEsc, clubCount: {$gt: 0}})
     .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount clubUsers.id'})
-    .exec(function(err, foundOrgPage){
+    .exec(function(err, foundCollegePage){
     if(err){
-      console.log(Date.now()+' : '+'(index-62)foundOrgPage err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(index-62)foundCollegePage err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
-    } else if(!foundOrgPage){
+    } else if(!foundCollegePage){
       req.flash('error', 'College page either does not exist or has no listed clubs :(');
       return res.redirect('back');
     } else{
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
       var match = false; var following = false;
-      var allClubsArr = foundOrgPage.allClubs.sort(function(a, b) {
+      var allClubsArr = foundCollegePage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
       if(req.user){
-        if(req.user.userKeys.college == foundOrgPage.name){
+        if(req.user.userKeys.college == foundCollegePage.name){
           match = true;
         }
         currentUserId = req.user._id;
         var keyValue = 0;
-        if(req.user.orgPageKeys){
-          for(var i=0;i<req.user.orgPageKeys.length;i++){
-            if(req.user.orgPageKeys[i].id.equals(foundOrgPage._id)){
-              keyValue = req.user.orgPageKeys[i].key;
+        if(req.user.collegePageKeys){
+          for(var i=0;i<req.user.collegePageKeys.length;i++){
+            if(req.user.collegePageKeys[i].id.equals(foundCollegePage._id)){
+              keyValue = req.user.collegePageKeys[i].key;
               break;
             }
           }
@@ -1424,20 +1424,20 @@ module.exports = {
             }
             Clubs_50_clubAvatar[i] = arr2D;
           }
-          var thisOrgPageFollowingClubIdsArr = [];
-          for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
-            for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+          var thisCollegePageFollowingClubIdsArr = [];
+          for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
+            for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
               for(var l=0;l<req.user.followingClubCount;l++){
-                if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
-                  thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                if(foundCollegePage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                  thisCollegePageFollowingClubIdsArr.push(foundCollegePage.allClubs[j].categoryClubIds[k]._id);
                   break;
                 }
               }
             }
           }
           var foundFriendsPicArr = []; var clubUserIdsArr = [];
-          return res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-          currentUserId, keyValue, thisOrgPageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+          return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+          currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
         } else if(keyValue == 2){
           for(var i=0;i<allClubsArr.length;i++){
             var arr12D = []; var arr22D = [];
@@ -1466,12 +1466,12 @@ module.exports = {
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              var thisOrgPageFollowingClubIdsArr = [];
-              for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
-                for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+              var thisCollegePageFollowingClubIdsArr = [];
+              for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
+                for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
                   for(var l=0;l<req.user.followingClubCount;l++){
-                    if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
-                      thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                    if(foundCollegePage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                      thisCollegePageFollowingClubIdsArr.push(foundCollegePage.allClubs[j].categoryClubIds[k]._id);
                       break;
                     }
                   }
@@ -1486,8 +1486,8 @@ module.exports = {
                 {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
                 foundFriendsPicArr.push(obj);
               }
-              return res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-              currentUserId, keyValue, thisOrgPageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+              return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+              currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
             }
           });
         } else if(keyValue == 0){
@@ -1499,19 +1499,19 @@ module.exports = {
             }
             Clubs_50_clubAvatar[i] = arr2D;
           }
-          var thisOrgPageFollowingClubIdsArr = [];
-          for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
-            for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+          var thisCollegePageFollowingClubIdsArr = [];
+          for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
+            for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
               for(var l=0;l<req.user.followingClubCount;l++){
-                if(foundOrgPage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
-                  thisOrgPageFollowingClubIdsArr.push(foundOrgPage.allClubs[j].categoryClubIds[k]._id);
+                if(foundCollegePage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                  thisCollegePageFollowingClubIdsArr.push(foundCollegePage.allClubs[j].categoryClubIds[k]._id);
                   break;
                 }
               }
             }
           }
-          res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-          currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
+          res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+          currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
         }
       } else{
         for(var i=0;i<allClubsArr.length;i++){
@@ -1523,28 +1523,28 @@ module.exports = {
           Clubs_50_clubAvatar[i] = arr2D;
         }
         currentUserId = '';
-        res.render('org_pages/index',{org_page: foundOrgPage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-        currentUserId, keyValue, thisOrgPageFollowingClubIdsArr});
+        res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+        currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
       }
     }
     });
   },
 
-  indexFollowAllOrgPage(req, res, next){
+  indexFollowAllCollegePage(req, res, next){
     if(req.user && req.user._id.equals(req.params.user_id)){
-      OrgPage.findOne({_id: req.params.org_id, clubCount: {$gt: 0}}, function(err, foundOrgPage){
-      if(err || !foundOrgPage){
-        console.log(Date.now()+' : '+'(index-63)foundOrgPage err:- '+JSON.stringify(err, null, 2));
+      CollegePage.findOne({_id: req.params.college_id, clubCount: {$gt: 0}}, function(err, foundCollegePage){
+      if(err || !foundCollegePage){
+        console.log(Date.now()+' : '+'(index-63)foundCollegePage err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        var notFollowingClubIdsArr = []; var thisOrgFollowingClubIdsArr = [];
-        for(var j=foundOrgPage.allClubs.length-1;j>=0;j--){
-          for(var k=foundOrgPage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
-            notFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundOrgPage.allClubs[j].categoryClubIds[k]));
+        var notFollowingClubIdsArr = []; var thisCollegeFollowingClubIdsArr = [];
+        for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
+          for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+            notFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundCollegePage.allClubs[j].categoryClubIds[k]));
             for(var l=0;l<req.user.followingClubCount;l++){
-              if(foundOrgPage.allClubs[j].categoryClubIds[k].equals(req.user.followingClubIds[l])){
-                thisOrgFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundOrgPage.allClubs[j].categoryClubIds[k]));
+              if(foundCollegePage.allClubs[j].categoryClubIds[k].equals(req.user.followingClubIds[l])){
+                thisCollegeFollowingClubIdsArr.push(mongoose.Types.ObjectId(foundCollegePage.allClubs[j].categoryClubIds[k]));
                 notFollowingClubIdsArr.pop();
                 break;
               }
@@ -1552,7 +1552,7 @@ module.exports = {
           }
         }
         var notFollowingClubsLength = notFollowingClubIdsArr.length;
-        var thisOrgFollowingClubsLength = thisOrgFollowingClubIdsArr.length;
+        var thisCollegeFollowingClubsLength = thisCollegeFollowingClubIdsArr.length;
 
         if(req.body.followAllClubs == 'true'){
           Club.updateMany({_id: {$in: notFollowingClubIdsArr}, isActive: true}, 
@@ -1575,15 +1575,15 @@ module.exports = {
             }
           });
         } else if(req.body.followAllClubs == 'false'){
-          Club.updateMany({_id: {$in: thisOrgFollowingClubIdsArr}, isActive: true}, 
+          Club.updateMany({_id: {$in: thisCollegeFollowingClubIdsArr}, isActive: true}, 
           {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClubs){
             if(err || !updateClubs){
               console.log(Date.now()+' => (profiles-10)updateClubs err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
               User.updateOne({_id: req.params.user_id}, 
-              {$pull: {followingClubIds: {$in: thisOrgFollowingClubIdsArr}}, 
-              $inc: {followingClubCount: -thisOrgFollowingClubsLength}}, function(err, updateUser){
+              {$pull: {followingClubIds: {$in: thisCollegeFollowingClubIdsArr}}, 
+              $inc: {followingClubCount: -thisCollegeFollowingClubsLength}}, function(err, updateUser){
               if(err || !updateUser){
               console.log(Date.now()+' : '+req.params.user_id+' => (index-65)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -1599,29 +1599,29 @@ module.exports = {
     }
   },
 
-  indexOrgPageSettings(req, res, next){
+  indexCollegePageSettings(req, res, next){
     if(req.user && req.user._id.equals(req.params.user_id)){
       if(req.body.initialCheckboxValue){
         if(req.body.initialCheckboxValue == 1){
-          var toggleOrgPageViewKey = 2;
+          var toggleCollegePageViewKey = 2;
         } else if(req.body.initialCheckboxValue == 2){
-          var toggleOrgPageViewKey = 1;
+          var toggleCollegePageViewKey = 1;
         } else{
-          var toggleOrgPageViewKey = 1;
+          var toggleCollegePageViewKey = 1;
         }
-        var orgPageKeyId = mongoose.Types.ObjectId(req.params.org_id);
+        var collegePageKeyId = mongoose.Types.ObjectId(req.params.college_id);
         var keyExists = false;
-        if(req.user.orgPageKeys){
-          for(var i=0;i<req.user.orgPageKeys.length;i++){
-            if(req.user.orgPageKeys[i].id.equals(orgPageKeyId)){
+        if(req.user.collegePageKeys){
+          for(var i=0;i<req.user.collegePageKeys.length;i++){
+            if(req.user.collegePageKeys[i].id.equals(collegePageKeyId)){
               keyExists = true;
               break;
             }
           }
         }
         if(keyExists){
-          User.updateOne({_id: req.user._id, orgPageKeys: {$elemMatch: {id: orgPageKeyId}}},
-          {$set: {'orgPageKeys.$.key': toggleOrgPageViewKey}}, function(err, updateUser){
+          User.updateOne({_id: req.user._id, collegePageKeys: {$elemMatch: {id: collegePageKeyId}}},
+          {$set: {'collegePageKeys.$.key': toggleCollegePageViewKey}}, function(err, updateUser){
           if(err || !updateUser){
           console.log(Date.now()+' : '+req.user._id+' => (index-66)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
@@ -1631,10 +1631,10 @@ module.exports = {
           });
         } else{
           var obj = {};
-          obj['id'] = orgPageKeyId;
-          obj['key'] = toggleOrgPageViewKey;
+          obj['id'] = collegePageKeyId;
+          obj['key'] = toggleCollegePageViewKey;
           User.updateOne({_id: req.user._id},
-          {$push: {orgPageKeys: obj}}, function(err, updateUser){
+          {$push: {collegePageKeys: obj}}, function(err, updateUser){
           if(err || !updateUser){
           console.log(Date.now()+' : '+req.user._id+' => (index-67)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');

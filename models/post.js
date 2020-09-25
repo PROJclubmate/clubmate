@@ -11,7 +11,7 @@ const postSchema = new Schema({
   }],
   image: String,
   imageId: String,
-  clubOrgKey: String,
+  clubCollegeKey: String,
   // +1 for minified view (Load more), +5 for expand; open in modal JSON to prevent page refresh => +5s
   viewsCount: {type: Number, default: 0},
   privacy: {

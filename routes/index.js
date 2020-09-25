@@ -4,13 +4,9 @@ const express  = require('express'),
   {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexCurrentUserInboxCount, 
   indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, 
   indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, 
-  indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchOrgPages, indexSearchMoreOrgPages, 
-  indexViewOrgPage, indexOrgPageSettings, indexFollowAllOrgPage, indexFollowClubs, indexShowFollowingClubs, 
+  indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, 
+  indexViewCollegePage, indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, 
   indexShowMyResume} = require('../controllers/index');
-
-// ==================================================
-// FOR NOW in urls, org_pages is replaced by colleges
-// ==================================================
 
 
 // New notification subscription
@@ -65,10 +61,10 @@ router.get('/find_clubs/filter_search', middleware.searchAndFilterClubs, indexFi
 router.get('/clubs-moreResults/filter_search', indexFilterSearchMoreClubs);
 
 // Search college pages
-router.get('/find_colleges/search', indexSearchOrgPages);
+router.get('/find_colleges/search', indexSearchCollegePages);
 
 // Search college pages(Load more using AJAX)
-router.get('/colleges-moreResults/search/:query', indexSearchMoreOrgPages);
+router.get('/colleges-moreResults/search/:query', indexSearchMoreCollegePages);
 
 // Friend requests / Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);
@@ -83,13 +79,13 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 // View college page
-router.get('/colleges/:org_name', indexViewOrgPage);
+router.get('/colleges/:college_name', indexViewCollegePage);
 
-// Follow all clubs at once in OrgPage
-router.put('/colleges/:org_id/followall/user/:user_id', middleware.isLoggedIn, indexFollowAllOrgPage);
+// Follow all clubs at once in CollegePage
+router.put('/colleges/:college_id/followall/user/:user_id', middleware.isLoggedIn, indexFollowAllCollegePage);
 
 // College page settings
-router.put('/colleges/:org_id/settings/user/:user_id', middleware.isLoggedIn, indexOrgPageSettings);
+router.put('/colleges/:college_id/settings/user/:user_id', middleware.isLoggedIn, indexCollegePageSettings);
 
 // Follow clubs
 router.put('/users/:user_id/follow/:club_id', middleware.isLoggedIn, indexFollowClubs);

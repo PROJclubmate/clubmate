@@ -17,7 +17,7 @@ const userSchema = new Schema({
     default: 1,
     min: 1,
     max: 2,
-    required: '1-Org. followed, 2-Explore',
+    required: '1-Clubs followed, 2-Explore',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'
@@ -34,10 +34,10 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  orgPageKeys: [{
+  collegePageKeys: [{
     id: {
       type: Schema.Types.ObjectId,
-      ref: 'OrgPage'
+      ref: 'CollegePage'
     },
     key: {
       type: Number,

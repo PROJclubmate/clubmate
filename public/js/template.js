@@ -544,29 +544,29 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_colleges'){
-  $('#load-more-search-org_pages-btn').on('click', function(e){
+  $('#load-more-search-college_pages-btn').on('click', function(e){
     e.preventDefault();
-    $('#load-more-search-org_pages-span').addClass("spinner-border spinner-border-sm mr-1");
+    $('#load-more-search-college_pages-span').addClass("spinner-border spinner-border-sm mr-1");
     var query = $('#query').attr('value');
     $.ajax({
       type: 'GET',
       url: '/colleges-moreResults/search/'+query,
-      data: {ids: $('#load-more-search-org_pages-btn').val()},
+      data: {ids: $('#load-more-search-college_pages-btn').val()},
       timeout: 3000,
       success: function (response){
-        var arr = response.foundOrgPageIds;
+        var arr = response.foundCollegePageIds;
         if(arr && arr != ''){
-          if($('#load-more-search-org_pages-btn').val() != ''){
-            $('#load-more-search-org_pages-btn').val(arr.concat($('#load-more-search-org_pages-btn').val()));
-            var div = document.getElementById('client-search-org_pages');
-            div.innerHTML += search_org_pages_template(response);
+          if($('#load-more-search-college_pages-btn').val() != ''){
+            $('#load-more-search-college_pages-btn').val(arr.concat($('#load-more-search-college_pages-btn').val()));
+            var div = document.getElementById('client-search-college_pages');
+            div.innerHTML += search_college_pages_template(response);
           } else{
-            $('#load-more-search-org_pages-btn').val(arr);
+            $('#load-more-search-college_pages-btn').val(arr);
           }
         } else{
-          $('#load-more-search-org_pages-btn').addClass('nodisplay');
+          $('#load-more-search-college_pages-btn').addClass('nodisplay');
         }
-        $('#load-more-search-org_pages-btn').html('<span id="load-more-search-org_pages-span"></span>Load More').blur();
+        $('#load-more-search-college_pages-btn').html('<span id="load-more-search-college_pages-span"></span>Load More').blur();
       }
     });
   });
@@ -2756,7 +2756,7 @@ function allTimeTopTopicPosts_template(response){
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
         <div>
-          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="orgdp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
+          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
         </div>
         <div>
           <span class="truncate3 mobiletext2 lineheight2 my-1">
@@ -3002,22 +3002,22 @@ function break_arr(arr){
   return html;
 }
 
-function search_org_pages_template(response){
+function search_college_pages_template(response){
   html = ejs.render(`
-<% var len = org_pages.length; var k=0; for(k;k<len;k++){ %>
+<% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
       <div class="card-body3 lineheight1 fullwidth">
         <div class="notification px-2 py-1 college d-flex flex-column">
           <div class="boldtext text-xxl">
-            <div class="orgname-search d-flex">
+            <div class="collegename-search d-flex">
               <span>
                 <% if(matchArr[k]){ %>
                   <sup class="greencolor text-xs pb-auto">My </sup>
                 <% } %>
-                <a href="/org_pages/<%= org_pages[k].name %>" class="black">
+                <a href="/college_pages/<%= college_pages[k].name %>" class="black">
                   <i class="fas fa-university lightgrey"></i>
-                  <span id="copyTxt"><%= org_pages[k].name %></span>
+                  <span id="copyTxt"><%= college_pages[k].name %></span>
                 </a>
               </span>
               <div class="tooltip">
@@ -3028,17 +3028,17 @@ function search_org_pages_template(response){
               </div>
             </div>
           </div>
-          <span class="badge text-sm"><%= org_pages[k].userCount %></span>
+          <span class="badge text-sm"><%= college_pages[k].userCount %></span>
         </div>
         <br>
         <div class="lightgrey text-sm">
-          <span><span class="boldtext text-md"><%= org_pages[k].clubCount %></span> clubs</span>
+          <span><span class="boldtext text-md"><%= college_pages[k].clubCount %></span> clubs</span>
         </div>
       </div>
     </div>
   </div>
 <% } %>
-`,{org_pages: response.org_pages, query: response.query, foundOrgPageIds: response.foundOrgPageIds, 
+`,{college_pages: response.college_pages, query: response.query, foundCollegePageIds: response.foundCollegePageIds, 
   matchArr: response.matchArr, csrfToken: response.csrfToken});
   return html;
 }

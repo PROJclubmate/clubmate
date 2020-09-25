@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
-const orgPageSchema = new Schema({
+const collegePageSchema = new Schema({
   name: {type: String, unique: true, required: true},
   userCount: {type: Number, default: 0},
   allUserIds: [{
@@ -22,8 +22,8 @@ const orgPageSchema = new Schema({
 });
 
 // for find queries(match exact strings)
-orgPageSchema.index({name: 1}, {unique: true});
+collegePageSchema.index({name: 1}, {unique: true});
 // for search
-orgPageSchema.index({name: 'text'});
+collegePageSchema.index({name: 'text'});
 
-module.exports = mongoose.model('OrgPage', orgPageSchema);
+module.exports = mongoose.model('CollegePage', collegePageSchema);

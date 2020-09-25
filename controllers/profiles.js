@@ -4,7 +4,7 @@ const express          = require('express'),
   User                 = require('../models/user'),
   Club                 = require('../models/club'),
   Post                 = require('../models/post'),
-  OrgPage              = require('../models/organization-page'),
+  CollegePage          = require('../models/college-page'),
   Conversation         = require('../models/conversation'),
   ClubConversation     = require('../models/club-conversation'),
   Token                = require('../models/token'),
@@ -472,7 +472,7 @@ module.exports = {
               "descEdit": 1,
               "image": 1,
               "imageId": 1,
-              "clubOrgKey": 1,
+              "clubCollegeKey": 1,
               "viewsCount": 1,
               "privacy": 1,
               "moderation": 1,
@@ -599,33 +599,33 @@ module.exports = {
               foundUser.userKeys.sex = req.body.userKeys.sex;
             }
           } else if(req.body.userKeys && !(req.body.userKeys.birthdate && req.body.userKeys.sex)){
-            // COLLEGE PAGE(OrgPage)
+            // COLLEGE PAGE
             if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
               var oldCollegeName = foundUser.userKeys.college;
               var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
-              OrgPage.findOne({name: oldCollegeName}, function (err, foundOldOrgPage){
-                if(foundOldOrgPage && foundOldOrgPage.allUserIds.length){
-                  for(var i=foundOldOrgPage.allUserIds.length-1;i>=0;i--){
-                    if(foundOldOrgPage.allUserIds[i].equals(foundUser._id)){
-                      foundOldOrgPage.allUserIds.splice(i,1);
+              CollegePage.findOne({name: oldCollegeName}, function (err, foundOldCollegePage){
+                if(foundOldCollegePage && foundOldCollegePage.allUserIds.length){
+                  for(var i=foundOldCollegePage.allUserIds.length-1;i>=0;i--){
+                    if(foundOldCollegePage.allUserIds[i].equals(foundUser._id)){
+                      foundOldCollegePage.allUserIds.splice(i,1);
                       break;
                     }
                   }
-                  foundOldOrgPage.userCount -= 1;
-                  foundOldOrgPage.save();
+                  foundOldCollegePage.userCount -= 1;
+                  foundOldCollegePage.save();
                 }
               });
-              OrgPage.findOne({name: newCollegeName}, function (err, foundNewOrgPage){
-                if(foundNewOrgPage){
-                  foundNewOrgPage.allUserIds.push(foundUser._id);
-                  foundNewOrgPage.userCount += 1;
-                  foundNewOrgPage.save();
+              CollegePage.findOne({name: newCollegeName}, function (err, foundNewCollegePage){
+                if(foundNewCollegePage){
+                  foundNewCollegePage.allUserIds.push(foundUser._id);
+                  foundNewCollegePage.userCount += 1;
+                  foundNewCollegePage.save();
                 } else{
                   if(newCollegeName && newCollegeName != ''){
-                    OrgPage.create({name: newCollegeName}, function (err, createdNewOrgPage){
-                      createdNewOrgPage.allUserIds.push(foundUser._id);
-                      createdNewOrgPage.userCount += 1;
-                      createdNewOrgPage.save();
+                    CollegePage.create({name: newCollegeName}, function (err, createdNewCollegePage){
+                      createdNewCollegePage.allUserIds.push(foundUser._id);
+                      createdNewCollegePage.userCount += 1;
+                      createdNewCollegePage.save();
                     });
                   }
                 }
@@ -1149,62 +1149,62 @@ module.exports = {
           }
         }
         if(req.body.clubKeys){
-          const oldOrgName = foundClub.clubKeys.college;
+          const oldCollegeName = foundClub.clubKeys.college;
           const oldCategory = foundClub.clubKeys.category;
-          const newOrgName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          const newCollegeName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
           const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-          // COLLEGE PAGE(OrgPage)
-          if(oldOrgName != newOrgName || oldCategory != newCategory){
-            if(oldOrgName != newOrgName){
-              // 1) IF an orgPage of OLD ORG name exists => SPLICE clubId from old category of old org & dec. count
-              await OrgPage.findOne({name: oldOrgName}, function (err, foundOldOrgPage){
-                if(foundOldOrgPage && foundOldOrgPage.allClubs.length){
-                  for(var i=foundOldOrgPage.allClubs.length-1;i>=0;i--){
-                    if(foundOldOrgPage.allClubs[i].category == oldCategory){
-                      foundOldOrgPage.allClubs[i].categoryCount -= 1;
-                      for(var j=foundOldOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
-                        if(foundOldOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
-                          foundOldOrgPage.allClubs[i].categoryClubIds.splice(j,1);
+          // COLLEGE PAGE
+          if(oldCollegeName != newCollegeName || oldCategory != newCategory){
+            if(oldCollegeName != newCollegeName){
+              // 1) IF an collegePage of OLD College name exists => SPLICE clubId from old category of old college & dec. count
+              await CollegePage.findOne({name: oldCollegeName}, function (err, foundOldCollegePage){
+                if(foundOldCollegePage && foundOldCollegePage.allClubs.length){
+                  for(var i=foundOldCollegePage.allClubs.length-1;i>=0;i--){
+                    if(foundOldCollegePage.allClubs[i].category == oldCategory){
+                      foundOldCollegePage.allClubs[i].categoryCount -= 1;
+                      for(var j=foundOldCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                        if(foundOldCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                          foundOldCollegePage.allClubs[i].categoryClubIds.splice(j,1);
                         }
                       }
                       break;
                     }
                   }
-                  foundOldOrgPage.clubCount -= 1;
-                  foundOldOrgPage.save();
+                  foundOldCollegePage.clubCount -= 1;
+                  foundOldCollegePage.save();
                 }
               });
             }
-            // 2) IF an orgPage of NEW ORG name "exists" => PUSH clubId into category(upsert) & inc. count
-            await OrgPage.findOne({name: newOrgName}, function (err, foundNewOrgPage){
-              if(foundNewOrgPage){
+            // 2) IF an collegePage of NEW College name "exists" => PUSH clubId into category(upsert) & inc. count
+            await CollegePage.findOne({name: newCollegeName}, function (err, foundNewCollegePage){
+              if(foundNewCollegePage){
                 var foundNewCategory = false;
-                if(foundNewOrgPage.allClubs.length){
-                  for(var i=foundNewOrgPage.allClubs.length-1;i>=0;i--){
-                    // => orgPage different
-                    if(oldOrgName != newOrgName && foundNewOrgPage.allClubs[i].category == newCategory){
-                      foundNewOrgPage.allClubs[i].categoryCount += 1;
-                      foundNewOrgPage.allClubs[i].categoryClubIds.push(foundClub._id);
+                if(foundNewCollegePage.allClubs.length){
+                  for(var i=foundNewCollegePage.allClubs.length-1;i>=0;i--){
+                    // => collegePage different
+                    if(oldCollegeName != newCollegeName && foundNewCollegePage.allClubs[i].category == newCategory){
+                      foundNewCollegePage.allClubs[i].categoryCount += 1;
+                      foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
                       foundNewCategory = true;
-                      foundNewOrgPage.clubCount += 1;
+                      foundNewCollegePage.clubCount += 1;
                     }
-                    // => orgPage same
+                    // => collegePage same
                     // Remove club from old category
-                    if(oldOrgName == newOrgName && oldCategory != newCategory && foundNewOrgPage.allClubs[i].category == oldCategory){
-                      foundNewOrgPage.allClubs[i].categoryCount -= 1;
-                      for(var j=foundNewOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
-                        if(foundNewOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
-                          foundNewOrgPage.allClubs[i].categoryClubIds.splice(j,1);
-                          foundNewOrgPage.clubCount -= 1;
+                    if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == oldCategory){
+                      foundNewCollegePage.allClubs[i].categoryCount -= 1;
+                      for(var j=foundNewCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                        if(foundNewCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                          foundNewCollegePage.allClubs[i].categoryClubIds.splice(j,1);
+                          foundNewCollegePage.clubCount -= 1;
                         }
                       }
                     }
                     // Add club to new category
-                    if(oldOrgName == newOrgName && oldCategory != newCategory && foundNewOrgPage.allClubs[i].category == newCategory){
-                      foundNewOrgPage.allClubs[i].categoryCount += 1;
-                      foundNewOrgPage.allClubs[i].categoryClubIds.push(foundClub._id);
+                    if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == newCategory){
+                      foundNewCollegePage.allClubs[i].categoryCount += 1;
+                      foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
                       foundNewCategory = true;
-                      foundNewOrgPage.clubCount += 1;
+                      foundNewCollegePage.clubCount += 1;
                     }
                   }
                 }
@@ -1213,26 +1213,26 @@ module.exports = {
                   obj['category'] = newCategory;
                   obj['categoryCount'] = 1;
                   obj['categoryClubIds'] = [foundClub._id];
-                  foundNewOrgPage.allClubs.push(obj);
-                  foundNewOrgPage.clubCount += 1;
+                  foundNewCollegePage.allClubs.push(obj);
+                  foundNewCollegePage.clubCount += 1;
                 }
-                foundNewOrgPage.save();
+                foundNewCollegePage.save();
               } else{
-                // 3) If an orgPage of NEW ORG name "does not exist" => Create NEW ORG PAGE with new org name
-                if(newOrgName && newOrgName != ''){
-                  OrgPage.create({name: newOrgName}, function (err, createdNewOrgPage){
-                    createdNewOrgPage.clubCount += 1;
+                // 3) If an collegePage of NEW College name "does not exist" => Create NEW COLLEGE PAGE with new college name
+                if(newCollegeName && newCollegeName != ''){
+                  CollegePage.create({name: newCollegeName}, function (err, createdNewCollegePage){
+                    createdNewCollegePage.clubCount += 1;
                     var obj = {};
                     obj['category'] = newCategory;
                     obj['categoryCount'] = 1;
                     obj['categoryClubIds'] = [foundClub._id];
-                    createdNewOrgPage.allClubs.push(obj);
-                    createdNewOrgPage.save();
+                    createdNewCollegePage.allClubs.push(obj);
+                    createdNewCollegePage.save();
                   });
                 }
               }
             });
-            foundClub.clubKeys.college = newOrgName;
+            foundClub.clubKeys.college = newCollegeName;
             foundClub.clubKeys.category = newCategory;
           }
 
@@ -1304,24 +1304,24 @@ module.exports = {
           await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
           foundClub.featuredPhotos.splice(i,1);
         }
-        var orgName = foundClub.clubKeys.college;
+        var collegeName = foundClub.clubKeys.college;
         var clubCategory = foundClub.clubKeys.category;
-        if(orgName && orgName != ''){
-          OrgPage.findOne({name: orgName}, function (err, foundOrgPage){
-            if(foundOrgPage && foundOrgPage.allClubs.length){
-              for(var i=foundOrgPage.allClubs.length-1;i>=0;i--){
-                if(foundOrgPage.allClubs[i].category == clubCategory){
-                  foundOrgPage.allClubs[i].categoryCount -= 1;
-                  for(var j=foundOrgPage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
-                    if(foundOrgPage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
-                      foundOrgPage.allClubs[i].categoryClubIds.splice(j,1);
+        if(collegeName && collegeName != ''){
+          CollegePage.findOne({name: collegeName}, function (err, foundCollegePage){
+            if(foundCollegePage && foundCollegePage.allClubs.length){
+              for(var i=foundCollegePage.allClubs.length-1;i>=0;i--){
+                if(foundCollegePage.allClubs[i].category == clubCategory){
+                  foundCollegePage.allClubs[i].categoryCount -= 1;
+                  for(var j=foundCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                    if(foundCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                      foundCollegePage.allClubs[i].categoryClubIds.splice(j,1);
                     }
                   }
                   break;
                 }
               }
-              foundOrgPage.clubCount -= 1;
-              foundOrgPage.save();
+              foundCollegePage.clubCount -= 1;
+              foundCollegePage.save();
             }
           });
         }
