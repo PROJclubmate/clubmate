@@ -210,11 +210,7 @@
                 <a class="nav-link boldtext black" id="clubs-tab" data-toggle="tab" href="#clubs" role="tab" aria-controls="clubs" aria-selected="false">Clubs</a>
               </li>
               <li class="nav-item">
-                <% if(currentUser && !match){ %>
-                  <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
-                <% } else{ %>
-                  <a class="nav-link boldtext black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
-                <% } %>
+                <a class="nav-link boldtext black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
               </li>
               <% if(currentUser && match){ %>
                 <li class="nav-item">
@@ -222,7 +218,7 @@
                 </li>
               <% } else if(currentUser && !match){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chats</a>
+                 <a class="nav-link boldtext black active" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chats</a>
                 </li>
               <% } %>
             </ul>
@@ -652,11 +648,7 @@
               <% } %>
             </div>
             <!-- Activity Tab -->
-            <% if(currentUser && !match){ %>
-              <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-            <% } else{ %>
-              <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-            <% } %>
+            <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
               <div id="delegated-posts">
                 <div id="server-posts">
                   <% //include ../partials/posts_user %>
@@ -683,7 +675,7 @@
               </div>
             <% } else if(currentUser && !match){ %>
               <!-- Chats Tab -->
-              <div class="tab-pane fade greyback" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+              <div class="tab-pane fade greyback show active" id="chats" role="tabpanel" aria-labelledby="chats-tab">
                 <div id="pin-chatbox" class="pin-chatbox3 chatbox-user" value="<%= currentUser.firstName %>">
                   <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUser._id %>">
                     <% include ../users/chats %>
