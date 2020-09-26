@@ -101,7 +101,7 @@ div.content{
   .noborder.post-head, .noborder.post-tail{border-right: 1px solid #ccc !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
-  .centerpad-posts{padding: 0 3rem 0 0 !important;}
+  .centerpad-posts{padding: 0 3.5rem 0 0 !important;}
   .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke-width: 0.5px !important;}
   .vote-subpost, .vote-subpost.fa-thumbs-up{-webkit-text-stroke: 0.25px #fafafa !important;}
   .pin-chatbox{width: inherit;}
@@ -239,6 +239,7 @@ div.content{
   #club-send{padding: 0.4375rem 0.75rem !important;}
   #messages{margin-bottom: 42px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
+  #discover_nav{position: fixed; bottom: 0; top: unset;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -941,7 +942,7 @@ time.calendar span{
   font-size: 1.625rem;
   background-color: white;
   border-radius: 2.5rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.75rem 0.5rem;
   border: 1px solid darkgrey;
   line-height: 1.25rem;
 }

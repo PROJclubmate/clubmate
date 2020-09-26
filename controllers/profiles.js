@@ -1,6 +1,4 @@
-const express          = require('express'),
-  router               = express.Router(),
-  passport             = require('passport'),
+const passport         = require('passport'),
   User                 = require('../models/user'),
   Club                 = require('../models/club'),
   Post                 = require('../models/post'),
@@ -13,7 +11,7 @@ const express          = require('express'),
   crypto               = require('crypto'),
   mongoose             = require('mongoose'),
   moment               = require('moment'),
-  {cloudinary, upload} = require('../public/js/cloudinary'),
+  {cloudinary}         = require('../public/js/cloudinary'),
   mbxGeocoding         = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient      = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 

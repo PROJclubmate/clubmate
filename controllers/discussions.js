@@ -1,6 +1,4 @@
-const express  = require('express'),
-  router       = express.Router({mergeParams: true}),
-  Post         = require('../models/post'),
+const Post     = require('../models/post'),
   Discussion   = require('../models/discussion'),
   {cloudinary} = require('../public/js/cloudinary.js');
 

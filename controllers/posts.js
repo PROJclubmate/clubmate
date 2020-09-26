@@ -1,12 +1,10 @@
-const express          = require('express'),
-  router               = express.Router(),
-  mongoose             = require('mongoose'),
+const mongoose         = require('mongoose'),
   Post                 = require('../models/post'),
   User                 = require('../models/user'),
   Club                 = require('../models/club'),
   Comment              = require('../models/comment'),
   Discussion           = require('../models/discussion'),
-  {cloudinary, upload} = require('../public/js/cloudinary.js');
+  {cloudinary}         = require('../public/js/cloudinary.js');
 
 module.exports = {
   postsHome(req, res, next){
@@ -140,7 +138,7 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       if(req.body.discoverSwitch){
         User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
-        async function(err, updateUser){
+        function(err, updateUser){
         if(err || !updateUser){
           console.log(Date.now()+' : '+req.user._id+' => (posts-5)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
@@ -150,7 +148,7 @@ module.exports = {
       }
       if(req.body.sortByKey){
         User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
-        async function(err, updateUser){
+        function(err, updateUser){
         if(err || !updateUser){
           console.log(Date.now()+' : '+req.user._id+' => (posts-6)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
