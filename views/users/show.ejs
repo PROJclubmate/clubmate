@@ -694,7 +694,7 @@
         <div>
           <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="friendReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="friendReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-user-plus"></i> Add Friend
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -740,14 +740,14 @@
             </div>
           <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="cancelReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="cancelReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-minus"></i> Request Pending
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } %>
