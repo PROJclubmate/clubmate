@@ -160,7 +160,7 @@
                 <label for="school" class="sr-only">School</label>
                 <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
                 <label for="residence" class="sr-only">Residence</label>
-                <input type="text" id="residence" class="form-control form-control-sm" name="userKeys[residence]" value="<%= user.userKeys.residence %>" placeholder="Residence">
+                <input type="text" id="residence" class="form-control form-control-sm" name="userKeys[residence]" value="<%= user.userKeys.residence %>" placeholder="Residence (City)">
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>

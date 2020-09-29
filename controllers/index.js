@@ -372,7 +372,8 @@ module.exports = {
 
   indexSearch(req, res, next){
     const query = req.query.search;
-    User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
+    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}}, 
+      {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
@@ -441,7 +442,8 @@ module.exports = {
 
   indexSearchPeople(req, res, next){
     const query = req.query.user;
-    User.find({$text: {$search: query}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
+    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}}, 
+      {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
@@ -470,7 +472,8 @@ module.exports = {
     } else{
       var seenIds = [];
     }
-    User.find({$text: {$search: query}, _id: {$nin: seenIds}}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
+    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}, _id: {$nin: seenIds}}, 
+      {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
     if(err || !foundUsers){
@@ -535,6 +538,7 @@ module.exports = {
     // creating mongoDB query
     if(req.query.url.split('=') != ''){
       const urlEqualsSplit = req.query.url.split('=');
+      dbQueries.push({isVerified: true});
       var users = urlEqualsSplit[1];
       if(users.split('&')[0]){
         users = new RegExp(escapeRegExp(users.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
@@ -1390,7 +1394,7 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundCollegePage){
-      req.flash('error', 'College page either does not exist or has no listed clubs :(');
+      req.flash('error', 'College page has no listed clubs :/');
       return res.redirect('back');
     } else{
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 

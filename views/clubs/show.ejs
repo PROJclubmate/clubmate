@@ -103,16 +103,16 @@
                 <!-- Member have to follow seperately too -->
                 <div class="text-center my-3">
                   <% if(!isFollowingClub){ %>
-                    <button class="btn btn-college2 collegediv-follow py-1 px-2" name="followClub" value="true" type="submit">Follow</button>
+                    <button class="btn btn-college2 collegediv-follow" name="followClub" value="true" type="submit">Follow</button>
                   <% } else{ %>
-                    <button class="btn btn-light btn-college collegediv-follow py-1 px-2" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+                    <button class="btn btn-light btn-college collegediv-follow" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
                   <% } %>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } %>
             <div>
-              <div class="text-sm my-2 boldtext lineheight"><%= club.banner %></div>
+              <div class="text-sm mt-5 mb-2 text-lato lineheight" style="color: lightcoral;"><%= club.banner %></div>
               <div class="valign">
                 <div class="boldtext">Description</div>
                 <% if(0 <= rank && rank <= 1){ %>

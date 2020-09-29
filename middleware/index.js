@@ -106,6 +106,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   if(queryKeys.length){
     const dbQueries = [];
     let {users, college, workplace, school, location, distance} = req.query;
+    dbQueries.push({isVerified: true});
     if(users){
       filterKeys['users'] = users;
       users = new RegExp(escapeRegExp(users), 'gi');

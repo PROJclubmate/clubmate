@@ -3201,7 +3201,7 @@ input.shadow:-webkit-autofill:focus{
   background-image: linear-gradient(135deg, #8ae553 0%, #8ae553 22%, #6ecb47 22%, #6ecb47 28%, #53b03b 28%, #53b03b 72%, #37962f 72%, #37962f 100%);
   color: white;
   background-size: 200% 100%;
-  background-position: 100% 0;
+  background-position: 99% 0;
 }
 .gb11:focus:after{
   background-position: 100% 0;

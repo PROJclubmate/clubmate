@@ -141,8 +141,9 @@
 					      <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 					      	<span class="ml-1 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
 					      <% } else if(currentUser && keyValue == 2){ %>
-					      	<% if(clubUserIdsArr[i][j].length){ %>
-					      		<span class="px-2 pr-3 nowrap d-inline-flex" style="margin-left: -2px;">
+									<% if(clubUserIdsArr[i][j].length){ %>
+										<br/>
+					      		<span class="px-2 pr-3 nowrap d-inline-flex" style="margin-left: 1rem;">
 					      			<% var count = 0; %>
 						      		<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
 				      					<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
@@ -167,11 +168,11 @@
 				    	<form action="/users/<%= currentUser._id %>/follow/<%= college_page.allClubs[i].categoryClubIds[j]._id %>?_method=PUT" method="POST">
 					    	<% if(thisCollegePageFollowingClubIdsArr.includes(college_page.allClubs[i].categoryClubIds[j]._id)){ %>
 					    		<div>
-					    			<button class="btn btn-light btn-college collegediv-follow py-1 px-2 mobiletext3" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+					    			<button class="btn btn-light btn-college collegediv-follow mobiletext3" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
 					    		</div>
 					    	<% } else{ %>
 					    		<div>
-					    			<button class="btn btn-college2 collegediv-follow py-1 px-2 mobiletext3" name="followClub" value="true" type="submit">Follow</button>
+					    			<button class="btn btn-college2 collegediv-follow mobiletext3" name="followClub" value="true" type="submit">Follow</button>
 					    		</div>
 					    	<% } %>
 					    	<input type="hidden" name="_csrf" value="<%= csrfToken %>">
