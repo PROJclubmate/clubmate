@@ -1,8 +1,6 @@
 <% include ../partials/header %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
 
 
 <div class="row no-gutters content-toppad">
@@ -149,13 +147,7 @@
                 </form>
               <% } %>
             </div>
-            <% if((club.clubKeys.location && club.clubKeys.location != '') && club.geometry){ %>
-              <div>
-                <div id='map' style="border: 1px solid lightgrey;"></div>
-              </div>
-            <% } else{ %>
-              <hr>
-            <% } %>
+            <hr>
           </div>
           <div class="card-body">
             <div class="dropctn">
@@ -213,12 +205,9 @@
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>"><%= club.clubKeys.college %></a></div></div>
-              <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=&category=<%= club.clubKeys.category %>&college="><%= club.clubKeys.category %></a></div></div>
+              <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&category=<%= club.clubKeys.category %>&college="><%= club.clubKeys.category %></a></div></div>
               <% if(club.clubKeys.weblink){ %>
                 <div class="info1">Weblink: <div class="info30"><a href="<%= club.clubKeys.weblink %>" target="_blank" rel="noopener"><%= club.clubKeys.weblink.replace(/^https?\:\/\//i, '') %></a></div></div>
-              <% } %>
-              <% if(club.clubKeys.location){ %>
-                <div class="info1">Location: <div class="info30"><a href="/find_clubs/filter_search?clubs=&location=<%= club.clubKeys.location %>&category=&college="><%= club.clubKeys.location %></a></div></div>
               <% } %>
             </div>
           </div>
@@ -267,8 +256,6 @@
                 </datalist>
                 <label for="weblink" class="sr-only">Weblink</label>
                 <input type="text" id="weblink" class="form-control form-control-sm" name="clubKeys[weblink]" value="<%= club.clubKeys.weblink %>" placeholder="Weblink">
-                <label for="location" class="sr-only">Location</label>
-                <input type="text" id="location" class="form-control form-control-sm" name="clubKeys[location]" value="<%= club.clubKeys.location %>" placeholder="Location">
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update club profile</button>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
@@ -542,7 +529,6 @@
   var club = <%- JSON.stringify(club) %>;
 </script>
 <% include ../partials/footer %>
-<script src="/js/mapbox.js"></script>
 
 <%
   function rankTitle(rank){

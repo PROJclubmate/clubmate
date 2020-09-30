@@ -15,9 +15,6 @@
 			<% if(filterKeys.category){ %>
 				<span class="lightgrey text-xs">Category=</span><span class="boldtext text-sm nothing"><%= filterKeys.category %></span>
 			<% } %>
-			<% if(filterKeys.location){ %>
-				<span class="lightgrey text-xs">Club location=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span>
-			<% } %>
 			<% if(filterKeys.distance){ %>
 				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
 			<% } %><strong>)</strong>
@@ -54,7 +51,6 @@
 			      	<div>
 					      <% if(clubs[k].clubKeys){ %>
 						      <div class="text-xs boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
-						      <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
 						      <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
 						    <% } %>
 						  </div>
@@ -142,31 +138,12 @@
           <option value="Miscellaneous">
         </datalist>
       </div>
-      <div class="d-flex flex-row">
-		  	<label for="location" class="sr-only">Location</label>
-		  	<input type="text" id="location" class="form-control form-control-sm" name="location" placeholder="Club location or zipcode" value="<%= query.location %>">
-		  	<a href="#" id="find-me" class="my-auto mx-1" title="Use my location"><i class="fas fa-crosshairs text-lg"></i></a>
-		  </div>
-		  <p id="location_status" class="text-sm darkgrey"></p>
-	  	<div>
-		    <input type="radio" name="distance" id="distance25" value="25" <%= query.distance === '25' ? 'checked' : '' %>>
-	  	  <label for="distance25" class="text-sm darkgrey">within 25 Km</label>
-	  	</div>
-	  	<div>
-		    <input type="radio" name="distance" id="distance50" value="50" <%= query.distance === '50' ? 'checked' : '' %>>
-	  	  <label for="distance50" class="text-sm darkgrey">50 Km</label>
-	  	</div>
-	  	<div>
-		    <input type="radio" name="distance" id="distance100" value="100" <%= query.distance === '100' ? 'checked' : '' %>>
-			  <label for="distance100" class="text-sm darkgrey">100 Km</label>
-	  	</div>
 			<div>
-				<a href="/find_clubs/filter_search?clubs=&college=&category=&location=">Reset keys</a>
+				<a href="/find_clubs/filter_search?clubs=&college=&category=">Reset keys</a>
 			</div>
 			<button id="search-moreFilterClubs-btn" class="btn btn-success btn-sm fullwidth" type="submit" value="<%= moreClubsUrl %>">Search</button>
 		</form>
   </div>
 </div>
 
-<script src="/js/use-my-location.js"></script>
 <% include ../partials/footer %>

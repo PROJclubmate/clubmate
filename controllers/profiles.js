@@ -1234,21 +1234,6 @@ module.exports = {
           }
 
           foundClub.clubKeys.weblink = req.body.clubKeys.weblink.replace(/\&/g, ' ');
-          if(foundClub.clubKeys.location != req.body.clubKeys.location){
-            if(req.body.clubKeys.location != ''){
-              let response = await geocodingClient
-              .forwardGeocode({
-                query: req.body.clubKeys.location,
-                limit: 1
-              })
-              .send();
-              foundClub.clubKeys.location = req.body.clubKeys.location.replace(/[^a-zA-Z',0-9 .]/g, '');
-              foundClub.geometry = response.body.features[0].geometry;
-            } else{
-              foundClub.clubKeys.location = '';
-              foundClub.geometry = undefined;
-            }
-          }
         }
         if(req.body.info){
           if(req.body.info.description){

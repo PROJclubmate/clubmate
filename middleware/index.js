@@ -47,7 +47,8 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {clubs, college, category, location, distance} = req.query;
+    let {clubs, college, category} = req.query;
+    dbQueries.push({isActive: true});
     if(clubs){
       filterKeys['clubs'] = clubs;
       clubs = new RegExp(escapeRegExp(clubs), 'gi');
@@ -62,36 +63,6 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
       filterKeys['category'] = category;
       category = new RegExp(escapeRegExp(category), 'gi');
       dbQueries.push({'clubKeys.category': category});
-    }
-    if(location){
-      filterKeys['location'] = location;
-      let coordinates;
-      try{
-        location = JSON.parse(location);
-        coordinates = location;
-      } catch(err){
-        const response = await geocodingClient.forwardGeocode({
-          query: location,
-          limit: 1
-        }).send();
-        coordinates = response.body.features[0].geometry.coordinates;
-      }
-      if(distance){
-        filterKeys['distance'] = distance;
-      }
-      let maxDistance = distance || 25;
-      maxDistance *= 1000;
-      dbQueries.push({
-        geometry: {
-          $near: {
-            $geometry: {
-              type: 'Point',
-              coordinates
-            },
-            $maxDistance: maxDistance
-          }
-        }
-      });
     }
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
   }

@@ -2966,7 +2966,6 @@ function search_clubs_template(response){
           <div>
             <% if(clubs[k].clubKeys){ %>
               <div class="text-xs boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
-              <div class="lightgrey text-xs boldtext"><%= clubs[k].clubKeys.location %></div>
               <div class="lightgrey text-xs"><%= clubs[k].clubKeys.weblink %></div>
             <% } %>
           </div>

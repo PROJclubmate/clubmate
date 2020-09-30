@@ -1,6 +1,5 @@
-const mongoose          = require('mongoose'),
-  passportLocalMongoose = require('passport-local-mongoose'),
-  Schema                = mongoose.Schema;
+const mongoose = require('mongoose'),
+  Schema       = mongoose.Schema;
 
 const clubSchema = new Schema({
   name: String,
@@ -22,17 +21,7 @@ const clubSchema = new Schema({
   clubKeys: {
     college: String,
     category: String,
-    weblink: String,
-    location: String,
-  },
-  geometry: {
-    type: {
-      type: String,
-      enum: ['Point'],
-    },
-    coordinates: {
-      type: [Number],
-    }
+    weblink: String
   },
   updates: [{
     pusherId: this,

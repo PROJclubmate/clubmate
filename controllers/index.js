@@ -574,8 +574,8 @@ module.exports = {
           }).send();
           coordinates = response.body.features[0].geometry.coordinates;
         }
-        if(urlEqualsSplit[6]){
-          var distance = Number(urlEqualsSplit[9]);
+        if(urlEqualsSplit[4]){
+          var distance = Number(urlEqualsSplit[5]);
         }
         let maxDistance = distance || 25;
         maxDistance *= 1000;
@@ -714,6 +714,7 @@ module.exports = {
     // creating mongoDB query
     if(req.query.url.split('=') != ''){
       const urlEqualsSplit = req.query.url.split('=');
+      dbQueries.push({isActive: true});
       var clubs = urlEqualsSplit[1];
       if(clubs.split('&')[0]){
         clubs = new RegExp(escapeRegExp(clubs.split('&')[0].replace(/\+/g, ' ')), 'gi');
@@ -728,43 +729,6 @@ module.exports = {
       if(category.split('&')[0]){
         category = new RegExp(escapeRegExp(category.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'clubKeys.category': category});
-      }
-      var location = urlEqualsSplit[4];
-      if(location.split('&')[0]){ 
-        let coordinates;
-        try{
-          if(location.split('&')[0].includes('\+')){
-            // replacing ascii characters of [, ]
-            location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
-            .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
-          } else{
-            location = location.split('&')[0].replace(/\%20/g, ' ');
-            location = JSON.parse(location);
-          }
-          coordinates = location;
-        } catch(err){
-          const response = await geocodingClient.forwardGeocode({
-            query: location,
-            limit: 1
-          }).send();
-          coordinates = response.body.features[0].geometry.coordinates;
-        }
-        if(urlEqualsSplit[5]){
-          var distance = Number(urlEqualsSplit[5]);
-        }
-        let maxDistance = distance || 25;
-        maxDistance *= 1000;
-        dbQueries.push({
-          geometry: {
-            $near: {
-              $geometry: {
-                type: 'Point',
-                coordinates
-              },
-              $maxDistance: maxDistance
-            }
-          }
-        });
       }
       dbQueries.push({_id: {$nin: seenIds}})
     }
