@@ -2917,7 +2917,6 @@ function search_people_template(response){
           <div>
             <div class="text-xs mobilebold darkgrey"><%= users[k].userKeys.college %></div>
             <% if(users[k].userKeys){ %>
-              <div class="lightgrey text-xs"><%= users[k].userKeys.workplace %></div>
               <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
             <% } %>
           </div>

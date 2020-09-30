@@ -630,7 +630,6 @@ module.exports = {
               });
               foundUser.userKeys.college = newCollegeName;
             }
-            foundUser.userKeys.workplace = req.body.userKeys.workplace.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
             foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
             if(foundUser.userKeys.residence != req.body.userKeys.residence){
               if(req.body.userKeys.residence != ''){

@@ -62,7 +62,6 @@ const userSchema = new Schema({
     sex: String,
     birthdate: Date,
     college: String,
-    workplace: String,
     school: String,
     residence: String
   },

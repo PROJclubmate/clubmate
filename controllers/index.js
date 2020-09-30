@@ -549,17 +549,12 @@ module.exports = {
         college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var workplace = urlEqualsSplit[3];
-      if(workplace.split('&')[0]){
-        workplace = new RegExp(escapeRegExp(workplace.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
-        dbQueries.push({'userKeys.workplace': workplace});
-      }
-      var school = urlEqualsSplit[4];
+      var school = urlEqualsSplit[3];
       if(school.split('&')[0]){
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[5];
+      var location = urlEqualsSplit[4];
       if(location.split('&')[0]){
         let coordinates;
         try{
