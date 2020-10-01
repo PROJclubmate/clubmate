@@ -216,6 +216,7 @@ div.content{
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
   .helppad2{padding: 0 2.5rem;}
+  .helpmar{margin-top: 6.5rem !important;}
   button.vote{font-size: 1.5rem !important;}
   .nocaretmar{margin-left: 0.5rem;}
   .story-container{width: 100vw;}
@@ -241,6 +242,7 @@ div.content{
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset;}
   .chat-msg3{top: 45% !important;}
+  .cover-help{width: 88vw !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -403,6 +405,7 @@ div.content{
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
   .chat-msg3{top: 42.5% !important;}
+  .cover-help{width: 86vw !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -3260,4 +3263,33 @@ input.shadow:-webkit-autofill:focus{
 .hamburger--arrow-r.is-active .hamburger-inner::after{
   bottom: -0.1875rem;
   transform: translate3d(0.25rem, 0, 0) rotate(-45deg) scale(0.75, 1);
+}
+
+/************************************/
+.img-comp-container{
+  position: relative;
+}
+.img-comp-img{
+  position: absolute;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+.img-comp-img img{
+  display: block;
+  vertical-align: middle;
+}
+.img-comp-slider{
+  position: absolute;
+  z-index: 5;
+  cursor: ew-resize;
+  width: 40px;
+  height: 40px;
+  opacity: 0.7;
+  border-radius: 50%;
+  background: #dc717d url(https://res.cloudinary.com/dubirhea4/image/upload/v1601571229/icons/cd-arrows.svg) no-repeat center center;
+}
+.cover-help{
+  width: 40vw;
+  object-fit: cover;
 }
