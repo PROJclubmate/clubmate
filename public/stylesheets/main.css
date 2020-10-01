@@ -240,6 +240,7 @@ div.content{
   #messages{margin-bottom: 42px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset;}
+  .chat-msg3{top: 45% !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -401,6 +402,7 @@ div.content{
   #user-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
+  .chat-msg3{top: 42.5% !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -2476,12 +2478,16 @@ select.select1::-ms-expand{
   margin: 0.15rem 0 0.15rem 3rem;
 }
 .chat-msg3{
+  position: absolute;
+  top: 47.5%;
+  left: 35%;
+  right: 35%;
   text-align: center;
   font-size: 0.9375rem;
   background-color: rgba(255,255,255,0.5);
   border-radius: 0.5rem;
-  padding: 0 0.15rem;
-  padding-bottom: 0.1rem;
+  padding: 0 0.25rem;
+  padding-bottom: 0.125rem;
   margin: 0.15rem 0;
 }
 .chat-head{
@@ -2518,6 +2524,10 @@ select.select1::-ms-expand{
   border-radius: 0.25rem;
   border: none;
   box-shadow: 0px 2px 3px -2px rgba(0,0,0,0.5);
+}
+#prevMessage-div{
+  margin: 1rem 0;
+  padding: 1rem 0;
 }
 .topic-heart{
   margin-bottom: -0.25rem; 

@@ -133,7 +133,7 @@ if(socket !== undefined){
     if(conversation.conversationId == ''){
       $('#load-prevMsgs-btn').addClass('nodisplay');
       $("#messages").append(`
-        <div class="chat-msg3"><span class="boldtext"> Start a conversation </span></div> <br>`);
+        <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
     } else{
       $.get('/chat/'+conversation.conversationId, (data) =>{
         addMessages(data);
@@ -289,7 +289,7 @@ if(socket !== undefined){
     if(conversation.conversationId == ''){
       $('#load-prevMsgs-btn').addClass('nodisplay');
       $("#messages").append(`
-        <div class="chat-msg3"><span class="boldtext"> Start a conversation </span></div> <br>`);
+        <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
     } else{
       $.get('/club-chat/'+conversation.conversationId, (data) =>{
         addClubMessages(data);
