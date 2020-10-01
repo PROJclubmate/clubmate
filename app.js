@@ -140,7 +140,11 @@ app.use(async function(req, res, next){
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
       .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId note'})
       .exec();
-      res.locals.userClubs = foundUser.userClubs.reverse();
+      res.locals.userClubs = foundUser.userClubs.sort(function(a, b){
+        if(a.clubName < b.clubName) { return -1; }
+        if(a.clubName > b.clubName) { return 1; }
+        return 0;
+      });
       res.locals.clubUpdates = foundUser.clubUpdates;
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
       res.locals.friendRequests = foundUser.friendRequests.reverse();
