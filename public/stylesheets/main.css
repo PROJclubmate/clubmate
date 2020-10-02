@@ -93,6 +93,9 @@ div.content{
   .pl-2.mobilepad{padding: 0 !important;}
   .helppad{padding-left: 3rem;}
   .helppad2{padding-left: 2.5rem;}
+  .helppad3{padding-left: 3.5rem;}
+  .helpmar{margin-left: 2.5rem !important;}
+  .helppadmar{padding-left: 0 !important; margin-left: 0 !important;}
   .commentpad{padding-left: 0.25rem;}
   .popup-box-notifications{right: 6.5rem !important;}
   .desktop-mt-2{margin-top: 0.5rem;}
@@ -242,7 +245,7 @@ div.content{
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset;}
   .chat-msg3{top: 45% !important;}
-  .cover-help{width: 88vw !important;}
+  .cover-help{width: 100vw !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -405,7 +408,6 @@ div.content{
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
   .chat-msg3{top: 42.5% !important;}
-  .cover-help{width: 86vw !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -1471,7 +1473,6 @@ input[type="file"]#inputavatar{
   border-width: 6px;
   border-style: solid;
   border-image: repeating-linear-gradient(to left top, blue, red 20px);
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
 }
 .btncollapse.btncollapse-info{
   box-shadow: none;
@@ -1879,7 +1880,7 @@ ul{
 .badge-round{
   height: 1.125rem;
   min-width: 1.125rem;
-  border-radius: 100% !important;
+  border-radius: 1rem !important;
 }
 .badge-white{
   background: #f8f9fa !important;
@@ -1889,7 +1890,7 @@ ul{
   padding: 0.15rem;
   height: 1rem;
   min-width: 1rem;
-  border-radius: 100% !important;
+  border-radius: 1rem !important;
 }
 .badge-light{
   background-color: #dcdcdc;
@@ -3287,6 +3288,7 @@ input.shadow:-webkit-autofill:focus{
   height: 40px;
   opacity: 0.7;
   border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(0,0,0,.2), 0 0 10px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.35);
   background: #dc717d url(https://res.cloudinary.com/dubirhea4/image/upload/v1601571229/icons/cd-arrows.svg) no-repeat center center;
 }
 .cover-help{

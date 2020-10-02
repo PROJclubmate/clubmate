@@ -23,11 +23,13 @@ function initComparisons() {
     function slideReady(e) {
       e.preventDefault();
       clicked = 1;
+      slider.style.backgroundColor = '#445b7c';
       window.addEventListener("pointermove", slideMove);
       window.addEventListener("touchmove", slideMove);
     }
     function slideFinish() {
       clicked = 0;
+      slider.style.backgroundColor = '#dc717d';
     }
     function slideMove(e) {
       var pos;
