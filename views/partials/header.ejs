@@ -94,7 +94,7 @@
             <li class="nav-item">
               <a href="/help" id="help_offline" class="text-lg nav-link requests navhelp" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
             </li>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
+            <li id="notLoggedIn" class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
               <a href="/login" class="nav-link">Login</a>
             </li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">

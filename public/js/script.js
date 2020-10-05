@@ -690,8 +690,10 @@ if(window.innerWidth < 768){
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/) || 
   location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/))){
-    $('#mobile_toggler').addClass("nodisplay");
-    $('.inbox_mobile').removeClass("nodisplay");
+    if($('#notLoggedIn').length == 0){
+      $('#mobile_toggler').addClass("nodisplay");
+      $('.inbox_mobile').removeClass("nodisplay");
+    }
   }
 }
 
