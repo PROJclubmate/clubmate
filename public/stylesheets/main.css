@@ -183,8 +183,8 @@ div.content{
   .chat-head3{width: 92vw;}
   h5.topic-h5{font-size: 1.125rem!important; padding: 0.125rem 0;}
   .searchcard2{width: 100% !important;}
+  div.mt-2.mobilepad.keys{margin-top: 0 !important;}
   .friends-dp{height: 8rem !important;}
-  div.mt-2.mobilepad.keys{margin-top: -2.5rem !important;}
   .mobileNone{display: none !important;}
   .mobileNoneFlex{display: none !important;}
   .desktopNone{display: flex !important;}
@@ -246,6 +246,7 @@ div.content{
   #discover_nav{position: fixed; bottom: 0; top: unset;}
   .chat-msg3{top: 45% !important;}
   .cover-help{width: 100vw !important;}
+  .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -256,7 +257,7 @@ div.content{
   .sidebar a{padding: 10.5px 13.25px; height: 48px !important;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
-  .friends-dp{height: 7.25rem !important;}
+  .friends-dp{height: 6.9065rem !important;}
   h5.topic-h5{font-size: 1.25rem !important;}
   button.modvote{font-size: 2.5rem !important;}
   .content-toppad{padding-top: 0.675rem !important;}
@@ -267,7 +268,7 @@ div.content{
   .btn-sm{padding: 0.375rem 0.625rem !important;}
   .btn-lg{padding: 0.625rem 1.125rem !important;}
   .form-signin{max-width: 20rem !important;}
-  .form-control{padding: 0.5rem 0.875rem !important;}
+  .form-control{padding: 0.5rem !important;}
   .custom-file-upload{margin-top: 0.15rem !important;}
   select, .custom-file-upload{height: 36px !important; padding: 6px 8px !important;}
   select.select3{width: 82px;}
@@ -300,14 +301,14 @@ div.content{
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
-  .friends-dp{height: 6.15rem !important;}
+  .friends-dp{height: 5.875rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
   #sidebar-dropbox{top: 48px; left: 91px;}
   .sidebar a{padding: 10.5px 13px;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
-  .friends-dp{height: 6.1rem !important;}
+  .friends-dp{height: 5.8445rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Redmi Note 7 => 393px*/
@@ -316,7 +317,7 @@ div.content{
   .sidebar a{padding: 11px 11.25px;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   .sidebar-icon{font-size: 1.375rem;}
-  .friends-dp{height: 6rem !important;}
+  .friends-dp{height: 5.5475rem !important;}
   .commentpad2{padding-left: 0.25rem;}
   .discover-icon{font-size: 1.625rem;}
 }
@@ -325,7 +326,7 @@ div.content{
   #sidebar-dropbox{top: 48px; left: 84px;}
   .sidebar a{padding: 11px 10px;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
-  .friends-dp{height: 5.65rem !important;}
+  .friends-dp{height: 5.4065rem !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
   .mobiletext3{font-size: 0.75rem !important;}
@@ -345,7 +346,7 @@ div.content{
   a.hr2.active{padding-top: 9.5px; padding-bottom: 9.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
-  .friends-dp{height: 5.5rem !important;}
+  .friends-dp{height: 5.2665rem !important;}
   .name-green{padding: 0.125rem 0 !important; font-size: 1.5rem !important; -webkit-text-stroke-width: 0.65px;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
@@ -372,7 +373,7 @@ div.content{
   div.carousel-frame{height: 135px !important;}
   div.carousel-frame2{height: 135px !important;}
   div.carousel-div{height: 127px !important;}
-  .friends-dp{height: 5.25rem !important;}
+  .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
   h5.topic-h5{font-size: 1.125rem !important;}
   button.modvote{font-size: 2.375rem !important;}
@@ -386,7 +387,8 @@ div.content{
   .btn-sm{padding: 0.25rem 0.5rem !important;}
   .btn-lg{padding: 0.5rem 1rem !important;}
   .form-signin{max-width: 18rem !important;}
-  .form-control{padding: 0.375rem 0.75rem !important;}
+  .form-control{padding: 0.375rem 0.5rem !important;}
+  .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
   select, .custom-file-upload{height: 32px !important; padding: 4px 8px !important;}
   #input-10{height: 35px !important; margin-top: 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
@@ -414,7 +416,7 @@ div.content{
   #sidebar-dropbox{top: 38px; left: 70px;}
   .sidebar a{padding: 8.5px 4px;}
   .discover-icon{font-size: 1.5rem;}
-  .friends-dp{height: 4.75rem !important;}
+  .friends-dp{height: 4.4065rem !important;}
   .name-green{padding: 0.25rem 0 !important; font-size: 1.375rem !important; -webkit-text-stroke-width: 0.6px;}
 }
 /*----------------------------------------------------------------*/
@@ -1024,7 +1026,7 @@ time.calendar span{
 }
 .friends-dp{
   width: 100% !important;
-  height: 4.1rem;
+  height: 4.05rem;
   position: relative;
   object-fit: cover;
 }
@@ -1878,7 +1880,7 @@ ul{
   padding: 0.15rem 0.25rem;
 }
 .badge-round{
-  height: 1.125rem;
+  min-height: 1.125rem;
   min-width: 1.125rem;
   border-radius: 1rem !important;
 }
@@ -1888,7 +1890,7 @@ ul{
   top: -0.25rem !important;
   right: -0.25rem !important;
   padding: 0.15rem;
-  height: 1rem;
+  min-height: 1rem;
   min-width: 1rem;
   border-radius: 1rem !important;
 }
@@ -1914,9 +1916,9 @@ ul{
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
   z-index: 9;
   padding: 0.15rem;
-  height: 1rem;
+  min-height: 1rem;
   min-width: 1rem;
-  border-radius: 100% !important;
+  border-radius: 1rem !important;
 }
 .notification{
   position: relative;
@@ -2484,8 +2486,8 @@ select.select1::-ms-expand{
 .chat-msg3{
   position: absolute;
   top: 47.5%;
-  left: 35%;
-  right: 35%;
+  left: 36%;
+  right: 36%;
   text-align: center;
   font-size: 0.9375rem;
   background-color: rgba(255,255,255,0.5);

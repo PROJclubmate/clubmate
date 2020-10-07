@@ -27,11 +27,11 @@
             </div>
           </div>
           <div>
-            <% if(currentUser && match){ %>
-              <div class="d-flex flex-column" style="height: 50%;">
-            <% } else{ %>
-              <div class="d-flex flex-column" style="height: 100%;">
-            <% } %>
+              <% if(currentUser && match){ %>
+                <div class="d-flex flex-column" style="height: 50%;">
+              <% } else{ %>
+                <div class="d-flex flex-column" style="height: 100%;">
+              <% } %>
               <div class="my-auto" style="margin-left: 2.75rem;">
                 <div>
                   <% if(user.isVerified){ %>
@@ -58,6 +58,15 @@
                   <%// } %> -->
                 </div>
               </div>
+            <!-- <%// } else{ %>
+              <div class="story-container" style="height: 50%; margin-left: 2.75rem;">
+                <div class="d-flex story-container2 scroll moz-scroll mt-3">
+                  <div class="d-flex flex-column mr-3">
+                    <div class="story text-center story-dark"></div>
+                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
+                  </div>
+                </div>
+              </div> -->
             <% } %>
           </div>
         </div>
@@ -80,7 +89,7 @@
                 </div>
               </div>
               <div>
-                <div class="d-flex flex-column" style="height: 100%;">
+                <div class="d-flex flex-column" style="height: 85%;">
                   <div class="my-auto pl-3">
                     <div>
                       <% if(user.isVerified){ %>
@@ -89,7 +98,7 @@
                         <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
                       <% } %>
                     </div>
-                    <div class="text-xs mb-2 boldtext lineheight"><%= user.note %></div>
+                    <div class="text-xxs mb-2 boldtext lineheight" style="min-height: 20px;"><%= user.note %></div>
                   </div>
                 </div>
               </div>
@@ -109,11 +118,20 @@
                   <%// } %> -->
                 </div>
               </div>
+            <% } else{ %>
+              <div class="story-container" style="margin-bottom: 4.5rem;">
+                <div class="d-flex px-3" style="overflow: hidden; overflow-x: scroll;">
+                  <div class="d-flex flex-column mr-3">
+                    <div class="story mt-3 story-dark"></div>
+                    <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
+                  </div>
+                </div>
+              </div>
             <% } %>
           </div>
         </div>
       </div>
-      <div class="col-md-4 px-1 mobilepad desktop-mt-2">
+      <div class="col-md-4 px-1 mobilepad desktop-mt-2 keyspad">
         <div class="card border-light"> 
           <div class="card-body">
             <div class="dropctn">
@@ -135,12 +153,8 @@
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <% if(user.userKeys.school){ %>
-                <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
-              <% } %>
-              <% if(user.userKeys.residence){ %>
-                <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
-              <% } %>
+              <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
+              <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
             </div>
           </div>
           <% if(currentUser && match){ %>
