@@ -178,13 +178,17 @@
         </div>
         <div class="mt-2">
           <div class="card mt-0 border-light">
-            <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#friends">
-              <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
-              <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
-            </button>
             <% if(match){ %>
+              <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#friends">
+                <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
+                <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
+              </button>
               <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
             <% } else{ %>
+              <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#friends">
+                <span><i class="fas fa-users"></i></span><span class="boldtext">Mutual</span>
+                <span class="lightgrey text-sm nopad"> . <%= foundFriends.length %></span>
+              </button>
               <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;">
             <% } %>
             <% for(i=0;i<foundFriends.length;i++){ %>

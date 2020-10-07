@@ -27,10 +27,13 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        var currentUserFriends = req.user.friends;
         var friends = foundUser.friends.reverse();
-        // Show friends made in order of latest(4)
         User.aggregate([
-          {$match: {_id: {$in: friends}}},
+          {$match: {$and: [
+            {_id: {$in: friends}}, 
+            {_id: {$in: currentUserFriends}}
+          ]}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
           {$sort: {"__order": 1}},
           {$project :{fullName: 1, profilePic: 1, profilePicId: 1}},
@@ -172,6 +175,7 @@ module.exports = {
         return res.redirect('back');
       } else{
         var friends = foundUser.friends.reverse();
+        // Show friends made in order of latest(4)
         User.aggregate([
           {$match: {_id: {$in: friends}}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
