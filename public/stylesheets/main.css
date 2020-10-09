@@ -209,6 +209,7 @@ div.content{
   div.carousel-frame2{height: 150px !important;}
   div.carousel-div{height: 142px !important;}
   img.postimg{width: 100%; height: 22rem; object-fit: cover;}
+  img.postimg.topicimg{height: 18rem !important;}
   .navbar-brand{margin: 0;}
   .collegename{font-size: 1.5rem !important; border-radius: 0.5rem !important; line-height: 1.375rem !important;}
   .collegepad{padding: 0.25rem 0.5rem !important;}
@@ -259,7 +260,7 @@ div.content{
   .sidebar-label{font-size: 0.75rem !important;}
   .friends-dp{height: 6.9065rem !important;}
   h5.topic-h5{font-size: 1.25rem !important;}
-  button.modvote{font-size: 2.5rem !important;}
+  button.modvote{font-size: 2.75rem !important;}
   .content-toppad{padding-top: 0.675rem !important;}
   .btn.btncollapse{padding: 0.125rem 0.25rem !important;}
   .info-size{font-size: 1.0625rem !important;}
@@ -280,9 +281,10 @@ div.content{
   .story-label{width: 75px !important;}
   .story-plus{padding: 1.325rem 0 !important;}
   .navdp{height: 40px !important; width: 40px !important;}
-  .collegedp{height: 50px !important; width: 50px !important;}
+  .collegedp{height: 58px !important; width: 58px !important;}
   button.vote{font-size: 1.625rem !important;}
   img.postimg{height: 25rem !important;}
+  img.postimg.topicimg{height: 20rem !important;}
   .check-label .face{top: 0.125rem !important;}
   #edit-account-info{padding: 0 0.5rem !important;}
   .discover-overlay a{padding: 0.5rem !important; font-size: 1rem !important;}
@@ -376,7 +378,7 @@ div.content{
   .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
   h5.topic-h5{font-size: 1.125rem !important;}
-  button.modvote{font-size: 2.375rem !important;}
+  button.modvote{font-size: 2.625rem !important;}
   .content-toppad{padding-top: 0.5rem !important;}
   .nav-link{padding: 5px 4px !important; font-size: 1rem !important;}
   .nav-link.requests{font-size: 1.125rem !important;}
@@ -396,9 +398,10 @@ div.content{
   .story-label{width: 65px !important;}
   .story-plus{padding: 1rem 0 !important;}
   .navdp{height: 36px !important; width: 36px !important;}
-  .collegedp{height: 46px !important; width: 46px !important;}
+  .collegedp{height: 50px !important; width: 50px !important;}
   button.vote{font-size: 1.5rem !important;}
   img.postimg{height: 22rem !important;}
+  img.postimg.topicimg{height: 18rem !important;}
   .discover-vote{font-size: 1.625rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 42px) !important;}
   .mobiletext{font-size: 0.875rem !important;}
@@ -2128,7 +2131,7 @@ button.vote2{
   cursor: pointer;
 }
 button.modvote{
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   line-height: 1.125rem;
   padding: 0;
   border: none;

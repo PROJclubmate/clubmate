@@ -922,7 +922,7 @@ function index_posts_template(response){
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <% } %>
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <% if(!friendsPostUrl){ %>
@@ -1406,7 +1406,7 @@ function club_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
@@ -1789,7 +1789,7 @@ function user_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -2155,7 +2155,7 @@ function heart_posts_template(response){
             <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
             <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p></div>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
+              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= postsH[l].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
