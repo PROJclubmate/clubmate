@@ -624,7 +624,7 @@ function updateMessageHeight2(){
     updateHeight(40);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-    updateHeight(48 + 4);
+    updateHeight(50 + 4);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 360){
     updateHeight(42);
@@ -653,7 +653,7 @@ function updateMessageHeight3(){
     updateHeight(40,47);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-    updateHeight(48 + 4,52);
+    updateHeight(50 + 4,52);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 360){
     updateHeight(42,47);

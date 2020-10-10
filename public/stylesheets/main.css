@@ -127,6 +127,18 @@ div.content{
   #club-send{padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
   .searchdp{height: 100px !important; width: 100px!important;}
+  .text-xxxxs{font-size: 0.4375rem !important;}
+  .text-xxxs{font-size: 0.5625rem !important;}
+  .text-xxs{font-size: 0.6875rem !important;}
+  .text-xs{font-size: 0.75rem !important;}
+  .text-sm{font-size: 0.875rem !important;}
+  .text-md{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
+  .text-lg{font-size: 1.125rem !important;}
+  .text-xl{font-size: 1.25rem !important;}
+  .text-xxl{font-size: 1.375rem !important;}
+  .text-xxxl{font-size: 1.625rem !important;}
+  .text-xxxxl{font-size: 2rem !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -235,10 +247,22 @@ div.content{
   #emoji-picker2{padding-top: 0 !important; padding-bottom: 0 !important;}
   .emoji-up{bottom: 2.125rem !important;}
   .overlay3{transition: none !important;}
-  .mobiletext{font-size: 0.9375rem !important;}
-  .mobiletext2{font-size: 1rem !important;}
-  .mobiletext3{font-size: 0.875rem !important;}
-  .mobiletext4{font-size: 0.75rem !important;}
+  .text-xxxxs{font-size: 0.4375rem !important;}
+  .text-xxxs{font-size: 0.5625rem !important;}
+  .text-xxs{font-size: 0.6875rem !important;}
+  .text-xs{font-size: 0.75rem !important;}
+  .text-sm{font-size: 0.875rem !important;}
+  .text-md{font-size: 0.9375rem !important;}
+  .text-index{font-size: 1rem !important;}
+  .text-lg{font-size: 1.125rem !important;}
+  .text-xl{font-size: 1.25rem !important;}
+  .text-xxl{font-size: 1.375rem !important;}
+  .text-xxxl{font-size: 1.625rem !important;}
+  .text-xxxxl{font-size: 2rem !important;}
+  .mobiletext{font-size: 1rem !important;}
+  .mobiletext2{font-size: 1.0625rem !important;}
+  .mobiletext3{font-size: 0.9375rem !important;}
+  .mobiletext4{font-size: 0.8125rem !important;}
   .form-control.chatinput{padding: 0.5rem 0.875rem !important;}
   #user-send{padding: 0.4375rem 0.75rem !important;}
   #club-send{padding: 0.4375rem 0.75rem !important;}
@@ -251,11 +275,11 @@ div.content{
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
-  .name{font-size: 1.625rem !important; padding: 0.0945rem 0.5rem 0.0945rem 0.325rem !important;}
-  .sidebar-back{height: 48px !important;}
+  .name{font-size: 1.625rem !important; padding: 0.1565rem 0.5rem 0.1565rem 0.325rem !important;}
+  .sidebar-back{height: 50px !important;}
   .navbar{padding: 3px 10px !important;}
-  #sidebar-dropbox{top: 48px; left: 91px;}
-  .sidebar a{padding: 10.5px 13.25px; height: 48px !important;}
+  #sidebar-dropbox{top: 50px; left: 91px;}
+  .sidebar a{padding: 13px 13.25px; height: 50px !important;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .friends-dp{height: 6.9065rem !important;}
@@ -291,7 +315,7 @@ div.content{
   .discover-overlay .discovertop{font-size: 1rem !important;}
   .discover-overlay .discovertop-left{font-size: 0.625rem !important; padding: 0.375rem 0.25rem !important;}
   .discover-vote{font-size: 1.875rem !important;}
-  .chatlist-box{height: calc(100vh - 1rem - 48px) !important;}
+  .chatlist-box{height: calc(100vh - 1rem - 50px) !important;}
   .chat-msg{font-size: 1rem !important;}.chat-msg2{font-size: 1rem !important;}.chat-msg3{font-size: 1rem !important;}
   .chat-head{font-size: 0.6875rem !important;}.chat-head2{font-size: 0.6875rem !important;}
   .chat-head3{font-size: 0.75rem !important;}.chat-head4{font-size: 0.75rem !important;}
@@ -307,16 +331,16 @@ div.content{
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
-  #sidebar-dropbox{top: 48px; left: 91px;}
-  .sidebar a{padding: 10.5px 13px;}
+  #sidebar-dropbox{top: 50px; left: 91px;}
+  .sidebar a{padding: 13px 13px;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .friends-dp{height: 5.8445rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Redmi Note 7 => 393px*/
 @media screen and (max-width: 394px){
-  #sidebar-dropbox{top: 48px; left: 86px;}
-  .sidebar a{padding: 11px 11.25px;}
+  #sidebar-dropbox{top: 50px; left: 86px;}
+  .sidebar a{padding: 13px 11.25px;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   .sidebar-icon{font-size: 1.375rem;}
   .friends-dp{height: 5.5475rem !important;}
@@ -325,14 +349,14 @@ div.content{
 }
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
-  #sidebar-dropbox{top: 48px; left: 84px;}
-  .sidebar a{padding: 11px 10px;}
+  #sidebar-dropbox{top: 50px; left: 84px;}
+  .sidebar a{padding: 13px 10px;}
   a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
   .friends-dp{height: 5.4065rem !important;}
-  .mobiletext{font-size: 0.875rem !important;}
-  .mobiletext2{font-size: 0.9375rem !important;}
-  .mobiletext3{font-size: 0.75rem !important;}
-  .mobiletext4{font-size: 0.6875rem !important;}
+  .mobiletext{font-size: 0.9375rem !important;}
+  .mobiletext2{font-size: 1rem !important;}
+  .mobiletext3{font-size: 0.875rem !important;}
+  .mobiletext4{font-size: 0.75rem !important;}
   .info1{font-size: 0.9375rem !important;}
   .profilename{font-size: 1.125rem !important;}
   .discover-vote{font-size: 1.75rem !important;}
@@ -343,13 +367,12 @@ div.content{
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
   .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
-  #sidebar-dropbox{top: 48px; left: 82px;}
-  .sidebar a{padding: 11.5px 9.5px;}
+  #sidebar-dropbox{top: 50px; left: 82px;}
+  .sidebar a{padding: 13px 9.5px;}
   a.hr2.active{padding-top: 9.5px; padding-bottom: 9.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
   .friends-dp{height: 5.2665rem !important;}
-  .name-green{padding: 0.125rem 0 !important; font-size: 1.5rem !important; -webkit-text-stroke-width: 0.65px;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
 }
@@ -406,7 +429,7 @@ div.content{
   .chatlist-box{height: calc(100vh - 1rem - 42px) !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.875rem !important;}
-  .mobiletext3{font-size: 0.75rem !important;}
+  .mobiletext3{font-size: 0.8125rem !important;}
   .mobiletext4{font-size: 0.6875rem !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
@@ -513,18 +536,6 @@ textarea{
 hr{
   margin: 0;
 }
-.text-xxxxs{font-size: 0.4375rem !important;}
-.text-xxxs{font-size: 0.5625rem !important;}
-.text-xxs{font-size: 0.6875rem !important;}
-.text-xs{font-size: 0.75rem !important;}
-.text-sm{font-size: 0.875rem !important;}
-.text-md{font-size: 0.9375rem !important;}
-.text-index{font-size: 1rem !important;}
-.text-lg{font-size: 1.125rem !important;}
-.text-xl{font-size: 1.25rem !important;}
-.text-xxl{font-size: 1.375rem !important;}
-.text-xxxl{font-size: 1.625rem !important;}
-.text-xxxxl{font-size: 2rem !important;}
 .dropdown-menu{
   z-index: 3 !important;
 }
