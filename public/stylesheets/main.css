@@ -195,7 +195,7 @@ div.content{
   .chat-head3{width: 92vw;}
   h5.topic-h5{font-size: 1.125rem!important; padding: 0.125rem 0;}
   .searchcard2{width: 100% !important;}
-  div.mt-2.mobilepad.keys{margin-top: 0 !important;}
+  div.mt-2.mobilepad.keys{margin-top: 0.25rem !important;}
   .friends-dp{height: 8rem !important;}
   .mobileNone{display: none !important;}
   .mobileNoneFlex{display: none !important;}
@@ -2518,6 +2518,7 @@ select.select1::-ms-expand{
 }
 .chat-head-clubpad{
   margin: -0.35rem 0 0 0 !important;
+  padding-bottom: 0.25rem;
 }
 .chat-head2{
   text-align: right;

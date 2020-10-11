@@ -7,7 +7,7 @@
           Club updates
         </span>
       </div>
-      <div><span class="lightgrey text-sm nopad"><%= club.updates.length %></span></div>
+      <div><span class="lightgrey text-sm mobiletext3 nopad"><%= club.updates.length %></span></div>
     </div>
   </button>
   <% if(club.updates && club.updates.length>0){ %>
@@ -65,7 +65,7 @@
             <% } else{ %>
               <div class="eventD text-md mx-2 my-1 lineheight"></div>
             <% } %>
-            <div class="lightgrey text-xs mobiletext3 mobilebold">
+            <div class="lightgrey text-xs mobiletext4 mobilebold">
               <%= club.updates[i].news %>
               <div class="text-xxs notbold"><em><%= moment(club.updates[i].pushedAt).calendar() %></em></div>
               <% if(0 <= rank && rank <= 1){ %>

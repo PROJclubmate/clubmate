@@ -260,12 +260,12 @@ if(socket !== undefined){
         prevDate = moment(message.createdAt).format("MMM Do YY");
         if(message.authorId == data.currentUser){
           $("#messages").append(`
-            <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.firstName} 
-             ${moment(message.createdAt).format('LT')} </div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+            <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
+            <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
         } else{
           $("#messages").append(`
-            <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${message.authorName} 
-             ${moment(message.createdAt).format('LT')} </div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+            <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
+            <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
         }
       });
     }
@@ -276,7 +276,7 @@ if(socket !== undefined){
     var currentUserId = convIdclubIdcurrId[2];
     if(currentUserId == data.authorId){
         $("#messages").append(`
-          <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"> ${data.authorName} </div>
+          <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span></span> ${data.authorName} </div>
            <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
       } else{
         $("#messages").append(`
