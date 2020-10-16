@@ -70,6 +70,8 @@ div.content{
   .discover-icon{font-size: 1.75rem;}
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
   .story-container{width: 65vw;}
+  .lb-absolute{position:  absolute; bottom: 0; left: 0.25rem; margin: 0 0.25rem 0.5rem 0.25rem;}
+  #discover_nav{position: fixed; bottom: 0; top: unset;}
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
@@ -272,6 +274,7 @@ div.content{
   .chat-msg3{top: 45% !important;}
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
+  #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -307,7 +310,7 @@ div.content{
   .navdp{height: 40px !important; width: 40px !important;}
   .collegedp{height: 58px !important; width: 58px !important;}
   button.vote{font-size: 1.625rem !important;}
-  img.postimg{height: 25rem !important;}
+  img.postimg{height: 25.75rem !important;}
   img.postimg.topicimg{height: 20rem !important;}
   .check-label .face{top: 0.125rem !important;}
   #edit-account-info{padding: 0 0.5rem !important;}
@@ -423,7 +426,7 @@ div.content{
   .navdp{height: 36px !important; width: 36px !important;}
   .collegedp{height: 50px !important; width: 50px !important;}
   button.vote{font-size: 1.5rem !important;}
-  img.postimg{height: 22rem !important;}
+  img.postimg{height: 22.5rem !important;}
   img.postimg.topicimg{height: 18rem !important;}
   .discover-vote{font-size: 1.625rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 42px) !important;}
@@ -2482,7 +2485,7 @@ select.select1::-ms-expand{
   background-color: white;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.25rem;
+  padding: 0.375rem;
   margin: 0.15rem 3rem 0.15rem 0;
 }
 .chat-msg2{
@@ -2494,7 +2497,7 @@ select.select1::-ms-expand{
   background-color: #b3ffb3;
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.25rem;
+  padding: 0.375rem;
   margin: 0.15rem 0 0.15rem 3rem;
 }
 .chat-msg3{

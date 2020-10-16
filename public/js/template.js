@@ -1116,7 +1116,7 @@ function discover_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <span>
-          <div><img class="card-img-top postimg" src="<%= posts[k].image %>"></div>
+          <div><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div>
         </span>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>

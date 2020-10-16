@@ -1,4 +1,4 @@
-<div class="card mt-0 border-light">
+<div class="card mt-0 border-light lb-absolute">
   <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#latestUpdates">
     <div class="valign">
       <div class="mobiletext3">
@@ -10,7 +10,7 @@
           <% } %>
         </span>
       </div>
-      <div><span class="lightgrey text-sm mobiletext3 nopad"><%= latestUpdates().arr.length %></span></div>
+      <div><span class="lightgrey text-sm mobiletext3 ml-2 nopad"><%= latestUpdates().arr.length %></span></div>
     </div>
   </button>
   <div id="latestUpdates" class="collapse scroll moz-scroll">

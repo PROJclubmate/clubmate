@@ -1,7 +1,7 @@
 <% include ../partials/header %>
     
 <div class="row no-gutters">
-  <div class="col-lg-2 col-md-2 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
+  <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
   <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
     <div class="my-4">
       <div class="d-inline-flex">
@@ -67,7 +67,7 @@
   <% } %>
 </div>
 <nav id="discover_nav" class="navbar fixed-bottom navbar-light bg-light desktopNone tabletShow discover-navback">
-  <div style="width: 100vw; padding: 0.125rem 0;">
+  <div id="discover_nav-div">
     <% if(currentUser){ %>
       <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
         <% if(currentUser.discoverSwitch == 1){ %>
