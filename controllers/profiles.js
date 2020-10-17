@@ -1608,7 +1608,7 @@ module.exports = {
       user.save(function(err){
         req.logIn(user, function(err){
           if (err){return next(err);}
-          return res.redirect('/home');
+          return res.redirect('/chats');
         });
       });
     })(req, res, next);
