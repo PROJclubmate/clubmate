@@ -73,7 +73,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto" style="margin-left: -0.25rem;">
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
-            <a href="/home" class="nav-link">Home</a>
+            <a href="/home" class="nav-link burgernav">Home</a>
           </li>
           <!--Search bar-->
           <li class="nav-item">
@@ -92,26 +92,26 @@
         <ul class="navbar-nav navbar-right">
           <% if(!currentUser){ %>
             <li class="nav-item">
-              <a href="/help" id="help_offline" class="text-lg nav-link requests navhelp" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
+              <a href="/help" id="help_offline" class="text-lg nav-link burgernav requests navhelp" data-toggle="tooltip" title="Help" onclick="toggle_requests('help_offline');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li id="notLoggedIn" class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
-              <a href="/login" class="nav-link">Login</a>
+              <a href="/login" class="nav-link burgernav">Login</a>
             </li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">
-              <a href="/register" class="nav-link">Sign Up</a>
+              <a href="/register" class="nav-link burgernav">Sign Up</a>
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <a href="/help" id="help_online" class="text-lg nav-link requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
+              <a href="/help" id="help_online" class="text-lg nav-link burgernav requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item notification">
-              <span><a href="/chats" id="inbox" class="text-xl nav-link requests" title="Inbox"><i class="fas fa-envelope" onclick="toggle_requests('inbox');"></i></a></span>
+              <span><a href="/chats" id="inbox" class="text-xl nav-link burgernav requests" title="Inbox"><i class="fas fa-envelope" onclick="toggle_requests('inbox');"></i></a></span>
               <% if(currentUser.inboxMsgCount > 0){ %>
                 <span class="inbox_count badge text-xxs"><%= currentUser.inboxMsgCount %></span>
               <% } %>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
-              <span id="requestslink" class="text-xl nav-link requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
+              <span id="requestslink" class="text-xl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
                 <i class="fas fa-user-friends"></i>
               </span>
               <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
@@ -120,7 +120,7 @@
             </li>
             <li class="nav-item d-inline-flex">
               <div>
-                <a href="/users/<%= currentUser.id %>" class="nav-link img">
+                <a href="/users/<%= currentUser.id %>" class="nav-link burgernav img">
                   <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
                   <span id="navname"><%= currentUser.firstName %></span>
                 </a>
@@ -128,7 +128,7 @@
               <div class="vr"></div>
             </li>
             <li class="nav-item">
-              <a href="/logout" class="nav-link">Logout</a>
+              <a href="/logout" class="nav-link burgernav">Logout</a>
             </li>
           <% } %>
         </ul>

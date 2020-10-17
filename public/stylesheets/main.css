@@ -141,6 +141,8 @@ div.content{
   .text-xxl{font-size: 1.375rem !important;}
   .text-xxxl{font-size: 1.625rem !important;}
   .text-xxxxl{font-size: 2rem !important;}
+  .chats-img{width: 35%; display: block; margin-left: auto; margin-right: auto; 
+    transform: translateY(50%); filter: opacity(65%);}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -231,6 +233,7 @@ div.content{
   .collegediv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
   .collegediv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important; margin-bottom: 1rem !important;}
   .mobilebold{font-weight: 500 !important;}
+  .nav-link.burgernav{margin: 0.5rem 0.25rem !important;}
   .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
   .helppad2{padding: 0 2.5rem;}

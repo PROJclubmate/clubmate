@@ -506,7 +506,12 @@ $(function (){
   for(var k=0;k<divUtc365.length;k++){
     var localTime = moment.utc($('#'+divUtc365[k].id).text()).toDate();
     localTime = moment(localTime).format('l');
-    $('#'+divLocal365[k].id).text(localTime);
+    localTimeAdjusted = localTime.substring(0, localTime.length - 5)
+    if(moment(localTime).year() == moment().year()){
+      $('#'+divLocal365[k].id).text(localTimeAdjusted);
+    } else{
+      $('#'+divLocal365[k].id).text(localTime);
+    }
   }
 });
 
