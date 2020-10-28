@@ -44,7 +44,7 @@ module.exports = {
           return post._id;
         });
         var posts = postsPrivacyFilter(homePosts, req.user);
-        var modPosts = postsModerationFilter(posts,req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
@@ -106,7 +106,7 @@ module.exports = {
           return post._id;
         });
         var posts = postsPrivacyFilter(friendsPosts, req.user);
-        var modPosts = postsModerationFilter(posts,req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
@@ -913,7 +913,7 @@ module.exports = {
         var unfilteredPost = [];
         unfilteredPost.push(foundPost);
         var post = postsPrivacyFilter(unfilteredPost, req.user);
-        var modPost = postsModerationFilter(post,req.user);
+        var modPost = postsModerationFilter(post, req.user);
         if(modPost.length){
           var modPost = modPost[0];
           var PC_50_clubAvatar = cloudinary.url(modPost.postClub.avatarId,
@@ -1602,11 +1602,11 @@ function sortComments(posts){
   return topCommentPosts;
 };
 
-function postsPrivacyFilter(foundPosts, foundUser){
+function postsPrivacyFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var friendsLen = foundUser.friends.length;
-  var clubLen = foundUser.userClubs.length;
+  var friendsLen = currentUser.friends.length;
+  var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var privacy = foundPosts[i].privacy;
     //Public
@@ -1616,13 +1616,13 @@ function postsPrivacyFilter(foundPosts, foundUser){
     //Friends
     if(privacy == 1){
       var pushed = false;
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id) && pushed == false){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
         pushed = true;
         posts.push(foundPosts[i]);
       }
       if(friendsLen && pushed == false){
         for(j=0;j<friendsLen;j++){
-          if(foundPosts[i].postAuthor.id.equals(foundUser.friends[j])){
+          if(foundPosts[i].postAuthor.id.equals(currentUser.friends[j])){
             pushed = true;
             posts.push(foundPosts[i]);
             break;
@@ -1631,7 +1631,7 @@ function postsPrivacyFilter(foundPosts, foundUser){
       }
       if(clubLen && pushed == false){
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             pushed = true;
             posts.push(foundPosts[i]);
             break;
@@ -1641,11 +1641,11 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Club(members)
     if(privacy == 2){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             posts.push(foundPosts[i]);
             break;
           }
@@ -1654,16 +1654,16 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Club(friends)
     if(privacy == 3){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(friendsLen && clubLen){
         outerLoop:
         for(j=0;j<clubLen;j++){
           for(k=0;k<friendsLen;k++){
-            if((foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-                foundPosts[i].postAuthor.id.equals(foundUser.friends[k])) || 
-              (foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-               0 <= foundUser.userClubs[j].rank && foundUser.userClubs[j].rank <= 1)){
+            if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+                foundPosts[i].postAuthor.id.equals(currentUser.friends[k])) || 
+              (foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+               0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
               posts.push(foundPosts[i]);
               break outerLoop;
             }
@@ -1673,7 +1673,7 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Private
     if(privacy == 4){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }
     }
@@ -1681,19 +1681,19 @@ function postsPrivacyFilter(foundPosts, foundUser){
   return posts;
 };
 
-function postsModerationFilter(foundPosts, foundUser){
+function postsModerationFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var clubLen = foundUser.userClubs.length;
+  var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var moderation = foundPosts[i].moderation;
     //Exclusive
     if(moderation == 1){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(clubLen){
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             posts.push(foundPosts[i]);
           }
         }
@@ -1705,12 +1705,12 @@ function postsModerationFilter(foundPosts, foundUser){
     }
     //Hidden
     if(moderation == -1){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(clubLen){
         for(j=0;j<clubLen;j++){
-          if((foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-          0 <= foundUser.userClubs[j].rank && foundUser.userClubs[j].rank <= 1)){
+          if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+          0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
             posts.push(foundPosts[i]);
           }
         }

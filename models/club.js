@@ -20,8 +20,7 @@ const clubSchema = new Schema({
   },
   clubKeys: {
     college: String,
-    category: String,
-    weblink: String
+    category: String
   },
   updates: [{
     pusherId: this,

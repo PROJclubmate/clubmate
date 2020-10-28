@@ -358,7 +358,7 @@ module.exports = {
         });
         var userPosts = foundUserPosts;
         var posts = postsPrivacyFilter(userPosts, req.user);
-        var modPosts = postsModerationFilter(posts,req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
@@ -519,7 +519,7 @@ module.exports = {
         });
         var userPosts = foundHeartPosts;
         var posts = postsPrivacyFilter(userPosts, req.user);
-        var modPosts = postsModerationFilter(posts,req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatarH = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
@@ -814,7 +814,7 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
           } else{
-            var modTopTopicPosts = postsModerationFilter(topTopicPosts,req.user);
+            var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user);
             for(var l=0;l<modTopTopicPosts.length;l++){
               Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
               {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
@@ -860,7 +860,7 @@ module.exports = {
         console.log(Date.now()+' : '+req.user._id+' => (profiles-24)topTopicPosts err:- '+JSON.stringify(err, null, 2));
         return res.sendStatus(500);
         } else{
-          var modTopTopicPosts = postsModerationFilter(topTopicPosts,req.user);
+          var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user);
           for(var l=0;l<modTopTopicPosts.length;l++){
             Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
@@ -998,7 +998,7 @@ module.exports = {
           return post._id;
         });
         var posts = postsPrivacyFilter(clubPosts, req.user);
-        var modPosts = postsModerationFilter(posts,req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
@@ -1236,8 +1236,6 @@ module.exports = {
             foundClub.clubKeys.college = newCollegeName;
             foundClub.clubKeys.category = newCategory;
           }
-
-          foundClub.clubKeys.weblink = req.body.clubKeys.weblink.replace(/\&/g, ' ');
         }
         if(req.body.info){
           if(req.body.info.description){
@@ -1879,11 +1877,11 @@ function sortComments(posts){
   return topCommentPosts;
 };
 
-function postsPrivacyFilter(foundPosts, foundUser){
+function postsPrivacyFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var friendsLen = foundUser.friends.length;
-  var clubLen = foundUser.userClubs.length;
+  var friendsLen = currentUser.friends.length;
+  var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var privacy = foundPosts[i].privacy;
     //Public
@@ -1893,13 +1891,13 @@ function postsPrivacyFilter(foundPosts, foundUser){
     //Friends
     if(privacy == 1){
       var pushed = false;
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id) && pushed == false){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
         pushed = true;
         posts.push(foundPosts[i]);
       }
       if(friendsLen && pushed == false){
         for(j=0;j<friendsLen;j++){
-          if(foundPosts[i].postAuthor.id.equals(foundUser.friends[j])){
+          if(foundPosts[i].postAuthor.id.equals(currentUser.friends[j])){
             pushed = true;
             posts.push(foundPosts[i]);
             break;
@@ -1908,7 +1906,7 @@ function postsPrivacyFilter(foundPosts, foundUser){
       }
       if(clubLen && pushed == false){
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             pushed = true;
             posts.push(foundPosts[i]);
             break;
@@ -1918,11 +1916,11 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Club(members)
     if(privacy == 2){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             posts.push(foundPosts[i]);
             break;
           }
@@ -1931,16 +1929,16 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Club(friends)
     if(privacy == 3){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(friendsLen && clubLen){
         outerLoop:
         for(j=0;j<clubLen;j++){
           for(k=0;k<friendsLen;k++){
-            if((foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-                foundPosts[i].postAuthor.id.equals(foundUser.friends[k])) || 
-              (foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-               0 <= foundUser.userClubs[j].rank && foundUser.userClubs[j].rank <= 1)){
+            if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+                foundPosts[i].postAuthor.id.equals(currentUser.friends[k])) || 
+              (foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+               0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
               posts.push(foundPosts[i]);
               break outerLoop;
             }
@@ -1950,7 +1948,7 @@ function postsPrivacyFilter(foundPosts, foundUser){
     }
     //Private
     if(privacy == 4){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }
     }
@@ -1958,19 +1956,19 @@ function postsPrivacyFilter(foundPosts, foundUser){
   return posts;
 };
 
-function postsModerationFilter(foundPosts, foundUser){
+function postsModerationFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var clubLen = foundUser.userClubs.length;
+  var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var moderation = foundPosts[i].moderation;
     //Exclusive
     if(moderation == 1){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(clubLen){
         for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id)){
+          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
             posts.push(foundPosts[i]);
           }
         }
@@ -1982,12 +1980,12 @@ function postsModerationFilter(foundPosts, foundUser){
     }
     //Hidden
     if(moderation == -1){
-      if(foundPosts[i].postAuthor.id.equals(foundUser._id)){
+      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(clubLen){
         for(j=0;j<clubLen;j++){
-          if((foundPosts[i].postClub._id.equals(foundUser.userClubs[j].id) && 
-          0 <= foundUser.userClubs[j].rank && foundUser.userClubs[j].rank <= 1)){
+          if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
+          0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
             posts.push(foundPosts[i]);
           }
         }

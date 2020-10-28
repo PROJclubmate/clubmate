@@ -76,7 +76,7 @@ div.content{
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
-  .name{color: white !important; background-color: #3e3a39;}
+  .name{color: white !important; background-color: #403d3c; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 7px -2px rgba(0,0,0,0.4);}
   .navback{background-color: rgba(54,51,50,0.95);}
   .desktopNone{display: none !important;}
@@ -171,7 +171,8 @@ div.content{
 /* Mobile Phones */
 @media screen and (max-width: 767px){
   .navbar{box-shadow: none;}
-  .navbar-toggler{border-color: transparent !important; padding: 0.25rem 0.5rem !important;}
+  .navbar-toggler{border-width: 2px !important; border-color: transparent !important; 
+    padding: 0.1875rem 0.5rem !important;}
   .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
@@ -285,9 +286,9 @@ div.content{
   .sidebar-back{height: 50px !important;}
   .navbar{padding: 3px 10px !important;}
   #sidebar-dropbox{top: 50px; left: 91px;}
-  .sidebar a{padding: 13px 13.25px; height: 50px !important;}
-  a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
-  .sidebar-label{font-size: 0.75rem !important;}
+  .sidebar a{padding: 14px 13.25px; height: 50px !important;}
+  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
+  .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem;}
   .friends-dp{height: 6.9065rem !important;}
   h5.topic-h5{font-size: 1.25rem !important;}
   button.modvote{font-size: 2.75rem !important;}
@@ -338,16 +339,16 @@ div.content{
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
   #sidebar-dropbox{top: 50px; left: 91px;}
-  .sidebar a{padding: 13px 13px;}
-  a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
+  .sidebar a{padding: 14px 13px;}
+  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .friends-dp{height: 5.8445rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Redmi Note 7 => 393px*/
 @media screen and (max-width: 394px){
   #sidebar-dropbox{top: 50px; left: 86px;}
-  .sidebar a{padding: 13px 11.25px;}
-  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
+  .sidebar a{padding: 14px 11.25px;}
+  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .sidebar-icon{font-size: 1.375rem;}
   .friends-dp{height: 5.5475rem !important;}
   .commentpad2{padding-left: 0.25rem;}
@@ -356,8 +357,8 @@ div.content{
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
   #sidebar-dropbox{top: 50px; left: 84px;}
-  .sidebar a{padding: 13px 10px;}
-  a.hr2.active{padding-top: 9px; padding-bottom: 9px;}
+  .sidebar a{padding: 14px 10px;}
+  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .friends-dp{height: 5.4065rem !important;}
   .mobiletext{font-size: 0.9375rem !important;}
   .mobiletext2{font-size: 1rem !important;}
@@ -374,8 +375,8 @@ div.content{
 @media screen and (max-width: 376px){
   .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
   #sidebar-dropbox{top: 50px; left: 82px;}
-  .sidebar a{padding: 13px 9.5px;}
-  a.hr2.active{padding-top: 9.5px; padding-bottom: 9.5px;}
+  .sidebar a{padding: 14px 9.5px;}
+  a.hr2.active{padding-top: 12.5px; padding-bottom: 12.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
   .friends-dp{height: 5.2665rem !important;}
@@ -388,8 +389,8 @@ div.content{
   .sidebar-back{height: 42px !important;}
   .navbar{padding: 1px 10px !important;}
   #sidebar-dropbox{top: 42px; left: 78px;}
-  .sidebar a{padding: 8.5px 9px; height: 42px !important;}
-  a.hr2.active{padding-top: 6.5px; padding-bottom: 6.5px;}
+  .sidebar a{padding: 10.5px 9px; height: 42px !important;}
+  a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.6875rem !important;}
   .mobile-cover{height: 160px !important;}
   div.lpcov{width: 168px; padding-bottom: 0 !important;}
@@ -511,15 +512,15 @@ div.content{
   width: inherit;
 }
 #inbox_mobile{
-  font-size: 1.6875rem;
+  font-size: 1.75rem;
   color: #7a7b7c;
   -webkit-text-stroke: 0.5px #fafafa;
-  padding: 0.2rem 0.55rem;
+  padding: 0.125rem 0.5625rem;
   border-radius: 0.25rem;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 #inbox_mobile:hover{
-  border: 1px solid #eaecf0;
+  border: 2px solid #eaecf0;
 }
 .inbox_mobile.badge-mobile{
   margin: 0.25rem 0.5rem;
@@ -3234,7 +3235,7 @@ input.shadow:-webkit-autofill:focus{
   transition-duration: 0.15s;
   transition-timing-function: linear;
   text-transform: none;
-  background-color: #3e3a39;
+  background-color: #403d3c;
   border: 0;
   margin: 0;
   overflow: visible;

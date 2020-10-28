@@ -578,7 +578,7 @@ $('#client-posts-discover').on('click', '.discovercard', function(){
   var width = $(this).width();
   var height = $(this).height();
 
-  $(votecard).css({top: top, left: left, position:'absolute'}).width(width).height(height);
+  $(votecard).css({top: top, left: left, position:'absolute'}).width(width).height(height + 2);
   $(votecard).css('display', 'block');
 });
 
