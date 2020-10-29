@@ -92,7 +92,7 @@ if(socket !== undefined){
 
   // 3). FUNCTIONS
   function addMessages(data){
-    var prevDate;
+    var prevDate, prevAuthorId;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
     if(data.messages.bucketNum > 2){
       $('#load-prevMsgs-btn').removeClass('nodisplay');
@@ -103,16 +103,31 @@ if(socket !== undefined){
           $("#messages").append(`
             <div class="chat-head3"> ${moment(message.createdAt).format("MMM Do YY")} </div>`);
         }
-        prevDate = moment(message.createdAt).format("MMM Do YY");
         if(message.authorId == data.currentUser){
-          $("#messages").append(`
-            <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
-             ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+            $("#messages").append(`
+              <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
+              ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          } else{
+            $("#messages").append(`
+              <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
+              <div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
+              ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          }
         } else{
-          $("#messages").append(`
-            <div><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
-             ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+            $("#messages").append(`
+              <div><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
+              ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          } else{
+            $("#messages").append(`
+              <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
+              <div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
+              ${moment(message.createdAt).format('LT')} </div></div></div>`);
+          }
         }
+        prevDate = moment(message.createdAt).format("MMM Do YY");
+        prevAuthorId = message.authorId;
       });
     }
     chatBoxOnLoad()
@@ -246,7 +261,7 @@ if(socket !== undefined){
   socket.on('clubMessage', newClubMessage);
 
   function addClubMessages(data){
-    var prevDate;
+    var prevDate, prevAuthorId;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
     if(data.messages.bucketNum > 2){
       $('#load-prevMsgs-btn').removeClass('nodisplay');
@@ -257,16 +272,31 @@ if(socket !== undefined){
           $("#messages").append(`
             <div class="chat-head3"> ${moment(message.createdAt).format("MMM Do YY")} </div>`);
         }
-        prevDate = moment(message.createdAt).format("MMM Do YY");
         if(message.authorId == data.currentUser){
-          $("#messages").append(`
-            <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
-            <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+            $("#messages").append(`
+              <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          } else{
+            $("#messages").append(`
+              <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
+              <div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          }
         } else{
-          $("#messages").append(`
-            <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
-            <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+            $("#messages").append(`
+              <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          } else{
+            $("#messages").append(`
+              <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
+              <div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+          }
         }
+        prevDate = moment(message.createdAt).format("MMM Do YY");
+        prevAuthorId = message.authorId;
       });
     }
     chatBoxOnLoad()

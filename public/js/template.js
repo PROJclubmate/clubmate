@@ -635,19 +635,32 @@ $('#load-prevMsgs-btn').on('click', function(e){
 
 function load_prevMsgs_template(response){
   html = ejs.render(`
-<% var prevDate; %>
+<% var prevDate, prevAuthorId; %>
 <% messageBucket.messages.forEach(function(message){ %>
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
     <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
   <% } %>
-  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
   <% if(message.authorId == currentUser){ %>
-    <div class="flex-end"><div class="chat-msg2"><div><%= message.text %></div><div class="chat-head2">
-       <%= moment(message.createdAt).format('LT') %></div></div></div>
-  <% } else{ %>
-    <div><div class="chat-msg"><div><%= message.text %></div><div class="chat-head">
+    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div class="flex-end"><div class="chat-msg2"><div><%= message.text %></div><div class="chat-head2">
       <%= moment(message.createdAt).format('LT') %></div></div></div>
+    <% } else{ %>
+      <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
+      <div><%= message.text %></div><div class="chat-head2">
+      <%= moment(message.createdAt).format('LT') %></div></div></div>
+    <% } %>
+  <% } else{ %>
+    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div><div class="chat-msg"><div><%= message.text %></div><div class="chat-head">
+      <%= moment(message.createdAt).format('LT') %></div></div></div>
+    <% } else{ %>
+      <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
+      <div><%= message.text %></div><div class="chat-head">
+      <%= moment(message.createdAt).format('LT') %></div></div></div>
+    <% } %>
   <% } %>
+  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
+  <% prevAuthorId = message.authorId; %>
 <% }); %>
 `,{messageBucket: response.messageBucket, currentUser: response.currentUser});
   return html;
@@ -655,19 +668,31 @@ function load_prevMsgs_template(response){
 
 function load_prevClubMsgs_template(response){
   html = ejs.render(`
-<% var prevDate; %>
+<% var prevDate, prevAuthorId; %>
 <% messageBucket.messages.forEach(function(message){ %>
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
     <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
   <% } %>
-  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
   <% if(message.authorId == currentUser){ %>
-    <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"><%= firstName %>
+    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"><%= firstName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+    <% } else{ %>
+      <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
+      <div class="chat-head2"><%= firstName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+    <% } %>
   <% } else{ %>
-    <div><div class="chat-msg"><div class="chat-head bluecolor"><%= message.authorName %>
+    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div><div class="chat-msg"><div class="chat-head bluecolor"><%= message.authorName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+    <% } else{ %>
+      <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="chat-head bluecolor"><%= message.authorName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+    <% } %>
   <% } %>
+  <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
+  <% prevAuthorId = message.authorId; %>
 <% }); %>
 `,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName});
   return html;

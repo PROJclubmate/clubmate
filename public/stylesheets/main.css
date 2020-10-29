@@ -228,7 +228,7 @@ div.content{
   img.postimg{width: 100%; height: 22rem; object-fit: cover;}
   img.postimg.topicimg{height: 18rem !important;}
   .navbar-brand{margin: 0;}
-  .collegename{font-size: 1.5rem !important; border-radius: 0.5rem !important; line-height: 1.375rem !important;}
+  .collegename{font-size: 1.5rem !important; line-height: 1.375rem !important;}
   .collegepad{padding: 0.25rem 0.5rem !important;}
   .collegediv-name{padding: 0.25rem 0.25rem !important;}
   .collegediv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
@@ -279,6 +279,7 @@ div.content{
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
+  .inbox_mobile{max-height: 42px;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -335,6 +336,8 @@ div.content{
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
   .friends-dp{height: 5.875rem !important;}
+  .navbar-toggler{font-size: 1.375rem !important;}
+  #inbox_mobile{font-size: 1.875rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
@@ -443,6 +446,8 @@ div.content{
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
   .chat-msg3{top: 42.5% !important;}
+  .navbar-toggler{font-size: 1.25rem !important;}
+  #inbox_mobile{font-size: 1.75rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -971,7 +976,7 @@ time.calendar span{
 .collegename{
   font-size: 1.625rem;
   background-color: white;
-  border-radius: 2.5rem;
+  border-radius: 1.75rem;
   padding: 0.75rem 0.5rem;
   border: 1px solid darkgrey;
   line-height: 1.25rem;
@@ -2556,6 +2561,7 @@ select.select1::-ms-expand{
 #prevMessage-div{
   margin: 1rem 0;
   padding: 1rem 0;
+  width: 100%;
 }
 .topic-heart{
   margin-bottom: -0.25rem; 
