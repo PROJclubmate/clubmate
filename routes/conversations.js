@@ -252,14 +252,16 @@ module.exports = function(io){
 	// ================================ CLUB-CHAT ROUTES =====================================
 	router.get('/club-chat/:conversationId', function(req, res){
 		if(req.user){
-		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
-		  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
+			ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
+			// =========> IMPROVISE!!!! - 2nd level populate is not limited. desired only profilePic50 & _id
+		  .populate({path: 'messageBuckets', populate: {path: 'messages.authorId'}, options: {sort: {_id: -1}, limit: 2}})
 		  .exec(function(err, foundClubConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
+					// console.log('BRUH'+JSON.stringify(foundClubConversation, null, 2));
 	      	var foundMessageIds = foundClubConversation.messageBuckets.map(function(messages){
 		        return messages._id;
 		      });
@@ -295,12 +297,13 @@ module.exports = function(io){
 		    	}
 	    	};
 	  		if(contains2(req.user.userClubs,foundClubConversation.clubId)){
-	  			Message.findById(bucket[bucket.length-1], function(err, foundMessages){
+					Message.findById(bucket[bucket.length-1])
+					.populate('messages.authorId', '_id profilePic').exec(function(err, foundMessages){
 		        var currentUser = req.user._id;
 		        var firstName = req.user.firstName;
 		        if(foundMessages){
 		        	var foundMessageId = [foundMessages._id];
-		        } else{var foundMessageId = null;}
+						} else{var foundMessageId = null;}
 		        res.send({messageBucket: foundMessages, currentUser, foundMessageId, firstName});
 		      });
 	      } else{console.log('(conversations-19)Not a club member: ('+req.user._id+') '+req.user.fullName);}

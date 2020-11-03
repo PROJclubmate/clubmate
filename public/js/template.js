@@ -673,26 +673,30 @@ function load_prevClubMsgs_template(response){
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
     <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
   <% } %>
-  <% if(message.authorId == currentUser){ %>
-    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-      <div class="flex-end"><div class="chat-msg2"><div class="chat-head2"><%= firstName %>
+  <% if(message.authorId._id == currentUser){ %>
+    <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><%= firstName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
     <% } else{ %>
       <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
-      <div class="chat-head2"><%= firstName %>
+      <div class="chat-head2 chat-head-clubpad"><%= firstName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
     <% } %>
   <% } else{ %>
-    <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-      <div><div class="chat-msg"><div class="chat-head bluecolor"><%= message.authorName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+    <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
+      <div class="d-flex flex-row"><div class="px-1">
+      <img class="chatdp rounded-circle" src="<%= message.authorId.profilePic %>"></div>
+      <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
     <% } else{ %>
-      <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="chat-head bluecolor"><%= message.authorName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+      <div class="d-flex flex-row"><div class="px-1">
+      <img class="chatdp rounded-circle transparent2" src="<%= message.authorId.profilePic %>"></div>
+      <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
+      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
     <% } %>
   <% } %>
   <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
-  <% prevAuthorId = message.authorId; %>
+  <% prevAuthorId = message.authorId._id; %>
 <% }); %>
 `,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName});
   return html;

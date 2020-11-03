@@ -887,6 +887,12 @@ li.nav-item{
   width: 46px;
   object-fit: cover;
 }
+.chatdp{
+  height: 25px;
+  width: 25px;
+  object-fit: cover;
+  margin: 0.15rem 0;
+}
 #navname{
   vertical-align: middle;
 }
@@ -1866,6 +1872,9 @@ img.cover{
 }
 .transparent{
   background-color: transparent;
+}
+.transparent2{
+  opacity: 0;
 }
 .yellowback{
   background-color: #ffead9;

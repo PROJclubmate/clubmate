@@ -272,8 +272,8 @@ if(socket !== undefined){
           $("#messages").append(`
             <div class="chat-head3"> ${moment(message.createdAt).format("MMM Do YY")} </div>`);
         }
-        if(message.authorId == data.currentUser){
-          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+        if(message.authorId._id == data.currentUser){
+          if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
             $("#messages").append(`
               <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
@@ -284,19 +284,23 @@ if(socket !== undefined){
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
           }
         } else{
-          if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
+          if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
             $("#messages").append(`
+              <div class="d-flex flex-row"><div class="px-1">
+              <img class="chatdp rounded-circle" src="${message.authorId.profilePic}"></div>
               <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
-              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div></div>`);
           } else{
             $("#messages").append(`
+              <div class="d-flex flex-row"><div class="px-1">
+              <img class="chatdp rounded-circle transparent2" src="${message.authorId.profilePic}"></div>
               <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
               <div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
-              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div>`);
+              <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div></div>`);
           }
         }
         prevDate = moment(message.createdAt).format("MMM Do YY");
-        prevAuthorId = message.authorId;
+        prevAuthorId = message.authorId._id;
       });
     }
     chatBoxOnLoad()
