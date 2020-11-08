@@ -298,7 +298,7 @@ module.exports = function(io){
 	    	};
 	  		if(contains2(req.user.userClubs,foundClubConversation.clubId)){
 					Message.findById(bucket[bucket.length-1])
-					.populate('messages.authorId', '_id profilePic').exec(function(err, foundMessages){
+					.populate('messages.authorId', '_id profilePic profilePic50').exec(function(err, foundMessages){
 		        var currentUser = req.user._id;
 		        var firstName = req.user.firstName;
 		        if(foundMessages){

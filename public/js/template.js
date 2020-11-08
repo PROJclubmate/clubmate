@@ -603,7 +603,7 @@ $('#load-prevMsgs-btn').on('click', function(e){
       $('#load-prevMsgs-btn').addClass('nodisplay');
     }
   } else if($("#pin-chatbox").hasClass("chatbox-club")){
-    const conversationId = $("#club-convoId").attr("value").split(',')[0];
+    const conversationId = $("#club-convoId").attr("value").split('^')[0];
     if(conversationId){
       $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
       $.ajax({
@@ -685,12 +685,12 @@ function load_prevClubMsgs_template(response){
   <% } else{ %>
     <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
       <div class="d-flex flex-row"><div class="px-1">
-      <img class="chatdp rounded-circle" src="<%= message.authorId.profilePic %>"></div>
+      <img class="chatdp rounded-circle" src="<%= message.authorId.profilePic50 %>"></div>
       <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
     <% } else{ %>
       <div class="d-flex flex-row"><div class="px-1">
-      <img class="chatdp rounded-circle transparent2" src="<%= message.authorId.profilePic %>"></div>
+      <img class="chatdp rounded-circle transparent2" src="<%= message.authorId.profilePic50 %>"></div>
       <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
       <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
     <% } %>

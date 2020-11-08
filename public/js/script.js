@@ -79,13 +79,6 @@ if(window.innerWidth > 768){
   if(!$('#latestUpdates').hasClass('clubupdates')){
     $('#latestUpdates').addClass('show');
   }
-  $("#myTab").on('click', '.nav-link', function(e){
-    if($(this).attr('id') == 'chats-tab'){
-      hidesidebar(-1);
-    } else if($(this).attr('id') != 'chats-tab' && $('#chats-tab').hasClass('active')){
-      hidesidebar(1);
-    }
-  });
 }
 
 $('#latestUpdates').on('shown.bs.collapse', function(){

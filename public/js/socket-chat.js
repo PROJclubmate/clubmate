@@ -173,7 +173,7 @@ if(socket !== undefined){
   $(() =>{
     $(() =>{
       if($("#club-convoId").hasClass("club-convoId")){
-        var convIdclubId = $("#club-convoId").attr("value").split(',');
+        var convIdclubId = $("#club-convoId").attr("value").split('^');
         var conversationId = convIdclubId[0];
         var clubId = convIdclubId[1];
         socket.emit('joinClubRoom', conversationId);
@@ -187,16 +187,18 @@ if(socket !== undefined){
       var authorName = $("#pin-chatbox").attr("value");
       var composedMessage = $("#club-message").val();
       if(composedMessage && composedMessage != ''){
-        var convIdclubIdcurrId = $("#club-convoId").attr("value").split(',');
-        var conversationId = convIdclubIdcurrId[0];
-        var clubId = convIdclubIdcurrId[1];
-        var authorId = convIdclubIdcurrId[2];
+        var convIdclubIdcurrIdProfilePic = $("#club-convoId").attr("value").split('^');
+        var conversationId = convIdclubIdcurrIdProfilePic[0];
+        var clubId = convIdclubIdcurrIdProfilePic[1];
+        var authorId = convIdclubIdcurrIdProfilePic[2];
+        var authorprofilePic = convIdclubIdcurrIdProfilePic[3];
         sendClubMessage({
           composedMessage: composedMessage,
           conversationId: conversationId,
           clubId: clubId,
           authorId: authorId,
-          authorName: authorName
+          authorName: authorName,
+          authorProfilePic: authorprofilePic
         });
         socket.emit('notClubTyping', $("#pin-chatbox").attr("value"));
       } else{
@@ -287,13 +289,13 @@ if(socket !== undefined){
           if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
             $("#messages").append(`
               <div class="d-flex flex-row"><div class="px-1">
-              <img class="chatdp rounded-circle" src="${message.authorId.profilePic}"></div>
+              <img class="chatdp rounded-circle" src="${message.authorId.profilePic50}"></div>
               <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div></div>`);
           } else{
             $("#messages").append(`
               <div class="d-flex flex-row"><div class="px-1">
-              <img class="chatdp rounded-circle transparent2" src="${message.authorId.profilePic}"></div>
+              <img class="chatdp rounded-circle transparent2" src="${message.authorId.profilePic50}"></div>
               <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
               <div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="chat-msg-div"> ${message.text}</div> </div></div></div>`);
@@ -306,16 +308,18 @@ if(socket !== undefined){
     chatBoxOnLoad()
   }
   function newClubMessage(data){
-    var convIdclubIdcurrId = $("#club-convoId").attr("value").split(',');
-    var currentUserId = convIdclubIdcurrId[2];
+    var convIdclubIdcurrIdProfilePic = $("#club-convoId").attr("value").split('^');
+    var currentUserId = convIdclubIdcurrIdProfilePic[2];
     if(currentUserId == data.authorId){
         $("#messages").append(`
           <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span></span> ${data.authorName} </div>
-           <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
+          <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
       } else{
         $("#messages").append(`
+          <div class="d-flex flex-row"><div class="px-1">
+          <img class="chatdp rounded-circle transparent" src="${data.authorProfilePic}"></div>
           <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${data.authorName} </div>
-           <div class="chat-msg-div"> ${data.composedMessage} </div></div></div>`);
+          <div class="chat-msg-div"> ${data.composedMessage} </div></div></div></div>`);
       }
     scrollToNext()
   }

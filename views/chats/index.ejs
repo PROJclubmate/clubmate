@@ -2,8 +2,9 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-4 col-md-4 col-12 chatlist-box scroll moz-scroll">
-		<div class="greyback">
-			<h3 class="chatpad mt-3">Chats</h3>
+		<div class="greyback valign">
+			<div><h3 class="chatpad mt-3">Chats</h3></div>
+			<div class="mr-2 mt-2 desktopNone"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
 		</div>
 		<div class="card mt-0 chatlist-margin" style="min-height: 100%;">
 			<% for(var i=0;i<chatList.length;i++){ %>
@@ -16,9 +17,17 @@
 						<div>
 							<div class="py-2 my-1 px-1">
 								<% if(chatList[i].type == 'user'){ %>
-					      	<img class="collegedp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
-					      <% } else if(chatList[i].type == 'club'){ %>
-					      	<img class="collegedp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
+									<% if(chatList[i].id.toString() == recipientId2){ %>
+										<a href="/users/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem;" src="<%= chatList[i].image || '/images/noUser.png' %>"></a>
+									<% } else{ %>
+										<a href="/users/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>"></a>
+									<% } %>
+								<% } else if(chatList[i].type == 'club'){ %>
+									<% if(chatList[i].id.toString() == convClubId2){ %>
+										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem;" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+									<% } else{ %>
+										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+									<% } %>
 					     	<% } %>
 					    </div>
 						</div>
@@ -86,7 +95,7 @@
 		    </div>
 			<% } else if(chatType == 'club'){ %>
 				<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-6 col-lg-6 col-12" value="<%= currentUser.firstName %>">
-		      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUserId %>">
+		      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.profilePic50 %>">
 		        <% include ../chats/clubchat %>
 		      </div>
 				</div>

@@ -319,11 +319,11 @@
           <div class="card-header tabcontainer">
             <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link boldtext black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
+                <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
               </li>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
                 <li class="nav-item">
-                  <a class="nav-link boldtext black active" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
+                  <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
                 </li>
               <% } %>
               <li class="nav-item">
@@ -343,7 +343,7 @@
           </div>
             <div class="tab-content" id="myTabContent">
               <!-- Activity Tab -->
-              <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+              <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
                     <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
@@ -416,9 +416,9 @@
               </div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
                 <!-- Chats Tab -->
-                <div class="tab-pane fade cardpad greyback nothing show active" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
                   <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
-                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
+                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.profilePic50 %>">
                       <% include ../clubs/chats %>
                     </div>
                   </div>

@@ -564,6 +564,9 @@ module.exports = {
             //replace original information with new information
             foundUser.profilePicId = result.public_id;
             foundUser.profilePic = result.secure_url;
+            var User_50_profilePic = cloudinary.url(result.public_id,
+            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            foundUser.profilePic50 = User_50_profilePic;
           } catch(err){
             console.log(Date.now()+' : '+req.user._id+' => (profiles-16)profilePicUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');

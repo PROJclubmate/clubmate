@@ -172,8 +172,8 @@ div.content{
 @media screen and (max-width: 767px){
   .navbar{box-shadow: none;}
   .navbar-toggler{border-width: 2px !important; border-color: transparent !important; 
-    padding: 0.1875rem 0.5rem !important;}
-  .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important;}
+    padding: 0.1875rem 0.5rem !important; border-radius: 1rem 1rem 0.25rem 0.25rem;}
+  .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important; outline: none;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
   .name-green{
@@ -279,7 +279,6 @@ div.content{
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
-  .inbox_mobile{max-height: 42px;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -337,7 +336,7 @@ div.content{
 @media screen and (max-width: 415px){
   .friends-dp{height: 5.875rem !important;}
   .navbar-toggler{font-size: 1.375rem !important;}
-  #inbox_mobile{font-size: 1.875rem !important;}
+  #inbox_mobile{font-size: 1.8125rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
@@ -447,7 +446,7 @@ div.content{
   #messages{margin-bottom: 42px;}
   .chat-msg3{top: 42.5% !important;}
   .navbar-toggler{font-size: 1.25rem !important;}
-  #inbox_mobile{font-size: 1.75rem !important;}
+  #inbox_mobile{font-size: 1.6875rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -458,6 +457,7 @@ div.content{
   .name-green{padding: 0.25rem 0 !important; font-size: 1.375rem !important; -webkit-text-stroke-width: 0.6px;}
 }
 /*----------------------------------------------------------------*/
+.fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
 .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke: 0.75px #fafafa;}
 .fas.fa-thumbs-up.greencolor, .fas.fa-heart.redcolor2, .fas.fa-arrow-alt-circle-up{-webkit-text-stroke: 0.25px #262626;}
 .fas.fa-thumbs-down{-webkit-text-stroke: 0.25px #fafafa;}
@@ -521,7 +521,7 @@ div.content{
   color: #7a7b7c;
   -webkit-text-stroke: 0.5px #fafafa;
   padding: 0.125rem 0.5625rem;
-  border-radius: 0.25rem;
+  border-radius: 1rem 1rem 0.25rem 0.25rem;
   border: 2px solid transparent;
 }
 #inbox_mobile:hover{
@@ -886,6 +886,13 @@ li.nav-item{
   height: 46px;
   width: 46px;
   object-fit: cover;
+}
+a > .collegedp.chatsdp{
+  color: lightgrey;
+}
+a > .collegedp.chatsdp:hover{
+  border: 2px solid lightgrey;
+  transition: 0.1s ease-in-out;
 }
 .chatdp{
   height: 25px;
@@ -2746,7 +2753,7 @@ input.shadow:-webkit-autofill:focus{
   width: 3.0625rem;
   user-select: none;
 }
-[type="checkbox"]{
+#toggleCollegePageViewKey{
   display: none;
 }
 .check-label{
@@ -3333,4 +3340,9 @@ input.shadow:-webkit-autofill:focus{
 .cover-help{
   width: 40vw;
   object-fit: cover;
+}
+.far.fa-compass:hover{
+  color: goldenrod;
+  -webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: black;
 }
