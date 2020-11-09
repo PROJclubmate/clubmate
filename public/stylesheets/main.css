@@ -173,7 +173,7 @@ div.content{
   .navbar{box-shadow: none;}
   .navbar-toggler{border-width: 2px !important; border-color: transparent !important; 
     padding: 0.1875rem 0.5rem !important; border-radius: 1rem 1rem 0.25rem 0.25rem;}
-  .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important; outline: none;}
+  .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important; outline: none; background-color: white;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
   .name-green{
@@ -291,7 +291,8 @@ div.content{
   .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem;}
   .friends-dp{height: 6.9065rem !important;}
   h5.topic-h5{font-size: 1.25rem !important;}
-  button.modvote{font-size: 2.75rem !important;}
+  button.modvote{font-size: 2.625rem !important;}
+  .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 2.875rem !important; margin: 0 -0.25rem !important;}
   .content-toppad{padding-top: 0.675rem !important;}
   .btn.btncollapse{padding: 0.125rem 0.25rem !important;}
   .info-size{font-size: 1.0625rem !important;}
@@ -410,7 +411,8 @@ div.content{
   .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
   h5.topic-h5{font-size: 1.125rem !important;}
-  button.modvote{font-size: 2.625rem !important;}
+  button.modvote{font-size: 2.5rem !important;}
+  .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 2.75rem !important;}
   .content-toppad{padding-top: 0.5rem !important;}
   .nav-link{padding: 5px 4px !important; font-size: 1rem !important;}
   .nav-link.requests{font-size: 1.125rem !important;}
@@ -461,7 +463,8 @@ div.content{
 .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke: 0.75px #fafafa;}
 .fas.fa-thumbs-up.greencolor, .fas.fa-heart.redcolor2, .fas.fa-arrow-alt-circle-up{-webkit-text-stroke: 0.25px #262626;}
 .fas.fa-thumbs-down{-webkit-text-stroke: 0.25px #fafafa;}
-.fas.fa-caret-up, .fas.fa-caret-down{-webkit-text-stroke: 0.25px #262626;}
+.fas.fa-caret-up, .fas.fa-caret-down{-webkit-text-stroke: 1.25px #262626;}
+.on > .fas.fa-caret-up, .on > .fas.fa-caret-down{-webkit-text-stroke: 0.5px #262626; font-size: 2.875rem; margin: 0 -0.25rem;}
 .fas.fa-ellipsis-v{-webkit-text-stroke: 0.25px #fafafa;}
 .text-lato{font-family: 'Lato', sans-serif;}
 .text-bitter{font-family: 'Bitter', serif;}
@@ -526,6 +529,7 @@ div.content{
 }
 #inbox_mobile:hover{
   border: 2px solid #eaecf0;
+  background-color: white;
 }
 .inbox_mobile.badge-mobile{
   margin: 0.25rem 0.5rem;
@@ -2161,6 +2165,7 @@ button.vote{
   color: #262626;
   cursor: pointer;
 }
+button.vote:focus{outline: none;}
 button.vote2{
   font-size: 1.25rem;
   padding: 0;
@@ -2169,15 +2174,17 @@ button.vote2{
   color: grey;
   cursor: pointer;
 }
+button.vote2:focus{outline: none;}
 button.modvote{
-  font-size: 2.75rem;
+  font-size: 2.625rem;
   line-height: 1.125rem;
   padding: 0;
   border: none;
   background-color: rgba(0,0,0,0);
-  color: darkgrey;
+  color: transparent;
   cursor: pointer;
 }
+button.modvote:focus{outline: none;}
 button.dislikebtn:hover{
   color: black;
 }

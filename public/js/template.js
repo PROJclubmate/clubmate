@@ -1020,13 +1020,13 @@ function index_posts_template(response){
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
-                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
@@ -1512,13 +1512,13 @@ function club_posts_template(response){
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
-                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
@@ -1887,13 +1887,13 @@ function user_posts_template(response){
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
-                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                  <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+                  <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
@@ -2253,13 +2253,13 @@ function heart_posts_template(response){
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= postsH[l]._id %>/modvote" method="POST">
                 <% if(hasModVoteH[l] == 1){%>
-                  <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                  <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
                   <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVoteH[l] == -1){ %>
                   <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
-                  <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+                  <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                 <% } else if(hasModVoteH[l] == 0){ %>
                   <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                   <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>

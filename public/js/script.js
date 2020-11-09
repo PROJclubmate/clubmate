@@ -1015,22 +1015,22 @@ $("div#delegated-posts").on('click', '.modvote', function(e){
       $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
 
       if(formData[1].name == 'upVote'){
-        $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor');
+        $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
         if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor3')){
           $('#modVote-count'+data.foundPost._id).removeClass('bluecolor3');
         } else{
           $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
         }
-        $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor');
+        $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
       }
       if(formData[1].name == 'downVote'){
-        $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor');
+        $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
         if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
           $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
         } else{
           $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
         }
-        $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor');
+        $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
       }
     },
     error: function(xhr) {

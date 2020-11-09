@@ -219,7 +219,7 @@ if(socket !== undefined){
     }
   }
   $("#club-message").focus(function(){
-    var conversationId = $("#club-convoId").attr("value").split(',')[0];
+    var conversationId = $("#club-convoId").attr("value").split('^')[0];
     $.post('/seen_clubmsg/'+conversationId);
   });
 

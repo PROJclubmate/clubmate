@@ -215,13 +215,13 @@
                 <div class="mx-2 mb-auto d-flex flex-column">
                   <form class="d-flex flex-column post-modvote-form" action="/posts/<%= post._id %>/modvote" method="POST">
                     <% if(hasModVote == 1){ %>
-                      <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn bluecolor" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
+                      <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                       <span id="modVote-count<%= post._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= post.upVoteCount - post.downVoteCount %></span>
                       <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                     <% } else if(hasModVote == -1){ %>
                       <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                       <span id="modVote-count<%= post._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= post.upVoteCount - post.downVoteCount %></span>
-                      <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn orangecolor" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
+                      <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down lineheight3"></i></button>
                     <% } else if(hasModVote == 0){ %>
                       <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up lineheight3"></i></button>
                       <span id="modVote-count<%= post._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
@@ -430,7 +430,7 @@
     </div>
   <% } else if(currentUser && post.topic != '' && quote == false){ %>
     <div id="pin-chatbox" class="col-md-4 col-lg-3 mt-3 pb-2 px-2 order-md-last order-first postclubchat mobileNone" value="<%= currentUser.firstName %>">
-      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>,<%= convClubId %>,<%= currentUser._id %>">
+      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.profilePic50 %>">
         <% include ../partials/clubchat %>
       </div>
     </div>
