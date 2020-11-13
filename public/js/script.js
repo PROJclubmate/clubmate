@@ -76,7 +76,7 @@ if(location.pathname == '/home'){
 }
 
 if(window.innerWidth > 768){
-  if(!$('#latestUpdates').hasClass('clubupdates')){
+  if(!$('#latestUpdates').hasClass('clubupdates') && $('#latestUpdates-count').text() != 0){
     $('#latestUpdates').addClass('show');
   }
 }
@@ -127,14 +127,26 @@ function hidesidebar(hideValueNum){
 }
 
 $('#input_topic').on('input', function(e){
-  if($(this).val() != ''){
-    $('#priv_everyone').removeAttr('selected');
-    $('#priv_club').attr('selected', 'true');
-    $('.priv_public').attr('disabled', 'true');
+  if(!$('#description').hasClass('junior')){
+    if($(this).val() != ''){
+      $('#priv_everyone').removeAttr('selected');
+      $('#priv_club').attr('selected', 'true');
+      $('.priv_public').attr('disabled', 'true');
+    } else{
+      $('.priv_public').removeAttr('disabled');
+      $('#priv_club').removeAttr('selected');
+      $('#priv_everyone').attr('selected', 'true');
+    }
   } else{
-    $('.priv_public').removeAttr('disabled');
-    $('#priv_club').removeAttr('selected');
-    $('#priv_everyone').attr('selected', 'true');
+    if($(this).val() != ''){
+      $('#description').removeClass('description2');
+      $('#description').removeAttr('readonly', 'true');
+      $('#description').attr('required', 'true');
+    } else{
+      $('#description').addClass('description2');
+      $('#description').attr('readonly', 'true');
+      $('#description').removeAttr('required', 'true');
+    }
   }
 });
 

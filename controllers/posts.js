@@ -802,13 +802,12 @@ module.exports = {
   },
 
   postsCreate(req, res, next){
-    var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-    {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
     var rank = currentRank2(req.params.club_id,req.user.userClubs);
-    // Only rank 0-3 can create a topic
-    if(((req.body.topic == '') && (0<=rank && rank<=4)) || ((req.body.topic != '') && (0<=rank && rank<4))){
+    // Only rank 0-3 can create a simple post
+    if(((req.body.topic != '') && (0<=rank && rank<=4)) || ((req.body.topic == '') && (0<=rank && rank<=3))){
       if(req.file){
-        if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
+        if(req.body.privacy && (((req.body.topic != '') && (2<=req.body.privacy && req.body.privacy<=4)) || 
+        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=4)))){
           cloudinary.v2.uploader.upload(req.file.path,
           {folder: 'postImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
           effect: 'sharpen:25', format: 'webp', crop: 'limit'},
@@ -858,7 +857,8 @@ module.exports = {
           return res.redirect('back');
         }
       } else{
-        if(req.body.privacy && 0<=req.body.privacy && req.body.privacy<=4){
+        if(req.body.privacy && (((req.body.topic != '') && (2<=req.body.privacy && req.body.privacy<=4)) || 
+        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=4)))){
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
           if(err || !foundClub){

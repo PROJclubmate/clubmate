@@ -279,6 +279,7 @@ div.content{
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
+  .collegedp{margin: 0 0.25rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -313,7 +314,7 @@ div.content{
   .story-label{width: 75px !important;}
   .story-plus{padding: 1.325rem 0 !important;}
   .navdp{height: 40px !important; width: 40px !important;}
-  .collegedp{height: 58px !important; width: 58px !important;}
+  .collegedp{height: 62px !important; width: 62px !important;}
   button.vote{font-size: 1.625rem !important;}
   img.postimg{height: 25.75rem !important;}
   img.postimg.topicimg{height: 20rem !important;}
@@ -432,7 +433,7 @@ div.content{
   .story-label{width: 65px !important;}
   .story-plus{padding: 1rem 0 !important;}
   .navdp{height: 36px !important; width: 36px !important;}
-  .collegedp{height: 50px !important; width: 50px !important;}
+  .collegedp{height: 54px !important; width: 54px !important;}
   button.vote{font-size: 1.5rem !important;}
   img.postimg{height: 22.5rem !important;}
   img.postimg.topicimg{height: 18rem !important;}
@@ -464,7 +465,7 @@ div.content{
 .fas.fa-thumbs-up.greencolor, .fas.fa-heart.redcolor2, .fas.fa-arrow-alt-circle-up{-webkit-text-stroke: 0.25px #262626;}
 .fas.fa-thumbs-down{-webkit-text-stroke: 0.25px #fafafa;}
 .fas.fa-caret-up, .fas.fa-caret-down{-webkit-text-stroke: 1.25px #262626;}
-.on > .fas.fa-caret-up, .on > .fas.fa-caret-down{-webkit-text-stroke: 0.5px #262626; font-size: 2.875rem; margin: 0 -0.25rem;}
+.on > .fas.fa-caret-up, .on > .fas.fa-caret-down{-webkit-text-stroke: 0.25px #262626; font-size: 2.875rem; margin: 0 -0.25rem;}
 .fas.fa-ellipsis-v{-webkit-text-stroke: 0.25px #fafafa;}
 .text-lato{font-family: 'Lato', sans-serif;}
 .text-bitter{font-family: 'Bitter', serif;}
@@ -887,9 +888,10 @@ li.nav-item{
   margin-left: -0.5rem;
 }
 .collegedp{
-  height: 46px;
-  width: 46px;
+  height: 50px;
+  width: 50px;
   object-fit: cover;
+  margin-right: 0.25rem !important;
 }
 a > .collegedp.chatsdp{
   color: lightgrey;
@@ -1523,7 +1525,7 @@ input[type="file"]#inputavatar{
   box-shadow: none;
 }
 .btncollapse.btncollapse-info:hover, .btncollapse.btncollapse-info:focus{
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
+  box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3);
 }
 .btn-primary{
   border-color: #3b7db5;
@@ -2593,6 +2595,7 @@ select.select1::-ms-expand{
   min-height: 3rem;
 }
 .topic-break{
+  width: 100%;
   border-radius: 0.5rem 0 0 0.5rem !important;
   border-bottom: 1px solid #c0c0c0 !important;
   border-top: 1px solid #d2d2d2 !important;
@@ -2612,13 +2615,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
   font-size: 0.875rem;
   background-color: #ffead9;
 }
-.topic2{
-  border-radius: 0.5rem 0.5rem 0 0;
-  font-family: 'Bitter', serif;
-  font-weight: 600;
-  font-size: 0.875rem;
-  box-shadow: none;
-}
 .hyperlink{
   border-radius: 0 0 0.15rem 0.15rem;
   margin-top: -0.635rem;
@@ -2626,6 +2622,12 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
 }
 .description{
   border-radius: 0 0 0.15rem 0.15rem;
+}
+.description2{
+  background-color: whitesmoke !important;
+}
+.description2:focus{
+  box-shadow: none !important;
 }
 .subpostdp{
   height: 50px !important;

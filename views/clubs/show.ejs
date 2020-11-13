@@ -347,15 +347,18 @@
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
                     <form id="create-new-post" class="card-body2" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                      <label for="topic" class="sr-only">Topic</label>
                       <% if(rank >= 0 && rank <=3){ %>
-                        <label for="topic" class="sr-only">Topic</label>
                         <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);">
                       <% } else{ %>
-                        <label for="topic" class="sr-only">Topic</label>
-                        <input type="text" name="topic" class="form-control topic2" placeholder="discussion [topic]" readonly="readonly" value="" style="border: none;">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);" required>
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
-                      <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                      <% if(rank >= 0 && rank <=3){ %>
+                        <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                      <% } else{ %>
+                        <textarea id="description" class="emoji-input form-control text-sm description description2 junior" type="text" name="description" placeholder="Describe your post" rows="3" readonly></textarea>
+                      <% } %>
                       <label for="hyperlink" class="sr-only">Hyperlink</label>
                       <input id="hyperlink" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Hyperlink">
                       <div class="righttext d-flex my-auto">
@@ -389,9 +392,18 @@
                           <span>
                             <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
                             <select id="privacy" name="privacy" class="shortened-select select1 blackcolor" data-toggle="tooltip" title="Privacy setting">
-                              <option id="priv_everyone" class="priv_public" value="0" data-descr="Everyone" selected></option>
-                              <option class="priv_public" value="1" data-descr="My Friends"></option>
-                              <option id="priv_club" value="2" data-descr="This Club"></option>
+                              <% if(rank >= 0 && rank <=3){ %>
+                                <option id="priv_everyone" class="priv_public" value="0" data-descr="Everyone" selected></option>
+                                <option class="priv_public" value="1" data-descr="My Friends"></option>
+                              <% } else if(rank == 4){ %>
+                                <option id="priv_everyone" class="priv_public" value="0" data-descr="Everyone" disabled></option>
+                                <option class="priv_public" value="1" data-descr="My Friends" disabled></option>
+                              <% } %>
+                              <% if(rank == 4){ %>
+                                <option id="priv_club" value="2" data-descr="This Club" selected></option>
+                              <% } else if(rank >= 0 && rank <=3){ %>
+                                <option id="priv_club" value="2" data-descr="This Club"></option>
+                              <% } %>
                               <option value="3" data-descr="Friends in Club"></option>
                               <option value="4" data-descr="Only Me"></option>
                             </select>
