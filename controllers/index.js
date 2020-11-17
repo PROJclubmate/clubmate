@@ -231,9 +231,7 @@ module.exports = {
           var chatType = null;
           if(req.body && req.body.user){
             chatType = 'user';
-            Conversation.findOne({_id: req.body.user})
-            .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
-            .exec(function(err, foundConversation){ 
+            Conversation.findOne({_id: req.body.convId}, function(err, foundConversation){ 
             if(err || !foundConversation){
               console.log(req.user._id+' => (index-6)foundConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -250,12 +248,8 @@ module.exports = {
                 var isBlocked = false;
                 var isBlockedByFoundUser = false;
               }
-              var foundMessageIds = foundConversation.messageBuckets.map(function(messages){
-                return messages._id;
-              });
               var currentUserId = req.user._id;
               var conversationId = foundConversation._id;
-              var lastMessage = foundConversation.latestMessage;
               for(var l=0;l<foundConversation.participants.length;l++){
                 if(!foundConversation.participants[l].equals(req.user._id)){
                   var recipientId2 = foundConversation.participants[l];
@@ -268,34 +262,28 @@ module.exports = {
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                return res.render('chats/index', {chatList, chatType, messages: foundConversation, currentUserId, 
-                recipientId: '', convClubId: null, lastMessage, conversationId, isBlocked, isBlockedByFoundUser, 
-                foundMessageIds, recepient: foundRecepient, recipientId2, convClubId2: null});
+                return res.render('chats/index', {chatList, chatType, currentUserId, 
+                recipientId: '', convClubId: null, conversationId, isBlocked, isBlockedByFoundUser, 
+                recepient: foundRecepient, recipientId2, convClubId2: null});
               }
               });
             }
             });
           } else if(req.body && req.body.club){
             chatType = 'club';
-            ClubConversation.findOne({_id: req.body.club, isActive: true})
-            .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
-            .exec(function(err, foundClubConversation){
+            ClubConversation.findOne({_id: req.body.convId, isActive: true}, function(err, foundClubConversation){
             if(err || !foundClubConversation){
               console.log(req.user._id+' => (index-8)foundClubConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
-              if(contains2(req.user.userClubs,foundClubConversation.clubId)){
-                var foundMessageIds = foundClubConversation.messageBuckets.map(function(messages){
-                  return messages._id;
-                });
+              if(contains2(req.user.userClubs, foundClubConversation.clubId)){
                 var currentUserId = req.user._id;
                 var firstName = req.user.firstName;
                 var conversationId = foundClubConversation._id;
                 var convClubId2 = foundClubConversation.clubId;
-                return res.render('chats/index', {chatList, chatType, messages: foundClubConversation, currentUserId, 
-                conversationId ,convClubId: '', recipientId: null, firstName, foundMessageIds, convClubId2, 
-                recipientId2: null});
+                return res.render('chats/index', {chatList, chatType, currentUserId, conversationId , 
+                convClubId: '', recipientId: null, firstName, convClubId2, recipientId2: null});
               }
             }
             });

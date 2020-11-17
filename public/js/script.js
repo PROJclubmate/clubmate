@@ -600,14 +600,17 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
 });
 
 $('.chat-item').click(function(){
-  var id = $(this).attr('id').substring(9);
+  var convIdCHATITEMprofileId = $(this).attr('id').split('^');
+  var convId = convIdCHATITEMprofileId[0];
+  var profileId = convIdCHATITEMprofileId[2];
   var type = $(this).attr('value');
   if(type == 'user'){
-    $.post('/seen_msg/'+id);
+    $.post('/seen_msg/'+convId);
   } else if(type == 'club'){
-    $.post('/seen_clubmsg/'+id);
+    $.post('/seen_clubmsg/'+convId);
   }
-  $('.chat-form').append('<input type="hidden" name="'+type+'" value="'+id+'">').submit();
+  $('.chat-form').append('<input type="hidden" name="convId" value="'+convId+'">')
+  .append('<input type="hidden" name="'+type+'" value="'+profileId+'">').submit();
 });
 
 var remToPx = function(count){

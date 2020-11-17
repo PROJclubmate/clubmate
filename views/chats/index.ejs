@@ -10,9 +10,9 @@
 			<% for(var i=0;i<chatList.length;i++){ %>
 				<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
 					<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
-						<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
+						<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
 					<% } else{ %>
-						<div id="chat-item<%= chatList[i]._id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
+						<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
 					<% } %>
 						<div>
 							<div class="py-2 my-1 px-1">
