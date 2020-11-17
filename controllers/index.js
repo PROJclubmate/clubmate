@@ -279,11 +279,10 @@ module.exports = {
             } else{
               if(contains2(req.user.userClubs, foundClubConversation.clubId)){
                 var currentUserId = req.user._id;
-                var firstName = req.user.firstName;
                 var conversationId = foundClubConversation._id;
-                var convClubId2 = foundClubConversation.clubId;
-                return res.render('chats/index', {chatList, chatType, currentUserId, conversationId , 
-                convClubId: '', recipientId: null, firstName, convClubId2, recipientId2: null});
+                var convClubId2 = req.body.club;
+                return res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
+                convClubId: '', recipientId: null, convClubId2, recipientId2: null});
               }
             }
             });

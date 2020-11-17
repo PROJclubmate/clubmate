@@ -75,12 +75,6 @@ if(location.pathname == '/home'){
   friends.classList.toggle('active');
 }
 
-if(window.innerWidth > 768){
-  if(!$('#latestUpdates').hasClass('clubupdates') && $('#latestUpdates-count').text() != 0){
-    $('#latestUpdates').addClass('show');
-  }
-}
-
 $('#latestUpdates').on('shown.bs.collapse', function(){
   if($('#pushnew').hasClass('admin')){
     $('#latestUpdates').animate({scrollTop: 92}, 500);
@@ -743,6 +737,10 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   if(window.innerWidth < 768){
     if($('#mypage').length){
       $('#brandname').addClass("name-green");
+    }
+  } else{
+    if(!$('#latestUpdates').hasClass('clubupdates') && $('#latestUpdates-count').text() != 0){
+      $('#latestUpdates').addClass('show');
     }
   }
   

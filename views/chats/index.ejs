@@ -90,13 +90,17 @@
 			<% if(chatType == 'user'){ %>
 				<div id="pin-chatbox" class="chatbox-user pin-chatbox2 col-md-6 col-lg-6 col-12" value="<%= currentUser.firstName %>">
 		      <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUserId %>">
-		        <% include ../chats/userchat %>
+						<div id="lastMsgBy" value="">
+							<% include ../chats/userchat %>
+						</div>
 		      </div>
 		    </div>
 			<% } else if(chatType == 'club'){ %>
 				<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-6 col-lg-6 col-12" value="<%= currentUser.firstName %>">
-		      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.profilePic50 %>">
-		        <% include ../chats/clubchat %>
+		      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
+						<div id="lastMsgBy" value="">
+							<% include ../chats/clubchat %>
+						</div>
 		      </div>
 				</div>
 			<% } %>
