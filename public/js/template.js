@@ -642,20 +642,20 @@ function load_prevMsgs_template(response){
   <% } %>
   <% if(message.authorId == currentUser){ %>
     <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-      <div class="flex-end"><div class="chat-msg2"><div><%= message.text %></div><div class="chat-head2">
+      <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head2">
       <%= moment(message.createdAt).format('LT') %></div></div></div>
     <% } else{ %>
       <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
-      <div><%= message.text %></div><div class="chat-head2">
+      <div class="chat-msg-div"><%= message.text %></div><div class="chat-head2">
       <%= moment(message.createdAt).format('LT') %></div></div></div>
     <% } %>
   <% } else{ %>
     <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-      <div><div class="chat-msg"><div><%= message.text %></div><div class="chat-head">
+      <div><div class="chat-msg"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head">
       <%= moment(message.createdAt).format('LT') %></div></div></div>
     <% } else{ %>
       <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
-      <div><%= message.text %></div><div class="chat-head">
+      <div class="chat-msg-div"><%= message.text %></div><div class="chat-head">
       <%= moment(message.createdAt).format('LT') %></div></div></div>
     <% } %>
   <% } %>
@@ -676,23 +676,23 @@ function load_prevClubMsgs_template(response){
   <% if(message.authorId._id == currentUser){ %>
     <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
       <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><%= firstName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+      <%= moment(message.createdAt).format('LT') %></div><div class="clubchat-msg-div"><%= message.text %></div> </div></div>
     <% } else{ %>
       <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
       <div class="chat-head2 chat-head-clubpad"><%= firstName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div>
+      <%= moment(message.createdAt).format('LT') %></div><div class="clubchat-msg-div"><%= message.text %></div> </div></div>
     <% } %>
   <% } else{ %>
     <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
       <div class="d-flex flex-row"><div class="px-1">
       <img class="chatdp rounded-circle" src="<%= message.authorId.profilePic50 %>"></div>
       <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
+      <%= moment(message.createdAt).format('LT') %></div><div class="clubchat-msg-div"><%= message.text %></div> </div></div></div>
     <% } else{ %>
       <div class="d-flex flex-row"><div class="px-1">
       <img class="chatdp rounded-circle transparent2" src="<%= message.authorId.profilePic50 %>"></div>
       <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="chat-head chat-head-clubpad bluecolor"><%= message.authorName %>
-      <%= moment(message.createdAt).format('LT') %></div><div><%= message.text %></div> </div></div></div>
+      <%= moment(message.createdAt).format('LT') %></div><div class="clubchat-msg-div"><%= message.text %></div> </div></div></div>
     <% } %>
   <% } %>
   <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
@@ -805,7 +805,11 @@ function index_posts_template(response){
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
           <% } %>
+          <% if(posts[k].description.length < 150){ %>
+            <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+          <% } else{ %>
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+          <% } %>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
             <div class="lightgrey2">
               <span>
@@ -1016,7 +1020,7 @@ function index_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div style="margin-top: -0.25rem;">
+          <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -1279,7 +1283,11 @@ function club_posts_template(response){
       <% } else{ %>
         <div class="nounderline nothing card-body2">
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-            <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
+            <% if(posts[k].description.length < 150){ %>
+              <span class="truncate2 mobiletext linewrap nolink description-short"><%= posts[k].description %></span>
+            <% } else{ %>
+              <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
+            <% } %>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
             <div class="lightgrey2">
               <span>
@@ -1508,7 +1516,7 @@ function club_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div style="margin-top: -0.25rem;">
+          <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -1669,7 +1677,11 @@ function user_posts_template(response){
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-            <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <% if(posts[k].description.length < 150){ %>
+              <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+            <% } else{ %>
+              <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <% } %>
             <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
             <div class="lightgrey2">
               <span>
@@ -1883,7 +1895,7 @@ function user_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div style="margin-top: -0.25rem;">
+          <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
@@ -2035,7 +2047,11 @@ function heart_posts_template(response){
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-            <p class="truncate2 nothing mobiletext linewrap nolink"><%= postsH[l].description %></p>
+            <% if(postsH[l].description.length < 150){ %>
+              <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= postsH[l].description %></p>
+            <% } else{ %>
+              <p class="truncate2 nothing mobiletext linewrap nolink"><%= postsH[l].description %></p>
+            <% } %>
             <p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p>
             <div class="lightgrey2">
               <span>
@@ -2249,7 +2265,7 @@ function heart_posts_template(response){
               </div>
             <% } %>
           </div>
-          <div style="margin-top: -0.25rem;">
+          <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= postsH[l]._id %>/modvote" method="POST">
                 <% if(hasModVoteH[l] == 1){%>

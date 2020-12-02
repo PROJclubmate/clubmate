@@ -1,193 +1,200 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-9 order-md-first order-last card border-light" style="min-height: 75vh;">
-		<div class="college valign collegediv-name">
-			<% if(match){ %>
-				<div class="boldtext">
-					<div class="collegename d-flex">
-						<span>
-							<sup class="greencolor2 text-xs pb-auto boldtext">My </sup>
-							<i class="fas fa-university lightgrey text-xxl"></i>
-							<span id="copyTxt"><%= college_page.name %></span>
-						</span>
-						<div class="tooltip">
-						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-						  <i class="far fa-copy lightgrey"></i>
-						  </button>
+	<div class="col-lg-9 order-md-first order-last card chatlist-box chatlist-box-college scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
+		<% if(college_page.cover && college_page.cover != ''){  %>
+			<div class="greyback">
+				<img class="cover college-cover" src="<%= college_page.cover %>">
+			</div>
+		<% } %>
+		<div class="border-light" style="border-bottom-color: white !important;">
+			<div class="college valign collegediv-name">
+				<% if(match){ %>
+					<div class="boldtext">
+						<div class="collegename d-flex">
+							<span>
+								<sup class="greencolor2 text-xs pb-auto boldtext">My </sup>
+								<i class="fas fa-university lightgrey text-xxl"></i>
+								<span id="copyTxt"><%= college_page.name %></span>
+							</span>
+							<div class="tooltip">
+							<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+								<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+								<i class="far fa-copy lightgrey"></i>
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
-			<% } else{ %>
-				<div class="boldtext">
-					<div class="collegename d-flex">
-						<span>
-							<i class="fas fa-university lightgrey text-xxl mr-2 ml-1"></i><span id="copyTxt"><%= college_page.name %></span>
-						</span>
-						<div class="tooltip">
-						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-						  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-						  <i class="far fa-copy lightgrey"></i>
-						  </button>
+				<% } else{ %>
+					<div class="boldtext">
+						<div class="collegename d-flex">
+							<span>
+								<i class="fas fa-university lightgrey text-xxl mr-2 ml-1"></i><span id="copyTxt"><%= college_page.name %></span>
+							</span>
+							<div class="tooltip">
+							<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+								<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+								<i class="far fa-copy lightgrey"></i>
+								</button>
+							</div>
 						</div>
-					</div>
-					</div>
-			<% } %>
-			<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
-		</div>
-		<div class="collegediv-clubcnt">
-			<div class="valign">
-				<div class="d-flex flex-row">
-					<div class="mobilebold lightgrey text-md mx-1">
-						<span><span class="boldtext"><%= college_page.clubCount %></span> clubs</span>
+						</div>
+				<% } %>
+				<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
+			</div>
+			<div class="collegediv-clubcnt">
+				<div class="valign">
+					<div class="d-flex flex-row">
+						<div class="mobilebold lightgrey text-md mx-1">
+							<span><span class="boldtext"><%= college_page.clubCount %></span> clubs</span>
+						</div>
+						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
+							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+								<div id="container-collegePage">
+									<div class="toggleCollegePage">
+										<input type="checkbox" name="toggleCollegePage" class="check-checkbox" id="toggleCollegePageViewKey">
+										<label class="check-label" for="toggleCollegePageViewKey">
+											<div id="background"></div>
+											<span class="face">
+												<span class="face-container">
+													<span class="eye left"></span>
+													<span class="eye right"></span>
+													<span class="mouth"></span>
+												</span>
+											</span>
+										</label>
+									</div>
+								</div>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+							</form>
+						<% } else if(currentUser && keyValue == 2){ %>
+							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+								<div id="container-collegePage">
+									<div class="toggleCollegePage">
+										<input type="checkbox" name="toggleCollegePage" class="check-checkbox" id="toggleCollegePageViewKey" checked>
+										<label class="check-label" for="toggleCollegePageViewKey">
+											<div id="background"></div>
+											<span class="face">
+												<span class="face-container">
+													<span class="eye left"></span>
+													<span class="eye right"></span>
+													<span class="mouth"></span>
+												</span>
+											</span>
+										</label>
+									</div>
+								</div>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+							</form>
+						<% } %>
 					</div>
 					<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
-						<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-							<div id="container-collegePage">
-							  <div class="toggleCollegePage">
-							    <input type="checkbox" name="toggleCollegePage" class="check-checkbox" id="toggleCollegePageViewKey">
-							    <label class="check-label" for="toggleCollegePageViewKey">
-							      <div id="background"></div>
-							      <span class="face">
-							        <span class="face-container">
-							          <span class="eye left"></span>
-							          <span class="eye right"></span>
-							          <span class="mouth"></span>
-							        </span>
-							      </span>
-							    </label>
-							  </div>
-							</div>
-							<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-						</form>
+						<div></div>
 					<% } else if(currentUser && keyValue == 2){ %>
-						<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-							<div id="container-collegePage">
-							  <div class="toggleCollegePage">
-							    <input type="checkbox" name="toggleCollegePage" class="check-checkbox" id="toggleCollegePageViewKey" checked>
-							    <label class="check-label" for="toggleCollegePageViewKey">
-							      <div id="background"></div>
-							      <span class="face">
-							        <span class="face-container">
-							          <span class="eye left"></span>
-							          <span class="eye right"></span>
-							          <span class="mouth"></span>
-							        </span>
-							      </span>
-							    </label>
-							  </div>
-							</div>
+						<form action="/colleges/<%= college_page._id %>/followall/user/<%= currentUserId %>?_method=PUT" method="POST">
+							<% if(college_page.clubCount-thisCollegePageFollowingClubIdsArr.length > 0){ %>
+								<div style="height: 22px;">
+									<button class="btn btn-college2 btn-followall py-1 px-0 noshadow text-xs" name="followAllClubs" value="true" type="submit">Follow all <i class="fas fa-arrow-down"></i></button>
+								</div>
+							<% } else{ %>
+								<div style="height: 22px;">
+									<button class="btn btn-college2 btn-followall py-1 px-0 noshadow text-xs lightgrey2" name="followAllClubs" value="false" type="submit">Unfollow all <i class="fas fa-arrow-down"></i></button>
+								</div>
+							<% } %>
 							<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 						</form>
 					<% } %>
 				</div>
 				<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
-					<div></div>
+					<div class="text-xxs boldtext lightgrey2 p-1 invisible">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
 				<% } else if(currentUser && keyValue == 2){ %>
-					<form action="/colleges/<%= college_page._id %>/followall/user/<%= currentUserId %>?_method=PUT" method="POST">
-						<% if(college_page.clubCount-thisCollegePageFollowingClubIdsArr.length > 0){ %>
-							<div style="height: 22px;">
-								<button class="btn btn-college2 btn-followall py-1 px-0 noshadow text-xs" name="followAllClubs" value="true" type="submit">Follow all <i class="fas fa-arrow-down"></i></button>
-							</div>
-						<% } else{ %>
-							<div style="height: 22px;">
-								<button class="btn btn-college2 btn-followall py-1 px-0 noshadow text-xs lightgrey2" name="followAllClubs" value="false" type="submit">Unfollow all <i class="fas fa-arrow-down"></i></button>
+					<div class="text-xxs boldtext lightgrey2 p-1">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
+				<% } %>
+			</div>
+			<div class="collegepad py-1">
+				<% for(var i=college_page.allClubs.length-1;i>=0;i--){ %>
+					<% if(college_page.allClubs[i].category != ''){ %>
+						<% if(college_page.allClubs[i].categoryCount>0){ %>
+							<div class="boldtext category">
+								<%= college_page.allClubs[i].category %> (<%= college_page.allClubs[i].categoryCount %>)
 							</div>
 						<% } %>
-						<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-					</form>
-				<% } %>
-			</div>
-			<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
-				<div class="text-xxs boldtext lightgrey2 p-1 invisible">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
-			<% } else if(currentUser && keyValue == 2){ %>
-				<div class="text-xxs boldtext lightgrey2 p-1">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
-			<% } %>
-		</div>
-		<div class="collegepad py-1">
-			<% for(var i=college_page.allClubs.length-1;i>=0;i--){ %>
-				<% if(college_page.allClubs[i].category != ''){ %>
-					<% if(college_page.allClubs[i].categoryCount>0){ %>
-						<div class="boldtext category">
-							<%= college_page.allClubs[i].category %> (<%= college_page.allClubs[i].categoryCount %>)
-						</div>
+					<% } else{ %>
+						<% if(college_page.allClubs[i].categoryCount>0){ %>
+							<div class="boldtext category">
+								<span class="redcolor">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
+							</div>
+						<% } %>
 					<% } %>
-				<% } else{ %>
-					<% if(college_page.allClubs[i].categoryCount>0){ %>
-						<div class="boldtext category">
-							<span class="redcolor">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
-						</div>
-					<% } %>
-				<% } %>
-				<div class="my-2 lineheight2">
-			  <% for(var j=college_page.allClubs[i].categoryClubIds.length-1;j>=0;j--){ %>
-			  	<div class="valign">
-				  	<div class="d-flex flex-row">
-					    <div class="py-1 mb-auto">
-					      <a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>">
-					      <img class="collegedp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
-					    </div>
-					    <div class="my-auto ml-2">
-					    	<% if(currentUser && keyValue == 2){ %>
-					      	<span class="mr-1 lineheight" style="vertical-align: top;">
-					      <% } else{ %>
-					      	<span class="lineheight" style="vertical-align: baseline;">
-					      <% } %>
-					       	<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
-					          <strong><%= college_page.allClubs[i].categoryClubIds[j].name %></strong>
-					        </a>
-					      </span>
-					      <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-					      	<span class="ml-1 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
-					      <% } else if(currentUser && keyValue == 2){ %>
-									<% if(clubUserIdsArr[i][j].length){ %>
-										<br/>
-					      		<span class="pl-2 nowrap d-inline-flex" style="margin-left: 1rem;">
-					      			<% var count = 0; %>
-						      		<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
-				      					<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
-				      						<% if(count<3 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
-				      							<span class="smalldppad d-inline-flex" title="<%= foundFriendsPicArr[l].name %>" style="z-index: <%= 4-count %>;">
-						      						<img class="smalldp rounded-circle" src="<%= foundFriendsPicArr[l].url %>">
-						      					</span>
-						      					<% count++; %>
+					<div class="my-2 lineheight2">
+					<% for(var j=college_page.allClubs[i].categoryClubIds.length-1;j>=0;j--){ %>
+						<div class="valign">
+							<div class="d-flex flex-row">
+								<div class="py-1 mb-auto">
+									<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>">
+									<img class="collegedp rounded-circle" src="<%= Clubs_50_clubAvatar[i][j] || '/images/noClub.png' %>"></a>
+								</div>
+								<div class="my-auto ml-2">
+									<% if(currentUser && keyValue == 2){ %>
+										<span class="mr-1 lineheight" style="vertical-align: top;">
+									<% } else{ %>
+										<span class="lineheight" style="vertical-align: baseline;">
+									<% } %>
+										<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
+											<strong><%= college_page.allClubs[i].categoryClubIds[j].name %></strong>
+										</a>
+									</span>
+									<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
+										<span class="ml-1 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+									<% } else if(currentUser && keyValue == 2){ %>
+										<% if(clubUserIdsArr[i][j].length){ %>
+											<br/>
+											<span class="pl-2 nowrap d-inline-flex" style="margin-left: 1rem;">
+												<% var count = 0; %>
+												<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
+													<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
+														<% if(count<3 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
+															<span class="smalldppad d-inline-flex" title="<%= foundFriendsPicArr[l].name %>" style="z-index: <%= 4-count %>;">
+																<img class="smalldp rounded-circle" src="<%= foundFriendsPicArr[l].url %>">
+															</span>
+															<% count++; %>
+														<% } %>
 													<% } %>
-				      					<% } %>
+												<% } %>
+											</span>
+											<% if(clubUserIdsArr[i][j].length > 3){ %>
+												<span class="text-xs lightgrey" style="vertical-align: text-top;">.. <%= clubUserIdsArr[i][j].length-3 %> more</span>
 											<% } %>
-										</span>
-										<% if(clubUserIdsArr[i][j].length > 3){ %>
-											<span class="text-xs lightgrey" style="vertical-align: text-top;">.. <%= clubUserIdsArr[i][j].length-3 %> more</span>
 										<% } %>
-					      	<% } %>
-					      <% } %>
-					    </div>
-					  </div>
-					  <% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-						  <div class="darkgrey text-sm mobiletext2 px-1 nowrap">
-				        <em><%= college_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
-				      </div>
-				    <% } else if(keyValue == 2){ %>
-				    	<form action="/users/<%= currentUser._id %>/follow/<%= college_page.allClubs[i].categoryClubIds[j]._id %>?_method=PUT" method="POST">
-					    	<% if(thisCollegePageFollowingClubIdsArr.includes(college_page.allClubs[i].categoryClubIds[j]._id)){ %>
-					    		<div>
-					    			<button class="btn btn-light btn-college collegediv-follow mobiletext3" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
-					    		</div>
-					    	<% } else{ %>
-					    		<div>
-					    			<button class="btn btn-college2 collegediv-follow mobiletext3" name="followClub" value="true" type="submit">Follow</button>
-					    		</div>
-					    	<% } %>
-					    	<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-					    </form>
-				    <% } %>
-			    </div>
-			  <% } %>
+									<% } %>
+								</div>
+							</div>
+							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
+								<div class="darkgrey text-sm mobiletext2 px-1 nowrap">
+									<em><%= college_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
+								</div>
+							<% } else if(keyValue == 2){ %>
+								<form action="/users/<%= currentUser._id %>/follow/<%= college_page.allClubs[i].categoryClubIds[j]._id %>?_method=PUT" method="POST">
+									<% if(thisCollegePageFollowingClubIdsArr.includes(college_page.allClubs[i].categoryClubIds[j]._id)){ %>
+										<div>
+											<button class="btn btn-light btn-college collegediv-follow mobiletext3" name="followClub" value="false" type="submit"><i class="fas fa-check"></i> Following</button>
+										</div>
+									<% } else{ %>
+										<div>
+											<button class="btn btn-college2 collegediv-follow mobiletext3" name="followClub" value="true" type="submit">Follow</button>
+										</div>
+									<% } %>
+									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+								</form>
+							<% } %>
+						</div>
+					<% } %>
+				</div>
+				<% } %>
 			</div>
-			<% } %>
 		</div>
 	</div>
-	<div class="col-md-4 col-lg-3 px-2">
+	<div class="col-md-4 col-lg-3 px-2 mobileNone">
     <div class="list-group">
       <li class="list-group-item orangecolor text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
     </div>

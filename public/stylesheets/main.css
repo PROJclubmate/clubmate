@@ -58,21 +58,6 @@ div.content{
   #side-home{height: 40px;}
   .story-container{width: 45vw;}
 }
-/* iPad Pro */
-@media screen and (min-width: 992px) and (max-width: 1200px){
-  .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
-  .story-container{width: 50vw;}
-}
-/* iPad */
-@media screen and (min-width: 768px) and (max-width: 992px){
-  .mobileNone.tabletNone{display: none !important;}
-  .desktopNone.tabletShow{display: block !important;}
-  .discover-icon{font-size: 1.75rem;}
-  .discoverswitch-mobile{padding: 0 3.5rem !important;}
-  .story-container{width: 65vw;}
-  .lb-absolute{position:  absolute; bottom: 0; left: 0.25rem; margin: 0 0.25rem 0.5rem 0.25rem;}
-  #discover_nav{position: fixed; bottom: 0; top: unset;}
-}
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
@@ -88,6 +73,7 @@ div.content{
   .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
+  .chatlist-box-college.scroll::-webkit-scrollbar-track{background: #d8d8d8;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     transition: ease-in-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
@@ -143,6 +129,8 @@ div.content{
   .text-xxxxl{font-size: 2rem !important;}
   .chats-img{width: 35%; display: block; margin-left: auto; margin-right: auto; 
     transform: translateY(50%); filter: opacity(65%);}
+  h5.topic-h5{font-size: 1.375rem !important;}
+  .description-short{font-size: 1.25rem !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -160,13 +148,34 @@ div.content{
   .content-toppad{padding-top: 0.5rem;}
   .sidebar-iconmar{margin-right: 0;}
   .hamburger{visibility: hidden;}
-  .discoverswitch{padding: 1rem 1rem !important;}
+  .discoverswitch{padding: 1rem 1.75rem !important;}
   .sidebar-label{font-size: 0.9375rem !important; margin: 0;}
   .sidebar-icon{font-size: 1.45rem;}
   .sidebar a{padding: 7.5px 11px; font-size: 1rem; float: left; height: 42px !important;}
   a.hr2.active{padding-top: 5.5px; padding-bottom: 5.5px;}
   .btnxxs{padding: 0 4px !important;}
   .story-container.mobilepad{padding: 0 0.5rem !important;}
+}
+/* iPad Pro */
+@media screen and (min-width: 992px) and (max-width: 1200px){
+  .pin-chatbox{margin: 0 0 0 75%; left: 0; right: 0;}
+  .story-container{width: 50vw;}
+  .navbar{height: 42px;}
+  .sidebar-back{height: 42px;}
+  .info30{width: 64% !important;}
+}
+/* iPad */
+@media screen and (min-width: 768px) and (max-width: 992px){
+  .mobileNone.tabletNone{display: none !important;}
+  .desktopNone.tabletShow{display: block !important;}
+  .discover-icon{font-size: 1.75rem;}
+  .discoverswitch-mobile{padding: 0 3.5rem !important;}
+  .story-container{width: 65vw;}
+  .lb-absolute{position:  absolute; bottom: 0; left: 0.25rem; margin: 0 0.25rem 0.5rem 0.25rem;}
+  #discover_nav{position: fixed; bottom: 0; top: unset;}
+  .navbar{height: 42px;}
+  .sidebar-back{height: 42px;}
+  .info30{width: 64% !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -198,7 +207,7 @@ div.content{
   .carousel-caption{bottom: 2.5rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
   .carousel-caption-heading{margin: 0; line-height: 1rem !important;}
   .chat-head3{width: 92vw;}
-  h5.topic-h5{font-size: 1.125rem!important; padding: 0.125rem 0;}
+  h5.topic-h5{font-size: 1.3125rem !important; padding: 0.125rem 0;}
   .searchcard2{width: 100% !important;}
   div.mt-2.mobilepad.keys{margin-top: 0.25rem !important;}
   .friends-dp{height: 8rem !important;}
@@ -280,6 +289,7 @@ div.content{
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .collegedp{margin: 0 0.25rem !important;}
+  .description-short{font-size: 1.1875rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -291,7 +301,6 @@ div.content{
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem;}
   .friends-dp{height: 6.9065rem !important;}
-  h5.topic-h5{font-size: 1.25rem !important;}
   button.modvote{font-size: 2.625rem !important;}
   .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 2.875rem !important; margin: 0 -0.25rem !important;}
   .content-toppad{padding-top: 0.675rem !important;}
@@ -411,7 +420,7 @@ div.content{
   div.carousel-div{height: 127px !important;}
   .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
-  h5.topic-h5{font-size: 1.125rem !important;}
+  h5.topic-h5{font-size: 1.1875rem !important;}
   button.modvote{font-size: 2.5rem !important;}
   .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 2.75rem !important;}
   .content-toppad{padding-top: 0.5rem !important;}
@@ -450,6 +459,7 @@ div.content{
   .chat-msg3{top: 42.5% !important;}
   .navbar-toggler{font-size: 1.25rem !important;}
   #inbox_mobile{font-size: 1.6875rem !important;}
+  .description-short{font-size: 1.125rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -711,7 +721,7 @@ input{
 }
 .discoverswitch{
   font-size: 1.375rem;
-  padding: 1rem 2rem;
+  padding: 1rem 1.875rem;
 }
 .discoverswitch-mobile{
   font-size: 1.65rem;
@@ -727,6 +737,7 @@ input{
   background: linear-gradient(270deg, rgba(138,43,226,1) 0%, rgba(244,128,36,1) 5%, rgba(0,125,213,1) 25%, rgba(0,51,102,1) 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
+  white-space: nowrap;
 }
 #explore-switch{
   color: white;
@@ -734,6 +745,7 @@ input{
   background: linear-gradient(90deg, rgba(0,125,213,1) 25%, rgba(100,149,237,1) 65%, rgba(246,215,176,1) 85%, rgba(125,220,31,1) 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
+  white-space: nowrap;
 }
 #following-switch-mobile{
   background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 15%, rgba(0,125,213,1) 35%, rgba(0,51,102,1) 80%);
@@ -749,6 +761,9 @@ input{
 }
 /* Card styles 
 ------------------------------------------------------*/
+.show-comments{
+  border-radius: 0 0 0.5rem 0.5rem !important;
+}
 .post-head{
   border-radius: 0.5rem 0.5rem 0 0 !important;
   border-top: 1px solid #d2d2d2 !important;
@@ -895,6 +910,7 @@ li.nav-item{
 }
 a > .collegedp.chatsdp{
   color: lightgrey;
+  background-color: lightgrey;
 }
 a > .collegedp.chatsdp:hover{
   border: 2px solid lightgrey;
@@ -1008,9 +1024,14 @@ time.calendar span{
   font-size: 1.15rem;
   border-radius: 0.5rem !important;
 }
-.collegepad{padding: 0.25rem 1rem;}
+.collegepad{
+  padding: 0.25rem 1rem;
+}
 .collegediv-name{
   padding: 0.25rem 1rem;
+  z-index: 5;
+  position: sticky;
+  top: 0;
 }
 .btn-college{
   color: white;
@@ -1119,6 +1140,10 @@ time.calendar span{
 .avatar{
   height: 200px;
 }
+.college-cover{
+  height: 116px;
+  overflow: hidden;
+}
 #postinfo{
   float: right;
 }
@@ -1154,6 +1179,7 @@ span.nopad{
   z-index: 10;
   padding: 0 25px 0 50px;
   justify-content: space-between;
+  will-change: transform;
 }
 a.nav-link{
   margin: 0 0.25rem;
@@ -1550,18 +1576,19 @@ input[type="file"]#inputavatar{
   background-color: #8db9df;
 }
 .btn.moderation{
-  border-radius: 1rem !important;
+  border-radius: 0.5rem !important;
 }
 .btn-info{
   border-color: #407cc4;
   background-color: white;
   color: #407cc4;
-  font-weight: 600;
+  font-weight: 500;
   border-width: 1px !important;
 }
 .btn-info:hover{
   border-color: #106ab0;
   background-color: #1a90d9;
+  font-weight: 600;
 }
 .btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
   border-color: #1470a9;
@@ -2167,7 +2194,6 @@ button.vote{
   color: #262626;
   cursor: pointer;
 }
-button.vote:focus{outline: none;}
 button.vote2{
   font-size: 1.25rem;
   padding: 0;
@@ -2489,6 +2515,7 @@ select.select1::-ms-expand{
   height: 158px;
   overflow-y: scroll;
   overflow-y: overlay;
+  overflow-x: hidden;
   will-change: transform;
 }
 #messages:hover{
@@ -2508,6 +2535,10 @@ select.select1::-ms-expand{
 }
 .chat-msg-div{
   white-space: pre-line;
+  padding-bottom: 0.25rem;
+}
+.clubchat-msg-div{
+  white-space: pre-line;
 }
 .chat-msg{
   word-break: break-word;
@@ -2519,19 +2550,19 @@ select.select1::-ms-expand{
   background-color: white;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.5rem;
+  padding: 0.625rem;
   margin: 0.15rem 3rem 0.15rem 0;
 }
 .chat-msg2{
   line-height: 1.15rem !important;
   font-size: 0.9375rem;
-  border: 1px solid #d0d0d0;
+  border: 1px solid #cccccc;
   border-top: none;
   border-left: none;
   background-color: #b3ffb3;
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.5rem;
+  padding: 0.625rem;
   margin: 0.15rem 0 0.15rem 3rem;
 }
 .chat-msg3{
@@ -2551,18 +2582,19 @@ select.select1::-ms-expand{
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.35rem 0;
+  margin: 0 0 -0.5rem 0;
 }
 .chat-head-clubpad{
-  margin: -0.35rem 0 0 0 !important;
+  margin: -0.675rem 0 0 0 !important;
   padding-bottom: 0.25rem;
+  padding-top: 0.3125rem;
 }
 .chat-head2{
   text-align: right;
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.35rem 0;
+  margin: 0 0 -0.5rem 0;
 }
 .chat-head3{
   text-align: center;
@@ -2628,6 +2660,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
 }
 .description2:focus{
   box-shadow: none !important;
+}
+.description-short{
+  padding: 1rem 0;
 }
 .subpostdp{
   height: 50px !important;
@@ -3114,7 +3149,12 @@ input.shadow:-webkit-autofill:focus{
   height: calc(100vh - 2rem - 40px);
   overflow-y: scroll;
   overflow-y: overlay;
+  overflow-x: hidden;
   bottom: -1rem;
+  will-change: transform;
+}
+.chatlist-box-college{
+  bottom: unset;
 }
 .chatlist-content{
   border-bottom: 1px solid whitesmoke;

@@ -1,3 +1,9 @@
+var $img = $('#college_page_A');
+
+if($img.length > 0 && !$img.get(0).complete){
+  $img.on('load', initComparisons);
+}
+
 function initComparisons() {
   $('#college_page_A_container').height($('#college_page_A').height()+'px');
 

@@ -67,7 +67,11 @@
         <% } else{ %>
           <div class="card-body3">
         <% } %>
+        <% if(!post.image && post.description.length < 150){ %>
+          <p class="nothing mobiletext linewrap description-short"><%= post.description %></p>
+        <% } else{ %>
           <p class="nothing mobiletext linewrap"><%= post.description %></p>
+        <% } %>
           <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
           <div class="valign">
             <div>
@@ -211,7 +215,7 @@
                   </ul>
                 </div>
               </div>
-              <div style="margin-top: -0.25rem;">
+              <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
                 <div class="mx-2 mb-auto d-flex flex-column">
                   <form class="d-flex flex-column post-modvote-form" action="/posts/<%= post._id %>/modvote" method="POST">
                     <% if(hasModVote == 1){ %>

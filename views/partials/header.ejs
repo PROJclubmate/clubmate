@@ -51,16 +51,16 @@
       </div>
       <div>
         <% if(currentUser){ %>
-          <div class="inbox_mobile nodisplay" style="margin-right: -0.5rem;">
+          <div id="inbox_mobile_div" class="inbox_mobile" style="margin-right: -0.5rem;">
             <span class="notification">
-              <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Inbox" onclick="toggle_requests('inbox_mobile');"><i class="far fa-envelope"></i></a>
+              <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
               <% if(currentUser.inboxMsgCount > 0){ %>
                 <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.inboxMsgCount %></span>
               <% } %>
             </span>
           </div>
         <% } %>
-        <div style="margin-right: -0.5rem;">
+        <div id="mobile_toggler_div" class="nodisplay" style="margin-right: -0.5rem;">
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
               <% if (currentUser && currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
@@ -102,16 +102,16 @@
             </li>
           <% } else{ %>
             <li class="nav-item">
-              <a href="/help" id="help_online" class="text-lg nav-link burgernav requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
+              <a href="/help" id="help_online" class="text-xl nav-link burgernav requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item notification">
-              <span><a href="/chats" id="inbox" class="text-xl nav-link burgernav requests" title="Inbox"><i class="fas fa-envelope" onclick="toggle_requests('inbox');"></i></a></span>
+              <span><a href="/chats" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
               <% if(currentUser.inboxMsgCount > 0){ %>
                 <span class="inbox_count badge text-xxs"><%= currentUser.inboxMsgCount %></span>
               <% } %>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
-              <span id="requestslink" class="text-xl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
+              <span id="requestslink" class="text-xxl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
                 <i class="fas fa-user-friends"></i>
               </span>
               <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>

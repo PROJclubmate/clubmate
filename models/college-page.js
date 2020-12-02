@@ -3,13 +3,13 @@ const mongoose = require('mongoose'),
 
 const collegePageSchema = new Schema({
   name: {type: String, unique: true, required: true},
+  cover: String,
   userCount: {type: Number, default: 0},
   allUserIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
   clubCount: {type: Number, default: 0},
-  // Not 'allClubIds' (clubCount != allClubs.length)
   allClubs: [{
     category: String,
     categoryCount: {type: Number, default: 0},
