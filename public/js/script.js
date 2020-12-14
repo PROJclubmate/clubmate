@@ -495,7 +495,12 @@ $(function (){
   for(var i=0;i<divUtc3.length;i++){
     var localTime = moment.utc($('#'+divUtc3[i].id).text()).toDate();
     localTime = moment(localTime).fromNow();
-    $('#'+divLocal3[i].id).text(localTime);
+    if(localTime.endsWith(' ago')){
+      localTimeAdjusted = localTime.substring(0, localTime.length - 4);
+      $('#'+divLocal3[i].id).text(localTimeAdjusted);
+    } else{
+      $('#'+divLocal3[i].id).text(localTime);
+    }
   }
   for(var j=0;j<divUtc7.length;j++){
     var localTime = moment.utc($('#'+divUtc7[j].id).text()).toDate();
@@ -505,8 +510,8 @@ $(function (){
   for(var k=0;k<divUtc365.length;k++){
     var localTime = moment.utc($('#'+divUtc365[k].id).text()).toDate();
     localTime = moment(localTime).format('l');
-    localTimeAdjusted = localTime.substring(0, localTime.length - 5)
     if(moment(localTime).year() == moment().year()){
+      localTimeAdjusted = localTime.substring(0, localTime.length - 5);
       $('#'+divLocal365[k].id).text(localTimeAdjusted);
     } else{
       $('#'+divLocal365[k].id).text(localTime);

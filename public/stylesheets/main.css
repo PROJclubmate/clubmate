@@ -127,15 +127,18 @@ div.content{
   .text-xxl{font-size: 1.375rem !important;}
   .text-xxxl{font-size: 1.625rem !important;}
   .text-xxxxl{font-size: 2rem !important;}
+  .chatname{font-size: 0.9375rem !important;}
+  .lastmsg{font-size: 1rem !important;}
   .chats-img{width: 35%; display: block; margin-left: auto; margin-right: auto; 
-    transform: translateY(50%); filter: opacity(65%);}
+    transform: translateY(50%); filter: opacity(80%);}
   h5.topic-h5{font-size: 1.375rem !important;}
   .description-short{font-size: 1.25rem !important;}
+  .chatdp{margin-left: 0.125rem !important; margin-right: 0.5rem !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
   .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
-    z-index: 8; box-shadow: 0px 2px 15px -2px rgba(0,0,0,0.4);}
+    z-index: 8; box-shadow: 0px 2px 10px -2px rgba(0,0,0,0.4);}
   .navbar{padding: 1px 10px !important;}
   .navback{background-color: #3e3a39 !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 96px; border: 3px solid #f1f1f1;
@@ -176,6 +179,7 @@ div.content{
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
+  .chatdp{margin-left: 0 !important; margin-right: 0.5rem !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -186,13 +190,13 @@ div.content{
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
   .name-green{
-    color: #19ae69 !important;
+    color: mediumseagreen !important;
     font-size: 1.625rem !important;
     padding: 0 !important;
     font-weight: 900;
-    -webkit-text-fill-color: #19ae69;
+    -webkit-text-fill-color: mediumseagreen;
     -webkit-text-stroke-width: 0.65px;
-    -webkit-text-stroke-color: #169c5e;
+    -webkit-text-stroke-color: mediumseagreen;
   }
   .discover-icon{font-size: 1.75rem;}
   .badge-mobile{background: #f8f9fa !important; color: #262626 !important; top: -0.25rem !important;
@@ -290,6 +294,7 @@ div.content{
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .collegedp{margin: 0 0.25rem !important;}
   .description-short{font-size: 1.1875rem !important;}
+  .chatdp{margin-left: 0 !important; margin-right: 0.5rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -342,6 +347,11 @@ div.content{
   #club-send{font-size: 1rem; padding: 0.3445rem 0.6875rem !important;}
   #messages{margin-bottom: 46px;}
   .searchdp{height: 116px !important; width: 116px!important;}
+  .chatname{font-size: 1.0625rem !important;}
+  .lastmsg{font-size: 1.125rem !important;}
+  .lineheight{line-height: 1.375rem !important;}
+  .lineheight2{line-height: 1.125rem !important;}
+  .lineheight3{line-height: 0.875rem !important;}
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
@@ -395,6 +405,7 @@ div.content{
   .friends-dp{height: 5.2665rem !important;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
+  .lastmsg{font-size: 1rem !important;}
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
 @media screen and (max-width: 361px){
@@ -452,6 +463,8 @@ div.content{
   .mobiletext2{font-size: 0.875rem !important;}
   .mobiletext3{font-size: 0.8125rem !important;}
   .mobiletext4{font-size: 0.6875rem !important;}
+  .chatname{font-size: 0.9375rem !important;}
+  .lastmsg{font-size: 1rem !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
@@ -460,6 +473,9 @@ div.content{
   .navbar-toggler{font-size: 1.25rem !important;}
   #inbox_mobile{font-size: 1.6875rem !important;}
   .description-short{font-size: 1.125rem !important;}
+  .lineheight{line-height: 1.25rem !important;}
+  .lineheight2{line-height: 1rem !important;}
+  .lineheight3{line-height: 0.75rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -548,7 +564,6 @@ div.content{
 #side-clubs{
   cursor: pointer;
 }
-h5{color: black;}
 html{
   scroll-behavior: smooth;
   position: relative;
@@ -556,6 +571,7 @@ html{
 }
 body{
   background-color: #d8d8d8;
+  color: #262226;
 }
 textarea{
   resize: none;
@@ -770,7 +786,7 @@ input{
 }
 .post-tail{
   border-radius: 0 0 0.5rem 0.5rem !important;
-  border-bottom: 1px solid #c0c0c0 !important;
+  border-bottom: 1px solid #ccc !important;
 }
 .card{
   border: none;
@@ -821,7 +837,7 @@ input{
   border-radius: 0.25rem;
   border-left: 1px solid #d2d2d2;
   border-top: 1px solid #d2d2d2;
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   margin: 0 0.25rem 0.5rem 0.25rem;
   width: calc(50% - 0.5rem);
@@ -917,8 +933,8 @@ a > .collegedp.chatsdp:hover{
   transition: 0.1s ease-in-out;
 }
 .chatdp{
-  height: 25px;
-  width: 25px;
+  height: 28px;
+  width: 28px;
   object-fit: cover;
   margin: 0.15rem 0;
 }
@@ -1204,7 +1220,7 @@ a.nav-link{
 .nav-link.requests-active{
   transition: ease-in-out 0.15s;
   background-color: #505050 !important;
-  color: #19ae69 !important;
+  color: mediumseagreen !important;
   opacity: 1;
   padding: 0 0.5rem;
   border-radius: 1rem;
@@ -1224,8 +1240,8 @@ button.dropdown-toggle:focus{
 }
 button.dropdown-toggle2:focus{
   border-radius: 1rem;
-  border-color: #19ae69;
-  background-color: #19ae69;
+  border-color: mediumseagreen;
+  background-color: mediumseagreen;
   color: white;
   box-shadow: 0px 2px 7px -1px rgba(0,0,0,0.4);
 }
@@ -1575,9 +1591,6 @@ input[type="file"]#inputavatar{
   border-color: #8db9df;
   background-color: #8db9df;
 }
-.btn.moderation{
-  border-radius: 0.5rem !important;
-}
 .btn-info{
   border-color: #407cc4;
   background-color: white;
@@ -1662,6 +1675,12 @@ input[type="file"]#inputavatar{
 .btnxs.btnshadow{
   box-shadow: inset 0px 1px 1px rgba(255,255,255,0.125), 0px 2px 5px -2px rgba(0,0,0,0.5);
 }
+.btn.moderation{
+  margin: -0.5rem 0;
+  border-bottom-width: 1px;
+  border: none;
+  text-transform: uppercase;
+}
 /*--------------------*/
 .drop-shadow1{
   z-index: 2;
@@ -1714,7 +1733,7 @@ a.red:hover{color: #d6312e;}
   color: #30c376 !important;
 }
 .greencolor2{
-  color: #19ae69 !important;
+  color: mediumseagreen !important;
 }
 .greencolor3{
   color: #2f0e10 !important;
@@ -2217,7 +2236,7 @@ button.dislikebtn:hover{
   color: black;
 }
 button.likebtn:hover{
-  color: #19ae69;
+  color: mediumseagreen;
 }
 button.upVotebtn{
   z-index: 2;
@@ -2253,8 +2272,8 @@ select{
   background-color: white;
   padding: 4px 8px;
   font-size: 0.875rem;
-  border: 1px solid #19ae69;
-  color: #19ae69;
+  border: 1px solid mediumseagreen;
+  color: mediumseagreen;
   border-radius: 0 0.25rem 0.25rem 0;
   height: 32px;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
@@ -2629,14 +2648,14 @@ select.select1::-ms-expand{
 .topic-break{
   width: 100%;
   border-radius: 0.5rem 0 0 0.5rem !important;
-  border-bottom: 1px solid #c0c0c0 !important;
+  border-bottom: 1px solid #ccc !important;
   border-top: 1px solid #d2d2d2 !important;
   margin-top: 0;
 }
 .topic-column{
   background-color: whitesmoke;
   border-radius: 0 0.5rem 0.5rem 0 !important;
-  border-bottom: 1px solid #c0c0c0 !important;
+  border-bottom: 1px solid #ccc !important;
   border-top: 1px solid #d2d2d2 !important;
 }
 h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight: 400;}
@@ -3143,7 +3162,9 @@ input.shadow:-webkit-autofill:focus{
 .chat-item.active{
   background-color: white;
   border-radius: 0.5rem;
-  border: 1px solid silver;
+  border: 1px solid lightgrey;
+  border-left-width: 2px;
+  border-right-width: 2px;
 }
 .chatlist-box{
   height: calc(100vh - 2rem - 40px);
@@ -3315,7 +3336,7 @@ input.shadow:-webkit-autofill:focus{
 .hamburger.is-active .hamburger-inner::before,
 .hamburger.is-active .hamburger-inner::after{
   z-index: 10;
-  background-color: #19ae69;
+  background-color: mediumseagreen;
 }
 .hamburger:focus{
   outline: 0;
@@ -3334,7 +3355,7 @@ input.shadow:-webkit-autofill:focus{
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
   width: 0.875rem;
   height: 0.125rem;
-  background-color: #19ae69;
+  background-color: mediumseagreen;
   border-radius: 0.125rem;
   position: absolute;
   transition-property: transform;

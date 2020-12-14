@@ -12,7 +12,7 @@
 	<div class="col-lg-4 col-md-4 col-12 chatlist-box scroll moz-scroll">
 		<div class="greyback valign">
 			<div><h3 class="chatpad mt-3">Chats</h3></div>
-			<div class="mr-2 mt-2 desktopNone"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
+			<div class="p-2 desktopNone" style="margin-bottom: -1.125rem;"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
 		</div>
 		<div class="card mt-0 chatlist-margin" style="min-height: 100%;">
 			<% for(var i=0;i<chatList.length;i++){ %>
@@ -42,14 +42,14 @@
 						<div class="d-flex justify-content-between fullwidth chatlist-content">
 							<div class="my-auto mx-2">
 					    	<div class="d-flex flex-column lineheight">
-						      <div class="grey boldtext">
+						      <div class="grey boldtext chatname">
 						      	<% if(chatList[i].type == 'user'){ %>
 						          <span><%= chatList[i].name %></span>
 						        <% } else if(chatList[i].type == 'club'){ %>
-						          <span><%= chatList[i].name %></span>
+						          <span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
 						       	<% } %>
 						      </div>
-						      <div class="my-auto lightgrey mobiletext2 truncate1">
+						      <div class="my-auto lightgrey lastmsg truncate1">
 						      	<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
 						      		<span class="bluecolor boldtext">></span>
 						      	<% } %>

@@ -301,16 +301,16 @@ if(socket !== undefined){
         } else{
           if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
             $("#messages").append(`
-              <div class="d-flex flex-row"><div class="px-1">
-              <img class="chatdp rounded-circle" src="${message.authorId.profilePic50}"></div>
-              <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
+              <div class="d-flex flex-row"><div>
+              <a href="/users/${message.authorId._id}"><img class="chatdp rounded-circle" src="${message.authorId.profilePic50}"></a></div>
+              <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"> ${message.authorName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="clubchat-msg-div"> ${message.text}</div> </div></div></div>`);
           } else{
             $("#messages").append(`
-              <div class="d-flex flex-row"><div class="px-1">
-              <img class="chatdp rounded-circle transparent2" src="${message.authorId.profilePic50}"></div>
+              <div class="d-flex flex-row"><div>
+              <a href="/users/${message.authorId._id}"><img class="chatdp rounded-circle transparent2" src="${message.authorId.profilePic50}"></a></div>
               <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
-              <div class="chat-head chat-head-clubpad bluecolor"><span> ${message.authorName} </span>
+              <div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"> ${message.authorName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="clubchat-msg-div"> ${message.text}</div> </div></div></div>`);
           }
         }
@@ -339,16 +339,16 @@ if(socket !== undefined){
     } else{
       if(data.authorId == prevAuthorId){
         $("#messages").append(`
-          <div class="d-flex flex-row"><div class="px-1">
-          <img class="chatdp rounded-circle transparent2" src="${data.authorProfilePic}"></div>
+          <div class="d-flex flex-row"><div>
+          <a href="/users/${data.authorId}"><img class="chatdp rounded-circle transparent2" src="${data.authorProfilePic}"></a></div>
           <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
-          <div class="chat-head chat-head-clubpad bluecolor"><span> ${data.authorName} </span></div>
+          <div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"> ${data.authorName} </span></div>
           <div class="clubchat-msg-div"> ${data.composedMessage}</div></div></div></div>`);
       } else{
         $("#messages").append(`
-          <div class="d-flex flex-row"><div class="px-1">
-          <img class="chatdp rounded-circle transparent" src="${data.authorProfilePic}"></div>
-          <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"> ${data.authorName} </div>
+          <div class="d-flex flex-row"><div>
+          <a href="/users/${data.authorId}"><img class="chatdp rounded-circle transparent" src="${data.authorProfilePic}"></a></div>
+          <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor" class="text-xs"> ${data.authorName} </div>
           <div class="clubchat-msg-div"> ${data.composedMessage} </div></div></div></div>`);
       }
     }

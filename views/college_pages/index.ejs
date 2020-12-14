@@ -122,7 +122,7 @@
 					<% } else{ %>
 						<% if(college_page.allClubs[i].categoryCount>0){ %>
 							<div class="boldtext category">
-								<span class="redcolor">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
+								<span class="redcolor text-xl lineheight3 mr-1">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
 							</div>
 						<% } %>
 					<% } %>
@@ -138,14 +138,14 @@
 									<% if(currentUser && keyValue == 2){ %>
 										<span class="mr-1 lineheight" style="vertical-align: top;">
 									<% } else{ %>
-										<span class="lineheight" style="vertical-align: baseline;">
+										<span class="lineheight" style="vertical-align: baseline; display: inline-block;">
 									<% } %>
 										<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
 											<strong><%= college_page.allClubs[i].categoryClubIds[j].name %></strong>
 										</a>
 									</span>
 									<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-										<span class="ml-1 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+										<span class="ml-2 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
 									<% } else if(currentUser && keyValue == 2){ %>
 										<% if(clubUserIdsArr[i][j].length){ %>
 											<br/>
