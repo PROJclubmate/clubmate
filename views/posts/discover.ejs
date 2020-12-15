@@ -1,5 +1,32 @@
 <% include ../partials/header %>
-    
+
+<div class="row no-gutters">
+  <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5"></div>
+  <div class="col-lg-7 col-md-10 story-container mobilepad mt-3 pt-1">
+    <% if(currentUser.discoverSwitch == 1){ %>
+      <div class="d-flex scroll moz-scroll">
+    <% } else if(currentUser.discoverSwitch == 2){ %>
+      <div class="d-flex scroll moz-scroll" style="opacity: 0.35;">
+    <% } %>
+      <div class="d-flex flex-column mr-3">
+        <div class="story story2 story-square story-dark"></div>
+        <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">visible</div>
+      </div>
+      <div class="d-flex flex-column mr-3">
+        <div class="story story2 story-square story-dark"></div>
+        <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">to</div>
+      </div>
+      <div class="d-flex flex-column mr-3">
+        <div class="story story2 story-square story-dark"></div>
+        <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">full</div>
+      </div>
+      <div class="d-flex flex-column mr-3">
+        <div class="story story2 story-square story-dark"></div>
+        <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">college</div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row no-gutters">
   <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
   <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
