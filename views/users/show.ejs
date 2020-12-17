@@ -381,6 +381,76 @@
                   <% } %>
                 </div>
               </div>
+              <br>
+              <div class="d-flex flex-column px-1 mobilepad mt-2">
+                <div class="dropctn">
+                  <strong class="info-size">Bio:</strong>
+                </div>
+                <% if(user.recommends.music.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    About me: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% recommends_split(user.recommends.music); %>
+                      <br>
+                      <div id="recommends_form1_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var music = user.recommends.music; var len = music.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
+                              <% } %>
+                            <% } %>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                <% } %>
+                <% if(user.recommends.movies.length || (currentUser && match)){ %>
+                  <div class="info1">
+                    Follow on: 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% recommends_split(user.recommends.movies); %>
+                      <br>
+                      <div id="recommends_form2_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var movies = user.recommends.movies; var len = movies.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <% if(i == 0){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
+                              <% }else{ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
+                              <% } %>
+                            <% } %>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
                 <div class="info1">
                   <strong class="info-size">Interests:</strong> 
@@ -388,7 +458,7 @@
                     <% if(currentUser && match){ %>
                       <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
-                    <% favourites_split(user.interests); %>
+                    <% recommends_split(user.interests); %>
                     <br>
                     <div id="interests_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -400,7 +470,7 @@
                         </div>
                         <div class="d-flex flex-row-reverse fullwidth">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="favourites_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          <button onclick="recommends_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
@@ -413,19 +483,19 @@
                 <div class="dropctn">
                   <strong class="info-size">Recommends:</strong>
                 </div>
-                <% if(user.favourites.music.length || (currentUser && match)){ %>
+                <% if(user.recommends.music.length || (currentUser && match)){ %>
                   <div class="info1">
                     Music: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.music); %>
+                      <% recommends_split(user.recommends.music); %>
                       <br>
-                      <div id="favourites_form1_div" class="greyback">
+                      <div id="recommends_form1_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form1" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var music = user.favourites.music; var len = music.length; var i=0;
+                          <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var music = user.recommends.music; var len = music.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
@@ -436,7 +506,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -445,19 +515,19 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.favourites.movies.length || (currentUser && match)){ %>
+                <% if(user.recommends.movies.length || (currentUser && match)){ %>
                   <div class="info1">
                     Movies: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.movies); %>
+                      <% recommends_split(user.recommends.movies); %>
                       <br>
-                      <div id="favourites_form2_div" class="greyback">
+                      <div id="recommends_form2_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form2" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var movies = user.favourites.movies; var len = movies.length; var i=0;
+                          <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var movies = user.recommends.movies; var len = movies.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
@@ -468,7 +538,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -477,19 +547,19 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.favourites.tvshows.length || (currentUser && match)){ %>
+                <% if(user.recommends.tvshows.length || (currentUser && match)){ %>
                   <div class="info1">
                     TV Shows: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.tvshows); %>
+                      <% recommends_split(user.recommends.tvshows); %>
                       <br>
-                      <div id="favourites_form3_div" class="greyback">
+                      <div id="recommends_form3_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form3" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var tvshows = user.favourites.tvshows; var len = tvshows.length; var i=0;
+                          <div id="recommends_form3" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var tvshows = user.recommends.tvshows; var len = tvshows.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>" autofocus>
@@ -500,7 +570,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -509,19 +579,19 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.favourites.places.length || (currentUser && match)){ %>
+                <% if(user.recommends.places.length || (currentUser && match)){ %>
                   <div class="info1">
                     Places: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.places); %>
+                      <% recommends_split(user.recommends.places); %>
                       <br>
-                      <div id="favourites_form4_div" class="greyback">
+                      <div id="recommends_form4_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form4" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var places = user.favourites.places; var len = places.length; var i=0;
+                          <div id="recommends_form4" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var places = user.recommends.places; var len = places.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Rio de Janeiro" value="<%= places[i] %>" autofocus>
@@ -532,7 +602,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -541,19 +611,19 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.favourites.books.length || (currentUser && match)){ %>
+                <% if(user.recommends.books.length || (currentUser && match)){ %>
                   <div class="info1">
                     Books: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.books); %>
+                      <% recommends_split(user.recommends.books); %>
                       <br>
-                      <div id="favourites_form5_div" class="greyback">
+                      <div id="recommends_form5_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form5" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var books = user.favourites.books; var len = books.length; var i=0;
+                          <div id="recommends_form5" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var books = user.recommends.books; var len = books.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One (Peter Thiel)" value="<%= books[i] %>" autofocus>
@@ -564,7 +634,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -573,19 +643,19 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.favourites.videogames.length || (currentUser && match)){ %>
+                <% if(user.recommends.videogames.length || (currentUser && match)){ %>
                   <div class="info1">
                     Video Games: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('favourites_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('recommends_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% favourites_split(user.favourites.videogames); %>
+                      <% recommends_split(user.recommends.videogames); %>
                       <br>
-                      <div id="favourites_form6_div" class="greyback">
+                      <div id="recommends_form6_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="favourites_form6" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var videogames = user.favourites.videogames; var len = videogames.length; var i=0;
+                          <div id="recommends_form6" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var videogames = user.recommends.videogames; var len = videogames.length; var i=0;
                             for(i;i<=len;i++){ %>
                               <% if(i == 0){ %>
                                 <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>" autofocus>
@@ -596,7 +666,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="favourites_add('favourites_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="recommends_add('recommends_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -809,7 +879,7 @@
 
 <% include ../partials/footer %>
 
-<% function favourites_split(arr){ %>
+<% function recommends_split(arr){ %>
   <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
   <% if(i==0 && i==len-1){ %>
     <%= arr[i] %>

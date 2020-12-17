@@ -656,12 +656,12 @@ module.exports = {
           }
         }
         editinfo(0,req.body.interests,foundUser.interests);
-        editinfo(1,req.body.music,foundUser.favourites.music);
-        editinfo(2,req.body.movies,foundUser.favourites.movies);
-        editinfo(3,req.body.tvshows,foundUser.favourites.tvshows);
-        editinfo(4,req.body.places,foundUser.favourites.places);
-        editinfo(5,req.body.books,foundUser.favourites.books);
-        editinfo(6,req.body.videogames,foundUser.favourites.videogames);
+        editinfo(1,req.body.music,foundUser.recommends.music);
+        editinfo(2,req.body.movies,foundUser.recommends.movies);
+        editinfo(3,req.body.tvshows,foundUser.recommends.tvshows);
+        editinfo(4,req.body.places,foundUser.recommends.places);
+        editinfo(5,req.body.books,foundUser.recommends.books);
+        editinfo(6,req.body.videogames,foundUser.recommends.videogames);
 
         function editinfo(count,newData,oldData){
           if(newData){
@@ -676,12 +676,12 @@ module.exports = {
               oldData.splice(i,1,inputstring);
             }
             if(count==0){foundUser.interests=oldData;}
-            else if(count==1){foundUser.favourites.music=oldData;}
-            else if(count==2){foundUser.favourites.movies=oldData;}
-            else if(count==3){foundUser.favourites.tvshows=oldData;}
-            else if(count==4){foundUser.favourites.places=oldData;}
-            else if(count==5){foundUser.favourites.books=oldData;}
-            else if(count==6){foundUser.favourites.videogames=oldData;}
+            else if(count==1){foundUser.recommends.music=oldData;}
+            else if(count==2){foundUser.recommends.movies=oldData;}
+            else if(count==3){foundUser.recommends.tvshows=oldData;}
+            else if(count==4){foundUser.recommends.places=oldData;}
+            else if(count==5){foundUser.recommends.books=oldData;}
+            else if(count==6){foundUser.recommends.videogames=oldData;}
           }
         };
         foundUser.save();

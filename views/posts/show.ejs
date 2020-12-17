@@ -68,7 +68,7 @@
           <div class="card-body3">
         <% } %>
         <% if(!post.image && post.description.length < 200){ %>
-          <p class="nothing mobiletext linewrap description-short"><%= post.description %></p>
+          <p class="nothing mobiletext linewrap description-short description-short-show"><%= post.description %></p>
         <% } else{ %>
           <p class="nothing mobiletext linewrap"><%= post.description %></p>
         <% } %>
@@ -85,7 +85,7 @@
             <% } %>
           </div>
         </div>
-        <hr class="hr-light">
+        <hr class="hr-light mx-2">
         <div class="card-body3">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">

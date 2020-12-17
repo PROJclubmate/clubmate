@@ -274,7 +274,7 @@ function none_display(id){
 	}
 }
 
-function favourites_add(id,name,placeholder){
+function recommends_add(id,name,placeholder){
   var divelement = document.getElementById(id);
   var input = document.createElement('input');
   input.setAttribute('type', 'text');
