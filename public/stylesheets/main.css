@@ -414,6 +414,7 @@ div.content{
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
   .lastmsg{font-size: 1rem !important;}
+  .topic-column{padding-left: 0.1875rem !important; padding-right: 0.1875rem !important;}
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
 @media screen and (max-width: 361px){
@@ -1202,7 +1203,8 @@ span.nopad{
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  transition: top 0.3s;
+  transition: ease-out 0.3s;
+  transition-delay: 0.5s;
   z-index: 10;
   padding: 0 25px 0 50px;
   justify-content: space-between;
@@ -1312,6 +1314,8 @@ input[type="file"]#inputavatar{
 .clear_update{display: none;}
 #toggle_profile_form{display: none;}
 #account_info_form_div{display: none;}
+#aboutme_form_div{display: none;}
+#followon_form_div{display: none;}
 #interests_form_div{display: none;}
 #recommends_form1_div{display: none;}
 #recommends_form2_div{display: none;}
@@ -2664,6 +2668,8 @@ select.select1::-ms-expand{
   margin-top: 0;
 }
 .topic-column{
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   background-color: whitesmoke;
   border-radius: 0 0.5rem 0.5rem 0 !important;
   border-bottom: 1px solid #ccc !important;
@@ -3179,7 +3185,7 @@ input.shadow:-webkit-autofill:focus{
   border-bottom: 1px solid #efefef;
 }
 .chat-item.active{
-  background-color: white;
+  background-color: whitesmoke;
   border-radius: 0.5rem;
   border: 1px solid lightgrey;
   border-left-width: 2px;

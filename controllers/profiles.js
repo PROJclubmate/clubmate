@@ -655,6 +655,21 @@ module.exports = {
             }
           }
         }
+        if(req.body.aboutme){
+          foundUser.bio.aboutme = req.body.aboutmetext.replace(/[^a-zA-Z'()&0-9\n .-]/g, '');
+        }
+        if(req.body.followon){
+          foundUser.bio.instagram = encodeURI(req.body.instagram);
+          foundUser.bio.facebook = encodeURI(req.body.facebook);
+          foundUser.bio.linkedin = encodeURI(req.body.linkedin);
+          foundUser.bio.twitter = encodeURI(req.body.twitter);
+          foundUser.bio.discord = encodeURI(req.body.discord);
+          foundUser.bio.github = encodeURI(req.body.github);
+          foundUser.bio.spotify = encodeURI(req.body.spotify);
+          foundUser.bio.youtube = encodeURI(req.body.youtube);
+          foundUser.bio.custom1 = encodeURI(req.body.custom1);
+          foundUser.bio.custom2 = encodeURI(req.body.custom2);
+         }
         editinfo(0,req.body.interests,foundUser.interests);
         editinfo(1,req.body.music,foundUser.recommends.music);
         editinfo(2,req.body.movies,foundUser.recommends.movies);

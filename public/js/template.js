@@ -785,7 +785,7 @@ function index_posts_template(response){
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
@@ -810,7 +810,7 @@ function index_posts_template(response){
           <% } else{ %>
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
           <% } %>
-            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
@@ -949,7 +949,7 @@ function index_posts_template(response){
           </div>
           <% if(posts[k].image){ %>
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             <% if(!friendsPostUrl){ %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <% } else{ %>
@@ -964,7 +964,7 @@ function index_posts_template(response){
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <% } %>
               <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             </a>
           <% } %>
         </div>
@@ -1153,13 +1153,13 @@ function discover_posts_template(response){
         </span>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><span class="truncate1"><%= posts[k].hyperlink %></span></p>
+          <p class="nothing mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></p>
         </div>
       <% } else{ %>
         <div class="card-body2 nounderline nothing">
           <span>
             <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
-            <p class="nothing mobiletext linewrap"><span class="truncate1"><%= posts[k].hyperlink %></span></p>
+            <p class="nothing mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></p>
           </span>
         </div>
       <% } %>
@@ -1267,7 +1267,7 @@ function club_posts_template(response){
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
           <div class="lightgrey2 valign">
             <div>
               <span>
@@ -1307,7 +1307,7 @@ function club_posts_template(response){
             <% } else{ %>
               <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
             <% } %>
-            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
             <div class="lightgrey2 valign">
               <div>
                 <span>
@@ -1462,14 +1462,14 @@ function club_posts_template(response){
           </div>
           <% if(posts[k].image){ %>
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
               <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
               <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             </a>
           <% } %>
         </div>
@@ -1682,7 +1682,7 @@ function user_posts_template(response){
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
@@ -1703,7 +1703,7 @@ function user_posts_template(response){
             <% } else{ %>
               <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
             <% } %>
-            <p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
@@ -1849,14 +1849,14 @@ function user_posts_template(response){
           </div>
           <% if(posts[k].image){ %>
             <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
               <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
               <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= posts[k].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= posts[k].hyperlink %></a></p></div>
+              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></p></div>
             </a>
           <% } %>
         </div>
@@ -2052,7 +2052,7 @@ function heart_posts_template(response){
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= postsH[l].description %></p>
-          <p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p>
+          <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></p>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
@@ -2073,7 +2073,7 @@ function heart_posts_template(response){
             <% } else{ %>
               <p class="truncate2 nothing mobiletext linewrap nolink"><%= postsH[l].description %></p>
             <% } %>
-            <p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p>
+            <p class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></p>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
@@ -2219,14 +2219,14 @@ function heart_posts_template(response){
           </div>
           <% if(postsH[l].image){ %>
             <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
-            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p></div>
+            <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></p></div>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
               <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= postsH[l].image %>"></div></div>
             </a>
           <% } else{ %>
             <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
               <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= postsH[l].description %></div>
-              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= postsH[l].hyperlink %>" target="_blank" rel="noopener" class="truncate1"><%= postsH[l].hyperlink %></a></p></div>
+              <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></p></div>
             </a>
           <% } %>
         </div>

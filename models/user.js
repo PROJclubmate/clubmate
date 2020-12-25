@@ -76,6 +76,19 @@ const userSchema = new Schema({
     }
   },
   note: String,
+  bio: {
+    aboutme: String,
+    instagram: String,
+    facebook: String,
+    linkedin: String,
+    twitter: String,
+    discord: String,
+    github: String,
+    spotify: String,
+    youtube: String,
+    custom1: String,
+    custom2: String
+  },
   interests: [String],
   recommends: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String], videogames: [String]},
   friendRequests: [this],

@@ -386,30 +386,25 @@
                 <div class="dropctn">
                   <strong class="info-size">Bio:</strong>
                 </div>
-                <% if(user.recommends.music.length || (currentUser && match)){ %>
+                <% if((user.bio.aboutme || user.bio.instagram || user.bio.facebook || user.bio.linkedin || user.bio.twitter || user.bio.discord
+                || user.bio.github || user.bio.spotify || user.bio.youtube || user.bio.custom1 || user.bio.custom2) || (currentUser && match)){ %>
                   <div class="info1">
                     About me: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('aboutme_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% recommends_split(user.recommends.music); %>
+                      <span class="clubchat-msg-div"><%= user.bio.aboutme %></span>
                       <br>
-                      <div id="recommends_form1_div" class="greyback">
+                      <div id="aboutme_form_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var music = user.recommends.music; var len = music.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
-                              <% } %>
-                            <% } %>
+                          <div id="aboutme_form" class="fullwidth">
+                            <label for="aboutme" class="sr-only">About me</label>
+                            <input type="hidden" id="aboutme" name="aboutme" value="#">
+                            <textarea type="text" id="aboutmetext" class="form-control fullwidth" name="aboutmetext" placeholder="Tell about yourself" rows="5"><%= user.bio.aboutme %></textarea>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -423,25 +418,86 @@
                     Follow on: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('followon_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% recommends_split(user.recommends.movies); %>
+                      <% if(user.bio.instagram){ %>
+                        <a href="<%= decodeURI(user.bio.instagram) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-instagram"></i></a>
+                      <% } %>
+                      <% if(user.bio.facebook){ %>
+                        <a href="<%= decodeURI(user.bio.facebook) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-facebook"></i></a>
+                      <% } %>
+                      <% if(user.bio.linkedin){ %>
+                        <a href="<%= decodeURI(user.bio.linkedin) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-linkedin"></i></a>
+                      <% } %>
+                      <% if(user.bio.twitter){ %>
+                        <a href="<%= decodeURI(user.bio.twitter) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-twitter"></i></a>
+                      <% } %>
+                      <% if(user.bio.discord){ %>
+                        <a href="<%= decodeURI(user.bio.discord) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-discord"></i></a>
+                      <% } %>
+                      <% if(user.bio.github){ %>
+                        <a href="<%= decodeURI(user.bio.github) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-github"></i></a>
+                      <% } %>
+                      <% if(user.bio.spotify){ %>
+                        <a href="<%= decodeURI(user.bio.spotify) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-spotify"></i></a>
+                      <% } %>
+                      <% if(user.bio.youtube){ %>
+                        <a href="<%= decodeURI(user.bio.youtube) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-youtube"></i></a>
+                      <% } %>
+                      <% if(user.bio.custom1){ %>
+                        <a href="<%= decodeURI(user.bio.custom1) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fas fa-link"></i></a>
+                      <% } %>
+                      <% if(user.bio.custom2){ %>
+                        <a href="<%= decodeURI(user.bio.custom2) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fas fa-link"></i></a>
+                      <% } %>
                       <br>
-                      <div id="recommends_form2_div" class="greyback">
+                      <div id="followon_form_div" class="greyback">
                         <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var movies = user.recommends.movies; var len = movies.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
-                              <% } %>
-                            <% } %>
+                          <div id="followon_form" class="d-flex flex-column fullwidth">
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-instagram" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="instagram" placeholder="Instagram profile" style="width: inherit;" value="<%= decodeURI(user.bio.instagram) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-facebook" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="facebook" placeholder="Facebook profile" style="width: inherit;" value="<%= decodeURI(user.bio.facebook) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-linkedin" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="linkedin" placeholder="LinkedIn profile" style="width: inherit;" value="<%= decodeURI(user.bio.linkedin) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-twitter" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="twitter" placeholder="Twitter profile" style="width: inherit;" value="<%= decodeURI(user.bio.twitter) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-discord" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="discord" placeholder="Discord profile" style="width: inherit;" value="<%= decodeURI(user.bio.discord) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-github" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="github" placeholder="GitHub Account" style="width: inherit;" value="<%= decodeURI(user.bio.github) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-spotify" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="spotify" placeholder="Spotify Playlist" style="width: inherit;" value="<%= decodeURI(user.bio.spotify) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-youtube" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="youtube" placeholder="YouTube channel" style="width: inherit;" value="<%= decodeURI(user.bio.youtube) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fas fa-link" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="custom1" placeholder="Custom link 1" style="width: inherit;" value="<%= decodeURI(user.bio.custom1) %>"></div>
+                            </div>
+                            <div class="d-flex flex-row">
+                              <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fas fa-link" style="width: 36px;"></i></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="custom2" placeholder="Custom link 2" style="width: inherit;" value="<%= decodeURI(user.bio.custom2) %>"></div>
+                            </div>
+                            <input type="hidden" id="followon" name="followon" value="#">
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
+                            <button class="btn btn-sm btnxs btn-primary ml-2 mb-1" type="submit">Update</button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -459,7 +515,9 @@
                       <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                     <% } %>
                     <% recommends_split(user.interests); %>
-                    <br>
+                    <% if((currentUser && match) || (user.interests && user.interests.length)){ %>
+                      <br>
+                    <% } %>
                     <div id="interests_form_div" class="greyback">
                       <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
                         <div id="interests_form" class="form-inline d-flex justify-content-between fullwidth">
@@ -468,7 +526,7 @@
                             <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Interests" value="<%= interests[i] %>">
                           <% } %>
                         </div>
-                        <div class="d-flex flex-row-reverse fullwidth">
+                        <div class="d-flex flex-row-reverse fullwidth mb-1">
                           <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                           <button onclick="recommends_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                         </div>
@@ -497,14 +555,10 @@
                           <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
                             <% var music = user.recommends.music; var len = music.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Poets of the Fall" value="<%= music[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
@@ -529,14 +583,10 @@
                           <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
                             <% var movies = user.recommends.movies; var len = movies.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Pulp Fiction" value="<%= movies[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
@@ -561,14 +611,10 @@
                           <div id="recommends_form3" class="form-inline d-flex justify-content-between fullwidth">
                             <% var tvshows = user.recommends.tvshows; var len = tvshows.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="Game of Thrones" value="<%= tvshows[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="TV Shows" value="<%= tvshows[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="TV Shows" value="<%= tvshows[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
@@ -593,14 +639,10 @@
                           <div id="recommends_form4" class="form-inline d-flex justify-content-between fullwidth">
                             <% var places = user.recommends.places; var len = places.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Rio de Janeiro" value="<%= places[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Places" value="<%= places[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Places" value="<%= places[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
@@ -625,14 +667,10 @@
                           <div id="recommends_form5" class="form-inline d-flex justify-content-between fullwidth">
                             <% var books = user.recommends.books; var len = books.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Zero to One (Peter Thiel)" value="<%= books[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Books" value="<%= books[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Books" value="<%= books[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
@@ -657,14 +695,10 @@
                           <div id="recommends_form6" class="form-inline d-flex justify-content-between fullwidth">
                             <% var videogames = user.recommends.videogames; var len = videogames.length; var i=0;
                             for(i;i<=len;i++){ %>
-                              <% if(i == 0){ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="The Last of Us" value="<%= videogames[i] %>" autofocus>
-                              <% }else{ %>
-                                <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="Video Games" value="<%= videogames[i] %>">
-                              <% } %>
+                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="Video Games" value="<%= videogames[i] %>">
                             <% } %>
                           </div>
-                          <div class="d-flex flex-row-reverse fullwidth">
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
                             <button onclick="recommends_add('recommends_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>

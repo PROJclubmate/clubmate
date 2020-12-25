@@ -1234,7 +1234,7 @@ module.exports = {
           foundPost.descEdit.push(editobj);
           foundPost.description = req.body.description;
         };
-        foundPost.hyperlink = req.body.hyperlink;
+        foundPost.hyperlink = encodeURI(req.body.hyperlink);
         foundPost.privacy = req.body.privacy;
         var hasVote = voteCheck(req.user,foundPost);
         var hasModVote = modVoteCheck(req.user,foundPost);
