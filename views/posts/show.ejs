@@ -378,7 +378,7 @@
 
       <!-- COMMENTS -->
       <% if(post.topic == ''){ %>
-        <div class="card show-comments">
+        <div class="card show-comments mb-3">
           <div class="valign p-2 mb-2">
             <div class="mb-auto">
               <% if(currentUser){ %>
@@ -393,8 +393,8 @@
                   <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
                 </div>
                 <div class="d-flex flex-row-reverse">
-                  <button class="btn btn-sm btn-success commentbtn btnshadow btnxs ml-2 mt-2">Submit</button>
-                  <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnshadow btnxs text-sm mt-2" type="button">Cancel</button>
+                  <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
+                  <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="button">Cancel</button>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>

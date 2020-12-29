@@ -67,7 +67,7 @@
             <% } %>
             <div class="lightgrey text-xs mobiletext4 mobilebold">
               <%= club.updates[i].news %>
-              <div class="text-xxs notbold"><em><%= moment(club.updates[i].pushedAt).calendar() %></em></div>
+              <div class="text-xxs notbold mt-2"><em><%= moment(club.updates[i].pushedAt).calendar() %></em></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <div class="text-xxs notbold nothing">[by: <em><%= club.updates[i].pusherName %></em>]</div>
               <% } %>

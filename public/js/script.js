@@ -8,17 +8,17 @@ window.onscroll = function(){
   var scroll = document.documentElement.scrollTop;
 
   if(window.innerWidth > 1199 && prevScrollpos > currentScrollPos){
-    navbar.style.top = "0";
-    pop_box_requests.style.top = "40px";
+    navbar.style.transform = "translateY(0)";
+    pop_box_requests.style.transform = "translateY(0)";
   } else if(!navbar.classList.contains('stuck') && window.innerWidth < 1199 && prevScrollpos > currentScrollPos){
-    navbar.style.top = "0px";
-    pop_box_requests.style.top = "42px";
+    navbar.style.transform = "translateY(0px)";
+    pop_box_requests.style.transform = "translateY(0)";
   } else if(window.innerWidth > 1199 && prevScrollpos < currentScrollPos && currentScrollPos > 42){
-    navbar.style.top = "-40px";
-    pop_box_requests.style.top = "-600px";
+    navbar.style.transform = "translateY(-40px)";
+    pop_box_requests.style.transform = "translateY(-600px)";
   } else if(!navbar.classList.contains('stuck') && window.innerWidth < 1200 && prevScrollpos < currentScrollPos && currentScrollPos > 0){
-    navbar.style.top = "-50px";
-    pop_box_requests.style.top = "-600px";
+    navbar.style.transform = "translateY(-50px)";
+    pop_box_requests.style.transform = "translateY(-600px)";
   }
   prevScrollpos = currentScrollPos;
 

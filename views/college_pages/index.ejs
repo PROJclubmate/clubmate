@@ -9,44 +9,36 @@
 		<% } %>
 		<div class="border-light" style="border-bottom-color: white !important;">
 			<div class="college valign collegediv-name">
-				<% if(match){ %>
-					<div class="boldtext">
-						<div class="collegename d-flex">
+				<div class="boldtext">
+					<div class="collegename d-flex">
+						<% if(match){ %>
 							<span>
-								<sup class="greencolor2 text-xs pb-auto boldtext">My </sup>
+								<sup class="greencolor2 text-xs pb-auto boldtext" style="margin-right: -0.125rem;">My </sup>
 								<i class="fas fa-university lightgrey text-xxl"></i>
 								<span id="copyTxt"><%= college_page.name %></span>
 							</span>
-							<div class="tooltip">
-							<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-								<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-								<i class="far fa-copy lightgrey"></i>
-								</button>
-							</div>
+						<% } else{ %>
+							<span>
+								<sup class="greencolor2 text-xs pb-auto boldtext invisible" style="margin-right: -0.125rem;">My </sup>
+								<i id="collegeicon" class="fas fa-university lightgrey text-xxl"></i>
+								<span id="copyTxt"><%= college_page.name %></span>
+							</span>
+						<% } %>
+						<div class="tooltip">
+						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
+							<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+							<i class="far fa-copy lightgrey"></i>
+							</button>
 						</div>
 					</div>
-				<% } else{ %>
-					<div class="boldtext">
-						<div class="collegename d-flex">
-							<span>
-								<i class="fas fa-university lightgrey text-xxl mr-2 ml-1"></i><span id="copyTxt"><%= college_page.name %></span>
-							</span>
-							<div class="tooltip">
-							<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-								<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-								<i class="far fa-copy lightgrey"></i>
-								</button>
-							</div>
-						</div>
-						</div>
-				<% } %>
+				</div>
 				<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
 			</div>
 			<div class="collegediv-clubcnt">
 				<div class="valign">
 					<div class="d-flex flex-row">
-						<div class="mobilebold lightgrey text-md mx-1">
-							<span><span class="boldtext"><%= college_page.clubCount %></span> clubs</span>
+						<div class="mobilebold lightgrey text-md mr-1">
+							<span><span class="boldtext text-sm"><%= college_page.clubCount %></span><span class="nothing text-sm"> clubs</span></span>
 						</div>
 						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
@@ -106,9 +98,9 @@
 					<% } %>
 				</div>
 				<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
-					<div class="text-xxs boldtext lightgrey2 p-1 invisible">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
+					<div class="text-xxs boldtext lightgrey2 py-1 invisible">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
 				<% } else if(currentUser && keyValue == 2){ %>
-					<div class="text-xxs boldtext lightgrey2 p-1">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
+					<div class="text-xxs boldtext lightgrey2 py-1">Not following: <%= college_page.clubCount-thisCollegePageFollowingClubIdsArr.length %></div>
 				<% } %>
 			</div>
 			<div class="collegepad py-1">
