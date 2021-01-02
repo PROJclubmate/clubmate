@@ -681,34 +681,6 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.recommends.videogames.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    Video Games: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form6_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.videogames); %>
-                      <br>
-                      <div id="recommends_form6_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form6" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var videogames = user.recommends.videogames; var len = videogames.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="videogames" placeholder="Video Games" value="<%= videogames[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form6','videogames','Video Games');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
                 <!-- *********************info END********************* -->
               </div>
             </div>

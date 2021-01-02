@@ -90,7 +90,7 @@ const userSchema = new Schema({
     custom2: String
   },
   interests: [String],
-  recommends: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String], videogames: [String]},
+  recommends: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String]},
   friendRequests: [this],
   friends: [this],
   friendsCount: {type: Number, default: 0},

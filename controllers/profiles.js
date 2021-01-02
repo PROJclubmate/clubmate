@@ -676,7 +676,6 @@ module.exports = {
         editinfo(3,req.body.tvshows,foundUser.recommends.tvshows);
         editinfo(4,req.body.places,foundUser.recommends.places);
         editinfo(5,req.body.books,foundUser.recommends.books);
-        editinfo(6,req.body.videogames,foundUser.recommends.videogames);
 
         function editinfo(count,newData,oldData){
           if(newData){
@@ -696,7 +695,6 @@ module.exports = {
             else if(count==3){foundUser.recommends.tvshows=oldData;}
             else if(count==4){foundUser.recommends.places=oldData;}
             else if(count==5){foundUser.recommends.books=oldData;}
-            else if(count==6){foundUser.recommends.videogames=oldData;}
           }
         };
         foundUser.save();
