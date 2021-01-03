@@ -1288,11 +1288,12 @@ function club_posts_template(response){
               <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                 <!-- Moderation -->
                 <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
-                  <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
+                  <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                     <span>
-                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">
+                      </button>
                     </span>
-                  <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
+                  <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
                     <span>
                       <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                     </span>
@@ -1328,11 +1329,11 @@ function club_posts_template(response){
                 <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                   <!-- Moderation -->
                   <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
-                    <% if(0 <= rank && rank <= 2 && posts[k].moderation == 1){ %>
+                    <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                       </span>
-                    <% } else if(0 <= rank && rank <= 2 && posts[k].moderation == 0){ %>
+                    <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info noshadow text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                       </span>

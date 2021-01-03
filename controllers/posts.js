@@ -1317,112 +1317,130 @@ module.exports = {
   },
 
   postsVote(req, res, next){
-    Post.findById(req.params.post_id, function(err, foundPost){
-    if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-43)foundPost err:- '+JSON.stringify(err, null, 2));
-      return res.sendStatus(500);
+    if(req.body.visibility || req.body.exclusive || req.body.published){
+      Post.findById(req.params.post_id).populate({path: 'postClub', select: 'clubUsers'})
+      .exec(function(err, foundPost){
+      if(err || !foundPost){
+        console.log(Date.now()+' : '+req.user._id+' => (posts-43)foundPost err:- '+JSON.stringify(err, null, 2));
+        return res.sendStatus(500);
+      } else{
+        var isModerator = checkRank2(foundPost.postClub.clubUsers,req.user._id,2);
+        if(isModerator){
+          if(req.body.exclusive){
+            foundPost.moderation = parseInt(req.body.exclusive);
+            foundPost.save();
+            res.json({foundPost, isOwner: false, csrfToken: res.locals.csrfToken});
+          }
+          if(req.body.published){
+            foundPost.moderation = parseInt(req.body.published);
+            foundPost.save();
+            res.json({foundPost, isOwner: false, csrfToken: res.locals.csrfToken});
+          }
+        }
+        var isAdmin = checkRank2(foundPost.postClub.clubUsers,req.user._id,1);
+        if(isAdmin){
+          var isOwner = checkRank2(foundPost.postClub.clubUsers,req.user._id,0);
+          if(req.body.visibility){
+            foundPost.moderation = parseInt(req.body.visibility);
+            foundPost.save();
+            res.json({foundPost, isOwner, csrfToken: res.locals.csrfToken});
+          }
+        }
+      }
+      });
     } else{
-      if(req.body.visibility){
-        foundPost.moderation = parseInt(req.body.visibility);
-        foundPost.save();
-        res.json({foundPost, csrfToken: res.locals.csrfToken});
-      }
-      if(req.body.exclusive){
-        foundPost.moderation = parseInt(req.body.exclusive);
-        foundPost.save();
-        res.json({foundPost, csrfToken: res.locals.csrfToken});
-      }
-      if(req.body.published){
-        foundPost.moderation = parseInt(req.body.published);
-        foundPost.save();
-        res.json({foundPost, csrfToken: res.locals.csrfToken});
-      }
-      var i, k; var clickIdFound = false, otherIdFound = false;
-      var likeIds = foundPost.likeUserIds; var len1 = foundPost.likeCount;
-      var heartIds = foundPost.heartUserIds; var len3 = foundPost.heartCount;
-      // Like button
-      if(req.body.like == 'like'){
-        for(i=len1-1;i>=0;i--){
-          if(likeIds[i].equals(req.user._id)){
-            likeIds.splice(i,1);
-            foundPost.likeCount -= 1;
-            clickIdFound = true;
-            break;
-          }
-        }
-        if(clickIdFound == false){
-          for(k=len3-1;k>=0;k--){
-            if(heartIds[k].equals(req.user._id)){
-              heartIds.splice(k,1);
-              foundPost.heartCount -= 1;
-              otherIdFound = true;
-              break;
-            }
-          }
-          if(otherIdFound == true){
-            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
-              if(err || !updateUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-44)updateUser err:- '+JSON.stringify(err, null, 2));
-                return res.sendStatus(500);
-              }
-            });
-          }
-        }
-        if(clickIdFound == false){
-          likeIds.push(req.user._id);
-          foundPost.likeCount += 1;
-        }
-        foundPost.save();
-        res.json({foundPost, csrfToken: res.locals.csrfToken});
-      }
-      // Heart button
-      else if(req.body.heart == 'heart'){
-        for(k=len3-1;k>=0;k--){
-          if(heartIds[k].equals(req.user._id)){
-            heartIds.splice(k,1);
-            foundPost.heartCount -=1;
-            clickIdFound = true;
-            break;                   
-          }
-        }
-        if(clickIdFound == true){
-          User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
-            if(err || !updateUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-45)updateUser err:- '+JSON.stringify(err, null, 2));
-              return res.sendStatus(500);
-            }
-          });
-        }
-        if(clickIdFound == false){
+      Post.findById(req.params.post_id, function(err, foundPost){
+      if(err || !foundPost){
+        console.log(Date.now()+' : '+req.user._id+' => (posts-44)foundPost err:- '+JSON.stringify(err, null, 2));
+        return res.sendStatus(500);
+      } else{
+        var i, k; var clickIdFound = false, otherIdFound = false;
+        var likeIds = foundPost.likeUserIds; var len1 = foundPost.likeCount;
+        var heartIds = foundPost.heartUserIds; var len3 = foundPost.heartCount;
+        // Like button
+        if(req.body.like == 'like'){
           for(i=len1-1;i>=0;i--){
             if(likeIds[i].equals(req.user._id)){
               likeIds.splice(i,1);
               foundPost.likeCount -= 1;
+              clickIdFound = true;
               break;
             }
           }
-        }
-        if(clickIdFound == false){
-          heartIds.push(req.user._id);
-          foundPost.heartCount +=1;
-          User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
-            if(err || !updateUser){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-46)updateUser err:- '+JSON.stringify(err, null, 2));
-              return res.sendStatus(500);
+          if(clickIdFound == false){
+            for(k=len3-1;k>=0;k--){
+              if(heartIds[k].equals(req.user._id)){
+                heartIds.splice(k,1);
+                foundPost.heartCount -= 1;
+                otherIdFound = true;
+                break;
+              }
             }
-          });
+            if(otherIdFound == true){
+              User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
+                if(err || !updateUser){
+                  console.log(Date.now()+' : '+req.user._id+' => (posts-45)updateUser err:- '+JSON.stringify(err, null, 2));
+                  return res.sendStatus(500);
+                }
+              });
+            }
+          }
+          if(clickIdFound == false){
+            likeIds.push(req.user._id);
+            foundPost.likeCount += 1;
+          }
+          foundPost.save();
+          res.json({foundPost, csrfToken: res.locals.csrfToken});
         }
-        foundPost.save();
-        res.json({foundPost, csrfToken: res.locals.csrfToken});
+        // Heart button
+        else if(req.body.heart == 'heart'){
+          for(k=len3-1;k>=0;k--){
+            if(heartIds[k].equals(req.user._id)){
+              heartIds.splice(k,1);
+              foundPost.heartCount -=1;
+              clickIdFound = true;
+              break;                   
+            }
+          }
+          if(clickIdFound == true){
+            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
+              if(err || !updateUser){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-46)updateUser err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+          }
+          if(clickIdFound == false){
+            for(i=len1-1;i>=0;i--){
+              if(likeIds[i].equals(req.user._id)){
+                likeIds.splice(i,1);
+                foundPost.likeCount -= 1;
+                break;
+              }
+            }
+          }
+          if(clickIdFound == false){
+            heartIds.push(req.user._id);
+            foundPost.heartCount +=1;
+            User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
+              if(err || !updateUser){
+                console.log(Date.now()+' : '+req.user._id+' => (posts-47)updateUser err:- '+JSON.stringify(err, null, 2));
+                return res.sendStatus(500);
+              }
+            });
+          }
+          foundPost.save();
+          res.json({foundPost, csrfToken: res.locals.csrfToken});
+        }
       }
+      });
     }
-    });
   },
 
   postsModVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-47)foundPost err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (posts-48)foundPost err:- '+JSON.stringify(err, null, 2));
       return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;
@@ -1487,6 +1505,16 @@ module.exports = {
 }
 
 //*************FUNCTIONS**************
+function checkRank2(clubUsers,userId,rank){
+  var ok = false;
+  clubUsers.forEach(function(user){
+    if(user.id.equals(userId) && (user.userRank == 0 || user.userRank == rank)){
+      ok = true;
+    }
+  });
+  return ok;
+};
+
 function currentRank2(clubId,userClubs){
   var rank;
   userClubs.forEach(function(club){

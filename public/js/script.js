@@ -510,12 +510,13 @@ $(function (){
   for(var k=0;k<divUtc365.length;k++){
     var localTime = moment.utc($('#'+divUtc365[k].id).text()).toDate();
     localTime = moment(localTime).format('l');
-    if(moment(localTime).year() == moment().year()){
+    // =====================           REMEMBER TO UN-COMMENT          =============================
+    // if(moment(localTime).year() == moment().year()){
       localTimeAdjusted = localTime.substring(0, localTime.length - 5);
       $('#'+divLocal365[k].id).text(localTimeAdjusted);
-    } else{
-      $('#'+divLocal365[k].id).text(localTime);
-    }
+    // } else{
+    //   $('#'+divLocal365[k].id).text(localTime);
+    // }
   }
 });
 
@@ -986,14 +987,17 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
       }
       if(formData[1].name == 'visibility'){
         if(formData[1].value == '-1'){
-          $('#moderation'+data.foundPost._id).remove();
-          $('#modVisibility'+data.foundPost._id).removeClass('createdButton');
           $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
           $('#visibility'+data.foundPost._id).text('Visibility(Show)').val('1');
+          if(data.isOwner == true){
+            $('#moderation'+data.foundPost._id).remove();
+            $('#modVisibility'+data.foundPost._id).removeClass('createdButton');
+          }
         } else if(formData[1].value == '1'){
           $('#visibility'+data.foundPost._id).text('Visibility(Hide)').val('-1');
           $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
-          var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
+          if(data.isOwner == true){
+            var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
             if(data.foundPost.topic == '' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');
               btnVisibility.setAttribute('id', 'moderation'+data.foundPost._id);
@@ -1005,7 +1009,8 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
               btnVisibility.innerHTML = 'Exclusive';
               mySpan.appendChild(btnVisibility);
             }
-          $('#modVisibility'+data.foundPost._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
+            $('#modVisibility'+data.foundPost._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
+          }
         }
       }
     },

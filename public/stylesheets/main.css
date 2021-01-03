@@ -92,7 +92,7 @@ div.content{
   .noborder.post-head, .noborder.post-tail{border-right: 1px solid #ccc !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
-  .centerpad-posts{padding: 0 3.5rem 0 0 !important;}
+  .centerpad-posts{padding: 0 5rem 0 2rem !important;}
   .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke-width: 0.5px !important;}
   .vote-subpost, .vote-subpost.fa-thumbs-up{-webkit-text-stroke: 0.25px #fafafa !important;}
   .pin-chatbox{width: inherit;}
@@ -185,7 +185,7 @@ div.content{
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
   .chatdp{margin-left: 0 !important; margin-right: 0.5rem !important;}
-  .centerpad-posts{padding: 0 10rem 0 0 !important;}
+  .centerpad-posts{padding: 0 8.5rem 0 0 !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
