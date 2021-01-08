@@ -219,20 +219,20 @@
           <div class="card-header tabcontainer">
             <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
               <li class="nav-item">
-                <% if(currentUser && match){ %>
-                  <a class="nav-link boldtext black active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Info</a>
+                <% if(currentUser && !match){ %>
+                  <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
                 <% } else{ %>
-                  <a class="nav-link boldtext black" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Info</a>
+                  <a class="nav-link boldtext black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
                 <% } %>
               </li>
               <li class="nav-item">
                 <a class="nav-link boldtext black" id="clubs-tab" data-toggle="tab" href="#clubs" role="tab" aria-controls="clubs" aria-selected="false">Clubs</a>
               </li>
               <li class="nav-item">
-                <% if(currentUser && !match){ %>
-                  <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
+                <% if(currentUser && match){ %>
+                  <a class="nav-link boldtext black active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Info</a>
                 <% } else{ %>
-                  <a class="nav-link boldtext black" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="true">Activity</a>
+                  <a class="nav-link boldtext black" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Info</a>
                 <% } %>
               </li>
               <% if(currentUser && match){ %>
@@ -247,6 +247,86 @@
             </ul>
           </div>
           <div class="tab-content" id="myTabContent">
+            <!-- Activity Tab -->
+            <% if(currentUser && !match){ %>
+              <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+            <% } else{ %>
+              <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+            <% } %>
+              <div id="delegated-posts">
+                <div id="server-posts">
+                  <% //include ../partials/posts_user %>
+                </div>
+                <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
+                <div class="text-center">
+                  <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">
+                    <span id="load-more-span"></span>Load
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Clubs Tab -->
+            <div class="tab-pane fade cardpad border-light-lr" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
+              <div class="greyback valign my-auto" style="height: 23px;">
+                <div class="d-flex flex-row">
+                  <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
+                </div>
+                <div class="d-flex flex-row">
+                  <% if(currentUser && !match && adminClubs.length!=0){ %>
+                    <span>
+                      <form action="/requests?_method=PUT" method="POST" class="form-inline">
+                        <div id="clubInvite-select" class="clubInvite-select"></div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      </form>
+                    </span>
+                  <% } %>
+                  <% if(currentUser && !match && user.clubInvites.length!=0){ %>
+                    <span>
+                      <form action="/requests?_method=PUT" method="POST" class="form-inline">
+                        <div id="inviteCancel-select" class="inviteCancel-select"></div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      </form>
+                    </span>
+                  <% } %>
+                  <% if(currentUser && match){ %>
+                    <span class="d-flex">
+                      <button onclick="toggleclass_display('newClub_form')" class="btn btnxs text-xs btn-secondary my-auto" style="height: 27px;">Start a new club</button>
+                    </span>
+                  <% } %>
+                </div>
+              </div>
+              <div class="newClub_form my-2" style="outline: 2px dashed lightgrey;">
+                <form action="/users/<%= user._id %>/clubs?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                  <div class="form-signin">
+                    <label for="name" class="sr-only">Club name</label>
+                    <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
+                    <label for="banner" class="sr-only">Club banner</label>
+                    <input id="banner" class="form-control form-control-sm shadow" type="text" name="banner" placeholder="Banner">
+                    <label for="inputavatar" class="custom-file-upload fullwidth text-center" title="Upload club avatar">
+                      <i class="fas fa-upload"></i> Club avatar
+                    </label>
+                    <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required="">
+                    <br>
+                    <br>
+                    <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
+                  </div>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              </div>
+              <% if((isFriend || match) && clubs.length!=0){ %>
+                <div id="server-clubs">
+                  <% include ../partials/user_clubs %>
+                </div>
+                <div id="client-clubs"></div>
+                <% if(clubCount > 10){ %>
+                  <div class="text-center">
+                    <button id="load-more-clubs-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="10,20">
+                      <span id="load-more-clubs-span"></span>Load More
+                    </button>
+                  </div>
+                <% } %>
+              <% } %>
+            </div>
             <!-- **********************Info START************************ -->
             <% if(currentUser && match){ %>
               <div class="tab-pane fade cardpad show active border-light-lr" id="info" role="tabpanel" aria-labelledby="info-tab">
@@ -472,19 +552,19 @@
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-discord" style="width: 36px;"></i></div>
-                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="discord" placeholder="Discord profile" style="width: inherit;" value="<%= decodeURI(user.bio.discord) %>"></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="discord" placeholder="Discord server / profile" style="width: inherit;" value="<%= decodeURI(user.bio.discord) %>"></div>
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-github" style="width: 36px;"></i></div>
-                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="github" placeholder="GitHub Account" style="width: inherit;" value="<%= decodeURI(user.bio.github) %>"></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="github" placeholder="GitHub account" style="width: inherit;" value="<%= decodeURI(user.bio.github) %>"></div>
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-spotify" style="width: 36px;"></i></div>
-                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="spotify" placeholder="Spotify Playlist" style="width: inherit;" value="<%= decodeURI(user.bio.spotify) %>"></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="spotify" placeholder="Spotify playlist" style="width: inherit;" value="<%= decodeURI(user.bio.spotify) %>"></div>
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-youtube" style="width: 36px;"></i></div>
-                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="youtube" placeholder="YouTube channel" style="width: inherit;" value="<%= decodeURI(user.bio.youtube) %>"></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="youtube" placeholder="YouTube channel (playlists)" style="width: inherit;" value="<%= decodeURI(user.bio.youtube) %>"></div>
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fas fa-link" style="width: 36px;"></i></div>
@@ -681,87 +761,6 @@
                     </div>
                   </div>
                 <% } %>
-                <!-- *********************info END********************* -->
-              </div>
-            </div>
-            <!-- Clubs Tab -->
-            <div class="tab-pane fade cardpad border-light-lr" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
-              <div class="greyback valign my-auto" style="height: 23px;">
-                <div class="d-flex flex-row">
-                  <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
-                </div>
-                <div class="d-flex flex-row">
-                  <% if(currentUser && !match && adminClubs.length!=0){ %>
-                    <span>
-                      <form action="/requests?_method=PUT" method="POST" class="form-inline">
-                        <div id="clubInvite-select" class="clubInvite-select"></div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    </span>
-                  <% } %>
-                  <% if(currentUser && !match && user.clubInvites.length!=0){ %>
-                    <span>
-                      <form action="/requests?_method=PUT" method="POST" class="form-inline">
-                        <div id="inviteCancel-select" class="inviteCancel-select"></div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    </span>
-                  <% } %>
-                  <% if(currentUser && match){ %>
-                    <span class="d-flex">
-                      <button onclick="toggleclass_display('newClub_form')" class="btn btnxs text-xs btn-secondary my-auto" style="height: 27px;">Start a new club</button>
-                    </span>
-                  <% } %>
-                </div>
-              </div>
-              <div class="newClub_form my-2" style="outline: 2px dashed lightgrey;">
-                <form action="/users/<%= user._id %>/clubs?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-                  <div class="form-signin">
-                    <label for="name" class="sr-only">Club name</label>
-                    <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
-                    <label for="banner" class="sr-only">Club banner</label>
-                    <input id="banner" class="form-control form-control-sm shadow" type="text" name="banner" placeholder="Banner">
-                    <label for="inputavatar" class="custom-file-upload fullwidth text-center" title="Upload club avatar">
-                      <i class="fas fa-upload"></i> Club avatar
-                    </label>
-                    <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required="">
-                    <br>
-                    <br>
-                    <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
-                  </div>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-              </div>
-              <% if((isFriend || match) && clubs.length!=0){ %>
-                <div id="server-clubs">
-                  <% include ../partials/user_clubs %>
-                </div>
-                <div id="client-clubs"></div>
-                <% if(clubCount > 10){ %>
-                  <div class="text-center">
-                    <button id="load-more-clubs-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="10,20">
-                      <span id="load-more-clubs-span"></span>Load More
-                    </button>
-                  </div>
-                <% } %>
-              <% } %>
-            </div>
-            <!-- Activity Tab -->
-            <% if(currentUser && !match){ %>
-              <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-            <% } else{ %>
-              <div class="tab-pane fade greyback" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-            <% } %>
-              <div id="delegated-posts">
-                <div id="server-posts">
-                  <% //include ../partials/posts_user %>
-                </div>
-                <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
-                <div class="text-center">
-                  <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">
-                    <span id="load-more-span"></span>Load
-                  </button>
-                </div>
               </div>
             </div>
             <% if(currentUser && match){ %>

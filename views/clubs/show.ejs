@@ -321,22 +321,20 @@
               <li class="nav-item">
                 <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
               </li>
-              <% if(currentUser && 0 <= rank && rank <=4){ %>
+              <li class="nav-item">
+               <a class="nav-link boldtext black notification" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true">
+                Members
+                <% if(memberRequestsLength > 0){ %>
+                  <span class="badge badge-white text-xxs"><%= memberRequestsLength %></span>
+                <% } %>
+              </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link boldtext black" id="requests-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">Stories</a>
+              </li>
+              <% if(currentUser && 0 <= rank && rank <= 4){ %>
                 <li class="nav-item">
                   <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
-                </li>
-              <% } %>
-              <li class="nav-item">
-               <a class="nav-link boldtext black" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true">Members</a>
-              </li>
-              <% if(0 <= rank && rank <= 1){ %>
-                <li class="nav-item">
-                  <a class="nav-link boldtext black notification" id="requests-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">
-                    Requests
-                      <% if(memberRequestsLength > 0){ %>
-                        <span class="badge badge-white text-xxs"><%= memberRequestsLength %></span>
-                      <% } %>
-                  </a>
                 </li>
               <% } %>
             </ul>
@@ -426,18 +424,6 @@
                   </div>
                 </div>
               </div>
-              <% if(currentUser && 0 <= rank && rank <=4){ %>
-                <!-- Chats Tab -->
-                <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
-                  <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
-                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
-                      <div id="lastMsgBy" value=""> 
-                        <% include ../clubs/chats %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% } %>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad border-light-lr" id="members" role="tabpanel" aria-labelledby="members-tab">
                 <div class="greyback valign" style="height: 23px;">
@@ -472,19 +458,29 @@
                   </div>
                 <% } %>
               </div>
-              <% if(0 <= rank && rank <= 1){ %>
-                <!-- Member Requests Tab -->
-                <div class="tab-pane fade cardpad border-light-lr" id="requests" role="tabpanel" aria-labelledby="requests-tab">
-                  <div class="greyback" style="height: 23px;">
-                    <div class="d-flex flex-row">
-                      <span class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Member Reqs.</span>
-                    </div>
+              <!-- Member Requests Tab -->
+              <div class="tab-pane fade cardpad border-light-lr" id="requests" role="tabpanel" aria-labelledby="requests-tab">
+                <div class="greyback" style="height: 23px;">
+                  <div class="d-flex flex-row">
+                    <span class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Member Reqs.</span>
                   </div>
-                  <div id="client-memberRequests"></div>
-                  <div class="text-center">
-                    <button id="load-more-memberRequests-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="0,10">
-                      <span id="load-more-memberRequests-span"></span>Load
-                    </button>
+                </div>
+                <div id="client-memberRequests"></div>
+                <div class="text-center">
+                  <button id="load-more-memberRequests-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="0,10">
+                    <span id="load-more-memberRequests-span"></span>Load
+                  </button>
+                </div>
+              </div>
+              <% if(currentUser && 0 <= rank && rank <=4){ %>
+                <!-- Chats Tab -->
+                <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                  <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
+                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
+                      <div id="lastMsgBy" value=""> 
+                        <% include ../clubs/chats %>
+                      </div>
+                    </div>
                   </div>
                 </div>
               <% } %>

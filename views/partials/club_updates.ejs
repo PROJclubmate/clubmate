@@ -27,7 +27,7 @@
                 <input name="newsDate" type="text" class="form-control datetimepicker-input text-sm mobiletext3" data-target="#datetimepicker4" placeholder="mm/dd/yyyy (event date)" style="height: 30px; border-radius: 0.25rem;">
               </div>
               <div class="input-group mt-1">
-                <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update" style="border-radius: 0.25rem 0 0 0.25rem !important;">
+                <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update" style="border-radius: 0.25rem 0 0 0.25rem !important; height: calc(1.5em + 1rem + 2px);">
                 <div class="input-group-append">
                   <button class="btn btn-secondary btnxxs text-xs" type="submit">Push</button>
                 </div>
@@ -40,7 +40,7 @@
         <div id="pushnew" class="moderator">
           <form action="/clubs/<%= club._id %>?_method=PUT" method="POST">
             <div class="input-group mt-1">
-              <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update" style="border-radius: 0.25rem 0 0 0.25rem !important;">
+              <input type="text" name="newsUpdate" class="form-control commentbox3 text-sm" placeholder="Write an update" style="border-radius: 0.25rem 0 0 0.25rem !important; height: calc(1.5em + 1rem + 2px);">
               <div class="input-group-append">
                 <button class="btn btn-secondary btnxxs text-xs" type="submit">Push</button>
               </div>
@@ -53,7 +53,7 @@
     <% if(club.updates && club.updates != ''){ %>
       <div id="updates-content">
         <% for(i=club.updates.length-1;i>=0;i--){ %>
-          <div class="fullwidth d-flex flex-row py-2" onmouseover="toggle_display('clear_update<%= i %>');" onmouseout="toggle_display('clear_update<%= i %>');">
+          <div class="fullwidth d-flex flex-row py-2" onmouseover="toggle_visibility('clear_update<%= i %>');" onmouseout="toggle_visibility('clear_update<%= i %>');">
             <% if(club.updates[i].eventDate){ %>
               <div class="text-md mx-2 my-1 lineheight">
                 <time datetime="<%= moment(club.updates[i].eventDate).format('LL') %>" class="calendar">
@@ -65,16 +65,16 @@
             <% } else{ %>
               <div class="eventD text-md mx-2 my-1 lineheight"></div>
             <% } %>
-            <div class="lightgrey text-xs mobiletext4 mobilebold">
+            <div class="grey text-sm mobiletext3 mobilebold">
               <%= club.updates[i].news %>
-              <div class="text-xxs notbold mt-2"><em><%= moment(club.updates[i].pushedAt).calendar() %></em></div>
+              <div class="lightgrey text-xxs notbold mt-2"><em><%= moment(club.updates[i].pushedAt).calendar() %></em></div>
               <% if(0 <= rank && rank <= 1){ %>
-                <div class="text-xxs notbold nothing">[by: <em><%= club.updates[i].pusherName %></em>]</div>
+                <div class="lightgrey text-xxs notbold nothing">[by: <em><%= club.updates[i].pusherName %></em>]</div>
               <% } %>
             </div>
             <div class="d-flex flex-row ml-auto mb-auto">
               <% if(0 <= rank && rank <= 1){ %>
-                <span id="clear_update<%= i %>" class="dropdown ml-auto mb-auto clear_update">
+                <span id="clear_update<%= i %>" class="dropdown ml-auto mb-auto clear_update2">
                   <button class="btn btn-sm dropdown-toggle editprofile" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                   <ul class="dropdown-menu dropdown-menu-right dropbox">
                     <div class="container drop-shadow1">

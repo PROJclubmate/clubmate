@@ -968,7 +968,11 @@ function index_posts_template(response){
             </a>
           <% } %>
         </div>
-        <div class="card-body3">
+        <% if(posts[k].image){ %>
+          <div class="card-body3">
+        <% } else{ %>
+          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+        <% } %>
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
           </div>
@@ -1479,7 +1483,11 @@ function club_posts_template(response){
             </a>
           <% } %>
         </div>
-        <div class="card-body3">
+        <% if(posts[k].image){ %>
+          <div class="card-body3">
+        <% } else{ %>
+          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+        <% } %>
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
           </div>
@@ -1866,7 +1874,11 @@ function user_posts_template(response){
             </a>
           <% } %>
         </div>
-        <div class="card-body3">
+        <% if(posts[k].image){ %>
+          <div class="card-body3">
+        <% } else{ %>
+          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+        <% } %>
           <div>
             <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
           </div>
@@ -2236,7 +2248,11 @@ function heart_posts_template(response){
             </a>
           <% } %>
         </div>
-        <div class="card-body3">
+        <% if(posts[k].image){ %>
+          <div class="card-body3">
+        <% } else{ %>
+          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+        <% } %>
           <div>
             <span class="lightgrey text-sm"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
           </div>
@@ -2785,15 +2801,15 @@ function moreMemberRequests_template(response){
       <a href="/users/<%= club.memberRequests[m].userId._id %>">
       <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUser.png' %>"></a>
     </div>
-    <div class="col-md-6 col-6 my-auto d-flex flex-column">
-      <div>
+    <div class="col-md-6 col-6 my-auto">
+      <span>
         <a href="/users/<%= club.memberRequests[m].userId._id %>" class="mobiletext2 grey">
           <strong><%= club.memberRequests[m].userId.fullName %></strong>
         </a>
-      </div>
-      <div class="my-auto lightgrey text-xs">
+      </span>
+      <span class="my-auto lightgrey text-xs">
         <%= club.memberRequests[m].message %>
-      </div>
+      </span>
     </div>
     <div class="col-md-5 col-4 d-flex">
       <div class="ml-auto mb-auto">

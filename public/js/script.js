@@ -77,9 +77,9 @@ if(location.pathname == '/home'){
 
 $('#latestUpdates').on('shown.bs.collapse', function(){
   if($('#pushnew').hasClass('admin')){
-    $('#latestUpdates').animate({scrollTop: 92}, 500);
+    $('#latestUpdates').animate({scrollTop: 101}, 500);
   } else if($('#pushnew').hasClass('moderator')){
-    $('#latestUpdates').animate({scrollTop: 50}, 500);
+    $('#latestUpdates').animate({scrollTop: 59}, 500);
   }
 })
 
@@ -241,6 +241,14 @@ function toggle_display(id){
     divelement.style.display = 'none';
   else
     divelement.style.display = 'block';
+}
+
+function toggle_visibility(id){
+  var divelement = document.getElementById(id);
+  if(divelement.style.visibility == 'visible')
+    divelement.style.visibility = 'hidden';
+  else
+    divelement.style.visibility = 'visible';
 }
 
 function closeForm(id){
