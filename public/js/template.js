@@ -913,68 +913,76 @@ function index_posts_template(response){
   <% } else{ %>
     <!-- TOPIC POSTS -->
     <div class="d-flex flex-row justify-content-between">
-      <div class="card topic-break mt-3">
-        <div class="card-body">
-          <div class="dropctn">
-            <div class="valign">
-              <div>
-                <% if(!friendsPostUrl){ %>
-                  <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
-                <% } else{ %>
-                  <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
-                <% } %>
-              </div>
-              <div>
+      <div class="card topic-break mt-3 flex-column justify-content-between">
+        <div>
+          <div class="card-body">
+            <div class="dropctn">
+              <div class="valign">
                 <div>
                   <% if(!friendsPostUrl){ %>
-                    <span class="mobiletext2">
-                      <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
-                    </span>
+                    <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
                   <% } else{ %>
-                    <span class="mobiletext2">
-                      <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
-                    </span>
+                    <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
                   <% } %>
-                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).fromNow() %></em>
+                </div>
+                <div>
+                  <div>
+                    <% if(!friendsPostUrl){ %>
+                      <span class="mobiletext2">
+                        <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
+                      </span>
+                    <% } else{ %>
+                      <span class="mobiletext2">
+                        <a class="darkgrey" href="/users/<%= posts[k].postAuthor.id._id %>"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
+                      </span>
+                    <% } %>
+                    <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).fromNow() %></em>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="nounderline nothing">
           <div class="topic-head">
-            <div class="mx-2 mb-auto">
+            <div class="px-2 mb-auto">
               <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
             </div>
           </div>
-          <% if(posts[k].image){ %>
-            <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            <% if(!friendsPostUrl){ %>
-              <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-            <% } else{ %>
-              <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-            <% } %>
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
-            </a>
-          <% } else{ %>
-            <% if(!friendsPostUrl){ %>
-              <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-            <% } else{ %>
-              <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-            <% } %>
-              <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            </a>
-          <% } %>
         </div>
-        <% if(posts[k].image){ %>
-          <div class="card-body3">
-        <% } else{ %>
-          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
-        <% } %>
-          <div>
-            <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+        <div>
+          <div class="nounderline nothing">
+            <% if(posts[k].image){ %>
+              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+              <% } %>
+              <% if(!friendsPostUrl){ %>
+                <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+              <% } else{ %>
+                <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+              <% } %>
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+              </a>
+            <% } else{ %>
+              <% if(!friendsPostUrl){ %>
+                <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+              <% } else{ %>
+                <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+              <% } %>
+                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <% } %>
+              </a>
+            <% } %>
+          </div>
+          <% if(posts[k].image){ %>
+            <div class="card-body3">
+          <% } else{ %>
+            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+          <% } %>
+            <div>
+              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1438,58 +1446,66 @@ function club_posts_template(response){
   <% } else{ %>
     <!-- TOPIC POSTS -->
     <div class="noborder d-flex flex-row justify-content-between">
-      <div class="card topic-break mt-3">
-        <div class="card-body">
-          <div class="dropctn">
-            <div class="valign">
-              <div>
-                <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
-              </div>
-              <div class="lineheight2">
+      <div class="card topic-break mt-3 flex-column justify-content-between">
+        <div>
+          <div class="card-body">
+            <div class="dropctn">
+              <div class="valign">
                 <div>
-                  <span class="mobiletext2">
-                    <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
-                  </span>
-                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  <a href="/users/<%= posts[k].postAuthor.id._id %>"><img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>"></a>
                 </div>
-                <div>
-                <% if(posts[k].moderation == -1){ %>
-                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
-                <% } %>
-                <% if(posts[k].descEdit.length != 0){ %>
-                  <div class="badge badge-warning text-xxs">Edited</div>
-                <% } %>
+                <div class="lineheight2">
+                  <div>
+                    <span class="mobiletext2">
+                      <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
+                    </span>
+                    <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  </div>
+                  <div>
+                  <% if(posts[k].moderation == -1){ %>
+                    <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                  <% } %>
+                  <% if(posts[k].descEdit.length != 0){ %>
+                    <div class="badge badge-warning text-xxs">Edited</div>
+                  <% } %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="nounderline nothing">
           <div class="valign topic-head">
-            <div class="mx-2 mb-auto">
+            <div class="px-2 mb-auto">
               <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
             </div>
           </div>
-          <% if(posts[k].image){ %>
-            <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
-            </a>
-          <% } else{ %>
-            <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-              <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            </a>
-          <% } %>
         </div>
-        <% if(posts[k].image){ %>
-          <div class="card-body3">
-        <% } else{ %>
-          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
-        <% } %>
-          <div>
-            <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+        <div>
+          <div class="nounderline nothing">
+            <% if(posts[k].image){ %>
+              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+              <% } %>
+                <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+              </a>
+            <% } else{ %>
+              <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
+                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <% } %>
+              </a>
+            <% } %>
+          </div>
+          <% if(posts[k].image){ %>
+            <div class="card-body3">
+          <% } else{ %>
+            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+          <% } %>
+            <div>
+              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1821,66 +1837,74 @@ function user_posts_template(response){
     <!-- TOPIC POSTS -->
     <div class="noborder d-flex flex-row justify-content-between">
       <% if(k == 0){ %>
-        <div class="card mt-0 pt-3 topic-break">
+        <div class="card mt-0 pt-3 topic-break flex-column justify-content-between">
       <% } else{ %>
-        <div class="card topic-break mt-3">
+        <div class="card mt-3 topic-break flex-column justify-content-between">
       <% } %>
-        <div class="card-body">
-          <div class="dropctn">
-            <div class="valign lineheight">
-              <div>
-                <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
-              </div>
-              <div class="lineheight2">
+        <div>
+          <div class="card-body">
+            <div class="dropctn">
+              <div class="valign lineheight">
                 <div>
-                  <span class="mobiletext2">
-                    <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
-                  </span>
-                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
                 </div>
-                <div>
-                  <% if(currentUser && match){ %>
-                    <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
-                    <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
-                    <% } else if(posts[k].moderation == -1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                <div class="lineheight2">
+                  <div>
+                    <span class="mobiletext2">
+                      <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
+                    </span>
+                    <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  </div>
+                  <div>
+                    <% if(currentUser && match){ %>
+                      <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+                      <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+                      <% } else if(posts[k].moderation == -1){ %>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                      <% } %>
                     <% } %>
-                  <% } %>
-                  <% if(posts[k].descEdit.length != 0){ %>
-                    <div class="badge badge-warning text-xxs">Edited</div>
-                  <% } %>
+                    <% if(posts[k].descEdit.length != 0){ %>
+                      <div class="badge badge-warning text-xxs">Edited</div>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="nounderline nothing">
           <div class="valign topic-head">
-            <div class="mx-2 mb-auto">
+            <div class="px-2 mb-auto">
               <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
             </div>
           </div>
-          <% if(posts[k].image){ %>
-            <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
-            <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
-            </a>
-          <% } else{ %>
-            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-              <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
-              <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
-            </a>
-          <% } %>
         </div>
-        <% if(posts[k].image){ %>
-          <div class="card-body3">
-        <% } else{ %>
-          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
-        <% } %>
-          <div>
-            <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+        <div>
+          <div class="nounderline nothing">
+            <% if(posts[k].image){ %>
+              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+              <% } %>
+              <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+              </a>
+            <% } else{ %>
+              <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
+                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <% } %>
+              </a>
+            <% } %>
+          </div>
+          <% if(posts[k].image){ %>
+            <div class="card-body3">
+          <% } else{ %>
+            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+          <% } %>
+            <div>
+              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2195,66 +2219,74 @@ function heart_posts_template(response){
     <!-- TOPIC POSTS -->
     <div class="noborder d-flex flex-row justify-content-between">
       <% if(l == 0){ %>
-        <div class="card mt-0 pt-3 topic-break">
+        <div class="card mt-0 pt-3 topic-break flex-column justify-content-between">
       <% } else{ %>
-        <div class="card topic-break mt-3">
+        <div class="card mt-3 topic-break flex-column justify-content-between">
       <% } %>
-        <div class="card-body">
-          <div class="dropctn">
-            <div class="valign lineheight">
-              <div>
-                <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
-              </div>
-              <div class="lineheight2">
+        <div>
+          <div class="card-body">
+            <div class="dropctn">
+              <div class="valign lineheight">
                 <div>
-                  <span class="mobiletext2">
-                    <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
-                  </span>
-                  <em class="text-xxs lightgrey2">. <%= moment(postsH[l].createdAt).calendar() %></em>
+                  <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
                 </div>
-                <div>
-                  <% if(currentUser && match){ %>
-                    <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
-                    <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs"><%= postsH[l].moderation %></div>
-                    <% } else if(postsH[l].moderation == -1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs"><%= postsH[l].moderation %></div>
+                <div class="lineheight2">
+                  <div>
+                    <span class="mobiletext2">
+                      <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
+                    </span>
+                    <em class="text-xxs lightgrey2">. <%= moment(postsH[l].createdAt).calendar() %></em>
+                  </div>
+                  <div>
+                    <% if(currentUser && match){ %>
+                      <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
+                      <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
+                        <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs"><%= postsH[l].moderation %></div>
+                      <% } else if(postsH[l].moderation == -1){ %>
+                        <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs"><%= postsH[l].moderation %></div>
+                      <% } %>
                     <% } %>
-                  <% } %>
-                  <% if(postsH[l].descEdit.length != 0){ %>
-                    <div class="badge badge-warning text-xxs">Edited</div>
-                  <% } %>
+                    <% if(postsH[l].descEdit.length != 0){ %>
+                      <div class="badge badge-warning text-xxs">Edited</div>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="nounderline nothing">
           <div class="valign topic-head">
-            <div class="mx-2 mb-auto">
+            <div class="px-2 mb-auto">
               <h5 class="nothing topic-h5"><%= postsH[l].topic %></h5>
             </div>
           </div>
-          <% if(postsH[l].image){ %>
-            <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
-            <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
-            <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-              <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= postsH[l].image %>"></div></div>
-            </a>
-          <% } else{ %>
-            <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-              <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= postsH[l].description %></div>
-              <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
-            </a>
-          <% } %>
         </div>
-        <% if(posts[k].image){ %>
-          <div class="card-body3">
-        <% } else{ %>
-          <div class="card-body3" style="border-top: 1px solid whitesmoke;">
-        <% } %>
-          <div>
-            <span class="lightgrey text-sm"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
+        <div>
+          <div class="nounderline nothing">
+            <% if(postsH[l].image){ %>
+              <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
+              <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
+                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+              <% } %>
+              <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= postsH[l].image %>"></div></div>
+              </a>
+            <% } else{ %>
+              <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
+                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= postsH[l].description %></div>
+                <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
+                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+                <% } %>
+              </a>
+            <% } %>
+          </div>
+          <% if(postsH[l].image){ %>
+            <div class="card-body3">
+          <% } else{ %>
+            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+          <% } %>
+            <div>
+              <span class="lightgrey text-sm"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
+            </div>
           </div>
         </div>
       </div>

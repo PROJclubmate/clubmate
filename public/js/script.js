@@ -736,9 +736,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");
   }
-  if(window.innerWidth < 360){
-    $('#requests-tab').text('Req');
-  }
 
   oldMsgHeightMobile = updateMessageHeight3();
   $(window).resize(function(){

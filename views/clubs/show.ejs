@@ -322,7 +322,7 @@
                 <a class="nav-link boldtext black active" id="activity-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
               </li>
               <li class="nav-item">
-               <a class="nav-link boldtext black notification" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true">
+               <a class="nav-link boldtext black notification" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">
                 Members
                 <% if(memberRequestsLength > 0){ %>
                   <span class="badge badge-white text-xxs"><%= memberRequestsLength %></span>
@@ -330,11 +330,11 @@
               </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link boldtext black" id="requests-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">Stories</a>
+                <a class="nav-link boldtext black" id="stories-tab" data-toggle="tab" href="#stories" role="tab" aria-controls="stories" aria-selected="true">Stories</a>
               </li>
               <% if(currentUser && 0 <= rank && rank <= 4){ %>
                 <li class="nav-item">
-                  <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chats</a>
+                  <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chat</a>
                 </li>
               <% } %>
             </ul>
@@ -359,31 +359,31 @@
                       <% } %>
                       <label for="hyperlink" class="sr-only">Hyperlink</label>
                       <input id="hyperlink" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Hyperlink">
-                      <div class="righttext d-flex my-auto">
-                        <span>
+                      <div class="d-flex flex-row righttext my-auto">
+                        <div class="ml-1 my-auto">
                           <div class="emoji-panel">
-                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md" style="margin-top: 0.25rem;" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
+                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
                               <i class="fas fa-link"></i>
                             </button>
                           </div>
-                        </span>
-                        <span>
+                        </div>
+                        <div class="ml-1 mr-2 my-auto">
                           <div class="emoji-panel">
                             <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" type="button" title="Insert emoji">
                               <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                                 <% include ../partials/emoji_picker %>
                               </div>
-                              <i class="far fa-laugh-wink" style="padding-top: 0.35rem; padding-right: 0.5rem;"></i>
+                              <i class="far fa-laugh-wink"></i>
                             </button>
                           </div>
-                        </span>
-                        <span>
+                        </div>
+                        <div class="mx-1 my-auto">
                           <label for="inputImage" class="custom-file-upload" title="Upload image">
                             <i class="fas fa-upload"></i> Image
                           </label>
                           <input type="file" id="inputImage" class="text-sm" name="image" accept="image/*">
-                        </span>
-                        <span class="righttext d-flex my-auto">
+                        </div>
+                        <div class="righttext d-flex my-auto">
                           <span>
                             <button id="postbutton" class="btn btn-sm btn-success" title="Submit post" onclick="loading_spinner('load-postbutton','description');"><span id="load-postbutton"></span>Post</button>
                           </span>
@@ -406,7 +406,7 @@
                               <option value="4" data-descr="Only Me"></option>
                             </select>
                           </span>
-                        </span>
+                        </div>
                       </div>
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
@@ -426,52 +426,63 @@
               </div>
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad border-light-lr" id="members" role="tabpanel" aria-labelledby="members-tab">
-                <div class="greyback valign" style="height: 23px;">
-                  <div class="d-flex flex-row">
-                    <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
-                  </div>
-                  <div class="d-flex">
-                    <div>
-                      <button onclick="toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
+                <% if(memberRequestsLength && memberRequestsLength > 0){ %>
+                  <div class="greyback px-2 mb-3" style="height: 23px; margin: 0 -0.5rem;">
+                    <div class="valign whiteback" style="height: inherit;">
+                      <div class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Requests</div>
+                      <div id="show-requestsbtn">
+                        <button onclick="toggle_display('client-memberRequests-div');
+                        document.getElementById('show-requestsbtn').style.display = 'none';
+                        document.getElementById('clubmembers-div').style.display = 'none';" 
+                        class="btn btnxs text-xs btn-secondary mx-2" style="height: 27px;">Show</button>
+                      </div>
                     </div>
-                    <div id="searchMember_form">
-                      <div class="input-group input-group-sm">
-                        <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 26px; width: 185px; border: none;">
-                        <div class="input-group-append">
-                          <button id="search-members-btn" class="btn btn-secondary search py-0 px-1 btnshadow" type="submit" style="height: 26px;">
-                            <span id="search-members-span"></span>Go
-                          </button>
+                  </div>
+                  <div id="client-memberRequests-div">
+                    <div id="client-memberRequests"></div>
+                    <div class="text-center">
+                      <button id="load-more-memberRequests-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="0,10">
+                        <span id="load-more-memberRequests-span"></span>Load
+                      </button>
+                    </div>
+                  </div>
+                <% } %>
+                <div id="clubmembers-div">
+                  <div class="greyback valign" style="height: 23px;">
+                    <div class="d-flex flex-row">
+                      <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
+                    </div>
+                    <div class="d-flex">
+                      <div>
+                        <button onclick="toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
+                      </div>
+                      <div id="searchMember_form">
+                        <div class="input-group input-group-sm">
+                          <input id="search-members-input" type="text" name="name" class="form-control search shadow ml-1" placeholder="Search member" autofocus required style="height: 26px; width: 185px; border: none;">
+                          <div class="input-group-append">
+                            <button id="search-members-btn" class="btn btn-secondary search py-0 px-1 btnshadow" type="submit" style="height: 26px;">
+                              <span id="search-members-span"></span>Go
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div id="server-members">
-                  <% include ../partials/club_members %>
-                </div>
-                <div id="client-members"></div>
-                <% if(0 <= rank && rank <= 4){ %>
-                  <div class="text-center">
-                    <button id="load-more-members-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="1,11">
-                      <span id="load-more-members-span"></span>Load More
-                    </button>
+                  <div id="server-members">
+                    <% include ../partials/club_members %>
                   </div>
-                <% } %>
-              </div>
-              <!-- Member Requests Tab -->
-              <div class="tab-pane fade cardpad border-light-lr" id="requests" role="tabpanel" aria-labelledby="requests-tab">
-                <div class="greyback" style="height: 23px;">
-                  <div class="d-flex flex-row">
-                    <span class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Member Reqs.</span>
-                  </div>
-                </div>
-                <div id="client-memberRequests"></div>
-                <div class="text-center">
-                  <button id="load-more-memberRequests-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="0,10">
-                    <span id="load-more-memberRequests-span"></span>Load
-                  </button>
+                  <div id="client-members"></div>
+                  <% if(0 <= rank && rank <= 4){ %>
+                    <div class="text-center">
+                      <button id="load-more-members-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="1,11">
+                        <span id="load-more-members-span"></span>Load More
+                      </button>
+                    </div>
+                  <% } %>
                 </div>
               </div>
+              <!-- Stories Tab -->
+              <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab"></div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
                 <!-- Chats Tab -->
                 <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">

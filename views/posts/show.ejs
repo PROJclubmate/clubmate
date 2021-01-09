@@ -130,65 +130,75 @@
       <!-- TOPIC POSTS -->
       <div>
         <div class="d-flex flex-row justify-content-between mt-3">
-          <div class="card topic-break">
-            <div class="card-body">
-              <div class="dropctn">
-                <div class="valign">
-                  <div>
-                    <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
-                  </div>
-                  <div class="lineheight2">
-                    <div class="mobiletext2 truncate1">
-                      <span>
-                        <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
-                      </span>
-                      <i class="fas fa-caret-left lightgrey"></i>
-                      <span>
-                        <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
-                      </span>
-                    </div>
+          <div class="card topic-break flex-column justify-content-between">
+            <div>
+              <div class="card-body">
+                <div class="dropctn">
+                  <div class="valign">
                     <div>
-                      <% if(post.moderation == -1){ %>
-                        <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
-                      <% } %>
-                      <% if(post.descEdit.length != 0){ %>
-                        <div class="badge badge-warning text-xxs">Edited</div>
-                      <% } %>
-                      <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                      <span class="lightgrey2 nothing"><em id="timeLocal" class="text-xxs"></em></span>
+                      <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
+                    </div>
+                    <div class="lineheight2">
+                      <div class="mobiletext2 truncate1">
+                        <span>
+                          <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
+                        </span>
+                        <i class="fas fa-caret-left lightgrey"></i>
+                        <span>
+                          <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
+                        </span>
+                      </div>
+                      <div>
+                        <% if(post.moderation == -1){ %>
+                          <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
+                        <% } %>
+                        <% if(post.descEdit.length != 0){ %>
+                          <div class="badge badge-warning text-xxs">Edited</div>
+                        <% } %>
+                        <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                        <span class="lightgrey2 nothing"><em id="timeLocal" class="text-xxs"></em></span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="nounderline nothing">
               <div class="topic-head">
-                <div class="mx-2 mb-auto">
+                <div class="px-2 mb-auto">
                   <h5 class="nothing topic-h5"><%= post.topic %></h5>
                 </div>
               </div>
-              <% if(post.image){ %>
-                <div class="mobiletext linewrap card-body3"><%= post.description %></div>
-                <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
-                </div>
-                <img class="card-img-top" src="<%= post.image %>">
-              <% } else{ %>
-                <div class="card-body3 mobiletext linewrap nolink"><%= post.description %></div>
-                <div class="card-body3"><p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
-                </div>
-              <% } %>
             </div>
-            <!-- Vote bar -->
-            <% if(post.image){ %>
-              <div class="card-body3">
-            <% } else{ %>
-              <div class="card-body3" style="border-top: 1px solid whitesmoke;">
-            <% } %>
-              <div class="d-flex flex-row">
-                <div class="lightgrey text-sm" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
-                <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                  <div id="following-switch-mobile" class="boldtext nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</div>
+            <div>
+              <div class="nounderline nothing">
+                <% if(post.image){ %>
+                  <div class="mobiletext linewrap card-body3"><%= post.description %></div>
+                  <% if(post.hyperlink && post.hyperlink != ''){ %>
+                    <div class="card-body3">
+                      <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                    </div>
+                  <% } %>
+                  <img class="card-img-top" src="<%= post.image %>">
+                <% } else{ %>
+                  <div class="card-body3 mobiletext linewrap nolink"><%= post.description %></div>
+                  <% if(post.hyperlink && post.hyperlink != ''){ %>
+                    <div class="card-body3">
+                      <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                    </div>
+                  <% } %>
                 <% } %>
+              </div>
+              <!-- Vote bar -->
+              <% if(post.image){ %>
+                <div class="card-body3">
+              <% } else{ %>
+                <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+              <% } %>
+                <div class="d-flex flex-row">
+                  <div class="lightgrey text-sm" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
+                  <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
+                    <div id="following-switch-mobile" class="boldtext nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</div>
+                  <% } %>
+                </div>
               </div>
             </div>
           </div>
@@ -324,6 +334,11 @@
             <% include ../partials/subPosts %>
           </div>
         <% } else if(post.subpostsCount == 0){ %>
+          <div class="dropctn mt-2 py-2 invisible">
+            <div class="my-2">
+              <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="">0</a></span>
+            </div>
+          </div>
           <div class="card">
             <div class="card-body3 d-flex mx-auto">
               <span class="text-sm lightgrey">No sub-posts yet.</span>

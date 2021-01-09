@@ -241,7 +241,7 @@
                 </li>
               <% } else if(currentUser && !match){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chats</a>
+                 <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chat</a>
                 </li>
               <% } %>
             </ul>
@@ -794,7 +794,7 @@
   </div>
   <% if(currentUser && !match){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
-      <div class="valign" style="padding: 0.75rem 0.5rem;">
+      <div class="valign lb-absolute" style="padding: 0.75rem 0.5rem;">
         <div>
           <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
@@ -856,7 +856,7 @@
             </form>
           <% } %>
         </div>
-        <div>
+        <div class="ml-2">
           <% if(conversationId && conversationId != ''){ %>
             <% if(user.isLoggedIn){ %>
               <svg id="isUserInRoom" height="12" width="12">
