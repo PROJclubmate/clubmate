@@ -257,16 +257,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   window.onload=function(){
     document.getElementById('load-more-btn').click();
-    if($('#mypage').length){
-      $.ajax({
-        url: '/user/'+location.pathname.split('/')[2]+'/inbox',
-        timeout: 3000,
-        type: 'PUT',
-        success: function(data){
-          $('.inbox_count').text(data.count);
-        }
-      })
-    }
   }
   $('#load-more-btn').on('click', function(e){
     e.preventDefault();

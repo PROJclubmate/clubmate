@@ -1,12 +1,12 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexCurrentUserInboxCount, 
-  indexSearch, indexSearchEmail, indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, 
-  indexRequests, indexMemberRequests, indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, 
-  indexFilterSearchClubs, indexFilterSearchMoreClubs, indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, 
-  indexViewCollegePage, indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, 
-  indexShowMyResume} = require('../controllers/index');
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexSearch, indexSearchEmail, 
+  indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, 
+  indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
+  indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
+  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexShowMyResume}
+   = require('../controllers/index');
 
 
 // New notification subscription
@@ -26,9 +26,6 @@ router.get('/chats', middleware.isLoggedIn, indexChats);
 
 // Chats list
 router.put('/chats', middleware.isLoggedIn, indexChatsOpen);
-
-// Update inbox notifications count(AJAX)
-router.put('/user/:id/inbox', middleware.isLoggedIn, indexCurrentUserInboxCount);
 
 // Search
 router.get('/search', indexSearch);
