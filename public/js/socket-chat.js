@@ -398,9 +398,11 @@ if(socket !== undefined){
   function chatBoxOnLoad(){
     setTimeout(function(){
       if($('#messages')[0].scrollHeight == 0){
-        $('#messages').animate({scrollTop: 10000}, 1000);
+        $('#messages').animate({scrollTop: 10000}, 1);
+        $('#pin-chatbox.pin-chatbox2').css('visibility', 'visible');
       } else{
-        $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
+        $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1);
+        $('#pin-chatbox.pin-chatbox2').css('visibility', 'visible');
       }
     }, 100);
     if(window.innerWidth > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){

@@ -83,16 +83,6 @@ $('#latestUpdates').on('shown.bs.collapse', function(){
   }
 })
 
-// Fake Progress bar (Nanobar)
-var options = {
-  classname: 'meter',
-  id: 'bar-id'
-};
-var nanobar = new Nanobar( options );
-nanobar.go(30);
-nanobar.go(76);
-nanobar.go(100);
-
 // Hide sidebar
 function hidesidebar(hideValueNum){
   var sidebar = document.getElementById('sidebar');
@@ -404,7 +394,7 @@ function blur() {
 });
 
 // System emoji picker
-$(document).on("click","#emoji-picker",function (e){
+$('.emoji-panel').on("click","#emoji-picker",function (e){
   e.stopPropagation();
   $('.intercom-composer-emoji-popover').addClass("active");
 });
@@ -413,7 +403,7 @@ $(document).click(function (e){
     $(".intercom-composer-emoji-popover").removeClass("active");
   }
 });
-$(document).on("click",".intercom-emoji-picker-emoji", function(e){
+$('.emoji-panel').on("click",".intercom-emoji-picker-emoji", function(e){
   var target = $('.emoji-input');
   var caretPos = document.getElementsByClassName('emoji-input')[0].selectionStart;
   var caretEnd = document.getElementsByClassName('emoji-input')[0].selectionEnd;
@@ -434,7 +424,7 @@ $('.intercom-composer-popover-input').on('input', function() {
 });
 
 ////////////////// System emoji picker2 //////////////////
-$(document).on("click","#emoji-picker2",function(e){
+$('.emoji-panel').on("click","#emoji-picker2",function(e){
   e.stopPropagation();
   $('.intercom-composer-emoji-popover2').addClass("active");
 });
@@ -443,7 +433,7 @@ $(document).click(function (e) {
     $(".intercom-composer-emoji-popover2").removeClass("active");
   }
 });
-$(document).on("click",".intercom-emoji-picker-emoji2",function(e){
+$('.emoji-panel').on("click",".intercom-emoji-picker-emoji2",function(e){
   var target = $('.emoji-input2');
   var caretPos = document.getElementsByClassName('emoji-input2')[0].selectionStart;
   var caretEnd = document.getElementsByClassName('emoji-input2')[0].selectionEnd;
@@ -716,12 +706,21 @@ if(window.innerWidth < 768){
       $('.inbox_mobile').removeClass("nodisplay");
     }
   }
+
+  $(document).on("click",".btncollapse", function(e){
+    var btn = $(this);
+    btn.css('border-image', 'repeating-linear-gradient(to left top, blue, red 20px)');
+    setTimeout(function(){
+      btn.css('border', '5px solid white');
+    }, 500); 
+  });
 }
 
 if(location.pathname == '/help/'){
   $(".navhelp").addClass('requests-active');
 }
 if(location.pathname == '/chats'){
+  $('.inbox_count').text($('#chats-notificationCount').attr('value'));
   $("#inbox").addClass('requests-active');
 
   oldMsgHeightMobile = updateMessageHeight2();
@@ -803,6 +802,15 @@ $('textarea').on('input', function(){
   }
 });
 
+// Fake Progress bar (Nanobar)
+var options = {
+  classname: 'meter',
+  id: 'bar-id'
+};
+var nanobar = new Nanobar( options );
+nanobar.go(30);
+nanobar.go(76);
+nanobar.go(100);
 
 //================================================================================
 // AJAX

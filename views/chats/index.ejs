@@ -11,10 +11,12 @@
 <div class="row no-gutters">
 	<div id="chats-list" class="col-lg-4 col-md-4 col-12 chatlist-box scroll moz-scroll">
 		<div class="greyback valign">
-			<div><h3 class="chatpad mt-3">Chats</h3></div>
+			<div>
+				<h3 id="chats-notificationCount" class="chatpad mt-3" value="<%= notificationCount %>">Chats</h3>
+			</div>
 			<div class="p-2 desktopNone chat-discover" style="margin-bottom: -1.125rem;"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
 		</div>
-		<div class="card mt-0 chatlist-margin" style="min-height: 100%;">
+		<div class="card mt-0 chatlist-margin border-light" style="min-height: 100%;">
 			<% for(var i=0;i<chatList.length;i++){ %>
 				<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
 					<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>

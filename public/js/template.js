@@ -2478,7 +2478,7 @@ function post_comments_template(response){
 function post_subPosts_template(response){
   html = ejs.render(` 
 <% if(post.subpostBuckets.length >= 1){ %>
-  <div class="dropctn mt-2">
+  <div class="dropctn mt-2 py-2">
     <div class="pr-2">
       <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
@@ -2518,7 +2518,7 @@ function post_subPosts_template(response){
         <div class="mb-auto d-flex flex-column subpost-left">
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-              <img class="subpostdp my-1" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
             </a>
           </div>
           <div><span class="text-xs">#</span><span class="boldtext blackcolor nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
