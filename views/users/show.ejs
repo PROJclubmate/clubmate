@@ -120,7 +120,7 @@
               </div>
             <% } else{ %>
               <div class="story-container" style="margin-bottom: 4.5rem;">
-                <div class="d-flex px-3" style="overflow: hidden; overflow-x: scroll;">
+                <div class="d-flex px-3 invisible style="overflow: hidden; overflow-x: scroll;">
                   <div class="d-flex flex-column mr-3">
                     <div class="story mt-3 story-dark" style="border-style: dashed;"></div>
                     <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
@@ -177,25 +177,25 @@
           <% } %>
         </div>
         <div class="mt-2">
-          <div class="card mt-0 border-light">
+          <div class="card mt-0 border-light btncollapse-div">
             <% if(currentUser && match){ %>
               <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#friends">
                 <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
                 <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
               </button>
-              <div id="friends" class="collapse show row no-gutters" style="padding-right: 0.25rem;">
+              <div id="friends" class="collapse btncollapse-content show row no-gutters" style="padding-right: 0.25rem;">
             <% } else if(currentUser && !match){ %>
               <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#friends">
                 <span><i class="fas fa-users"></i></span><span class="boldtext">Mutual</span>
                 <span class="lightgrey text-sm nopad"> . <%= foundFriends.length %></span>
               </button>
-              <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;">
+              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
             <% } else{ %>
               <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#friends">
                 <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
                 <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
               </button>
-              <div id="friends" class="collapse row no-gutters" style="padding-right: 0.25rem;">
+              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
             <% } %>
             <% for(i=0;i<foundFriends.length;i++){ %>
               <% if(foundFriends[i]){ %>

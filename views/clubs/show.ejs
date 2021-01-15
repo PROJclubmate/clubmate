@@ -92,9 +92,9 @@
           </div>
       </div>
       <div class="col-md-4 px-1 mobilepad mt-2 keys keyspad">
-        <div class="card border-light">
+        <div class="card border-light btncollapse-div">
           <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info" data-toggle="collapse" data-target="#infobox">Info</button>
-          <div id="infobox" class="collapse card-body5">
+          <div id="infobox" class="collapse btncollapse-content card-body5">
             <% if(currentUser){ %>
               <form action="/users/<%= currentUser._id %>/follow/<%= club._id %>?_method=PUT" method="POST">
                 <div class="text-sm boldtext lightgrey my-3 text-center"><%= club.followerCount %></div>
@@ -149,7 +149,7 @@
             </div>
             <hr>
           </div>
-          <div class="card-body">
+          <div class="card-body btncollapse-content">
             <div class="dropctn">
               <h5>Keys</h5>  
               <div class="dropdown">
@@ -259,11 +259,11 @@
         </div>
         <% if(currentUser && (rank >= 0 && rank <=4)){ %>
           <div class="mt-2">
-            <div class="card mt-0 border-light">
+            <div class="card mt-0 border-light btncollapse-div">
               <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#hot_topics">
                 <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
               </button>
-              <div id="hot_topics" class="tab-content collapse">
+              <div id="hot_topics" class="tab-content collapse btncollapse-content">
                 <div class="card-body3 tab-pane container active" id="thisweek">
                   <% if(topTopicPosts.length != 0){ %>
                     <% for(var i=0;i<topTopicPosts.length;i++){ %>

@@ -242,7 +242,7 @@ div.content{
   .mobilemargin{margin: 0 !important;}
   .info1{font-size: 1rem !important;}
   div.vr{border-right: none; padding-top: 0.25rem;}
-  div.lcov{border-radius: 0 0 0.75rem 0.75rem; z-index: 3;}
+  div.lcov{border-radius: 0.75rem; z-index: 3;}
   div.rcov{border-radius: 0.75rem 0.75rem 0 0; box-shadow: none;}
   div.lpcov{width: inherit; top: -2.5rem;}
   .profilename{text-align: center; white-space: pre-wrap !important; width: 180px; padding: 0.375rem 0 !important;
@@ -251,7 +251,7 @@ div.content{
   img.profilePic.cover{height: 180px !important; width: 180px !important;}
   .profilePic-frame.lcov{width: 188px !important;}
   .avatar-frame{width: 188px !important;}
-  img.avatar.cover{height: 180px !important; width: 180px !important;}
+  img.avatar.cover{height: 180px !important; width: 180px !important; border-radius: 0.5rem 0.5rem 0 0;}
   div.carousel-frame{height: 150px !important;}
   div.carousel-frame2{height: 150px !important;}
   div.carousel-div{height: 142px !important;}
@@ -316,6 +316,7 @@ div.content{
   #copyTxt{padding: 0 0.8125rem !important;}
   #toggleCollegePage-form{position: absolute; left: 4.675rem !important;}
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.375rem !important;}
+  .btncollapse-fade.collapsed{border-color: #d6d6d6 !important; background-color: #d6d6d6 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -1623,6 +1624,14 @@ input[type="file"]#inputavatar{
 .btncollapse.btncollapse-info:hover, .btncollapse.btncollapse-info:focus{
   box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3);
 }
+.btncollapse-div{
+  border-radius: 0.25rem;
+}
+.btncollapse-content{
+  background-color: white;
+  margin-top: -0.25rem;
+  padding-top: 0.25rem;
+}
 .btn-primary{
   border-color: #3b7db5;
   background-color: #428bca;
@@ -2086,10 +2095,10 @@ ul{
   opacity: 1 !important;
 }
 div.carousel-img{
-  border-top: 1px solid #c8c8c8;
+  border-top: 1px solid #d6d6d6;
   border-right: 1px solid white;
   border-bottom: 1px solid white;
-  border-left: 1px solid #c8c8c8;
+  border-left: 1px solid #d6d6d6;
   box-shadow: inset 0px 0px 3px -1px rgba(0,0,0,0.5);
 }
 .overlay{
@@ -2855,6 +2864,9 @@ input.shadow:-webkit-autofill:focus{
 }
 .story-square{
   border-radius: 1.75rem;
+}
+.story-plus{
+  vertical-align: text-top;
 }
 .story-label{
   width: 65px;

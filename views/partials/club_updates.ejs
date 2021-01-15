@@ -1,4 +1,4 @@
-<div class="card mt-0 border-light lb-absolute">
+<div class="card mt-0 border-light btncollapse-div lb-absolute">
   <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#latestUpdates">
     <div class="valign">
       <div class="mobiletext3">
@@ -11,9 +11,9 @@
     </div>
   </button>
   <% if(club.updates && club.updates.length>0){ %>
-    <div id="latestUpdates" class="clubupdates collapse scroll moz-scroll">
+    <div id="latestUpdates" class="clubupdates collapse btncollapse-content scroll moz-scroll">
   <% } else{ %>
-    <div id="latestUpdates" class="clubupdates collapse scroll moz-scroll">
+    <div id="latestUpdates" class="clubupdates collapse btncollapse-content scroll moz-scroll">
   <% } %>
     <div class="p-2">
       <% if(0 <= rank && rank <= 1){ %>

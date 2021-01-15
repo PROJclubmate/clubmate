@@ -1,5 +1,5 @@
-<div class="card mt-0 border-light lb-absolute">
-  <button type="button" class="btn btn-sm boldtext btncollapse text-left" data-toggle="collapse" data-target="#latestUpdates">
+<div class="card mt-0 border-light greyback btncollapse-div lb-absolute">
+  <button type="button" class="btn btn-sm boldtext btncollapse btncollapse-fade collapsed text-left" data-toggle="collapse" data-target="#latestUpdates">
     <div class="valign">
       <div class="mobiletext3">
         <span><i class="far fa-newspaper"></i></span>
@@ -13,7 +13,7 @@
       <div><span id="latestUpdates-count" class="lightgrey text-sm mobiletext3 ml-2 nopad"><%= latestUpdates().arr.length %></span></div>
     </div>
   </button>
-  <div id="latestUpdates" class="collapse scroll moz-scroll">
+  <div id="latestUpdates" class="collapse btncollapse-content scroll moz-scroll">
     <div id="updates-content">
       <% var arr = latestUpdates().arr;
       for(i=0;i<arr.length;i++){ %>

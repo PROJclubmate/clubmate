@@ -707,7 +707,7 @@ if(window.innerWidth < 768){
     }
   }
 
-  $(document).on("click",".btncollapse", function(e){
+  $('div.btncollapse-div').on("click",".btncollapse", function(e){
     var btn = $(this);
     btn.css('border-image', 'repeating-linear-gradient(to left top, blue, red 20px)');
     setTimeout(function(){
