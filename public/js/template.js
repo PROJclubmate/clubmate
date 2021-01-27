@@ -1087,7 +1087,7 @@ function discover_posts_template(response){
         <% } %>
       </div>
       <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-        <div class="discovertop-left discoverlink lineheight2" style="left: 46%;">
+        <div class="discovertop-left discoverlink lineheight2">
           <a style="padding: 0 !important;" target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index mobiletext4"></i></a>
         </div>
       <% } %>
@@ -1142,7 +1142,7 @@ function discover_posts_template(response){
         <div class="dropctn">
           <div class="valign">
             <div>
-              <span><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
+              <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
             </div>
             <div>
               <div>
@@ -2391,16 +2391,19 @@ function post_comments_template(response){
         </a>
       </div>
       <div class="commentdiv my-1 pb-1 lineheight hr2">
-        <div class="valign commentpad commentpad2">
+        <div class="commentpad commentpad2">
           <div>
             <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
             </span>
             <span class="darkgrey text-xxs mobilebold"><%= moment(comments[j].postedAt).fromNow() %></span>
           </div>
-          <div class="d-flex flex-row mb-auto">
+        </div>
+        <div class="valign">
+          <div class="mobiletext linewrap commentpad commentpad2 mb-1 mr-4"><%= comments[j].text %></div>
+          <div class="d-flex flex-row">
             <% if(currentUser && comments[j].commentAuthor.id._id == currentUser){ %>
               <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle editprofile nothing px-1 pt-1" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
+                <button class="btn dropdown-toggle editprofile mx-1 px-2 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>
@@ -2439,11 +2442,11 @@ function post_comments_template(response){
               </div>
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
-              <div class="commentwrap lineheight0 mt-1">
+              <div class="commentwrap lineheight0 mb-2">
                 <% if(upComments.includes(comments[j]._id)){ %>
-                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote bluecolor commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                  <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
-                      <i class="fas fa-arrow-alt-circle-up"></i>
+                      <i class="fab fa-gratipay"></i>
                     </div>
                     <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
                       <%= comments[j].upvotesCount %>
@@ -2452,7 +2455,7 @@ function post_comments_template(response){
                 <% } else{ %>
                   <button id="comment-up-btn<%= comments[j]._id %>" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
-                      <i class="fas fa-arrow-alt-circle-up"></i>
+                      <i class="fab fa-gratipay"></i>
                     </div>
                     <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
                       <%= comments[j].upvotesCount %>
@@ -2464,7 +2467,6 @@ function post_comments_template(response){
             </form>
           </div>
         </div>
-        <div class="mobiletext linewrap commentpad commentpad2 pr-1 pb-1" style="margin-top: -0.25rem ;"><%= comments[j].text %></div>
       </div>
     </div>
   </div>
@@ -2528,29 +2530,29 @@ function post_subPosts_template(response){
               <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
                 <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up greencolor"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
                 <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down blackcolor"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
                 <% } else{ %>
                   <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up"></i></button>
+                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
                   </span>
                   <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
                   <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down"></i></button>
+                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
                   </span>
                   <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
                 <% } %>
@@ -2558,10 +2560,10 @@ function post_subPosts_template(response){
               </form>
             <% } else{ %>
               <span class="mr-2"> 
-                <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up"></i></button>
+                <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2"></i></button>
               </span>
               <span class="ml-2">
-                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down"></i></button>
+                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2"></i></button>
               </span>
             <% } %>
           </div>

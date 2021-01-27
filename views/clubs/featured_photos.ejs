@@ -8,7 +8,7 @@
 		<div class="row no-gutters">
 			<!-- Update existing -->
 			<% for(var i=0;i<featuredPhotos.length;i++){ %>
-				<div class="card searchcard2">
+				<div class="card searchcard2 border-light">
 					<form action="/clubs/<%= clubId %>/featured_photos?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
 						<div class="d-flex d-flex-row">
 							<div>
@@ -46,7 +46,7 @@
 
 			<!-- New push -->
 			<% var index = featuredPhotos.length; for(var i=0;i<(5-featuredPhotos.length);i++){ %>
-				<div class="card searchcard2">
+				<div class="card searchcard2 border-light">
 					<form action="/clubs/<%= clubId %>/featured_photos?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
 						<div class="d-flex flex-row">
 							<div>

@@ -31,7 +31,11 @@
             <% } else{ %>
               <div class="col-md-9 p-1 card coverback indexcard rcov carousel-frame2">
             <% } %>
+            <% if(club.featuredPhotos.length != 0){ %>
+              <div id="carouselControls" class="carousel hascover slide carousel-fade" data-ride="carousel">
+            <% } else{ %>
               <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
+            <% } %>
                 <% if(club.featuredPhotos.length == 0){ %>
                   <div class="carousel-inner d-flex">
                     <div class="carousel-item active carousel-div carousel-img">
@@ -80,7 +84,7 @@
                     </a>
                   <% } %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
@@ -347,9 +351,9 @@
                     <form id="create-new-post" class="card-body2 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
                       <% if(rank >= 0 && rank <=3){ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="[topic]" style="border-color: #ffdfaf;">
                       <% } else{ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="discussion [topic]" style="border-color: rgba(0,0,0,0.2);" required>
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="[topic]" style="border-color: #ffdfaf;" required>
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <% if(rank >= 0 && rank <=3){ %>
@@ -362,14 +366,14 @@
                       <div class="d-flex flex-row righttext my-auto">
                         <div class="ml-1 my-auto">
                           <div class="emoji-panel">
-                            <button class=" emoji-panel chat-input-tool btn btn-sm text-md" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
+                            <button class="chat-input-tool btn btn-sm text-md" type="button" title="Insert hyperlink" onclick="toggle_display('hyperlink')">
                               <i class="fas fa-link"></i>
                             </button>
                           </div>
                         </div>
                         <div class="ml-1 mr-2 my-auto">
                           <div class="emoji-panel">
-                            <button id="emoji-picker" class=" emoji-panel chat-input-tool btn btn-sm text-lg" type="button" title="Insert emoji">
+                            <button id="emoji-picker" class="chat-input-tool btn btn-sm text-lg" type="button" title="Insert emoji">
                               <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                                 <% include ../partials/emoji_picker %>
                               </div>

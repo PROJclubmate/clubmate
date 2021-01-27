@@ -80,7 +80,7 @@
             </div>
             <% if(post.commentsCount > 0){ %>
               <div class="lightgrey text-xxs">
-                <%= post.commentsCount %><% if(post.commentsCount == 1){ %> comment <% } else{ %> comments <% } %>
+                <em><%= post.commentsCount %><% if(post.commentsCount == 1){ %> comment <% } else{ %> comments <% } %></em>
               </div>
             <% } %>
           </div>
