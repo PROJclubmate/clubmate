@@ -1622,7 +1622,7 @@ module.exports = {
       user.save(function(err){
         req.logIn(user, function(err){
           if (err){return next(err);}
-          return res.redirect('/chats');
+          return res.redirect('/discover');
         });
       });
     })(req, res, next);

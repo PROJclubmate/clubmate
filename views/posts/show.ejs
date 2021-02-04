@@ -189,14 +189,14 @@
               </div>
               <!-- Vote bar -->
               <% if(post.image){ %>
-                <div class="card-body3">
+                <div class="card-body5">
               <% } else{ %>
-                <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+                <div class="card-body5" style="border-top: 1px solid whitesmoke;">
               <% } %>
                 <div class="d-flex flex-row">
-                  <div class="lightgrey text-sm" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
+                  <div class="lightgrey text-xs" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
                   <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                    <div id="following-switch-mobile" class="boldtext nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</div>
+                    <strong id="following-switch-mobile" class="text-sm nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
                   <% } %>
                 </div>
               </div>
@@ -268,177 +268,177 @@
           </div>
         </div>
     <% } %>
-        <!-- EDIT POST Display: none -->
-        <div id="post_edit_history">
-          <hr>
-          <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
-          <div class="card-body3 greyback2">
-            <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
-            <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
-          </div>
-          <br>
-          <% } %>
-        </div>
-        <div id="post_edit_form">
-          <hr>
-          <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
-          <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
-            <label for="description" class="sr-only">Post description</label>
-            <textarea type="text" id="description" class="emoji-input form-control shadow whitesmokeback" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
-            <label for="hyperlink_edit" class="sr-only">Hyperlink</label>
-            <input id="hyperlink_edit" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Insert hyperlink" value="<%= post.hyperlink %>">
-            <div class="valign">
-              <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
-              <div class="righttext d-flex my-auto">
-                <span>
-                  <div class="emoji-panel">
-                    <button id="emoji-picker<%= post._id %>" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-                      <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover right">
-                        <% include ../partials/emoji_picker %>
-                      </div>
-                      <i class="far fa-laugh-wink"></i>
-                    </button>
-                  </div>
-                </span>
-                <span>
-                  <button id="postbutton" class="btn btn-sm btn-success postprivacy" title="Submit update">Update post</button>
-                </span>
-                <span>
-                  <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
-                  <select id="privacy" name="privacy" class="shortened-select select1 blackcolor">
-                    <% if(post.topic == ''){ %>
-                      <option value="0" data-descr="Everyone" selected></option>
-                      <option value="1" data-descr="My Friends"></option>
-                      <option value="2" data-descr="This Club"></option>
-                    <% } else{ %>
-                      <option value="0" data-descr="Everyone"  disabled></option>
-                      <option value="1" data-descr="My Friends" disabled></option>
-                      <option value="2" data-descr="This Club" selected></option>
-                    <% } %>
-                    <option value="3" data-descr="Friends in Club"></option>
-                    <option value="4" data-descr="Only Me"></option>
-                  </select>
-                </span>
-              </div>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
-          <% } %>
-        </div>
+    </div>
+    <!-- EDIT POST Display: none -->
+    <div id="post_edit_history">
+      <hr>
+      <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
+      <div class="card-body3 greyback2">
+        <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
+        <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
       </div>
-
-      <!-- SUB POSTS -->
-      <% if(post.topic != '' && 0 <= rank && rank <= 4){ %>
-        <% if(post.subpostsCount != 0){ %>
-          <div id="dynamic-subPosts">
-            <% include ../partials/subPosts %>
-          </div>
-        <% } else if(post.subpostsCount == 0){ %>
-          <div class="dropctn mt-2 py-2 invisible">
-            <div class="my-2">
-              <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="">0</a></span>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body3 d-flex mx-auto">
-              <span class="text-sm lightgrey">No sub-posts yet.</span>
-            </div>
-          </div>
-          <div class="card indexcard2">
-            <div class="card-body3">
-              <div class="valign">
-                <div class="mb-auto d-flex flex-column">
-                  <div>
-                    <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+      <br>
+      <% } %>
+    </div>
+    <div id="post_edit_form" class="card border-light-lr">
+      <hr>
+      <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
+      <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
+        <label for="description" class="sr-only">Post description</label>
+        <textarea type="text" id="description" class="emoji-input form-control shadow whitesmokeback" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
+        <label for="hyperlink_edit" class="sr-only">Hyperlink</label>
+        <input id="hyperlink_edit" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Insert hyperlink" value="<%= post.hyperlink %>">
+        <div class="valign">
+          <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
+          <div class="righttext d-flex my-auto">
+            <span>
+              <div class="emoji-panel">
+                <button id="emoji-picker<%= post._id %>" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                  <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover right">
+                    <% include ../partials/emoji_picker %>
                   </div>
-                  <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
-                </div>
-                <div class="commentdiv d-flex flex-column">
-                  <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
-                    <div class="valign">
-                      <div class="d-flex flex-column">
-                        <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                        <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
-                      </div>
-                      <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
-                        <span><em id="timeUTC2" class="text-xxs lightgrey nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                        <span class="nothing"><em id="timeLocal2" class="text-xxs"></em></span>
-                      </div>
-                    </div>
-                    <div class="input-group">
-                      <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4"></textarea>
-                    </div>
-                    <div class="d-flex flex-row-reverse">
-                      <button class="btn btn-success subpostbtn btnshadow btnxs text-sm ml-2 mt-2">Submit</button>
-                      <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-                      <label id="input-10" for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                        <i class="fas fa-upload"></i> Image(s)
-                      </label>
-                      <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
-                      <div class="emoji-panel subpostbtn pt-2 px-2">
-                        <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-                          <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
-                            <% include ../partials/emoji_picker %>
-                          </div>
-                          <i class="far fa-laugh-wink"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  </form>
-                </div>
+                  <i class="far fa-laugh-wink"></i>
+                </button>
               </div>
-            </div>
+            </span>
+            <span>
+              <button id="postbutton" class="btn btn-sm btn-success postprivacy" title="Submit update">Update post</button>
+            </span>
+            <span>
+              <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
+              <select id="privacy" name="privacy" class="shortened-select select1 blackcolor">
+                <% if(post.topic == ''){ %>
+                  <option value="0" data-descr="Everyone" selected></option>
+                  <option value="1" data-descr="My Friends"></option>
+                  <option value="2" data-descr="This Club"></option>
+                <% } else{ %>
+                  <option value="0" data-descr="Everyone"  disabled></option>
+                  <option value="1" data-descr="My Friends" disabled></option>
+                  <option value="2" data-descr="This Club" selected></option>
+                <% } %>
+                <option value="3" data-descr="Friends in Club"></option>
+                <option value="4" data-descr="Only Me"></option>
+              </select>
+            </span>
           </div>
-          <hr>
-        <% } %>
-      <% } %>
-
-      <!-- COMMENTS -->
-      <% if(post.topic == ''){ %>
-        <div class="card show-comments mb-3">
-          <div class="valign p-2 mb-2">
-            <div class="mb-auto">
-              <% if(currentUser){ %>
-                <a href="/users/<%= currentUser.id %>"><span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
-              <% }else{ %>
-                <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
-              <% }%>
-            </div>
-            <div class="commentdiv">
-              <form action="/posts/<%= post._id %>/comments" method="POST">
-                <div class="input-group">
-                  <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
-                </div>
-                <div class="d-flex flex-row-reverse">
-                  <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
-                  <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="button">Cancel</button>
-                </div>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              </form>
-            </div>
-          </div>
-          <% if(post.commentsCount != 0){ %>
-            <div id="delegated-comments">
-              <div id="server-comments">
-                <% include ../partials/comments %>
-              </div>
-              <div id="client-comments"></div>
-              <% if(post.commentBuckets.length > 2){ %>
-                <div class="text-center mb-2">
-                  <button id="load-more-comments-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= index %>">
-                    <span id="load-more-comments-span"></span>Load More
-                  </button>
-                </div>
-              <% } %>
-            </div>
-          <% } else if(post.commentsCount == 0){ %>
-            <div class="card-body2 d-flex mx-auto">
-              <span class="text-sm lightgrey">No comments yet.</span>
-            </div>
-          <% } %>
         </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      </form>
       <% } %>
+    </div>
+
+    <!-- SUB POSTS -->
+    <% if(post.topic != '' && 0 <= rank && rank <= 4){ %>
+      <% if(post.subpostsCount != 0){ %>
+        <div id="dynamic-subPosts">
+          <% include ../partials/subPosts %>
+        </div>
+      <% } else if(post.subpostsCount == 0){ %>
+        <div class="dropctn mt-2 py-2 invisible">
+          <div class="my-2">
+            <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="">0</a></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body3 d-flex mx-auto">
+            <span class="text-sm lightgrey">No sub-posts yet.</span>
+          </div>
+        </div>
+        <div class="card indexcard2">
+          <div class="card-body3">
+            <div class="valign">
+              <div class="mb-auto d-flex flex-column">
+                <div>
+                  <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+                </div>
+                <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
+              </div>
+              <div class="commentdiv ml-2 d-flex flex-column">
+                <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
+                  <div class="valign mb-1">
+                    <div class="d-flex flex-column">
+                      <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
+                      <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                    </div>
+                    <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
+                      <span><em id="timeUTC2" class="text-xxs lightgrey nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                      <span class="nothing"><em id="timeLocal2" class="text-xxs"></em></span>
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4"></textarea>
+                  </div>
+                  <div class="d-flex flex-row-reverse">
+                    <button class="btn btn-success subpostbtn btnshadow btnxs text-sm ml-2 mt-2">Submit</button>
+                    <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+                    <label id="input-10" for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
+                      <i class="fas fa-upload"></i> Image(s)
+                    </label>
+                    <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
+                    <div class="emoji-panel subpostbtn pt-2 px-2">
+                      <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                        <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
+                          <% include ../partials/emoji_picker %>
+                        </div>
+                        <i class="far fa-laugh-wink"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+      <% } %>
+    <% } %>
+
+    <!-- COMMENTS -->
+    <% if(post.topic == ''){ %>
+      <div class="card show-comments mb-3">
+        <div class="valign p-2 mb-2">
+          <div class="mb-auto">
+            <% if(currentUser){ %>
+              <a href="/users/<%= currentUser.id %>"><span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
+            <% }else{ %>
+              <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
+            <% }%>
+          </div>
+          <div class="commentdiv ml-2">
+            <form action="/posts/<%= post._id %>/comments" method="POST">
+              <div class="input-group">
+                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
+              </div>
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
+                <button onclick="none_display('commentbtn'); clear_text();" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="button">Cancel</button>
+              </div>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            </form>
+          </div>
+        </div>
+        <% if(post.commentsCount != 0){ %>
+          <div id="delegated-comments">
+            <div id="server-comments">
+              <% include ../partials/comments %>
+            </div>
+            <div id="client-comments"></div>
+            <% if(post.commentBuckets.length > 2){ %>
+              <div class="text-center mb-2">
+                <button id="load-more-comments-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= index %>">
+                  <span id="load-more-comments-span"></span>Load More
+                </button>
+              </div>
+            <% } %>
+          </div>
+        <% } else if(post.commentsCount == 0){ %>
+          <div class="card-body2 d-flex mx-auto">
+            <span class="text-sm lightgrey">No comments yet.</span>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
 
 
 

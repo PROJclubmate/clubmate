@@ -67,7 +67,7 @@ var Grade = function () {
         key: 'getRGBAGradientValues',
         value: function getRGBAGradientValues(top) {
             return top.map(function (color, index) {
-                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.75' + ') ' + (index == 0 ? '0%' : '100%');
+                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.85' + ') ' + (index == 0 ? '0%' : '100%');
             }).join(',');
         }
     }, {
@@ -146,10 +146,10 @@ var Grade = function () {
             }
 
             var gradientProperty = this.getCSSGradientProperty(top);
-
             var textProperty = this.getTextProperty(top);
+            var backgroundColorProperty = 'background-color: white';
 
-            var style = (this.container.getAttribute('style') || '') + '; ' + gradientProperty + '; ' + textProperty;
+            var style = (this.container.getAttribute('style') || '') + '; ' + gradientProperty + '; ' + textProperty + '; ' + backgroundColorProperty;
             this.container.setAttribute('style', style);
         }
     }, {

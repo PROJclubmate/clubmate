@@ -770,12 +770,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  if($('#mypage').length){
-    $('#brandname').addClass("name-green");
-  }
   if(window.innerWidth > 768){
     if(!$('#latestUpdates').hasClass('clubupdates') && $('#latestUpdates-count').text() != 0){
-      $('#latestUpdates').addClass('show');
+      $('#latestUpdates, #friends').addClass('show');
     }
   }
   

@@ -95,7 +95,7 @@
                   <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
                 </a>
               </div>
-              <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+              <div class="grey boldtext text-xxs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
               <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('ll'); %> <span class="text-xxxs lightgrey"></span> <em class="lightgrey text-xxxs"></em></div>
@@ -166,12 +166,12 @@
           </div>
           <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
         </div>
-        <div class="commentdiv d-flex flex-column">
+        <div class="commentdiv ml-2 d-flex flex-column">
           <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-            <div class="valign">
+            <div class="valign mb-1">
               <div class="d-flex flex-column">
                 <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
+                <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
               </div>
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
                 <span><em id="timeUTC2" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>

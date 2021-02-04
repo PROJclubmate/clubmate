@@ -877,26 +877,17 @@ function index_posts_template(response){
         </div>
       <% } %>
       <div class="card-body3">
-        <div class="valign">
-          <div class="mb-auto">
-            <% if(currentUser){ %>
-              <a href="/users/<%= currentUser._id %>"><span><img class="postdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
-            <% } else{ %>
-              <span><img class="postdp rounded-circle" src="<%= '/images/noUser.png' %>"></span>
-            <% }%>
-          </div>
-          <div class="commentdiv">
-            <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
-              <div class="input-group">
-                <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>')" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
-              </div>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          </div>
+        <div class="commentdiv">
+          <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
+            <div class="input-group">
+              <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+              <button onclick="none_display('commentbtn<%= posts[k]._id %>')" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
@@ -966,12 +957,12 @@ function index_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].image){ %>
-            <div class="card-body3">
+            <div class="card-body5">
           <% } else{ %>
-            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+            <div class="card-body5" style="border-top: 1px solid whitesmoke;">
           <% } %>
             <div>
-              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+              <span class="lightgrey text-xs"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
             </div>
           </div>
         </div>
@@ -1410,26 +1401,17 @@ function club_posts_template(response){
         </div>
       <% } %>
       <div class="card-body3">
-        <div class="valign">
-          <div class="mb-auto">
-            <% if(currentUser){ %>
-              <a href="/users/<%= currentUser._id %>"><span><img class="postdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
-            <% } else{ %>
-              <span><img class="postdp rounded-circle" src="<%= '/images/noUser.png' %>"></span>
-            <% }%>
-          </div>
-          <div class="commentdiv">
-            <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
-              <div class="input-group">
-                <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
-              </div>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          </div>
+        <div class="commentdiv">
+          <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
+            <div class="input-group">
+              <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+              <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
@@ -1489,12 +1471,12 @@ function club_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].image){ %>
-            <div class="card-body3">
+            <div class="card-body5">
           <% } else{ %>
-            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+            <div class="card-body5" style="border-top: 1px solid whitesmoke;">
           <% } %>
             <div>
-              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+              <span class="lightgrey text-xs"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
             </div>
           </div>
         </div>
@@ -1800,26 +1782,17 @@ function user_posts_template(response){
         </div>
       <% } %>
       <div class="card-body3">
-        <div class="valign">
-          <div class="mb-auto">
-            <% if(currentUser){ %>
-              <a href="/users/<%= currentUser._id %>"><span><img class="postdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span></a>
-            <% }else{ %>
-              <span><img class="postdp rounded-circle" src="<%= '/images/noUser.png' %>"></span>
-            <% }%>
-          </div>
-          <div class="commentdiv">
-            <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
-              <div class="input-group">
-                <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
-                <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
-              </div>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          </div>
+        <div class="commentdiv">
+          <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
+            <div class="input-group">
+              <input onclick="block_display('commentbtn<%= posts[k]._id %>');" id="commentbox<%= posts[k]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
+              <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
@@ -1888,12 +1861,12 @@ function user_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].image){ %>
-            <div class="card-body3">
+            <div class="card-body5">
           <% } else{ %>
-            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+            <div class="card-body5" style="border-top: 1px solid whitesmoke;">
           <% } %>
             <div>
-              <span class="lightgrey text-sm"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
+              <span class="lightgrey text-xs"><strong><%= posts[k].subpostsCount %></strong> subPosts</span>
             </div>
           </div>
         </div>
@@ -2182,26 +2155,17 @@ function heart_posts_template(response){
         </div>
       <% } %>
       <div class="card-body3">
-        <div class="valign">
-          <div class="mb-auto">
-            <% if(currentUser){ %>
-              <a href="/users/<%= currentUser._id %>"><span><img class="postdp rounded-circle" src="<%= CU_50_profilePicH || '/images/noUser.png' %>"></span></a>
-            <% }else{ %>
-              <span><img class="postdp rounded-circle" src="<%= '/images/noUser.png' %>"></span>
-            <% }%>
-          </div>
-          <div class="commentdiv">
-            <form action="/posts/<%= postsH[l]._id %>/comments" method="POST">
-              <div class="input-group">
-                <input onclick="block_display('commentbtn<%= postsH[l]._id %>');" id="commentbox<%= postsH[l]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
-                <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
-              </div>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          </div>
+        <div class="commentdiv">
+          <form action="/posts/<%= postsH[l]._id %>/comments" method="POST">
+            <div class="input-group">
+              <input onclick="block_display('commentbtn<%= postsH[l]._id %>');" id="commentbox<%= postsH[l]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
+              <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
@@ -2270,12 +2234,12 @@ function heart_posts_template(response){
             <% } %>
           </div>
           <% if(postsH[l].image){ %>
-            <div class="card-body3">
+            <div class="card-body5">
           <% } else{ %>
-            <div class="card-body3" style="border-top: 1px solid whitesmoke;">
+            <div class="card-body5" style="border-top: 1px solid whitesmoke;">
           <% } %>
             <div>
-              <span class="lightgrey text-sm"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
+              <span class="lightgrey text-xs"><strong><%= postsH[l].subpostsCount %></strong> subPosts</span>
             </div>
           </div>
         </div>
@@ -2390,7 +2354,7 @@ function post_comments_template(response){
           <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
         </a>
       </div>
-      <div class="commentdiv my-1 pb-1 lineheight hr2">
+      <div class="commentdiv ml-2 my-1 pb-1 lineheight hr2">
         <div class="commentpad commentpad2">
           <div>
             <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -2576,7 +2540,7 @@ function post_subPosts_template(response){
                   <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
                 </a>
               </div>
-              <div class="grey boldtext text-xs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+              <div class="grey boldtext text-xxs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
               <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
@@ -2648,12 +2612,12 @@ function post_subPosts_template(response){
           </div>
           <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
         </div>
-        <div class="commentdiv d-flex flex-column">
+        <div class="commentdiv ml-2 d-flex flex-column">
           <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
-            <div class="valign">
+            <div class="valign mb-1">
               <div class="d-flex flex-column">
                 <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                <div class="darkgrey boldtext subpostbtn text-xs"><%= rankTitle(rank) %></div>
+                <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
               </div>
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
             </div>
@@ -2688,7 +2652,7 @@ function post_subPosts_template(response){
 
   function rankTitle(rank){
     if(rank == 0){return 'Owner';}
-    else if(rank == 1){return 'Admin.';}
+    else if(rank == 1){return 'Admin';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
     else if(rank == 4){return 'Jr. member';}

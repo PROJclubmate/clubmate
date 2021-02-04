@@ -62,7 +62,6 @@ div.content{
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
   .name{color: white !important; background-color: #403d3c; margin-left: -0.25rem; padding-left: 0.5rem !important;}
-  .name-green{background-color: #19ae69; opacity: 0.9; border-radius: 0 0.5rem 0.5rem 0;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
   .navback{background-color: rgba(54,51,50,0.95);}
   .desktopNone{display: none !important;}
@@ -133,7 +132,7 @@ div.content{
   .lastmsg{font-size: 1rem !important;}
   .chats-img{width: 35%; height: 45vh; display: block; margin-left: auto; margin-right: auto; 
     transform: translateY(50%); filter: opacity(90%);}
-  h5.topic-h5{font-size: 1.375rem !important;}
+  h5.topic-h5{font-size: 1.25rem !important;}
   .description-short-show{font-size: 1.25rem !important;}
   .chatdp{margin-left: 0.125rem !important; margin-right: 0.5rem !important;}
   .discoverlink{top: 0 !important; left: 45% !important;}
@@ -212,9 +211,6 @@ div.content{
   .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important; outline: none; background-color: white;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .name{color: #262223 !important;}
-  .name-green{
-    color: #19ae69 !important; font-size: 1.625rem !important; padding: 0 !important; font-weight: 900;
-    -webkit-text-fill-color: #19ae69; -webkit-text-stroke-width: 0.5px; -webkit-text-stroke-color: #13ac15;}
   #navbar.stuck{transform: translateY(0px) !important;}
   .discover-icon{font-size: 1.75rem;}
   .badge-mobile{background: #f8f9fa !important; color: #262626 !important; top: -0.25rem !important;
@@ -223,14 +219,13 @@ div.content{
   .clear_update{display: block !important;}
   .clear_update2{visibility: visible;}
   .mobilewidth{width: 100% !important;}
-  .commentdiv{width: 90% !important;}
   .mobile-cover{height: 200px !important;}
   .hr3{border-bottom: 0.5px solid #dcdcdc; margin: 0 !important;}
   .postclubchat{padding: 0 0.25rem 0.5rem 0.25rem !important; margin: 0 !important;}
   .carousel-caption{bottom: 2.5rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
   .carousel-caption-heading{margin: 0; line-height: 1rem !important;}
   .chat-head3{width: 92vw;}
-  h5.topic-h5{font-size: 1.375rem !important;}
+  h5.topic-h5{font-size: 1.25rem !important;}
   .searchcard2{width: 100% !important;}
   div.mt-2.mobilepad.keys{margin-top: 0.25rem !important;}
   .friends-dp{height: 8rem !important;}
@@ -257,6 +252,8 @@ div.content{
   img.avatar.cover{height: 180px !important; width: 180px !important; border-radius: 0.5rem 0.5rem 0 0;}
   div.carousel-frame2{height: 180px !important;}
   div.carousel-div{height: 172px !important;}
+  .carousel-caption{text-shadow: 0.25px 0.25px 0 #262626, -0.25px -0.25px 0 #262626, 0.25px -0.25px 0 #262626, 
+    -0.25px 0.25px 0 #262626 !important;}
   img.postimg{width: 100%; height: 22rem; object-fit: cover;}
   img.postimg.topicimg{height: 18rem !important;}
   .navbar-brand{margin: 0;}
@@ -321,7 +318,9 @@ div.content{
   #toggleCollegePage-form{position: absolute; left: 4.675rem !important;}
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.375rem !important;}
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{background-color: transparent !important; border-color: transparent !important;}
+  .btncollapse-user.collapsed{border-radius: 0.5rem;}
   .border-light.btncollapse-div-shadow{background-color: transparent; border-color: transparent !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
+  .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: 0px 1px 3px -1px rgb(0,0,0,0.15) !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
@@ -329,6 +328,7 @@ div.content{
   .nofill-color * .clubupdates-count{color: #808080;}
   .carousel-indicators{top: 54px !important;}
   .discoverlink{top: 0.125rem !important; left: 45% !important;}
+  input.form-control.search:focus{border-color: #80bdff !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -383,7 +383,7 @@ div.content{
   #messages{margin-bottom: 46px;}
   .searchdp{height: 116px !important; width: 116px!important;}
   .chatname{font-size: 1.0625rem !important;}
-  .lastmsg{font-size: 1.125rem !important;}
+  .lastmsg{font-size: 1.0625rem !important;}
   .lineheight{line-height: 1.375rem !important;}
   .lineheight2{line-height: 1.125rem !important;}
   .lineheight3{line-height: 0.875rem !important;}
@@ -401,6 +401,7 @@ div.content{
   .overlay3.overlay3-grad{top: 58px !important;}
   #carouselControls.hascover{margin-top: -58px !important;}
   .arrowshowpost{font-size: 1.125rem !important;}
+  .topic-head{min-height: 3.5rem !important;}
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
@@ -465,8 +466,7 @@ div.content{
   .friends-dp{height: 5.2665rem !important;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
-  .lastmsg{font-size: 1rem !important;}
-  .topic-column{padding-left: 0.1875rem !important; padding-right: 0.1875rem !important;}
+  .topic-column{padding-left: 0.3125rem !important; padding-right: 0.3125rem !important;}
   #copyTxt{padding: 0 1.625rem !important;}
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
@@ -493,8 +493,8 @@ div.content{
   div.carousel-div{height: 152px !important;}
   .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
-  h5.topic-h5{font-size: 1.25rem !important;}
-  .topic-head{min-height: 3rem !important;}
+  h5.topic-h5{font-size: 1.125rem !important;}
+  .topic-head{min-height: 3.375rem !important;}
   button.modvote{font-size: 2.5rem !important;}
   .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 2.875rem !important;}
   .content-toppad{padding-top: 0.5rem !important;}
@@ -528,7 +528,7 @@ div.content{
   .mobiletext3{font-size: 0.8125rem !important;}
   .mobiletext4{font-size: 0.6875rem !important;}
   .chatname{font-size: 0.9375rem !important;}
-  .lastmsg{font-size: 1rem !important;}
+  .lastmsg{font-size: 0.9375rem !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
   #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
@@ -561,7 +561,6 @@ div.content{
   a.side-drop-elem{padding: 8.5px 4px;}
   .discover-icon{font-size: 1.5rem;}
   .friends-dp{height: 4.4065rem !important;}
-  .name-green{padding: 0.25rem 0 !important; font-size: 1.375rem !important; -webkit-text-stroke-width: 0.6px;}
 }
 /*----------------------------------------------------------------*/
 .fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
@@ -633,7 +632,7 @@ div.content{
   color: #7a7b7c;
   -webkit-text-stroke: 0.5px #fafafa;
   padding: 0.125rem 0.5625rem;
-  border-radius: 1rem 1rem 0.25rem 0.25rem;
+  border-radius: 0.5rem;
   border: 2px solid transparent;
 }
 #inbox_mobile:hover{
@@ -1076,15 +1075,15 @@ time.calendar strong{
   padding: 0;
   color: white;
   height: 1.125rem;
-  background-color: #ffa05d;
+  background-color: #ff8c00;
   border-bottom: 1px dashed brown;
-  box-shadow: 0 1px 0 #ffa05d;
+  box-shadow: 0 1px 0 #ff8c00;
 }
 time.calendar em{
   font-size: 0.5625rem;
   position: absolute;
   bottom: -0.125rem;
-  color: #ff901f;
+  color: #ff8c00;
   white-space: nowrap;
 }
 time.calendar span{
@@ -1558,6 +1557,8 @@ input[type="file"]#inputavatar{
   color: #007bff !important;
   border-color: white !important;
   border-radius: 2rem !important;
+  height: 1.75rem;
+  width: 1.75rem;
 }
 .btn-notification:hover{
   border-color: grey !important;
@@ -1592,6 +1593,7 @@ input[type="file"]#inputavatar{
 }
 .btn-light.btnxxs{
   border-color: #dcdcdc;
+  border-bottom-width: 1px;
 }
 .btn-light.btn-college.focus, .btn-light.btn-college:focus{
   border-color: white !important;
@@ -1811,7 +1813,7 @@ a.red:hover{color: #d6312e;}
   color: grey !important;
 }
 .lightgrey2{
-  color: darkgrey !important;
+  color: #a8aaac !important;
 }
 .greencolor{
   color: #30c376 !important;
@@ -1843,8 +1845,8 @@ a.red:hover{color: #d6312e;}
 .orangecolor{
   color: #ff9900 !important;
 }
-.orangecolo2{
-  color: #f48024 !important;
+.orangecolor2{
+  color: #ff8c00 !important;
 }
 .purplecolor{
   color: #8a2be2 !important;
@@ -1899,9 +1901,9 @@ a .nolink:hover{
   margin: 0;
   height: 30px;
   border-radius: 2rem !important;
+  border-color: #eaecf0;
 }
 .commentdiv{
-  margin-left: 0.5rem;
   width: 100%;
 }
 .commentbox1{
@@ -1960,7 +1962,7 @@ a .nolink:hover{
 .carousel-caption{
   bottom: 0.5rem;
   padding: 0;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 0.5px 0.5px 0 #262626, -0.5px -0.5px 0 #262626, 0.5px -0.5px 0 #262626, -0.5px 0.5px 0 #262626;
   font-size: 0.875rem;
 }
 .carousel-caption-heading{
@@ -2766,7 +2768,7 @@ select.select1::-ms-expand{
   margin-bottom: -0.25rem; 
 }
 .topic-head{
-  min-height: 3.25rem;
+  min-height: 3.875rem;
 }
 .topic-break{
   width: 100%;
@@ -2776,8 +2778,8 @@ select.select1::-ms-expand{
   margin-top: 0;
 }
 .topic-column{
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
   background-color: whitesmoke;
   border-radius: 0 0.5rem 0.5rem 0 !important;
   border-bottom: 0.5px solid #cccccc !important;
@@ -3298,7 +3300,7 @@ input.shadow:-webkit-autofill:focus{
 .chat-item.active{
   background-color: whitesmoke;
   border-radius: 0.5rem;
-  border: 1px solid lightgrey;
+  border: 1px solid #d0d0d0;
   border-left-width: 2px;
   border-right-width: 2px;
 }

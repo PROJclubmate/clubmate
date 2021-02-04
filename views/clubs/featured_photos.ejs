@@ -25,11 +25,19 @@
 				    			<div class="d-flex flex-column fullwidth">
 				    				<div>
 				    					<label for="heading<%= i %>" class="sr-only">Heading</label>
-	              			<input type="text" id="heading<%= i %>" class="form-control form-control-sm boldtext" name="heading" value="<%= featuredPhotos[i].heading %>" placeholder="heading [<%= i+1 %>]">
+											<% if(i==0){ %> 
+												<input type="text" id="heading<%= i %>" class="form-control form-control-sm boldtext" name="heading" value="<%= featuredPhotos[i].heading %>" placeholder="heading [<%= i+1 %>]" style="border-color: white;" disabled>
+											<% } else{ %>
+												<input type="text" id="heading<%= i %>" class="form-control form-control-sm boldtext" name="heading" value="<%= featuredPhotos[i].heading %>" placeholder="heading [<%= i+1 %>]">
+											<% } %>
 				    				</div>
 				    				<div>
 				    					<label for="description<%= i %>" class="sr-only">Description</label>
-	              			<input type="text" id="description<%= i %>" class="form-control form-control-sm" name="description" value="<%= featuredPhotos[i].description %>" placeholder="description [<%= i+1 %>]" style="margin-top: 0.75rem;">
+											<% if(i==0){ %> 
+												<input type="text" id="description<%= i %>" class="form-control form-control-sm" name="description" value="<%= featuredPhotos[i].description %>" placeholder="description [<%= i+1 %>]" style="margin-top: 0.75rem; border-color: white;" disabled>
+											<% } else{ %>
+												<input type="text" id="description<%= i %>" class="form-control form-control-sm" name="description" value="<%= featuredPhotos[i].description %>" placeholder="description [<%= i+1 %>]" style="margin-top: 0.75rem;">
+											<% } %>
 				    				</div>
 				    			</div>
 				    			<div class="ml-2">
@@ -85,7 +93,7 @@
 	<div class="col-md-9 col-lg-3 px-2 mobileNone">
     <br>
     <div class="list-group">
-      <li class="list-group-item orangecolor greyback text-sm boldtext mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
+      <li class="list-group-item orangecolor2 boldtext greyback text-sm mt-3"><i class="fas fa-plus"></i> Invite your friends, spread the message</li>
     </div>
   </div>
 </div>

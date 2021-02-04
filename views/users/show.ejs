@@ -20,7 +20,7 @@
                     <i class="fas fa-upload"></i> Update profile pic
                   </label>
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                  <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                  <button class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               <% } %>
@@ -82,7 +82,7 @@
                         <i class="fas fa-upload"></i> Update profile pic
                       </label>
                       <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
-                      <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                      <button class="btn btn-sm btn-success overlay2" style="border: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
                   <% } %>
@@ -104,7 +104,7 @@
               </div>
             </div>
             <% if(currentUser && match){ %>
-              <div class="story-container">
+              <div class="story-container" style="margin-bottom: 5.625rem;">
                 <div class="d-flex px-3" style="overflow: hidden; overflow-x: scroll;">
                   <div class="d-flex flex-column mr-3">
                     <div class="story mt-3 text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
@@ -183,7 +183,7 @@
                 <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
                 <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
               </button>
-              <div id="friends" class="collapse btncollapse-content show row no-gutters" style="padding-right: 0.25rem;">
+              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
             <% } else if(currentUser && !match){ %>
               <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#friends">
                 <span><i class="fas fa-users"></i></span><span class="boldtext">Mutual</span>
@@ -336,8 +336,8 @@
               <div class="d-flex flex-row">
                 <span class="ml-auto">
                   <% if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
-                    <button id="enable-notifications" class="btn btn-white btn-notification btnxxs text-sm"title="Enable notifications on this device">
-                      <i class="fas fa-bell"></i>
+                    <button id="enable-notifications" class="btn btn-white btn-notification text-sm"title="Enable notifications on this device">
+                      <i class="fas fa-user-cog"></i>
                     </button>
                     <button id="mypage" class="btn btn-white btnxxs text-sm noshadow nopoint nowrap nodisplay" type="button">
                     <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
@@ -564,7 +564,7 @@
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fab fa-youtube" style="width: 36px;"></i></div>
-                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="youtube" placeholder="YouTube channel (playlists)" style="width: inherit;" value="<%= decodeURI(user.bio.youtube) %>"></div>
+                              <div class="fullwidth"><input type="text" class="form-control form-control-sm" name="youtube" placeholder="YouTube channel / playlists" style="width: inherit;" value="<%= decodeURI(user.bio.youtube) %>"></div>
                             </div>
                             <div class="d-flex flex-row">
                               <div class="text-xxxxl lightgrey my-auto mr-2"><i class="fas fa-link" style="width: 36px;"></i></div>
@@ -869,7 +869,7 @@
             <% } %>
           <% } else{ %>
             <svg id="isUserInRoom" height="12" width="12">
-              <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#d7d7d7"/>
+              <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#dcdcdc"/>
             </svg>
           <% } %>
         </div>
