@@ -29,7 +29,7 @@
           <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
             <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
             <% if(rank == 0){ %>
-              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="Owner">Owner</option>
+              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
             <% } %>
             <option value="1,<%= users[i].id._id %>,<%= club._id %>" data-descr="Administrator">Admin</option>
             <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Moderator">Mod.</option>

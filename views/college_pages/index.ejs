@@ -80,8 +80,12 @@
 							</form>
 						<% } %>
 					</div>
-					<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
-						<div></div>
+					<% if(currentUser && keyValue == 1){ %>
+						<% if(todayActiveCount > 0){ %>
+							<div class="text-sm boldtext orangecolor2"><%= todayActiveCount %><em> active</em></div>
+						<% } else{ %>
+							<div></div>
+						<% } %>
 					<% } else if(currentUser && keyValue == 2){ %>
 						<form action="/colleges/<%= college_page._id %>/followall/user/<%= currentUserId %>?_method=PUT" method="POST">
 							<% if(college_page.clubCount-thisCollegePageFollowingClubIdsArr.length > 0){ %>

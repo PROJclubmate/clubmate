@@ -46,18 +46,18 @@ module.exports = {
 
   indexRoot(req, res, next){
     if(req.user){
-      res.redirect('/users/'+req.user._id);
+      return res.redirect('/users/'+req.user._id);
     } else{
-      res.render('landing');
+      return res.render('landing');
     }
   },
 
   indexHelp(req, res, next){
-    res.render('help');
+    return res.render('help');
   },
 
   indexFAQ(req, res, next){
-    res.render('faq');
+    return res.render('faq');
   },
 
   indexChats(req, res, next){
@@ -153,8 +153,9 @@ module.exports = {
             req.flash('error', 'Something went wrong :(');
           }
           });
-          return res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
+          res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
           recipientId2: null, notificationCount});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -282,15 +283,18 @@ module.exports = {
                   break;
                 }
               }
-              User.findById(recipientId2).select({isLoggedIn: 1}).exec(function(err, foundRecepient){
+              User.findById(recipientId2).select({isLoggedIn: 1, lastActive: 1}).exec(function(err, foundRecepient){
               if(err || !foundRecepient){
                 console.log(Date.now()+' : '+req.user._id+' => (index-9)foundRecepient err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                return res.render('chats/index', {chatList, chatType, currentUserId, 
+                var wasActiveMinuteago = foundRecepient.lastActive >= (new Date() - 120*1000);
+                var wasActiveToday = foundRecepient.lastActive >= (new Date() - 24*3600*1000);
+                res.render('chats/index', {chatList, chatType, currentUserId, 
                 recipientId: '', convClubId: null, conversationId, isBlocked, isBlockedByFoundUser, 
-                recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount});
+                recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago, wasActiveToday});
+                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
               });
             }
@@ -307,8 +311,9 @@ module.exports = {
                 var currentUserId = req.user._id;
                 var conversationId = foundClubConversation._id;
                 var convClubId2 = req.body.club;
-                return res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
+                res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
                 convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount});
+                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
             }
             });
@@ -358,6 +363,7 @@ module.exports = {
         } else{
           res.render('search/index',{users: foundUsers, clubs: foundClubs, college_pages: foundCollegePages, query,
           Users_100_profilePic, Clubs_100_Avatar});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -386,6 +392,7 @@ module.exports = {
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
       emailSearch: true, Users_100_profilePic});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -411,6 +418,7 @@ module.exports = {
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
       emailSearch: false, Users_100_profilePic});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -439,8 +447,9 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, 
+      res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, 
       emailSearch: false, Users_100_profilePic, csrfToken: res.locals.csrfToken});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -473,6 +482,7 @@ module.exports = {
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys,
       emailSearch: false, Users_100_profilePic});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -562,8 +572,9 @@ module.exports = {
         Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, 
+      res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, 
       currentUser, Users_100_profilePic, csrfToken: res.locals.csrfToken});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -588,6 +599,7 @@ module.exports = {
       }
       res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: false, moreClubsUrl: '',
       Clubs_100_Avatar});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -615,8 +627,9 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, 
+      res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, 
       Clubs_100_Avatar, csrfToken: res.locals.csrfToken});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -649,6 +662,7 @@ module.exports = {
       }
       res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: true, moreClubsUrl, filterKeys,
       Clubs_100_Avatar});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -701,8 +715,9 @@ module.exports = {
         Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
         {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
       }
-      return res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar, 
+      res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar, 
       csrfToken: res.locals.csrfToken});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -728,6 +743,7 @@ module.exports = {
         }
       }
       res.render('search/college_pages',{college_pages: foundCollegePages, query, foundCollegePageIds, matchArr});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -757,8 +773,9 @@ module.exports = {
         }
       }
       var currentUser = req.user;
-      return res.json({college_pages: foundCollegePages, query, foundCollegePageIds, matchArr, 
+      res.json({college_pages: foundCollegePages, query, foundCollegePageIds, matchArr, 
       csrfToken: res.locals.csrfToken});
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
   },
@@ -1033,7 +1050,7 @@ module.exports = {
       }
       });
     };
-    res.redirect('back');
+    return res.redirect('back');
   },
 
   indexMemberRequests(req, res, next){
@@ -1096,13 +1113,13 @@ module.exports = {
         console.log(Date.now()+' : '+req.user._id+' => (index-49)foundClub err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
-        var owner, admin, ownerTransfer = false;
-        owner = checkRank(foundClub.clubUsers,req.user._id,0);
-        if(owner){
+        var president, admin, presidentTransfer = false;
+        president = checkRank(foundClub.clubUsers,req.user._id,0);
+        if(president){
           if(newRank == 0){
             for(var i=0;i<foundClub.clubUsers.length;i++){
               if(!foundClub.clubUsers[i].id.equals(req.user._id)){
-                // IF ANYONE OTHER THAN OWNER HAS FOUNDERSHIP; MAKE ADMIN AND LOG REPORT
+                // IF ANYONE OTHER THAN PRESIDENT HAS OWNERSHIP; MAKE ADMIN AND LOG REPORT
                 if(foundClub.clubUsers[i].userRank == 0){
                   foundClub.clubUsers[i].userRank = 1;
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
@@ -1144,13 +1161,13 @@ module.exports = {
                 }
               }
             }
-            ownerTransfer = true;
+            presidentTransfer = true;
           }
         }
-        if(!owner){
+        if(!president){
           admin = checkRank(foundClub.clubUsers,req.user._id,1);
         }
-        if((admin || owner) && !ownerTransfer){
+        if((admin || president) && !presidentTransfer){
           if(0<newRank && newRank<5){
             for(var i=0;i<foundClub.clubUsers.length;i++){
               if(foundClub.clubUsers[i].id.equals(userId)){
@@ -1168,7 +1185,7 @@ module.exports = {
               }
             }
           }
-        } else if(!owner){
+        } else if(!president){
           console.log(Date.now()+' : '+'Unauthorized rank change attempt of: '+userId+
           ' by: '+req.user.fullName+' User ID: '+req.user._id);
         }
@@ -1247,7 +1264,7 @@ module.exports = {
       }
       });
     }
-    res.redirect('back');
+    return res.redirect('back');
   },
 
   indexViewAllFriends(req, res, next){
@@ -1263,7 +1280,7 @@ module.exports = {
       if(foundUser._id.equals(req.user._id) || foundUser.friends.includes(req.user._id)){
         User.find({_id: {$in: foundUser.friends}})
         .skip((perPage * pageNumber) - perPage).limit(perPage).sort({fullName: 1})
-        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, isLoggedIn: 1})
+        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, isLoggedIn: 1, lastActive: 1})
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
           console.log(Date.now()+' : '+'(index-60)foundFriends err:- '+JSON.stringify(err, null, 2));
@@ -1281,8 +1298,18 @@ module.exports = {
           }
           var match = foundUser._id.equals(req.user._id);
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
-          res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
-          current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match});
+          if(match){
+            User.countDocuments({_id: {$in: foundUser.friends}, 
+            lastActive: {$gt:new Date(Date.now() - 120*1000)}}, function(err, onlineFriendsCount){
+              res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
+              current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match, onlineFriendsCount});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+            });
+          } else{
+            res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
+            current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+          }
         }
         });
       } else{
@@ -1326,28 +1353,32 @@ module.exports = {
           }
         }
         if(keyValue == 1){
-          for(var i=0;i<allClubsArr.length;i++){
-            var arr2D = [];
-            for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-              arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          User.countDocuments({_id: {$in: foundCollegePage.allUserIds}, 
+          lastActive: {$gt:new Date(Date.now() - 24*3600*1000)}}, function(err, todayActiveCount){
+            for(var i=0;i<allClubsArr.length;i++){
+              var arr2D = [];
+              for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
+                arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
+                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              }
+              Clubs_50_clubAvatar[i] = arr2D;
             }
-            Clubs_50_clubAvatar[i] = arr2D;
-          }
-          var thisCollegePageFollowingClubIdsArr = [];
-          for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
-            for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
-              for(var l=0;l<req.user.followingClubCount;l++){
-                if(foundCollegePage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
-                  thisCollegePageFollowingClubIdsArr.push(foundCollegePage.allClubs[j].categoryClubIds[k]._id);
-                  break;
+            var thisCollegePageFollowingClubIdsArr = [];
+            for(var j=foundCollegePage.allClubs.length-1;j>=0;j--){
+              for(var k=foundCollegePage.allClubs[j].categoryClubIds.length-1;k>=0;k--){
+                for(var l=0;l<req.user.followingClubCount;l++){
+                  if(foundCollegePage.allClubs[j].categoryClubIds[k]._id.equals(req.user.followingClubIds[l])){
+                    thisCollegePageFollowingClubIdsArr.push(foundCollegePage.allClubs[j].categoryClubIds[k]._id);
+                    break;
+                  }
                 }
               }
             }
-          }
-          var foundFriendsPicArr = []; var clubUserIdsArr = [];
-          return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-          currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+            var foundFriendsPicArr = []; var clubUserIdsArr = [];
+            res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+            currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr, todayActiveCount});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+          });
         } else if(keyValue == 2){
           for(var i=0;i<allClubsArr.length;i++){
             var arr12D = []; var arr22D = [];
@@ -1396,8 +1427,9 @@ module.exports = {
                 {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
                 foundFriendsPicArr.push(obj);
               }
-              return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+              res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
               currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
           });
         } else if(keyValue == 0){
@@ -1422,6 +1454,7 @@ module.exports = {
           }
           res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
           currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
         for(var i=0;i<allClubsArr.length;i++){
@@ -1433,7 +1466,7 @@ module.exports = {
           Clubs_50_clubAvatar[i] = arr2D;
         }
         currentUserId = '';
-        res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
+        return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
         currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
       }
     }
@@ -1479,7 +1512,7 @@ module.exports = {
               console.log(Date.now()+' : '+req.params.user_id+' => (index-64)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               } else{
-                res.redirect('back');
+                return res.redirect('back');
               }
               });
             }
@@ -1498,7 +1531,7 @@ module.exports = {
               console.log(Date.now()+' : '+req.params.user_id+' => (index-65)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               } else{
-                res.redirect('back');
+                return res.redirect('back');
               }
               });
             }
@@ -1536,7 +1569,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (index-66)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
-            res.redirect('back');
+            return res.redirect('back');
           }
           });
         } else{
@@ -1549,7 +1582,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (index-67)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
-            res.redirect('back');
+            return res.redirect('back');
           }
           });
         }
@@ -1575,7 +1608,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.params.user_id+' => (index-69)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
-            res.redirect('back');
+            return res.redirect('back');
           }
           });
         }
@@ -1594,7 +1627,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (index-71)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
-            res.redirect('back');
+            return res.redirect('back');
           }
           });
         }
@@ -1607,7 +1640,8 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       Club.find({_id: {$in: req.user.followingClubIds}})
       .select({_id: 1, name: 1}).exec(function(err, followingClubs){
-        return res.json({followingClubs});
+        res.json({followingClubs});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       });
     }
   },

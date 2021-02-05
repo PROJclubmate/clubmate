@@ -28,13 +28,13 @@
 							<div class="py-2 my-1 px-1">
 								<% if(chatList[i].type == 'user'){ %>
 									<% if(chatList[i].id.toString() == recipientId2){ %>
-										<a href="/users/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem;" src="<%= chatList[i].image || '/images/noUser.png' %>"></a>
+										<a href="/users/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem; margin-left: -2px;" src="<%= chatList[i].image || '/images/noUser.png' %>"></a>
 									<% } else{ %>
 										<a href="/users/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>"></a>
 									<% } %>
 								<% } else if(chatList[i].type == 'club'){ %>
 									<% if(chatList[i].id.toString() == convClubId2){ %>
-										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem;" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp" style="border-radius: 1rem; margin-left: -2px;" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
 									<% } else{ %>
 										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
 									<% } %>

@@ -2651,7 +2651,7 @@ function post_subPosts_template(response){
   }
 
   function rankTitle(rank){
-    if(rank == 0){return 'Owner';}
+    if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
@@ -2698,7 +2698,7 @@ function moreMembers_template(response){
           <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
             <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
             <% if(rank == 0){ %>
-              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="Owner">Owner</option>
+              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
             <% } %>
             <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
             <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
@@ -2760,15 +2760,15 @@ function moreMembers_template(response){
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Owner';}
-    else if(rank == 1){return 'Admin.';}
+    if(rank == 0){return 'President';}
+    else if(rank == 1){return 'Admin';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
     else if(rank == 4){return 'Jr. member';}
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Ow';}
+    if(rank == 0){return 'Pr';}
     else if(rank == 1){return 'Ad';}
     else if(rank == 2){return 'Mo';}
     else if(rank == 3){return 'Sr';}
@@ -2937,15 +2937,15 @@ function moreClubs_template(response){
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Owner';}
-    else if(rank == 1){return 'Admin.';}
+    if(rank == 0){return 'President';}
+    else if(rank == 1){return 'Admin';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
     else if(rank == 4){return 'Jr. member';}
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Ow';}
+    if(rank == 0){return 'Pr';}
     else if(rank == 1){return 'Ad';}
     else if(rank == 2){return 'Mo';}
     else if(rank == 3){return 'Sr';}

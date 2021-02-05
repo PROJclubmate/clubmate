@@ -132,6 +132,8 @@ module.exports = {
             Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
             {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
+          var wasActiveMinuteago = foundUser.lastActive >= (new Date() - 120*1000);
+          var wasActiveToday = foundUser.lastActive >= (new Date() - 24*3600*1000);
           if(hasConversation == true){
             Conversation.findOne({_id: conversationId}, function(err, foundConversation){
             if(err || !foundConversation){
@@ -150,16 +152,20 @@ module.exports = {
                 var isBlocked = false;
                 var isBlockedByFoundUser = false;
               }
-              return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+              res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
               clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
+              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic, 
+              wasActiveMinuteago, wasActiveToday});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
             });
           } else{
             var recipientId = foundUser._id;
-            return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+            res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
             clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
+            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic, 
+            wasActiveMinuteago, wasActiveToday});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
         }
         });
@@ -249,9 +255,10 @@ module.exports = {
             Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
             {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
-          return res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+          res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
           clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
           foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -325,8 +332,9 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          return res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, 
+          res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, 
           userId: foundUser._id, rank, currentUserId, match, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       }
     }
@@ -378,8 +386,9 @@ module.exports = {
             }
           });
         };
-        return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundPostIds, 
+        res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundPostIds, 
         PC_50_clubAvatar, CU_50_profilePic, arrLength, csrfToken: res.locals.csrfToken});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
       });
     } else{
@@ -536,8 +545,9 @@ module.exports = {
             return res.sendStatus(500);
           }
         });
-        return res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundHPostIds, 
+        res.json({hasVote, hasModVote, posts: modPosts, match, currentUser, foundHPostIds, 
         CU_50_profilePicH, PC_50_clubAvatarH, arrLength, csrfToken: res.locals.csrfToken});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
       });
     } else{
@@ -586,8 +596,8 @@ module.exports = {
           foundUser.note = req.body.note;
         }
         if(req.body.firstName || req.body.lastName){
-          var newFirstName = req.body.firstName.trim();
-          var newLastName = req.body.lastName.trim();
+          var newFirstName = req.body.firstName.trim()[0].toUpperCase() + req.body.firstName.trim().substring(1).toLowerCase();
+          var newLastName = req.body.lastName.trim()[0].toUpperCase() + req.body.lastName.trim().substring(1).toLowerCase();
           if(newFirstName != '' && ((newFirstName != foundUser.firstName) || (newLastName != foundUser.lastName))){
             foundUser.firstName = newFirstName;
             foundUser.lastName = newLastName;
@@ -699,7 +709,7 @@ module.exports = {
         };
         foundUser.save();
         req.flash('success', 'Successfully updated');
-        res.redirect('/users/' + req.params.id);
+        return res.redirect('/users/' + req.params.id);
       }
       });
     }
@@ -761,7 +771,7 @@ module.exports = {
                 foundUser.userClubs.push(objb);
                 foundUser.save();
                 req.flash('success', 'Successfully updated');
-                res.redirect('/clubs/' + newClub._id);
+                return res.redirect('/clubs/' + newClub._id);
               }
               });
             }
@@ -835,15 +845,23 @@ module.exports = {
               Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
               {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             }
-            res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
-            club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
-            memberRequestsLength, isFollowingClub});
+            var clubUserIds = users.map(function(user){
+              return user.id._id;
+            });
+            User.countDocuments({_id: {$in: clubUserIds}, 
+            lastActive: {$gt:new Date(Date.now() - 120*1000)}}, function(err, onlineClubMembersCount){
+              res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
+              club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
+              memberRequestsLength, isFollowingClub, onlineClubMembersCount});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+            });
           }
           });
         } else{
           res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
           club: foundClub, Users_50_profilePic, Posts_50_Image: [], topTopicPosts: [], sentMemberReq, 
           memberRequestsLength, isFollowingClub});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
         var PA_50_profilePic = [], Users_50_profilePic = [];
@@ -857,7 +875,7 @@ module.exports = {
         }
         var rank, currentUser = null; var topTopicPosts = []; var sentMemberReq = false;
         foundClub.updates = '';
-        res.render('clubs/show', {currentUser, rank, users: limitedUsers, club: foundClub, topTopicPosts,
+        return res.render('clubs/show', {currentUser, rank, users: limitedUsers, club: foundClub, topTopicPosts,
         PA_50_profilePic, Users_50_profilePic, sentMemberReq, memberRequestsLength: null});
       }
     }
@@ -881,7 +899,8 @@ module.exports = {
             Posts_50_Image[l] = cloudinary.url(modTopTopicPosts[l].imageId,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
           }
-          return res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts, csrfToken: res.locals.csrfToken});
+          res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -914,8 +933,9 @@ module.exports = {
           }
           var newStart = (start+10).toString(), newEnd = (end+10).toString();
           var newEndpoints = newStart+','+newEnd;
-          return res.json({users: limitedUsers, Users_50_profilePic, newEndpoints, clubId: foundClub._id, 
+          res.json({users: limitedUsers, Users_50_profilePic, newEndpoints, clubId: foundClub._id, 
           rank, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       }
     }
@@ -949,8 +969,9 @@ module.exports = {
                 Users_50_profilePic[j] = cloudinary.url(matchingUsers[j].id.profilePicId,
                 {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
               }
-            return res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank, 
+            res.json({users: matchingUsers, Users_50_profilePic, clubId: foundClub._id, rank, 
             csrfToken: res.locals.csrfToken});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           } else{
             return res.sendStatus(400);
           }
@@ -982,8 +1003,9 @@ module.exports = {
         }
         var newStart = (start+10).toString(), newEnd = (end+10).toString();
         var newEndpoints = newStart+','+newEnd;
-        return res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub, 
+        res.json({users: limitedUsers, MemberRequests_50_profilePic, newEndpoints, club: foundClub, 
         csrfToken: res.locals.csrfToken});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       } else{
         res.redirect('back');
       }
@@ -1033,8 +1055,9 @@ module.exports = {
         });
         var currentUser = req.user;
         var rank = currentRank2(req.params.club_id,req.user.userClubs);
-        return res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, 
+        res.json({hasVote, hasModVote, posts: modPosts, rank, currentUser, foundPostIds, 
         PA_50_profilePic, CU_50_profilePic, arrLength, csrfToken: res.locals.csrfToken});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
       });
     } else{
@@ -1120,7 +1143,7 @@ module.exports = {
             }
           });
           req.flash('success', 'Successfully updated');
-          res.redirect('/clubs/' + req.params.club_id);
+          return res.redirect('/clubs/' + req.params.club_id);
         });
       } else if(admin == true){
         // is avatar uploaded?
@@ -1280,7 +1303,7 @@ module.exports = {
         }
         foundClub.save();
         req.flash('success', 'Successfully updated');
-        res.redirect('/clubs/' + req.params.club_id);
+        return res.redirect('/clubs/' + req.params.club_id);
       } else{
         console.log(Date.now()+' : '+req.user._id+' => (profiles-37)rankCheck fail :Update Club');
         req.flash('error', "You don't have enough admin privileges :(");
@@ -1297,8 +1320,8 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var owner = foundClub.clubUsers;
-      var ok = checkRank(owner,req.user._id,0);
+      var president = foundClub.clubUsers;
+      var ok = checkRank(president,req.user._id,0);
       if(ok == true){
         for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
           await cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
@@ -1346,10 +1369,10 @@ module.exports = {
         foundClub.deActivatedOn = Date.now();
         foundClub.save();
         req.flash('success', 'Club deleted successfully!');
-        res.redirect('/users/'+req.user._id);
+        return res.redirect('/users/'+req.user._id);
       } else{
         console.log(Date.now()+' : '+'rankCheck fail :Destroy Club');
-        req.flash('error', "Only owners can delete their clubs!");
+        req.flash('error', "Only president can delete their club!");
         return res.redirect('back');
       }
     }
@@ -1369,6 +1392,7 @@ module.exports = {
         clubName = foundClub.name;
         clubId = foundClub._id;
         res.render('clubs/featured_photos', {featuredPhotos, clubName, clubId});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       } else{
         res.redirect('back');
       }
@@ -1433,7 +1457,7 @@ module.exports = {
           return res.redirect('/clubs/'+req.params.id+'/featured_photos');
         }
       } else{
-        res.redirect('back');
+        return res.redirect('back');
       }
     }
     });

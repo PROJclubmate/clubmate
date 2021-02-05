@@ -329,6 +329,10 @@ div.content{
   .carousel-indicators{top: 54px !important;}
   .discoverlink{top: 0.125rem !important; left: 45% !important;}
   input.form-control.search:focus{border-color: #80bdff !important;}
+  .text-shadow-white{text-shadow: 0.25px 0.25px white, -0.25px 0.25px white, 
+    0.25px -0.25px white, -0.25px -0.25px white !important;}
+  .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
+    0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -1201,6 +1205,12 @@ time.calendar span{
 .friends-text:hover{
   color: white; 
   text-decoration: none;
+}
+.text-shadow-white{
+  text-shadow: 0.5px 0.5px white, -0.5px 0.5px white, 0.5px -0.5px white, -0.5px -0.5px white;
+}
+.text-shadow-black{
+  text-shadow: 0.5px 0.5px #262626, -0.5px 0.5px #262626, 0.5px -0.5px #262626, -0.5px -0.5px #262626;
 }
 .searchdp{
   margin: 0 0.5rem;
@@ -2745,7 +2755,7 @@ select.select1::-ms-expand{
   font-size: 0.625rem;
   font-weight: 600;
   color: #909090;
-  margin-top: 0.5rem;
+  margin-top: 5rem;
   margin-bottom: 0.5rem;
 }
 .chat-head4{

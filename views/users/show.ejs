@@ -424,16 +424,15 @@
                   Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
                   <br>
                   <% if(!match){ %>
-                    <% if(user.isLoggedIn){ %>
+                    <% if(user.isLoggedIn && user.lastActive >= (new Date() - 60*1000)){ %>
                       <span>
                         <svg height="16" width="16">
                           <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
                         </svg>
                       </span>
-                      <span class="greencolor">Logged in</span>
+                      <span class="greencolor">Online</span>
                     <% } else{ %>
-                      Last logout: <span id="timeLocalRelative" class="info30 nothing"></span>
-                      <span><em id="timeUTC" class="info30 invisible"><%= moment(user.lastLoggedOut).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                      Last active: <span class="info30 nothing"><%= moment(user.lastActive).fromNow() %></span>
                     <% } %>
                   <br>
                   <br>
@@ -857,20 +856,20 @@
           <% } %>
         </div>
         <div class="ml-2">
-          <% if(conversationId && conversationId != ''){ %>
-            <% if(user.isLoggedIn){ %>
+          <% if(currentUser && !match){ %>
+            <% if(wasActiveToday && wasActiveMinuteago){ %>
               <svg id="isUserInRoom" height="12" width="12">
                 <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
               </svg>
+            <% } else if(wasActiveToday && !wasActiveMinuteago){ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+              </svg>
             <% } else{ %>
               <svg id="isUserInRoom" height="12" width="12">
-                <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#fff3d7"/>
+                <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#dcdcdc"/>
               </svg>
             <% } %>
-          <% } else{ %>
-            <svg id="isUserInRoom" height="12" width="12">
-              <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#dcdcdc"/>
-            </svg>
           <% } %>
         </div>
       </div>
@@ -899,7 +898,7 @@
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Owner';}
+    if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
@@ -907,7 +906,7 @@
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Ow';}
+    if(rank == 0){return 'Pr';}
     else if(rank == 1){return 'Ad';}
     else if(rank == 2){return 'Mo';}
     else if(rank == 3){return 'Sr';}

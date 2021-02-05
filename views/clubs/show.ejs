@@ -114,7 +114,7 @@
               </form>
             <% } %>
             <div>
-              <div class="text-lg mt-5 mb-2 text-lato lineheight" style="color: lightcoral;"><%= club.banner %></div>
+              <div class="text-lg mt-5 mb-2 text-lato text-shadow-black lineheight" style="color: goldenrod;"><%= club.banner %></div>
               <div class="valign">
                 <div class="boldtext">Description</div>
                 <% if(0 <= rank && rank <= 1){ %>
@@ -455,10 +455,16 @@
                   <div class="greyback valign" style="height: 23px;">
                     <div class="d-flex flex-row">
                       <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
+                      <% if(0 <= rank && rank <= 4){ %>
+                        <span id="membersOnlineCount" class=" my-auto" style="display: block;">
+                          <span class="lightgrey text-sm ml-2" style="vertical-align: text-top;">|</span>
+                          <span class="text-sm boldtext greencolor2 text-shadow-white px-2 mx-0" style="vertical-align: text-top;"><%= onlineClubMembersCount %><em> online</em></span>
+                        </span>
+                      <% } %>
                     </div>
                     <div class="d-flex">
                       <div>
-                        <button onclick="toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
+                        <button onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
                       </div>
                       <div id="searchMember_form">
                         <div class="input-group input-group-sm">
@@ -552,7 +558,7 @@
 
 <%
   function rankTitle(rank){
-    if(rank == 0){return 'Owner';}
+    if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin.';}
     else if(rank == 2){return 'Moderator';}
     else if(rank == 3){return 'Sr. member';}
@@ -560,7 +566,7 @@
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Ow';}
+    if(rank == 0){return 'Pr';}
     else if(rank == 1){return 'Ad';}
     else if(rank == 2){return 'Mo';}
     else if(rank == 3){return 'Sr';}

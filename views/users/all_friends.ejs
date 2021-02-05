@@ -2,14 +2,25 @@
 
 <div class="row no-gutters">
 	<div class="col-lg-9">
-		<div class="ml-2 mt-3">
-			<span class="boldtext"><a href="/users/<%= userId %>" class="black"> 
+		<div class="ml-2 mt-3 valign">
+			<div>
+				<span class="boldtext"><a href="/users/<%= userId %>" class="black"> 
+				<% if(match){ %>
+					My</a></span>
+				<% } else{ %>
+					<%= userName %></a></span>'s
+				<% } %>
+					friends
+			</div>
 			<% if(match){ %>
-				My</a></span>
+				<% if(onlineFriendsCount > 0){ %>
+					<div class="text-sm boldtext greencolor2 text-shadow-white px-2"><%= onlineFriendsCount %><em> online</em></div>
+				<% } else{ %>
+					<div class="text-sm boldtext greencolor2 text-shadow-white px-2">0<em> online </em>😴</div>
+				<% } %>
 			<% } else{ %>
-				<%= userName %></a></span>'s
+				<div></div>
 			<% } %>
-				friends
 		</div>
 
 		<div class="dropctn mt-2">
@@ -82,13 +93,19 @@
 									      	<span class="nothing text-lg"><strong class="searchname"><%= users[k].fullName %></strong></span>
 									      </a>
 									    </div>
-									    <% if(users[k].isLoggedIn === true){ %>
+									    <% if(users[k].lastActive >= (new Date() - 60*1000)){ %>
 										    <div>
 	                        <svg height="16" width="16">
 	                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
 	                        </svg>
 	                      </div>
-	                    <% } %>
+											<% } else if(users[k].lastActive >= (new Date() - 24*3600*1000)){ %>
+												<div>
+													<svg height="12" width="12">
+														<circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+													</svg>
+												</div>
+											<% } %>
 									   </div>
 							      <div class="lightgrey text-xs"><%= users[k].note %></div>
 							      <br>

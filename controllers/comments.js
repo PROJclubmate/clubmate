@@ -53,6 +53,7 @@ module.exports = {
         var bucket = foundBucket;
         var foundComment = foundBucket.comments[0];
         res.render('comments/edit', {bucket, comment: foundComment});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       } else{
         res.redirect('back');
       }
@@ -136,8 +137,9 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
-          return res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
+          res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
           CA_50_profilePic, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         // Close else block if problem
         } else{
           return res.json({buckets: []});
@@ -162,6 +164,7 @@ module.exports = {
     } else{
       if(notFoundComment){
         res.json({foundComment: notFoundComment, csrfToken: res.locals.csrfToken});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }else if(!notFoundComment){
         Comment.findOneAndUpdate({_id: req.params.bucket_id, 
           comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}},
@@ -173,6 +176,7 @@ module.exports = {
           return res.sendStatus(500);
         } else{
           res.json({foundComment, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }

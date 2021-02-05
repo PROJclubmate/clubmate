@@ -1024,14 +1024,14 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
         if(formData[1].value == '-1'){
           $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
           $('#visibility'+data.foundPost._id).text('Visibility(Show)').val('1');
-          if(data.isOwner == true){
+          if(data.isPresident == true){
             $('#moderation'+data.foundPost._id).remove();
             $('#modVisibility'+data.foundPost._id).removeClass('createdButton');
           }
         } else if(formData[1].value == '1'){
           $('#visibility'+data.foundPost._id).text('Visibility(Hide)').val('-1');
           $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
-          if(data.isOwner == true){
+          if(data.isPresident == true){
             var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
             if(data.foundPost.topic == '' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');

@@ -12,6 +12,7 @@ const userSchema = new Schema({
   isVerified: {type: Boolean, default: false},
   isLoggedIn: Boolean,
   lastLoggedOut: Date,
+  lastActive: Date,
   discoverSwitch: {
     type: Number,
     default: 1,
@@ -130,7 +131,7 @@ const userSchema = new Schema({
       type: Number,
       min: 0,
       max: 4,
-      required: 'Please provide a (clubRank:0-Owner,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
+      required: 'Please provide a (clubRank:0-President,1-Admin,2-Moderator,3-SrMember,4-JrMember)',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'

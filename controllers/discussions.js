@@ -100,8 +100,9 @@ module.exports = {
           } else{
             var subVotes = [];
           }
-          return res.json({post: foundPost, subVotes, bucket: foundBucket, index, rank, currentUser,
+          res.json({post: foundPost, subVotes, bucket: foundBucket, index, rank, currentUser,
           clubId: req.params.club_id, CU_50_profilePic, sPA_50_profilePic, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       } else{
@@ -123,7 +124,8 @@ module.exports = {
         return res.sendStatus(500);
       } else{
         if(foundClickId){
-          return res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }else if(!foundClickId){
           Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
             subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: req.user._id}}},
@@ -143,7 +145,8 @@ module.exports = {
               console.log(Date.now()+' : '+req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
-              return res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
             });
           }
@@ -162,7 +165,8 @@ module.exports = {
         return res.sendStatus(500);
       } else{
         if(foundClickId){
-          return res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }else if(!foundClickId){
           Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
             subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: req.user._id}}},
@@ -182,7 +186,8 @@ module.exports = {
               console.log(Date.now()+' : '+req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
-              return res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
             });
           }
