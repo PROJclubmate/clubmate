@@ -1,4 +1,5 @@
 const Post     = require('../models/post'),
+  User         = require('../models/user'),
   Comment      = require('../models/comment'),
   {cloudinary} = require('../public/js/cloudinary.js');
 
@@ -119,7 +120,7 @@ module.exports = {
     } else{
       if(foundPost.topic == '' && foundPost.commentBuckets != ''){
         Comment.find({_id: foundPost.commentBuckets[req.query.newIndex]})
-        .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+        .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
           console.log(Date.now()+' : '+'(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));

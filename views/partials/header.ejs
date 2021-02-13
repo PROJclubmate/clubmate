@@ -121,7 +121,13 @@
             <li class="nav-item d-inline-flex">
               <div>
                 <a href="/users/<%= currentUser.id %>" class="nav-link burgernav img nowrap">
-                  <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
+                  <span>
+                    <% if(currentUser.userKeys.sex == 'Male'){ %>
+                      <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
+                    <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+                      <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
+                    <% } %>
+                  </span>
                   <span id="navname"><%= currentUser.firstName %></span>
                 </a>
               </div>
@@ -191,7 +197,12 @@
           <div class="d-inline-flex wordwrap">
             <span>
               <a href="/users/<%= friendRequests[j]._id %>">
-                <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUser.png' %>"></a>
+                <% if(friendRequests[j].userKeys.sex == 'Male'){ %>
+                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserMale.png' %>">
+                <% } else if(friendRequests[j].userKeys.sex == 'Female'){ %>
+                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserFemale.png' %>">
+                <% } %>
+              </a>
             </span>
             <span>
               <div class="d-flex flex-column lineheight2 mx-2">

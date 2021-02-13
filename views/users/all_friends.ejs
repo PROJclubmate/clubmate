@@ -83,7 +83,11 @@
 								<div class="d-inline-flex">
 									<div>
 							      <a href="/users/<%= users[k]._id %>">
-				            	<img class="searchdp" style="margin: 0 !important;" src="<%= Friends_100_profilePic[k] || '/images/noUser.png' %>">
+											<% if(users[k].userKeys.sex == 'Male'){ %>
+				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Friends_100_profilePic[k] || '/images/noUserMale.png' %>">
+											<% } else if(users[k].userKeys.sex == 'Female'){ %>
+				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Friends_100_profilePic[k] || '/images/noUserFemale.png' %>">
+											<% } %>
 				          	</a>
 							    </div>
 							    <div class="card-body3 lineheight fullwidth">

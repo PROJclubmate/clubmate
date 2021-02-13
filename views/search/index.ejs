@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 		<% if(query){ %>
-			<div class="ml-2 mt-2 mobiletext">Search results for: <span class="boldtext"><%= query %></span></div>
+			<div class="ml-2 mt-5 mobiletext4">Search results for: <span class="boldtext"><%= query %></span></div>
 		<% } else{ %>
-			<div class="ml-2 mt-2 mobiletext boldtext">Search for :-</div>
+			<div class="ml-2 mt-5 mobiletext4 boldtext">Search for :-</div>
 		<% } %>
 		<br>
 		<form action="/find_people/search" method="GET">
@@ -24,7 +24,11 @@
 							<div class="d-inline-flex">
 								<div>
 						      <a href="/users/<%= users[k]._id %>">
-			            	<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+										<% if(users[k].userKeys.sex == 'Male'){ %>
+			            		<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
+										<% } else if(users[k].userKeys.sex == 'Female'){ %>
+			            		<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
+										<% } %>
 			          	</a>
 						    </div>
 						    <div class="card-body3 lineheight fullwidth">
@@ -63,7 +67,7 @@
 							<div class="d-inline-flex">
 								<div>
 						      <a href="/clubs/<%= clubs[k]._id %>">
-			            	<img class="searchdp mx-0" src="<%= Clubs_100_Avatar[k] || 'https://res.cloudinary.com/dubirhea4/image/upload/v1544819201/defaults/noUser.png' %>">
+			            	<img class="searchdp mx-0" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
 			          	</a>
 						    </div>
 						    <div class="card-body3 lineheight fullwidth">

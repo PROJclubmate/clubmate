@@ -108,7 +108,7 @@ module.exports = {
           chatList.push(obja);
         }
         Conversation.find({_id: {$in: userConversationId}})
-        .populate({path: 'participants', select: 'fullName profilePic profilePicId'})
+        .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundUserConversation){
         if(err){
           console.log(req.user._id+' => (index-3)foundUserConversation err:- '+JSON.stringify(err, null, 2));
@@ -130,6 +130,7 @@ module.exports = {
               if(!foundUserConversation[i].participants[k]._id.equals(req.user._id)){
                 objb['id'] = foundUserConversation[i].participants[k].id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
+                objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
                 objb['image'] = cloudinary.url(foundUserConversation[i].participants[k].profilePicId, {width: 100, 
                 height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
                 break;
@@ -211,7 +212,7 @@ module.exports = {
           chatList.push(obja);
         }
         Conversation.find({_id: {$in: userConversationId}})
-        .populate({path: 'participants', select: 'fullName profilePic profilePicId'})
+        .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundUserConversation){
         if(err){
           console.log(req.user._id+' => (index-6)foundUserConversation err:- '+JSON.stringify(err, null, 2));
@@ -233,6 +234,7 @@ module.exports = {
               if(!foundUserConversation[i].participants[k]._id.equals(req.user._id)){
                 objb['id'] = foundUserConversation[i].participants[k]._id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
+                objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
                 objb['image'] = cloudinary.url(foundUserConversation[i].participants[k].profilePicId, {width: 100, 
                 height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
                 break;

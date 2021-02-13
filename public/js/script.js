@@ -1241,25 +1241,25 @@ $('div#dynamic-subPosts').on('click', '.vote2', function(e){
       $('#dislike-count'+data.foundClickId.subPosts[0]._id).text(data.foundClickId.subPosts[0].dislikeCount);
 
       if(formData[1].name == 'subLike'){
-        if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
-          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
+        if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-up vote-subpost2 greencolor"></i>'){
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up vote-subpost2"></i>');
         }
-        else if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-up"></i>'
-        || $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>')){
-          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
+        else if($('#like-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-up vote-subpost2"></i>'
+        || $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i>')){
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up vote-subpost2 greencolor"></i>');
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down vote-subpost2"></i>');
         }
         $('#like-count'+data.foundClickId.subPosts[0]._id).toggleClass('greencolor3');
         $('#dislike-count'+data.foundClickId.subPosts[0]._id).removeClass('blackcolor');
       }
       if(formData[1].name == 'subDislike'){
-        if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down blackcolor"></i>'){
-          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down"></i>');
+        if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i>'){
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-down vote-subpost2"></i>');
         }
-        else if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-down"></i>'
-        || $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up greencolor"></i>')){
-          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down blackcolor"></i>');
-          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up"></i>');
+        else if($('#dislike-btn'+data.foundClickId.subPosts[0]._id).html() == '<i class="vote-subpost far fa-thumbs-down vote-subpost2"></i>'
+        || $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-up vote-subpost2 greencolor"></i>')){
+          $('#dislike-btn'+data.foundClickId.subPosts[0]._id).html('<i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i>');
+          $('#like-btn'+data.foundClickId.subPosts[0]._id).html('<i class="vote-subpost far fa-thumbs-up vote-subpost2"></i>');
         }
         $('#like-count'+data.foundClickId.subPosts[0]._id).removeClass('greencolor3');
         $('#dislike-count'+data.foundClickId.subPosts[0]._id).toggleClass('blackcolor');

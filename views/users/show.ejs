@@ -13,7 +13,11 @@
         <div class="d-flex flex-row mobileNoneFlex">
           <div>
             <div class="container p-1 ml-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
-              <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
+              <% if(user.userKeys.sex == 'Male'){ %>
+                <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserMale.png' %>">
+              <% } else if(user.userKeys.sex == 'Female'){ %>
+                <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserFemale.png' %>">
+              <% } %>
               <% if(currentUser && match){ %>
                 <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                   <label for="inputprofilePic" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
@@ -75,7 +79,11 @@
             <div class="d-flex flex-row">
               <div class="ml-2">
                 <div class="container p-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
-                  <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUser.png' %>">
+                  <% if(user.userKeys.sex == 'Male'){ %>
+                    <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserMale.png' %>">
+                  <% } else if(user.userKeys.sex == 'Female'){ %>
+                    <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserFemale.png' %>">
+                  <% } %>
                   <% if(currentUser && match){ %>
                     <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                       <label for="inputprofilePic2" class="overlay pb-5" style="outline: 4px solid rgba(0,0,0,0.5);">
@@ -201,7 +209,11 @@
               <% if(foundFriends[i]){ %>
                 <div class="col-3 pl-1 py-1">
                   <a href="/users/<%= foundFriends[i]._id %>">
-                    <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUser.png' %>">
+                    <% if(user.userKeys.sex == 'Male'){ %>
+                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserMale.png' %>">
+                    <% } else if(user.userKeys.sex == 'Female'){ %>
+                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserFemale.png' %>">
+                    <% } %>
                   </a>
                   <div class="lineheight3">
                     <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>
@@ -494,7 +506,7 @@
                 <% } %>
                 <% if(user.recommends.movies.length || (currentUser && match)){ %>
                   <div class="info1">
-                    Follow on: 
+                    Find me on: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
                         <button onclick="toggle_display('followon_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
@@ -867,7 +879,7 @@
               </svg>
             <% } else{ %>
               <svg id="isUserInRoom" height="12" width="12">
-                <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#dcdcdc"/>
+                <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#e0e0e0"/>
               </svg>
             <% } %>
           <% } %>

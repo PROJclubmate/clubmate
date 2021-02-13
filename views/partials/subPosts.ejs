@@ -39,12 +39,16 @@
         <div class="mb-auto d-flex flex-column subpost-left">
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-              <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
+                <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
+                <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
+              <% } %>
             </a>
           </div>
-          <div><span class="text-xs">#</span><span class="boldtext blackcolor nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
-          <hr>
-          <div class="d-flex flex-row mx-auto whiteback">
+          <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
+          <hr style="border-color: whitesmoke;">
+          <div class="d-flex flex-row mx-auto whiteback" style="border-radius: 0 0 0.15rem 0.15rem;">
             <% if(0 <= rank && rank <= 4){ %>
               <form action="/subposts/<%= bucket._id %>/<%= subPosts[j]._id %>/vote" method="POST">
                 <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
@@ -95,12 +99,12 @@
                   <strong><%= subPosts[j].subPostAuthor.id.fullName %></strong>
                 </a>
               </div>
-              <div class="grey boldtext text-xxs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
+              <div class="lightgrey boldtext text-xxs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="grey boldtext text-xxs mb-auto"><%= moment(subPosts[j].postedAt).format('ll'); %> <span class="text-xxxs lightgrey"></span> <em class="lightgrey text-xxxs"></em></div>
+              <div class="darkgrey boldtext text-xxs mb-auto" style="margin-bottom: -0.3125rem !important;"><%= moment(subPosts[j].postedAt).format('ll'); %> <span class="text-xxxs lightgrey"></span> <em class="lightgrey text-xxxs"></em></div>
               <div class="dropdown ml-auto">
-                <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
+                <button class="btn btn-sm dropdown-toggle editprofile pr-0" style="padding-top: 0 !important; padding-bottom: 0 !important;" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>
@@ -192,9 +196,9 @@
             <% } %>
             <div class="input-group">
               <% if(quote){ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4" autofocus></textarea>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4" autofocus></textarea>
               <% } else{ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add sub-post" rows="4"></textarea>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
               <% } %>
             </div>
             <div class="d-flex flex-row-reverse">

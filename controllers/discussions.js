@@ -1,4 +1,5 @@
 const Post     = require('../models/post'),
+  User         = require('../models/user'),
   Discussion   = require('../models/discussion'),
   {cloudinary} = require('../public/js/cloudinary.js');
 
@@ -77,7 +78,7 @@ module.exports = {
           var page = foundPost.subpostBuckets.length-1;
         }
         Discussion.find({_id: foundPost.subpostBuckets[page]})
-        .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
+        .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
           console.log(Date.now()+' : '+'(discussions-4)foundBucket err:- '+JSON.stringify(err, null, 2));

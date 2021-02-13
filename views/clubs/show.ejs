@@ -114,7 +114,7 @@
               </form>
             <% } %>
             <div>
-              <div class="text-lg mt-5 mb-2 text-lato text-shadow-black lineheight" style="color: goldenrod;"><%= club.banner %></div>
+              <div class="text-lg mt-5 mb-2 text-lato text-shadow-black lineheight" style="color: #fcb410;"><%= club.banner %></div>
               <div class="valign">
                 <div class="boldtext">Description</div>
                 <% if(0 <= rank && rank <= 1){ %>
@@ -464,7 +464,11 @@
                     </div>
                     <div class="d-flex">
                       <div>
-                        <button onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
+                        <% if(0 <= rank && rank <= 4){ %>
+                          <button onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');" class="btn btnxs chat-input-tool my-auto" title="Search members"><i class="fas fa-search"></i></button>
+                        <% } else{ %>
+                          <button class="btn btnxs chat-input-tool my-auto lightgrey2" title="Search members"><i class="fas fa-search"></i></button>
+                        <% } %>
                       </div>
                       <div id="searchMember_form">
                         <div class="input-group input-group-sm">

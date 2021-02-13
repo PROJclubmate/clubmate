@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-lg-9 order-md-first order-last">
 	<% if(!filter){ %>
-		<div class="mt-2 ml-2 mobiletext">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+		<div class="ml-2 mt-4 pt-2 mobiletext4">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<% } else{ %>
-		<div class="mt-2 ml-2 mobiletext lineheight">Search results for <strong>(</strong>
+		<div class="ml-2 mt-4 pt-2 mobiletext4 lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.users){ %>
 				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span>
 			<% } %>
@@ -29,7 +29,11 @@
 				<div class="d-flex flex-row">
 					<div>
 			      <a href="/users/<%= users[k]._id %>">
-            	<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+							<% if(users[k].userKeys.sex == 'Male'){ %>
+            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
+							<% } else if(users[k].userKeys.sex == 'Female'){ %>
+            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
+							<% } %>
           	</a>
 			    </div>
 			    <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">

@@ -789,7 +789,7 @@ module.exports = {
 
   profilesClubProfile(req, res, next){
     Club.findOne({_id: req.params.club_id, isActive: true})
-    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
+    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId userKeys'})
     .exec(function(err, foundClub){
     if(err){
       console.log(Date.now()+' : '+'(profiles-22)foundClub err:- '+JSON.stringify(err, null, 2));
@@ -909,7 +909,7 @@ module.exports = {
 
   profilesClubMoreMembers(req, res, next){
     Club.findById(req.params.club_id)
-    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
+    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId userKeys'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
       console.log(Date.now()+' : '+'(profiles-25)foundClub err:- '+JSON.stringify(err, null, 2));
@@ -944,7 +944,7 @@ module.exports = {
 
   profilesClubSearchMembers(req, res, next){
     Club.findById(req.params.club_id)
-    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId'})
+    .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId userKeys'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
       console.log(Date.now()+' : '+'(profiles-26)foundClub err:- '+JSON.stringify(err, null, 2));
@@ -985,7 +985,7 @@ module.exports = {
 
   profilesClubMoreMemberRequests(req, res, next){
     Club.findById(req.params.id)
-    .populate({path: 'memberRequests.userId', select: 'fullName profilePic profilePicId'})
+    .populate({path: 'memberRequests.userId', select: 'fullName profilePic profilePicId userKeys'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
       console.log(Date.now()+' : '+'(profiles-27)foundClub err:- '+JSON.stringify(err, null, 2));
@@ -1023,7 +1023,7 @@ module.exports = {
         var seenIds = [];
       }
       Post.find({postClub: req.params.club_id, _id: {$nin: seenIds}})
-      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
+      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){
@@ -1068,7 +1068,7 @@ module.exports = {
         var seenIds = [];
       }
       Post.find({postClub: req.params.club_id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
-      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
+      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, clubPosts){

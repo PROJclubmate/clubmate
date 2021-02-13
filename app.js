@@ -138,7 +138,7 @@ app.use(async function(req, res, next){
       //REQUESTS
       let foundUser = await User.findById(req.user._id)
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
-      .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId note'})
+      .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId userKeys note'})
       .exec();
       res.locals.userClubs = foundUser.userClubs.sort(function(a, b){
         if(a.clubName < b.clubName) { return -1; }

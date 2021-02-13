@@ -95,7 +95,7 @@ module.exports = {
         var seenIds = [];
       }
       Post.find({'postAuthor.id': {$in: req.user.friends}, _id: {$nin: seenIds}})
-      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId'})
+      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, friendsPosts){
@@ -944,7 +944,7 @@ module.exports = {
             lastTwoBuckets.push(modPost.commentBuckets[len-1]);
             lastTwoBuckets.push(modPost.commentBuckets[len-2]);
             Comment.find({_id: {$in: lastTwoBuckets}})
-            .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+            .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
             .exec(function(err, foundBuckets){
             if(err || !foundBuckets){
               console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
@@ -979,7 +979,7 @@ module.exports = {
             if(modPost.subpostBuckets != ''){
               var len = index = modPost.subpostBuckets.length;
               Discussion.findOne({_id: modPost.subpostBuckets[len-1]})
-              .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
+              .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
               .exec(function(err, foundBucket){
               if(err || !foundBucket){
                 console.log(Date.now()+' : '+'(posts-30)foundBucket err:- '+JSON.stringify(err, null, 2));
@@ -1060,7 +1060,7 @@ module.exports = {
           lastTwoBuckets.push(foundPost.commentBuckets[len-1]);
           lastTwoBuckets.push(foundPost.commentBuckets[len-2]);
           Comment.find({_id: {$in: lastTwoBuckets}})
-          .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId'})
+          .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
           .exec(function(err, foundBuckets){
           if(err || !foundBuckets){
             console.log(Date.now()+' : '+'(posts-29)foundBuckets err:- '+JSON.stringify(err, null, 2));
