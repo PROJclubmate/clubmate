@@ -63,7 +63,7 @@ div.content{
   #inbox_mobile{display: none !important;}
   .name{color: white !important; background-color: #403d3c; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
-  .navback{background-color: rgba(54,51,50,0.95);}
+  .navback{background-color: rgba(54,51,50,0.95); background-image: url(/images/maze-black.png); image-rendering: pixelated;}
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
@@ -151,7 +151,8 @@ div.content{
   .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
     z-index: 8; box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);}
   .navbar{padding: 1px 10px !important;}
-  .name, .navback{background-color: #3e3a39 !important;}
+  .navback{background-color: #3e3a39 !important;}
+  .name{background-color: unset !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 96px; border: 3px solid #f1f1f1;
     box-shadow: 4px 11px 5px -6px rgba(0,0,0,0.2);}
   a.hr2{border: none;}
@@ -319,6 +320,7 @@ div.content{
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.375rem !important;}
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{background-color: transparent !important; border-color: transparent !important;}
   .btncollapse-user.collapsed{border-radius: 0.5rem;}
+  .btncollapse-div-user{border-radius: 0.5rem;}
   .border-light.btncollapse-div-shadow{background-color: transparent; border-color: transparent !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
   .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: 0px 1px 3px -1px rgb(0,0,0,0.15) !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
@@ -979,6 +981,7 @@ div.card-title{
   width: 100%;
   height: 22rem;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 /*Nav styles
 ---------------------------------------------------*/
@@ -989,11 +992,13 @@ li.nav-item{
   height: 36px;
   width: 36px;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 .smalldp{
   height: 16px;
   width: 16px;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 .smalldppad{
   padding: 2px;
@@ -1006,6 +1011,7 @@ li.nav-item{
   width: 50px;
   object-fit: cover;
   margin-right: 0.25rem !important;
+  image-rendering: -webkit-optimize-contrast;
 }
 a > .collegedp.chatsdp{
   color: lightgrey;
@@ -1024,6 +1030,7 @@ a > .collegedp.chatsdp.active{
   width: 28px;
   object-fit: cover;
   margin: 0.15rem 0;
+  image-rendering: -webkit-optimize-contrast;
 }
 #navname{
   vertical-align: middle;
@@ -1086,6 +1093,7 @@ time.calendar strong{
   background-color: #ff8c00;
   border-bottom: 1px dashed brown;
   box-shadow: 0 1px 0 #ff8c00;
+  background-image: url(/images/washi.png);
 }
 time.calendar em{
   font-size: 0.5625rem;
@@ -1198,6 +1206,7 @@ time.calendar span{
   height: 4.05rem;
   position: relative;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 .friends-text{
   bottom: 10%; 
@@ -1220,6 +1229,7 @@ time.calendar span{
   margin: 0 0.5rem;
   object-fit: cover;
   box-shadow: 1px 2px 7px -1px rgba(0,0,0,0.5);
+  image-rendering: -webkit-optimize-contrast;
 }
 .searchcard{
   position: relative;
@@ -1233,6 +1243,7 @@ time.calendar span{
   height: 30px;
   width: 30px;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 .posthead{
   margin: 0.5rem;
@@ -1639,7 +1650,6 @@ input[type="file"]#inputavatar{
 }
 .btn-white.focus, .btn-white:focus{
   box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
-  border-bottom-width: 1px !important;
 }
 .btn.btncollapse{
   background-color: white;
@@ -1674,7 +1684,7 @@ input[type="file"]#inputavatar{
   background-color: #428bca;
 }
 .btn-primary:hover{
-  border-color: #3b7db5;
+  border-color: #346fa1;
   background-color: #3b7db5;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
@@ -1712,7 +1722,7 @@ input[type="file"]#inputavatar{
   background-color: #4aac71 !important;
 }
 .btn-success:hover{
-  border-color: #429a65 !important;
+  border-color: #3b895a !important;
   background-color: #429a65 !important;
 }
 .btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle{
@@ -1995,6 +2005,7 @@ a .nolink:hover{
 img.cover{
   width: 100%;
   object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 .coverback{
   border: none;
@@ -2045,6 +2056,7 @@ img.cover{
   background-image: url(/images/doodleBack.png);
   background-size: 150px 150px;
   background-repeat: repeat;
+  image-rendering: -webkit-optimize-contrast;
 }
 .whiteback{
   background-color: white;
@@ -2822,6 +2834,8 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
   height: 50px !important;
   width: 50px !important;
   object-fit: cover;
+  border-radius: 0.25rem !important;
+  image-rendering: -webkit-optimize-contrast;
 }
 .subpost-left{
   float: left;   
