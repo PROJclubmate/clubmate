@@ -145,6 +145,8 @@ div.content{
   .clubupdates-count{color: #808080;}
   .carousel-inner{border-radius: 0 0.75rem 0.75rem 0;}
   .input-group-append.searchbtn-div{margin-left: -2px;}
+  #posts_view_toggle{margin-top: 7.0625rem; margin-left: -3rem; margin-right: 3rem;}
+  .search-bottompos.search-bottompos-desktop{width: calc(100% - 100px - 2rem) !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -182,6 +184,8 @@ div.content{
   .centerpad-posts{padding: 0 0rem 0 5rem !important;}
   #chats-list{padding-left: 0.5rem;}
   #pin-chatbox.pin-chatbox2{padding-right: 0.25rem; flex: 0 0 66.666667%; max-width: 66.666667%;}
+  .circle-plus .circle{margin-left: 5rem !important;}
+  .posts_view_toggle-pad{padding-left: 5.5rem !important;}
 }
 /* iPad */
 @media screen and (min-width: 768px) and (max-width: 992px){
@@ -203,6 +207,8 @@ div.content{
   .badge.badge-success.badge-round.float-right{position: absolute; right: 0.25rem;}
   #chats-list{padding-left: 0.5rem;}
   #pin-chatbox.pin-chatbox2{padding-right: 0.25rem;}
+  .circle-plus .circle{margin-left: 0.125rem !important;}
+  .posts_view_toggle-pad{padding-left: 0.8125rem !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -335,6 +341,9 @@ div.content{
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
     a > .collegedp.chatsdp.active{margin-left: 0.125rem !important;}
+  .truncate2{-webkit-line-clamp: 15 !important;}
+  .circle-plus .circle{margin-left: 0.125rem !important;}
+  .posts_view_toggle-pad{padding-left: 0.75rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -408,6 +417,8 @@ div.content{
   #carouselControls.hascover{margin-top: -58px !important;}
   .arrowshowpost{font-size: 1.125rem !important;}
   .topic-head{min-height: 3.5rem !important;}
+  .circle-plus .circle{margin-left: 0.1875rem !important;}
+  .posts_view_toggle-pad{padding-left: 1rem !important;}
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
@@ -559,6 +570,8 @@ div.content{
   .overlay3.overlay3-grad{top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
   .discover-overlay .discovertop-left{padding: 0.6875rem !important;}
+  .circle-plus .circle{margin-left: 0.0625rem !important;}
+  .posts_view_toggle-pad{padding-left: 0.75rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -571,11 +584,11 @@ div.content{
 /*----------------------------------------------------------------*/
 .fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
 .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke: 0.75px #fafafa;}
-.fas.fa-thumbs-up.greencolor{-webkit-text-stroke: 1px #13ac15;}
+.fas.fa-thumbs-up.greencolor{-webkit-text-stroke: 1px #00b300;}
 .fab.fa-gratipay{-webkit-text-stroke: 0.25px grey;}
 .vote-subpost2{-webkit-text-stroke-width: 0.5px !important;}
-.fas.fa-heart.redcolor2{-webkit-text-stroke: 1px #f44133;}
-.fas.fa-thumbs-down{-webkit-text-stroke: 1px black; color: #262626 !important;}
+.fas.fa-heart.redcolor2{-webkit-text-stroke: 1px #f23a34;}
+.fas.fa-thumbs-down{-webkit-text-stroke: 0.5px black; color: #262626 !important; -webkit-text-stroke-width: 0.25px !important;}
 .fas.fa-caret-up, .fas.fa-caret-down{-webkit-text-stroke: 1.3125px #262626;}
 .on > .fas.fa-caret-up{-webkit-text-stroke: 1px #147dd6; font-size: 3.25rem; margin: 0 -0.25rem;}
 .on > .fas.fa-caret-down{-webkit-text-stroke: 1px #f77f00; font-size: 3rem; margin: 0 -0.25rem;}
@@ -712,7 +725,8 @@ hr{
 .wordwrap{
   overflow: hidden;
   display: inline-block;
-  overflow-wrap: break-word !important;
+  /* overflow-wrap: break-word !important; */
+  overflow-wrap: anywhere !important;
 }
 .my-15{
   margin: 0.15rem 0;
@@ -905,10 +919,9 @@ input{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
-.search-bottomright{
-  padding: 0 0.25rem;
+.search-bottompos{
   position: absolute;
-  right: 0.25rem;
+  width: calc(100% - 100px - 1rem);
   bottom: 0.5rem;
 }
 .search-topright{
@@ -1584,6 +1597,7 @@ input[type="file"]#inputavatar{
   border-radius: 2rem !important;
   height: 1.75rem;
   width: 1.75rem;
+  border-width: 2px !important;
 }
 .btn-notification:hover{
   border-color: grey !important;
@@ -1778,6 +1792,13 @@ input[type="file"]#inputavatar{
 .btnshadow{
   box-shadow: inset 0px 1px 1px rgba(255,255,255,0.125), 0px 2px 5px -2px rgba(0,0,0,0.5);
 }
+.gb.btnshadow{
+  box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.5);
+}
+.btnshadow:focus{
+  box-shadow: none !important;
+  outline: none;
+}
 .btnxs{
   padding: 1px 4px !important;
   box-shadow: none;
@@ -1834,7 +1855,7 @@ a.red:hover{color: #d6312e;}
   color: #343a40 !important;
 }
 .lightgrey{
-  color: grey !important;
+  color: #7a7b7c !important;
 }
 .lightgrey2{
   color: #a8aaac !important;
@@ -1852,7 +1873,7 @@ a.red:hover{color: #d6312e;}
   color: #ed4956 !important;
 }
 .redcolor2{
-  color: #f76d6f !important;
+  color: #eb5d6b !important;
 }
 .redcolor3{
   color: #052514 !important;
@@ -2267,7 +2288,7 @@ div.carousel-img{
 .truncate2{
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 10;
+  -webkit-line-clamp: 16;
   -webkit-box-orient: vertical;
 }
 .truncate3{
@@ -3579,4 +3600,58 @@ input.shadow:-webkit-autofill:focus{
   color: goldenrod;
   -webkit-text-stroke-width: 0.25px;
   -webkit-text-stroke-color: black;
+}
+.closed .vertical{
+  transition: all 0.5s ease-out;
+  transform: rotate(-90deg);
+}
+.closed .horizontal{
+  transition: all 0.5s ease-out;
+  transform: rotate(-90deg);
+  opacity: 1;
+}
+.opened{
+  opacity: 1;
+}
+.opened .vertical{
+  transition: all 0.5s ease-out;
+  transform: rotate(90deg);
+}
+.opened .horizontal{
+  transition: all 0.5s ease-out;
+  transform: rotate(90deg);
+  opacity: 0;
+}
+.circle-plus{
+  height: 2rem;
+  width: 2rem;
+  font-size: 1rem;
+}
+.circle-plus .circle{
+  position: relative;
+  width: 2.05rem;
+  height: 2rem;
+  border-radius: 100%;
+  border: solid 2.5px #e0e0e0;
+  cursor: pointer;
+}
+.circle-plus .circle .horizontal{
+  position: absolute;
+  background-color: #7a7b7c;
+  width: 15px;
+  height: 2.5px;
+  left: 50%;
+  margin-left: -7.5px;
+  top: 50%;
+  margin-top: -1.25px;
+}
+.circle-plus .circle .vertical{
+  position: absolute;
+  background-color: #7a7b7c;
+  width: 2.5px;
+  height: 15px;
+  left: 50%;
+  margin-left: -1.25px;
+  top: 50%;
+  margin-top: -7.5px;
 }

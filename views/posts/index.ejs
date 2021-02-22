@@ -50,6 +50,11 @@
     <div id="server-posts">
       <% //include ../partials/posts_index %>
     </div>
+    <% if(currentUser){ %>
+      <div class="mx-2 mt-5 mb-1 desktopNone tabletShow">
+        <% include ../partials/posts_view_toggle %>
+      </div>
+    <% } %>
     <div id="client-posts"></div>
     <div class="text-center pt-2">
       <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
@@ -59,7 +64,9 @@
   </div>
   <% if(currentUser){ %>
     <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone">
-      <% include ../partials/latest_updates %>
+      <div id="posts_view_toggle">
+        <% include ../partials/posts_view_toggle %>
+      </div>
     </div>
   <% } %>
 </div>

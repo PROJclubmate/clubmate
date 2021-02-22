@@ -138,7 +138,7 @@
                     <div>
                       <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
                     </div>
-                    <div class="lineheight2">
+                    <div class="lineheight">
                       <div class="mobiletext2 truncate1">
                         <span>
                           <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
@@ -148,15 +148,13 @@
                           <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
                         </span>
                       </div>
-                      <div>
+                      <div class="lineheight3">
                         <% if(post.moderation == -1){ %>
                           <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
                         <% } %>
                         <% if(post.descEdit.length != 0){ %>
                           <div class="badge badge-warning text-xxs">Edited</div>
                         <% } %>
-                        <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                        <span class="lightgrey2 nothing"><em id="timeLocal" class="text-xxs"></em></span>
                       </div>
                     </div>
                   </div>
@@ -188,16 +186,21 @@
                 <% } %>
               </div>
               <!-- Vote bar -->
-              <% if(post.image){ %>
-                <div class="card-body5">
-              <% } else{ %>
-                <div class="card-body5" style="border-top: 1px solid whitesmoke;">
+              <div class="card-body5">
+              <% if(!post.image){ %>
+                <hr class="hr-light">
               <% } %>
-                <div class="d-flex flex-row">
-                  <div class="lightgrey text-xs" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
-                  <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                    <strong id="following-switch-mobile" class="text-sm nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
-                  <% } %>
+                <div class="valign">
+                  <div class="d-flex flex-row">
+                    <div class="lightgrey text-xs" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
+                    <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
+                      <strong id="following-switch-mobile" class="text-sm nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
+                    <% } %>
+                  </div>
+                  <div style="line-height: 0;">
+                    <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                    <span class="lightgrey2 nothing"><em id="timeLocal" class="text-xxs"></em></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -225,7 +228,7 @@
                   </ul>
                 </div>
               </div>
-              <div style="margin-top: -1rem; padding-bottom: 0.5rem;">
+              <div style="margin-top: -1rem; margin-bottom: -0.5rem;">
                 <div class="mx-2 mb-auto d-flex flex-column">
                   <form class="d-flex flex-column post-modvote-form" action="/posts/<%= post._id %>/modvote" method="POST">
                     <% if(hasModVote == 1){ %>
@@ -251,15 +254,15 @@
                 <div class="d-flex flex-column">
                   <% if(currentUser){ %>
                     <% if(hasVote == 3){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
-                      <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
+                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto mt-2" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
+                      <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
                     <% } else if(hasVote == 0){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey nothing text-sm mx-auto" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
-                      <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey nothing text-sm mx-auto mt-2" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
+                      <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                       <% } %>
                         <div class="invisible" id="modVisibility<%= post._id %>"></div>
                   <% } else{ %>
-                    <div class="mx-auto" style="padding-bottom: 0.15rem;"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+                    <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -366,7 +369,7 @@
                     </div>
                   </div>
                   <div class="input-group">
-                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
+                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
                     <button class="btn btn-success subpostbtn btnshadow btnxs text-sm ml-2 mt-2">Submit</button>

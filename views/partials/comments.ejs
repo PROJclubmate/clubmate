@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="valign">
-            <div class="mobiletext linewrap commentpad commentpad2 mb-1 mr-4"><%= comments[j].text %></div>
+            <div class="mobiletext linewrap wordwrap commentpad commentpad2 mb-1 mr-4"><%= comments[j].text %></div>
             <div class="d-flex flex-row">
               <% if(currentUser && comments[j].commentAuthor.id._id.equals(currentUser._id)){ %>
                 <div class="dropdown">

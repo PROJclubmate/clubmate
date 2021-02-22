@@ -105,15 +105,18 @@
 	                      </div>
 											<% } else if(users[k].lastActive >= (new Date() - 24*3600*1000)){ %>
 												<div>
-													<svg height="12" width="12">
-														<circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+													<svg height="16" width="16">
+														<circle cx="8" cy="7" r="5" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
 													</svg>
 												</div>
 											<% } %>
 									   </div>
-							      <div class="lightgrey text-xs"><%= users[k].note %></div>
+							      <div class="lightgrey text-xs pr-3"><%= users[k].note %></div>
 							      <br>
-							      <div class="darkgrey text-xs search-bottomright"><%= users[k].userKeys.residence %></div>
+										<div class="valign search-bottompos">
+											<div></div>
+							      	<div class="darkgrey text-xs mobiletext4 text-right lineheight2 ml-1" style="max-width: 50%;"><%= users[k].userKeys.residence %></div>
+										</div>
 							    </div>
 							  </div>
 						  </div>

@@ -579,6 +579,15 @@ function outCopyTxtFn(){
   tooltip.innerHTML = "Copy to clipboard";
 }
 
+$('.togglePostsView-form').on('click', function(){
+  $('.circle-plus').toggleClass('opened');
+  setTimeout(function(){
+    var form = document.getElementsByClassName('togglePostsView-form');
+    form[0].submit();
+    $('.posts_view_key').attr('value', '0');
+  }, 500);
+});
+
 $('#toggleCollegePageViewKey').change(function(e){
   e.stopPropagation();
   var valueNum;

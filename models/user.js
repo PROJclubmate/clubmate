@@ -24,6 +24,17 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
+  postsViewToggle: {
+    type: Number,
+    default: 1,
+    min: 1,
+    max: 2,
+    required: '1-Mix, 2-Topic posts only',
+    validate: {
+      validator: Number.isInteger,
+      message: '{VALUE} is not an integer value.'
+    }
+  },
   sortByKey: {
     type: Number,
     default: 1,

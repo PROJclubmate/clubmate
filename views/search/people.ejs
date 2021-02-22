@@ -55,17 +55,17 @@
 					    	<% }})} %>
 					    </div>
 				    </div>
-			      <div class="lightgrey text-xs"><%= users[k].note %></div>
+			      <div class="lightgrey text-xs pr-3"><%= users[k].note %></div>
 			      <br>
-			      <div class="valign">
-			      	<div>
-			      		<div class="text-xs mobilebold darkgrey"><%= users[k].userKeys.college %></div>
+			      <div class="valign search-bottompos search-bottompos-desktop">
+			      	<div class="mt-auto">
+			      		<div class="text-xs mobiletext4 mobilebold darkgrey"><%= users[k].userKeys.college %></div>
 				      	<% if(users[k].userKeys){ %>
-						      <div class="lightgrey text-xs"><%= users[k].userKeys.school %></div>
+						      <div class="lightgrey text-xs mobiletext4"><%= users[k].userKeys.school %></div>
 						    <% } %>
 					    </div>
 					    <% if(users[k].userKeys){ %>
-				      	<div class="darkgrey text-xs mt-auto text-right search-bottomright ml-1" style="max-width: 30%;"><%= users[k].userKeys.residence %></div>
+				      	<div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.residence %></div>
 				      <% } %>
 				    </div>
 			    </div>

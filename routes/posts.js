@@ -3,8 +3,8 @@ const express  = require('express'),
   middleware   = require('../middleware'),
   {upload}     = require('../public/js/cloudinary.js'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
-  postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, postsUpdate, postsDelete, 
-  postsVote, postsModVote} = require('../controllers/posts');
+  postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, 
+  postsUpdate, postsDelete, postsVote, postsModVote} = require('../controllers/posts');
 
 
 // Home page
@@ -19,11 +19,14 @@ router.get('/friends_posts', postsFriends_posts);
 // Friends' posts load more posts(AJAX)
 router.get('/friends_posts-morePosts', postsFriends_postsMorePosts);
 
+// Index posts view settings
+router.put('/indexposts/settings/user/:id', middleware.isLoggedIn, postsViewSettings);
+
 // Discover page
 router.get('/discover', postsDiscover);
 
 // Discover settings
-router.put('/discover/settings/user/:id', postsDiscoverSettings);
+router.put('/discover/settings/user/:id', middleware.isLoggedIn, postsDiscoverSettings);
 
 // Discover load more posts(AJAX)
 router.get('/discover-morePosts', postsDiscoverMorePosts);

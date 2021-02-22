@@ -1,39 +1,50 @@
 <% include ./partials/header %>
 
+<style>
+  body{
+    background:linear-gradient(135deg, #160C23, #7B6762);
+    color: white;
+  }
+</style>
 <div class="d-flex">
   <div class="mx-auto mt-5 mb-4">
-    <h3 class="text-center d-flex text-lato">Welcome to <span class="text-xxs pt-1 pl-2">PRJ<img src="/images/icons/app-icon-96x96.png" style="width: 20px; height: 20px;"></span>clubmate</h3>
+    <h3 class="text-center d-flex text-lato" style="text-shadow: 0.5px 0.5px black, -0.5px 0.5px black, 0.5px -0.5px black, -0.5px -0.5px black;">
+      Welcome to <span class="text-xxs pt-1 pl-2 greencolor2">PRJ<img src="/images/icons/app-icon-96x96.png" style="width: 20px; height: 20px; image-rendering: -webkit-optimize-contrast;"></span>clubmate</h3>
   </div>
 </div>
 <div class="row no-gutters justify-content-center">
-  <div class="col-10 col-md-4">
-    <h6 class="text-center mb-5">clubmate lets you find and join people around similar interests in your college.</h6>
+  <div class="col-10 col-lg-4 col-md-6">
+    <h6 class="text-center mb-5">Find and join people around similar interests in your college.</h6>
     <br>
     <h6>You can use clubmate to:</h6>
-    <ul style="list-style-type: disc; list-style-position: inside;">
-      <li>See all listed clubs in your school</li>
-      <li>Explore cool stuff happening in your college</li>
-      <li>Find out what your friends do</li>
+    <ul style="list-style-type: disc; list-style-position: inside;" class="mobiletext3">
+      <li>See the list of clubs in your college</li>
+      <li>Explore cool stuff happening in your college RN</li>
+      <li>Find out what your friends are upto</li>
       <li>Talk in Group Chats</li>
-      <li>Discuss topics / Ask questions</li>
-      <li>Pursue hobbies, together :)</li>
+      <li>Discuss topics / Ask questions / Seek advice</li>
+      <li>Pursue hobbies & share experiences :)</li>
     </ul>
     <br>
-    <div class="d-flex">
-      <div class="mx-auto">
-        <button class="gb gb4 gb-bordered hover-fill gb-rounded px-0 mx-2"><a href="/login" class="nounderline text-lg gb-bordered">login</a></button>
-        <button class="gb gb4 gb-bordered hover-fill gb-rounded px-0 mx-2"><a href="/register" class="nounderline text-lg gb-bordered">signup</a></button>
+    <br>
+    <br>
+    <div>
+      <div class="d-flex">
+        <div class="mx-auto">
+          <a href="/login"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">login</span></button></a>
+          <a href="/register"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">signup</span></button></a>
+        </div>
       </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="d-flex flex-column">
-      <div class="text-xs lightgrey mx-auto pl-4">
-        <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
-        <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+      <br>
+      <br>
+      <br>
+      <div class="d-flex flex-column" style="margin-top: -0.5rem;">
+        <div class="text-xs lightgrey mx-auto pl-4">
+          <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
+          <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+        </div>
+        <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
       </div>
-      <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
     </div>
   </div>
 </div>
