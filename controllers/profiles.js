@@ -1469,10 +1469,13 @@ module.exports = {
 
   profilesSignUp(req, res, next){
     if(req.body.firstName.trim() != ''){
+      var newFirstName = req.body.firstName.trim()[0].toUpperCase() + req.body.firstName.trim().substring(1).toLowerCase();
+      var newLastName = req.body.lastName.trim()[0].toUpperCase() + req.body.lastName.trim().substring(1).toLowerCase();
+      var newFullName = newFirstName+' '+newLastName;
       var newUser = new User({
-        firstName: req.body.firstName.trim(),
-        lastName: req.body.lastName.trim(),
-        fullName: req.body.firstName+' '+req.body.lastName,
+        firstName: newFirstName,
+        lastName: newLastName,
+        fullName: newFullName,
         email: req.body.email,
         userKeys: req.body.userKeys,
         profilePic: null,
@@ -1509,7 +1512,7 @@ module.exports = {
               to: user.email,
               from: '"Clubmate"team@clubmate.co.in',
               subject: 'Account Verification Token',
-              text: 'Welcome to clubmate '+req.body.firstName+'!  ,\n\n' + 
+              text: 'Welcome to clubmate '+newFirstName+'!  ,\n\n' + 
               'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
               '\/confirmation\/' + token.token + '\n\n' +
               'Thanks,\n' +

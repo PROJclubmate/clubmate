@@ -344,6 +344,7 @@ div.content{
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
+  .landing-bottom{bottom: 2rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -3501,6 +3502,11 @@ input.shadow:-webkit-autofill:focus{
 }
 .gb11:focus:after{
   background-position: 100% 0;
+}
+.landing-bottom{
+  position: absolute;
+  width: 100%;
+  bottom: 0.25rem;
 }
 .hamburger{
   position: absolute;
