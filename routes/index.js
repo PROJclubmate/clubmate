@@ -5,7 +5,7 @@ const express  = require('express'),
   indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, 
   indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
-  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexShowMyResume}
+  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexFeedbackPage}
    = require('../controllers/index');
 
 
@@ -90,7 +90,10 @@ router.put('/users/:user_id/follow/:club_id', middleware.isLoggedIn, indexFollow
 // Show my followed clubs
 router.get('/show_following/:id', middleware.isLoggedIn, indexShowFollowingClubs);
 
-// Show my resume PRIVATE/UNLISTED
-router.get('/resume', indexShowMyResume);
+// Get account settings page
+router.get('/users/:id/settings', middleware.isLoggedIn, indexSettingsPage);
+
+// Get user feedback page
+router.get('/feedback', middleware.isLoggedIn, indexFeedbackPage);
 
 module.exports = router;

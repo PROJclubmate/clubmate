@@ -1648,9 +1648,12 @@ module.exports = {
     }
   },
 
-  /* PRIVATE */
-  indexShowMyResume(req, res, next){
-    res.render("resume");
+  indexSettingsPage(req, res, next){
+    res.render("settings");
+  },
+
+  indexFeedbackPage(req, res, next){
+    res.render("feedback");
   }
 };
 

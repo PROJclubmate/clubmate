@@ -348,13 +348,13 @@
               <div class="d-flex flex-row">
                 <span class="ml-auto">
                   <% if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
-                    <button id="enable-notifications" class="btn btn-white btn-notification text-sm"title="Enable notifications on this device">
-                      <i class="fas fa-user-cog"></i>
-                    </button>
-                    <button id="mypage" class="btn btn-white btnxxs text-sm noshadow nopoint nowrap nodisplay" type="button">
-                    <i class="fas fa-ghost" aria-hidden="true"></i> Me</button>
+                    <a href="/users/<%= user._id %>/settings">
+                      <button class="btn btn-white btn-settings text-sm"title="Account settings">
+                        <i class="fas fa-user-cog"></i>
+                      </button>
+                    </a>
                   <% } else{ %>
-                    <button class="btn btn-white btnxxs text-sm noshadow nopoint nowrap invisible" type="button">
+                    <button class="btn btn-white btnxxs text-sm invisible" type="button">
                     Not Me</button>
                   <% } %>
                 </span>

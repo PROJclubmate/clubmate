@@ -1,0 +1,81 @@
+<% include ./partials/header %>
+
+<style>
+  body{
+    background:linear-gradient(135deg, #160C23, #7B6762);
+    color: white;
+  }
+  .heart{
+    position: absolute;
+    top: 50%;
+    left: 56%;
+    width: 52.5px;
+    height: 52.5px;
+    margin: -26.25px;
+  }
+  .heart{
+    position: unset;
+    margin: -0.65rem -0.25rem;
+    transform: scale(0.5);
+  }
+  @media screen and (max-width: 1200px){
+    .heart{left: 50%;}
+  }
+  @media screen and (max-width: 481px){
+    .heart{transform: scale(0.6);}
+  }
+  @media screen and (max-width: 361px){
+    .heart{transform: scale(0.5);}
+  }
+  .heart:hover::before{
+    -webkit-animation-play-state: paused;
+    border-radius: 100%;
+    opacity: 0;
+  }
+  .heart::before{
+    content: "";
+    display: block;
+    transition: all 400ms;
+    -webkit-animation: pulse 1.2s steps(1) infinite;
+    width: 7.5px;
+    height: 7.5px;
+    margin: -7.5px 0 0 -7.5px;
+    box-shadow: 15px 7.5px #8e1a19, 22.5px 7.5px #ac0500, 37.5px 7.5px #f73f0c, 45px 7.5px #fa5f27, 7.5px 15px #740100, 15px 15px #8e0500, 22.5px 15px #8e1918, 30px 15px #ca1300, 37.5px 15px #f34f2b, 45px 15px #df351f, 52.5px 15px #f77c2a, 7.5px 22.5px #4b0000, 15px 22.5px #690100, 22.5px 22.5px #8e0f0b, 30px 22.5px #bf1000, 37.5px 22.5px #f84010, 45px 22.5px #f04222, 52.5px 22.5px #fa5724, 7.5px 30px #451312, 15px 30px #5a0100, 22.5px 30px #840e0c, 30px 30px #a51d1a, 37.5px 30px #ed2805, 45px 30px #d9321e, 52.5px 30px #f44622, 15px 37.5px #3b0000, 22.5px 37.5px #5d1a1b, 30px 37.5px #8e1a19, 37.5px 37.5px #a80700, 45px 37.5px #b90a00, 22.5px 45px #3d0000, 30px 45px #551415, 37.5px 45px #670100, 30px 52.5px #340000;
+  }
+  @-webkit-keyframes pulse{
+    50% {
+      -webkit-filter: blur(1px);
+      -webkit-transform: translate(-2px, 2px);
+    }
+  }
+</style>
+<div class="row no-gutters justify-content-center">
+  <div class="d-flex flex-row mx-auto mt-5 mb-4">
+    <div class="heart"></div>
+    <div>How would you rate our concept?</div>
+  </div>
+  <div class="col-10 col-lg-4 col-md-6 landing-bottom">
+    <div class="d-flex valign justify-content-center">
+      <div class="mr-2">Hi <%= currentUser.firstName %></div>
+      <div>
+        <% if(currentUser.userKeys.sex == 'Male'){ %>
+          <img class="navdp rounded-circle" style="image-rendering: auto;" src="<%='/images/noUserMale.png' %>">
+        <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+          <img class="navdp rounded-circle" style="image-rendering: auto;" src="<%='/images/noUserFemale.png' %>">
+        <% } %>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex flex-column" style="margin-top: -0.5rem;">
+      <div class="text-xs lightgrey mx-auto pl-4">
+        <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
+        <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+      </div>
+      <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
+    </div>
+  </div>
+</div>
+
+<% include ./partials/footer %>

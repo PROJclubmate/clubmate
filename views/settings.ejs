@@ -1,0 +1,288 @@
+<% include ./partials/header %>
+<style>
+.switch{
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.75rem;
+}
+.switch input{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before{
+  position: absolute;
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider{
+  background-color: #2196F3;
+}
+input:checked + .slider:before{
+  -webkit-transform: translateX(1.25rem);
+  -ms-transform: translateX(1.25rem);
+  transform: translateX(1.25rem);
+}
+.slider.round{
+  border-radius: 1.75rem;
+}
+.slider.round:before{
+  border-radius: 50%;
+}
+.category-head{
+  width: 100%;
+  color: #7a7b7c;
+  border-radius: 0.15rem;
+  border-bottom: 1px solid white;
+  background-color: rgba(255,255,255, 0.25);
+  margin: 0 -0.25rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
+}
+.settings-pad{
+  padding: 3rem !important;
+}
+@media screen and (max-width: 767px){
+  .settings-pad{
+    padding: 1rem !important;
+    margin-top: 5rem;
+  }
+}
+/* Dark mode special */
+.toggleWrapper{
+  transform: scale(0.6);
+  margin: -0.625rem -1rem;
+}
+.toggleWrapper input{
+  display: none;
+}
+.toggle{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 50px;
+  background-color: #87CEEB;
+  border-radius: 84px;
+  transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.toggle__handler{
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  top: 7px;
+  left: 7px;
+  width: 36px;
+  height: 36px;
+  background-color: #FFCF96;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: rotate(-45deg);
+}
+.toggle__handler .crater{
+  position: absolute;
+  background-color: #E8CDA5;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  border-radius: 100%;
+}
+.toggle__handler .crater--1{
+  top: 18px;
+  left: 10px;
+  width: 4px;
+  height: 4px;
+}
+.toggle__handler .crater--2{
+  top: 28px;
+  left: 14px;
+  width: 5px;
+  height: 5px;
+}
+.toggle__handler .crater--3{
+  top: 10px;
+  left: 18px;
+  width: 7px;
+  height: 7px;
+}
+.star{
+  position: absolute;
+  background-color: #ffffff;
+  transition: all 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  border-radius: 50%;
+}
+.star--1{
+  top: 10px;
+  left: 28px;
+  z-index: 0;
+  width: 24px;
+  height: 3px;
+}
+.star--2{
+  top: 18px;
+  left: 22px;
+  z-index: 1;
+  width: 24px;
+  height: 3px;
+}
+.star--3{
+  top: 27px;
+  left: 32px;
+  z-index: 0;
+  width: 24px;
+  height: 3px;
+}
+.star--4,
+.star--5,
+.star--6{
+  opacity: 0;
+  transition: all 300ms 0 cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.star--4{
+  top: 16px;
+  left: 11px;
+  z-index: 0;
+  width: 2px;
+  height: 2px;
+  transform: translate3d(3px, 0, 0);
+}
+.star--5{
+  top: 32px;
+  left: 17px;
+  z-index: 0;
+  width: 3px;
+  height: 3px;
+  transform: translate3d(3px, 0, 0);
+}
+.star--6{
+  top: 36px;
+  left: 28px;
+  z-index: 0;
+  width: 2px;
+  height: 2px;
+  transform: translate3d(3px, 0, 0);
+}
+input:checked + .toggle{
+  background-color: #749DD6;
+}
+input:checked + .toggle:before{
+  color: #749ED7;
+}
+input:checked + .toggle:after{
+  color: #ffffff;
+}
+input:checked + .toggle .toggle__handler{
+  background-color: #FFE5B5;
+  transform: translate3d(30px, 0, 0) rotate(0);
+}
+input:checked + .toggle .toggle__handler .crater{
+  opacity: 1;
+}
+input:checked + .toggle .star--1{
+  width: 2px;
+  height: 2px;
+}
+input:checked + .toggle .star--2{
+  width: 4px;
+  height: 4px;
+  transform: translate3d(-5px, 0, 0);
+}
+input:checked + .toggle .star--3{
+  width: 2px;
+  height: 2px;
+  transform: translate3d(-7px, 0, 0);
+}
+input:checked + .toggle .star--4,
+input:checked + .toggle .star--5,
+input:checked + .toggle .star--6{
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+input:checked + .toggle .star--4{
+  transition: all 300ms 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+input:checked + .toggle .star--5{
+  transition: all 300ms 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+input:checked + .toggle .star--6{
+  transition: all 300ms 400ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+</style>
+
+<img class="settings-img" src="<%= '/images/settings.svg' %>" title="Designed by [Freepik] from @flaticon">
+<div class="row no-gutters">
+  <div class="col-lg-6 col-md-8 col-12 settings-pad">
+    <div>
+      <div class="category-head text-xs boldtext">Notifications</div>
+      <div class="valign my-2">
+        <div>Push notifications</div>
+        <div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="valign my-2">
+        <div>Sound Alert</div>
+        <div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div>
+      <div class="category-head text-xs boldtext">Appearance</div>
+      <div class="valign my-2">
+        <div class="lightgrey2">Dark Mode</div>
+        <div>
+          <div class="toggleWrapper">
+            <input type="checkbox" id="dn">
+            <label for="dn" class="toggle">
+              <span class="toggle__handler">
+                <span class="crater crater--1"></span>
+                <span class="crater crater--2"></span>
+                <span class="crater crater--3"></span>
+              </span>
+              <span class="star star--1"></span>
+              <span class="star star--2"></span>
+              <span class="star star--3"></span>
+              <span class="star star--4"></span>
+              <span class="star star--5"></span>
+              <span class="star star--6"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <a href="/feedback">
+      Give Feedback
+    </a>
+  </div>
+</div>
+
+<% include ./partials/footer %>
