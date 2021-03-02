@@ -188,6 +188,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           $('#load-more-members-btn').val(newEndpoints);
           var div = document.getElementById('client-members');
           div.innerHTML += moreMembers_template(response);
+          if(arr.length < 10){
+            $('#load-more-members-btn').addClass('nodisplay');
+          }
         } else{
           $('#load-more-members-btn').addClass('nodisplay');
         }
@@ -244,6 +247,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           $('#load-more-memberRequests-btn').val(newEndpoints);
           var div = document.getElementById('client-memberRequests');
           div.innerHTML += moreMemberRequests_template(response);
+          if(arr.length < 10){
+            $('#load-more-memberRequests-btn').addClass('nodisplay');
+          }
         } else{
           $('#load-more-memberRequests-btn').addClass('nodisplay');
         }
@@ -334,6 +340,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           $('#load-more-clubs-btn').val(newEndpoints);
           var div = document.getElementById('client-clubs');
           div.innerHTML += moreClubs_template(response);
+          if(arr.length < 10){
+            $('#load-more-clubs-btn').addClass('nodisplay');
+          }
         } else{
           $('#load-more-clubs-btn').addClass('nodisplay');
         }
