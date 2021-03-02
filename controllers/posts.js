@@ -984,6 +984,9 @@ module.exports = {
                   CA_50_profilePic[i][j] = cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId,
                   {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
                 }
+                foundBuckets[i].comments.sort(function(a, b){
+                  return a.upvotesCount - b.upvotesCount;
+                });
               }
               var index = len-3;
               if(req.user){

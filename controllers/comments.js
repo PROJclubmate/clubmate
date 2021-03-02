@@ -138,6 +138,9 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
+          foundBucket.comments.sort(function(a, b){
+            return a.upvotesCount - b.upvotesCount;
+          });
           res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
           CA_50_profilePic, csrfToken: res.locals.csrfToken});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();

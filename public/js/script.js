@@ -1220,6 +1220,11 @@ $('div#delegated-comments').on('click', '.commentvote', function(e){
     type: 'PUT',
     success: function(data){
       $('#comment-up-count'+data.foundComment.comments[0]._id).text(data.foundComment.comments[0].upvotesCount);
+      if($('#comment-up-count'+data.foundComment.comments[0]._id).text() == 0){
+        $('#comment-up-count'+data.foundComment.comments[0]._id).addClass('invisible');
+      } else{
+        $('#comment-up-count'+data.foundComment.comments[0]._id).removeClass('invisible');
+      }
       if(formData[1].name == 'commentUp'){
         $('#comment-up-btn'+data.foundComment.comments[0]._id).toggleClass('redcolor2');
         $('#comment-up-count'+data.foundComment.comments[0]._id).toggleClass('redcolor3');

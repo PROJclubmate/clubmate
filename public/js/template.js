@@ -2465,7 +2465,7 @@ function post_comments_template(response){
                     <div>
                       <i class="fab fa-gratipay"></i>
                     </div>
-                    <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
                       <%= comments[j].upvotesCount %>
                   </div>
                   </button>
@@ -2474,7 +2474,11 @@ function post_comments_template(response){
                     <div>
                       <i class="fab fa-gratipay"></i>
                     </div>
-                    <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <% if(comments[j].upvotesCount > 0){ %>
+                      <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <% } else{ %>
+                      <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">
+                    <% } %>
                       <%= comments[j].upvotesCount %>
                     </div>
                   </button>

@@ -2416,6 +2416,9 @@ button.redcolor2.commentvote:hover * .fab.fa-gratipay{
   color: #f76d6f;
   -webkit-text-stroke: 0.25px #f44133;
 }
+.commentcount{
+  min-width: 0.5rem;
+}
 button.upVotebtn:hover{
   color: whitesmoke;
 }
