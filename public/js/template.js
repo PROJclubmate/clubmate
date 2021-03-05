@@ -797,7 +797,7 @@ function index_posts_template(response){
             </span>
             <% if(posts[k].commentsCount > 0){ %>
                . <span class="boldtext nothing text-xxs">
-                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
           </div>
@@ -822,7 +822,7 @@ function index_posts_template(response){
               </span>
               <% if(posts[k].commentsCount > 0){ %>
                  . <span class="boldtext nothing text-xxs">
-                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                  <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
             </div>
@@ -984,12 +984,12 @@ function index_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].subpostsCount > 0){ %>
-            <div class="card-body5">
+            <div class="card-body5 lineheight">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
               <div>
-                <span class="lightgrey2 text-xs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
+                <span class="lightgrey2 text-xxs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
               </div>
             </div>
           <% } %>
@@ -1101,7 +1101,7 @@ function discover_posts_template(response){
       <div class="discovertop-left lineheight2">
         <% if(posts[k].commentsCount > 0){ %>
           <span class="boldtext">
-            <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+            <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
           </span>
         <% } %>
       </div>
@@ -1307,14 +1307,14 @@ function club_posts_template(response){
               </span>
               <% if(posts[k].commentsCount > 0){ %>
                 . <span class="boldtext nothing text-xxs">
-                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                  <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
             </div>
             <div>
               <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                 <!-- Moderation -->
-                <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
+                <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
                   <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                     <span>
                       <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">
@@ -1348,14 +1348,14 @@ function club_posts_template(response){
                 </span>
                 <% if(posts[k].commentsCount > 0){ %>
                   . <span class="boldtext nothing text-xxs">
-                    <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                    <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                   </span>
                 <% } %>
               </div>
               <div>
                 <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                   <!-- Moderation -->
-                  <% if(0 <= posts[k].privacy && posts[k].privacy <= 1){ %>
+                  <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
                     <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
@@ -1513,12 +1513,12 @@ function club_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].subpostsCount > 0){ %>
-            <div class="card-body5">
+            <div class="card-body5 lineheight">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
               <div>
-                <span class="lightgrey2 text-xs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
+                <span class="lightgrey2 text-xxs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
               </div>
             </div>
           <% } %>
@@ -1630,10 +1630,11 @@ function club_posts_template(response){
 <%
 function privacyText(privacy){
   if(privacy == 0){return 'Public';}
-  else if(privacy == 1){return 'Friends';}
-  else if(privacy == 2){return 'Club';}
-  else if(privacy == 3){return 'Club(friends)';}
-  else if(privacy == 4){return 'Private';}
+  else if(privacy == 1){return 'College';}
+  else if(privacy == 2){return 'Friends';}
+  else if(privacy == 3){return 'Club';}
+  else if(privacy == 4){return 'Club(friends)';}
+  else if(privacy == 5){return 'Private';}
 } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, rank: response.rank,
   currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, 
@@ -1734,7 +1735,7 @@ function user_posts_template(response){
             </span>
             <% if(posts[k].commentsCount > 0){ %>
                . <span class="boldtext nothing text-xxs">
-                <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
           </div>
@@ -1755,7 +1756,7 @@ function user_posts_template(response){
               </span>
               <% if(posts[k].commentsCount > 0){ %>
                  . <span class="boldtext nothing text-xxs">
-                  <%= posts[k].commentsCount %><% if(posts[k].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                  <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
             </div>
@@ -1906,12 +1907,12 @@ function user_posts_template(response){
             <% } %>
           </div>
           <% if(posts[k].subpostsCount > 0){ %>
-            <div class="card-body5">
+            <div class="card-body5 lineheight">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
               <div>
-                <span class="lightgrey2 text-xs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
+                <span class="lightgrey2 text-xxs"><strong><%= posts[k].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
               </div>
             </div>
           <% } %>
@@ -2110,7 +2111,7 @@ function heart_posts_template(response){
             </span>
             <% if(postsH[l].commentsCount > 0){ %>
                . <span class="boldtext nothing text-xxs">
-                <%= postsH[l].commentsCount %><% if(postsH[l].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                <%= postsH[l].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
           </div>
@@ -2131,7 +2132,7 @@ function heart_posts_template(response){
               </span>
               <% if(postsH[l].commentsCount > 0){ %>
                  . <span class="boldtext nothing text-xxs">
-                  <%= postsH[l].commentsCount %><% if(postsH[l].commentsCount == 1){ %> <i class="fas fa-comment"></i> <% } else{ %> <i class="fas fa-comments"></i> <% } %>
+                  <%= postsH[l].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
             </div>
@@ -2282,12 +2283,12 @@ function heart_posts_template(response){
             <% } %>
           </div>
           <% if(postsH[l].subpostsCount > 0){ %>
-            <div class="card-body5">
+            <div class="card-body5 lineheight">
               <% if(!postsH[l].image){ %>
                 <hr class="hr-light">
               <% } %>
               <div>
-                <span class="lightgrey2 text-xs"><strong><%= postsH[l].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
+                <span class="lightgrey2 text-xxs"><strong><%= postsH[l].subpostsCount %></strong> <i class="fas fa-comment-alt"></i></span>
               </div>
             </div>
           <% } %>

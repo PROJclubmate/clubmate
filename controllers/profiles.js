@@ -1931,8 +1931,14 @@ function postsPrivacyFilter(foundPosts, currentUser){
     if(privacy == 0){
       posts.push(foundPosts[i]);
     }
-    //Friends
+    //College
     if(privacy == 1){
+      if(foundPosts[i].clubCollegeKey == currentUser.userKeys.college){
+        posts.push(foundPosts[i]);
+      }
+    }
+    //Friends
+    if(privacy == 2){
       var pushed = false;
       if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
         pushed = true;
@@ -1958,7 +1964,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Club(members)
-    if(privacy == 2){
+    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
@@ -1971,7 +1977,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Club(friends)
-    if(privacy == 3){
+    if(privacy == 4){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(friendsLen && clubLen){
@@ -1990,7 +1996,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Private
-    if(privacy == 4){
+    if(privacy == 5){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }

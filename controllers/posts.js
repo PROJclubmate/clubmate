@@ -218,7 +218,7 @@ module.exports = {
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}, {topic: ''}
+              {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -329,7 +329,7 @@ module.exports = {
             postClub: {$in: req.user.followingClubIds},
             createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))},
             _id: {$nin: seenIds}, 
-            moderation: 0, privacy: 0, topic: ''})
+            moderation: 0, privacy: {$in: [0,1,2]}, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
           .sort({createdAt: -1}).limit(20)
@@ -373,7 +373,7 @@ module.exports = {
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}, {topic: ''}
+              {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -843,8 +843,8 @@ module.exports = {
     // Only rank 0-3 can create a simple post
     if(((req.body.topic != '') && (0<=rank && rank<=4)) || ((req.body.topic == '') && (0<=rank && rank<=3))){
       if(req.file){
-        if(req.body.privacy && (((req.body.topic != '') && (2<=req.body.privacy && req.body.privacy<=4)) || 
-        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=4)))){
+        if(req.body.privacy && (((req.body.topic != '') && (3<=req.body.privacy && req.body.privacy<=5)) || 
+        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
           cloudinary.v2.uploader.upload(req.file.path,
           {folder: 'postImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
           effect: 'sharpen:25', format: 'webp', crop: 'limit'},
@@ -894,8 +894,8 @@ module.exports = {
           return res.redirect('back');
         }
       } else{
-        if(req.body.privacy && (((req.body.topic != '') && (2<=req.body.privacy && req.body.privacy<=4)) || 
-        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=4)))){
+        if(req.body.privacy && (((req.body.topic != '') && (3<=req.body.privacy && req.body.privacy<=5)) || 
+        ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
           if(err || !foundClub){
@@ -1608,8 +1608,14 @@ function postsPrivacyFilter(foundPosts, currentUser){
     if(privacy == 0){
       posts.push(foundPosts[i]);
     }
-    //Friends
+    //College
     if(privacy == 1){
+      if(foundPosts[i].clubCollegeKey == currentUser.userKeys.college){
+        posts.push(foundPosts[i]);
+      }
+    }
+    //Friends
+    if(privacy == 2){
       var pushed = false;
       if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
         pushed = true;
@@ -1635,7 +1641,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Club(members)
-    if(privacy == 2){
+    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
@@ -1648,7 +1654,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Club(friends)
-    if(privacy == 3){
+    if(privacy == 4){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else if(friendsLen && clubLen){
@@ -1667,7 +1673,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
       }
     }
     //Private
-    if(privacy == 4){
+    if(privacy == 5){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }

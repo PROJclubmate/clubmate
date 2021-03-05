@@ -144,12 +144,14 @@ $('#input_topic').on('input', function(e){
   if(!$('#description').hasClass('junior')){
     if($(this).val() != ''){
       $('#priv_everyone').removeAttr('selected');
-      $('#priv_club').attr('selected', 'true');
+      $('.priv_college').attr('disabled', 'true');
       $('.priv_public').attr('disabled', 'true');
+      $('#priv_club').attr('selected', 'true');
     } else{
+      $('#priv_everyone').attr('selected', 'true');
+      $('.priv_college').removeAttr('disabled');
       $('.priv_public').removeAttr('disabled');
       $('#priv_club').removeAttr('selected');
-      $('#priv_everyone').attr('selected', 'true');
     }
   } else{
     if($(this).val() != ''){
