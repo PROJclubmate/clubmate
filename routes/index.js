@@ -19,7 +19,7 @@ router.get('/', indexRoot);
 router.get('/help', indexHelp);
 
 // FAQ page
-router.get('/FAQ', indexFAQ);
+router.get('/faq', indexFAQ);
 
 // Chats list
 router.get('/chats', middleware.isLoggedIn, indexChats);

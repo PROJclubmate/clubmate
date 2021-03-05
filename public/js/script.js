@@ -753,7 +753,7 @@ if(window.innerWidth < 768){
   });
 }
 
-if(location.pathname == '/help/'){
+if((location.pathname == '/help/') || (location.pathname == '/faq')){
   $(".navhelp").addClass('requests-active');
 }
 if(location.pathname == '/chats'){
