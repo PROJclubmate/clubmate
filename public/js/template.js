@@ -1072,8 +1072,7 @@ function index_posts_template(response){
                 <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
                   <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                  <% } %>
-                    <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
+                <% } %>
               <% } else{ %>
                 <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
@@ -1317,8 +1316,7 @@ function club_posts_template(response){
                 <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
                   <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                     <span>
-                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">
-                      </button>
+                      <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light noshadow text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                     </span>
                   <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
                     <span>
@@ -1328,6 +1326,7 @@ function club_posts_template(response){
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
+              <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             </div>
           </div>
         </div>
@@ -1368,6 +1367,7 @@ function club_posts_template(response){
                   <% } %>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
+                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
               </div>
             </div>
           </a>
@@ -1404,7 +1404,6 @@ function club_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
-                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             <% } else{ %>
               <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
@@ -1613,8 +1612,7 @@ function club_posts_template(response){
                 <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
                   <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                  <% } %>
-                    <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
+                <% } %>
               <% } else{ %>
                 <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
@@ -1999,8 +1997,7 @@ function user_posts_template(response){
                 <% } else if(hasVote[k] == 0){ %>
                   <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
                   <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                  <% } %>
-                    <div class="nodisplay" id="modVisibility<%= posts[k]._id %>"></div>
+                <% } %>
               <% } else{ %>
                 <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>
@@ -2375,8 +2372,7 @@ function heart_posts_template(response){
                 <% } else if(hasVoteH[l] == 0){ %>
                   <div id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= postsH[l].heartCount %></div>
                   <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                  <% } %>
-                    <div class="nodisplay" id="modVisibility<%= postsH[l]._id %>"></div>
+                <% } %>
               <% } else{ %>
                 <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
               <% } %>

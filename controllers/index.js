@@ -1315,7 +1315,7 @@ module.exports = {
         }
         });
       } else{
-        req.flash('success', 'You are not a friend with this person :/');
+        req.flash('success', 'You are not a friend with this person');
         return res.redirect('back');
       }
     }
@@ -1332,7 +1332,7 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundCollegePage){
-      req.flash('error', 'College page has no listed clubs :/');
+      req.flash('error', 'College page has no listed clubs');
       return res.redirect('back');
     } else{
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 

@@ -557,6 +557,7 @@ module.exports = {
 
   profilesUpdateUserProfile(req, res, next){
     if(req.user && req.user._id.equals(req.params.id)){
+      var newCollegePageExists;
       User.findById(req.params.id, async function(err, foundUser){
       if(err || !foundUser){
         console.log(Date.now()+' : '+req.user._id+' => (profiles-15)foundUser err:- '+JSON.stringify(err, null, 2));
@@ -618,34 +619,30 @@ module.exports = {
             if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
               var oldCollegeName = foundUser.userKeys.college;
               var newCollegeName = req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
-              CollegePage.findOne({name: oldCollegeName}, function (err, foundOldCollegePage){
-                if(foundOldCollegePage && foundOldCollegePage.allUserIds.length){
-                  for(var i=foundOldCollegePage.allUserIds.length-1;i>=0;i--){
-                    if(foundOldCollegePage.allUserIds[i].equals(foundUser._id)){
-                      foundOldCollegePage.allUserIds.splice(i,1);
-                      break;
-                    }
-                  }
-                  foundOldCollegePage.userCount -= 1;
-                  foundOldCollegePage.save();
-                }
-              });
-              CollegePage.findOne({name: newCollegeName}, function (err, foundNewCollegePage){
-                if(foundNewCollegePage){
-                  foundNewCollegePage.allUserIds.push(foundUser._id);
-                  foundNewCollegePage.userCount += 1;
-                  foundNewCollegePage.save();
-                } else{
-                  if(newCollegeName && newCollegeName != ''){
-                    CollegePage.create({name: newCollegeName}, function (err, createdNewCollegePage){
-                      createdNewCollegePage.allUserIds.push(foundUser._id);
-                      createdNewCollegePage.userCount += 1;
-                      createdNewCollegePage.save();
-                    });
+              var foundOldCollegePage = await CollegePage.findOne({name: oldCollegeName});
+              if(foundOldCollegePage && foundOldCollegePage.allUserIds.length){
+                for(var i=foundOldCollegePage.allUserIds.length-1;i>=0;i--){
+                  if(foundOldCollegePage.allUserIds[i].equals(foundUser._id)){
+                    foundOldCollegePage.allUserIds.splice(i,1);
+                    break;
                   }
                 }
-              });
-              foundUser.userKeys.college = newCollegeName;
+                foundOldCollegePage.userCount -= 1;
+                foundOldCollegePage.save();
+              }
+              var foundNewCollegePage = await CollegePage.findOne({name: newCollegeName});
+              if(foundNewCollegePage){
+                foundNewCollegePage.allUserIds.push(foundUser._id);
+                foundNewCollegePage.userCount += 1;
+                foundNewCollegePage.save();
+                foundUser.userKeys.college = newCollegeName;
+              } else{
+                if(newCollegeName != ''){
+                  req.flash('error', 'Page for '+newCollegeName+' does not exist yet');
+                  newCollegePageExists = 'no';
+                }
+                foundUser.userKeys.college = '';
+              }
             }
             foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
             if(foundUser.userKeys.residence != req.body.userKeys.residence){
@@ -708,7 +705,9 @@ module.exports = {
           }
         };
         foundUser.save();
-        req.flash('success', 'Successfully updated');
+        if(newCollegePageExists == 'no'){} else{
+          req.flash('success', 'Successfully updated');
+        }
         return res.redirect('/users/' + req.params.id);
       }
       });
@@ -1112,6 +1111,7 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
+      var newCollegePageExists;
       var rankUsers = foundClub.clubUsers;
       var admin = checkRank(rankUsers,req.user._id,1); 
       var moder = checkRank(rankUsers,req.user._id,2);
@@ -1189,90 +1189,81 @@ module.exports = {
           }
         }
         if(req.body.clubKeys){
-          const oldCollegeName = foundClub.clubKeys.college;
-          const oldCategory = foundClub.clubKeys.category;
-          const newCollegeName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
-          const newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          var oldCollegeName = foundClub.clubKeys.college;
+          var oldCategory = foundClub.clubKeys.category;
+          var newCollegeName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          var newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
           // COLLEGE PAGE
           if(oldCollegeName != newCollegeName || oldCategory != newCategory){
             if(oldCollegeName != newCollegeName){
-              // 1) IF an collegePage of OLD College name exists => SPLICE clubId from old category of old college & dec. count
-              await CollegePage.findOne({name: oldCollegeName}, function (err, foundOldCollegePage){
-                if(foundOldCollegePage && foundOldCollegePage.allClubs.length){
-                  for(var i=foundOldCollegePage.allClubs.length-1;i>=0;i--){
-                    if(foundOldCollegePage.allClubs[i].category == oldCategory){
-                      foundOldCollegePage.allClubs[i].categoryCount -= 1;
-                      for(var j=foundOldCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
-                        if(foundOldCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
-                          foundOldCollegePage.allClubs[i].categoryClubIds.splice(j,1);
-                        }
+              // 1) IF a collegePage of OLD College name exists => SPLICE clubId from old category of old college & dec. count
+              var foundOldCollegePage = await CollegePage.findOne({name: oldCollegeName});
+              if(foundOldCollegePage && foundOldCollegePage.allClubs.length){
+                for(var i=foundOldCollegePage.allClubs.length-1;i>=0;i--){
+                  if(foundOldCollegePage.allClubs[i].category == oldCategory){
+                    foundOldCollegePage.allClubs[i].categoryCount -= 1;
+                    for(var j=foundOldCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                      if(foundOldCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                        foundOldCollegePage.allClubs[i].categoryClubIds.splice(j,1);
                       }
-                      break;
                     }
+                    break;
                   }
-                  foundOldCollegePage.clubCount -= 1;
-                  foundOldCollegePage.save();
                 }
-              });
+                foundOldCollegePage.clubCount -= 1;
+                foundOldCollegePage.save();
+              }
             }
-            // 2) IF an collegePage of NEW College name "exists" => PUSH clubId into category(upsert) & inc. count
-            await CollegePage.findOne({name: newCollegeName}, function (err, foundNewCollegePage){
-              if(foundNewCollegePage){
-                var foundNewCategory = false;
-                if(foundNewCollegePage.allClubs.length){
-                  for(var i=foundNewCollegePage.allClubs.length-1;i>=0;i--){
-                    // => collegePage different
-                    if(oldCollegeName != newCollegeName && foundNewCollegePage.allClubs[i].category == newCategory){
-                      foundNewCollegePage.allClubs[i].categoryCount += 1;
-                      foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
-                      foundNewCategory = true;
-                      foundNewCollegePage.clubCount += 1;
-                    }
-                    // => collegePage same
-                    // Remove club from old category
-                    if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == oldCategory){
-                      foundNewCollegePage.allClubs[i].categoryCount -= 1;
-                      for(var j=foundNewCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
-                        if(foundNewCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
-                          foundNewCollegePage.allClubs[i].categoryClubIds.splice(j,1);
-                          foundNewCollegePage.clubCount -= 1;
-                        }
+            // 2) IF a collegePage of NEW College name "exists" => PUSH clubId into category(upsert) & inc. count
+            var foundNewCollegePage = await CollegePage.findOne({name: newCollegeName});
+            if(foundNewCollegePage){
+              var foundNewCategory = false;
+              if(foundNewCollegePage.allClubs.length){
+                for(var i=foundNewCollegePage.allClubs.length-1;i>=0;i--){
+                  // => collegePage different
+                  if(oldCollegeName != newCollegeName && foundNewCollegePage.allClubs[i].category == newCategory){
+                    foundNewCollegePage.allClubs[i].categoryCount += 1;
+                    foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
+                    foundNewCategory = true;
+                    foundNewCollegePage.clubCount += 1;
+                  }
+                  // => collegePage same
+                  // Remove club from old category
+                  if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == oldCategory){
+                    foundNewCollegePage.allClubs[i].categoryCount -= 1;
+                    for(var j=foundNewCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                      if(foundNewCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                        foundNewCollegePage.allClubs[i].categoryClubIds.splice(j,1);
+                        foundNewCollegePage.clubCount -= 1;
                       }
                     }
-                    // Add club to new category
-                    if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == newCategory){
-                      foundNewCollegePage.allClubs[i].categoryCount += 1;
-                      foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
-                      foundNewCategory = true;
-                      foundNewCollegePage.clubCount += 1;
-                    }
                   }
-                }
-                if(foundNewCategory == false){
-                  var obj = {};
-                  obj['category'] = newCategory;
-                  obj['categoryCount'] = 1;
-                  obj['categoryClubIds'] = [foundClub._id];
-                  foundNewCollegePage.allClubs.push(obj);
-                  foundNewCollegePage.clubCount += 1;
-                }
-                foundNewCollegePage.save();
-              } else{
-                // 3) If an collegePage of NEW College name "does not exist" => Create NEW COLLEGE PAGE with new college name
-                if(newCollegeName && newCollegeName != ''){
-                  CollegePage.create({name: newCollegeName}, function (err, createdNewCollegePage){
-                    createdNewCollegePage.clubCount += 1;
-                    var obj = {};
-                    obj['category'] = newCategory;
-                    obj['categoryCount'] = 1;
-                    obj['categoryClubIds'] = [foundClub._id];
-                    createdNewCollegePage.allClubs.push(obj);
-                    createdNewCollegePage.save();
-                  });
+                  // Add club to new category
+                  if(oldCollegeName == newCollegeName && oldCategory != newCategory && foundNewCollegePage.allClubs[i].category == newCategory){
+                    foundNewCollegePage.allClubs[i].categoryCount += 1;
+                    foundNewCollegePage.allClubs[i].categoryClubIds.push(foundClub._id);
+                    foundNewCategory = true;
+                    foundNewCollegePage.clubCount += 1;
+                  }
                 }
               }
-            });
-            foundClub.clubKeys.college = newCollegeName;
+              if(foundNewCategory == false){
+                var obj = {};
+                obj['category'] = newCategory;
+                obj['categoryCount'] = 1;
+                obj['categoryClubIds'] = [foundClub._id];
+                foundNewCollegePage.allClubs.push(obj);
+                foundNewCollegePage.clubCount += 1;
+              }
+              foundNewCollegePage.save();
+              foundClub.clubKeys.college = newCollegeName;
+            } else{
+              if(newCollegeName != ''){
+                req.flash('error', 'Page for '+newCollegeName+' does not exist yet');
+                newCollegePageExists = 'no';
+              }
+              foundClub.clubKeys.college = '';
+            }
             foundClub.clubKeys.category = newCategory;
           }
         }
@@ -1302,7 +1293,9 @@ module.exports = {
           foundClub.banner = req.body.banner;
         }
         foundClub.save();
-        req.flash('success', 'Successfully updated');
+        if(newCollegePageExists == 'no'){} else{
+          req.flash('success', 'Successfully updated');
+        }
         return res.redirect('/clubs/' + req.params.club_id);
       } else{
         console.log(Date.now()+' : '+req.user._id+' => (profiles-37)rankCheck fail :Update Club');

@@ -222,7 +222,7 @@
                 <input type="text" id="banner" class="form-control form-control-sm commentbox2 text-center" name="banner" value="<%= club.banner %>" placeholder="Banner" autofocus>
                 <br>
                 <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
-                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[college]" value="<%= club.clubKeys.college %>" placeholder="College name [paste exact string here]">
+                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="clubKeys[college]" value="<%= club.clubKeys.college %>" placeholder="College name (paste exact string here)">
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>
                   <input list="category" class="form-control form-control-sm select_dark" name="clubKeys[category]" 
@@ -338,7 +338,7 @@
               </li>
               <% if(currentUser && 0 <= rank && rank <= 4){ %>
                 <li class="nav-item">
-                  <a class="nav-link boldtext black" id="chats-tab" data-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="false">Chat</a>
+                  <a class="nav-link boldtext black" id="rooms-tab" data-toggle="tab" href="#rooms" role="tab" aria-controls="rooms" aria-selected="false">Rooms</a>
                 </li>
               <% } %>
             </ul>
@@ -500,8 +500,8 @@
               <!-- Stories Tab -->
               <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab"></div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
-                <!-- Chats Tab -->
-                <div class="tab-pane fade cardpad greyback nothing" id="chats" role="tabpanel" aria-labelledby="chats-tab">
+                <!-- Chats/Rooms Tab -->
+                <div class="tab-pane fade cardpad greyback nothing" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
                   <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
                     <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
                       <div id="lastMsgBy" value=""> 

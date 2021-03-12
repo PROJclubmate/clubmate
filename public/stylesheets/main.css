@@ -687,7 +687,7 @@ hr{
   margin: 0;
 }
 .dropdown-menu{
-  z-index: 3 !important;
+  z-index: 4 !important;
 }
 .mobileShow{
   display: none;
@@ -1049,7 +1049,8 @@ a > .collegedp.chatsdp.active{
   height: 28px;
   width: 28px;
   object-fit: cover;
-  margin: 0.15rem 0;
+  margin: 0.125rem 0;
+  border: 2px solid white;
   image-rendering: -webkit-optimize-contrast;
 }
 #navname{
@@ -2775,7 +2776,7 @@ select.select1{
   margin: 0 0 -0.5rem 0;
 }
 .chat-head-clubpad{
-  margin: -0.6875rem 0 0 0 !important;
+  margin: -0.75rem 0 0 0 !important;
   padding-bottom: 0.25rem;
   padding-top: 0.3125rem;
 }
@@ -2850,6 +2851,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
 }
 .description2{
   background-color: whitesmoke !important;
+  border: none;
 }
 .description2:focus{
   box-shadow: none !important;
