@@ -1324,9 +1324,9 @@ function club_posts_template(response){
                     </span>
                   <% } %>
                 <% } %>
+                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
-              <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
             </div>
           </div>
         </div>
@@ -1365,9 +1365,9 @@ function club_posts_template(response){
                       </span>
                     <% } %>
                   <% } %>
+                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
-                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
               </div>
             </div>
           </a>
