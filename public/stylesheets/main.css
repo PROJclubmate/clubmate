@@ -134,7 +134,7 @@ div.content{
     transform: translateY(50%); filter: opacity(90%);}
   h5.topic-h5{font-size: 1.25rem !important;}
   .description-short-show{font-size: 1.25rem !important;}
-  .chatdp{margin-left: 0.125rem !important; margin-right: 0.5rem !important;}
+  .chatdp{margin-left: 0.125rem !important; margin-right: 0.125rem !important;}
   .discoverlink{top: 0 !important; left: 45% !important;}
   #copyTxt{padding: 0 0.25rem !important;}
   #toggleCollegePage-form{position: absolute; left: 4.875rem !important;}
@@ -199,7 +199,7 @@ div.content{
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
-  .chatdp{margin-left: 0 !important; margin-right: 0.5rem !important;}
+  .chatdp{margin-left: 0 !important;}
   .centerpad-posts{padding: 0 8.5rem 0 0 !important;}
   .chat-item{padding-left: 0 !important; padding-right: 0 !important;}
   .timeLocal1, .timeLocal3, .timeLocal7, .timeLocal365{padding-right: 0.25rem; position: absolute;
@@ -320,7 +320,6 @@ div.content{
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .collegedp{margin: 0 0.25rem !important;}
   .description-short-show{font-size: 1.1875rem !important;}
-  .chatdp{margin-left: 0 !important; margin-right: 0.5rem !important;}
   #copyTxt{padding: 0 0.8125rem !important;}
   #toggleCollegePage-form{position: absolute; left: 4.675rem !important;}
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.375rem !important;}
@@ -347,6 +346,7 @@ div.content{
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .landing-bottom{bottom: 2rem !important;}
   .settings-img{top: 0 !important;}
+  .chat-statusbar{border-top: 0.5px solid #d3d3d3 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -2742,7 +2742,7 @@ select.select1{
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.625rem;
-  margin: 0.15rem 3rem 0.15rem 0;
+  margin: 0.15rem 5rem 0.15rem 0.5rem;
 }
 .chat-msg2{
   line-height: 1.15rem !important;
@@ -2754,7 +2754,7 @@ select.select1{
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.625rem;
-  margin: 0.15rem 0 0.15rem 3rem;
+  margin: 0.15rem 0.5rem 0.15rem 5rem;
 }
 .chat-msg3{
   position: absolute;
@@ -3351,9 +3351,8 @@ input.shadow:-webkit-autofill:focus{
 .chat-item.active{
   background-color: whitesmoke;
   border-radius: 0.5rem;
-  border: 1px solid #d3d3d3;
-  border-left-width: 2px;
-  border-right-width: 2px;
+  border-left: 2px solid #d3d3d3;
+  border-right: 2px solid #d3d3d3;
 }
 .chatlist-box{
   height: calc(100vh - 2rem - 40px);

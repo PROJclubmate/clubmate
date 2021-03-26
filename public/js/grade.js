@@ -67,7 +67,7 @@ var Grade = function () {
         key: 'getRGBAGradientValues',
         value: function getRGBAGradientValues(top) {
             return top.map(function (color, index) {
-                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.85' + ') ' + (index == 0 ? '0%' : '100%');
+                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.8' + ') ' + (index == 0 ? '0%' : '0%');
             }).join(',');
         }
     }, {
@@ -109,7 +109,7 @@ var Grade = function () {
         value: function getTextProperty(top) {
             var rgb = this.getMiddleRGB(top[0].rgba.slice(0, 3), top[1].rgba.slice(0, 3));
             var o = Math.round((parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000);
-            if (o > 100) {
+            if (o > 165) {
                 return 'color: #000';
             } else {
                 return 'color: #fff';
