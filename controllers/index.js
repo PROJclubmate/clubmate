@@ -285,7 +285,7 @@ module.exports = {
                   break;
                 }
               }
-              User.findById(recipientId2).select({isLoggedIn: 1, lastActive: 1}).exec(function(err, foundRecepient){
+              User.findById(recipientId2).select({lastActive: 1}).exec(function(err, foundRecepient){
               if(err || !foundRecepient){
                 console.log(Date.now()+' : '+req.user._id+' => (index-9)foundRecepient err:- '+JSON.stringify(err, null, 2));
                 req.flash('error', 'Something went wrong :(');
@@ -1282,7 +1282,7 @@ module.exports = {
       if(foundUser._id.equals(req.user._id) || foundUser.friends.includes(req.user._id)){
         User.find({_id: {$in: foundUser.friends}})
         .skip((perPage * pageNumber) - perPage).limit(perPage).sort({fullName: 1})
-        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, isLoggedIn: 1, lastActive: 1})
+        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, lastActive: 1})
         .exec(function(err, foundFriends){
         if(err || !foundFriends){
           console.log(Date.now()+' : '+'(index-60)foundFriends err:- '+JSON.stringify(err, null, 2));

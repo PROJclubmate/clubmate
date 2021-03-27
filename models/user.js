@@ -10,7 +10,6 @@ const userSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   isVerified: {type: Boolean, default: false},
-  isLoggedIn: Boolean,
   lastLoggedOut: Date,
   lastActive: Date,
   discoverSwitch: {
@@ -26,7 +25,7 @@ const userSchema = new Schema({
   },
   postsViewToggle: {
     type: Number,
-    default: 1,
+    default: 2,
     min: 1,
     max: 2,
     required: '1-Mix, 2-Topic posts only',

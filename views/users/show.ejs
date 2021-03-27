@@ -436,7 +436,7 @@
                   Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
                   <br>
                   <% if(!match){ %>
-                    <% if(user.isLoggedIn && user.lastActive >= (new Date() - 60*1000)){ %>
+                    <% if(user.lastActive >= (new Date() - 60*1000)){ %>
                       <span>
                         <svg height="16" width="16">
                           <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>

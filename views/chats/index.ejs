@@ -53,52 +53,52 @@
 					     	<% } %>
 					    </div>
 						</div>
-						<div class="d-flex justify-content-between fullwidth chatlist-content">
-							<div class="my-auto mx-2">
+						<div class="d-flex chatlist-content fullwidth">
+							<div class="my-auto ml-2 mr-1 fullwidth">
 					    	<div class="d-flex flex-column lineheight">
-						      <div class="grey boldtext chatname">
-						      	<% if(chatList[i].type == 'user'){ %>
-						          <span><%= chatList[i].name %></span>
-						        <% } else if(chatList[i].type == 'club'){ %>
-						          <span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
-						       	<% } %>
-						      </div>
-						      <div class="my-auto lightgrey lastmsg truncate1">
-						      	<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
-						      		<span class="bluecolor boldtext">></span>
-						      	<% } %>
-						        <%= chatList[i].latestMessage %>
-						      </div>
+									<div class="valign">
+										<div class="grey boldtext chatname">
+											<% if(chatList[i].type == 'user'){ %>
+												<span><%= chatList[i].name %></span>
+											<% } else if(chatList[i].type == 'club'){ %>
+												<span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
+											<% } %>
+										</div>
+										<div>
+											<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
+												<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
+													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap"></em>
+													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+												<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
+													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap"></em>
+													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+												<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
+													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap"></em>
+													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+												<% } else{ %>
+													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap"></em>
+													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+												<% } %>
+											<% } %>
+										</div>
+									</div>
+									<div class="valign">
+										<div class="my-auto lightgrey lastmsg truncate1">
+											<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
+												<span class="bluecolor boldtext">></span>
+											<% } %>
+											<%= chatList[i].latestMessage %>
+										</div>
+										<div>
+											<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
+												<span class="badge badge-success badge-round"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
+											<% } else{ %>
+												<span class="badge badge-success badge-round nodisplay">0</span>
+											<% } %>
+										</div>
+									</div>
 						    </div>
 						  </div>
-						  <div class="my-auto pb-1 lineheight quarterwidth">
-								<div class="d-flex flex-column">
-									<div>
-										<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
-											<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
-												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap float-right"></em>
-												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-											<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
-												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap float-right"></em>
-												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-											<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
-												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap float-right"></em>
-												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-											<% } else{ %>
-												<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap float-right"></em>
-												<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap float-right invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-											<% } %>
-										<% } %>
-									</div>
-									<div>
-										<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
-											<span class="badge badge-success badge-round float-right"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
-										<% } else{ %>
-											<span class="badge badge-success badge-round float-right invisible">0</span>
-										<% } %>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 					<input type="hidden" name="_csrf" value="<%= csrfToken %>">

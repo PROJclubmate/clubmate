@@ -1629,28 +1629,25 @@ module.exports = {
 
   profilesLoginUser(req, res, next){
     passport.authenticate('local', function(err, user, info){
-      if (err){
+      if(err){
         req.flash('error', err);
         return next(err);
       }
-      if (!user){
+      if(!user){
         req.flash('error', info.message);
         return res.redirect('/login');
       }
       req.session.userId = user._id;
-      user.isLoggedIn = true;
-      user.save(function(err){
-        req.logIn(user, function(err){
-          if (err){return next(err);}
-          return res.redirect('/discover');
-        });
+      req.logIn(user, function(err){
+        if(err){return next(err);}
+        return res.redirect('/discover');
       });
     })(req, res, next);
   },
 
   profilesLogout(req, res, next){
     if(req.user){
-      User.updateOne({_id: req.user._id}, {isLoggedIn: false, lastLoggedOut: Date.now()}, 
+      User.updateOne({_id: req.user._id}, {lastLoggedOut: Date.now()}, 
       function(err, updateUser){
         if(err || !updateUser){
           console.log(Date.now()+' : '+req.user._id+' => (profiles-47)updateUser err:- '+JSON.stringify(err, null, 2));

@@ -202,9 +202,6 @@ div.content{
   .chatdp{margin-left: 0 !important;}
   .centerpad-posts{padding: 0 8.5rem 0 0 !important;}
   .chat-item{padding-left: 0 !important; padding-right: 0 !important;}
-  .timeLocal1, .timeLocal3, .timeLocal7, .timeLocal365{padding-right: 0.25rem; position: absolute;
-    right: 0; margin-top: -1.25rem;}
-  .badge.badge-success.badge-round.float-right{position: absolute; right: 0.25rem;}
   #chats-list{padding-left: 0.5rem;}
   #pin-chatbox.pin-chatbox2{padding-right: 0.25rem;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
@@ -340,7 +337,7 @@ div.content{
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
-    a > .collegedp.chatsdp.active{margin-left: 0.125rem !important;}
+    a > .collegedp.chatsdp.active{margin-left: 0.0625rem !important;}
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
@@ -744,9 +741,6 @@ hr{
 .fullwidth{
   width: 100% !important;
 }
-.quarterwidth{
-  width: 25% !important;
-}
 .form-signin{
   width: 100%;
   max-width: 18rem;
@@ -1038,12 +1032,12 @@ a > .collegedp.chatsdp{
   background-color: lightgrey;
 }
 a > .collegedp.chatsdp:hover{
-  border: 2px solid lightgrey;
+  border: 2px solid whitesmoke;
   transition: 0.1s linear;
 }
 a > .collegedp.chatsdp.active{
   border-radius: 1rem;
-  margin-left: -0.125rem;
+  margin-left: -0.1875rem;
 }
 .chatdp{
   height: 28px;
@@ -2806,6 +2800,9 @@ select.select1{
   border: none;
   box-shadow: 0px 2px 3px -2px rgba(0,0,0,0.5);
 }
+.lastmsg{
+  width: 80%;
+}
 #prevMessage-div{
   margin: 1rem 0;
   padding: 1rem 0;
@@ -3351,8 +3348,8 @@ input.shadow:-webkit-autofill:focus{
 .chat-item.active{
   background-color: whitesmoke;
   border-radius: 0.5rem;
-  border-left: 2px solid #d3d3d3;
-  border-right: 2px solid #d3d3d3;
+  border-left: 3px solid #d3d3d3;
+  border-right: 3px solid #d3d3d3;
 }
 .chatlist-box{
   height: calc(100vh - 2rem - 40px);
