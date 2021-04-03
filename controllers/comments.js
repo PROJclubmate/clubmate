@@ -1,7 +1,7 @@
 const Post     = require('../models/post'),
   User         = require('../models/user'),
   Comment      = require('../models/comment'),
-  {cloudinary} = require('../public/js/cloudinary.js');
+  {cloudinary} = require('../config/cloudinary.js');
 
 module.exports = {
   commentsCreate(req, res, next){

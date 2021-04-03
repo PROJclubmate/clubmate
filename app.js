@@ -11,17 +11,12 @@ const express      = require('express'),
   passport         = require('passport'),
   LocalStrategy    = require('passport-local'),
   methodOverride   = require('method-override'),
+  dotenv           = require('dotenv').config(),
+  {cloudinary}     = require('./config/cloudinary'),
   User             = require('./models/user'),
   port             = 8080,
-  url              = 'mongodb://localhost/ghost_prod',
-  dotenv           = require('dotenv').config();
+  url              = 'mongodb://localhost/ghost_prod';
 
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_ID, 
-  api_secret: process.env.API_SECRET,
-});
 
 //Requiring routes
 const indexRoutes    = require('./routes/index'),
@@ -36,7 +31,7 @@ const indexRoutes    = require('./routes/index'),
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
 useUnifiedTopology: true}, function(err, client){
   if(err){
-    return console.log(Date.now()+' : '+'(app-17)'+JSON.stringify(err, null, 2));
+    return console.log(Date.now()+' : '+'(app-1)'+JSON.stringify(err, null, 2));
   }
   console.log(Date.now()+' : '+'MongoDB connected...');
 
@@ -161,7 +156,7 @@ app.use(async function(req, res, next){
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
       res.locals.FR_50_profilePic = fUFR_50_profilePic;
     } catch(err){
-      console.log(Date.now()+' : '+req.user._id+' => (app-1)request population err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+req.user._id+' => (app-2)request population err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }

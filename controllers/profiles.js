@@ -1,19 +1,20 @@
-const passport         = require('passport'),
-  User                 = require('../models/user'),
-  Club                 = require('../models/club'),
-  Post                 = require('../models/post'),
-  CollegePage          = require('../models/college-page'),
-  Conversation         = require('../models/conversation'),
-  ClubConversation     = require('../models/club-conversation'),
-  Token                = require('../models/token'),
-  async                = require('async'),
-  nodemailer           = require('nodemailer'),
-  crypto               = require('crypto'),
-  mongoose             = require('mongoose'),
-  moment               = require('moment'),
-  {cloudinary}         = require('../public/js/cloudinary'),
-  mbxGeocoding         = require('@mapbox/mapbox-sdk/services/geocoding'),
-  geocodingClient      = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+const passport                     = require('passport'),
+  User                             = require('../models/user'),
+  Club                             = require('../models/club'),
+  Post                             = require('../models/post'),
+  CollegePage                      = require('../models/college-page'),
+  Conversation                     = require('../models/conversation'),
+  ClubConversation                 = require('../models/club-conversation'),
+  Token                            = require('../models/token'),
+  async                            = require('async'),
+  nodemailer                       = require('nodemailer'),
+  crypto                           = require('crypto'),
+  mongoose                         = require('mongoose'),
+  moment                           = require('moment'),
+  {cloudinary}                     = require('../config/cloudinary'),
+  // {uploadFile, deleteFile}         = require('../config/s3'),
+  mbxGeocoding                     = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient                  = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 
 module.exports = {
@@ -568,16 +569,21 @@ module.exports = {
           try{
             if(foundUser.profilePicId != null){
               await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
+              // await deleteFile(foundUser.profilePicId);
             }
             var result = await cloudinary.v2.uploader.upload(req.file.path,
               {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
               effect: 'sharpen:25', format: 'webp', crop: 'limit'});
+            // const file = req.file;
+            // const result = await uploadFile(file, 'profilePics/');
             //replace original information with new information
             foundUser.profilePicId = result.public_id;
             foundUser.profilePic = result.secure_url;
             var User_50_profilePic = cloudinary.url(result.public_id,
             {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
             foundUser.profilePic50 = User_50_profilePic;
+            // foundUser.profilePic = result.Location;
+            // foundUser.profilePicId = result.Key;
           } catch(err){
             console.log(Date.now()+' : '+req.user._id+' => (profiles-16)profilePicUpload err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
@@ -1503,7 +1509,7 @@ module.exports = {
             });
             var mailOptions = {
               to: user.email,
-              from: '"Clubmate"team@clubmate.co.in',
+              from: '"clubmate"team@clubmate.co.in',
               subject: 'Account Verification Token',
               text: 'Welcome to clubmate '+newFirstName+'!  ,\n\n' + 
               'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
@@ -1602,7 +1608,7 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: '"Clubmate"team@clubmate.co.in',
+          from: '"clubmate"team@clubmate.co.in',
           subject: 'Account Verification Token',
           text: 'Hello '+user.firstName+',\n\n' + 'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
           '\/confirmation\/' + token.token + '\n\n' +
@@ -1701,7 +1707,7 @@ module.exports = {
         });
         var mailOptions = {
           to: user.email,
-          from: '"Clubmate"team@clubmate.co.in',
+          from: '"clubmate"team@clubmate.co.in',
           subject: 'Password reset request',
           text: 'Hello '+user.firstName+',\n\n' +
             'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -1779,7 +1785,7 @@ module.exports = {
           });
           var mailOptions = {
             to: user.email,
-            from: '"Clubmate"team@clubmate.co.in',
+            from: '"clubmate"team@clubmate.co.in',
             subject: 'Password reset request',
             text: 'Hello '+user.firstName+',\n\n' +
               'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n\n' +

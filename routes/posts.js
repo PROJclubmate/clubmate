@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {upload}     = require('../public/js/cloudinary.js'),
+  {upload}     = require('../config/cloudinary.js'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
   postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, 
   postsUpdate, postsDelete, postsVote, postsModVote} = require('../controllers/posts');

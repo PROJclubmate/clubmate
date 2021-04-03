@@ -17,92 +17,96 @@
 			<div class="p-2 desktopNone chat-discover" style="margin-bottom: -1.125rem;"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
 		</div>
 		<div class="card mt-0 chatlist-margin border-light" style="min-height: 100%;">
-			<% for(var i=0;i<chatList.length;i++){ %>
-				<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
-					<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
-						<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
-					<% } else{ %>
-						<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
-					<% } %>
-						<div>
-							<div class="py-2 my-1 px-1">
-								<% if(chatList[i].type == 'user'){ %>
-									<% if(chatList[i].id.toString() == recipientId2){ %>
-										<a href="/users/<%= chatList[i].id %>">
-											<% if(chatList[i].userKeys.sex == 'Male'){ %>
-												<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
-											<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
-												<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
-											<% } %>
-										</a>
-									<% } else{ %>
-										<a href="/users/<%= chatList[i].id %>">
-											<% if(chatList[i].userKeys.sex == 'Male'){ %>
-												<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
-											<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
-												<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
-											<% } %>
-										</a>
-									<% } %>
-								<% } else if(chatList[i].type == 'club'){ %>
-									<% if(chatList[i].id.toString() == convClubId2){ %>
-										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
-									<% } else{ %>
-										<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
-									<% } %>
-					     	<% } %>
-					    </div>
-						</div>
-						<div class="d-flex chatlist-content fullwidth">
-							<div class="my-auto ml-2 mr-1 fullwidth">
-					    	<div class="d-flex flex-column lineheight">
-									<div class="valign">
-										<div class="grey boldtext chatname">
-											<% if(chatList[i].type == 'user'){ %>
-												<span><%= chatList[i].name %></span>
-											<% } else if(chatList[i].type == 'club'){ %>
-												<span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
-											<% } %>
-										</div>
-										<div>
-											<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
-												<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
-													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap"></em>
-													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-												<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
-													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap"></em>
-													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-												<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
-													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap"></em>
-													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
-												<% } else{ %>
-													<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap"></em>
-													<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+			<% if(chatList.length){ %>
+				<% for(var i=0;i<chatList.length;i++){ %>
+					<form class="row no-gutters chat-form" action="/chats?_method=PUT" method="POST">
+						<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
+							<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
+						<% } else{ %>
+							<div id="<%= chatList[i]._id %>^chat-item^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item" value="<%= chatList[i].type %>">
+						<% } %>
+							<div>
+								<div class="py-2 my-1 px-1">
+									<% if(chatList[i].type == 'user'){ %>
+										<% if(chatList[i].id.toString() == recipientId2){ %>
+											<a href="/users/<%= chatList[i].id %>">
+												<% if(chatList[i].userKeys.sex == 'Male'){ %>
+													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
+												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
+													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
 												<% } %>
-											<% } %>
+											</a>
+										<% } else{ %>
+											<a href="/users/<%= chatList[i].id %>">
+												<% if(chatList[i].userKeys.sex == 'Male'){ %>
+													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
+												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
+													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
+												<% } %>
+											</a>
+										<% } %>
+									<% } else if(chatList[i].type == 'club'){ %>
+										<% if(chatList[i].id.toString() == convClubId2){ %>
+											<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+										<% } else{ %>
+											<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+										<% } %>
+									<% } %>
+								</div>
+							</div>
+							<div class="d-flex chatlist-content fullwidth">
+								<div class="my-auto ml-2 mr-1 fullwidth">
+									<div class="d-flex flex-column lineheight">
+										<div class="valign">
+											<div class="grey boldtext chatname">
+												<% if(chatList[i].type == 'user'){ %>
+													<span><%= chatList[i].name %></span>
+												<% } else if(chatList[i].type == 'club'){ %>
+													<span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
+												<% } %>
+											</div>
+											<div>
+												<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
+													<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
+														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap"></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+													<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
+														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap"></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+													<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
+														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap"></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+													<% } else{ %>
+														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap"></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+													<% } %>
+												<% } %>
+											</div>
+										</div>
+										<div class="valign">
+											<div class="my-auto lightgrey lastmsg truncate1">
+												<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
+													<span class="bluecolor boldtext">></span>
+												<% } %>
+												<%= chatList[i].latestMessage %>
+											</div>
+											<div>
+												<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
+													<span class="badge badge-success badge-round"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
+												<% } else{ %>
+													<span class="badge badge-success badge-round nodisplay">0</span>
+												<% } %>
+											</div>
 										</div>
 									</div>
-									<div class="valign">
-										<div class="my-auto lightgrey lastmsg truncate1">
-											<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
-												<span class="bluecolor boldtext">></span>
-											<% } %>
-											<%= chatList[i].latestMessage %>
-										</div>
-										<div>
-											<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
-												<span class="badge badge-success badge-round"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
-											<% } else{ %>
-												<span class="badge badge-success badge-round nodisplay">0</span>
-											<% } %>
-										</div>
-									</div>
-						    </div>
-						  </div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-				</form>
+						<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+					</form>
+				<% } %>
+			<% } else{ %>
+				<div class="d-flex mx-auto text-xs lightgrey">Nothing here</div>
 			<% } %>
 		</div>
 	</div>

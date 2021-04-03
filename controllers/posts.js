@@ -4,7 +4,7 @@ const mongoose         = require('mongoose'),
   Club                 = require('../models/club'),
   Comment              = require('../models/comment'),
   Discussion           = require('../models/discussion'),
-  {cloudinary}         = require('../public/js/cloudinary.js');
+  {cloudinary}         = require('../config/cloudinary.js');
 
 module.exports = {
   postsHome(req, res, next){
