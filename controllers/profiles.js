@@ -1,20 +1,20 @@
-const passport                     = require('passport'),
-  User                             = require('../models/user'),
-  Club                             = require('../models/club'),
-  Post                             = require('../models/post'),
-  CollegePage                      = require('../models/college-page'),
-  Conversation                     = require('../models/conversation'),
-  ClubConversation                 = require('../models/club-conversation'),
-  Token                            = require('../models/token'),
-  async                            = require('async'),
-  nodemailer                       = require('nodemailer'),
-  crypto                           = require('crypto'),
-  mongoose                         = require('mongoose'),
-  moment                           = require('moment'),
-  {cloudinary}                     = require('../config/cloudinary'),
-  // {uploadFile, deleteFile}         = require('../config/s3'),
-  mbxGeocoding                     = require('@mapbox/mapbox-sdk/services/geocoding'),
-  geocodingClient                  = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+const passport                                      = require('passport'),
+  User                                              = require('../models/user'),
+  Club                                              = require('../models/club'),
+  Post                                              = require('../models/post'),
+  CollegePage                                       = require('../models/college-page'),
+  Conversation                                      = require('../models/conversation'),
+  ClubConversation                                  = require('../models/club-conversation'),
+  Token                                             = require('../models/token'),
+  async                                             = require('async'),
+  nodemailer                                        = require('nodemailer'),
+  crypto                                            = require('crypto'),
+  mongoose                                          = require('mongoose'),
+  moment                                            = require('moment'),
+  {cloudinary}                                      = require('../config/cloudinary'),
+  {uploadFile, removeTmpUpload, deleteFile}         = require('../config/s3'),
+  mbxGeocoding                                      = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient                                   = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 
 module.exports = {
@@ -569,13 +569,19 @@ module.exports = {
           try{
             if(foundUser.profilePicId != null){
               await cloudinary.v2.uploader.destroy(foundUser.profilePicId);
-              // await deleteFile(foundUser.profilePicId);
+              // deleteFile(foundUser.profilePicId);
             }
             var result = await cloudinary.v2.uploader.upload(req.file.path,
               {folder: 'profilePics/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
               effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-            // const file = req.file;
-            // const result = await uploadFile(file, 'profilePics/');
+            // var file = req.file;
+            // var [result1080, result200, result100] = await Promise.allSettled(
+            //   [uploadFile(file, 'profilePics/', 1080),
+            //   uploadFile(file, 'profilePics/', 200),
+            //   uploadFile(file, 'profilePics/', 100)]
+            // );
+            // const result = await uploadFile(file, 'profilePics/', 1080, 'inside');
+            // removeTmpUpload(file.path);
             //replace original information with new information
             foundUser.profilePicId = result.public_id;
             foundUser.profilePic = result.secure_url;
