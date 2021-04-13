@@ -1,20 +1,22 @@
-const User             = require('../models/user'),
-  Club                 = require('../models/club'),
-  CollegePage          = require('../models/college-page'),
-  Conversation         = require('../models/conversation'),
-  ClubConversation     = require('../models/club-conversation'),
-  Subscription         = require('../models/subscription'),
-  mongoose             = require('mongoose'),
-  {cloudinary}         = require('../config/cloudinary.js'),
-  webpush              = require('web-push'),
-  mbxGeocoding         = require('@mapbox/mapbox-sdk/services/geocoding'),
-  geocodingClient      = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+const User         = require('../models/user'),
+  Club             = require('../models/club'),
+  CollegePage      = require('../models/college-page'),
+  Conversation     = require('../models/conversation'),
+  ClubConversation = require('../models/club-conversation'),
+  Subscription     = require('../models/subscription'),
+  {enviornment}    = require('../config/env_switch'),
+  clConfig         = require('../config/cloudinary'),
+  s3Config         = require('../config/s3'),
+  mongoose         = require('mongoose'),
+  webpush          = require('web-push'),
+  mbxGeocoding     = require('@mapbox/mapbox-sdk/services/geocoding'),
+  geocodingClient  = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
-
-const publicVapidKey = 'BIlA75fh7DBK0PTVj3oMSnSEVfP8M7HHM6wZFvcUYr_CWnMiQPrZAjP34V-iMGJMCKhBIXlOnfUK5PfR__kjcwM';
-const privateVapidKey = 'JVEoDpfY8snHhRhwWhx7gThMWNBxohn9CcdXE0yAqgU';
-
-webpush.setVapidDetails('mailto:team@clubmate.co.in', publicVapidKey, privateVapidKey);
+if(enviornment === 'dev'){
+  var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
+} else if (enviornment === 'prod'){
+  var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
+}
 
 
 module.exports = {
@@ -97,8 +99,11 @@ module.exports = {
           }
           obja['id'] = foundClubConversation[i].clubId._id;
           obja['name'] = foundClubConversation[i].clubId.name;
-          obja['image'] = cloudinary.url(foundClubConversation[i].clubId.avatarId, {width: 100, height: 100, 
-          quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          if(enviornment === 'dev'){
+            obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
+          } else if (enviornment === 'prod'){
+            obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
+          }
           obja['latestMessage'] = foundClubConversation[i].latestMessage;
           obja['lastMsgOn'] = foundClubConversation[i].lastMsgOn;
           obja['lastMsgBy'] = foundClubConversation[i].lastMsgBy;
@@ -131,8 +136,11 @@ module.exports = {
                 objb['id'] = foundUserConversation[i].participants[k].id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
                 objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
-                objb['image'] = cloudinary.url(foundUserConversation[i].participants[k].profilePicId, {width: 100, 
-                height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                if(enviornment === 'dev'){
+                  objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
+                } else if (enviornment === 'prod'){
+                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
+                }
                 break;
               }
             }
@@ -155,7 +163,7 @@ module.exports = {
           }
           });
           res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
-          recipientId2: null, notificationCount});
+          recipientId2: null, notificationCount, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
@@ -201,8 +209,11 @@ module.exports = {
           }
           obja['id'] = foundClubConversation[i].clubId._id;
           obja['name'] = foundClubConversation[i].clubId.name;
-          obja['image'] = cloudinary.url(foundClubConversation[i].clubId.avatarId, {width: 100, height: 100, 
-          quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          if(enviornment === 'dev'){
+            obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
+          } else if (enviornment === 'prod'){
+            obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
+          }
           obja['latestMessage'] = foundClubConversation[i].latestMessage;
           obja['lastMsgOn'] = foundClubConversation[i].lastMsgOn;
           obja['lastMsgBy'] = foundClubConversation[i].lastMsgBy;
@@ -235,8 +246,11 @@ module.exports = {
                 objb['id'] = foundUserConversation[i].participants[k]._id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
                 objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
-                objb['image'] = cloudinary.url(foundUserConversation[i].participants[k].profilePicId, {width: 100, 
-                height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                if(enviornment === 'dev'){
+                  objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
+                } else if (enviornment === 'prod'){
+                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
+                }
                 break;
               }
             }
@@ -295,7 +309,8 @@ module.exports = {
                 var wasActiveToday = foundRecepient.lastActive >= (new Date() - 24*3600*1000);
                 res.render('chats/index', {chatList, chatType, currentUserId, 
                 recipientId: '', convClubId: null, conversationId, isBlocked, isBlockedByFoundUser, 
-                recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago, wasActiveToday});
+                recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago,
+                wasActiveToday, cdn_prefix});
                 return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
               });
@@ -314,7 +329,7 @@ module.exports = {
                 var conversationId = foundClubConversation._id;
                 var convClubId2 = req.body.club;
                 res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
-                convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount});
+                convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount, cdn_prefix});
                 return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
             }
@@ -340,8 +355,11 @@ module.exports = {
     } else{
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       Club.find({$text: {$search: query}, isActive: true}, {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
       .select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1}).limit(3)
@@ -353,8 +371,11 @@ module.exports = {
       } else{
         var Clubs_100_Avatar = [];
         for(var l=0;l<foundClubs.length;l++){
-          Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
-          {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+          if(enviornment === 'dev'){
+            Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
+          } else if (enviornment === 'prod'){
+            Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
+          }
         }
         CollegePage.find({$text: {$search: query}, clubCount: {$gt: 0}}, {score: {$meta: 'textScore'}})
         .sort({score: {$meta: 'textScore'}}).exec(function(err, foundCollegePages){
@@ -364,7 +385,7 @@ module.exports = {
           return res.redirect('back');
         } else{
           res.render('search/index',{users: foundUsers, clubs: foundClubs, college_pages: foundCollegePages, query,
-          Users_100_profilePic, Clubs_100_Avatar});
+          Users_100_profilePic, Clubs_100_Avatar, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
@@ -389,11 +410,14 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
-      emailSearch: true, Users_100_profilePic});
+      emailSearch: true, Users_100_profilePic, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -415,11 +439,14 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
-      emailSearch: false, Users_100_profilePic});
+      emailSearch: false, Users_100_profilePic, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -446,11 +473,14 @@ module.exports = {
       var currentUser = req.user;
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       res.json({users: foundUsers, query, foundUserIds, currentUser, filter: false, 
-      emailSearch: false, Users_100_profilePic, csrfToken: res.locals.csrfToken});
+      emailSearch: false, Users_100_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -479,11 +509,14 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys,
-      emailSearch: false, Users_100_profilePic});
+      emailSearch: false, Users_100_profilePic, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -571,11 +604,14 @@ module.exports = {
       var currentUser = req.user;
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        Users_100_profilePic[l] = cloudinary.url(foundUsers[l].profilePicId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
+        }
       }
       res.json({users: foundUsers, query, foundUserIds, filter: true, emailSearch: false, 
-      currentUser, Users_100_profilePic, csrfToken: res.locals.csrfToken});
+      currentUser, Users_100_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -596,11 +632,14 @@ module.exports = {
       });
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
+        }
       }
       res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: false, moreClubsUrl: '',
-      Clubs_100_Avatar});
+      Clubs_100_Avatar, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -626,11 +665,14 @@ module.exports = {
       var currentUser = req.user;
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
+        }
       }
       res.json({clubs: foundClubs, query, foundClubIds, currentUser, filter: false, 
-      Clubs_100_Avatar, csrfToken: res.locals.csrfToken});
+      Clubs_100_Avatar, csrfToken: res.locals.csrfToken, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -659,11 +701,14 @@ module.exports = {
       });
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
+        }
       }
       res.render('search/clubs',{clubs: foundClubs, query, foundClubIds, filter: true, moreClubsUrl, filterKeys,
-      Clubs_100_Avatar});
+      Clubs_100_Avatar, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -714,11 +759,14 @@ module.exports = {
       var currentUser = req.user;
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        Clubs_100_Avatar[l] = cloudinary.url(foundClubs[l].avatarId,
-        {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
+        } else if (enviornment === 'prod'){
+          Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
+        }
       }
       res.json({clubs: foundClubs, query, foundUserIds, filter: true, currentUser, Clubs_100_Avatar, 
-      csrfToken: res.locals.csrfToken});
+      csrfToken: res.locals.csrfToken, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -744,7 +792,8 @@ module.exports = {
           }
         }
       }
-      res.render('search/college_pages',{college_pages: foundCollegePages, query, foundCollegePageIds, matchArr});
+      res.render('search/college_pages',{college_pages: foundCollegePages, query, foundCollegePageIds, matchArr,
+      cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -776,7 +825,7 @@ module.exports = {
       }
       var currentUser = req.user;
       res.json({college_pages: foundCollegePages, query, foundCollegePageIds, matchArr, 
-      csrfToken: res.locals.csrfToken});
+      csrfToken: res.locals.csrfToken, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
     });
@@ -806,8 +855,11 @@ module.exports = {
             }
             foundClub.save();
             // Send CI notification
-            var CI_50_clubAvatar = cloudinary.url(foundClub.avatarId, {width: 100, height: 100, 
-              quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              var CI_50_clubAvatar = clConfig.cloudinary.url(foundClub.avatarId, clConfig.thumb_100_obj);
+            } else if (enviornment === 'prod'){
+              var CI_50_clubAvatar = s3Config.thumb_100_prefix+foundClub.avatarId;
+            }
             var title = foundClub.name+' sent you an invite';
             var openUrl = 'https://clubmate.co.in/clubs/'+clubIduserId[0];
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
@@ -950,8 +1002,11 @@ module.exports = {
             console.log(Date.now()+' : '+req.user._id+' => (index-35)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           } else{
-            var FR_50_profilePic = cloudinary.url(foundUser.profilePicId, {width: 100, height: 100, 
-              quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              var FR_50_profilePic = clConfig.cloudinary.url(foundUser.profilePicId, clConfig.thumb_100_obj);
+            } else if (enviornment === 'prod'){
+              var FR_50_profilePic = s3Config.thumb_100_prefix+foundUser.profilePicId;
+            }
             var title = foundUser.fullName+' sent you a request';
             var openUrl = 'https://clubmate.co.in/users/'+req.user._id;
             webpush.setVapidDetails('mailto:team@clubmate.co.in',
@@ -1295,8 +1350,11 @@ module.exports = {
           });
           var Friends_100_profilePic = [];
           for(var l=0;l<foundFriends.length;l++){
-            Friends_100_profilePic[l] = cloudinary.url(foundFriends[l].profilePicId,
-            {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
+            } else if (enviornment === 'prod'){
+              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
+            }
           }
           var match = foundUser._id.equals(req.user._id);
           var userName = foundUser.fullName, userId = foundUser._id, friendsCount = foundUser.friendsCount;
@@ -1304,12 +1362,13 @@ module.exports = {
             User.countDocuments({_id: {$in: foundUser.friends}, 
             lastActive: {$gt:new Date(Date.now() - 120*1000)}}, function(err, onlineFriendsCount){
               res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
-              current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match, onlineFriendsCount});
+              current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match, onlineFriendsCount,
+              cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             });
           } else{
             res.render('users/all_friends',{users: foundFriends, userName, userId, foundFriendIds, friendsCount,
-            current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match});
+            current: pageNumber, Friends_100_profilePic, pages: Math.ceil(count / perPage), match, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
         }
@@ -1360,8 +1419,11 @@ module.exports = {
             for(var i=0;i<allClubsArr.length;i++){
               var arr2D = [];
               for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-                arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                if(enviornment === 'dev'){
+                  arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
+                } else if (enviornment === 'prod'){
+                  arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
+                }
               }
               Clubs_50_clubAvatar[i] = arr2D;
             }
@@ -1377,8 +1439,9 @@ module.exports = {
               }
             }
             var foundFriendsPicArr = []; var clubUserIdsArr = [];
-            res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-            currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr, todayActiveCount});
+            res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
+            match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
+            todayActiveCount, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           });
         } else if(keyValue == 2){
@@ -1386,8 +1449,11 @@ module.exports = {
             var arr12D = []; var arr22D = [];
             for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
               var arr23D = [];
-              arr12D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              if(enviornment === 'dev'){
+                arr12D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
+              } else if (enviornment === 'prod'){
+                arr12D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
+              }
               // Very heavy (4 nested loops O_o)
               for(var k=0;k<allClubsArr[i].categoryClubIds[j].clubUsers.length;k++){
                 for(var l=0;l<req.user.friends.length;l++){
@@ -1425,12 +1491,16 @@ module.exports = {
                 var obj = {};
                 obj['id'] = foundFriends[i]._id;
                 obj['name'] = foundFriends[i].fullName;
-                obj['url'] = cloudinary.url(foundFriends[i].profilePicId,
-                {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+                if(enviornment === 'dev'){
+                  obj['url'] = clConfig.cloudinary.url(foundFriends[i].profilePicId, clConfig.thumb_100_obj);
+                } else if (enviornment === 'prod'){
+                  obj['url'] = s3Config.thumb_100_prefix+foundFriends[i].profilePicId;
+                }
                 foundFriendsPicArr.push(obj);
               }
-              res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-              currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr});
+              res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
+              match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
+              cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
           });
@@ -1438,8 +1508,11 @@ module.exports = {
           for(var i=0;i<allClubsArr.length;i++){
             var arr2D = [];
             for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-              arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-              {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+              if(enviornment === 'dev'){
+                arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
+              } else if (enviornment === 'prod'){
+                arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
+              }
             }
             Clubs_50_clubAvatar[i] = arr2D;
           }
@@ -1454,22 +1527,25 @@ module.exports = {
               }
             }
           }
-          res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-          currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
+          res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
+          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
         for(var i=0;i<allClubsArr.length;i++){
           var arr2D = [];
           for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-            arr2D[j] = cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
+            } else if (enviornment === 'prod'){
+              arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
+            }
           }
           Clubs_50_clubAvatar[i] = arr2D;
         }
         currentUserId = '';
-        return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr, match, 
-        currentUserId, keyValue, thisCollegePageFollowingClubIdsArr});
+        return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar,
+        allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
       }
     }
     });
@@ -1642,7 +1718,7 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       Club.find({_id: {$in: req.user.followingClubIds}})
       .select({_id: 1, name: 1}).exec(function(err, followingClubs){
-        res.json({followingClubs});
+        res.json({followingClubs, cdn_prefix});
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       });
     }

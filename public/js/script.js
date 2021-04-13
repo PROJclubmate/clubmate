@@ -404,7 +404,11 @@ $('#inputavatar').change(function(){
 	var file = $('#inputavatar')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
+  $('.overlay2').css('display','block');
 });
+
+var cw = $('.subPostimg').width();
+$('.subPostimg').css({'height':cw+'px'});
 
 // Privacy select button
 function focus() {

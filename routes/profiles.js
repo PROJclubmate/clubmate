@@ -1,7 +1,7 @@
-const express  = require('express'),
-  router       = express.Router(),
-  middleware   = require('../middleware'),
-  {upload}     = require('../config/cloudinary.js'),
+const express   = require('express'),
+  router        = express.Router(),
+  middleware    = require('../middleware'),
+  {enviornment} = require('../config/env_switch.js'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
   profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
   profilesClubMoreMembers, profilesClubSearchMembers, profilesClubMoreMemberRequests, profilesClubMorePosts, 
@@ -10,7 +10,12 @@ const express  = require('express'),
   profilesReVerify,  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, 
   profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass} = 
   require('../controllers/profiles');
-  
+
+if(enviornment === 'dev'){
+  var {upload} = require('../config/cloudinary.js');
+} else if (enviornment === 'prod'){
+  var {upload} = require('../config/s3.js');
+}
 
 // Show user profile page
 router.get('/users/:id', profilesUserProfile);

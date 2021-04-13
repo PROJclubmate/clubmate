@@ -1,7 +1,16 @@
-const Post     = require('../models/post'),
-  User         = require('../models/user'),
-  Comment      = require('../models/comment'),
-  {cloudinary} = require('../config/cloudinary.js');
+const Post      = require('../models/post'),
+  User          = require('../models/user'),
+  Comment       = require('../models/comment'),
+  {enviornment} = require('../config/env_switch'),
+  clConfig      = require('../config/cloudinary'),
+  s3Config      = require('../config/s3');
+
+if(enviornment === 'dev'){
+  var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
+} else if (enviornment === 'prod'){
+  var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
+}
+
 
 module.exports = {
   commentsCreate(req, res, next){
@@ -53,7 +62,7 @@ module.exports = {
       if(foundBucket.comments[0].commentAuthor.id.equals(req.user._id)){
         var bucket = foundBucket;
         var foundComment = foundBucket.comments[0];
-        res.render('comments/edit', {bucket, comment: foundComment});
+        res.render('comments/edit', {bucket, comment: foundComment, cdn_prefix});
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       } else{
         res.redirect('back');
@@ -128,8 +137,11 @@ module.exports = {
         } else if(!err && foundBucket != ''){
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
-            CA_50_profilePic[j] = cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              CA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
+            } else if (enviornment === 'prod'){
+              CA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].comments[j].commentAuthor.id.profilePicId;
+            }
           }
           var index = req.query.newIndex-1;
           if(req.user && foundBucket != ''){
@@ -142,7 +154,7 @@ module.exports = {
             return a.upvotesCount - b.upvotesCount;
           });
           res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
-          CA_50_profilePic, csrfToken: res.locals.csrfToken});
+          CA_50_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         // Close else block if problem
         } else{
@@ -167,7 +179,7 @@ module.exports = {
       return res.sendStatus(500);
     } else{
       if(notFoundComment){
-        res.json({foundComment: notFoundComment, csrfToken: res.locals.csrfToken});
+        res.json({foundComment: notFoundComment, csrfToken: res.locals.csrfToken, cdn_prefix});
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }else if(!notFoundComment){
         Comment.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -179,7 +191,7 @@ module.exports = {
           console.log(Date.now()+' : '+req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
           return res.sendStatus(500);
         } else{
-          res.json({foundComment, csrfToken: res.locals.csrfToken});
+          res.json({foundComment, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });

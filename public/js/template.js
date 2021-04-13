@@ -155,24 +155,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     });
   });
 
-  $('#alltime-posts-btn').on('click', function(e){
-    if(!$('#alltime-posts-btn').hasClass('done')){
-      $.ajax({
-        type: 'GET',
-        url: '/clubs-allTimeTopTopicPosts/'+location.pathname.split('/')[2],
-        timeout: 3000,
-        success: function (response){
-          var arr = response.topTopicPosts.length;
-          if(arr && arr > 0){
-            var div = document.getElementById('alltime');
-            div.innerHTML = allTimeTopTopicPosts_template(response);
-            $('#alltime-posts-btn').addClass('done');
-          }
-        }
-      });
-    }
-  });
-
   $('#load-more-members-btn').on('click', function(e){
     e.preventDefault();
     $('#load-more-members-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -374,6 +356,24 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
   if($('#load-prevMsgs-btn')){
     $('#load-prevMsgs-btn').addClass('nodisplay');
   }
+
+  $('#alltime-posts-btn').on('click', function(e){
+    if(!$('#alltime-posts-btn').hasClass('done')){
+      $.ajax({
+        type: 'GET',
+        url: '/clubs-allTimeTopTopicPosts/'+location.pathname.split('/')[2],
+        timeout: 3000,
+        success: function (response){
+          var arr = response.topTopicPosts.length;
+          if(arr && arr > 0){
+            var div = document.getElementById('alltime');
+            div.innerHTML = allTimeTopTopicPosts_template(response);
+            $('#alltime-posts-btn').addClass('done');
+          }
+        }
+      });
+    }
+  });
 
   $('#load-more-comments-btn').on('click', function(e){
     e.preventDefault();
@@ -680,7 +680,7 @@ function load_prevMsgs_template(response){
   <% prevDate2 = moment(message.createdAt).format("LT"); %>
   <% prevAuthorId = message.authorId; %>
 <% }); %>
-`,{messageBucket: response.messageBucket, currentUser: response.currentUser});
+`,{messageBucket: response.messageBucket, currentUser: response.currentUser, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -714,7 +714,7 @@ function load_prevClubMsgs_template(response){
   <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
   <% prevAuthorId = message.authorId._id; %>
 <% }); %>
-`,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName});
+`,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -803,7 +803,7 @@ function index_posts_template(response){
         <% } else{ %>
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
         <% } %>
-          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -985,7 +985,7 @@ function index_posts_template(response){
               <% } else{ %>
                 <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
               <% } %>
-                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
               </a>
             <% } else{ %>
               <% if(!friendsPostUrl){ %>
@@ -1104,7 +1104,7 @@ function index_posts_template(response){
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   friendsPostUrl: response.friendsPostUrl, currentUser: response.currentUser, 
   CU_50_profilePic: response.CU_50_profilePic, PC_50_clubAvatar: response.PC_50_clubAvatar, 
-  PA_50_profilePic: response.PA_50_profilePic, csrfToken: response.csrfToken});
+  PA_50_profilePic: response.PA_50_profilePic, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -1191,7 +1191,7 @@ function discover_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <span>
-          <div><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div>
+          <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -1211,7 +1211,7 @@ function discover_posts_template(response){
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
   PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -1311,7 +1311,7 @@ function club_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -1517,7 +1517,7 @@ function club_posts_template(response){
                 <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
                 <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
               </a>
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
@@ -1653,7 +1653,7 @@ function privacyText(privacy){
 } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, rank: response.rank,
   currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, 
-  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken});
+  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -1739,7 +1739,7 @@ function user_posts_template(response){
       </div>
       <% if(posts[k].image){ %>
         <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= posts[k].image %>"></div></div>
+          <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
           <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
@@ -1910,7 +1910,7 @@ function user_posts_template(response){
                 <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= posts[k].image %>"></div></div>
+                <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
               </a>
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -2028,7 +2028,7 @@ function user_posts_template(response){
 <% } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, 
   match: response.match, currentUser: response.currentUser, PC_50_clubAvatar: response.PC_50_clubAvatar, 
-  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken});
+  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -2403,7 +2403,7 @@ function heart_posts_template(response){
 <% } %>
 `,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, 
   match: response.match, currentUser: response.currentUser, PC_50_clubAvatarH: response.PC_50_clubAvatarH, 
-  CU_50_profilePicH: response.CU_50_profilePicH, csrfToken: response.csrfToken});
+  CU_50_profilePicH: response.CU_50_profilePicH, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -2508,14 +2508,14 @@ function post_comments_template(response){
 <% } %>
 `,{post: response.post, upComments: response.upComments, buckets: response.buckets, index: response.index,
   currentUser: response.currentUser, CA_50_profilePic: response.CA_50_profilePic, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
 function post_subPosts_template(response){
   html = ejs.render(` 
 <% if(post.subpostBuckets.length >= 1){ %>
-  <div class="dropctn mt-2 py-2">
+  <div class="dropctn mt-2 py-3">
     <div class="pr-2">
       <button class="btn btn-sm dropdown-toggle editprofile pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
@@ -2556,56 +2556,13 @@ function post_subPosts_template(response){
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
               <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
-                <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
               <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
-                <img class="subpostdp mt-2 mb-1" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
               <% } %>
             </a>
           </div>
           <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
-          <hr style="border-color: whitesmoke;">
-          <div class="d-flex flex-row mx-auto whiteback" style="border-radius: 0 0 0.15rem 0.15rem;">
-            <% if(0 <= rank && rank <= 4){ %>
-              <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
-                <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
-                  <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
-                  </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
-                  <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
-                  </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
-                <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
-                  <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
-                  </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
-                  <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
-                  </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
-                <% } else{ %>
-                  <span> 
-                    <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
-                  </span>
-                  <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
-                  <span>
-                    <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
-                  </span>
-                  <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
-                <% } %>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              </form>
-            <% } else{ %>
-              <span class="mr-2"> 
-                <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2"></i></button>
-              </span>
-              <span class="ml-2">
-                <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2"></i></button>
-              </span>
-            <% } %>
-          </div>
         </div>
         <div class="mobiletext">
           <div class="valign lineheight2 mb-1">
@@ -2620,12 +2577,12 @@ function post_subPosts_template(response){
             <div class="d-flex flex-column">
               <div class="darkgrey boldtext text-xxs mb-auto" style="margin-bottom: -0.3125rem !important;"><%= moment(subPosts[j].postedAt).format('lll'); %></div>
               <div class="dropdown ml-auto">
-                <button class="btn btn-sm dropdown-toggle editprofile pr-0" style="padding-top: 0 !important; padding-bottom: 0 !important;" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v text-xxxs"></i></button>
+                <button class="btn btn-sm dropdown-toggle editprofile pr-0" style="padding-top: 0 !important; padding-bottom: 0 !important;" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
                     <li>
                       <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/subPost/<%= bucket[0]._id %>" method="GET">
-                        <button class="dropitems pl-3 link-button text-sm" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
+                        <button class="dropitems pl-3 link-button text-sm quote" name="quote" type="submit" value="<%= subPosts[j]._id %>">Quote</button>
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
                     </li>
@@ -2649,15 +2606,57 @@ function post_subPosts_template(response){
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
         <% } %>
-        <div class="mobiletext linewrap lineheight"><%= subPosts[j].text %></div>
+        <div class="mobiletext linewrap lineheight subPost-text"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <% for(var k=0;k<subPosts[j].images.length;k++){ %>
             <div class="subPostimg-div">
-              <img class="card-img-top" src="<%= subPosts[j].images[k].image %>">
+              <img class="card-img-top subPostimg" src="<%= cdn_prefix+subPosts[j].images[k].imageId %>">
             </div>
           <% } %>
         <% } %>
       </div>
+    </div>
+    <div class="d-flex flex-row mr-auto px-2">
+      <% if(0 <= rank && rank <= 4){ %>
+        <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
+          <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
+            </span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
+          <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
+            </span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+          <% } else{ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
+            </span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
+          <% } %>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </form>
+      <% } else{ %>
+        <span class="mr-2"> 
+          <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2"></i></button>
+        </span>
+        <span class="ml-2">
+          <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2"></i></button>
+        </span>
+      <% } %>
     </div>
   </div>
 <% } %>
@@ -2736,7 +2735,7 @@ function post_subPosts_template(response){
 `,{post: response.post, subVotes: response.subVotes, bucket: response.bucket, index: Number(response.index),
   rank: Number(response.rank), currentUser: response.currentUser, clubId: response.clubId,
   CU_50_profilePic: response.CU_50_profilePic, sPA_50_profilePic: response.sPA_50_profilePic, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -2857,7 +2856,7 @@ function moreMembers_template(response){
 %>
 `,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, 
   newEndpoints: response.newEndpoints, clubId: response.clubId, rank: response.rank, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -2900,7 +2899,7 @@ function moreMemberRequests_template(response){
   <% } %>
 </div>
 `,{users: response.users, MemberRequests_50_profilePic: response.MemberRequests_50_profilePic, 
-  newEndpoints: response.newEndpoints, club: response.club, csrfToken: response.csrfToken});
+  newEndpoints: response.newEndpoints, club: response.club, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -2917,7 +2916,7 @@ function allTimeTopTopicPosts_template(response){
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
         <div>
-          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
+          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
         </div>
         <div>
           <span class="truncate3 mobiletext2 lineheight2 my-1">
@@ -2933,8 +2932,8 @@ function allTimeTopTopicPosts_template(response){
 <% } else{ %>
   <div class="lightgrey mobiletext2">No discussions created yet :/</div>
 <% } %>
-`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, 
-  csrfToken: response.csrfToken});
+`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, club: response.club, 
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -3039,7 +3038,7 @@ function moreClubs_template(response){
 %>
 `,{clubs: response.clubs, clubCount: response.clubCount, Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,
   newEndpoints: response.newEndpoints, userId: response.userId, rank: response.rank,
-  currentUserId: response.currentUserId, match: response.match, csrfToken: response.csrfToken});
+  currentUserId: response.currentUserId, match: response.match, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -3095,7 +3094,7 @@ function search_people_template(response){
 <% } %>
 `,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, 
   currentUser: response.currentUser, Users_100_profilePic: response.Users_100_profilePic, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -3160,7 +3159,7 @@ function break_arr(arr){
 %>
 `,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, 
   currentUser: response.currentUser, Clubs_100_Avatar: response.Clubs_100_Avatar, 
-  csrfToken: response.csrfToken});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -3201,7 +3200,7 @@ function search_college_pages_template(response){
   </div>
 <% } %>
 `,{college_pages: response.college_pages, query: response.query, foundCollegePageIds: response.foundCollegePageIds, 
-  matchArr: response.matchArr, csrfToken: response.csrfToken});
+  matchArr: response.matchArr, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -3230,6 +3229,6 @@ function showFollowing_template(response){
     <br>
   </div>
 <% } %>
-`,{followingClubs: response.followingClubs, csrfToken: response.csrfToken});
+`,{followingClubs: response.followingClubs, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }

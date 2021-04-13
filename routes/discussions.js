@@ -1,8 +1,14 @@
-const express  = require('express'),
-  router       = express.Router({mergeParams: true}),
-  middleware   = require('../middleware'),
-  {upload}     = require('../config/cloudinary.js'),
+const express   = require('express'),
+  router        = express.Router({mergeParams: true}),
+  middleware    = require('../middleware'),
+  {enviornment} = require('../config/env_switch.js'),
   {discussionsNew, discussionsPagination, discussionsVote} = require('../controllers/discussions');
+
+if(enviornment === 'dev'){
+  var {upload} = require('../config/cloudinary.js');
+} else if (enviornment === 'prod'){
+  var {upload} = require('../config/s3.js');
+}
 
 
 //	================================	/posts/:post_id/discussions  ====================================

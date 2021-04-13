@@ -101,9 +101,6 @@
               <a href="/register" class="nav-link burgernav">Sign Up</a>
             </li>
           <% } else{ %>
-            <li class="nav-item">
-              <a href="/help" id="help_online" class="text-xl nav-link burgernav requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
-            </li>
             <li class="nav-item notification">
               <span><a href="/chats" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
               <% if(currentUser.inboxMsgCount > 0){ %>
@@ -117,6 +114,9 @@
               <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
                 <span class="badge text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
               <% } %>
+            </li>
+            <li class="nav-item">
+              <a href="/help" id="help_online" class="text-xl nav-link burgernav requests navhelp" title="Help" onclick="toggle_requests('help_online');"><i class="fas fa-question-circle"></i></a>
             </li>
             <li class="nav-item d-inline-flex">
               <div>

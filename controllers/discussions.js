@@ -1,7 +1,16 @@
-const Post     = require('../models/post'),
-  User         = require('../models/user'),
-  Discussion   = require('../models/discussion'),
-  {cloudinary} = require('../config/cloudinary.js');
+const Post      = require('../models/post'),
+  User          = require('../models/user'),
+  Discussion    = require('../models/discussion'),
+  {enviornment} = require('../config/env_switch'),
+  clConfig      = require('../config/cloudinary'),
+  s3Config      = require('../config/s3');
+
+if(enviornment === 'dev'){
+  var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
+} else if (enviornment === 'prod'){
+  var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
+}
+
 
 module.exports = {
   discussionsNew(req, res, next){
@@ -16,15 +25,23 @@ module.exports = {
         if(req.files){
           multiImagesArr = [];
           // upload images
-          for(const file of req.files){
-            let result = await cloudinary.v2.uploader.upload(file.path,
-            {folder: 'subPostImages/', use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', 
-            effect: 'sharpen:25', format: 'webp', crop: 'limit'});
-            // add images to multiImagesArr array
-            multiImagesArr.push({
-              image: result.secure_url,
-              imageId: result.public_id
-            });
+          for(var file of req.files){
+            if(enviornment === 'dev'){
+              var result = await clConfig.cloudinary.v2.uploader.upload(file.path, subPostImages_1080_obj);
+              // add images to multiImagesArr array
+              multiImagesArr.push({
+                image: result.secure_url,
+                imageId: result.public_id
+              });
+            } else if (enviornment === 'prod'){
+              var result = await s3Config.uploadFile(file, 'subPostImages/', 1080);
+              s3Config.removeTmpUpload(file.path);
+              // add images to multiImagesArr array
+              multiImagesArr.push({
+                image: result.Location,
+                imageId: result.Key
+              });
+            }
           }
         };
         Discussion.findOneAndUpdate({postId: foundPost._id, bucket: foundPost.subpostbucketNum},
@@ -62,8 +79,11 @@ module.exports = {
   },
 
   discussionsPagination(req, res, next){
-    var CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-    {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+    if(enviornment === 'dev'){
+      var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    } else if (enviornment === 'prod'){
+      var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    }
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
     .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
@@ -86,8 +106,11 @@ module.exports = {
         } else{
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
-            sPA_50_profilePic[j] = cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId,
-            {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+            if(enviornment === 'dev'){
+              sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
+            } else if (enviornment === 'prod'){
+              sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId;
+            }
           }
           var currentUser = req.user, index = page;
           if(req.user && foundBucket != ''){
@@ -102,7 +125,7 @@ module.exports = {
             var subVotes = [];
           }
           res.json({post: foundPost, subVotes, bucket: foundBucket, index, rank, currentUser,
-          clubId: req.params.club_id, CU_50_profilePic, sPA_50_profilePic, csrfToken: res.locals.csrfToken});
+          clubId: req.params.club_id, CU_50_profilePic, sPA_50_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
@@ -125,7 +148,7 @@ module.exports = {
         return res.sendStatus(500);
       } else{
         if(foundClickId){
-          res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          res.json({foundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }else if(!foundClickId){
           Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -146,7 +169,7 @@ module.exports = {
               console.log(Date.now()+' : '+req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
-              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
             });
@@ -166,7 +189,7 @@ module.exports = {
         return res.sendStatus(500);
       } else{
         if(foundClickId){
-          res.json({foundClickId, csrfToken: res.locals.csrfToken});
+          res.json({foundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }else if(!foundClickId){
           Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -187,7 +210,7 @@ module.exports = {
               console.log(Date.now()+' : '+req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
               return res.sendStatus(500);
             } else{
-              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken});
+              res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
             });

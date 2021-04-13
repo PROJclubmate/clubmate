@@ -11,7 +11,7 @@
           <div class="dropctn">
             <div class="valign">
               <div>
-                <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
+                <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
               </div>
               <div class="lineheight2">
                 <div class="info-size">
@@ -62,7 +62,7 @@
           </div>
         </div>
         <% if(post.image){ %>
-          <img class="card-img-top" src="<%= post.image %>">
+          <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
           <div class="card-body">
         <% } else{ %>
           <div class="card-body3">
@@ -136,7 +136,7 @@
                 <div class="dropctn">
                   <div class="valign">
                     <div>
-                      <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noCLub.png' %>"></a>
+                      <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
                     </div>
                     <div class="lineheight">
                       <div class="mobiletext2 truncate1">
@@ -175,7 +175,7 @@
                       <p class="nothing mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
-                  <img class="card-img-top" src="<%= post.image %>">
+                  <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
                 <% } else{ %>
                   <div class="card-body3 mobiletext linewrap nolink"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
@@ -339,7 +339,7 @@
           <% include ../partials/subPosts %>
         </div>
       <% } else if(post.subpostsCount == 0){ %>
-        <div class="dropctn mt-2 py-2 invisible">
+        <div class="dropctn mt-2 py-3 invisible">
           <div class="my-2">
             <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="">0</a></span>
           </div>
@@ -461,10 +461,8 @@
       <% include ../partials/latest_updates %>
     </div>
   <% } else if(currentUser && post.topic != '' && quote == false){ %>
-    <div id="pin-chatbox" class="col-md-4 col-lg-3 mt-3 pb-2 px-2 order-md-last order-first postclubchat mobileNone" value="<%= currentUser.firstName %>">
-      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.profilePic50 %>">
-        <% include ../partials/clubchat %>
-      </div>
+    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 mobileNone">
+      <% include ../partials/hot_topics %>
     </div>
   <% } %>
 </div>

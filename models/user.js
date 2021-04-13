@@ -69,7 +69,6 @@ const userSchema = new Schema({
   }],
   profilePic: String,
   profilePicId: String,
-  profilePic50: String,
   userKeys: {
     sex: String,
     birthdate: Date,

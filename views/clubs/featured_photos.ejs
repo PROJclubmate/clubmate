@@ -13,7 +13,7 @@
 						<div class="d-flex d-flex-row">
 							<div>
 						    <div class="container gradient-wrap">
-			            <img class="searchdp" src="<%= featuredPhotos[i].image || '/images/noImage.png' %>" crossorigin="anonymous">
+			            <img class="searchdp" src="<%= cdn_prefix+featuredPhotos[i].imageId || '/images/noImage.png' %>" crossorigin="anonymous">
 			            <label for="featuredImage<%= i %>" class="overlay4">
 		                <i class="fas fa-upload"></i> Upload
 		              </label>

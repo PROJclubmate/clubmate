@@ -14,9 +14,9 @@
           <div>
             <div class="container p-1 ml-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
               <% if(user.userKeys.sex == 'Male'){ %>
-                <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserMale.png' %>">
+                <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId || '/images/noUserMale.png' %>">
               <% } else if(user.userKeys.sex == 'Female'){ %>
-                <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserFemale.png' %>">
+                <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId || '/images/noUserFemale.png' %>">
               <% } %>
               <% if(currentUser && match){ %>
                 <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
@@ -80,9 +80,9 @@
               <div class="ml-2">
                 <div class="container p-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
                   <% if(user.userKeys.sex == 'Male'){ %>
-                    <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserMale.png' %>">
+                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId || '/images/noUserMale.png' %>">
                   <% } else if(user.userKeys.sex == 'Female'){ %>
-                    <img class="profilePic cover image" src="<%= user.profilePic || '/images/noUserFemale.png' %>">
+                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId || '/images/noUserFemale.png' %>">
                   <% } %>
                   <% if(currentUser && match){ %>
                     <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">

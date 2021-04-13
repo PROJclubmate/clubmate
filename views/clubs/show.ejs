@@ -10,14 +10,14 @@
           <div class="row no-gutters">
             <div class="col-md-3 p-1 card coverback indexcard avatar-frame lcov order-md-first order-last lpcov mx-auto">
               <div class="container">
-                <img class="avatar cover image mx-auto" src="<%= club.avatar || '/images/noClub.png' %>">
+                <img class="avatar cover image mx-auto" src="<%= cdn_prefix+club.avatarId || '/images/noClub.png' %>">
                 <% if(0 <= rank && rank <= 1){ %>
                   <form action="/clubs/<%= club._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                     <label for="inputavatar" class="overlay">
                       <i class="fas fa-upload"></i> Update club avatar
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
-                    <button class="btn btn-sm btn-success overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
+                    <button class="btn btn-sm btn-success noborder overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
@@ -54,7 +54,7 @@
                   <div class="carousel-inner d-flex">
                     <% if(club.featuredPhotos.length >= 1){ %>
                       <div class="carousel-item active p-1 gradient-wrap coverback indexcard rcov">
-                        <img class="cover mobile-cover" src="<%= club.featuredPhotos[0].image %>" crossorigin="anonymous">
+                        <img class="cover mobile-cover" src="<%= cdn_prefix+club.featuredPhotos[0].imageId %>" crossorigin="anonymous">
                         <div class="carousel-caption">
                           <h6 class="carousel-caption-heading"><%= club.featuredPhotos[0].heading %></h6>
                           <div><%= club.featuredPhotos[0].description %></div>
@@ -64,7 +64,7 @@
                     <% if(club.featuredPhotos.length >= 2){ %>
                       <% for(var i=1;i<club.featuredPhotos.length;i++){ %>
                         <div class="carousel-item p-1 gradient-wrap coverback indexcard rcov">
-                          <img class="cover mobile-cover" src="<%= club.featuredPhotos[i].image %>" crossorigin="anonymous">
+                          <img class="cover mobile-cover" src="<%= cdn_prefix+club.featuredPhotos[i].image %>" crossorigin="anonymous">
                           <div class="carousel-caption">
                             <h6 class="carousel-caption-heading"><%= club.featuredPhotos[i].heading %></h6>
                             <div><%= club.featuredPhotos[i].description %></div>
@@ -262,60 +262,7 @@
           <% } %>
         </div>
         <% if(currentUser && (rank >= 0 && rank <=4)){ %>
-          <div class="mt-2">
-            <div class="card mt-0 border-light btncollapse-div">
-              <button type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3" data-toggle="collapse" data-target="#hot_topics">
-                <span class="redcolor"><i class="fas fa-fire"></i></span><span class="boldtext"> HOT Topics</span>
-              </button>
-              <div id="hot_topics" class="tab-content collapse btncollapse-content">
-                <div class="card-body3 tab-pane container active" id="thisweek">
-                  <% if(topTopicPosts.length != 0){ %>
-                    <% for(var i=0;i<topTopicPosts.length;i++){ %>
-                    <div class="valign">
-                      <div class="valign">
-                        <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
-                          <span class="truncate3 mobiletext2 lineheight2 my-1">
-                            <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-                            <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
-                          </span>
-                        <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
-                          <div>
-                            <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noClub.png' %>"></a>
-                          </div>
-                          <div>
-                            <span class="truncate3 mobiletext2 lineheight2 my-1">
-                              <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-                              <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
-                            </span>
-                          </div>
-                        <% } %>
-                      </div>
-                      <div class="mb-auto ml-2 mt-1 badge badge-pill badge-round2 badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
-                    </div>
-                    <% } %>
-                  <% } else if(currentUser && (rank >= 0 && rank <=4)){ %>
-                    <div class="lightgrey mobiletext2">No discussions created this week :/</div>
-                  <% } else if(currentUser && rank == undefined){ %>
-                    <div class="lightgrey mobiletext2">You are not a club member :/</div>
-                  <% } else if(!currentUser && rank == undefined){ %>
-                    <div class="lightgrey mobiletext2">You are not logged in.</div>
-                  <% } %>
-                </div>
-                <div class="card-body3 tab-pane container fade" id="alltime">...</div>
-                <hr style="border-top: 2px dashed #efefef;">
-                <div class="card-body1">
-                  <ul class="nav justify-content-end">
-                    <li class="nav-item">
-                      <a class="nav-link nav-topic nothing active text-xs mobiletext4" data-toggle="tab" href="#thisweek">this week</a>
-                    </li>
-                    <li class="nav-item">
-                      <a id="alltime-posts-btn" class="nav-link nav-topic nothing text-xs mobiletext4" data-toggle="tab" href="#alltime">all time</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+          <% include ../partials/hot_topics %>
         <% } %>
       </div>
       <div class="col-md-8 px-1 mobilepad mt-2">

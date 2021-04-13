@@ -1,21 +1,28 @@
-const express      = require('express'),
-  helmet           = require('helmet'),
-  app              = express(),
-  bodyParser       = require('body-parser'),
-  csrf             = require('csurf'),
-  http             = require('http').Server(app),
-  io               = require('socket.io')(http),
-  cookieSession    = require('cookie-session'),
-  mongoose         = require('mongoose'),
-  flash            = require('connect-flash'),
-  passport         = require('passport'),
-  LocalStrategy    = require('passport-local'),
-  methodOverride   = require('method-override'),
-  dotenv           = require('dotenv').config(),
-  {cloudinary}     = require('./config/cloudinary'),
-  User             = require('./models/user'),
-  port             = 8080,
-  url              = 'mongodb://localhost/ghost_prod';
+const express    = require('express'),
+  helmet         = require('helmet'),
+  app            = express(),
+  bodyParser     = require('body-parser'),
+  csrf           = require('csurf'),
+  http           = require('http').Server(app),
+  io             = require('socket.io')(http),
+  cookieSession  = require('cookie-session'),
+  mongoose       = require('mongoose'),
+  flash          = require('connect-flash'),
+  passport       = require('passport'),
+  LocalStrategy  = require('passport-local'),
+  methodOverride = require('method-override'),
+  dotenv         = require('dotenv').config(),
+  User           = require('./models/user'),
+  {enviornment}  = require('./config/env_switch'),
+  clConfig       = require('./config/cloudinary'),
+  s3Config       = require('./config/s3'),
+  port           = 8080;
+
+if(enviornment === 'dev'){
+  var url = 'mongodb://localhost/ghost_dev';
+} else if (enviornment === 'prod'){
+  var url = 'mongodb://localhost/ghost_prod';
+}
 
 
 //Requiring routes
@@ -128,8 +135,11 @@ app.use(async function(req, res, next){
   res.locals.currentUser = req.user;
   if(req.user){
     try{
-      res.locals.CU_50_profilePic = cloudinary.url(req.user.profilePicId,
-      {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+      if(enviornment === 'dev'){
+        res.locals.CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+      } else if (enviornment === 'prod'){
+        res.locals.CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+      }
       //REQUESTS
       let foundUser = await User.findById(req.user._id)
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
@@ -144,14 +154,20 @@ app.use(async function(req, res, next){
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
       res.locals.friendRequests = foundUser.friendRequests.reverse();
 
-      var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = []; var fUUC_50_profilePic = []; var fUUCTemp;
+      var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = [];
       for(var i=0;i<foundUser.clubInvites.length;i++){
-        fUCI_50_clubAvatar[i] = cloudinary.url(foundUser.clubInvites[i].avatarId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          fUCI_50_clubAvatar[i] = clConfig.cloudinary.url(foundUser.clubInvites[i].avatarId, clConfig.thumb_100_obj);
+        } else if (enviornment === 'prod'){
+          fUCI_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundUser.clubInvites[i].avatarId;
+        }
       }
       for(var j=0;j<foundUser.friendRequests.length;j++){
-        fUFR_50_profilePic[j] = cloudinary.url(foundUser.friendRequests[j].profilePicId,
-        {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'});
+        if(enviornment === 'dev'){
+          fUFR_50_profilePic[j] = clConfig.cloudinary.url(foundUser.friendRequests[j].profilePicId, clConfig.thumb_100_obj);
+        } else if (enviornment === 'prod'){
+          fUFR_50_profilePic[j] = s3Config.thumb_100_prefix+foundUser.friendRequests[j].profilePicId;
+        }
       }
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
       res.locals.FR_50_profilePic = fUFR_50_profilePic;

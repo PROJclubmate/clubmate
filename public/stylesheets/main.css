@@ -344,6 +344,8 @@ div.content{
   .landing-bottom{bottom: 2rem !important;}
   .settings-img{top: 0 !important;}
   .chat-statusbar{border-top: 0.5px solid #d3d3d3 !important;}
+  .subpostdp{height: 28px !important; width: 28px !important;}
+  .subPost-text{min-height: 2rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -389,7 +391,9 @@ div.content{
   .discoverlink{left: 42% !important;}
   .discover-vote{font-size: 1.875rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 50px) !important;}
-  .chat-msg{font-size: 1rem !important;}.chat-msg2{font-size: 1rem !important;}.chat-msg3{font-size: 1rem !important;}
+  .chat-msg{font-size: 1rem !important; margin: 0.15rem 5rem 0.15rem 0.5rem !important;}
+  .chat-msg2{font-size: 1rem !important; margin: 0.15rem 0.5rem 0.15rem 5rem !important;}
+  .chat-msg3{font-size: 1rem !important;}
   .chat-head{font-size: 0.6875rem !important;}.chat-head2{font-size: 0.6875rem !important;}
   .chat-head3{font-size: 0.75rem !important;}.chat-head4{font-size: 0.75rem !important;}
   .form-control.chatinput{padding: 0.5rem 0.875rem !important;}
@@ -995,7 +999,6 @@ div.card-title{
   width: 100%;
   height: 22rem;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 /*Nav styles
 ---------------------------------------------------*/
@@ -1006,13 +1009,11 @@ li.nav-item{
   height: 36px;
   width: 36px;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 .smalldp{
   height: 16px;
   width: 16px;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 .smalldppad{
   padding: 2px;
@@ -1025,7 +1026,6 @@ li.nav-item{
   width: 50px;
   object-fit: cover;
   margin-right: 0.25rem !important;
-  image-rendering: -webkit-optimize-contrast;
 }
 a > .collegedp.chatsdp{
   color: lightgrey;
@@ -1045,7 +1045,6 @@ a > .collegedp.chatsdp.active{
   object-fit: cover;
   margin: 0.125rem 0;
   border: 2px solid white;
-  image-rendering: -webkit-optimize-contrast;
 }
 #navname{
   vertical-align: middle;
@@ -1221,7 +1220,6 @@ time.calendar span{
   height: 4.05rem;
   position: relative;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 .friends-text{
   bottom: 10%; 
@@ -1244,7 +1242,6 @@ time.calendar span{
   margin: 0 0.5rem;
   object-fit: cover;
   box-shadow: 1px 2px 7px -1px rgba(0,0,0,0.5);
-  image-rendering: -webkit-optimize-contrast;
 }
 .searchcard{
   position: relative;
@@ -1258,7 +1255,6 @@ time.calendar span{
   height: 30px;
   width: 30px;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 .posthead{
   margin: 0.5rem;
@@ -2014,13 +2010,26 @@ a .nolink:hover{
 .carousel-caption-heading{
   font-size: 0.9375rem;
 }
+.subPost-text{
+  min-height: 3.5rem;
+}
+.quote{
+  border: 1px dashed indianred;
+  margin: 0.5rem;
+  width: 90%;
+  border-radius: 0.25rem;
+}
 .subPostimg-div{
   float: left;
   position: relative;
   width: 50%;
+  overflow: hidden;
   border: 0.5px solid lightgrey;
   border-radius: 0.15rem;
   padding: 0.25rem;
+}
+.subPostimg{
+  object-fit: cover;
 }
 .mobile-cover{
   height: 226px;
@@ -2028,7 +2037,6 @@ a .nolink:hover{
 img.cover{
   width: 100%;
   object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
 }
 .coverback{
   border: none;
@@ -2736,7 +2744,7 @@ select.select1{
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.625rem;
-  margin: 0.15rem 5rem 0.15rem 0.5rem;
+  margin: 0.15rem 7.5rem 0.15rem 0.5rem;
 }
 .chat-msg2{
   line-height: 1.15rem !important;
@@ -2748,7 +2756,7 @@ select.select1{
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.625rem;
-  margin: 0.15rem 0.5rem 0.15rem 5rem;
+  margin: 0.15rem 0.5rem 0.15rem 7.5rem;
 }
 .chat-msg3{
   position: absolute;
@@ -2861,11 +2869,10 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
   text-align: center;
 }
 .subpostdp{
-  height: 50px !important;
-  width: 50px !important;
+  height: 50px;
+  width: 50px;
   object-fit: cover;
   border-radius: 0.25rem !important;
-  image-rendering: -webkit-optimize-contrast;
 }
 .subpost-left{
   float: left;   
