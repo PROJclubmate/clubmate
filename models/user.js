@@ -25,7 +25,7 @@ const userSchema = new Schema({
   },
   postsViewToggle: {
     type: Number,
-    default: 2,
+    default: 1,
     min: 1,
     max: 2,
     required: '1-Mix, 2-Topic posts only',

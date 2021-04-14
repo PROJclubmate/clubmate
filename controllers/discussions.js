@@ -1,13 +1,13 @@
 const Post      = require('../models/post'),
   User          = require('../models/user'),
   Discussion    = require('../models/discussion'),
-  {enviornment} = require('../config/env_switch'),
+  {environment} = require('../config/env_switch'),
   clConfig      = require('../config/cloudinary'),
   s3Config      = require('../config/s3');
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -26,14 +26,14 @@ module.exports = {
           multiImagesArr = [];
           // upload images
           for(var file of req.files){
-            if(enviornment === 'dev'){
-              var result = await clConfig.cloudinary.v2.uploader.upload(file.path, subPostImages_1080_obj);
+            if(environment === 'dev'){
+              var result = await clConfig.cloudinary.v2.uploader.upload(file.path, clConfig.subPostImages_1080_obj);
               // add images to multiImagesArr array
               multiImagesArr.push({
                 image: result.secure_url,
                 imageId: result.public_id
               });
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               var result = await s3Config.uploadFile(file, 'subPostImages/', 1080);
               s3Config.removeTmpUpload(file.path);
               // add images to multiImagesArr array
@@ -79,9 +79,9 @@ module.exports = {
   },
 
   discussionsPagination(req, res, next){
-    if(enviornment === 'dev'){
+    if(environment === 'dev'){
       var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-    } else if (enviornment === 'prod'){
+    } else if (environment === 'prod'){
       var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
     }
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
@@ -106,9 +106,9 @@ module.exports = {
         } else{
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId;
             }
           }

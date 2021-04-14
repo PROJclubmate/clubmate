@@ -321,7 +321,7 @@
                   <option value="2" data-descr="My Friends" disabled></option>
                   <option value="3" data-descr="This Club" selected></option>
                 <% } %>
-                <option value="4" data-descr="Friends in Club"></option>
+                <option value="4" data-descr="#Room" disabled></option>
                 <option value="5" data-descr="Only Me"></option>
               </select>
             </span>
@@ -461,7 +461,7 @@
       <% include ../partials/latest_updates %>
     </div>
   <% } else if(currentUser && post.topic != '' && quote == false){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 mobileNone">
+    <div class="col-md-4 col-lg-3 px-2 pb-1 mt-2 order-md-last order-first">
       <% include ../partials/hot_topics %>
     </div>
   <% } %>

@@ -1,12 +1,12 @@
 const express   = require('express'),
   router        = express.Router({mergeParams: true}),
   middleware    = require('../middleware'),
-  {enviornment} = require('../config/env_switch.js'),
+  {environment} = require('../config/env_switch.js'),
   {discussionsNew, discussionsPagination, discussionsVote} = require('../controllers/discussions');
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var {upload} = require('../config/cloudinary.js');
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var {upload} = require('../config/s3.js');
 }
 

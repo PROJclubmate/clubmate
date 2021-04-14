@@ -4,7 +4,7 @@ const User         = require('../models/user'),
   Conversation     = require('../models/conversation'),
   ClubConversation = require('../models/club-conversation'),
   Subscription     = require('../models/subscription'),
-  {enviornment}    = require('../config/env_switch'),
+  {environment}    = require('../config/env_switch'),
   clConfig         = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
   mongoose         = require('mongoose'),
@@ -12,9 +12,9 @@ const User         = require('../models/user'),
   mbxGeocoding     = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient  = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -99,9 +99,9 @@ module.exports = {
           }
           obja['id'] = foundClubConversation[i].clubId._id;
           obja['name'] = foundClubConversation[i].clubId.name;
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
           }
           obja['latestMessage'] = foundClubConversation[i].latestMessage;
@@ -136,9 +136,9 @@ module.exports = {
                 objb['id'] = foundUserConversation[i].participants[k].id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
                 objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
                 }
                 break;
@@ -209,9 +209,9 @@ module.exports = {
           }
           obja['id'] = foundClubConversation[i].clubId._id;
           obja['name'] = foundClubConversation[i].clubId.name;
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
           }
           obja['latestMessage'] = foundClubConversation[i].latestMessage;
@@ -246,9 +246,9 @@ module.exports = {
                 objb['id'] = foundUserConversation[i].participants[k]._id;
                 objb['name'] = foundUserConversation[i].participants[k].fullName;
                 objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
                 }
                 break;
@@ -355,9 +355,9 @@ module.exports = {
     } else{
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -371,9 +371,9 @@ module.exports = {
       } else{
         var Clubs_100_Avatar = [];
         for(var l=0;l<foundClubs.length;l++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
           }
         }
@@ -410,9 +410,9 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -439,9 +439,9 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -473,9 +473,9 @@ module.exports = {
       var currentUser = req.user;
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -509,9 +509,9 @@ module.exports = {
       });
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -604,9 +604,9 @@ module.exports = {
       var currentUser = req.user;
       var Users_100_profilePic = [];
       for(var l=0;l<foundUsers.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Users_100_profilePic[l] = clConfig.cloudinary.url(foundUsers[l].profilePicId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
@@ -632,9 +632,9 @@ module.exports = {
       });
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
         }
       }
@@ -665,9 +665,9 @@ module.exports = {
       var currentUser = req.user;
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
         }
       }
@@ -701,9 +701,9 @@ module.exports = {
       });
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
         }
       }
@@ -759,9 +759,9 @@ module.exports = {
       var currentUser = req.user;
       var Clubs_100_Avatar = [];
       for(var l=0;l<foundClubs.length;l++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           Clubs_100_Avatar[l] = clConfig.cloudinary.url(foundClubs[l].avatarId, clConfig.thumb_200_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           Clubs_100_Avatar[l] = s3Config.thumb_200_prefix+foundClubs[l].avatarId;
         }
       }
@@ -855,9 +855,9 @@ module.exports = {
             }
             foundClub.save();
             // Send CI notification
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               var CI_50_clubAvatar = clConfig.cloudinary.url(foundClub.avatarId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               var CI_50_clubAvatar = s3Config.thumb_100_prefix+foundClub.avatarId;
             }
             var title = foundClub.name+' sent you an invite';
@@ -1002,9 +1002,9 @@ module.exports = {
             console.log(Date.now()+' : '+req.user._id+' => (index-35)foundUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           } else{
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               var FR_50_profilePic = clConfig.cloudinary.url(foundUser.profilePicId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               var FR_50_profilePic = s3Config.thumb_100_prefix+foundUser.profilePicId;
             }
             var title = foundUser.fullName+' sent you a request';
@@ -1350,9 +1350,9 @@ module.exports = {
           });
           var Friends_100_profilePic = [];
           for(var l=0;l<foundFriends.length;l++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
             }
           }
@@ -1419,9 +1419,9 @@ module.exports = {
             for(var i=0;i<allClubsArr.length;i++){
               var arr2D = [];
               for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
                 }
               }
@@ -1449,9 +1449,9 @@ module.exports = {
             var arr12D = []; var arr22D = [];
             for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
               var arr23D = [];
-              if(enviornment === 'dev'){
+              if(environment === 'dev'){
                 arr12D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
-              } else if (enviornment === 'prod'){
+              } else if (environment === 'prod'){
                 arr12D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
               }
               // Very heavy (4 nested loops O_o)
@@ -1491,9 +1491,9 @@ module.exports = {
                 var obj = {};
                 obj['id'] = foundFriends[i]._id;
                 obj['name'] = foundFriends[i].fullName;
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   obj['url'] = clConfig.cloudinary.url(foundFriends[i].profilePicId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   obj['url'] = s3Config.thumb_100_prefix+foundFriends[i].profilePicId;
                 }
                 foundFriendsPicArr.push(obj);
@@ -1508,9 +1508,9 @@ module.exports = {
           for(var i=0;i<allClubsArr.length;i++){
             var arr2D = [];
             for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-              if(enviornment === 'dev'){
+              if(environment === 'dev'){
                 arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
-              } else if (enviornment === 'prod'){
+              } else if (environment === 'prod'){
                 arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
               }
             }
@@ -1535,9 +1535,9 @@ module.exports = {
         for(var i=0;i<allClubsArr.length;i++){
           var arr2D = [];
           for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               arr2D[j] = clConfig.cloudinary.url(allClubsArr[i].categoryClubIds[j].avatarId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               arr2D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
             }
           }

@@ -59,7 +59,7 @@
               <div class="lightgrey boldtext text-xxs"><%= rankTitle(userRank(subPosts[j].subPostAuthor.id._id)) %></div>
             </div>
             <div class="d-flex flex-column">
-              <div class="darkgrey boldtext text-xxs mb-auto" style="margin-bottom: -0.3125rem !important;"><%= moment(subPosts[j].postedAt).format('ll'); %> <span class="text-xxxs lightgrey"></span> <em class="lightgrey text-xxxs"></em></div>
+              <div class="darkgrey boldtext text-xxs mb-auto" style="margin-bottom: -0.3125rem !important;"><%= moment(subPosts[j].postedAt).format('LL').substring(0, moment(subPosts[j].postedAt).format('LL').length - 6); %> <span class="text-xxxs lightgrey"></span> <em class="lightgrey text-xxxs"></em></div>
               <div class="dropdown ml-auto">
                 <button class="btn btn-sm dropdown-toggle editprofile pr-0" style="padding-top: 0 !important; padding-bottom: 0 !important;" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h text-xxxs"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">

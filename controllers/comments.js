@@ -1,13 +1,13 @@
 const Post      = require('../models/post'),
   User          = require('../models/user'),
   Comment       = require('../models/comment'),
-  {enviornment} = require('../config/env_switch'),
+  {environment} = require('../config/env_switch'),
   clConfig      = require('../config/cloudinary'),
   s3Config      = require('../config/s3');
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -137,9 +137,9 @@ module.exports = {
         } else if(!err && foundBucket != ''){
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               CA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               CA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].comments[j].commentAuthor.id.profilePicId;
             }
           }

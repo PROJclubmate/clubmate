@@ -646,9 +646,7 @@ $('#client-posts-discover').on('click', '.discovercard', function(){
 $('#client-posts-discover').on('click', '.discover-overlay', function(e){
   var id = $(this).attr('id');
   var votecard = '#votecard'+id.substring(8);
-  var likeBtnId = 'like-btn'+id.substring(8);
-  var heartBtnId = 'heart-btn'+id.substring(8);
-  if(e.target.parentElement.id == likeBtnId || e.target.parentElement.id == heartBtnId){
+  if(e.target.parentElement.id != 'client-posts-discover'){
     return;
   } else{
     $(votecard).css('display', 'none');

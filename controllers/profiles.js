@@ -6,7 +6,7 @@ const passport     = require('passport'),
   Conversation     = require('../models/conversation'),
   ClubConversation = require('../models/club-conversation'),
   Token            = require('../models/token'),
-  {enviornment}    = require('../config/env_switch'),
+  {environment}    = require('../config/env_switch'),
   clConfig         = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
   async            = require('async'),
@@ -17,9 +17,9 @@ const passport     = require('passport'),
   mbxGeocoding     = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient  = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -83,9 +83,9 @@ module.exports = {
             // If friend, then show 10 server rendered clubs under Clubs Tab
             var limitedClubs = clubs.slice(0,9);
             for(var k=0;k<limitedClubs.length;k++){
-              if(enviornment === 'dev'){
+              if(environment === 'dev'){
                 Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-              } else if (enviornment === 'prod'){
+              } else if (environment === 'prod'){
                 Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
               }
             }
@@ -140,9 +140,9 @@ module.exports = {
           }
           var Friends_100_profilePic = [];
           for(var l=0;l<foundFriends.length;l++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
             }
           }
@@ -218,9 +218,9 @@ module.exports = {
           var Clubs_50_clubAvatar = [];
           var limitedClubs = clubs.slice(0,9);
           for(var k=0;k<limitedClubs.length;k++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
             }
           }
@@ -269,9 +269,9 @@ module.exports = {
           }
           var Friends_100_profilePic = [];
           for(var l=0;l<foundFriends.length;l++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
             }
           }
@@ -311,9 +311,9 @@ module.exports = {
           var adminClubs = []; var clubInvites = []; var mutualClubs = [];
           var Friends_100_profilePic = [];
           for(var l=0;l<foundFriends.length;l++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
             }
           }
@@ -351,9 +351,9 @@ module.exports = {
           });
           var limitedClubs = clubs.slice(start,end);
           for(var k=0;k<limitedClubs.length;k++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
             }
           }
@@ -370,9 +370,9 @@ module.exports = {
 
   profilesUserMorePosts(req, res, next){
     if(req.user){
-      if(enviornment === 'dev'){
+      if(environment === 'dev'){
         var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-      } else if (enviornment === 'prod'){
+      } else if (environment === 'prod'){
         var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
       }
       if(req.query.ids != ''){
@@ -400,9 +400,9 @@ module.exports = {
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
           }
           hasVote[k] = voteCheck(req.user,modPosts[k]);
@@ -449,9 +449,9 @@ module.exports = {
         sortComments(userPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<userPosts.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             PC_50_clubAvatar[k] = clConfig.cloudinary.url(userPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+userPosts[k].postClub.avatarId;
           }
           hasVote[k] = voteCheck(req.user,userPosts[k]);
@@ -474,9 +474,9 @@ module.exports = {
 
   profilesUserMoreHeartPosts(req, res, next){
     if(req.user && req.user._id.equals(req.params.id)){
-      if(enviornment === 'dev'){
+      if(environment === 'dev'){
         var CU_50_profilePicH = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-      } else if (enviornment === 'prod'){
+      } else if (environment === 'prod'){
         var CU_50_profilePicH = s3Config.thumb_100_prefix+req.user.profilePicId;
       }
       if(req.query.heartIds != ''){
@@ -571,9 +571,9 @@ module.exports = {
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatarH = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             PC_50_clubAvatarH[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             PC_50_clubAvatarH[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
           }
           hasVote[k] = voteCheck(req.user,modPosts[k]);
@@ -608,14 +608,14 @@ module.exports = {
       } else{
         if(req.file){
           try{
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               if(foundUser.profilePicId != null){
                 clConfig.cloudinary.v2.uploader.destroy(foundUser.profilePicId);
               }
               var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.profilePics_1080_obj);
               foundUser.profilePic = result.secure_url;
               foundUser.profilePicId = result.public_id;
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               if(foundUser.profilePicId != null){
                 s3Config.deleteFile(foundUser.profilePicId);
               }
@@ -769,11 +769,11 @@ module.exports = {
     } else{
       if(req.user && req.user._id.equals(req.params.id)){
         try{
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.clubAvatars_1080_obj);
             req.body.avatar = result.secure_url;
             req.body.avatarId = result.public_id;
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             var result = await s3Config.uploadFile(req.file, 'clubAvatars/', 1080);
             s3Config.removeTmpUpload(req.file.path);
             req.body.avatar = result.Location;
@@ -862,9 +862,9 @@ module.exports = {
         var Users_50_profilePic = [], Posts_50_Image = [];
         var limitedUsers = users.slice(0,1);
         for(var k=0;k<limitedUsers.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             Users_50_profilePic[k] = clConfig.cloudinary.url(limitedUsers[k].id.profilePicId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             Users_50_profilePic[k] = s3Config.thumb_100_prefix+limitedUsers[k].id.profilePicId;
           }
         }
@@ -895,9 +895,9 @@ module.exports = {
             var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user);
             for(var l=0;l<modTopTopicPosts.length;l++){
               if(modTopTopicPosts[l].imageId && modTopTopicPosts[l].imageId != ''){
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   Posts_50_Image[l] = clConfig.cloudinary.url(modTopTopicPosts[l].imageId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   Posts_50_Image[l] = s3Config.thumb_100_prefix+modTopTopicPosts[l].imageId;
                 }
               } else{
@@ -929,9 +929,9 @@ module.exports = {
         });
         var limitedUsers = users.slice(0,1);
         for(var k=0;k<limitedUsers.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             Users_50_profilePic[k] = clConfig.cloudinary.url(limitedUsers[k].id.profilePicId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             Users_50_profilePic[k] = s3Config.thumb_100_prefix+limitedUsers[k].id.profilePicId;
           }
         }
@@ -959,9 +959,9 @@ module.exports = {
           var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user);
           for(var l=0;l<modTopTopicPosts.length;l++){
             if(modTopTopicPosts[l].imageId && modTopTopicPosts[l].imageId != ''){
-              if(enviornment === 'dev'){
+              if(environment === 'dev'){
                 Posts_50_Image[l] = clConfig.cloudinary.url(modTopTopicPosts[l].imageId, clConfig.thumb_100_obj);
-              } else if (enviornment === 'prod'){
+              } else if (environment === 'prod'){
                 Posts_50_Image[l] = s3Config.thumb_100_prefix+modTopTopicPosts[l].imageId;
               }
             } else{
@@ -998,9 +998,9 @@ module.exports = {
           var limitedUsers = users.slice(start,end);
           var rank = currentRank(users,req.user._id);
           for(var k=0;k<limitedUsers.length;k++){
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               Users_50_profilePic[k] = clConfig.cloudinary.url(limitedUsers[k].id.profilePicId, clConfig.thumb_100_obj);
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               Users_50_profilePic[k] = s3Config.thumb_100_prefix+limitedUsers[k].id.profilePicId;
             }
           }
@@ -1039,9 +1039,9 @@ module.exports = {
               }
             }
             for(var j=0;j<matchingUsers.length;j++){
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   Users_50_profilePic[j] = clConfig.cloudinary.url(matchingUsers[j].id.profilePicId, clConfig.thumb_100_obj);
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   Users_50_profilePic[j] = s3Config.thumb_100_prefix+matchingUsers[j].id.profilePicId;
                 }
               }
@@ -1074,9 +1074,9 @@ module.exports = {
         var MemberRequests_50_profilePic = [];
         var limitedUsers = foundClub.memberRequests.slice(start,end);
         for(var k=0;k<limitedUsers.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             MemberRequests_50_profilePic[k] = clConfig.cloudinary.url(limitedUsers[k].userId.profilePicId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             MemberRequests_50_profilePic[k] = s3Config.thumb_100_prefix+limitedUsers[k].userId.profilePicId;
           }
         }
@@ -1094,9 +1094,9 @@ module.exports = {
 
   profilesClubMorePosts(req, res, next){
     if(req.user){
-      if(enviornment === 'dev'){
+      if(environment === 'dev'){
         var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-      } else if (enviornment === 'prod'){
+      } else if (environment === 'prod'){
         var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
       }
       if(req.query.ids != ''){
@@ -1122,9 +1122,9 @@ module.exports = {
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             PA_50_profilePic[k] = clConfig.cloudinary.url(modPosts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             PA_50_profilePic[k] = s3Config.thumb_100_prefix+modPosts[k].postAuthor.id.profilePicId;
           }
           hasVote[k] = voteCheck(req.user,modPosts[k]);
@@ -1169,9 +1169,9 @@ module.exports = {
         sortComments(posts);
         var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
         for(k=0;k<posts.length;k++){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             PA_50_profilePic[k] = clConfig.cloudinary.url(posts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             PA_50_profilePic[k] = s3Config.thumb_100_prefix+posts[k].postAuthor.id.profilePicId;
           }
           hasVote[k] = voteCheck(req.user,posts[k]);
@@ -1237,12 +1237,12 @@ module.exports = {
       } else if(admin == true){
         if(req.file){
           try{
-            if(enviornment === 'dev'){
+            if(environment === 'dev'){
               clConfig.cloudinary.v2.uploader.destroy(foundClub.avatarId);
               var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.clubAvatars_1080_obj);
               foundClub.avatar = result.secure_url;
               foundClub.avatarId = result.public_id;
-            } else if (enviornment === 'prod'){
+            } else if (environment === 'prod'){
               s3Config.deleteFile(foundClub.avatarId);
               var result = await s3Config.uploadFile(req.file, 'clubAvatars/', 1080);
               s3Config.removeTmpUpload(req.file.path);
@@ -1410,9 +1410,9 @@ module.exports = {
       var ok = checkRank(president,req.user._id,0);
       if(ok == true){
         for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             clConfig.cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             s3Config.deleteFile(foundClub.featuredPhotos[i].imageId);
           }
           foundClub.featuredPhotos.splice(i,1);
@@ -1501,11 +1501,11 @@ module.exports = {
       if(moder){
         if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
           var obj = {};
-          if(enviornment === 'dev'){
+          if(environment === 'dev'){
             var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.featuredClubPhotos_1080_obj);
             obj['image'] = result.secure_url;
             obj['imageId'] = result.public_id;
-          } else if (enviornment === 'prod'){
+          } else if (environment === 'prod'){
             var result = await s3Config.uploadFile(req.file, 'featuredClubPhotos/', 1080);
             s3Config.removeTmpUpload(req.file.path);
             obj['image'] = result.Location;
@@ -1521,9 +1521,9 @@ module.exports = {
         if(req.body.delete && foundClub.featuredPhotos.length > 0){
           for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
             if(foundClub.featuredPhotos[i]._id.equals(req.body.delete)){
-              if(enviornment === 'dev'){
+              if(environment === 'dev'){
                 clConfig.cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
-              } else if (enviornment === 'prod'){
+              } else if (environment === 'prod'){
                 s3Config.deleteFile(foundClub.featuredPhotos[i].imageId);
               }
               foundClub.featuredPhotos.splice(i,1);
@@ -1538,12 +1538,12 @@ module.exports = {
           for(var i=foundClub.featuredPhotos.length-1;i>=0;i--){
             if(foundClub.featuredPhotos[i]._id.equals(req.body.update)){
               if(req.file){
-                if(enviornment === 'dev'){
+                if(environment === 'dev'){
                   clConfig.cloudinary.v2.uploader.destroy(foundClub.featuredPhotos[i].imageId);
                   var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.featuredClubPhotos_1080_obj);
                   foundClub.featuredPhotos[i].image = result.secure_url;
                   foundClub.featuredPhotos[i].imageId = result.public_id;
-                } else if (enviornment === 'prod'){
+                } else if (environment === 'prod'){
                   s3Config.deleteFile(foundClub.featuredPhotos[i].imageId);
                   var result = await s3Config.uploadFile(req.file, 'featuredClubPhotos/', 1080);
                   s3Config.removeTmpUpload(req.file.path);

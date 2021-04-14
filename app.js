@@ -13,14 +13,14 @@ const express    = require('express'),
   methodOverride = require('method-override'),
   dotenv         = require('dotenv').config(),
   User           = require('./models/user'),
-  {enviornment}  = require('./config/env_switch'),
+  {environment}  = require('./config/env_switch'),
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
   port           = 8080;
 
-if(enviornment === 'dev'){
+if(environment === 'dev'){
   var url = 'mongodb://localhost/ghost_dev';
-} else if (enviornment === 'prod'){
+} else if (environment === 'prod'){
   var url = 'mongodb://localhost/ghost_prod';
 }
 
@@ -135,9 +135,9 @@ app.use(async function(req, res, next){
   res.locals.currentUser = req.user;
   if(req.user){
     try{
-      if(enviornment === 'dev'){
+      if(environment === 'dev'){
         res.locals.CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-      } else if (enviornment === 'prod'){
+      } else if (environment === 'prod'){
         res.locals.CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
       }
       //REQUESTS
@@ -156,16 +156,16 @@ app.use(async function(req, res, next){
 
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = [];
       for(var i=0;i<foundUser.clubInvites.length;i++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           fUCI_50_clubAvatar[i] = clConfig.cloudinary.url(foundUser.clubInvites[i].avatarId, clConfig.thumb_100_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           fUCI_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundUser.clubInvites[i].avatarId;
         }
       }
       for(var j=0;j<foundUser.friendRequests.length;j++){
-        if(enviornment === 'dev'){
+        if(environment === 'dev'){
           fUFR_50_profilePic[j] = clConfig.cloudinary.url(foundUser.friendRequests[j].profilePicId, clConfig.thumb_100_obj);
-        } else if (enviornment === 'prod'){
+        } else if (environment === 'prod'){
           fUFR_50_profilePic[j] = s3Config.thumb_100_prefix+foundUser.friendRequests[j].profilePicId;
         }
       }
