@@ -62,7 +62,7 @@ const userSchema = new Schema({
       }
     }
   }],
-  followingClubCount:{type: Number, default: 0},
+  followingClubCount: {type: Number, default: 0},
   followingClubIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'
@@ -70,11 +70,14 @@ const userSchema = new Schema({
   profilePic: String,
   profilePicId: String,
   userKeys: {
-    sex: String,
-    birthdate: Date,
     college: String,
+    batch: String,
+    house: String,
+    sex: String,
+    branch: String,
     school: String,
-    residence: String
+    hometown: String,
+    birthdate: {type: Date, default: null}
   },
   geometry: {
     type: {
@@ -88,16 +91,16 @@ const userSchema = new Schema({
   note: String,
   bio: {
     aboutme: String,
-    instagram: String,
-    facebook: String,
-    linkedin: String,
-    twitter: String,
-    discord: String,
-    github: String,
-    spotify: String,
-    youtube: String,
-    custom1: String,
-    custom2: String
+    instagram: {type: String, default: ''},
+    facebook: {type: String, default: ''},
+    linkedin: {type: String, default: ''},
+    twitter: {type: String, default: ''},
+    discord: {type: String, default: ''},
+    github: {type: String, default: ''},
+    spotify: {type: String, default: ''},
+    youtube: {type: String, default: ''},
+    custom1: {type: String, default: ''},
+    custom2: {type: String, default: ''}
   },
   interests: [String],
   recommends: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String]},

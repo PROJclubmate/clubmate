@@ -3085,7 +3085,7 @@ function search_people_template(response){
             <% } %>
           </div>
           <% if(users[k].userKeys){ %>
-            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.residence %></div>
+            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.hometown %></div>
           <% } %>
         </div>
       </div>

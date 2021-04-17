@@ -177,8 +177,8 @@
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <div class="info1">HighSchool: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></div></div>
-              <div class="info1">Residence: <div class="info30"><a href="/find_people/filter_search?users=&college=&school=&location=<%= user.userKeys.residence %>"><%= user.userKeys.residence %></a></div></div>
+              <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=&batch=<%= user.userKeys.batch %>&house=&branch=&school=&location="><%= user.userKeys.batch %></a></div></div>
+              <div class="info1">House: <div class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=<%= user.userKeys.house %>&branch=&school=&location="><%= user.userKeys.house %></a></div></div>
             </div>
           </div>
           <% if(currentUser && match){ %>
@@ -188,12 +188,49 @@
                 <label for="note" class="sr-only">Note</label>
                 <input type="text" id="note" class="form-control form-control-sm commentbox2 text-center" name="note" value="<%= user.note %>" placeholder="Short note" autofocus>
                 <br>
-                <label for="college" class="text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
-                <input type="text" id="college" class="form-control form-control-sm greyback shadow mt-0" name="userKeys[college]" value="<%= user.userKeys.college %>" placeholder="College name (paste exact string here)">
-                <label for="school" class="sr-only">School</label>
-                <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="School">
-                <label for="residence" class="sr-only">Residence</label>
-                <input type="text" id="residence" class="form-control form-control-sm" name="userKeys[residence]" value="<%= user.userKeys.residence %>" placeholder="Residence (City)">
+                <label for="college" class="sr-only text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
+                <% if(!user.userKeys.college){ %>
+                  <input list="college" class="form-control form-control-sm select_dark" name="userKeys[college]" 
+                  pattern="JIIT Noida Sector 62" value="" placeholder="Your College">
+                <% } else{ %>
+                  <input list="college" class="form-control form-control-sm select_dark" name="userKeys[college]" pattern="JIIT Noida Sector 62" value="<%= user.userKeys.college %>" placeholder="Your College">
+                <% } %>
+                <datalist id="college">
+                  <option value="JIIT Noida Sector 62">
+                </datalist>
+                <label for="batch" class="sr-only">Batch</label>
+                <% if(!user.userKeys.batch){ %>
+                  <input list="batch" class="form-control form-control-sm select_dark" name="userKeys[batch]" 
+                  pattern="2015|2016|2017|2018|2019|2020|2021" value="" placeholder="First year">
+                <% } else{ %>
+                  <input list="batch" class="form-control form-control-sm select_dark" name="userKeys[batch]" pattern="2015|2016|2017|2018|2019|2020|2021" value="<%= user.userKeys.batch %>" placeholder="Your batch">
+                <% } %>
+                <datalist id="batch">
+                  <option value="2015">
+                  <option value="2016">
+                  <option value="2017">
+                  <option value="2018">
+                  <option value="2019">
+                  <option value="2020">
+                  <option value="2021">
+                </datalist>
+                <label for="house" class="sr-only">House</label>
+                <% if(!user.userKeys.house){ %>
+                  <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" 
+                  pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="" placeholder="House / Hostel">
+                <% } else{ %>
+                  <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="<%= user.userKeys.house %>" placeholder="House / Hostel">
+                <% } %>
+                <datalist id="house">
+                  <option value="Beaskund">
+                  <option value="Gaurikund">
+                  <option value="Suraj Tal">
+                  <option value="Dashir">
+                  <option value="Nako">
+                  <option value="Prashar">
+                  <option value="Suvalsar">
+                  <option value="Chandrataal">
+                </datalist>
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
@@ -375,126 +412,11 @@
                   <% } %>
                 </span>
               </div>
-              <div class="d-flex flex-column px-1 mobilepad">
-                <div class="info1">
-                  <strong class="info-size">Account info:</strong>
-                </div>
-                <div class="info1">
-                    Name: <span class="info30"><%= user.fullName %></span>
-                    <% if(currentUser && match){ %>
-                      <br>
-                      Email: <span class="info30"><%= user.email %>
-                        <% if(!user.isVerified){ %>
-                          <span class="text-xs orangecolor">Not Verified</span>
-                        <% } %>
-                      </span>
-                    <% } %>
-                    <br>
-                    Sex: <span class="info30"><%= user.userKeys.sex %></span>
-                    <br>
-                    Birthday: <span class="info30">
-                      <%= moment(user.userKeys.birthdate).format('MMM Do YY'); %>
-                      <div class="info30">
-                        <% if(currentUser && match){ %>
-                          <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
-                        <% } %>
-                      </div>
-                    </span>
-                    <br>
-                    <div class="info30">
-                    <div id="account_info_form_div" class="greyback">
-                      <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div class="valign">
-                          <div class="mx-2">
-                            <label for="inputFirstName" class="sr-only">First Name</label>
-                            <input type="text" id="inputFirstName" class="form-control form-control-sm" name="firstName" placeholder="first name" value="<%= user.firstName %>" required>
-                          </div>
-                          <div class="mx-2">
-                            <label for="inputLastName" class="sr-only">Last Name</label>
-                            <input type="text" id="inputLastName" class="form-control form-control-sm" name="lastName" placeholder="last name" value="<%= user.lastName %>">
-                          </div>
-                        </div>
-                        <div class="px-2">
-                          <div class="form-check-inline">
-                            <label class="form-check-label">
-                              <% if(user.userKeys.sex == 'Male'){ %>
-                                <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required checked>Male
-                              <% } else{ %>
-                                <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
-                              <% } %>
-                            </label>
-                          </div>
-                          <div class="form-check-inline">
-                            <label class="form-check-label">
-                              <% if(user.userKeys.sex == 'Female'){ %>
-                                <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female" checked>Female
-                              <% } else{ %>
-                                <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
-                              <% } %>
-                            </label>
-                          </div>
-                        </div>
-                        <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
-                          <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
-                          <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth mt-2">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                        </div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                <div class="info1">
-                  Member since: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
-                  <br>
-                  <% if(!match){ %>
-                    <% if(user.lastActive >= (new Date() - 60*1000)){ %>
-                      <span>
-                        <svg height="16" width="16">
-                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-                        </svg>
-                      </span>
-                      <span class="greencolor">Online</span>
-                    <% } else{ %>
-                      Last active: <span class="info30 nothing"><%= moment(user.lastActive).fromNow() %></span>
-                    <% } %>
-                  <br>
-                  <br>
-                    <% if(mutualClubs.length != 0){ %>
-                      <div class="info1">Mutual clubs: <div class="info30">
-                        <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
-                        <% if(i==0 && i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
-                          <% } else if(i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
-                          <% } else if(i>0 && i<len){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
-                          <% } else if(i==0){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
-                        <% }} %>
-                      </div></div>
-                    <% } %>
-                  <% } %>
-                  <% if(match){ %>
-                    <br>
-                    <div class="info1">Following: <div class="info30">
-                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
-                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
-                    </div></div>
-                  <% } %>
-                </div>
-              </div>
-              <br>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
                 <div class="dropctn">
                   <strong class="info-size">Bio:</strong>
                 </div>
-                <% if((user.bio.aboutme || user.bio.instagram || user.bio.facebook || user.bio.linkedin || user.bio.twitter || user.bio.discord
-                || user.bio.github || user.bio.spotify || user.bio.youtube || user.bio.custom1 || user.bio.custom2) || (currentUser && match)){ %>
+                <% if(currentUser && (match || user.bio.aboutme)){ %>
                   <div class="info1">
                     About me: 
                     <div class="info30">
@@ -520,7 +442,8 @@
                     </div>
                   </div>
                 <% } %>
-                <% if(user.recommends.movies.length || (currentUser && match)){ %>
+                <% if(currentUser && (match || (user.bio.instagram || user.bio.facebook || user.bio.linkedin || user.bio.twitter || user.bio.discord
+                || user.bio.github || user.bio.spotify || user.bio.youtube || user.bio.custom1 || user.bio.custom2))){ %>
                   <div class="info1">
                     Find me on: 
                     <div class="info30">
@@ -614,181 +537,378 @@
                   </div>
                 <% } %>
               </div>
-              <div class="d-flex flex-column px-1 mobilepad mt-2">
+              <div class="d-flex flex-column px-1 mobilepad">
                 <div class="info1">
-                  <strong class="info-size">Interests:</strong> 
+                  <strong class="info-size">Account info:</strong>
                   <div class="info30">
                     <% if(currentUser && match){ %>
-                      <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
                     <% } %>
-                    <% recommends_split(user.interests); %>
-                    <% if((currentUser && match) || (user.interests && user.interests.length)){ %>
+                  </div>
+                  <div class="info1">
+                    Name: <span class="info30"><%= user.fullName %></span>
+                    <% if(currentUser && match){ %>
                       <br>
+                      Email: <span class="info30"><%= user.email %>
+                        <% if(!user.isVerified){ %>
+                          <span class="text-xs orangecolor">Not Verified</span>
+                        <% } %>
+                      </span>
                     <% } %>
-                    <div id="interests_form_div" class="greyback">
-                      <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div id="interests_form" class="form-inline d-flex justify-content-between fullwidth">
-                          <% var interests = user.interests; var len = interests.length; var i=0;
-                          for(i;i<=len;i++){ %>
-                            <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Interests" value="<%= interests[i] %>">
-                          <% } %>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth mb-1">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                          <button onclick="recommends_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                        </div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    </div>
                     <br>
+                    Sex: <span class="info30"><%= user.userKeys.sex %></span>
+                    <br>
+                    <div class="info30">
+                      <div id="account_info_form_div" class="greyback mb-2">
+                        <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div class="valign">
+                            <div class="mx-2">
+                              <label for="inputFirstName" class="sr-only">First Name</label>
+                              <input type="text" id="inputFirstName" class="form-control form-control-sm" name="firstName" placeholder="first name" value="<%= user.firstName %>" required>
+                            </div>
+                            <div class="mx-2">
+                              <label for="inputLastName" class="sr-only">Last Name</label>
+                              <input type="text" id="inputLastName" class="form-control form-control-sm" name="lastName" placeholder="last name" value="<%= user.lastName %>">
+                            </div>
+                          </div>
+                          <div class="px-2">
+                            <div class="form-check-inline">
+                              <label class="form-check-label">
+                                <% if(user.userKeys.sex == 'Male'){ %>
+                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required checked>Male
+                                <% } else{ %>
+                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
+                                <% } %>
+                              </label>
+                            </div>
+                            <div class="form-check-inline">
+                              <label class="form-check-label">
+                                <% if(user.userKeys.sex == 'Female'){ %>
+                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female" checked>Female
+                                <% } else{ %>
+                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
+                                <% } %>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth mt-2">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                          </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="d-flex flex-column px-1 mobilepad mt-2">
-                <div class="dropctn">
-                  <strong class="info-size">Recommends:</strong>
+                <div class="info1">
+                  Joined on: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
+                  <br>
+                  <% if(!match){ %>
+                    <% if(user.lastActive >= (new Date() - 60*1000)){ %>
+                      <span>
+                        <svg height="16" width="16">
+                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                        </svg>
+                      </span>
+                      <span class="greencolor">Online</span>
+                    <% } else{ %>
+                      Last active: <span class="info30 nothing"><%= moment(user.lastActive).fromNow() %></span>
+                    <% } %>
+                  <br>
+                  <br>
+                    <% if(mutualClubs.length != 0){ %>
+                      <div class="info1">Mutual clubs: <div class="info30">
+                        <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
+                        <% if(i==0 && i==len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                          <% } else if(i==len-1){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                          <% } else if(i>0 && i<len){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                          <% } else if(i==0){ %>
+                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                        <% }} %>
+                      </div></div>
+                    <% } %>
+                  <% } %>
+                  <% if(match){ %>
+                    <br>
+                    <div class="info1">Following: <div class="info30">
+                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
+                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
+                    </div></div>
+                  <% } %>
                 </div>
-                <% if(user.recommends.music.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    Music: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.music); %>
-                      <br>
-                      <div id="recommends_form1_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var music = user.recommends.music; var len = music.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
-                <% if(user.recommends.movies.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    Movies: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.movies); %>
-                      <br>
-                      <div id="recommends_form2_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var movies = user.recommends.movies; var len = movies.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
-                <% if(user.recommends.tvshows.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    TV Shows: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.tvshows); %>
-                      <br>
-                      <div id="recommends_form3_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form3" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var tvshows = user.recommends.tvshows; var len = tvshows.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="TV Shows" value="<%= tvshows[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
-                <% if(user.recommends.places.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    Places: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.places); %>
-                      <br>
-                      <div id="recommends_form4_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form4" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var places = user.recommends.places; var len = places.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Places" value="<%= places[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
-                <% if(user.recommends.books.length || (currentUser && match)){ %>
-                  <div class="info1">
-                    Books: 
-                    <div class="info30">
-                      <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
-                      <% } %>
-                      <% recommends_split(user.recommends.books); %>
-                      <br>
-                      <div id="recommends_form5_div" class="greyback">
-                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div id="recommends_form5" class="form-inline d-flex justify-content-between fullwidth">
-                            <% var books = user.recommends.books; var len = books.length; var i=0;
-                            for(i;i<=len;i++){ %>
-                              <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Books" value="<%= books[i] %>">
-                            <% } %>
-                          </div>
-                          <div class="d-flex flex-row-reverse fullwidth mb-1">
-                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
-                          </div>
-                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        </form>
-                      </div>
-                      <br>
-                    </div>
-                  </div>
-                <% } %>
               </div>
+              <br>
+              <% if(currentUser && (match || isFriend)){ %>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="info1">
+                    <strong class="info-size">Personal info:</strong>
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button id="edit-account-info" onclick="toggle_display('personal_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                    </div>
+                    <div class="info1">
+                      Branch: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=&branch=<%= user.userKeys.branch %>&school=&location="><%= user.userKeys.branch %></a></span>
+                      <br>
+                      <% if(currentUser && (match || user.userKeys.school)){ %>
+                        High School: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=&branch=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></span>
+                        <br>
+                      <% } %>
+                      <% if(currentUser && (match || user.userKeys.hometown)){ %>
+                        Home Town: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=&branch=&school=&location=<%= user.userKeys.hometown %>"><%= user.userKeys.hometown %></a></span>
+                        <br>
+                      <% } %>
+                      <% if(currentUser && (match || user.userKeys.birthdate)){ %>
+                        Birthday: <span class="info30"><a href="#">
+                          <% if(user.userKeys.birthdate != null){ %><%= moment(user.userKeys.birthdate).format('MMM Do YY'); %><% } %>
+                        </a></span>
+                      <% } %>
+                    </div>
+                    <div class="info30">
+                      <div id="personal_info_form_div" class="greyback mb-2">
+                        <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div class="pt-1 px-2">
+                            <label for="branch" class="sr-only">Branch</label>
+                            <% if(!user.userKeys.branch){ %>
+                              <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]" 
+                              pattern="Civil Engineering|Computer Science & Engineering|Electrical Engineering|Mechanical Engineering|Engineering Physics|Data Science and Engineering|M.S/Ph.D.|M.Tech/M.Sc.>" value="" placeholder="Branch / Major">
+                            <% } else{ %>
+                              <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]" pattern="Civil Engineering|Computer Science & Engineering|Electrical Engineering|Mechanical Engineering|Engineering Physics|Data Science and Engineering|M.S/Ph.D.|M.Tech/M.Sc.>" value="<%= user.userKeys.branch %>" placeholder="Branch / Major">
+                            <% } %>
+                            <datalist id="branch">
+                              <option value="Civil Engineering">
+                              <option value="Computer Science & Engineering">
+                              <option value="Electrical Engineering">
+                              <option value="Mechanical Engineering">
+                              <option value="Engineering Physics">
+                              <option value="Data Science and Engineering">
+                              <option value="M.S/Ph.D.">
+                              <option value="M.Tech/M.Sc.">
+                            </datalist>
+                          </div>
+                          <div class="px-2">
+                            <label for="school" class="sr-only">School</label>
+                            <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="High School">
+                            <label for="hometown" class="sr-only">HomeTown</label>
+                            <input type="text" id="hometown" class="form-control form-control-sm" name="userKeys[hometown]" value="<%= user.userKeys.hometown %>" placeholder="Home Town">
+                          </div>
+                          <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
+                            <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth mt-2">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                          </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              <% } else{ %>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="info1">
+                    <strong class="info-size">Personal info:</strong> 
+                    <div class="info30 lightgrey"><i class="fas fa-eye-slash" title="Not a friend"></i></div>
+                  </div>
+                </div>
+              <% } %>
+              <% if(currentUser && (match || isFriend)){ %>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="info1">
+                    <strong class="info-size">Interests:</strong> 
+                    <div class="info30">
+                      <% if(currentUser && match){ %>
+                        <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                      <% } %>
+                      <% recommends_split(user.interests); %>
+                      <% if((currentUser && match) || (user.interests && user.interests.length)){ %>
+                        <br>
+                      <% } %>
+                      <div id="interests_form_div" class="greyback">
+                        <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                          <div id="interests_form" class="form-inline d-flex justify-content-between fullwidth">
+                            <% var interests = user.interests; var len = interests.length; var i=0;
+                            for(i;i<=len;i++){ %>
+                              <input type="text" class="form-control form-control-sm info-form" name="interests" placeholder="Interests" value="<%= interests[i] %>">
+                            <% } %>
+                          </div>
+                          <div class="d-flex flex-row-reverse fullwidth mb-1">
+                            <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            <button onclick="recommends_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                          </div>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="dropctn">
+                    <strong class="info-size">Recommends:</strong>
+                  </div>
+                  <% if(user.recommends.music.length || (currentUser && match)){ %>
+                    <div class="info1">
+                      Music: 
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                        <% recommends_split(user.recommends.music); %>
+                        <br>
+                        <div id="recommends_form1_div" class="greyback">
+                          <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div id="recommends_form1" class="form-inline d-flex justify-content-between fullwidth">
+                              <% var music = user.recommends.music; var len = music.length; var i=0;
+                              for(i;i<=len;i++){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="music" placeholder="Music" value="<%= music[i] %>">
+                              <% } %>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mb-1">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                              <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if(user.recommends.movies.length || (currentUser && match)){ %>
+                    <div class="info1">
+                      Movies: 
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                        <% recommends_split(user.recommends.movies); %>
+                        <br>
+                        <div id="recommends_form2_div" class="greyback">
+                          <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div id="recommends_form2" class="form-inline d-flex justify-content-between fullwidth">
+                              <% var movies = user.recommends.movies; var len = movies.length; var i=0;
+                              for(i;i<=len;i++){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="movies" placeholder="Movies" value="<%= movies[i] %>">
+                              <% } %>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mb-1">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                              <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if(user.recommends.tvshows.length || (currentUser && match)){ %>
+                    <div class="info1">
+                      TV Shows: 
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                        <% recommends_split(user.recommends.tvshows); %>
+                        <br>
+                        <div id="recommends_form3_div" class="greyback">
+                          <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div id="recommends_form3" class="form-inline d-flex justify-content-between fullwidth">
+                              <% var tvshows = user.recommends.tvshows; var len = tvshows.length; var i=0;
+                              for(i;i<=len;i++){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="tvshows" placeholder="TV Shows" value="<%= tvshows[i] %>">
+                              <% } %>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mb-1">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                              <button onclick="recommends_add('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if(user.recommends.places.length || (currentUser && match)){ %>
+                    <div class="info1">
+                      Places: 
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                        <% recommends_split(user.recommends.places); %>
+                        <br>
+                        <div id="recommends_form4_div" class="greyback">
+                          <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div id="recommends_form4" class="form-inline d-flex justify-content-between fullwidth">
+                              <% var places = user.recommends.places; var len = places.length; var i=0;
+                              for(i;i<=len;i++){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="places" placeholder="Places" value="<%= places[i] %>">
+                              <% } %>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mb-1">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                              <button onclick="recommends_add('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if(user.recommends.books.length || (currentUser && match)){ %>
+                    <div class="info1">
+                      Books: 
+                      <div class="info30">
+                        <% if(currentUser && match){ %>
+                          <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <% } %>
+                        <% recommends_split(user.recommends.books); %>
+                        <br>
+                        <div id="recommends_form5_div" class="greyback">
+                          <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div id="recommends_form5" class="form-inline d-flex justify-content-between fullwidth">
+                              <% var books = user.recommends.books; var len = books.length; var i=0;
+                              for(i;i<=len;i++){ %>
+                                <input type="text" class="form-control form-control-sm info-form" name="books" placeholder="Books" value="<%= books[i] %>">
+                              <% } %>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mb-1">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                              <button onclick="recommends_add('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                        <br>
+                      </div>
+                    </div>
+                  <% } %>
+                </div>
+              <% } else{ %>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="info1">
+                    <strong class="info-size">Interests:</strong> 
+                    <div class="info30 lightgrey"><i class="fas fa-eye-slash" title="Not a friend"></i></div>
+                  </div>
+                </div>
+                <div class="d-flex flex-column px-1 mobilepad mt-2">
+                  <div class="info1">
+                    <strong class="info-size">Recommends:</strong> 
+                    <div class="info30 lightgrey"><i class="fas fa-eye-slash" title="Not a friend"></i></div>
+                  </div>
+                </div>
+              <% } %>
             </div>
             <% if(currentUser && match){ %>
               <!-- Hearts Tab -->

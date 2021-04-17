@@ -76,7 +76,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {users, college, school, location, distance} = req.query;
+    let {users, college, batch, house, branch, school, location, distance} = req.query;
     dbQueries.push({isVerified: true});
     if(users){
       filterKeys['users'] = users;
@@ -87,6 +87,21 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       filterKeys['college'] = college;
       college = new RegExp(escapeRegExp(college), 'gi');
       dbQueries.push({'userKeys.college': college});
+    }
+    if(batch){
+      filterKeys['batch'] = batch;
+      batch = new RegExp(escapeRegExp(batch), 'gi');
+      dbQueries.push({'userKeys.batch': batch});
+    }
+    if(house){
+      filterKeys['house'] = house;
+      house = new RegExp(escapeRegExp(house), 'gi');
+      dbQueries.push({'userKeys.house': house});
+    }
+    if(branch){
+      filterKeys['branch'] = branch;
+      branch = new RegExp(escapeRegExp(branch), 'gi');
+      dbQueries.push({'userKeys.branch': branch});
     }
     if(school){
       filterKeys['school'] = school;
@@ -109,7 +124,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       if(distance){
         filterKeys['distance'] = distance;
       }
-      let maxDistance = distance || 25;
+      let maxDistance = distance || 100;
       maxDistance *= 1000;
       dbQueries.push({
         geometry: {

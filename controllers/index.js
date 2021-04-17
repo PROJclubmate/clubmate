@@ -544,12 +544,27 @@ module.exports = {
         college = new RegExp(escapeRegExp(college.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.college': college});
       }
-      var school = urlEqualsSplit[3];
+      var batch = urlEqualsSplit[3];
+      if(batch.split('&')[0]){
+        batch = new RegExp(escapeRegExp(batch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.batch': batch});
+      }
+      var house = urlEqualsSplit[4];
+      if(house.split('&')[0]){
+        house = new RegExp(escapeRegExp(house.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.house': house});
+      }
+      var branch = urlEqualsSplit[5];
+      if(branch.split('&')[0]){
+        branch = new RegExp(escapeRegExp(branch.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
+        dbQueries.push({'userKeys.branch': branch});
+      }
+      var school = urlEqualsSplit[6];
       if(school.split('&')[0]){
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[4];
+      var location = urlEqualsSplit[7];
       if(location.split('&')[0]){
         let coordinates;
         try{
@@ -569,10 +584,10 @@ module.exports = {
           }).send();
           coordinates = response.body.features[0].geometry.coordinates;
         }
-        if(urlEqualsSplit[4]){
-          var distance = Number(urlEqualsSplit[5]);
+        if(urlEqualsSplit[7]){
+          var distance = Number(urlEqualsSplit[8]);
         }
-        let maxDistance = distance || 25;
+        let maxDistance = distance || 100;
         maxDistance *= 1000;
         dbQueries.push({
           geometry: {

@@ -1,5 +1,4 @@
 function geoFindMe(e){
-	console.log('CLICK');
 	e.preventDefault();
 
 	const status = document.querySelector('#location_status');

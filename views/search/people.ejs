@@ -12,11 +12,20 @@
 			<% if(filterKeys.college){ %>
 				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
 			<% } %>
+			<% if(filterKeys.batch){ %>
+				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
+			<% } %>
+			<% if(filterKeys.house){ %>
+				<span class="lightgrey text-xs">House=</span><span class="boldtext text-sm nothing"><%= filterKeys.house %></span>
+			<% } %>
+			<% if(filterKeys.branch){ %>
+				<span class="lightgrey text-xs">Branch=</span><span class="boldtext text-sm nothing"><%= filterKeys.branch %></span>
+			<% } %>
 			<% if(filterKeys.school){ %>
 				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span>
 			<% } %>
 			<% if(filterKeys.location){ %>
-				<span class="lightgrey text-xs">Residence=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span>
+				<span class="lightgrey text-xs">Home Town=</span><span class="boldtext text-sm nothing"><%= filterKeys.location %></span>
 			<% } %>
 			<% if(filterKeys.distance){ %>
 				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
@@ -65,7 +74,7 @@
 						    <% } %>
 					    </div>
 					    <% if(users[k].userKeys){ %>
-				      	<div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.residence %></div>
+				      	<div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.hometown %></div>
 				      <% } %>
 				    </div>
 			    </div>
@@ -125,29 +134,73 @@
 			<h6 class="nothing mb-1">User keys</h6>
       <div>
       	<label for="college" class="sr-only">College</label>
-				<input class="form-control form-control-sm" type="text" placeholder="College" name="college" id="college" value="<%= query.college %>">
+				<input list="college" class="form-control form-control-sm select_dark" name="college" pattern="JIIT Noida Sector 62" value="<%= query.college %>" placeholder="Your College">
+				<datalist id="college">
+					<option value="JIIT Noida Sector 62">
+				</datalist>
 			</div>
+			<div>
+				<label for="batch" class="sr-only">Batch</label>
+				<input list="batch" class="form-control form-control-sm select_dark" name="batch" pattern="2015|2016|2017|2018|2019|2020|2021" value="<%= query.batch %>" placeholder="Batch (First year)">
+				<datalist id="batch">
+					<option value="2015">
+					<option value="2016">
+					<option value="2017">
+					<option value="2018">
+					<option value="2019">
+					<option value="2020">
+					<option value="2021">
+				</datalist>
+      </div>
+			<div>
+				<label for="house" class="sr-only">House</label>
+				<input list="house" class="form-control form-control-sm select_dark" name="house" value="<%= query.house %>" placeholder="House / Hostel">
+				<datalist id="house">
+					<option value="Beaskund">
+					<option value="Gaurikund">
+					<option value="Suraj Tal">
+					<option value="Dashir">
+					<option value="Nako">
+					<option value="Prashar">
+					<option value="Suvalsar">
+					<option value="Chandrataal">
+				</datalist>
+      </div>
+			<div>
+				<label for="branch" class="sr-only">Branch</label>
+				<input list="branch" class="form-control form-control-sm select_dark" name="branch" value="<%= query.branch %>" placeholder="Branch / Major">
+				<datalist id="branch">
+					<option value="Civil Engineering">
+					<option value="Computer Science & Engineering">
+					<option value="Electrical Engineering">
+					<option value="Mechanical Engineering">
+					<option value="Engineering Physics">
+					<option value="Data Science and Engineering">
+					<option value="M.S/Ph.D.">
+					<option value="M.Tech/M.Sc.">
+				</datalist>
+      </div>
       <div>
       	<label for="school" class="sr-only">School</label>
 				<input class="form-control form-control-sm" type="text" placeholder="School" name="school" id="school" value="<%= query.school %>">
       </div>
 			<div class="d-flex flex-row">
 		  	<label for="location" class="sr-only">Location</label>
-		  	<input type="text" id="location" class="form-control form-control-sm" name="location" placeholder="Residence (city)" value="<%= query.location %>">
+		  	<input type="text" id="location" class="form-control form-control-sm mt-0" name="location" placeholder="Home Town" value="<%= query.location %>">
 		  	<a href="#" id="find-me" class="my-auto mx-1" title="Use my location"><i class="fas fa-crosshairs text-lg"></i></a>
 		  </div>
 		  <p id="location_status" class="text-sm darkgrey"></p>
 	  	<div>
-		    <input type="radio" name="distance" id="distance25" value="25" <%= query.distance === '25' ? 'checked' : '' %>>
-	  	  <label for="distance25" class="text-sm darkgrey">within 25 Km</label>
-	  	</div>
-	  	<div>
-		    <input type="radio" name="distance" id="distance50" value="50" <%= query.distance === '50' ? 'checked' : '' %>>
-	  	  <label for="distance50" class="text-sm darkgrey">50 Km</label>
-	  	</div>
-	  	<div>
 		    <input type="radio" name="distance" id="distance100" value="100" <%= query.distance === '100' ? 'checked' : '' %>>
-			  <label for="distance100" class="text-sm darkgrey">100 Km</label>
+	  	  <label for="distance100" class="text-sm darkgrey">within 100 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance200" value="200" <%= query.distance === '200' ? 'checked' : '' %>>
+	  	  <label for="distance200" class="text-sm darkgrey">200 Km</label>
+	  	</div>
+	  	<div>
+		    <input type="radio" name="distance" id="distance500" value="500" <%= query.distance === '500' ? 'checked' : '' %>>
+			  <label for="distance500" class="text-sm darkgrey">500 Km</label>
 	  	</div>
 			<div>
 				<a href="/find_people/filter_search?users=&college=&school=&location=">Reset keys</a>

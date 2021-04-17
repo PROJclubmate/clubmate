@@ -1418,6 +1418,7 @@ input[type="file"]#inputavatar{
 .clear_update2{visibility: hidden;}
 #toggle_profile_form{display: none;}
 #account_info_form_div{display: none;}
+#personal_info_form_div{display: none;}
 #aboutme_form_div{display: none;}
 #followon_form_div{display: none;}
 #interests_form_div{display: none;}
