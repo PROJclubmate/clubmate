@@ -606,6 +606,21 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        if(req.body.deleteProfilePic == 'true'){
+          if(environment === 'dev'){
+            if(foundUser.profilePicId != null){
+              clConfig.cloudinary.v2.uploader.destroy(foundUser.profilePicId);
+            }
+            foundUser.profilePic = null;
+            foundUser.profilePicId = null;
+          } else if (environment === 'prod'){
+            if(foundUser.profilePicId != null){
+              s3Config.deleteFile(foundUser.profilePicId);
+            }
+            foundUser.profilePic = null;
+            foundUser.profilePicId = null;
+          }
+        }
         if(req.file){
           try{
             if(environment === 'dev'){
@@ -652,14 +667,13 @@ module.exports = {
           }
         }
         if(req.body.userKeys){
-          console.log(JSON.stringify(req.body.userKeys, null, 2));
           if(req.body.userKeys.sex){
             if(req.body.userKeys.sex != foundUser.userKeys.sex){
               foundUser.userKeys.sex = req.body.userKeys.sex;
             }
-          } else if(req.body.userKeys.branch || req.body.userKeys.school || req.body.userKeys.hometown || req.body.userKeys.birthdate){
-            if(req.body.userKeys.branch != foundUser.userKeys.branch){
-              foundUser.userKeys.branch = req.body.userKeys.branch;
+          } else if(req.body.userKeys.house || req.body.userKeys.school || req.body.userKeys.hometown || req.body.userKeys.birthdate){
+            if(req.body.userKeys.house != foundUser.userKeys.house){
+              foundUser.userKeys.house = req.body.userKeys.house;
             }
             if(req.body.userKeys.school != foundUser.userKeys.school){
               foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
@@ -683,7 +697,7 @@ module.exports = {
             if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
               foundUser.userKeys.birthdate = newDate;
             }
-          } else if(req.body.userKeys.college || req.body.userKeys.batch || req.body.userKeys.house){
+          } else if(req.body.userKeys.college || req.body.userKeys.batch || req.body.userKeys.branch){
             // COLLEGE PAGE
             if(foundUser.userKeys.college != req.body.userKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim()){
               var oldCollegeName = foundUser.userKeys.college;
@@ -716,8 +730,8 @@ module.exports = {
             if(req.body.userKeys.batch != foundUser.userKeys.batch){
               foundUser.userKeys.batch = req.body.userKeys.batch;
             }
-            if(req.body.userKeys.house != foundUser.userKeys.house){
-              foundUser.userKeys.house = req.body.userKeys.house;
+            if(req.body.userKeys.branch != foundUser.userKeys.branch){
+              foundUser.userKeys.branch = req.body.userKeys.branch;
             }
           }
         }

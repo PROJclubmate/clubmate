@@ -371,7 +371,7 @@ div.content{
   .form-control{padding: 0.5rem !important;}
   select, .custom-file-upload{height: 36px !important; padding: 6px 8px !important;}
   select.select3{width: 82px;}
-  #input-10{height: 39px !important; margin-top: 0.5rem !important; padding: 7px 8px !important;}
+  #images-10{height: 39px !important; margin-top: 0.5rem !important; padding: 7px 8px !important;}
   .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px !important; font-size: 1.125rem !important;}
   .nav-link.requests{font-size: 1.25rem !important;}
@@ -534,7 +534,7 @@ div.content{
   .form-control{padding: 0.375rem 0.5rem !important;}
   .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
   select, .custom-file-upload{height: 32px !important; padding: 0.25rem 0.5rem !important;}
-  #input-10{height: 35px !important; margin-top: 0.5rem !important;}
+  #images-10{height: 35px !important; margin-top: 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
   .story{height: 66px !important; width: 66px !important;}
   .story-label{width: 66px !important;}
@@ -1370,6 +1370,9 @@ input[type="file"].featuredImage{
 input[type="file"]#inputImage{
   display: none;
 }
+input[type="file"]#inputImages10{
+  display: none;
+}
 input[type="file"]#inputprofilePic{
   display: none;
 }
@@ -1716,18 +1719,15 @@ input[type="file"]#inputavatar{
   background-color: #8db9df;
 }
 .btn-info{
-  border-color: #407cc4;
-  background-color: whitesmoke;
+  border: 1px solid whitesmoke !important;
+  background-color: white;
   color: #407cc4;
-  text-shadow: 0.5px 0.5px white, -0.5px 0.5px white, 0.5px -0.5px white, -0.5px -0.5px white;
   font-weight: 500;
-  border-width: 1px !important;
 }
 .btn-info:hover{
   border-color: #407cc4;
   background-color: #1a90d9;
   font-weight: 600;
-  text-shadow: none;
 }
 .btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
   border-color: #1470a9;
@@ -2194,7 +2194,7 @@ div.carousel-img{
   color: white; 
   width: 100%;
   transition: 0.15s ease;
-  opacity: 0;
+  opacity: 0.25;
   font-size: 0.875rem;
   padding: 10px;
   text-align: center;
@@ -2226,7 +2226,7 @@ div.carousel-img{
   border: none;
   color: white; 
   transition: 0.15s ease;
-  opacity: 0;
+  opacity: 0.25;
   font-size: 0.875rem;
   text-align: center;
   cursor: pointer;
@@ -2954,12 +2954,13 @@ input.shadow:-webkit-autofill:focus{
   padding-right: 0px !important;
 }
 .mail-wrap{
-  position: relative;
-  padding: 0.375rem;
   border-radius: 0.75rem;
-  background: repeating-linear-gradient(45deg, #e0e0e0 , #e0e0e0 10px, #3C7AB8 0, #3C7AB8 20px, #e0e0e0 0, #e0e0e0 30px, #CB2C4B 0, #CB2C4B 40px);
-  border: 0.5px solid white;
+  background: repeating-linear-gradient(135deg, whitesmoke , whitesmoke 10px, #3C7AB8 0, #3C7AB8 20px, whitesmoke 0, whitesmoke 30px, #CB2C4B 0, #CB2C4B 40px);
+  background-repeat: no-repeat;
+  background-size: 100% 5%;
+  border: 0.5px solid lightgrey;
   max-width: 16rem;
+  overflow: hidden;
 }
 .story{
   border-radius: 100%;

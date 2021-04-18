@@ -2701,10 +2701,10 @@ function post_subPosts_template(response){
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
               <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
-              <label id="input-10" for="inputImage" class="custom-file-upload subpostbtn mt-2" title="Upload image">
+              <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
-              <input type="file" id="inputImage" class="text-sm" name="images" accept="image/*">
+              <input type="file" id="inputImages10" class="text-sm" name="images" accept="image/*">
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>

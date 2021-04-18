@@ -273,9 +273,13 @@
         </div>
       </a>
       <div id="sidebar-dropbox" class="scroll moz-scroll">
-        <% userClubs.forEach(function(club){ %>
-          <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
-        <% }); %>
+        <% if(userClubs.length){ %>
+          <% userClubs.forEach(function(club){ %>
+            <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
+          <% }); %>
+        <% } else{ %>
+          <div><a class="text-sm side-drop-elem px-3 py-5 lightgrey2 lineheight0" href="#">No clubs joined</a></div>
+        <% } %>
       </div>
     <% } %>
       <a class="hr2" id="side-friends" href="/friends_posts">

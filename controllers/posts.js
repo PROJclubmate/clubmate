@@ -22,7 +22,7 @@ module.exports = {
       res.render('posts/index', {friendsPostUrl: false, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     } else if(req.user && req.user.userClubs.length == 0){
-      req.flash('success', 'Join clubs to start seeing their posts at HOME.');
+      req.flash('success', 'Become a club member to start seeing their posts at HOME.');
       return res.redirect('/discover');
     } else if(!req.user){
       req.flash('success', 'Please Login to go HOME :)');

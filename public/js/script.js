@@ -380,27 +380,28 @@ $('#featuredImage4').change(function(){
 
 // Label path for input image file
 $('#inputImage').change(function(){
-	var i = $(this).prev('label').clone();
 	var file = $('#inputImage')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
 });
+$('#inputImages10').change(function(){
+	var fileNum = $('#inputImages10')[0].files.length;
+	var labelText = fileNum+' files';
+	$(this).prev('label').text(labelText);
+});
 $('#inputprofilePic').change(function(){
-	var i = $(this).prev('label').clone();
 	var file = $('#inputprofilePic')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
 	$('.overlay2').css('display','block');
 });
 $('#inputprofilePic2').change(function(){
-  var i = $(this).prev('label').clone();
   var file = $('#inputprofilePic2')[0].files[0].name;
   var truncated = file.trunc(15);
   $(this).prev('label').text(truncated);
   $('.overlay2').css('display','block');
 });
 $('#inputavatar').change(function(){
-	var i = $(this).prev('label').clone();
 	var file = $('#inputavatar')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
@@ -427,6 +428,17 @@ function blur() {
   select.addEventListener('focus', focus);
   select.addEventListener('blur', blur);
   blur.call(select);
+});
+
+$('#profilePic-frame-div-desktop').mouseenter(function (e){
+  $('#delete_profilePic-desktop').css('display', 'block');
+}).mouseleave(function(){
+  $('#delete_profilePic-desktop').css('display', 'none');
+});
+$('#profilePic-frame-div-mobile').mouseenter(function (e){
+  $('#delete_profilePic-mobile').css('display', 'block');
+}).mouseleave(function(){
+  $('#delete_profilePic-mobile').css('display', 'none');
 });
 
 // System emoji picker
