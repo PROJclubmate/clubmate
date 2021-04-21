@@ -78,93 +78,93 @@ module.exports = {
       });
       var notificationCount = 0;
       ClubConversation.find({_id: {$in: clubConversationId}, isActive: true})
-      .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversation){
+      .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
       if(err){
-        console.log(req.user._id+' => (index-2)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-2)foundClubConversations err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         var chatList = [];
-        for(var i=0;i<foundClubConversation.length;i++){
+        for(var i=0;i<foundClubConversations.length;i++){
           var obja = {};
           obja['type'] = 'club';
-          obja['_id'] = foundClubConversation[i]._id;
-          for(var j=0;j<foundClubConversation[i].seenMsgCursors.length;j++){
-            if(foundClubConversation[i].seenMsgCursors[j].id.equals(req.user._id)){
-              obja['seenMsgCursor'] = foundClubConversation[i].seenMsgCursors[j].cursor;
-              if(foundClubConversation[i].messageCount > foundClubConversation[i].seenMsgCursors[j].cursor){
+          obja['_id'] = foundClubConversations[i]._id;
+          for(var j=0;j<foundClubConversations[i].seenMsgCursors.length;j++){
+            if(foundClubConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+              obja['seenMsgCursor'] = foundClubConversations[i].seenMsgCursors[j].cursor;
+              if(foundClubConversations[i].messageCount > foundClubConversations[i].seenMsgCursors[j].cursor){
                 notificationCount++;
               }
               break;
             }
           }
-          obja['id'] = foundClubConversation[i].clubId._id;
-          obja['name'] = foundClubConversation[i].clubId.name;
+          obja['id'] = foundClubConversations[i].clubId._id;
+          obja['name'] = foundClubConversations[i].clubId.name;
           if(environment === 'dev'){
-            obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
+            obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
           } else if (environment === 'prod'){
-            obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
+            obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
           }
-          obja['latestMessage'] = foundClubConversation[i].latestMessage;
-          obja['lastMsgOn'] = foundClubConversation[i].lastMsgOn;
-          obja['lastMsgBy'] = foundClubConversation[i].lastMsgBy;
-          obja['messageCount'] = foundClubConversation[i].messageCount;
-          obja['bucketNum'] = foundClubConversation[i].bucketNum;
-          obja['messageBuckets'] = foundClubConversation[i].messageBuckets.pop();
+          obja['lastMessage'] = foundClubConversations[i].lastMessage;
+          obja['lastMsgOn'] = foundClubConversations[i].lastMsgOn;
+          obja['lastMsgBy'] = foundClubConversations[i].lastMsgBy;
+          obja['messageCount'] = foundClubConversations[i].messageCount;
+          obja['bucketNum'] = foundClubConversations[i].bucketNum;
+          obja['messageBuckets'] = foundClubConversations[i].messageBuckets.pop();
           chatList.push(obja);
         }
         Conversation.find({_id: {$in: userConversationId}})
         .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
-        .exec(function(err, foundUserConversation){
+        .exec(function(err, foundUserConversations){
         if(err){
-          console.log(req.user._id+' => (index-3)foundUserConversation err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-3)foundUserConversations err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
-          for(var i=0;i<foundUserConversation.length;i++){
+          for(var i=0;i<foundUserConversations.length;i++){
             var objb = {};
             objb['type'] = 'user';
-            objb['_id'] = foundUserConversation[i]._id;
-            for(var j=0;j<foundUserConversation[i].seenMsgCursors.length;j++){
-              if(foundUserConversation[i].seenMsgCursors[j].id.equals(req.user._id)){
-                objb['seenMsgCursor'] = foundUserConversation[i].seenMsgCursors[j].cursor;
-                if(foundUserConversation[i].messageCount > foundUserConversation[i].seenMsgCursors[j].cursor){
+            objb['_id'] = foundUserConversations[i]._id;
+            for(var j=0;j<foundUserConversations[i].seenMsgCursors.length;j++){
+              if(foundUserConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+                objb['seenMsgCursor'] = foundUserConversations[i].seenMsgCursors[j].cursor;
+                if(foundUserConversations[i].messageCount > foundUserConversations[i].seenMsgCursors[j].cursor){
                   notificationCount++;
                 }
               }
             }
-            for(var k=0;k<foundUserConversation[i].participants.length;k++){
-              if(!foundUserConversation[i].participants[k]._id.equals(req.user._id)){
-                objb['id'] = foundUserConversation[i].participants[k].id;
-                objb['name'] = foundUserConversation[i].participants[k].fullName;
-                objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
+            for(var k=0;k<foundUserConversations[i].participants.length;k++){
+              if(!foundUserConversations[i].participants[k]._id.equals(req.user._id)){
+                objb['id'] = foundUserConversations[i].participants[k].id;
+                objb['name'] = foundUserConversations[i].participants[k].fullName;
+                objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
                 if(environment === 'dev'){
-                  objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
+                  objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
                 } else if (environment === 'prod'){
-                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
+                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
                 }
                 break;
               }
             }
-            objb['latestMessage'] = foundUserConversation[i].latestMessage;
-            objb['lastMsgOn'] = foundUserConversation[i].lastMsgOn;
-            objb['lastMsgBy'] = foundUserConversation[i].lastMsgBy;
-            objb['messageCount'] = foundUserConversation[i].messageCount;
-            objb['bucketNum'] = foundUserConversation[i].bucketNum;
-            objb['messageBuckets'] = foundUserConversation[i].messageBuckets.pop();
+            objb['lastMessage'] = foundUserConversations[i].lastMessage;
+            objb['lastMsgOn'] = foundUserConversations[i].lastMsgOn;
+            objb['lastMsgBy'] = foundUserConversations[i].lastMsgBy;
+            objb['messageCount'] = foundUserConversations[i].messageCount;
+            objb['bucketNum'] = foundUserConversations[i].bucketNum;
+            objb['messageBuckets'] = foundUserConversations[i].messageBuckets.pop();
             chatList.push(objb);
           }
           chatList.sort(function(a, b){
             return b.lastMsgOn - a.lastMsgOn;
           });
           var chatType = null;
-          User.updateOne({_id: req.user._id}, {$set: {inboxMsgCount: notificationCount}}, function(err, updateUser){
+          res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
+          recipientId2: null, notificationCount, cdn_prefix});
+          return User.updateOne({_id: req.user._id}, 
+          {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
           if(err || !updateUser){
             console.log(Date.now()+' : '+req.user._id+' => (index-4)updateUser err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
           }
           });
-          res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
-          recipientId2: null, notificationCount, cdn_prefix});
-          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -188,90 +188,84 @@ module.exports = {
       });
       var notificationCount = 0;
       ClubConversation.find({_id: {$in: clubConversationId}, isActive: true})
-      .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversation){
+      .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
       if(err){
-        console.log(req.user._id+' => (index-5)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+        console.log(req.user._id+' => (index-5)foundClubConversations err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
       } else{
         var chatList = [];
-        for(var i=0;i<foundClubConversation.length;i++){
+        for(var i=0;i<foundClubConversations.length;i++){
           var obja = {};
           obja['type'] = 'club';
-          obja['_id'] = foundClubConversation[i]._id;
-          for(var j=0;j<foundClubConversation[i].seenMsgCursors.length;j++){
-            if(foundClubConversation[i].seenMsgCursors[j].id.equals(req.user._id)){
-              obja['seenMsgCursor'] = foundClubConversation[i].seenMsgCursors[j].cursor;
-              if(foundClubConversation[i].messageCount > foundClubConversation[i].seenMsgCursors[j].cursor){
+          obja['_id'] = foundClubConversations[i]._id;
+          for(var j=0;j<foundClubConversations[i].seenMsgCursors.length;j++){
+            if(foundClubConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+              obja['seenMsgCursor'] = foundClubConversations[i].seenMsgCursors[j].cursor;
+              if(foundClubConversations[i].messageCount > foundClubConversations[i].seenMsgCursors[j].cursor){
                 notificationCount++;
               }
               break;
             }
           }
-          obja['id'] = foundClubConversation[i].clubId._id;
-          obja['name'] = foundClubConversation[i].clubId.name;
+          obja['id'] = foundClubConversations[i].clubId._id;
+          obja['name'] = foundClubConversations[i].clubId.name;
           if(environment === 'dev'){
-            obja['image'] = clConfig.cloudinary.url(foundClubConversation[i].clubId.avatarId, clConfig.thumb_100_obj);
+            obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
           } else if (environment === 'prod'){
-            obja['image'] = s3Config.thumb_100_prefix+foundClubConversation[i].clubId.avatarId;
+            obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
           }
-          obja['latestMessage'] = foundClubConversation[i].latestMessage;
-          obja['lastMsgOn'] = foundClubConversation[i].lastMsgOn;
-          obja['lastMsgBy'] = foundClubConversation[i].lastMsgBy;
-          obja['messageCount'] = foundClubConversation[i].messageCount;
-          obja['bucketNum'] = foundClubConversation[i].bucketNum;
-          obja['messageBuckets'] = foundClubConversation[i].messageBuckets.pop();
+          obja['lastMessage'] = foundClubConversations[i].lastMessage;
+          obja['lastMsgOn'] = foundClubConversations[i].lastMsgOn;
+          obja['lastMsgBy'] = foundClubConversations[i].lastMsgBy;
+          obja['messageCount'] = foundClubConversations[i].messageCount;
+          obja['bucketNum'] = foundClubConversations[i].bucketNum;
+          obja['messageBuckets'] = foundClubConversations[i].messageBuckets.pop();
           chatList.push(obja);
         }
         Conversation.find({_id: {$in: userConversationId}})
         .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
-        .exec(function(err, foundUserConversation){
+        .exec(function(err, foundUserConversations){
         if(err){
-          console.log(req.user._id+' => (index-6)foundUserConversation err:- '+JSON.stringify(err, null, 2));
+          console.log(req.user._id+' => (index-6)foundUserConversations err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
         } else{
-          for(var i=0;i<foundUserConversation.length;i++){
+          for(var i=0;i<foundUserConversations.length;i++){
             var objb = {};
             objb['type'] = 'user';
-            objb['_id'] = foundUserConversation[i]._id;
-            for(var j=0;j<foundUserConversation[i].seenMsgCursors.length;j++){
-              if(foundUserConversation[i].seenMsgCursors[j].id.equals(req.user._id)){
-                objb['seenMsgCursor'] = foundUserConversation[i].seenMsgCursors[j].cursor;
-                if(foundUserConversation[i].messageCount > foundUserConversation[i].seenMsgCursors[j].cursor){
+            objb['_id'] = foundUserConversations[i]._id;
+            for(var j=0;j<foundUserConversations[i].seenMsgCursors.length;j++){
+              if(foundUserConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+                objb['seenMsgCursor'] = foundUserConversations[i].seenMsgCursors[j].cursor;
+                if(foundUserConversations[i].messageCount > foundUserConversations[i].seenMsgCursors[j].cursor){
                   notificationCount++;
                 }
               }
             }
-            for(var k=0;k<foundUserConversation[i].participants.length;k++){
-              if(!foundUserConversation[i].participants[k]._id.equals(req.user._id)){
-                objb['id'] = foundUserConversation[i].participants[k]._id;
-                objb['name'] = foundUserConversation[i].participants[k].fullName;
-                objb['userKeys'] = foundUserConversation[i].participants[k].userKeys;
+            for(var k=0;k<foundUserConversations[i].participants.length;k++){
+              if(!foundUserConversations[i].participants[k]._id.equals(req.user._id)){
+                objb['id'] = foundUserConversations[i].participants[k]._id;
+                objb['name'] = foundUserConversations[i].participants[k].fullName;
+                objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
                 if(environment === 'dev'){
-                  objb['image'] = clConfig.cloudinary.url(foundUserConversation[i].participants[k].profilePicId, clConfig.thumb_100_obj);
+                  objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
                 } else if (environment === 'prod'){
-                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversation[i].participants[k].profilePicId;
+                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
                 }
                 break;
               }
             }
-            objb['latestMessage'] = foundUserConversation[i].latestMessage;
-            objb['lastMsgOn'] = foundUserConversation[i].lastMsgOn;
-            objb['lastMsgBy'] = foundUserConversation[i].lastMsgBy;
-            objb['messageCount'] = foundUserConversation[i].messageCount;
-            objb['bucketNum'] = foundUserConversation[i].bucketNum;
-            objb['messageBuckets'] = foundUserConversation[i].messageBuckets.pop();
+            objb['lastMessage'] = foundUserConversations[i].lastMessage;
+            objb['lastMsgOn'] = foundUserConversations[i].lastMsgOn;
+            objb['lastMsgBy'] = foundUserConversations[i].lastMsgBy;
+            objb['messageCount'] = foundUserConversations[i].messageCount;
+            objb['bucketNum'] = foundUserConversations[i].bucketNum;
+            objb['messageBuckets'] = foundUserConversations[i].messageBuckets.pop();
             chatList.push(objb);
           }
           chatList.sort(function(a, b){
             return b.lastMsgOn - a.lastMsgOn;
           });
           var chatType = null;
-          User.updateOne({_id: req.user._id}, {$set: {inboxMsgCount: notificationCount}}, function(err, updateUser){
-          if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (index-7)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-          }
-          });
           if(req.body && req.body.user){
             chatType = 'user';
             Conversation.findOne({_id: req.body.convId}, function(err, foundConversation){ 
@@ -311,7 +305,13 @@ module.exports = {
                 recipientId: '', convClubId: null, conversationId, isBlocked, isBlockedByFoundUser, 
                 recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago,
                 wasActiveToday, cdn_prefix});
-                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+                return User.updateOne({_id: req.user._id}, 
+                {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
+                if(err || !updateUser){
+                  console.log(Date.now()+' : '+req.user._id+' => (index-7)updateUser err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                }
+                });
               }
               });
             }
@@ -330,7 +330,13 @@ module.exports = {
                 var convClubId2 = req.body.club;
                 res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
                 convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount, cdn_prefix});
-                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+                User.updateOne({_id: req.user._id}, 
+                {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
+                if(err || !updateUser){
+                  console.log(Date.now()+' : '+req.user._id+' => (index-7)updateUser err:- '+JSON.stringify(err, null, 2));
+                  req.flash('error', 'Something went wrong :(');
+                }
+                });
               }
             }
             });

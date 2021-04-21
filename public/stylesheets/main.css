@@ -2226,7 +2226,7 @@ div.carousel-img{
   border: none;
   color: white; 
   transition: 0.15s ease;
-  opacity: 0.25;
+  opacity: 0;
   font-size: 0.875rem;
   text-align: center;
   cursor: pointer;
@@ -2860,6 +2860,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #262626 !important; font-weight
 }
 .description{
   border-radius: 0 0 0.15rem 0.15rem;
+}
+.description:focus{
+  border: 1px solid white;
 }
 .description2{
   background-color: whitesmoke !important;
@@ -3693,4 +3696,21 @@ input.shadow:-webkit-autofill:focus{
   top: 3rem;
   right: 0;
   filter: opacity(50%);
+}
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
+}
+.college-infobtn{
+  border-radius: 2rem;
+  cursor: pointer;
+  width: max-content;
+  transition: ease-out 0.15s;
+}
+.college-infobtn:hover{
+  background-color: white;
+  color: #19ae69;
 }

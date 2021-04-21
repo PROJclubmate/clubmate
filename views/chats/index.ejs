@@ -88,7 +88,7 @@
 												<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
 													<span class="bluecolor boldtext">></span>
 												<% } %>
-												<%= chatList[i].latestMessage %>
+												<%= chatList[i].lastMessage %>
 											</div>
 											<div>
 												<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>

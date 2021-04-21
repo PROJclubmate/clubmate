@@ -52,7 +52,7 @@ const userSchema = new Schema({
     },
     key: {
       type: Number,
-      default: 1,
+      default: 2,
       min: 1,
       max: 2,
       required: '1-Members, 2-Followers',
@@ -128,7 +128,7 @@ const userSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
-  inboxMsgCount: {type: Number, default: 0},
+  unreadChatsCount: {type: Number, default: 0},
   userClubs: [{
     id: {
       type: Schema.Types.ObjectId,

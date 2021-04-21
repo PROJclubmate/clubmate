@@ -13,7 +13,7 @@ const conversationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  latestMessage: String,
+  lastMessage: String,
   lastMsgOn: {type: Date, default: Date.now},
   lastMsgBy: {
     type: Schema.Types.ObjectId,

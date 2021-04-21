@@ -54,8 +54,8 @@
           <div id="inbox_mobile_div" class="inbox_mobile" style="margin-right: -0.5rem;">
             <span class="notification">
               <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
-              <% if(currentUser.inboxMsgCount > 0){ %>
-                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.inboxMsgCount %></span>
+              <% if(currentUser.unreadChatsCount > 0){ %>
+                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </span>
           </div>
@@ -63,8 +63,8 @@
         <div id="mobile_toggler_div" class="nodisplay" style="margin-right: -0.5rem;">
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
-              <% if (currentUser && currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
-                <span class="badge badge-mobile text-xxs"><%= currentUser.inboxMsgCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && currentUser.unreadChatsCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
+                <span class="badge badge-mobile text-xxs"><%= currentUser.unreadChatsCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
               <% } %>
             </span>
           </button>
@@ -103,8 +103,8 @@
           <% } else{ %>
             <li class="nav-item notification">
               <span><a href="/chats" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
-              <% if(currentUser.inboxMsgCount > 0){ %>
-                <span class="inbox_count badge text-xxs"><%= currentUser.inboxMsgCount %></span>
+              <% if(currentUser.unreadChatsCount > 0){ %>
+                <span class="inbox_count badge text-xxs"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">

@@ -38,7 +38,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/discover",
+  "start_url": "/chats",
   "scope": ".",
   "display": "standalone",
   "orientation": "portrait-primary",

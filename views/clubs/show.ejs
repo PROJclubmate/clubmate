@@ -308,9 +308,9 @@
                     <form id="create-new-post" class="card-body2 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
                       <% if(rank >= 0 && rank <=3){ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="Topic [ask a question]">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="Topic [ask a question]">
                       <% } else{ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" placeholder="Topic [ask a question]" required>
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="Topic [ask a question]" required>
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <% if(rank >= 0 && rank <=3){ %>
