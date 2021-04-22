@@ -265,10 +265,11 @@ module.exports = {
           chatList.sort(function(a, b){
             return b.lastMsgOn - a.lastMsgOn;
           });
-          var chatType = null;
-          if(req.body && req.body.user){
+          var chatType, chatHeadName = null;
+          if(req.query && req.query.user){
             chatType = 'user';
-            Conversation.findOne({_id: req.body.convId}, function(err, foundConversation){ 
+            chatHeadName = req.query.user;
+            Conversation.findOne({_id: req.query.convId}, function(err, foundConversation){ 
             if(err || !foundConversation){
               console.log(req.user._id+' => (index-8)foundConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -304,7 +305,7 @@ module.exports = {
                 res.render('chats/index', {chatList, chatType, currentUserId, 
                 recipientId: '', convClubId: null, conversationId, isBlocked, isBlockedByFoundUser, 
                 recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago,
-                wasActiveToday, cdn_prefix});
+                wasActiveToday, chatHeadName, cdn_prefix});
                 return User.updateOne({_id: req.user._id}, 
                 {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
                 if(err || !updateUser){
@@ -316,9 +317,10 @@ module.exports = {
               });
             }
             });
-          } else if(req.body && req.body.club){
+          } else if(req.query && req.query.club){
             chatType = 'club';
-            ClubConversation.findOne({_id: req.body.convId, isActive: true}, function(err, foundClubConversation){
+            chatHeadName = req.query.club;
+            ClubConversation.findOne({_id: req.query.convId, isActive: true}, function(err, foundClubConversation){
             if(err || !foundClubConversation){
               console.log(req.user._id+' => (index-10)foundClubConversation err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
@@ -327,9 +329,10 @@ module.exports = {
               if(contains2(req.user.userClubs, foundClubConversation.clubId)){
                 var currentUserId = req.user._id;
                 var conversationId = foundClubConversation._id;
-                var convClubId2 = req.body.club;
+                var convClubId2 = req.query.profileId;
                 res.render('chats/index', {chatList, chatType, currentUserId, conversationId, 
-                convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount, cdn_prefix});
+                convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount, chatHeadName, 
+                cdn_prefix});
                 User.updateOne({_id: req.user._id}, 
                 {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
                 if(err || !updateUser){

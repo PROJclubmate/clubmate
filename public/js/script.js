@@ -666,17 +666,20 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
 });
 
 $('.chat-item').click(function(){
-  var convIdCHATITEMprofileId = $(this).attr('id').split('^');
-  var convId = convIdCHATITEMprofileId[0];
-  var profileId = convIdCHATITEMprofileId[2];
+  var convIdProfilenameProfileid = $(this).attr('id').split('^');
+  var convId = convIdProfilenameProfileid[0];
+  var profileName = convIdProfilenameProfileid[1];
+  var profileId = convIdProfilenameProfileid[2];
   var type = $(this).attr('value');
   if(type == 'user'){
     $.post('/seen_msg/'+convId);
   } else if(type == 'club'){
     $.post('/seen_clubmsg/'+convId);
   }
-  $('.chat-form').append('<input type="hidden" name="convId" value="'+convId+'">')
-  .append('<input type="hidden" name="'+type+'" value="'+profileId+'">').submit();
+  $('.chat-form')
+  .append('<input type="hidden" name="convId" value="'+convId+'">')
+  .append('<input type="hidden" name="profileId" value="'+profileId+'">')
+  .append('<input type="hidden" name="'+type+'" value="'+profileName+'">').submit();
 });
 
 var remToPx = function(count){
@@ -764,7 +767,7 @@ $("#myTab").on('click', '.nav-link', function(e){
 });
 
 if(window.innerWidth < 768){
-  if(!((location.pathname == '/chats') || 
+  if(!((location.pathname.split('/')[1] == 'chats') || 
   location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/) || 
   location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
@@ -787,7 +790,7 @@ if(window.innerWidth < 768){
 if((location.pathname == '/help/') || (location.pathname == '/faq')){
   $(".navhelp").addClass('requests-active');
 }
-if(location.pathname == '/chats'){
+if(location.pathname.split('/')[1] == 'chats'){
   $('.inbox_count').text($('#chats-notificationCount').attr('value'));
   $("#inbox").addClass('requests-active');
 

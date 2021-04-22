@@ -1,7 +1,7 @@
 <div class="card mt-0 border-light btncollapse-div">
   <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
     <div class="text-sm mobilebold">
-      <span>Direct chat</span>
+      <span><%= chatHeadName %></span>
       <% if(conversationId && conversationId != '' && isBlocked && isBlockedByFoundUser){ %>
         <span class="text-xxxs boldtext redcolor">(BLOCKED)</span>
       <% } %>

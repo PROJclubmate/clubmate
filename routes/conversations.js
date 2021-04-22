@@ -80,7 +80,7 @@ module.exports = function(io){
 		  } else{
 		    if(foundConversation){
 		      if(contains(foundConversation.participants,req.user._id)){
-		      	foundConversation.latestMessage = req.body.composedMessage;
+		      	foundConversation.lastMessage = req.body.composedMessage;
 		        Message.findOneAndUpdate({conversationId: foundConversation._id, bucket: foundConversation.bucketNum},
 		        {$inc: {count: 1},
 		          $push: {messages: {authorId: req.user._id, text: req.body.composedMessage}
@@ -222,7 +222,7 @@ module.exports = function(io){
 	    	conversation.seenMsgCursors.push(objb);
 	    }
 	    conversation.messageBuckets.push(message._id);
-	    conversation.latestMessage = req.body.composedMessage;
+	    conversation.lastMessage = req.body.composedMessage;
 	    conversation.save();
 	    var foundUserObj={}, currentUserObj={}, foundUserUserChats=[], currentUserUserChats=[];
 	    // foundUser userChats push
@@ -324,7 +324,7 @@ module.exports = function(io){
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
-	      	foundClubConversation.latestMessage = req.body.composedMessage;
+	      	foundClubConversation.lastMessage = req.body.composedMessage;
 	        Message.findOneAndUpdate({conversationId: foundClubConversation._id, bucket: foundClubConversation.bucketNum},
 	        {$inc: {count: 1},
 	          $push: {messages: {authorId: req.user._id, authorName: req.user.fullName, 
@@ -431,7 +431,7 @@ module.exports = function(io){
 		    	clubConversation.seenMsgCursors.push(objb);
 		    }
 		    clubConversation.messageBuckets.push(message._id);
-		    clubConversation.latestMessage = req.body.composedMessage;
+		    clubConversation.lastMessage = req.body.composedMessage;
 		    clubConversation.save();
 		    User.updateMany({_id: {$in: clubMembersArr}, userClubs: {$elemMatch: {id: foundClub._id}}}, 
 		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err, updateUsers){

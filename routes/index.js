@@ -25,7 +25,7 @@ router.get('/faq', indexFAQ);
 router.get('/chats', middleware.isLoggedIn, indexChats);
 
 // Chats list
-router.put('/chats', middleware.isLoggedIn, indexChatsOpen);
+router.get('/chats/open', middleware.isLoggedIn, indexChatsOpen);
 
 // Search
 router.get('/search', indexSearch);
