@@ -571,7 +571,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var coverTall = false;
   $('#college-scroll').scroll(function(){
     if(!coverTall){
-      if($('#college-scroll').scrollTop() > 116){
+      if($('#college-scroll').scrollTop() > 208){
         coverTall = true;
         if(window.innerWidth <= 768){
           $('img.college-cover').height(200);
@@ -693,23 +693,23 @@ var remToPx = function(count){
 }
 
 function updateMessageHeight2(){
-  function updateHeight(navheight){
+  function updateHeight(adjustment){
     if($('.pushmsg').css('display') == 'block'){
-      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 42 - 35;
+      var newMsgHeight = window.innerHeight - 1*remToPx() - 31 - 42 - 35 + adjustment;
       $('#messages').height(newMsgHeight);
     } else{
-      var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - 31 - 42;
+      var newMsgHeight = window.innerHeight - 1*remToPx() - 31 - 42 + adjustment;
       $('#messages').height(newMsgHeight);
     }
   }
   if(window.innerWidth <= 768 && window.innerWidth > 480){
-    updateHeight(40);
+    updateHeight(-16);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-    updateHeight(50 + 8);
+    updateHeight(-16);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 360){
-    updateHeight(42);
+    updateHeight(-4);
     document.getElementById("navbar").style.top = "0px";
   } else{
     if($('.pushmsg').css('display') == 'block'){
@@ -732,13 +732,13 @@ function updateMessageHeight3(){
     }
   }
   if(window.innerWidth <= 768 && window.innerWidth > 480){
-    updateHeight(40,47);
+    updateHeight(40 + 16,47);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-    updateHeight(50 + 8,52);
+    updateHeight(50 + 8 + 8,52);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 360){
-    updateHeight(42,47);
+    updateHeight(42 + 4,47);
     document.getElementById("navbar").style.top = "0px";
   } else{
     if($('.pushmsg').css('display') == 'block'){

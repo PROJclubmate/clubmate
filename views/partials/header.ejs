@@ -55,7 +55,7 @@
             <span class="notification">
               <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
               <% if(currentUser.unreadChatsCount > 0){ %>
-                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs nodisplay"><%= currentUser.unreadChatsCount %></span>
+                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs desktopNone"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </span>
           </div>
@@ -63,8 +63,8 @@
         <div id="mobile_toggler_div" class="nodisplay" style="margin-right: -0.5rem;">
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
-              <% if (currentUser && currentUser.unreadChatsCount + currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
-                <span class="badge badge-mobile text-xxs"><%= currentUser.unreadChatsCount + currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
+                <span class="badge badge-mobile text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
               <% } %>
             </span>
           </button>

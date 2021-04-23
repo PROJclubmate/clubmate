@@ -63,7 +63,7 @@ div.content{
   #inbox_mobile{display: none !important;}
   .name{color: white !important; background-color: #403d3c; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
-  .navback{background-color: rgba(54,51,50,0.95); background-image: url(/images/maze-black.png); image-rendering: pixelated;}
+  .navback{background-color: rgba(54,51,50,0.95);}
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
@@ -73,7 +73,7 @@ div.content{
   .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
-  .chatlist-box-college.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
+  #college-scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     transition: ease-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
@@ -305,10 +305,9 @@ div.content{
   .mobiletext2{font-size: 1.0625rem !important;}
   .mobiletext3{font-size: 0.9375rem !important;}
   .mobiletext4{font-size: 0.875rem !important;}
-  .form-control.chatinput{padding: 0.5rem 0.875rem !important;}
-  #user-send{padding: 0.4375rem 0.75rem !important;}
-  #club-send{padding: 0.4375rem 0.75rem !important;}
-  #messages{margin-bottom: 42px;}
+  .form-control.chatinput{padding: 0.75rem 0.875rem !important;}
+  #user-send, #club-send{font-size: 1.125rem; height: 46px; width: 46px;}
+  #messages{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset;}
   .chat-msg3{top: 45% !important;}
@@ -323,7 +322,6 @@ div.content{
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{background-color: #efefef !important; border-color: transparent !important; box-shadow: none !important;}
   .btncollapse-user.collapsed{border-radius: 0.5rem;}
   .btncollapse-div-user{border-radius: 0.5rem !important; background-color: #efefef; margin: 1px 0;}
-  .border-light.btncollapse-div{border: none !important;}
   .border-light.btncollapse-div-shadow{background-color: transparent; border-color: transparent !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
   .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: 0px 1px 3px -1px rgb(0,0,0,0.15) !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
@@ -343,9 +341,10 @@ div.content{
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .landing-bottom{bottom: 2rem !important;}
   .settings-img{top: 0 !important;}
-  .chat-statusbar{border-top: 0.5px solid #d3d3d3 !important;}
   .subpostdp{height: 28px !important; width: 28px !important;}
   .subPost-text{min-height: 2rem !important;}
+  #drop-chat{padding-top: 0.375rem !important; padding-bottom: 0.375rem !important;}
+  #college-scroll{height: calc(100vh - 1rem - 50px) !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -396,10 +395,6 @@ div.content{
   .chat-msg3{font-size: 1rem !important;}
   .chat-head{font-size: 0.6875rem !important;}.chat-head2{font-size: 0.6875rem !important;}
   .chat-head3{font-size: 0.75rem !important;}.chat-head4{font-size: 0.75rem !important;}
-  .form-control.chatinput{padding: 0.5rem 0.875rem !important;}
-  #user-send{font-size: 1rem; padding: 0.3445rem 0.6875rem !important;}
-  #club-send{font-size: 1rem; padding: 0.3445rem 0.6875rem !important;}
-  #messages{margin-bottom: 46px;}
   .searchdp{height: 116px !important; width: 116px!important;}
   .chatname{font-size: 1.0625rem !important;}
   .lastmsg{font-size: 1.0625rem !important;}
@@ -553,10 +548,9 @@ div.content{
   .mobiletext4{font-size: 0.6875rem !important;}
   .chatname{font-size: 0.9375rem !important;}
   .lastmsg{font-size: 0.9375rem !important;}
-  .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
-  #user-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
-  #club-send{font-size: 0.875rem; padding: 0.3125rem 0.625rem !important;}
-  #messages{margin-bottom: 42px;}
+  .form-control.chatinput{padding: 0.5rem 0.75rem !important;}
+  #user-send, #club-send{font-size: 1rem; height: 38px; width: 38px;}
+  #messages{margin-bottom: 46px;}
   .chat-msg3{top: 42.5% !important;}
   .navbar-toggler{font-size: 1.25rem !important;}
   #inbox_mobile{font-size: 1.6875rem !important;}
@@ -581,6 +575,7 @@ div.content{
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .check-label{transform: scale(1);}
   .search-bottompos{width: calc(100% - 100px - 1rem) !important;}
+  #drop-chat{padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -669,6 +664,9 @@ div.content{
 }
 .inbox_mobile.badge-mobile{
   margin: 0.25rem 0.5rem;
+  padding: 0.125rem 0.25rem !important;
+  box-shadow: none !important;
+  border: 1px solid whitesmoke;
 }
 #side-clubs{
   cursor: pointer;
@@ -2122,17 +2120,16 @@ ul{
   display: block;
   width: 100%;
 }
-.badge{
-  padding: 0.15rem 0.25rem;
-}
 .badge-round{
   min-height: 1.125rem;
   min-width: 1.125rem;
+  padding: 0.1875rem 0.25rem;
   border-radius: 1rem !important;
 }
 .badge-round2{
   min-height: 1.25rem;
   min-width: 1.25rem;
+  padding: 0.25rem;
   border-radius: 1rem !important;
 }
 .badge-white{
@@ -2168,9 +2165,9 @@ ul{
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
   z-index: 9;
-  padding: 0.15rem;
   min-height: 1rem;
   min-width: 1rem;
+  padding: 0.125rem;
   border-radius: 1rem !important;
 }
 .notification{
@@ -3377,14 +3374,14 @@ input.shadow:-webkit-autofill:focus{
   bottom: -1rem;
   will-change: transform;
 }
-.chatlist-box-college{
+#college-scroll{
   bottom: unset;
 }
 .chatlist-content{
   border-bottom: 0.5px solid whitesmoke;
 }
 #pin-chatbox.pin-chatbox2{
-  z-index: 4;
+  z-index: 11;
   position: fixed; 
   bottom: 0.825rem;
   width: inherit;
@@ -3697,14 +3694,15 @@ input.shadow:-webkit-autofill:focus{
   right: 0;
   filter: opacity(50%);
 }
-.scroll-hide::-webkit-scrollbar {
+.scroll-hide::-webkit-scrollbar{
   display: none;
 }
-.scroll-hide::-webkit-scrollbar {
+.scroll-hide::-webkit-scrollbar{
   display: none;
   scrollbar-width: none;
 }
 .college-infobtn{
+  align-items: center;
   border-radius: 2rem;
   cursor: pointer;
   width: max-content;
@@ -3713,4 +3711,7 @@ input.shadow:-webkit-autofill:focus{
 .college-infobtn:hover{
   background-color: white;
   color: #19ae69;
+}
+.college-infobtn:hover .fas{
+  -webkit-text-stroke-color: white;
 }

@@ -37,7 +37,7 @@
               <% if(currentUser && match){ %>
                 <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                   <label for="inputprofilePic" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
-                    <i class="fas fa-upload"></i> Update pic
+                    <i class="fas fa-upload mr-2"></i>profile pic
                   </label>
                   <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
                   <button class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
@@ -119,7 +119,7 @@
                   <% if(currentUser && match){ %>
                     <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                       <label for="inputprofilePic2" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
-                        <i class="fas fa-upload"></i> Update pic
+                        <i class="fas fa-upload mr-2"></i>profile pic
                       </label>
                       <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
                       <button class="btn btn-sm btn-success overlay2" style="border: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>

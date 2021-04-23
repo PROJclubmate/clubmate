@@ -17,7 +17,7 @@
                 <% if(0 <= rank && rank <= 1){ %>
                   <form action="/clubs/<%= club._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                     <label for="inputavatar" class="overlay mobiletext3">
-                      <i class="fas fa-upload"></i> Update avatar
+                      <i class="fas fa-upload mr-2"></i>avatar
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
                     <button class="btn btn-sm btn-success noborder overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
@@ -87,11 +87,11 @@
                     </a>
                   <% } %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Update featured photos</a>
+                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } %>
               </div>
@@ -286,7 +286,7 @@
                <a class="nav-link boldtext black notification" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">
                 Members
                 <% if(memberRequestsLength > 0){ %>
-                  <span class="badge badge-white text-xxs"><%= memberRequestsLength %></span>
+                  <span class="badge badge-white text-xxs noshadow"><%= memberRequestsLength %></span>
                 <% } %>
               </a>
               </li>
