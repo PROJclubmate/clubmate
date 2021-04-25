@@ -24,6 +24,8 @@
 }
 .sidebar-icon{
   font-size: 1.25rem;
+  width: 2.125rem;
+  text-align: center;
 }
 #sidebar-dropbox{
   max-height: 350px;
@@ -49,9 +51,6 @@ div.content{
 }
 .content-toppad{
   padding-top: 0.25rem;
-}
-.sidebar-iconmar{
-  margin-right: 0.25rem;
 }
 @media screen and (min-width: 1200px){
   .pin-chatbox{margin: 0 0 0 77.25%; left: 0; right: 0;}
@@ -98,7 +97,7 @@ div.content{
   #pin-chatbox.pin-chatbox2{padding-right: 3rem;}
   .pin-chatbox{width: inherit;}
   .pin-chatbox2{margin-left: -0.25rem;}
-  .chatlist-margin{margin-right: 0.25rem;}
+  .chatlist-background{margin-right: 0.25rem;}
   .topnotch-left:before{border-left: 0.5px solid #cccccc;}
   .topnotch-right:before{border-right: 0.5px solid #cccccc;}
   .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
@@ -130,7 +129,7 @@ div.content{
   .text-xxxxl{font-size: 2rem !important;}
   .chatname{font-size: 0.9375rem !important;}
   .lastmsg{font-size: 1rem !important;}
-  .chats-img{width: 35%; height: 45vh; display: block; margin-left: auto; margin-right: auto; 
+  .chats-img{height: 45vh; display: block; margin-left: auto; margin-right: auto; 
     transform: translateY(50%); filter: opacity(90%);}
   h5.topic-h5{font-size: 1.25rem !important;}
   .description-short-show{font-size: 1.25rem !important;}
@@ -163,7 +162,7 @@ div.content{
   a.hr2.active{border:2px inset white; padding-top: 7px; padding-bottom: 7px; box-shadow: inset 1px 1px 2px -1px grey;}
   div.content{margin-left: 0; padding: 0;}
   .content-toppad{padding-top: 0.5rem;}
-  .sidebar-iconmar{margin-right: 0;}
+  .sidebar-icon{width: unset;}
   .hamburger{visibility: hidden;}
   .discoverswitch{padding: 1rem 1.75rem !important;}
   .sidebar-label{font-size: 0.9375rem !important; margin: 0;}
@@ -3355,6 +3354,7 @@ input.shadow:-webkit-autofill:focus{
   cursor: pointer;
   border-bottom: 0.5px solid white;
   transition: ease-out 0.25s;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 .chat-item:hover{
   background-color: whitesmoke;
@@ -3373,6 +3373,13 @@ input.shadow:-webkit-autofill:focus{
   overflow-x: hidden;
   bottom: -1rem;
   will-change: transform;
+}
+.chatlist-background{
+  min-height: 100%;
+  background-image: url(/images/chat.svg);
+  background-size: 35vw;
+  background-repeat: no-repeat;
+  background-position: bottom;
 }
 #college-scroll{
   bottom: unset;
@@ -3535,7 +3542,7 @@ input.shadow:-webkit-autofill:focus{
 }
 .hamburger{
   position: absolute;
-  left: 8px;
+  left: 5px;
   border-radius: 0.25rem;
   display: inline-block;
   cursor: pointer;
