@@ -1174,7 +1174,7 @@ function discover_posts_template(response){
     </div>
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
       <div class="card-body">
-        <div class="dropctn">
+        <div class="card-heading dropctn">
           <div class="valign">
             <div>
               <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
@@ -1182,7 +1182,7 @@ function discover_posts_template(response){
             <div>
               <div>
                 <span class="mobiletext3">
-                  <span class="darkgrey truncate1"><strong><%= posts[k].postClub.name %></strong></span>
+                  <span class="truncate1"><strong><%= posts[k].postClub.name %></strong></span>
                 </span>
               </div>
             </div>

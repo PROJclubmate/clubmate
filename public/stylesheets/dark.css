@@ -1,0 +1,165 @@
+:root {
+  --color-white: #fff;
+  --color-white-100: #dee3ea;
+  --color-white-200: #b2bdcd;
+  --color-white-300: #5d7290;
+
+  --color-dark-500: #39475c;
+  --color-dark-600: #323d4d;
+  --color-dark-700: #242c37;
+  --color-dark-750: #1d252f;
+  --color-dark-800: #151a21;
+  --color-dark-850: #0f1318;
+  --color-dark-900: #0b0e11;
+  --color-dark-950: #020303;
+
+  --gradient-blue-purp: linear-gradient(to right, #30CFD0 0%, #8337df 100%);
+
+  --color-secondary-washed-out: #879eed;
+  --color-secondary: #5575e7;
+  --color-accent-glow: rgba(253,77,77,0.3);
+  --color-accent: #fd4d4d;
+  --color-accent-hover: #fd6868;
+  --color-accent-disabled: #f5bfbf;
+}
+
+body {
+  background-color: var(--color-dark-900);
+  color: var(--color-white-100);
+}
+
+input {
+  background-color: var(--color-dark-750);
+  color: var(--color-white);
+}
+
+.form-control {
+  background-color: var(--color-dark-750);
+  color: var(--color-white);
+}
+
+.form-control:focus {
+  background-color: var(--color-dark-750);
+  color: var(--color-white);
+}
+
+input.form-control.search:focus {
+  background-color: var(--color-dark-750);
+}
+
+.card {
+  background-color: var(--color-dark-800);
+  color: var(--color-white);
+}
+
+.card-heading {
+  color: var(--color-white-100);
+}
+
+.hamburger {
+  background-color: var(--color-dark-850);
+}
+
+
+/** === Navbar === **/
+button.btn.btn-secondary.search {
+  border-color: var(--color-dark-500) !important;
+  background-color: var(--color-dark-500) !important;
+}
+
+/** === SIDEBAR === **/
+#sidebar {
+  background-color: var(--color-dark-800);
+}
+
+#sidebar a {
+  color: var(--color-white-100);
+}
+
+.sidebar a.active {
+  background-color: var(--color-dark-900);
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: var(--color-dark-750);
+}
+
+#sidebar-dropbox {
+  background-color: var(--color-dark-800);
+}
+
+/** === Discover Page === **/
+.card.discovercard {
+  border: 0.5px solid var(--color-dark-800);
+}
+
+.card.discovercard:hover {
+  background-color: 0.5px solid var(--color-dark-900);
+  border: 0.5px solid var(--color-dark-900);
+}
+
+.sortBykey{
+  color: var(--color-white);
+  background-color: var(--color-dark-900);
+}
+.sortBykey:hover{
+  background-color: black;
+  color: white;
+}
+.sortBykey:focus{
+  outline: none;
+  color: white;
+}
+.sortBykey.active{
+  background-color: var(--color-dark-800);
+  color: white;
+}
+.sortBykey.logout:hover{
+  background-color: grey;
+  color: #e0e0e0;
+}
+
+.btn-light.discoverswitch {
+  background: var(--color-dark-700);
+  box-shadow: none;
+  border-color: var(--color-dark-700);
+}
+
+.btn-light.discoverswitch:hover {
+  background: var(--color-dark-800);
+  border-color: var(--color-dark-800);
+}
+
+#following-switch {
+  background: var(--color-dark-800);
+}
+
+#explore-switch {
+  background: var(--color-dark-800);
+}
+
+@media screen and (min-width: 768px) {
+  .navback {
+    background-color: var(--color-dark-850);
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: var(--color-white-100);
+  }
+
+  .name {
+    background-color: var(--color-dark-850);
+    background: var(--gradient-blue-purp);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent
+  }
+
+  .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    background-color: var(--color-dark-750);
+  }
+
+  #menu-toggle:hover {
+    background-color: var(--color-dark-750);
+  }
+}

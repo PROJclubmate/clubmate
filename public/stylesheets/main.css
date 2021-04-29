@@ -1,3 +1,7 @@
+:root {
+  --dark-grey: #343a40
+}
+
 /* The side navigation menu */
 .sidebar{
   margin: 0;
@@ -894,6 +898,9 @@ input{
 }
 .card{
   border: none;
+}
+.card-heading{
+  color: var(--dark-grey);
 }
 .card-body0{
   padding: 0 !important;
