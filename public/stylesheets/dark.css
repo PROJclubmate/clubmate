@@ -25,12 +25,12 @@
 
 body {
   background-color: var(--color-dark-900);
-  color: var(--color-white-100);
+  color: var(--color-white-200);
 }
 
 input {
   background-color: var(--color-dark-750);
-  color: var(--color-white);
+  color: var(--color-white-200);
 }
 
 .btn.btn-light {
@@ -42,6 +42,14 @@ input {
 
 .btn.btn-light:hover {
   background-color: var(--color-dark-800);
+}
+
+button.dropdown-toggle {
+  color: var(--color-white-200);
+}
+
+button.dropdown-toggle:hover {
+  color: var(--color-white-100);
 }
 
 .darkgrey {
@@ -56,14 +64,19 @@ a .nolink:hover {
   color: var(--color-white-100);
 }
 
+.hr-light {
+  border-top: 0.5px solid var(--color-dark-700);
+}
+
 .form-control {
   background-color: var(--color-dark-750);
-  color: var(--color-white);
+  color: var(--color-white-200);
+  border: 1px solid var(--color-dark-800);
 }
 
 .form-control:focus {
   background-color: var(--color-dark-750);
-  color: var(--color-white);
+  color: var(--color-white-100);
 }
 
 input.form-control.search:focus {
@@ -186,6 +199,44 @@ h5.topic-h5 {
   border-bottom: 0.5px solid var(--color-dark-750) !important;
   border-top: 0.5px solid var(--color-dark-750) !important;
 }
+
+button.vote {
+  color: var(--color-white-200);
+}
+
+.fas.fa-caret-up, .fas.fa-caret-down {
+  -webkit-text-stroke: 1.3125px var(--color-white-200);
+}
+
+.far.fa-thumbs-up, .far.fa-heart {
+  -webkit-text-stroke: 0.75px var(--color-dark-800);
+}
+
+.fas.fa-ellipsis-v {
+  -webkit-text-stroke: 0.25px var(--color-dark-800);
+}
+
+.circle-plus .circle {
+  border: solid 2.5px var(--color-dark-900);
+}
+
+.container.drop-shadow1 {
+  background-color: var(--color-dark-700);
+  color: var(--color-white-200);
+}
+
+.dropitems:hover {
+  background-color: var(--color-dark-750);
+}
+
+.post-head {
+  border-top: 5px solid var(--color-dark-800) !important;
+}
+
+.post-tail {
+  border-bottom: 0.5px solid var(--color-dark-800) !important;
+}
+
 
 /* For tablets */
 #discover_nav {
