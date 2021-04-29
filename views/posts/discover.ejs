@@ -106,14 +106,14 @@
     </div>
   <% } %>
 </div>
-<nav id="discover_nav" class="navbar fixed-bottom navbar-light bg-light desktopNone tabletShow discover-navback">
+<nav id="discover_nav" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
   <div id="discover_nav-div">
     <% if(currentUser){ %>
       <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
         <% if(currentUser.discoverSwitch == 1){ %>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign noback">
             <div><i id="following-switch-mobile" class="fas fa-university discover-icon"></i></div>
-            <div class="text-sm pl-2 mobilebold" style="color: #180c03;">Following..</div>
+            <div id="following-switch-mobile-txt" class="text-sm pl-2 mobilebold">Following..</div>
           </div>
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas discover-icon"></i></button>
         <% } else if(currentUser.discoverSwitch == 2){ %>
