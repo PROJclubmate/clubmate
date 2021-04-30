@@ -56,6 +56,14 @@ button.dropdown-toggle:hover {
   color: var(--color-white-100) !important;
 }
 
+a {
+  color: var(--color-white-200);
+}
+
+a:hover {
+  color: var(--color-white-100)
+}
+
 a .nolink {
   color: var(--color-white-200);
 }
@@ -126,6 +134,15 @@ button.btn.btn-secondary.search {
 }
 
 #sidebar-dropbox {
+  background-color: var(--color-dark-800);
+}
+
+.popup-box {
+  background-color: var(--color-dark-800);
+  border: 3px solid var(--color-dark-800);
+}
+
+.pop-header {
   background-color: var(--color-dark-800);
 }
 
@@ -238,6 +255,51 @@ button.vote {
 }
 
 
+/* College Page */
+
+.college {
+  color: var(--color-white-200);
+  /* background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25) 3px, white 5px, white 5px); */
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 0.5px solid var(--color-dark-800);
+}
+
+.college-infobtn:hover {
+  background-color: var(--color-dark-800);
+}
+
+.border-light {
+  border: 0.5px solid var(--color-dark-800) !important;
+}
+
+#college-scroll {
+  border-bottom: 1px solid var(--color-dark-700) !important;
+}
+
+.collegename {
+  background-color: var(--color-dark-800);
+  border: 0.5px solid var(--color-dark-800);
+  margin: 4px 0;
+}
+
+.category {
+  color: var(--color-white-200);
+  background-color: var(--color-dark-700);
+  padding-left: 4px;
+}
+
+.no-fa-text-stroke-dark {
+  -webkit-text-stroke: 0 !important;
+}
+
+a.grey.mobiletext {
+  color: var(--color-white-200);
+}
+
+a.grey.mobiletext:hover {
+  color: var(--color-white);
+}
+
 /* For tablets */
 #discover_nav {
   background-color: var(--color-dark-800);
@@ -279,6 +341,10 @@ button.vote {
 }
 
 @media screen and (min-width: 768px) {
+  .scroll::-webkit-scrollbar-track{background: var(--color-dark-800) !important;}
+  .scroll:hover::-webkit-scrollbar-thumb{background-color: var(--color-dark-500); border-radius: 1px;}
+  .scroll::-webkit-scrollbar-thumb:hover{background-color: var(--color-white-300) !important;}
+
   .navback {
     background-color: var(--color-dark-850);
   }
