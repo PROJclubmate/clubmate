@@ -109,7 +109,7 @@
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
               <span id="requestslink" class="text-xxl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
-                <i class="fas fa-user-friends"></i>
+                <i class="fas fa-bell"></i>
               </span>
               <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
                 <span class="badge text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
@@ -154,7 +154,7 @@
 <div class="popup-box scroll moz-scroll" id="pop_box_requests">
   <% if (currentUser && currentUser.clubInvites.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing lightgrey text-xs">Club Invites</h6>
+      <h6 class="nothing lightgrey text-xs"><i class="fas fa-envelope-open-text mr-2"></i>Club Invites</h6>
       <% if (currentUser.clubInvites.length != 0){ %>
         <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>
@@ -193,7 +193,7 @@
   <% } %>
   <% if(currentUser && currentUser.friendRequests.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing lightgrey text-xs">Friend Requests</h6>
+      <h6 class="nothing lightgrey text-xs"><i class="fas fa-user-friends mr-2"></i>Friend Requests</h6>
       <% if (currentUser.clubInvites.length == 0){ %>
         <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>

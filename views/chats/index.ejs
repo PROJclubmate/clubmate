@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 <script>
 	if(window.innerWidth < 768){
-		if(location.pathname == '/chats'){
+		if(location.pathname.split('/')[1] == 'chats'){
 			document.getElementById('inbox_mobile_div').classList.add('nodisplay');
 			document.getElementById('mobile_toggler_div').classList.remove('nodisplay');
 		}
@@ -16,10 +16,17 @@
 			</div>
 			<div class="p-2 desktopNone chat-discover" style="margin-bottom: -1.125rem;"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
 		</div>
+		<div class="d-flex flex-row">
+			<div class="my-2">
+        <a href="/chats/rooms">
+				  <img class="chats_chevron" src="<%= '/images/double-chevron.svg' %>" title="Designed by [Pixel perfect] from @flaticon">
+        </a>
+			</div>
+		</div>
 		<div class="card mt-0 chatlist-background border-light">
 			<% if(chatList.length){ %>
 				<% for(var i=0;i<chatList.length;i++){ %>
-					<form class="row no-gutters chat-form" action="/chats/open" method="GET">
+					<form class="chat-form" action="/chats/open" method="GET">
 						<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
 							<div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>" class="d-flex flex-row px-2 chat-item active" value="<%= chatList[i].type %>">
 						<% } else{ %>

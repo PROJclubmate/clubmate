@@ -1,7 +1,6 @@
 <% include ../partials/header %>
 
 
-
 <div class="row no-gutters content-toppad">
   <div class="col-lg-9 order-md-first order-last">
     <div class="row no-gutters">
@@ -285,9 +284,6 @@
               <li class="nav-item">
                <a class="nav-link boldtext black notification" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="members" aria-selected="true" onclick="document.getElementById('load-more-memberRequests-btn').click();">
                 Members
-                <% if(memberRequestsLength > 0){ %>
-                  <span class="badge badge-white text-xxs noshadow"><%= memberRequestsLength %></span>
-                <% } %>
               </a>
               </li>
               <li class="nav-item">
@@ -457,13 +453,29 @@
               <!-- Stories Tab -->
               <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab"></div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
-                <!-- Chats/Rooms Tab -->
-                <div class="tab-pane fade cardpad greyback nothing" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
-                  <div id="pin-chatbox" class="pin-chatbox3 chatbox-club" value="<%= currentUser.firstName %>">
-                    <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUser._id %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
-                      <div id="lastMsgBy" value=""> 
-                        <% include ../clubs/chats %>
+                <!-- Rooms Tab -->
+                <div class="tab-pane fade cardpad border-light-lr p-0 pt-2" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
+                  <div class="card indexcard cardbody">
+                    <div class="greyback valign my-auto m-2" style="height: 23px;">
+                      <div class="d-flex flex-row">
+                        <span class="lightgrey text-sm mx-2 my-auto"><%= 1 %> rooms</span>
                       </div>
+                    </div>
+                    <div class="mt-2">
+                      <div class="p-2 halfwidth" style="float: left;">
+                        <a href="#" class="lightgrey nounderline">
+                          <div class="room-container whitesmokeback">
+                            <i class="fas fa-user-friends mr-2"></i>Common
+                          </div>
+                        </a>
+                      </div>
+                      <!-- <div class="p-2 halfwidth" style="float: left;">
+                        <a href="#" class="grey nounderline">
+                          <div class="room-container whitesmokeback">
+                            <i class="fas fa-hashtag mr-2"></i>Admins only
+                          </div>
+                        </a>
+                      </div> -->
                     </div>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexSearch, indexSearchEmail, 
-  indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, 
-  indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, 
+  indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, 
+  indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
   indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexFeedbackPage}
    = require('../controllers/index');
@@ -20,12 +20,6 @@ router.get('/help', indexHelp);
 
 // FAQ page
 router.get('/faq', indexFAQ);
-
-// Chats list
-router.get('/chats', middleware.isLoggedIn, indexChats);
-
-// Chats list
-router.get('/chats/open', middleware.isLoggedIn, indexChatsOpen);
 
 // Search
 router.get('/search', indexSearch);

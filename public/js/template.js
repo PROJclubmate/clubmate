@@ -1013,7 +1013,7 @@ function index_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column mt-3">
+      <div class="topic-column mt-3">
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
@@ -1078,24 +1078,6 @@ function index_posts_template(response){
               </form>
             </div>
           </div>
-        </div>
-        <div>
-          <form action="/posts/<%= posts[k]._id %>/vote" method="POST">
-            <div class="d-flex flex-column">
-              <% if(currentUser){ %>
-                <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
-                <% } else if(hasVote[k] == 0){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                <% } %>
-              <% } else{ %>
-                <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-              <% } %>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
         </div>
       </div>
     </div>
@@ -1541,7 +1523,7 @@ function club_posts_template(response){
         </div>
       </div>
       <!-- TOPIC COLUMN -->
-      <div class="d-flex flex-column topic-column mt-3">
+      <div class="topic-column mt-3">
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
             <% if(currentUser){ %>
@@ -1618,24 +1600,6 @@ function club_posts_template(response){
               </form>
             </div>
           </div>
-        </div>
-        <div>
-          <form action="/posts/<%= posts[k]._id %>/vote" method="POST">
-            <div class="d-flex flex-column">
-              <% if(currentUser){ %>
-                <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
-                <% } else if(hasVote[k] == 0){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                <% } %>
-              <% } else{ %>
-                <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-              <% } %>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
         </div>
       </div>
     </div>
@@ -1935,9 +1899,9 @@ function user_posts_template(response){
       </div>
       <!-- TOPIC COLUMN -->
       <% if(k == 0){ %>
-        <div class="d-flex flex-column topic-column mt-0 pt-3">
+        <div class="topic-column mt-0 pt-3">
       <% } else{ %>
-        <div class="d-flex flex-column topic-column mt-3">
+        <div class="topic-column mt-3">
       <% } %>
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
@@ -2003,24 +1967,6 @@ function user_posts_template(response){
               </form>
             </div>
           </div>
-        </div>
-        <div>
-          <form action="/posts/<%= posts[k]._id %>/vote" method="POST">
-            <div class="d-flex flex-column">
-              <% if(currentUser){ %>
-                <% if(hasVote[k] == 3){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
-                <% } else if(hasVote[k] == 0){ %>
-                  <div id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= posts[k].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                <% } %>
-              <% } else{ %>
-                <div class="mx-auto pb-1"><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-              <% } %>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
         </div>
       </div>
     </div>
@@ -2310,9 +2256,9 @@ function heart_posts_template(response){
       </div>
       <!-- TOPIC COLUMN -->
       <% if(l == 0){ %>
-        <div class="d-flex flex-column topic-column mt-0 pt-3">
+        <div class="topic-column mt-0 pt-3">
       <% } else{ %>
-        <div class="d-flex flex-column topic-column mt-3">
+        <div class="topic-column mt-3">
       <% } %>
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
@@ -2378,24 +2324,6 @@ function heart_posts_template(response){
               </form>
             </div>
           </div>
-        </div>
-        <div>
-          <form action="/posts/<%= postsH[l]._id %>/vote" method="POST">
-            <div class="d-flex flex-column">
-              <% if(currentUser){ %>
-                <% if(hasVoteH[l] == 3){ %>
-                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto topic-heart mt-2"><%= postsH[l].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
-                <% } else if(hasVoteH[l] == 0){ %>
-                  <div id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= postsH[l].heartCount %></div>
-                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                <% } %>
-              <% } else{ %>
-                <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-              <% } %>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
         </div>
       </div>
     </div>
