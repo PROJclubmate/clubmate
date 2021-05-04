@@ -183,8 +183,7 @@ div.content{
   .centerpad-posts{padding: 0 0rem 0 5rem !important;}
   #chats-list{padding-left: 0.5rem;}
   #pin-chatbox.pin-chatbox2{padding-right: 0.25rem; flex: 0 0 66.666667%; max-width: 66.666667%;}
-  .circle-plus .circle{margin-left: 5rem !important;}
-  .posts_view_toggle-pad{padding-left: 5.5rem !important;}
+  .togglePostsView-form {float: right; margin-right: 36px;}
 }
 /* iPad */
 @media screen and (min-width: 768px) and (max-width: 992px){
