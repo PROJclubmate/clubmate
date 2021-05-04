@@ -97,7 +97,7 @@ div.content{
   #pin-chatbox.pin-chatbox2{padding-right: 3rem;}
   .pin-chatbox{width: inherit;}
   .pin-chatbox2{margin-left: -0.25rem;}
-  .chatlist-background{margin-right: 0.25rem;}
+  .chatlist-background{margin-right: 0.25rem; min-height: 100%;}
   .topnotch-left:before{border-left: 0.5px solid #cccccc;}
   .topnotch-right:before{border-right: 0.5px solid #cccccc;}
   .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
@@ -199,7 +199,7 @@ div.content{
   .info30{width: 64% !important;}
   .chatdp{margin-left: 0 !important;}
   .centerpad-posts{padding: 0 8.5rem 0 0 !important;}
-  .chat-item{padding-left: 0 !important; padding-right: 0 !important;}
+  .chatlist-item{padding-left: 0 !important; padding-right: 0 !important;}
   #chats-list{padding-left: 0.5rem;}
   #pin-chatbox.pin-chatbox2{padding-right: 0.25rem;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
@@ -333,7 +333,8 @@ div.content{
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
-    a > .collegedp.chatsdp.active{margin-left: 0.0625rem !important;}
+  a > .collegedp.chatsdp.active{margin-left: 0.0625rem !important;}
+  a > .collegedp.chatsdp.mr-0.active{margin-left: 0.25rem !important;}
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
@@ -1036,8 +1037,7 @@ a > .collegedp.chatsdp{
   background-color: lightgrey;
 }
 a > .collegedp.chatsdp.mr-0:hover{
-  border: 2px solid #e0e0e0;
-  transition: 0.1s linear;
+  border: none;
 }
 a > .collegedp.chatsdp:hover{
   border: 2px solid whitesmoke;
@@ -1046,6 +1046,9 @@ a > .collegedp.chatsdp:hover{
 a > .collegedp.chatsdp.active{
   border-radius: 1rem;
   margin-left: -0.1875rem;
+}
+a > .collegedp.chatsdp.mr-0.active{
+  margin-left: 0;
 }
 .chatdp{
   height: 28px;
@@ -3359,27 +3362,37 @@ input.shadow:-webkit-autofill:focus{
   color: white;
   -webkit-text-stroke-width: 0 !important;
 }
-.chat-item{
+.chatlist-item{
   width: 100%;
   cursor: pointer;
   border-bottom: 0.5px solid white;
   transition: ease-out 0.25s;
   background-color: rgba(255, 255, 255, 0.9);
 }
-.chat-item:hover{
+.chatlist-item:hover{
   background-color: whitesmoke;
   border-bottom: 0.5px solid #efefef;
 }
-.chat-item.active{
+.chatlist-item.active{
   background-color: whitesmoke;
-  border-radius: 0.5rem;
   border-left: 3px solid #d3d3d3;
   border-right: 3px solid #d3d3d3;
 }
-.chat-item2{
+.chatlist-club{
   cursor: pointer;
   border-bottom: 0.5px solid #e0e0e0;
   transition: ease-out 0.25s;
+}
+.chatlist-club.active{
+  background-color: lightgrey;
+}
+.chatlist-club:hover{
+  background-color: lightgrey;
+}
+.chatlist-item.chatlist-room{
+  border: none;
+  width: max-content;
+  border-radius: 2rem;
 }
 .chatlist-box{
   height: calc(100vh - 2rem - 40px);

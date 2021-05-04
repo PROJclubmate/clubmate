@@ -665,7 +665,7 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
   }
 });
 
-$('.chat-item').click(function(){
+$('.chatlist-item').click(function(){
   var convIdProfilenameProfileid = $(this).attr('id').split('^');
   var convId = convIdProfilenameProfileid[0];
   var profileName = convIdProfilenameProfileid[1];
