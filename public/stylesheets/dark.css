@@ -2,7 +2,7 @@
   --color-white: #fff;
   --color-white-100: #dee3ea;
   --color-white-200: #b2bdcd;
-  --color-white-300: #5d7290;
+  --color-white-300: #9baec0;
 
   --color-dark-500: #39475c;
   --color-dark-600: #323d4d;
@@ -16,11 +16,25 @@
   --gradient-blue-purp: linear-gradient(to right, #30CFD0 0%, #8337df 100%);
 
   --color-secondary-washed-out: #879eed;
-  --color-secondary: #5575e7;
+  --color-secondary: #55a5e7;
+  --color-light-blue: #80bdff;
   --color-accent-glow: rgba(253,77,77,0.3);
   --color-accent: #fd4d4d;
   --color-accent-hover: #fd6868;
   --color-accent-disabled: #f5bfbf;
+}
+
+::placeholder {
+  color: var(--color-white-300) !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: var(--color-white-300) !important;
+}
+
+::-ms-input-placeholder {
+  color: var(--color-white-300) !important;
 }
 
 body {
@@ -31,6 +45,43 @@ body {
 input {
   background-color: var(--color-dark-750);
   color: var(--color-white-200);
+  caret-color: var(--color-white-100);
+}
+
+input:focus {
+  border: 1px solid var(--color-light-blue);
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px var(--color-dark-800) inset !important;
+  -webkit-text-fill-color: var(--color-white-100) !important;
+}
+
+.btn {
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-700);
+  color: var(--color-white-200);
+}
+
+.btn:hover {
+  background-color: var(--color-dark-600);
+  border: 1px solid var(--color-dark-600);
+  color: var(--color-white-100);
+}
+
+.btn-secondary {
+  background-color: var(--color-dark-700) !important;
+  border-color: var(--color-dark-700) !important;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-dark-600) !important;
+  background-color: var(--color-dark-600) !important;
+}
+
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle {
+  border-color: var(--color-dark-600) !important;
+  background-color: var(--color-dark-600) !important;
 }
 
 .btn.btn-light {
@@ -44,6 +95,22 @@ input {
   background-color: var(--color-dark-800);
 }
 
+.btn.btn-success {
+  /* background-image: linear-gradient(to bottom,#0dae1a,#24ca15); */
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+  color: white;
+}
+
+.btn-info {
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-700) !important;
+  color: var(--color-light-blue);
+}
+
+.btn-info:hover {
+  color: var(--color-light-blue);
+}
+
 button.dropdown-toggle {
   color: var(--color-white-200);
 }
@@ -52,16 +119,30 @@ button.dropdown-toggle:hover {
   color: var(--color-white-100);
 }
 
+select {
+  background-color: var(--color-dark-700);
+  color: var(--color-white-200);
+  border: 1px solid var(--color-dark-700);
+}
+
+select:focus-visible {
+  outline-color: var(--color-dark-500);
+}
+
+.blackcolor {
+  color: var(--color-white-200) !important;
+}
+
 .darkgrey {
   color: var(--color-white-100) !important;
 }
 
 a {
-  color: var(--color-white-200);
+  color: var(--color-light-blue);
 }
 
 a:hover {
-  color: var(--color-white-100)
+  color: var(--color-secondary)
 }
 
 a .nolink {
@@ -104,11 +185,52 @@ input.form-control.search:focus {
   background-color: var(--color-dark-850);
 }
 
+.bluecolor3 {
+  color: var(--color-white-100) !important;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.greyback {
+  background-color: var(--color-dark-900);
+}
+
+.black {
+  color: var(--color-white-300);
+}
+
+.badge-white {
+  background: var(--color-dark-600) !important;
+  color: var(--color-white-200) !important;
+}
+
+.badge-light {
+  background: var(--color-dark-600);
+  color: var(--color-white-100);
+}
+
+.text-shadow-white {
+  text-shadow: none;
+}
+
+.whiteback {
+  background-color: var(--color-dark-800);
+}
+
+.list-group-item {
+  background-color: var(--color-dark-700);
+}
 
 /** === Navbar === **/
 button.btn.btn-secondary.search {
   border-color: var(--color-dark-500) !important;
   background-color: var(--color-dark-500) !important;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+  color: var(--color-white-100);
 }
 
 /** === SIDEBAR === **/
@@ -125,12 +247,13 @@ button.btn.btn-secondary.search {
   color: var(--color-white-100);
 }
 
-.sidebar a.active {
+#sidebar a.active {
   background-color: var(--color-dark-900);
 }
 
-.sidebar a:hover:not(.active) {
+#sidebar a:hover:not(.active) {
   background-color: var(--color-dark-750);
+  color: var(--color-white-100);
 }
 
 #sidebar-dropbox {
@@ -298,6 +421,74 @@ a.grey.mobiletext {
 
 a.grey.mobiletext:hover {
   color: var(--color-white);
+}
+
+div.carousel-img {
+  border-color: var(--color-dark-800);
+}
+
+.btn.btncollapse {
+  border-color: var(--color-dark-800);
+  background-color: var(--color-dark-800);
+}
+
+.btncollapse-content {
+  background-color: var(--color-dark-800);
+}
+
+.border-light-lr {
+  border-left: 0.5px solid var(--color-dark-800) !important;
+  border-right: 0.5px solid var(--color-dark-800) !important;
+}
+
+.card-header.tabcontainer {
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 1);
+  background-color: var(--color-dark-900);
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: var(--color-white-100);
+  background-color: var(--color-dark-800);
+  border-color: var(--color-dark-800);
+  box-shadow: 0px 5px 3px 0px var(--color-dark-800);
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+  color: var(--color-white-100);
+  border-color: var(--color-dark-700);
+}
+
+.topic {
+  background-color: var(--color-dark-700) !important;
+}
+
+#input_topic:focus {
+  border: 1px solid var(--color-light-blue) !important;
+}
+
+.description:focus {
+  border: 1px solid var(--color-light-blue);
+}
+
+.chat-input-tool {
+  color: var(--color-white-200);
+}
+
+.chat-input-tool:hover {
+  color: var(--color-white-100);
+}
+
+.custom-file-upload {
+  background-color: var(--color-dark-700);
+  box-shadow: none;
+  border: 1px solid var(--color-dark-700);
+  color: var(--color-white-200);
+}
+
+.custom-file-upload:hover {
+  border-color: var(--color-dark-600);
+  background-color: var(--color-dark-600);
+  box-shadow: 0 -2px 10px var(--color-dark-800);
 }
 
 /* For tablets */
