@@ -347,7 +347,9 @@ div.content{
   .chatlist-background{min-height: 100%; background-image: url(/images/chat.svg); background-size: 35vw;
     background-repeat: no-repeat; background-position: bottom;}
   .room-container{padding: 2rem 1rem !important;}
-  .chats_chevron.flipped{margin: 0 2rem !important;}
+  .chats_chevronimg.flipped{margin: 0 2.125rem !important;}
+  .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -424,6 +426,9 @@ div.content{
   .posts_view_toggle-pad{padding-left: 1rem !important;}
   .check-label{transform: scale(1.1);}
   .search-bottompos{width: calc(100% - 100px - 2rem) !important;}
+  .chats_chevronimg.flipped{margin: 0 2.5625rem !important;}
+  .chats_chevronimg.anitmate-right{transform: translateX(2.5625rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2.5rem) !important;}
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
@@ -579,6 +584,9 @@ div.content{
   .check-label{transform: scale(1);}
   .search-bottompos{width: calc(100% - 100px - 1rem) !important;}
   #drop-chat{padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;}
+  .chats_chevronimg.flipped{margin: 0 2.25rem !important;}
+  .chats_chevronimg.anitmate-right{transform: translateX(2.25rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2.125rem) !important;}
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
@@ -3748,12 +3756,19 @@ input.shadow:-webkit-autofill:focus{
   border: 1px solid lightgrey;
   cursor: pointer;
 }
-.chats_chevron{
+.chats_chevronimg{
   width: 16px;
   height: 16px;
   cursor: pointer;
+  transition: ease-out 0.15s;
 }
-.chats_chevron.flipped{
+.chats_chevronimg.flipped{
   transform: scaleX(-1);
   margin: 0 1.75rem;
+}
+.chats_chevronimg.anitmate-right{
+  transform: translateX(1.875rem);
+}
+.chats_chevronimg.flipped.anitmate-left{
+  transform: scaleX(-1) translateX(1.75rem);
 }

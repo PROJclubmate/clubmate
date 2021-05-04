@@ -798,6 +798,19 @@ if(location.pathname.split('/')[1] == 'chats'){
   $(window).resize(function(){
     oldMsgHeightMobile = updateMessageHeight2() + 35;
   });
+
+  var chatList = document.getElementById('chats-list');
+  var hammergesture = new Hammer.Manager(chatList);
+  hammergesture.add(new Hammer.Pan({direction:Hammer.DIRECTION_HORIZONTAL, threshold:80, pointers: 0}));
+  hammergesture.on("panend", function(ev) {
+    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[2] != 'clubs'){
+      $('.chats_chevronimg').addClass('anitmate-right');
+      window.location.replace($('#chatlist-chevron').attr('href'));
+    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[2] == 'clubs'){
+      $('.chats_chevronimg').addClass('anitmate-left');
+      window.location.replace($('#chatlist-chevron').attr('href'));
+    }
+  });
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
