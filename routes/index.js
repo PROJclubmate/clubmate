@@ -4,9 +4,9 @@ const express  = require('express'),
   {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, 
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, 
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
-  indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
-  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexFeedbackPage}
-   = require('../controllers/index');
+  indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
+  indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage,
+  indexFeedbackPage} = require('../controllers/index');
 
 
 // New notification subscription
@@ -68,6 +68,9 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 
 // View all friends
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
+
+// View list of all students in college
+router.get('/all_students/colleges/:college_key', middleware.searchAndFilterPeople, indexViewAllStudents);
 
 // View college page
 router.get('/colleges/:college_name', indexViewCollegePage);

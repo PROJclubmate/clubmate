@@ -223,8 +223,9 @@ module.exports = {
     const morePeopleUrl = res.locals.morePeopleUrl;
     const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
+    delete res.locals.coordinates;
     delete res.locals.morePeopleUrl;
-    delete res.locals.moreClubsUrl;
+    delete res.locals.filterKeys;
     User.find(dbQuery).select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
     .limit(10).exec(function(err, foundUsers){
     if(err){
@@ -297,22 +298,22 @@ module.exports = {
         school = new RegExp(escapeRegExp(school.split('&')[0].replace(/\+/g, ' ').replace(/\%20/g, ' ')), 'gi');
         dbQueries.push({'userKeys.school': school});
       }
-      var location = urlEqualsSplit[7];
-      if(location.split('&')[0]){
+      var hometown = urlEqualsSplit[7];
+      if(hometown.split('&')[0]){
         let coordinates;
         try{
-          if(location.split('&')[0].includes('\+')){
+          if(hometown.split('&')[0].includes('\+')){
             // replacing ascii characters of [, ]
-            location = JSON.parse(location.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
+            hometown = JSON.parse(hometown.split('&')[0].replace(/\+/g, ' ').replace(/\%5B/g, '[')
             .replace(/\%5D/g, ']').replace(/\%2C/g, ','));
           } else{
-            location = location.split('&')[0].replace(/\%20/g, ' ');
-            location = JSON.parse(location);
+            hometown = hometown.split('&')[0].replace(/\%20/g, ' ');
+            hometown = JSON.parse(hometown);
           }
-          coordinates = location;
+          coordinates = hometown;
         } catch(err){
           const response = await geocodingClient.forwardGeocode({
-            query: location,
+            query: hometown,
             limit: 1
           }).send();
           coordinates = response.body.features[0].geometry.coordinates;
@@ -439,7 +440,7 @@ module.exports = {
     const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
     delete res.locals.moreClubsUrl;
-    delete res.locals.moreClubsUrl;
+    delete res.locals.filterKeys;
     Club.find(dbQuery).select({name: 1, avatar: 1, avatarId: 1, clubKeys: 1, banner: 1, categories: 1})
     .limit(10).exec(function(err, foundClubs){
     if(err){
@@ -1143,13 +1144,74 @@ module.exports = {
     });
   },
 
+  indexViewAllStudents(req, res, next){
+    var perPage = 12;
+    var pageQuery = parseInt(req.query.page);
+    var pageNumber = pageQuery ? pageQuery : 1;
+    if(req.user.userKeys.college == req.params.college_key){
+      const {dbQuery} = res.locals;
+      const coordinates = JSON.stringify(res.locals.coordinates, null, 2);
+      delete res.locals.dbQuery;
+      delete res.locals.coordinates;
+      delete res.locals.morePeopleUrl;
+      delete res.locals.filterKeys;
+      if(req.query.batch){
+        var queryName = 'batch';
+        var queryValue = req.query.batch;
+        var dbQuery2 = dbQuery; 
+      } else if(req.query.branch){
+        var queryName = 'branch';
+        var queryValue = req.query.branch;
+        var dbQuery2 = dbQuery;
+      } else if(req.query.house){
+        var queryName = 'house';
+        var queryValue = req.query.house;
+        var dbQuery2 = dbQuery;
+      } else if(req.query.school){
+        var queryName = 'school';
+        var queryValue = req.query.school;
+        var dbQuery2 = dbQuery;
+      } else if(req.query.hometown){
+        var queryName = 'hometown';
+        var queryValue = req.query.hometown;
+        // Had to make custom query because countDocuments does not work with $near, replace with $geoWithin
+        var dbQueryTemplate = `{"$and":[{"isVerified":true},{"geometry":{"$geoWithin":{"$center":[${coordinates}, 100000]}}}]}`;
+        var dbQuery2 = JSON.parse(dbQueryTemplate);
+      }
+      User.countDocuments(dbQuery2).exec(function(err, count){
+        User.find(dbQuery)
+        .skip((perPage * pageNumber) - perPage).limit(perPage).sort({fullName: 1})
+        .select({fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, lastActive: 1})
+        .exec(function(err, foundStudents){
+        if(err || !foundStudents){
+          console.log(Date.now()+' : '+'(index-52)foundStudents err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          var Students_100_profilePic = []; var collegeKey = req.params.college_key;
+          for(var i=0;i<foundStudents.length;i++){
+            if(environment === 'dev'){
+              Students_100_profilePic[i] = clConfig.cloudinary.url(foundStudents[i].profilePicId, clConfig.thumb_200_obj);
+            } else if (environment === 'prod'){
+              Students_100_profilePic[i] = s3Config.thumb_200_prefix+foundStudents[i].profilePicId;
+            }
+          }
+          res.render('users/all_students',{users: foundStudents, current: pageNumber, Students_100_profilePic,
+          studentsCount: count, queryName, queryValue, pages: Math.ceil(count / perPage), collegeKey, cdn_prefix});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+        }
+        });
+      });
+    }
+  },
+
   indexViewCollegePage(req, res, next){
     var nameEsc = req.params.college_name.replace(/\+/g, ' ').replace(/\%20/g, ' ');
     CollegePage.findOne({name: nameEsc, clubCount: {$gt: 0}})
     .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount clubUsers.id'})
     .exec(function(err, foundCollegePage){
     if(err){
-      console.log(Date.now()+' : '+'(index-52)foundCollegePage err:- '+JSON.stringify(err, null, 2));
+      console.log(Date.now()+' : '+'(index-53)foundCollegePage err:- '+JSON.stringify(err, null, 2));
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else if(!foundCollegePage){
@@ -1233,7 +1295,7 @@ module.exports = {
           User.find({_id: {$in: friendsInClubArr}})
           .select({_id: 1, fullName: 1, profilePic: 1, profilePicId: 1}).exec(function(err, foundFriends){
             if(err || !foundFriends){
-              console.log(Date.now()+' : '+'(index-53)foundUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+'(index-54)foundUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -1317,7 +1379,7 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.user_id)){
       CollegePage.findOne({_id: req.params.college_id, clubCount: {$gt: 0}}, function(err, foundCollegePage){
       if(err || !foundCollegePage){
-        console.log(Date.now()+' : '+'(index-54)foundCollegePage err:- '+JSON.stringify(err, null, 2));
+        console.log(Date.now()+' : '+'(index-55)foundCollegePage err:- '+JSON.stringify(err, null, 2));
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -1349,7 +1411,7 @@ module.exports = {
               {$addToSet: {followingClubIds: {$each: notFollowingClubIdsArr}}, 
               $inc: {followingClubCount: notFollowingClubsLength}}, function(err, updateUser){
               if(err || !updateUser){
-              console.log(Date.now()+' : '+req.params.user_id+' => (index-55)updateUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.params.user_id+' => (index-56)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               } else{
                 return res.redirect('back');
@@ -1368,7 +1430,7 @@ module.exports = {
               {$pull: {followingClubIds: {$in: thisCollegeFollowingClubIdsArr}}, 
               $inc: {followingClubCount: -thisCollegeFollowingClubsLength}}, function(err, updateUser){
               if(err || !updateUser){
-              console.log(Date.now()+' : '+req.params.user_id+' => (index-56)updateUser err:- '+JSON.stringify(err, null, 2));
+              console.log(Date.now()+' : '+req.params.user_id+' => (index-57)updateUser err:- '+JSON.stringify(err, null, 2));
               req.flash('error', 'Something went wrong :(');
               } else{
                 return res.redirect('back');
@@ -1406,7 +1468,7 @@ module.exports = {
           User.updateOne({_id: req.user._id, collegePageKeys: {$elemMatch: {id: collegePageKeyId}}},
           {$set: {'collegePageKeys.$.key': toggleCollegePageViewKey}}, function(err, updateUser){
           if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-57)updateUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (index-58)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');
@@ -1419,7 +1481,7 @@ module.exports = {
           User.updateOne({_id: req.user._id},
           {$push: {collegePageKeys: obj}}, function(err, updateUser){
           if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-58)updateUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (index-59)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');
@@ -1437,7 +1499,7 @@ module.exports = {
         {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, 
         $inc: {followerCount: 1}}, function(err, updateClub){
         if(err || !updateClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-59)updateClub err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (index-60)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -1445,7 +1507,7 @@ module.exports = {
           {$addToSet: {followingClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
           $inc: {followingClubCount: 1}}, function(err, updateUser){
           if(err || !updateUser){
-          console.log(Date.now()+' : '+req.params.user_id+' => (index-60)updateUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.params.user_id+' => (index-61)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');
@@ -1457,14 +1519,14 @@ module.exports = {
         Club.updateOne({_id: req.params.club_id, isActive: true}, 
         {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClub){
         if(err || !updateClub){
-          console.log(Date.now()+' : '+req.user._id+' => (index-61)updateClub err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (index-62)updateClub err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
           User.updateOne({_id: req.params.user_id}, 
           {$pull: {followingClubIds: req.params.club_id}, $inc: {followingClubCount: -1}}, function(err, updateUser){
           if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (index-62)updateUser err:- '+JSON.stringify(err, null, 2));
+          console.log(Date.now()+' : '+req.user._id+' => (index-63)updateUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');

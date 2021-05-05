@@ -3,24 +3,7 @@
 <div class="row no-gutters">
 	<div class="col-lg-9">
 		<div class="ml-2 mt-3 valign">
-			<div>
-				<span class="boldtext"><a href="/users/<%= userId %>" class="black"> 
-				<% if(match){ %>
-					My</a></span>
-				<% } else{ %>
-					<%= userName %></a></span>'s
-				<% } %>
-					friends
-			</div>
-			<% if(match){ %>
-				<% if(onlineFriendsCount > 0){ %>
-					<div class="text-sm boldtext greencolor2 text-shadow-white px-2"><%= onlineFriendsCount %><em> online</em></div>
-				<% } else{ %>
-					<div class="text-sm boldtext greencolor2 text-shadow-white px-2">0<em> online </em>😴</div>
-				<% } %>
-			<% } else{ %>
-				<div></div>
-			<% } %>
+			<div style="text-transform: capitalize;"><%= queryName %>: <%= queryValue %></div>
 		</div>
 
 		<div class="dropctn mt-2">
@@ -34,7 +17,7 @@
 		        <% if (current == 1){ %>
 		        <li class="page-item disabled text-sm"><a class="page-link">«</a></li>
 		        <% } else{ %>
-		        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends">«</a></li>
+		        <li><a class="page-link text-sm" href="/all_students/colleges/<%= collegeKey %>?<%= queryName %>=<%= queryValue %>">«</a></li>
 		        <% } %>
 		 
 		        <% var i=(Number(current)>3 ? Number(current)-2:1) %>
@@ -42,14 +25,14 @@
 			        <% if (i == current) { %>
 			        <li class="active"><a class="page-link text-sm"><%= i %></a></li>
 			        <% } else{ %>
-			        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends?page=<%= i %>"><%= i %></a></li>
+			        <li><a class="page-link text-sm" href="/all_students/colleges/<%= collegeKey %>?<%= queryName %>=<%= queryValue %>&page=<%= i %>"><%= i %></a></li>
 			        <% } %>
 		        <% } %>
 		 
 		        <% if (current == pages){ %>
 		        <li class="page-item disabled text-sm"><a class="page-link">»</a></li>
 		        <% } else{ %>
-		        <li><a class="page-link text-sm" href="/users/<%= userId %>/all_friends?page=<%= pages %>">»</a></li>
+		        <li><a class="page-link text-sm" href="/all_students/colleges/<%= collegeKey %>?<%= queryName %>=<%= queryValue %>&page=<%= pages %>">»</a></li>
 		        <% } %>
 		    	</ul>
 		    <% } %>
@@ -61,7 +44,7 @@
 	        <div class="dropdown-menu dropdown-menu-right dropbox transparent">
 	          <div class="container drop-shadow1 floatright page-index-back">
 	            <div class="input-group input-group-sm px-2">
-	              <input href="/users/<%= userId %>/all_friends?page=" type="number" id="page-index-input2" class="form-control search text-xs px-1" placeholder="Page ..">
+	              <input href="/all_students/colleges/<%= collegeKey %>?<%= queryName %>=<%= queryValue %>&page=" type="number" id="page-index-input2" class="form-control search text-xs px-1" placeholder="Page ..">
 	              <div class="input-group-append">
 	                <button id="page-index-button2" class="btn btn-secondary text-sm btnxs btnshadow" type="submit"> Go </button>
 	              </div>
@@ -72,10 +55,10 @@
 	    </div>
 	  </div>
 
-		<div id="server-friends">
+		<div id="server-students">
 			<div class="row no-gutters mo-mx-2">
-				<% if(friendsCount == 0){ %>
-					<h6 class="lightgrey m-2">No friends yet :)</h6>
+				<% if(studentsCount == 0){ %>
+					<h6 class="lightgrey m-2">No students yet :)</h6>
 				<% }else{ %>
 					<% var len = users.length; var k=0; for(k;k<len;k++){ %>
 						<div class="col-md-4 mobilepad px-1">
@@ -84,9 +67,9 @@
 									<div>
 							      <a href="/users/<%= users[k]._id %>">
 											<% if(users[k].userKeys.sex == 'Male'){ %>
-				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Friends_100_profilePic[k] || '/images/noUserMale.png' %>">
+				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Students_100_profilePic[k] || '/images/noUserMale.png' %>">
 											<% } else if(users[k].userKeys.sex == 'Female'){ %>
-				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Friends_100_profilePic[k] || '/images/noUserFemale.png' %>">
+				            		<img class="searchdp" style="margin: 0 !important;" src="<%= Students_100_profilePic[k] || '/images/noUserFemale.png' %>">
 											<% } %>
 				          	</a>
 							    </div>

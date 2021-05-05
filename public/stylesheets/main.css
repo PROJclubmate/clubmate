@@ -350,6 +350,7 @@ div.content{
   .chats_chevronimg.flipped{margin: 0 2.125rem !important;}
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
+  .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
