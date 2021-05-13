@@ -1,39 +1,80 @@
-<% include ./partials/header %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <title>clubmate - Good company</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600&family=Lato:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+    <!-- Mobile/PWA support -->
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="/images/icons/favicon-16x16.ico">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="/images/icons/favicon-32x32.ico">
+    <link rel="icon" type="image/x-icon" sizes="64x64" href="/images/icons/favicon-96x96.ico">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/images/icons/app-icon-192x192.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#252525">
+    <meta name="apple-mobile-web-app-title" content="clubmate">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-60x60.png" sizes="60x60">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/images/icons/apple-icon-180x180.png" sizes="180x180">
+    <meta name="msapplication-navbutton-color" content="#252525">
+    <meta name="msapplication-TileColor" content="#252525">
+    <meta name="msapplication-TileImage" content="/images/icons/app-icon-144x144.png">
+    <meta name="theme-color" content="#252525">
+  </head>
+  <body>
+    <!-- Load progress bar -->
+    <div class="nanobar meter animate" id="bar-id" style="position: fixed;">
+      <div class="bar"></div>
+    </div>
 
-<style>
-  body{
-    background:linear-gradient(135deg, #160C23, #7B6762);
-    color: white;
-  }
-</style>
-<div class="d-flex">
-  <div class="mx-auto mt-5 mb-4">
-    <h3 class="text-center d-flex text-lato">
-      Welcome to <span class="text-xxs pt-1 pl-2 greencolor2">PROJ.<img src="/images/icons/app-icon-96x96.png" style="width: 20px; height: 20px;"></span>clubmate</h3>
-  </div>
-</div>
-<div class="row no-gutters justify-content-center">
-  <div class="col-10 col-lg-4 col-md-6">
-    <h6 class="text-center mb-5" style="margin-left: -0.5rem; margin-right: -0.5rem;">Find all the info, student groups in your college & their conversations at one place.</h6>
-  </div>
-  <div class="col-10 col-lg-4 col-md-6 landing-bottom">
+
+    <style>
+      body{
+        background:linear-gradient(135deg, #160C23, #7B6762);
+        color: white;
+      }
+    </style>
+
     <div class="d-flex">
-      <div class="mx-auto">
-        <a href="/login"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">login</span></button></a>
-        <a href="/register"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">signup</span></button></a>
+      <div class="mx-auto mt-5 mb-4">
+        <h3 class="text-center d-flex text-lato">
+          Welcome to <span class="text-xxs pt-1 pl-2 greencolor2">PROJ.<img src="/images/icons/app-icon-96x96.png" style="width: 20px; height: 20px;"></span>clubmate</h3>
       </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <div class="d-flex flex-column" style="margin-top: -0.5rem;">
-      <div class="text-xs lightgrey mx-auto pl-4">
-        <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
-        <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+    <div class="row no-gutters justify-content-center">
+      <div class="col-10 col-lg-4 col-md-6">
+        <h6 class="text-center mb-5" style="margin-left: -0.5rem; margin-right: -0.5rem;">Find all the info, student groups in your college & their conversations at one place.</h6>
       </div>
-      <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
+      <div class="col-10 col-lg-4 col-md-6 landing-bottom">
+        <div class="d-flex">
+          <div class="mx-auto">
+            <a href="/login"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">login</span></button></a>
+            <a href="/register"><button class="gb gb4 gb-bordered hover-fill gb-rounded btnshadow px-0 mx-2"><span class="nounderline text-lg gb-bordered">signup</span></button></a>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="d-flex flex-column" style="margin-top: -0.5rem;">
+          <div class="text-xs lightgrey mx-auto pl-4">
+            <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
+            <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+          </div>
+          <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 <% include ./partials/footer %>

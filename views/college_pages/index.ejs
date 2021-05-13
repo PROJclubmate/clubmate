@@ -2,37 +2,37 @@
 
 <div class="row no-gutters">
 	<div id="college-scroll" class="col-lg-9 card chatlist-box scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
-		<div class="greyback desktopNone" style="height: 5.75rem;">
-			<div class="d-flex justify-content-around my-2 pb-2 grey fullwidth">
-				<div class="d-flex flex-column px-1 my-2 college-infobtn" style="border-radius: 1rem;">
-					<div class="text-xxxl my-auto">
+		<div class="college-infodiv desktopNone">
+			<div class="d-flex justify-content-around my-2 pb-2 pitchblack fullwidth">
+				<div class="d-flex flex-column px-1 my-2 college-infobtn">
+					<div class="text-xxxxl my-auto">
 						<i class="far fa-newspaper"></i>
 					</div>
-					<div class="story-label lightgrey text-xxxs">News</div>
+					<div class="story-label mobileNone text-xxxs">News</div>
 				</div>
-				<div class="d-flex flex-column px-1 my-2 college-infobtn" style="border-radius: 1rem;">
-					<div class="text-xxxl my-auto">
+				<div class="d-flex flex-column px-1 my-2 college-infobtn">
+					<div class="text-xxxxl my-auto">
 						<i class="fas fa-tasks"></i>
 					</div>
-					<div class="story-label lightgrey text-xxxs">Attendance</div>
+					<div class="story-label mobileNone text-xxxs">Attendance</div>
 				</div>
-				<div class="d-flex flex-column px-1 my-2 college-infobtn" style="border-radius: 1rem;">
-					<div class="text-xxxl my-auto" style="-webkit-text-stroke: 0.25px #e0e0e0;">
+				<div class="d-flex flex-column px-1 my-2 college-infobtn">
+					<div class="text-xxxl my-auto">
 						<i class="fas fa-external-link-alt"></i>
 					</div>
-					<div class="story-label lightgrey text-xxxs">Quick links</div>
+					<div class="story-label mobileNone text-xxxs">Quick links</div>
 				</div>
-				<div class="d-flex flex-column px-1 my-2 college-infobtn" style="border-radius: 1rem;">
-					<div class="text-xxxl my-auto" style="-webkit-text-stroke: 0.25px #e0e0e0;">
+				<div class="d-flex flex-column px-1 my-2 college-infobtn">
+					<div class="text-xxxl my-auto">
 						<i class="fas fa-utensils"></i>
 					</div>
-					<div class="story-label lightgrey text-xxxs">Mess</div>
+					<div class="story-label mobileNone text-xxxs">Mess</div>
 				</div>
 			</div>
 		</div>
 		<% if(college_page.cover && college_page.cover != ''){  %>
 			<div class="greyback">
-				<img class="cover college-cover" src="<%= college_page.cover %>">
+				<img class="cover college-cover mobileblurred" src="<%= college_page.cover %>">
 			</div>
 		<% } %>
 		<div class="border-light" style="border-bottom-color: white !important;">
@@ -43,13 +43,15 @@
 							<span>
 								<sup class="greencolor2 text-xs pb-auto boldtext" style="margin-right: -0.125rem;">My </sup>
 								<i class="fas fa-university lightgrey text-xxl"></i>
-								<span id="copyTxt"><%= college_page.name %></span>
+								<!-- Change to college_page.name -->
+								<span id="copyTxt">IIT Mandi</span>
 							</span>
 						<% } else{ %>
 							<span>
 								<sup class="greencolor2 text-xs pb-auto boldtext invisible" style="margin-right: -0.125rem;">My </sup>
 								<i id="collegeicon" class="fas fa-university lightgrey text-xxl"></i>
-								<span id="copyTxt"><%= college_page.name %></span>
+								<!-- Change to college_page.name -->
+								<span id="copyTxt">IIT Mandi</span>
 							</span>
 						<% } %>
 						<div class="tooltip">
@@ -220,27 +222,27 @@
 	</div>
 	<div class="col-md-4 col-lg-3 px-2">
 		<div class="mobileNone">
-			<div class="d-flex flex-column mt-3 grey">
+			<div class="d-flex flex-column mt-3 darkgrey">
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem;">
+					<div class="text-xxxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem;">
 						<i class="far fa-newspaper"></i>
 					</div>
 					<div class="my-auto ml-3 lightgrey">News</div>
 				</div>
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem;">
+					<div class="text-xxxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem;">
 						<i class="fas fa-tasks"></i>
 					</div>
 					<div class="my-auto ml-3 lightgrey">Attendance</div>
 				</div>
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem; -webkit-text-stroke: 0.25px #e0e0e0;">
+					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
 						<i class="fas fa-external-link-alt"></i>
 					</div>
 					<div class="my-auto ml-3 lightgrey">Quick links</div>
 				</div>
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem; -webkit-text-stroke: 0.25px #e0e0e0;">
+					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
 						<i class="fas fa-utensils"></i>
 					</div>
 					<div class="my-auto ml-3 lightgrey">Mess</div>

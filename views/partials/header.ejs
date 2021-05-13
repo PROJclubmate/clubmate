@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="192x192"  href="/images/icons/app-icon-192x192.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#252120">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#262626">
     <meta name="apple-mobile-web-app-title" content="clubmate">
     <link rel="apple-touch-icon" href="/images/icons/apple-icon-57x57.png" sizes="57x57">
     <link rel="apple-touch-icon" href="/images/icons/apple-icon-60x60.png" sizes="60x60">
@@ -28,10 +28,10 @@
     <link rel="apple-touch-icon" href="/images/icons/apple-icon-144x144.png" sizes="144x144">
     <link rel="apple-touch-icon" href="/images/icons/apple-icon-152x152.png" sizes="152x152">
     <link rel="apple-touch-icon" href="/images/icons/apple-icon-180x180.png" sizes="180x180">
-    <meta name="msapplication-navbutton-color" content="#252120">
-    <meta name="msapplication-TileColor" content="#252120">
+    <meta name="msapplication-navbutton-color" content="#262626">
+    <meta name="msapplication-TileColor" content="#262626">
     <meta name="msapplication-TileImage" content="/images/icons/app-icon-144x144.png">
-    <meta name="theme-color" content="#252120">
+    <meta name="theme-color" content="#262626">
   </head>
   <body>
     <!-- Load progress bar -->
@@ -45,9 +45,37 @@
         </span>
       </button>
       <div>
-        <a href="/">
-          <span id="brandname" class="navbar-brand name"><em>clubmate</em></span>
-        </a>
+        <span id="brandname">
+          <a href="/" class="navbar-brand name mobileNone">
+            <em>clubmate</em>
+          </a>
+          <% if(locals.college_page){ %>
+            <a href="/users/<%= currentUser.id %>" class="navbar-brand name desktopNoneFlex">
+              <span class="valign lineheight">
+                <span>
+                  <% if(currentUser.userKeys.sex == 'Male'){ %>
+                    <% if(CU_50_profilePic){ %>
+                      <img class="chatdp rounded-circle" src="<%= CU_50_profilePic %>">
+                    <% } else{ %>
+                      <img class="chatdp rounded-circle" src="<%= '/images/noUserMale.png' %>">
+                    <% } %>
+                  <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+                    <% if(CU_50_profilePic){ %>
+                      <img class="chatdp rounded-circle" src="<%= CU_50_profilePic %>">
+                    <% } else{ %>
+                      <img class="chatdp rounded-circle" src="<%= '/images/noUserFemale.png' %>">
+                    <% } %>
+                  <% } %>
+                </span>
+                <span style="text-transform: lowercase;"><%= currentUser.firstName %></span>
+              </span>
+            </a>
+          <% } else{ %>
+            <a href="/" class="navbar-brand name desktopNone">
+              <em>clubmate</em>
+            </a>
+          <% } %>
+        </span>
       </div>
       <div>
         <% if(currentUser){ %>

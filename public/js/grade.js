@@ -67,14 +67,14 @@ var Grade = function () {
         key: 'getRGBAGradientValues',
         value: function getRGBAGradientValues(top) {
             return top.map(function (color, index) {
-                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.8' + ') ' + (index == 0 ? '0%' : '0%');
+                return 'rgba(' + color.rgba.slice(0, 3).join(',') + ',0.8' + ') ' + (index == 0 ? '-150%' : '100%');
             }).join(',');
         }
     }, {
         key: 'getCSSGradientProperty',
         value: function getCSSGradientProperty(top) {
             var val = this.getRGBAGradientValues(top);
-            return 'background-image: linear-gradient(135deg, ' + val + ')';
+            return 'background-image: radial-gradient(' + val + ')';
         }
     }, {
         key: 'getMiddleRGB',

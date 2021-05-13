@@ -574,7 +574,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       if($('#college-scroll').scrollTop() > 208){
         coverTall = true;
         if(window.innerWidth <= 768){
-          $('img.college-cover').height(200);
+          $('img.college-cover').height(200).removeClass('mobileblurred');
+          $('.college-infodiv').addClass('nodisplay');
         } else{
           $('img.college-cover').height(350);
         }

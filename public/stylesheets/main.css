@@ -60,9 +60,9 @@ div.content{
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
-  .name{color: white !important; background-color: #403d3c; margin-left: -0.25rem; padding-left: 0.5rem !important;}
+  .name{color: white !important; background-color: #373737; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
-  .navback{background-color: rgba(54,51,50,0.95);}
+  .navback{background-color: rgba(44,44,44,0.95);}
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
@@ -152,7 +152,7 @@ div.content{
   .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
     z-index: 8; box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);}
   .navbar{padding: 1px 10px !important;}
-  .navback{background-color: #3e3a39 !important;}
+  .navback{background-color: #353535 !important;}
   .name{background-color: unset !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 96px; border: 3px solid #f1f1f1;
     box-shadow: 4px 11px 5px -6px rgba(0,0,0,0.2);}
@@ -343,7 +343,7 @@ div.content{
   .subpostdp{height: 28px !important; width: 28px !important;}
   .subPost-text{min-height: 2rem !important;}
   #drop-chat{padding-top: 0.375rem !important; padding-bottom: 0.375rem !important;}
-  #college-scroll{height: calc(100vh - 1rem - 50px) !important;}
+  #college-scroll{height: calc(100vh - 1rem - 42px) !important;}
   .chatlist-background{min-height: 100%; background-image: url(/images/chat.svg); background-size: 35vw;
     background-repeat: no-repeat; background-position: bottom;}
   .room-container{padding: 2rem 1rem !important;}
@@ -351,6 +351,9 @@ div.content{
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
+  .college-infobtn{min-width: 56px; min-height: 56px;}
+  .college-cover.mobileblurred{filter: blur(2px);}
+  .mail-wrap{padding-top: 0.375rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -1860,6 +1863,7 @@ a{color: #3384ff;}
 .green{color: #30c376;}
 .grey{color: #454545;}
 .black{color: #343a40;}
+.pitchblack{color: #262626;}
 a.green:hover{color: #007e4b;}
 a.grey:hover{color: black;}
 a.darkgrey:hover{color: black;}
@@ -2975,6 +2979,7 @@ input.shadow:-webkit-autofill:focus{
   padding-right: 0px !important;
 }
 .mail-wrap{
+  padding-top: 0.25rem;
   border-radius: 0.75rem;
   background: repeating-linear-gradient(135deg, whitesmoke , whitesmoke 10px, #3C7AB8 0, #3C7AB8 20px, whitesmoke 0, whitesmoke 30px, #CB2C4B 0, #CB2C4B 40px);
   background-repeat: no-repeat;
@@ -3486,7 +3491,7 @@ input.shadow:-webkit-autofill:focus{
   background-position: 100% 0;
 }
 .gb4:after{
-  background: linear-gradient(45deg, #ef0781 0%, #ef0781 6%, #d00a70 6%, #d00a70 25%, #b10d60 25%, #b10d60 40%, #93104f 40%, #93104f 45%, #74133e 45%, #74133e 53%, #55162e 53%, #55162e 66%, #36191d 66%, #36191d 100%);
+  background: linear-gradient(135deg, #ef0781 0%, #ef0781 6%, #d00a70 6%, #d00a70 25%, #b10d60 25%, #b10d60 40%, #93104f 40%, #93104f 45%, #74133e 45%, #74133e 53%, #55162e 53%, #55162e 66%, #36191d 66%, #36191d 100%);
 }
 .gb4{
   background-color: white;
@@ -3580,7 +3585,7 @@ input.shadow:-webkit-autofill:focus{
   transition-duration: 0.15s;
   transition-timing-function: linear;
   text-transform: none;
-  background-color: #403d3c;
+  background-color: #373737;
   border: 0;
   margin: 0;
   overflow: visible;
@@ -3738,18 +3743,28 @@ input.shadow:-webkit-autofill:focus{
   display: none;
   scrollbar-width: none;
 }
+.college-infodiv{
+  height: 116px;
+  margin-bottom: -116px;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.25);
+}
 .college-infobtn{
   align-items: center;
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   cursor: pointer;
   width: max-content;
   transition: ease-out 0.15s;
 }
 .college-infobtn:hover{
   background-color: white;
-  color: #19ae69;
 }
-.college-infobtn:hover .fas{
+.college-infobtn .fa-newspaper, .college-infobtn .fa-tasks,
+.college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
+  -webkit-text-stroke: 0.25px #e0e0e0;
+}
+.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-tasks,
+.college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-external-link-alt{
   -webkit-text-stroke-color: white;
 }
 .room-container{
