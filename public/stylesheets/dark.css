@@ -154,6 +154,10 @@ a .nolink:hover {
   color: var(--color-white-100);
 }
 
+a.black:hover {
+  color: var(--color-white);
+}
+
 .hr-light {
   border-top: 0.5px solid var(--color-dark-700);
 }
@@ -346,6 +350,9 @@ button.btn.btn-secondary.search {
   background: var(--color-dark-800);
 }
 
+.category-head {
+  color: var(--color-white-100) !important;
+}
 
 /* Home page */
 .topic-break {

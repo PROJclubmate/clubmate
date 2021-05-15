@@ -5,7 +5,7 @@ const express  = require('express'),
   indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, 
   indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
-  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexFeedbackPage}
+  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexSettingsPagePost, indexFeedbackPage}
    = require('../controllers/index');
 
 
@@ -92,6 +92,9 @@ router.get('/show_following/:id', middleware.isLoggedIn, indexShowFollowingClubs
 
 // Get account settings page
 router.get('/users/:id/settings', middleware.isLoggedIn, indexSettingsPage);
+
+// Post account settings page
+router.post('/users/:id/settings', middleware.isLoggedIn, indexSettingsPagePost);
 
 // Get user feedback page
 router.get('/feedback', middleware.isLoggedIn, indexFeedbackPage);

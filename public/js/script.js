@@ -31,6 +31,26 @@ window.onscroll = function(){
   }
 }
 
+function postRequest(params, path="", method='post') {
+  const form = document.createElement('form');
+  form.method = method;
+  form.action = path;
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = key;
+      hiddenField.value = params[key];
+
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
 //Sidebar dropdown
 var dropdown = document.getElementsByClassName('dropdown-sidebar');
 for (var i=0;i<dropdown.length;i++){
@@ -764,6 +784,16 @@ $("#myTab").on('click', '.nav-link', function(e){
   if($(this).attr('id') != 'chats-tab'){
     $('#navbar').removeClass('stuck');
   }
+});
+
+$('#dn').on("change", function(e){
+  e.stopPropagation();
+
+  // Find checked or not, if checked implies dark theme
+  const darkTheme = this.checked ? "dark" : "light";
+  const csrfToken = $(this).attr("data-csrf");
+
+  postRequest({ darkTheme: darkTheme, _csrf: csrfToken }, "");
 });
 
 if(window.innerWidth < 768){
