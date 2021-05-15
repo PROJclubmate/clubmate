@@ -1,5 +1,5 @@
 function initComparisons() {
-  $('#college_page_A_container').height($('#college_page_A').height()+'px');
+  $('#college_page_container').height($('#college_page_A').height()+'px');
 
   var x, i;
   x = document.getElementsByClassName("img-comp-overlay");

@@ -62,7 +62,7 @@ if(socket !== undefined){
   });
   // Listen
   socket.on('someoneJoinedRoom', function(){
-    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
+    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#77bff3'/>");
   })
   socket.on('someoneLeftRoom', function(){
     $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
@@ -107,7 +107,7 @@ if(socket !== undefined){
           if(moment(message.createdAt).format('LT') != prevDate2){
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
               $("#messages").append(`
-                <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
+                <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             } else{
               $("#messages").append(`
@@ -118,7 +118,7 @@ if(socket !== undefined){
           } else{
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
               $("#messages").append(`
-                <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
+                <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
             } else{
               $("#messages").append(`
                 <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
@@ -129,7 +129,7 @@ if(socket !== undefined){
           if(moment(message.createdAt).format('LT') != prevDate2){
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
               $("#messages").append(`
-                <div><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
+                <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             } else{
               $("#messages").append(`
@@ -140,7 +140,7 @@ if(socket !== undefined){
           } else{
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
               $("#messages").append(`
-                <div><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
+                <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
             } else{
               $("#messages").append(`
                 <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
@@ -165,7 +165,7 @@ if(socket !== undefined){
           <div class="flex-end"><div class="chat-msg2 chat-msg-div" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;"> ${data.composedMessage} </div></div>`);
       } else{
         $("#messages").append(`
-          <div class="flex-end"><div class="chat-msg2 chat-msg-div"> ${data.composedMessage} </div></div>`);
+          <div class="flex-end mt-2"><div class="chat-msg2 chat-msg-div"> ${data.composedMessage} </div></div>`);
       }
     } else{
       if(data.authorId == prevAuthorId){
@@ -173,7 +173,7 @@ if(socket !== undefined){
           <div><div class="chat-msg chat-msg-div" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"> ${data.composedMessage} </div></div>`);
       } else{
         $("#messages").append(`
-          <div><div class="chat-msg chat-msg-div"> ${data.composedMessage} </div></div>`);
+          <div class="mt-2"><div class="chat-msg chat-msg-div"> ${data.composedMessage} </div></div>`);
       }
     }
     $('#lastMsgBy').attr('value', data.authorId);
@@ -263,7 +263,7 @@ if(socket !== undefined){
     $("#clubRoomConnectionsNum").text(data);
   });
   socket.on('someoneJoinedClubRoom', function(){
-    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#80bdff'/>");
+    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#77bff3'/>");
   })
   socket.on('everyoneLeftClubRoom', function(){
     $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");

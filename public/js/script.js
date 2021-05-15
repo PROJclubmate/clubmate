@@ -571,7 +571,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var coverTall = false;
   $('#college-scroll').scroll(function(){
     if(!coverTall){
-      if($('#college-scroll').scrollTop() > 208){
+      if($('#college-scroll').scrollTop() > 116){
         coverTall = true;
         if(window.innerWidth <= 768){
           $('img.college-cover').height(200).removeClass('mobileblurred');

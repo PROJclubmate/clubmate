@@ -310,9 +310,9 @@
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <% if(rank >= 0 && rank <=3){ %>
-                        <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="3" required></textarea>
+                        <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="4" required></textarea>
                       <% } else{ %>
-                        <textarea id="description" class="emoji-input form-control text-sm description description2 junior" type="text" name="description" placeholder="Describe your post" rows="3" readonly></textarea>
+                        <textarea id="description" class="emoji-input form-control text-sm description description2 junior" type="text" name="description" placeholder="Describe your post" rows="4" readonly></textarea>
                       <% } %>
                       <label for="hyperlink" class="sr-only">Hyperlink</label>
                       <input id="hyperlink" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Hyperlink">
@@ -369,6 +369,9 @@
                       </div>
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     </form>
+                  </div>
+                  <div class="py-5">
+                    <hr class="mx-2" style="border-color: #d3d3d3;">
                   </div>
                 <% } %>
                 <div id="delegated-posts">

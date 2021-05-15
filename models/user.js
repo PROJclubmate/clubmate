@@ -55,12 +55,13 @@ const userSchema = new Schema({
       default: 2,
       min: 1,
       max: 2,
-      required: '1-Members in clubs, 2-Following which clubs',
+      required: '1-Members in clubs & their banners, 2-Following which clubs & my friends in that club',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'
       }
-    }
+    },
+    _id: false
   }],
   followingClubCount: {type: Number, default: 0},
   followingClubIds: [{

@@ -110,7 +110,7 @@ div.content{
   #messages.messages3{height: calc(100vh - 1.5rem - 40px - 42px);}
   #messages.messages3.msg_dec3{height: calc(100vh - 1.5rem - 40px - 42px - 35px);}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 42px) !important;}
-  .form-control.chatinput{padding: 0.375rem 0.625rem !important;}
+  .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{padding: 0.3125rem 0.625rem !important;}
   #club-send{padding: 0.3125rem 0.625rem !important;}
   #messages{margin-bottom: 42px;}
@@ -215,7 +215,7 @@ div.content{
   .name{color: #262223 !important; background-color: unset !important;}
   #navbar.stuck{transform: translateY(0px) !important;}
   .discover-icon{font-size: 1.75rem;}
-  .badge-mobile{background: #f8f9fa !important; color: #262626 !important; top: -0.25rem !important;
+  .badge-mobile{background: whitesmoke !important; color: #262626 !important; top: -0.25rem !important;
   right: -0.5rem !important;}
   input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
   .clear_update{display: block !important;}
@@ -303,8 +303,8 @@ div.content{
   .mobiletext2{font-size: 1.0625rem !important;}
   .mobiletext3{font-size: 0.9375rem !important;}
   .mobiletext4{font-size: 0.875rem !important;}
-  .form-control.chatinput{padding: 0.75rem 0.875rem !important;}
-  #user-send, #club-send{font-size: 1.125rem; height: 46px; width: 46px;}
+  .form-control.chatinput{padding: 0.625rem 0.75rem !important;}
+  #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
   #messages{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset;}
@@ -313,6 +313,7 @@ div.content{
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
   #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .collegedp{margin: 0 0.25rem !important;}
+  .description{height: 7.5rem !important;}
   .description-short-show{font-size: 1.1875rem !important;}
   #copyTxt{padding: 0 0.8125rem !important;}
   #toggleCollegePage-form{position: absolute; left: 4.675rem !important;}
@@ -333,7 +334,7 @@ div.content{
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
-  a > .collegedp.chatsdp.active{margin-left: 0.0625rem !important;}
+  a > .collegedp.chatsdp.active{margin-left: 0.05625rem !important;}
   a > .collegedp.chatsdp.mr-0.active{margin-left: 0.25rem !important;}
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
@@ -395,7 +396,7 @@ div.content{
   #edit-account-info{padding: 0 0.5rem !important;}
   .discover-overlay a{padding: 0.875rem 0.75rem !important; font-size: 1rem !important;}
   .discover-overlay .discovertop{font-size: 1rem !important;}
-  .discover-overlay .discovertop-left{font-size: 0.625rem !important; padding: 0.75rem !important;}
+  .discover-overlay .discovertop-left{font-size: 0.75rem !important; padding: 0.75rem !important;}
   .discoverlink{left: 42% !important;}
   .discover-vote{font-size: 1.875rem !important;}
   .chatlist-box{height: calc(100vh - 1rem - 50px) !important;}
@@ -681,7 +682,6 @@ div.content{
   margin: 0.25rem 0.5rem;
   padding: 0.125rem 0.25rem !important;
   box-shadow: none !important;
-  border: 1px solid whitesmoke;
 }
 #side-clubs{
   cursor: pointer;
@@ -1052,12 +1052,12 @@ a > .collegedp.chatsdp.mr-0:hover{
   border: none;
 }
 a > .collegedp.chatsdp:hover{
-  border: 2px solid whitesmoke;
+  border: 4px solid whitesmoke;
   transition: 0.1s linear;
 }
 a > .collegedp.chatsdp.active{
   border-radius: 1rem;
-  margin-left: -0.1875rem;
+  margin-left: -0.125rem;
 }
 a > .collegedp.chatsdp.mr-0.active{
   margin-left: 0;
@@ -2178,7 +2178,7 @@ ul{
   background-color: #dc3545;
 }
 .badge-success{
-  background-color: #30c376;
+  background-color: #3bd677;
   border-radius: 1rem;
 }
 .notification .badge{
@@ -2759,7 +2759,7 @@ select.select1{
 }
 .chat-msg{
   word-break: break-word;
-  line-height: 1.25rem !important;
+  line-height: 1.375rem !important;
   font-size: 0.9375rem;
   border: 1px solid #d8d8d8;
   border-top-width: 0.5px;
@@ -2767,11 +2767,11 @@ select.select1{
   background-color: white;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.625rem;
+  padding: 0.5rem 0.625rem;
   margin: 0.15rem 7.5rem 0.15rem 0.5rem;
 }
 .chat-msg2{
-  line-height: 1.15rem !important;
+  line-height: 1.375rem !important;
   font-size: 0.9375rem;
   border: 1px solid #cccccc;
   border-top-width: 0.5px;
@@ -2779,7 +2779,7 @@ select.select1{
   background-color: #b3ffb3;
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
-  padding: 0.625rem;
+  padding: 0.5rem 0.625rem;
   margin: 0.15rem 0.5rem 0.15rem 7.5rem;
 }
 .chat-msg3{
@@ -2799,11 +2799,11 @@ select.select1{
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.625rem 0;
+  margin: 0 0 -0.5rem 0;
   padding-top: 0.25rem;
 }
 .chat-head-clubpad{
-  margin: -0.75rem 0 0 0 !important;
+  margin: -0.6875rem 0 -0.25rem 0 !important;
   padding-bottom: 0.25rem;
   padding-top: 0.3125rem;
 }
@@ -2812,7 +2812,7 @@ select.select1{
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.625rem 0;
+  margin: 0 0 -0.5rem 0;
   padding-top: 0.25rem;
 }
 .chat-head3{
@@ -3389,8 +3389,9 @@ input.shadow:-webkit-autofill:focus{
 }
 .chatlist-item.active{
   background-color: whitesmoke;
-  border-left: 3px solid #d3d3d3;
-  border-right: 3px solid #d3d3d3;
+  border-left: 2px solid #d3d3d3;
+  border-right: 2px solid #d3d3d3;
+  border-radius: 0.25rem;
 }
 .chatlist-club{
   cursor: pointer;
