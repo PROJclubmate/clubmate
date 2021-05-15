@@ -22,6 +22,7 @@
   --color-accent: #fd4d4d;
   --color-accent-hover: #fd6868;
   --color-accent-disabled: #f5bfbf;
+  --color-success: rgb(5,71,64);
 }
 
 ::placeholder {
@@ -223,6 +224,28 @@ input.form-control.search:focus {
   background-color: var(--color-dark-700);
 }
 
+.grey {
+  color: var(--color-white-200);
+}
+
+a.grey:hover {
+  color: var(--color-white-100);
+}
+
+/* Friend requests */
+.pop-container {
+  background-color: var(--color-dark-900);
+}
+
+.alert-success {
+  background-color: var(--color-success);
+  color: var(--color-white-100);
+}
+
+.close:hover {
+  color: var(--color-white);
+}
+
 /** === Navbar === **/
 button.btn.btn-secondary.search {
   border-color: var(--color-dark-500) !important;
@@ -300,7 +323,7 @@ button.btn.btn-secondary.search {
 }
 
 .sortBykey.logout:hover{
-  background-color: grey;
+  background-color: var(--color-dark-900);
   color: var(--color-white-100);
 }
 
@@ -569,4 +592,46 @@ div.carousel-img {
     border-right: 0.5px solid var(--color-dark-750) !important;
 }
 
+}
+
+
+/* === Chats === */
+.chat-item {
+  background-color: var(--color-dark-700);
+  border-bottom: var(--color-dark-900);
+}
+
+.chat-item:hover {
+  border-bottom: var(--color-dark-900);
+  background-color: var(--color-dark-600);
+}
+
+.chatlist-content {
+  border-bottom: var(--color-dark-850);
+}
+
+.chat-item.active {
+  background-color: var(--color-dark-600);
+  border-left: 3px solid var(--color-dark-600);
+  border-right: 3px solid var(--color-dark-600);
+}
+
+.chat-msg {
+  /* background-color: var(--color-dark-800); */
+  background-color: var(--color-dark-700);
+  border: none;
+}
+
+.chat-msg2 {
+  /* background-color: var(--color-dark-800); */
+  background-color: rgb(5,71,64);
+  border: none;
+}
+
+.chat-msg-div {
+  color: var(--color-white-100);
+}
+
+.chat-head2 {
+  color: var(--color-white-200);
 }
