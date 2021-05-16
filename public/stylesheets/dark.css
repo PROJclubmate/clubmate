@@ -1,8 +1,8 @@
 :root {
   --color-white: white;
   --color-white-100: #dee3ea;
-  --color-white-200: #b2bdcd;
-  --color-white-300: #9baec0;
+  --color-white-200: #c7ccd2;
+  --color-white-300: #b1b5bb;
 
   --color-dark-500: #39475c;
   --color-dark-600: #323d4d;
@@ -85,13 +85,19 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
     -webkit-text-stroke-color: var(--color-dark-900) !important;
   }
+  #btncollapse-club.btncollapse-club.btncollapse-club-dark{
+    color: var(--color-white-200) !important;
+  }
 }
 @media screen and (max-width: 1199px) {
   .sidebar a.active {
     border-color: var(--color-dark-700);
   }
   .sidebar-back {
-    background-color: var(--color-dark-700);
+    background-color: var(--color-dark-800);
+  }
+  #sidebar-dropbox{
+    border-color: var(--color-dark-750);
   }
   a.hr2.active{
     box-shadow: none;
@@ -114,9 +120,26 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     color: var(--color-white-100) !important;
   }
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{
+    background-color: var(--color-dark-800);
+    border-color: var(--color-dark-800);
+  }
+  .btncollapse-user.btncollapse-user-dark{
+    background-color: var(--color-dark-800) !important;
+    border-color: var(--color-dark-800) !important;
+  }
+  .chatlist-background{
+    background-image: url(/images/chat-dark.svg);
+  }
+  #btncollapse-club.btncollapse-club.btncollapse-club-nongrad.btncollapse-club-dark{
+    color: var(--color-white-200) !important;
     background-color: var(--color-dark-800) !important;
   }
-  .chatlist-background{background-image: url(/images/chat-dark.svg);}
+  #btncollapse-club.btncollapse-club.btncollapse-club-grad.btncollapse-club-dark{
+    border-color: transparent !important;
+  }
+  #btncollapse-club.btncollapse-club.btncollapse-club-grad.btncollapse-club-dark.nofill-color{
+    color: var(--color-white-200) !important;
+  }
 }
 
 .btn {
@@ -156,8 +179,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   color: white;
 }
 .btn-info {
-  background-color: var(--color-dark-700);
-  border: 1px solid var(--color-dark-700) !important;
+  background-color: var(--color-dark-800);
+  border: 1px dashed var(--color-dark-700) !important;
   color: var(--color-light-blue);
 }
 .btn-info:hover {
@@ -187,6 +210,13 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   background-color: var(--color-dark-700) !important;
   border-color: var(--color-dark-700) !important;
 }
+.btn-search{
+  background-color: var(--color-dark-800);
+  color: var(--color-white-100);
+}
+.btn-search:hover{
+  background-color: var(--color-dark-700);
+}
 button.dropdown-toggle {
   color: var(--color-white-200);
   background-color: transparent !important;
@@ -195,10 +225,12 @@ button.dropdown-toggle {
 button.dropdown-toggle:hover {
   color: var(--color-white-100);
 }
+.dropdown-menu{
+  background-color: transparent;
+}
 select {
   background-color: var(--color-dark-700);
   color: var(--color-white-200);
-  border: 1px solid var(--color-dark-700);
 }
 select:focus-visible {
   outline-color: var(--color-dark-500);
@@ -379,9 +411,6 @@ button.btn.btn-secondary.search {
 #explore-switch {
   background: var(--color-dark-800);
 }
-.category-head {
-  color: var(--color-white-100) !important;
-}
 
 /* Home page */
 .topic-break {
@@ -463,8 +492,12 @@ a.grey.mobiletext:hover {
 div.carousel-img {
   border-color: var(--color-dark-800);
 }
+.gradient-wrap{
+  /* background-image: none !important; */
+  background-color: var(--color-dark-800) !important;
+}
 .btn.btncollapse {
-  border-color: var(--color-dark-800);
+  border-color: var(--color-dark-800) !important;
   background-color: var(--color-dark-800);
   box-shadow: 0px 1px 3px -1px rgb(0, 0, 0, 0.75);
 }
@@ -483,13 +516,13 @@ div.carousel-img {
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   color: var(--color-white-100);
   background-color: var(--color-dark-800);
-  border-color: var(--color-dark-750);
+  border-color: var(--color-dark-700);
   border-bottom-color: transparent !important;
   box-shadow: 0px 5px 3px 0px var(--color-dark-800);
 }
 .nav-tabs .nav-link:hover {
   color: var(--color-white-100);
-  border-color: var(--color-dark-800);
+  border-color: var(--color-dark-750);
 }
 .topnotch-left:before, .topnotch-right:before{
   background: var(--color-dark-800);
@@ -506,6 +539,8 @@ div.carousel-img {
 }
 .chat-input-tool {
   color: var(--color-white-200);
+  background-color: var(--color-dark-800);
+  border-color: var(--color-dark-800);
 }
 .chat-input-tool:hover {
   color: var(--color-white-100);
@@ -608,8 +643,9 @@ time.calendar{
   background-color: var(--color-dark-800);
   border-color: var(--color-dark-750);
 }
-.category-head{
-  background-color: rgba(0,0,0, 0.25) !important;
+.category-head {
+  color: var(--color-white-100) !important;
+  background-color: rgba(255,255,255, 0.1) !important;
 }
 #myprofileimage_on_collegepage{
   border-color: var(--color-dark-800);
@@ -618,5 +654,14 @@ time.calendar{
   background: var(--color-dark-600);
 }
 .smalldppad{
+  background-color: var(--color-dark-800);
+}
+.modal-content{
+  background-color: var(--color-dark-800);
+}
+.slider{
+  background-color: var(--color-dark-700) !important;
+}
+.intercom-composer-popover, .intercom-composer-popover-input{
   background-color: var(--color-dark-800);
 }

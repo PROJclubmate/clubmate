@@ -1553,7 +1553,6 @@ module.exports = {
   },
 
   indexSettingsPagePost(req, res, next){
-    // First check what setting is sent to be changed
     // 1. Dark theme toggler
     if(req.body.darkTheme){
       const toSet = (req.body.darkTheme === "dark") ? true : false;
