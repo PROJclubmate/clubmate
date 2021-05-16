@@ -256,7 +256,11 @@ input:checked + .toggle .star--6{
     <div>
       <div class="category-head text-xs boldtext">Theme</div>
       <div class="valign my-2">
-        <div class="lightgrey2">Sunshade</div>
+        <% if(currentUser.darkTheme == false){ %>
+          <div>Sunshade</div>
+        <% } else{ %>
+          <div>Moonlight</div>
+        <% } %>
         <div>
           <div class="toggleWrapper">
             <% if(currentUser && currentUser.darkTheme) { %>

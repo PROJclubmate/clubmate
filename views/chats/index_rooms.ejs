@@ -22,7 +22,7 @@
 		<div class="d-flex flex-row">
 			<div class="mb-2">
 				<a id="chatlist-chevron" href="/chats">
-					<img class="chats_chevronimg flipped" src="<%= '/images/double-chevron.svg' %>" title="Designed by [Pixel perfect] from @flaticon">
+					<img class="chats_chevronimg flipped" src="<%= '/images/double-chevron.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621172289/icons/double-chevron.svg' %>" title="Designed by [Pixel perfect] from @flaticon">
 				</a>
 			</div>
 		</div>
@@ -68,7 +68,11 @@
 	</div>
 	<div class="col-lg-8 col-md-8 col-12">
 		<div>
-			<img class="chats-img mobileNone" src="<%= '/images/chat.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1602840522/icons/chat.svg' %>" title="Designed by [Freepik] from @flaticon">
+			<% if(currentUser.darkTheme == false){ %>
+				<img class="chats-img mobileNone" src="<%= '/images/chat.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621172316/icons/chat.svg' %>" title="Designed by [Freepik] from @flaticon">
+			<% } else{ %>
+				<img class="chats-img mobileNone" src="<%= '/images/chat-dark.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621173958/icons/chat-dark.svg' %>" title="Designed by [Freepik] from @flaticon">
+			<% } %>
 			<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
 				<div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
 					<div id="lastMsgBy" value="">

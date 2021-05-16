@@ -47,7 +47,6 @@
   background-color: grey;
   color: white;
 }
-/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.content{
   margin-left: 10rem;
   padding: 0 1rem;
@@ -72,7 +71,7 @@ div.content{
   .mobileNone{display: block !important;}
   .mobileNoneFlex{display: flex !important;}
   .scroll::-webkit-scrollbar{width: 0.25rem; height: 0.25rem;}
-  .scroll::-webkit-scrollbar-track{background: rgba(0,0,0,0);}
+  .scroll::-webkit-scrollbar-track{background: transparent;}
   .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
@@ -270,7 +269,7 @@ div.content{
   .collegediv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important; margin-bottom: 1rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.burgernav{margin: 0.5rem 0.25rem !important;}
-  .nav-link.requests{margin: 0 0.25rem !important; color: #202020 !important; text-shadow: none !important;}
+  .nav-link.burgernav.requests{margin: 0 0.25rem !important; color: #202020; text-shadow: none !important;}
   .helppad{padding: 0 1rem;}
   .helppad2{padding: 0 2.5rem;}
   .helpmar{margin-top: 6.5rem !important;}
@@ -2408,7 +2407,7 @@ button.vote{
   font-size: 1.625rem;
   padding: 0;
   border: none;
-  background-color: rgba(0,0,0,0);
+  background-color: transparent;
   color: #262626;
   cursor: pointer;
 }
@@ -2416,7 +2415,7 @@ button.vote2{
   font-size: 1.375rem;
   padding: 0;
   border: none;
-  background-color: rgba(0,0,0,0);
+  background-color: transparent;
   color: grey;
   cursor: pointer;
 }
@@ -2426,7 +2425,7 @@ button.modvote{
   line-height: 1.125rem;
   padding: 0;
   border: none;
-  background-color: rgba(0,0,0,0);
+  background-color: transparent;
   color: transparent;
   cursor: pointer;
 }
@@ -2728,7 +2727,7 @@ select.select1{
   transform: scale(1.5);
 }
 .chat-input-tool{
-  background-color: rgba(0,0,0,0);
+  background-color: transparent;
   color: grey;
   padding: 0.125rem 0.25rem;
   border:none;  
@@ -3800,4 +3799,7 @@ input.shadow:-webkit-autofill:focus{
 }
 .chats_chevronimg.flipped.anitmate-left{
   transform: scaleX(-1) translateX(1.75rem);
+}
+.page-link{
+  cursor: pointer;
 }
