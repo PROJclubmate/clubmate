@@ -591,10 +591,11 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var coverTall = false;
   $('#college-scroll').scroll(function(){
     if(!coverTall){
-      if($('#college-scroll').scrollTop() > 208){
+      if($('#college-scroll').scrollTop() > 116){
         coverTall = true;
         if(window.innerWidth <= 768){
-          $('img.college-cover').height(200);
+          $('img.college-cover').height(200).removeClass('mobileblurred');
+          $('.college-infodiv').addClass('nodisplay');
         } else{
           $('img.college-cover').height(350);
         }
@@ -685,7 +686,7 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
   }
 });
 
-$('.chat-item').click(function(){
+$('.chatlist-item').click(function(){
   var convIdProfilenameProfileid = $(this).attr('id').split('^');
   var convId = convIdProfilenameProfileid[0];
   var profileName = convIdProfilenameProfileid[1];
@@ -827,6 +828,19 @@ if(location.pathname.split('/')[1] == 'chats'){
   oldMsgHeightMobile = updateMessageHeight2();
   $(window).resize(function(){
     oldMsgHeightMobile = updateMessageHeight2() + 35;
+  });
+
+  var chatList = document.getElementById('chats-list');
+  var hammergesture = new Hammer.Manager(chatList);
+  hammergesture.add(new Hammer.Pan({direction:Hammer.DIRECTION_HORIZONTAL, threshold:80, pointers: 0}));
+  hammergesture.on("panend", function(ev) {
+    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[2] != 'clubs'){
+      $('.chats_chevronimg').addClass('anitmate-right');
+      window.location.replace($('#chatlist-chevron').attr('href'));
+    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[2] == 'clubs'){
+      $('.chats_chevronimg').addClass('anitmate-left');
+      window.location.replace($('#chatlist-chevron').attr('href'));
+    }
   });
 }
 

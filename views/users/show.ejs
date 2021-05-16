@@ -20,30 +20,32 @@
                 </button>
               </div>
             <% } %>
-            <div class="container p-1 ml-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
-              <% if(user.userKeys.sex == 'Male'){ %>
-                <% if(user.profilePicId){ %>
-                  <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                <% } else{ %>
-                  <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
+            <div class="card indexcard ml-1 p-1 coverback2 profilePic-frame lcov">
+              <div class="container" style="overflow: hidden; border-radius: 100%;">
+                <% if(user.userKeys.sex == 'Male'){ %>
+                  <% if(user.profilePicId){ %>
+                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
+                  <% } else{ %>
+                    <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
+                  <% } %>
+                <% } else if(user.userKeys.sex == 'Female'){ %>
+                  <% if(user.profilePicId){ %>
+                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
+                  <% } else{ %>
+                    <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
+                  <% } %>
                 <% } %>
-              <% } else if(user.userKeys.sex == 'Female'){ %>
-                <% if(user.profilePicId){ %>
-                  <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                <% } else{ %>
-                  <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
+                <% if(currentUser && match){ %>
+                  <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                    <label for="inputprofilePic" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
+                      <i class="fas fa-upload mr-2"></i>profile pic
+                    </label>
+                    <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
+                    <button class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  </form>
                 <% } %>
-              <% } %>
-              <% if(currentUser && match){ %>
-                <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-                  <label for="inputprofilePic" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
-                    <i class="fas fa-upload mr-2"></i>profile pic
-                  </label>
-                  <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                  <button class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
-              <% } %>
+              </div>
             </div>
           </div>
           <div>
@@ -102,30 +104,32 @@
                     </button>
                   </div>
                 <% } %>
-                <div class="container p-1 card coverback2 profilePic-frame indexcard lcov" style="overflow: hidden;">
-                  <% if(user.userKeys.sex == 'Male'){ %>
-                    <% if(user.profilePicId){ %>
-                      <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                    <% } else{ %>
-                      <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
+                <div class="p-1 card indexcard coverback2 profilePic-frame lcov">
+                  <div class="container" style="overflow: hidden; border-radius: 100%;">
+                    <% if(user.userKeys.sex == 'Male'){ %>
+                      <% if(user.profilePicId){ %>
+                        <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
+                      <% } else{ %>
+                        <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
+                      <% } %>
+                    <% } else if(user.userKeys.sex == 'Female'){ %>
+                      <% if(user.profilePicId){ %>
+                        <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
+                      <% } else{ %>
+                        <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
+                      <% } %>
                     <% } %>
-                  <% } else if(user.userKeys.sex == 'Female'){ %>
-                    <% if(user.profilePicId){ %>
-                      <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                    <% } else{ %>
-                      <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
+                    <% if(currentUser && match){ %>
+                      <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                        <label for="inputprofilePic2" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
+                          <i class="fas fa-upload mr-2"></i>profile pic
+                        </label>
+                        <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
+                        <button class="btn btn-sm btn-success overlay2" style="border: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      </form>
                     <% } %>
-                  <% } %>
-                  <% if(currentUser && match){ %>
-                    <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-                      <label for="inputprofilePic2" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
-                        <i class="fas fa-upload mr-2"></i>profile pic
-                      </label>
-                      <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
-                      <button class="btn btn-sm btn-success overlay2" style="border: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
-                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    </form>
-                  <% } %>
+                  </div>
                 </div>
               </div>
               <div>
@@ -217,8 +221,8 @@
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
               <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
-              <div class="info1">Batch: <div class="info30"><a href="/find_people/filter_search?users=&college=<%= user.userKeys.college %>&batch=<%= user.userKeys.batch %>&house=&branch=&school=&location="><%= user.userKeys.batch %></a></div></div>
-              <div class="info1">Branch: <div class="info30"><a href="/find_people/filter_search?users=&college=<%= user.userKeys.college %>&batch=&house=&branch=<%= user.userKeys.branch %>&school=&location="><%= user.userKeys.branch %></a></div></div>
+              <div class="info1">Batch: <div class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?batch=<%= user.userKeys.batch %>"><%= user.userKeys.batch %></a></div></div>
+              <div class="info1">Branch: <div class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?branch=<%= user.userKeys.branch %>"><%= user.userKeys.branch %></a></div></div>
             </div>
           </div>
           <% if(currentUser && match){ %>
@@ -579,56 +583,64 @@
               </div>
               <div class="d-flex flex-column px-1 mobilepad">
                 <div class="info1">
-                  <strong class="info-size">Account info:</strong>
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
+                  <% if(currentUser && match){ %>
+                    <strong class="info-size mt-2">Personal info:</strong>
+                    <div class="info30">
+                      <button id="edit-account-info" onclick="toggle_display('personal_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
+                    </div>
+                  <% } %>
+                  <div class="info1">
+                    <% if(currentUser && (match || user.userKeys.house)){ %>
+                      House: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?house=<%= user.userKeys.house %>"><%= user.userKeys.house %></a></span>
+                      <br>
+                    <% } %>
+                    <% if(currentUser && (match || user.userKeys.school)){ %>
+                      High School: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?school=<%= user.userKeys.school %>"><%= user.userKeys.school %></a></span>
+                      <br>
+                    <% } %>
+                    <% if(currentUser && (match || user.userKeys.hometown)){ %>
+                      Home Town: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?hometown=<%= user.userKeys.hometown %>"><%= user.userKeys.hometown %></a></span>
+                      <br>
+                    <% } %>
+                    <% if(currentUser && (match || user.userKeys.birthdate)){ %>
+                      Birthday: <span class="info30"><a href="#">
+                        <% if(user.userKeys.birthdate != null){ %><%= moment(user.userKeys.birthdate).format('MMM Do YY'); %><% } %>
+                      </a></span>
                     <% } %>
                   </div>
-                  <div class="info1">
-                    Name: <span class="info30"><%= user.fullName %></span>
-                    <% if(currentUser && match){ %>
-                      <br>
-                      Email: <span class="info30"><%= user.email %>
-                        <% if(!user.isVerified){ %>
-                          <span class="text-xs orangecolor">Not Verified</span>
-                        <% } %>
-                      </span>
-                    <% } %>
-                    <br>
-                    Sex: <span class="info30"><%= user.userKeys.sex %></span>
-                    <br>
+                  <% if(currentUser && match){ %>
                     <div class="info30">
-                      <div id="account_info_form_div" class="greyback mb-2">
+                      <div id="personal_info_form_div" class="greyback mb-2">
                         <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div class="valign">
-                            <div class="mx-2">
-                              <label for="inputFirstName" class="sr-only">First Name</label>
-                              <input type="text" id="inputFirstName" class="form-control form-control-sm" name="firstName" placeholder="first name" value="<%= user.firstName %>" required>
-                            </div>
-                            <div class="mx-2">
-                              <label for="inputLastName" class="sr-only">Last Name</label>
-                              <input type="text" id="inputLastName" class="form-control form-control-sm" name="lastName" placeholder="last name" value="<%= user.lastName %>">
-                            </div>
+                          <div class="pt-1 px-2">
+                            <label for="house" class="sr-only">House</label>
+                            <% if(!user.userKeys.house){ %>
+                              <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" 
+                              pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="" placeholder="House / Hostel">
+                            <% } else{ %>
+                              <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="<%= user.userKeys.house %>" placeholder="House / Hostel">
+                            <% } %>
+                            <datalist id="house">
+                              <option value="Beaskund">
+                              <option value="Gaurikund">
+                              <option value="Suraj Tal">
+                              <option value="Dashir">
+                              <option value="Nako">
+                              <option value="Prashar">
+                              <option value="Suvalsar">
+                              <option value="Chandrataal">
+                            </datalist>
                           </div>
                           <div class="px-2">
-                            <div class="form-check-inline">
-                              <label class="form-check-label">
-                                <% if(user.userKeys.sex == 'Male'){ %>
-                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required checked>Male
-                                <% } else{ %>
-                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
-                                <% } %>
-                              </label>
-                            </div>
-                            <div class="form-check-inline">
-                              <label class="form-check-label">
-                                <% if(user.userKeys.sex == 'Female'){ %>
-                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female" checked>Female
-                                <% } else{ %>
-                                  <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
-                                <% } %>
-                              </label>
+                            <label for="school" class="sr-only">School</label>
+                            <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="High School">
+                            <label for="hometown" class="sr-only">HomeTown</label>
+                            <input type="text" id="hometown" class="form-control form-control-sm" name="userKeys[hometown]" value="<%= user.userKeys.hometown %>" placeholder="Home Town">
+                          </div>
+                          <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
+                            <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                             </div>
                           </div>
                           <div class="d-flex flex-row-reverse fullwidth mt-2">
@@ -638,23 +650,110 @@
                         </form>
                       </div>
                     </div>
+                  <% } %>
+                </div>
+              </div>
+              <br>
+              <div class="d-flex flex-column px-1 mobilepad">
+                <div class="info1">
+                  <strong class="info-size">Account info:</strong>
+                  <div class="info30">
+                    <% if(currentUser && match){ %>
+                      <button id="edit-account-info" onclick="toggle_display('account_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
+                    <% } %>
                   </div>
+                  <% if(currentUser && match){ %>
+                    <div class="info1">
+                      Name: <span class="info30"><%= user.fullName %></span>
+                      <% if(currentUser && match){ %>
+                        <br>
+                        Email: <span class="info30"><%= user.email %>
+                          <% if(!user.isVerified){ %>
+                            <span class="text-xs orangecolor">Not Verified</span>
+                          <% } %>
+                        </span>
+                      <% } %>
+                      <br>
+                      Sex: <span class="info30"><%= user.userKeys.sex %></span>
+                      <br>
+                      <div class="info30">
+                        <div id="account_info_form_div" class="greyback mb-2">
+                          <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                            <div class="valign">
+                              <div class="mx-2">
+                                <label for="inputFirstName" class="sr-only">First Name</label>
+                                <input type="text" id="inputFirstName" class="form-control form-control-sm" name="firstName" placeholder="first name" value="<%= user.firstName %>" required>
+                              </div>
+                              <div class="mx-2">
+                                <label for="inputLastName" class="sr-only">Last Name</label>
+                                <input type="text" id="inputLastName" class="form-control form-control-sm" name="lastName" placeholder="last name" value="<%= user.lastName %>">
+                              </div>
+                            </div>
+                            <div class="px-2">
+                              <div class="form-check-inline">
+                                <label class="form-check-label">
+                                  <% if(user.userKeys.sex == 'Male'){ %>
+                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required checked>Male
+                                  <% } else{ %>
+                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
+                                  <% } %>
+                                </label>
+                              </div>
+                              <div class="form-check-inline">
+                                <label class="form-check-label">
+                                  <% if(user.userKeys.sex == 'Female'){ %>
+                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female" checked>Female
+                                  <% } else{ %>
+                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
+                                  <% } %>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="d-flex flex-row-reverse fullwidth mt-2">
+                              <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
                 </div>
                 <div class="info1">
-                  Joined on: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
-                  <br>
+                  <% if(currentUser && match){ %>
+                    Joined on: <span class="info30"><%= moment(user.createdAt).format('ll') %></span>
+                    <br>
+                  <% } %>
                   <% if(!match){ %>
-                    <% if(user.lastActive >= (new Date() - 60*1000)){ %>
-                      <span>
-                        <svg height="16" width="16">
-                          <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-                        </svg>
+                    Last active:
+                    <% if(user.lastActive >= (new Date() - 120*1000)){ %>
+                      <span class="info30 nothing">
+                        <span>
+                          <svg height="16" width="16">
+                            <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                          </svg>
+                        </span>
+                        <span class="greencolor">Online</span>
                       </span>
-                      <span class="greencolor">Online</span>
+                    <% } else if(user.lastActive >= (new Date() - 24*3600*1000)){ %>
+                      <span class="info30 nothing">
+                        <span>
+                          <svg height="16" width="16">
+                            <circle cx="8" cy="7" r="5" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"></circle>
+                          </svg>
+                        </span>
+                        <span class="orangecolor"><%= moment(user.lastActive).fromNow() %></span>
+                      </span>
                     <% } else{ %>
-                      Last active: <span class="info30 nothing"><%= moment(user.lastActive).fromNow() %></span>
+                      <span class="info30 nothing">
+                        <span>
+                          <svg height="16" width="16">
+                            <circle cx="8" cy="7" r="5" stroke="#dcdcdc" stroke-width="1" fill="white"></circle>
+                          </svg>
+                        </span>
+                        <span><%= moment(user.lastActive).fromNow() %></span>
+                      </span>
                     <% } %>
-                  <br>
                   <br>
                     <% if(mutualClubs.length != 0){ %>
                       <div class="info1">Mutual clubs: <div class="info30">
@@ -678,77 +777,6 @@
                       <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
                     </div></div>
                   <% } %>
-                </div>
-              </div>
-              <br>
-              <div class="d-flex flex-column px-1 mobilepad mt-2">
-                <div class="info1">
-                  <strong class="info-size">Personal info:</strong>
-                  <div class="info30">
-                    <% if(currentUser && match){ %>
-                      <button id="edit-account-info" onclick="toggle_display('personal_info_form_div');" class="btn btn-sm dropdown-toggle floatright"><i class="fas fa-edit"></i></button>
-                    <% } %>
-                  </div>
-                  <div class="info1">
-                    <% if(currentUser && (match || user.userKeys.house)){ %>
-                      House: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=<%= user.userKeys.house %>&branch=&school=&location="><%= user.userKeys.house %></a></span>
-                    <% } %>
-                    <br>
-                    <% if(currentUser && (match || user.userKeys.school)){ %>
-                      High School: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=&branch=&school=<%= user.userKeys.school %>&location="><%= user.userKeys.school %></a></span>
-                      <br>
-                    <% } %>
-                    <% if(currentUser && (match || user.userKeys.hometown)){ %>
-                      Home Town: <span class="info30"><a href="/find_people/filter_search?users=&college=&batch=&house=&branch=&school=&location=<%= user.userKeys.hometown %>"><%= user.userKeys.hometown %></a></span>
-                      <br>
-                    <% } %>
-                    <% if(currentUser && (match || user.userKeys.birthdate)){ %>
-                      Birthday: <span class="info30"><a href="#">
-                        <% if(user.userKeys.birthdate != null){ %><%= moment(user.userKeys.birthdate).format('MMM Do YY'); %><% } %>
-                      </a></span>
-                    <% } %>
-                  </div>
-                  <div class="info30">
-                    <div id="personal_info_form_div" class="greyback mb-2">
-                      <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                        <div class="pt-1 px-2">
-                          <label for="house" class="sr-only">House</label>
-                          <% if(!user.userKeys.house){ %>
-                            <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" 
-                            pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="" placeholder="House / Hostel">
-                          <% } else{ %>
-                            <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="<%= user.userKeys.house %>" placeholder="House / Hostel">
-                          <% } %>
-                          <datalist id="house">
-                            <option value="Beaskund">
-                            <option value="Gaurikund">
-                            <option value="Suraj Tal">
-                            <option value="Dashir">
-                            <option value="Nako">
-                            <option value="Prashar">
-                            <option value="Suvalsar">
-                            <option value="Chandrataal">
-                          </datalist>
-                        </div>
-                        <div class="px-2">
-                          <label for="school" class="sr-only">School</label>
-                          <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="High School">
-                          <label for="hometown" class="sr-only">HomeTown</label>
-                          <input type="text" id="hometown" class="form-control form-control-sm" name="userKeys[hometown]" value="<%= user.userKeys.hometown %>" placeholder="Home Town">
-                        </div>
-                        <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
-                          <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
-                          <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row-reverse fullwidth mt-2">
-                          <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                        </div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    </div>
-                  </div>
                 </div>
               </div>
               <br>

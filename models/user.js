@@ -56,12 +56,13 @@ const userSchema = new Schema({
       default: 2,
       min: 1,
       max: 2,
-      required: '1-Members, 2-Followers',
+      required: '1-Members in clubs & their banners, 2-Following which clubs & my friends in that club',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'
       }
-    }
+    },
+    _id: false
   }],
   followingClubCount: {type: Number, default: 0},
   followingClubIds: [{
@@ -129,7 +130,6 @@ const userSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
-  unreadChatsCount: {type: Number, default: 0},
   userClubs: [{
     id: {
       type: Schema.Types.ObjectId,
@@ -154,6 +154,7 @@ const userSchema = new Schema({
     memberSince: {type: Date, default: Date.now},
     _id: false
   }],
+  unreadChatsCount: {type: Number, default: 0},
   userChats: [{
     userId: this,
     conversationId: {
@@ -161,7 +162,11 @@ const userSchema = new Schema({
       ref: 'Conversation'
     },
     _id: false
-  }]
+  }],
+  lastOpenedChatListClub: {
+    type: Schema.Types.ObjectId,
+    ref: 'Club'
+  }
 },
 {
   timestamps: true

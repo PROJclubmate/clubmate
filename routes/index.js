@@ -1,12 +1,12 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexChats, indexChatsOpen, indexSearch, indexSearchEmail, 
-  indexSearchPeople, indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, 
-  indexMemberInfo, indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
-  indexViewAllFriends, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage, indexCollegePageSettings, 
-  indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage, indexSettingsPagePost, indexFeedbackPage}
-   = require('../controllers/index');
+  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, 
+  indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, 
+  indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
+  indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
+  indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage,
+  , indexSettingsPagePost, indexFeedbackPage} = require('../controllers/index');
 
 
 // New notification subscription
@@ -20,12 +20,6 @@ router.get('/help', indexHelp);
 
 // FAQ page
 router.get('/faq', indexFAQ);
-
-// Chats list
-router.get('/chats', middleware.isLoggedIn, indexChats);
-
-// Chats list
-router.get('/chats/open', middleware.isLoggedIn, indexChatsOpen);
 
 // Search
 router.get('/search', indexSearch);
@@ -74,6 +68,9 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 
 // View all friends
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
+
+// View list of all students in college
+router.get('/all_students/colleges/:college_key', middleware.searchAndFilterPeople, indexViewAllStudents);
 
 // View college page
 router.get('/colleges/:college_name', indexViewCollegePage);

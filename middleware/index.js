@@ -66,7 +66,7 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
     }
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
   }
-  res.locals.query = req.query;
+  // res.locals.query = req.query;
   res.locals.moreClubsUrl = req.originalUrl;
   res.locals.filterKeys = filterKeys;
   next();
@@ -76,7 +76,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
-    let {users, college, batch, house, branch, school, location, distance} = req.query;
+    let {users, college, batch, house, branch, school, hometown, distance} = req.query;
     dbQueries.push({isVerified: true});
     if(users){
       filterKeys['users'] = users;
@@ -108,15 +108,15 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
       school = new RegExp(escapeRegExp(school), 'gi');
       dbQueries.push({'userKeys.school': school});
     }
-    if(location){
-      filterKeys['location'] = location;
-      let coordinates;
+    if(hometown){
+      filterKeys['hometown'] = hometown;
+      var coordinates;
       try{
-        location = JSON.parse(location);
-        coordinates = location;
+        hometown = JSON.parse(hometown);
+        coordinates = hometown;
       } catch(err){
         const response = await geocodingClient.forwardGeocode({
-          query: location,
+          query: hometown,
           limit: 1
         }).send();
         coordinates = response.body.features[0].geometry.coordinates;
@@ -140,7 +140,8 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
     }
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : {};
   }
-  res.locals.query = req.query;
+  // res.locals.query = req.query;
+  res.locals.coordinates = coordinates;
   res.locals.morePeopleUrl = req.originalUrl;
   res.locals.filterKeys = filterKeys;
   next();

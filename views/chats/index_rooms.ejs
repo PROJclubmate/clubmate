@@ -1,0 +1,83 @@
+<% include ../partials/header %>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+<script>
+	if(window.innerWidth < 768){
+		if(location.pathname.split('/')[1] == 'chats'){
+			document.getElementById('inbox_mobile_div').classList.add('nodisplay');
+			document.getElementById('mobile_toggler_div').classList.remove('nodisplay');
+		}
+	}
+</script>
+<script src="/js/hammer.min.js"></script>
+
+
+<div class="row no-gutters">
+	<div id="chats-list" class="col-lg-4 col-md-4 col-12 chatlist-box scroll moz-scroll">
+		<div class="greyback valign">
+			<div>
+				<h3 class="chatpad mt-3">Chats</h3>
+			</div>
+			<div class="p-2 desktopNone chat-discover" style="margin-bottom: -1.125rem;"><a class="lightgrey2" href="/discover"><i class="far fa-compass"></i></a></div>
+		</div>
+		<div class="d-flex flex-row">
+			<div class="mb-2">
+				<a id="chatlist-chevron" href="/chats">
+					<img class="chats_chevronimg flipped" src="<%= '/images/double-chevron.svg' %>" title="Designed by [Pixel perfect] from @flaticon">
+				</a>
+			</div>
+		</div>
+		<div class="card mt-0 border-light d-flex flex-row" style="min-height: 100%;">
+			<div class="greyback" style="border-radius: 0 0.5rem 0.5rem 0;">
+				<% if(clubs.length){ %>
+					<% for(var i=0;i<clubs.length;i++){ %>
+						<% if(clubs[i].id.toString() == openedClub.id){ %>
+							<div class="px-2 chatlist-club active">
+						<% } else{ %>
+							<div class="px-2 chatlist-club">
+						<% } %>
+							<div>
+								<div style="padding: 0.75rem 0.25rem;">
+									<% if(clubs[i].id.toString() == openedClub.id){ %>
+										<a href="/chats/clubs/<%= clubs[i].id %>"><img class="collegedp chatsdp mr-0 active" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
+									<% } else{ %>
+										<a href="/chats/clubs/<%= clubs[i].id %>"><img class="collegedp chatsdp mr-0 rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
+									<% } %>
+								</div>
+							</div>
+						</div>
+					<% } %>
+				<% } else{ %>
+					<div class="d-flex mx-auto my-2 text-xs lightgrey">Nothing here</div>
+				<% } %>
+			</div>
+			<div class="ml-5">
+				<div class="my-4 py-1 text-sm boldtext grey"><%= openedClub.name %></div>
+				<div>
+					<form class="chat-form" action="/chats/clubs/<%= openedClub.id %>/open" method="GET">
+						<div id="<%= openedClub.conversationId %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+							<div class="py-2 my-2"><i class="fas fa-user-friends mr-2"></i>Common</div>
+						</div>
+						<div class="py-2 my-2 pointer"><i class="fas fa-hashtag mr-2"></i>Admins only</div>
+						<div class="py-2 my-2 pointer"><i class="fas fa-hashtag mr-2"></i>Backend</div>
+						<div class="py-2 my-2 pointer"><i class="fas fa-hashtag mr-2"></i>Cyber Security</div>
+						<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8 col-md-8 col-12">
+		<div>
+			<img class="chats-img mobileNone" src="<%= '/images/chat.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1602840522/icons/chat.svg' %>" title="Designed by [Freepik] from @flaticon">
+			<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
+				<div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
+					<div id="lastMsgBy" value="">
+						<% include ../chats/clubchat %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>
