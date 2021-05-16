@@ -6,7 +6,7 @@ const express  = require('express'),
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
   indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage,
-  , indexSettingsPagePost, indexFeedbackPage} = require('../controllers/index');
+  indexSettingsPagePost, indexFeedbackPage} = require('../controllers/index');
 
 
 // New notification subscription
