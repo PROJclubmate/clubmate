@@ -1780,6 +1780,24 @@ module.exports = {
     res.render("settings");
   },
 
+  indexSettingsPagePost(req, res, next) {
+    console.log("Request made", req.body);
+
+    // First check what setting is sent to be changed
+    // 1. Dark theme toggler
+
+    if (req.body.darkTheme) {
+      const toSet = (req.body.darkTheme === "dark") ? true : false;
+      User.updateOne({_id: req.user._id}, { darkTheme: toSet }, function(err){
+        if(err) {
+          return res.redirect('back');
+        } else {
+          return res.redirect('back');
+        }
+      });
+    }
+  },
+
   indexFeedbackPage(req, res, next){
     res.render("feedback");
   }
