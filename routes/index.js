@@ -6,7 +6,7 @@ const express  = require('express'),
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
   indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage,
-  indexFeedbackPage} = require('../controllers/index');
+  , indexSettingsPagePost, indexFeedbackPage} = require('../controllers/index');
 
 
 // New notification subscription
@@ -89,6 +89,9 @@ router.get('/show_following/:id', middleware.isLoggedIn, indexShowFollowingClubs
 
 // Get account settings page
 router.get('/users/:id/settings', middleware.isLoggedIn, indexSettingsPage);
+
+// Post account settings page
+router.post('/users/:id/settings', middleware.isLoggedIn, indexSettingsPagePost);
 
 // Get user feedback page
 router.get('/feedback', middleware.isLoggedIn, indexFeedbackPage);

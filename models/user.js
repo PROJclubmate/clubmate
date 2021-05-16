@@ -12,6 +12,7 @@ const userSchema = new Schema({
   isVerified: {type: Boolean, default: false},
   lastLoggedOut: Date,
   lastActive: Date,
+  darkTheme: {type: Boolean, default: false},
   discoverSwitch: {
     type: Number,
     default: 1,

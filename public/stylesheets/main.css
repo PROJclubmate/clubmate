@@ -1,3 +1,7 @@
+:root {
+  --dark-grey: #343a40
+}
+
 /* The side navigation menu */
 .sidebar{
   margin: 0;
@@ -193,7 +197,7 @@ div.content{
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
   .story-container{width: 65vw;}
   .lb-absolute{position:  absolute; bottom: 0.25rem; left: 0.25rem;}
-  #discover_nav{position: fixed; bottom: 0; top: unset;}
+  #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
@@ -307,7 +311,7 @@ div.content{
   #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
   #messages{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
-  #discover_nav{position: fixed; bottom: 0; top: unset;}
+  #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
   .chat-msg3{top: 45% !important;}
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem;}
@@ -878,6 +882,11 @@ input{
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
   white-space: nowrap;
 }
+
+#following-switch-mobile-txt {
+  color: #180c03;
+}
+
 #explore-switch{
   color: white;
   background: rgb(100,149,237);
@@ -914,6 +923,9 @@ input{
 }
 .card{
   border: none;
+}
+.card-heading{
+  color: var(--dark-grey);
 }
 .card-body0{
   padding: 0 !important;
