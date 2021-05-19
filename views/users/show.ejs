@@ -447,7 +447,7 @@
                   <% if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
                     <a href="/users/<%= user._id %>/settings">
                       <button class="btn btn-white btn-settings text-sm"title="Account settings">
-                        <i class="fas fa-user-cog"></i>
+                        Settings <i class="fas fa-user-cog"></i>
                       </button>
                     </a>
                   <% } else{ %>
@@ -748,7 +748,7 @@
                       <span class="info30 nothing">
                         <span>
                           <svg height="16" width="16">
-                            <circle cx="8" cy="7" r="5" stroke="#dcdcdc" stroke-width="1" fill="white"></circle>
+                            <circle cx="8" cy="7" r="5" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"></circle>
                           </svg>
                         </span>
                         <span><%= moment(user.lastActive).fromNow() %></span>
@@ -1076,7 +1076,7 @@
               </svg>
             <% } else{ %>
               <svg id="isUserInRoom" height="12" width="12">
-                <circle cx="6" cy="6" r="4" stroke="silver" stroke-width="1" fill="#e0e0e0"/>
+                <circle cx="6" cy="6" r="4" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"/>
               </svg>
             <% } %>
           <% } %>

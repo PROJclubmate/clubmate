@@ -31,10 +31,6 @@
       <% } else if(currentUser.discoverSwitch == 2){ %>
         <div class="d-flex flex-row">
           <div class="lightgrey my-auto">Show category: <em class="lightgrey2 px-2">All</em></div>
-          <div class="d-flex scroll moz-scroll invisible">
-            <div class="story story2 story-square story-dark"></div>
-            <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">college</div>
-          </div>
           <div class="d-flex flex-column invisible">
             <div class="story story2 story-square story-dark">
             </div>
@@ -125,7 +121,7 @@
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university discover-icon"></i></button>
           <div class="btn btn-light discoverswitch-mobile noshadow noborder valign noback">
             <div><i id="explore-switch-mobile" class="fas fa-globe-americas discover-icon"></i></div>
-            <div class="text-sm pl-2 my-auto mobilebold" style="color: #312b23;">Explore!</div>
+            <div id="explore-switch-mobile-txt" class="text-sm pl-2 my-auto mobilebold">Explore!</div>
           </div>
         <% } %>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">

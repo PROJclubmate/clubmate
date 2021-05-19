@@ -323,8 +323,8 @@ div.content{
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.375rem !important;}
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{background-color: #efefef !important; border-color: transparent !important; box-shadow: none !important;}
   .btncollapse-user.collapsed{border-radius: 0.5rem;}
-  .btncollapse-div-user{border-radius: 0.5rem !important; background-color: #efefef; margin: 1px 0;}
-  .border-light.btncollapse-div-shadow{background-color: transparent; border-color: transparent !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
+  .btncollapse-div-user{border-radius: 1rem !important; background-color: #efefef; margin: 1px 0;}
+  .border-light.btncollapse-div-shadow{background-color: transparent; border: none !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
   .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: 0px 1px 3px -1px rgb(0,0,0,0.15) !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
@@ -876,35 +876,36 @@ input{
 #following-switch{
   color: white;
   background: rgb(244,128,36);
-  background: linear-gradient(270deg, rgba(138,43,226,1) 0%, rgba(244,128,36,1) 5%, rgba(0,125,213,1) 25%, rgba(0,51,102,1) 100%);
+  background: linear-gradient(270deg, #a155e7 0%, #f48024 5%, #007dd5 25%, #003366 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.25);
   white-space: nowrap;
 }
-
-#following-switch-mobile-txt {
-  color: #180c03;
+#following-switch-mobile{
+  background: linear-gradient(300deg, #a155e7 10%, #f48024 15%, #007dd5 35%, #003366 80%);
+  cursor: default;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-
+#following-switch-mobile-txt{
+  color: #262a36;
+}
 #explore-switch{
   color: white;
   background: rgb(100,149,237);
-  background: linear-gradient(90deg, rgba(0,125,213,1) 25%, rgba(100,149,237,1) 65%, rgba(246,215,176,1) 85%, rgba(125,220,31,1) 100%);
+  background: linear-gradient(90deg, #007dd5 25%, #6495ed 65%, #f6d7b0 85%, #7ddc1f 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.35);
   white-space: nowrap;
 }
-#following-switch-mobile{
-  background: linear-gradient(300deg, rgba(138,43,226,1) 10%, rgba(244,128,36,1) 15%, rgba(0,125,213,1) 35%, rgba(0,51,102,1) 80%);
+#explore-switch-mobile{
+  background: linear-gradient(80deg, #257bef 10%, #6495ed 65%, #7ddc1f 80%, #f6d7b0 85%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-#explore-switch-mobile{
-  background: linear-gradient(80deg, rgba(37,123,239,1) 10%, rgba(100,149,237,1) 65%, rgba(125,220,31,1) 80%, rgba(246,215,176,1) 85%);
-  cursor: default;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+#explore-switch-mobile-txt{
+  color: #312b23;
 }
 /* Card styles 
 ------------------------------------------------------*/
@@ -1631,12 +1632,10 @@ input[type="file"]#inputavatar{
   color: #007bff !important;
   border-color: white !important;
   border-radius: 2rem !important;
-  height: 1.75rem;
-  width: 1.75rem;
   border-width: 2px !important;
 }
 .btn-settings:hover{
-  border-color: grey !important;
+  border-color: darkgrey !important;
 }
 .btn-settings:focus{
   box-shadow: none !important;
@@ -1691,7 +1690,7 @@ input[type="file"]#inputavatar{
   background-color: white;
   border: 2px solid #19a86e;
   color: #19a86e;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
 }
 .btn-white:hover{
   transition: .15s ease-out;
@@ -2120,7 +2119,18 @@ img.cover{
   opacity: 0;
 }
 .yellowback{
-  background-color: #ffead9;
+  background-color: #ffecdc;
+  position: relative;
+}
+.yellowback:before{
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
   background-image: url(/images/doodleBack.png);
   background-size: 150px 150px;
   background-repeat: repeat;
@@ -2254,8 +2264,8 @@ div.carousel-img{
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.25);
-  border: none;
+  background: rgba(0,0,0,0.25) !important;
+  border: none !important;
   color: white; 
   transition: 0.15s ease;
   opacity: 0;
@@ -2271,7 +2281,7 @@ div.carousel-img{
 }
 .overlay3:hover{
   color: white;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.5) !important;
   padding: 0.5rem !important;
 }
 .overlay4{
@@ -2779,7 +2789,7 @@ select.select1{
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.5rem 0.625rem;
-  margin: 0.15rem 7.5rem 0.15rem 0.5rem;
+  margin: 0.125rem 7.5rem 0.125rem 0.5rem;
 }
 .chat-msg2{
   line-height: 1.375rem !important;
@@ -2791,7 +2801,7 @@ select.select1{
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;
   padding: 0.5rem 0.625rem;
-  margin: 0.15rem 0.5rem 0.15rem 7.5rem;
+  margin: 0.125rem 0.5rem 0.125rem 7.5rem;
 }
 .chat-msg3{
   position: absolute;
@@ -2804,13 +2814,13 @@ select.select1{
   border-radius: 0.5rem;
   padding: 0 0.25rem;
   padding-bottom: 0.125rem;
-  margin: 0.15rem 0;
+  margin: 0.125rem 0;
 }
 .chat-head{
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.5rem 0;
+  margin: -0.125rem 0 -0.625rem 0;
   padding-top: 0.25rem;
 }
 .chat-head-clubpad{
@@ -2823,7 +2833,7 @@ select.select1{
   font-size: 0.5625rem;
   font-weight: 500;
   color: #909090;
-  margin: 0 0 -0.5rem 0;
+  margin: -0.125rem 0 -0.625rem 0;
   padding-top: 0.25rem;
 }
 .chat-head3{
@@ -2852,6 +2862,7 @@ select.select1{
   margin: 1rem 0;
   padding: 1rem 0;
   width: 100%;
+  background-color: rgba(255,255,255,0.5);
 }
 #input_topic:focus{
   border: 1px solid #ffead9 !important;
