@@ -10,7 +10,7 @@
   <div class="col-lg-9 order-md-first order-last">
     <div class="row no-gutters">
       <div class="col-md-12">
-        <div class="d-flex flex-row mobileNoneFlex">
+        <div class="d-flex flex-row">
           <div id="profilePic-frame-div-desktop">
             <% if(currentUser && match && user.profilePicId){ %>
               <div>
@@ -48,130 +48,27 @@
               </div>
             </div>
           </div>
-          <div>
-            <% if(currentUser && match){ %>
-              <div class="d-flex flex-column" style="height: 50%;">
-            <% } else{ %>
-              <div class="d-flex flex-column" style="height: 100%;">
-            <% } %>
-            <div class="my-auto" style="margin-left: 2.75rem;">
-              <div>
-                <% if(user.isVerified){ %>
-                  <h5 class="profilename text-left text-left"><%= user.fullName %></h5>
-                <% } else{ %>
-                  <h5 class="profilename text-left text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
-                <% } %>
-              </div>
-              <div class="text-sm mb-2 boldtext lineheight"><%= user.note %></div>
-            </div>
-            </div>
-            <% if(currentUser && match){ %>
-              <div class="story-container" style="height: 50%; margin-left: 2.75rem;">
-                <div class="d-flex story-container2 scroll moz-scroll mt-3">
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
-                  </div>
-                  <!-- <%// for(var i=0;i<3;i++){ %>
-                    <div class="d-flex flex-column mr-3">
-                      <div class="story"></div>
-                      <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                    </div> 
-                  <%// } %> -->
+          <div class="d-flex flex-column">
+            <div class="my-auto">
+              <div id="username_profile_div">
+                <div>
+                  <% if(user.isVerified){ %>
+                    <h5 class="profilename text-left"><%= user.fullName %></h5>
+                  <% } else{ %>
+                    <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                  <% } %>
                 </div>
+                <div class="profilename text-sm mobiletext4 boldtext lineheight"><%= user.note %></div>
               </div>
-            <!-- <%// } else{ %>
-              <div class="story-container" style="height: 50%; margin-left: 2.75rem;">
-                <div class="d-flex story-container2 scroll moz-scroll mt-3">
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story text-center story-dark"></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                  </div>
-                </div>
-              </div> -->
-            <% } %>
+            </div>
           </div>
         </div>
-        <div class="desktopNoneFlex">
-          <div class="d-flex flex-column">
-            <div class="d-flex flex-row">
-              <div id="profilePic-frame-div-mobile" class="ml-2">
-                <% if(currentUser && match && user.profilePicId){ %>
-                  <div>
-                    <button id="delete_profilePic-mobile" class="btn btn-danger btnxs text-xxs btnshadow" type="button"
-                    style="position: absolute; top: 0; left: 8px; display: none;" title="Delete profile pic" href="#deleteProfilePicModal" data-toggle="modal">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </div>
-                <% } %>
-                <div class="p-1 card indexcard coverback2 profilePic-frame lcov">
-                  <div class="container" style="overflow: hidden; border-radius: 100%;">
-                    <% if(user.userKeys.sex == 'Male'){ %>
-                      <% if(user.profilePicId){ %>
-                        <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                      <% } else{ %>
-                        <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
-                      <% } %>
-                    <% } else if(user.userKeys.sex == 'Female'){ %>
-                      <% if(user.profilePicId){ %>
-                        <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                      <% } else{ %>
-                        <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
-                      <% } %>
-                    <% } %>
-                    <% if(currentUser && match){ %>
-                      <form action="/users/<%= user._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-                        <label for="inputprofilePic2" class="overlay pt-0 mobiletext3" style="outline: 4px solid rgba(0,0,0,0.5); padding-bottom: 2.5rem;">
-                          <i class="fas fa-upload mr-2"></i>profile pic
-                        </label>
-                        <input type="file" id="inputprofilePic2" class="text-sm" name="profilePic" accept="image/*" required>
-                        <button class="btn btn-sm btn-success overlay2" style="border: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      </form>
-                    <% } %>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="d-flex flex-column" style="height: 85%;">
-                  <div class="my-auto pl-3">
-                    <div>
-                      <% if(user.isVerified){ %>
-                        <h5 class="profilename text-left"><%= user.fullName %></h5>
-                      <% } else{ %>
-                        <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
-                      <% } %>
-                    </div>
-                    <div class="mobiletext4 mb-2 boldtext lineheight" style="min-height: 20px;"><%= user.note %></div>
-                  </div>
-                </div>
-              </div>
+        <div class="desktopNoneFlex story-container" style="margin-bottom: 4.375rem;">
+          <div class="d-flex px-3 invisible scroll moz-scroll scroll-hide" style="overflow-x: scroll;">
+            <div class="d-flex flex-column mr-3">
+              <div class="story mt-3 story-dark" style="border-style: dashed;"></div>
+              <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
             </div>
-            <% if(currentUser && match){ %>
-              <div class="story-container" style="margin-bottom: 5.625rem;">
-                <div class="d-flex px-3 scroll moz-scroll scroll-hide" style="overflow-x: scroll;">
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3 text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl py-3 lightgrey story-plus"></i></div>
-                    <div class="story-label lightgrey text-xxxs boldtext pb-2">Add story</div>
-                  </div>
-                  <!-- <%// for(var i=0;i<3;i++){ %>
-                    <div class="d-flex flex-column mr-3">
-                      <div class="story mt-3"></div>
-                      <div class="story-label lightgrey text-xxxs boldtext pb-2">something</div>
-                    </div>
-                  <%// } %> -->
-                </div>
-              </div>
-            <% } else{ %>
-              <div class="story-container" style="margin-bottom: 4.5rem;">
-                <div class="d-flex px-3 invisible scroll moz-scroll scroll-hide" style="overflow-x: scroll;">
-                  <div class="d-flex flex-column mr-3">
-                    <div class="story mt-3 story-dark" style="border-style: dashed;"></div>
-                    <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
-                  </div>
-                </div>
-              </div>
-            <% } %>
           </div>
         </div>
         <!-- Modal HTML -->
@@ -444,16 +341,13 @@
             <% } %>
               <div class="d-flex flex-row">
                 <span class="ml-auto">
-                  <% if(currentUser && match && !isFriend && !sentRequest && !haveRequest){ %>
-                    <a href="/users/<%= user._id %>/settings">
-                      <button class="btn btn-white btn-settings text-sm"title="Account settings">
-                        Settings <i class="fas fa-user-cog"></i>
-                      </button>
-                    </a>
-                  <% } else{ %>
-                    <button class="btn btn-white btnxxs text-sm invisible" type="button">
-                    Not Me</button>
-                  <% } %>
+                  <button class="btn btn-white btnxxs text-sm invisible" type="button">
+                    <% if(currentUser && match){ %>
+                      <span id="my_profile_page">Me</span>
+                    <% } else{ %>
+                      <span>Not Me</span>
+                    <% } %>
+                  </button>
                 </span>
               </div>
               <div class="d-flex flex-column px-1 mobilepad mt-2">
@@ -1006,14 +900,14 @@
         <div>
           <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="friendReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="friendReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-user-plus"></i> Add Friend
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
             <div class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2 text-index" type="button" data-toggle="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2" type="button" data-toggle="dropdown">
                 <i class="fas fa-check"></i> Friends
               </button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
@@ -1052,14 +946,14 @@
             </div>
           <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="cancelReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="cancelReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-minus"></i> Request Pending
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2 text-index" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } %>
@@ -1085,7 +979,34 @@
     </div>
   <% } else if(currentUser && match){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
-      <% include ../partials/latest_updates %>
+      <div class="valign lb-absolute" style="padding: 0.75rem 0.5rem;">
+        <div>
+          <a href="/users/<%= user._id %>/settings">
+            <button class="gb gb2 gb-bordered hover-fill gb-rounded noborder px-2" title="Account settings">
+              <i class="fas fa-cog mr-2"></i>Settings
+            </button>
+          </a>
+        </div>
+        <div class="ml-2">
+          <% if(currentUser && !match){ %>
+            <% if(wasActiveToday && wasActiveMinuteago){ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+              </svg>
+            <% } else if(wasActiveToday && !wasActiveMinuteago){ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+              </svg>
+            <% } else{ %>
+              <svg id="isUserInRoom" height="12" width="12">
+                <circle cx="6" cy="6" r="4" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"/>
+              </svg>
+            <% } %>
+          <% } else{ %>
+            <i class="fas fa-calendar-alt lightgrey mr-1"></i>
+          <% } %>
+        </div>
+      </div>
     </div>
   <% } %>
 </div>

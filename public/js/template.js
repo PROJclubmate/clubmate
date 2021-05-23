@@ -642,7 +642,7 @@ function load_prevMsgs_template(response){
   <% if(message.authorId == currentUser){ %>
     <% if(moment(message.createdAt).format('LT') != prevDate2){ %>
       <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-        <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head2">
+        <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head2">
         <%= moment(message.createdAt).format('LT') %></div></div></div>
       <% } else{ %>
         <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
@@ -651,7 +651,7 @@ function load_prevMsgs_template(response){
       <% } %>
     <% } else{ %>
       <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-        <div class="flex-end"><div class="chat-msg2"><div class="chat-msg-div"><%= message.text %></div></div></div>
+        <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"><%= message.text %></div></div></div>
       <% } else{ %>
         <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
         <div class="chat-msg-div"><%= message.text %></div></div></div>
@@ -660,7 +660,7 @@ function load_prevMsgs_template(response){
   <% } else{ %>
     <% if(moment(message.createdAt).format('LT') != prevDate2){ %>
       <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-        <div><div class="chat-msg"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head">
+        <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"><%= message.text %></div><div class="chat-head">
         <%= moment(message.createdAt).format('LT') %></div></div></div>
       <% } else{ %>
         <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
@@ -669,7 +669,7 @@ function load_prevMsgs_template(response){
       <% } %>
     <% } else{ %>
       <% if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
-        <div><div class="chat-msg"><div class="chat-msg-div"><%= message.text %></div></div></div>
+        <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"><%= message.text %></div></div></div>
       <% } else{ %>
         <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
         <div class="chat-msg-div"><%= message.text %></div></div></div>

@@ -808,15 +808,26 @@ if(window.innerWidth < 768){
       $('.inbox_mobile').removeClass("nodisplay");
     }
   }
+}
 
-  $('div.btncollapse-div').on("click",".btncollapse", function(e){
-    var btn = $(this);
+$('div.btncollapse-div').on("click",".btncollapse", function(e){
+  var btn = $(this);
+  if(window.innerWidth < 768){
     btn.css('border-image', 'repeating-linear-gradient(to left top, blue, red 20px)');
     setTimeout(function(){
       btn.css('border', '5px solid white');
     }, 500); 
-  });
-}
+  }
+  if(btn.attr('id') == 'drop-info'){
+    if(btn.hasClass('noshadow')){
+      btn.removeClass('noshadow');
+      $('.fa-angle-up').removeClass('flipped-verticaly');
+    } else{
+      btn.addClass('noshadow');
+      $('.fa-angle-up').addClass('flipped-verticaly');
+    }
+  }
+});
 
 if((location.pathname == '/help/') || (location.pathname == '/faq')){
   $(".navhelp").addClass('requests-active');
@@ -860,8 +871,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   if(window.innerWidth > 768){
-    if(!$('#latestUpdates').hasClass('clubupdates') && $('#latestUpdates-count').text() != 0){
-      $('#latestUpdates, #friends').addClass('show');
+    if($('#my_profile_page').length){
+      $('#friends').addClass('show');
     }
   }
   

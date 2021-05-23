@@ -1,7 +1,3 @@
-:root {
-  --dark-grey: #343a40
-}
-
 /* The side navigation menu */
 .sidebar{
   margin: 0;
@@ -144,11 +140,13 @@ div.content{
   img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
   img.cover.mobile-cover, div.carousel-img{border-radius: 0 0.5rem 0.5rem 0 !important;}
   #btncollapse-club{color: #262626 !important;}
-  .clubupdates-count{color: #808080;}
   .carousel-inner{border-radius: 0 0.75rem 0.75rem 0;}
   .input-group-append.searchbtn-div{margin-left: -2px;}
   #posts_view_toggle{margin-top: 7.0625rem; margin-left: -3rem; margin-right: 3rem;}
   .search-bottompos.search-bottompos-desktop{width: calc(100% - 100px - 2rem) !important;}
+  .btncollapse.btncollapse-info:hover{
+    box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3) !important;
+  }
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -171,7 +169,7 @@ div.content{
   .sidebar-label{font-size: 0.9375rem !important; margin: 0;}
   .sidebar-icon{font-size: 1.45rem;}
   .sidebar a{padding: 7px 11px; font-size: 1rem; float: left; height: 42px !important;}
-  a.side-drop-elem{padding: 10px 11px;}
+  a.side-drop-elem{padding: 10px 11px; min-width: 12rem;}
   a.hr2.active{padding-top: 5.5px; padding-bottom: 5.5px;}
   .btnxxs{padding: 0 4px !important;}
   .story-container.mobilepad{padding: 0 0.5rem !important;}
@@ -248,8 +246,9 @@ div.content{
   div.rcov{border-radius: 0; box-shadow: none;}
   .mobile-cover{height: 180px !important;}
   div.lpcov{width: inherit; top: -2.25rem; margin-bottom: 0.75rem;}
-  .profilename{text-align: center; white-space: pre-wrap !important; width: 180px; padding: 0.375rem 0 !important;
-  line-height: 1.35rem !important;}
+  .profilename{white-space: pre-wrap !important; width: 180px; padding: 0.375rem 0 !important;
+  line-height: 1.35rem !important; margin-left: 1rem !important;}
+  .profilename.clubname{margin-left: 0 !important; text-align: center !important;}
   .profilePic-frame{width: 188px !important;}
   img.profilePic.cover{height: 180px !important; width: 180px !important;}
   .profilePic-frame.lcov{width: 188px !important;}
@@ -330,7 +329,6 @@ div.content{
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
   .nofill-color{color: #262626 !important;}
-  .nofill-color * .clubupdates-count{color: #808080;}
   .carousel-indicators{top: 54px !important;}
   .discoverlink{top: 0.125rem !important; left: 45% !important;}
   .text-shadow-white{text-shadow: 0.25px 0.25px white, -0.25px 0.25px white, 
@@ -350,7 +348,7 @@ div.content{
   #college-scroll{height: calc(100vh - 1rem - 42px) !important;}
   .chatlist-background{min-height: 100%; background-image: url(/images/chat.svg); background-size: 35vw;
     background-repeat: no-repeat; background-position: bottom;}
-  .room-container{padding: 2rem 1rem !important;}
+  .room-container{padding: 2rem 0 2rem 1rem !important;}
   .chats_chevronimg.flipped{margin: 0 2.125rem !important;}
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
@@ -358,6 +356,7 @@ div.content{
   .college-infobtn{min-width: 56px; min-height: 56px;}
   .college-cover.mobileblurred{filter: blur(2px);}
   .mail-wrap{padding-top: 0.375rem !important;}
+  #club-info-mar{margin-top: 2rem !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -771,6 +770,12 @@ hr{
   padding: 10px;
   margin: 0 auto;
 }
+.fa-at, .fa-key{
+  position: absolute;
+  top: 0.675rem;
+  right: 0.75rem;
+  color: #6c757c;
+}
 input.form-control.search{
   height: 30px;
   margin: 0;
@@ -925,7 +930,7 @@ input{
   border: none;
 }
 .card-heading{
-  color: var(--dark-grey);
+  color: #343a40;
 }
 .card-body0{
   padding: 0 !important;
@@ -1090,27 +1095,10 @@ a > .collegedp.chatsdp.mr-0.active{
 .nav-link.img{
   padding: 0;
 }
-#latestUpdates{
-  max-height: 200px;
+#thisweek, #alltime{
+  height: 200px;
   overflow-y: scroll;
   overflow-y: overlay;
-}
-#updates-content{
-  min-height: 200px;
-}
-.eventD{
-  color: #1976d2;
-  height: 2.5rem;
-  min-width: 3.125rem;
-  border: 1px solid darkgrey;
-  background: repeating-linear-gradient(
-    45deg,
-    #ededed,
-    #ededed 3px,
-    white 3px,
-    white 5px
-  );
-  text-align: center;
 }
 time.calendar{
   font-size: 0.625rem;
@@ -1628,18 +1616,6 @@ input[type="file"]#inputavatar{
 .btn.btn-round:focus{
   border-radius: 2rem;
 }
-.btn-settings{
-  color: #007bff !important;
-  border-color: white !important;
-  border-radius: 2rem !important;
-  border-width: 2px !important;
-}
-.btn-settings:hover{
-  border-color: darkgrey !important;
-}
-.btn-settings:focus{
-  box-shadow: none !important;
-}
 .btn.btn-dark{
   background-color: white;
   border: 0.5px solid darkgrey;
@@ -1715,10 +1691,7 @@ input[type="file"]#inputavatar{
   border-image: repeating-linear-gradient(to left top, blue, red 20px);
 }
 .btncollapse.btncollapse-info{
-  box-shadow: none !important;
-}
-.btncollapse.btncollapse-info:hover, .btncollapse.btncollapse-info:focus{
-  box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3);
+  padding: 0.5rem 0 !important;
 }
 .btncollapse-div{
   border-radius: 0.25rem;
@@ -2098,9 +2071,13 @@ img.cover{
 .profilename{
   font-size: 1.25rem;
   margin: 0;
+  margin-left: 3.25rem;
   white-space: nowrap;
   width: 100%;
   text-overflow: ellipsis;
+}
+.profilename.clubname{
+  margin-left: 0;
 }
 .cardpad{
   padding: 0.5rem;
@@ -3010,6 +2987,9 @@ input.shadow:-webkit-autofill:focus{
   max-width: 16rem;
   overflow: hidden;
 }
+.memberRequest_form{
+  box-shadow: inset 0px 2px 2px -2px rgb(0, 0, 0, 0.35);
+}
 .story{
   border-radius: 100%;
   border: 3px solid white;
@@ -3455,8 +3435,10 @@ input.shadow:-webkit-autofill:focus{
 }
 .gb{
   cursor: pointer;
-  font-size: 1.125rem;
+  font-size: 1rem;
   border-radius: 0.25rem;
+  color: #262626;
+  padding: 0.125rem 0.5rem;
 }
 .nounderline.gb-bordered{
   color: #262626 !important;
@@ -3465,7 +3447,6 @@ input.shadow:-webkit-autofill:focus{
   color: white !important;
 }
 .gb-bordered{
-  padding: 0.25rem 1rem;
   position: relative;
   border: 3px solid transparent;
   background-clip: padding-box;
@@ -3513,19 +3494,45 @@ input.shadow:-webkit-autofill:focus{
 .hover-slide:hover:after{
   background-position: 100% 0;
 }
+.gb2{
+  background-color: #efefef;
+}
+.gb2:after{
+  position: unset;
+  background-image: linear-gradient(45deg, rgba(8, 211, 172, 0.5) 0%, rgba(8, 211, 172, 0.5) 12.5%, rgba(62, 29, 50, 0.5) 12.5%, rgba(62, 29, 50, 0.5) 25%, rgba(54, 55, 67, 0.5) 25%, rgba(54, 55, 67, 0.5) 37.5%, rgba(47, 81, 85, 0.5) 37.5%, rgba(47, 81, 85, 0.5) 50%, rgba(23, 159, 137, 0.5) 50%, rgba(23, 159, 137, 0.5) 62.5%, rgba(16, 185, 155, 0.5) 62.5%, rgba(16, 185, 155, 0.5) 75%, rgba(31, 133, 120, 0.5) 75%, rgba(31, 133, 120, 0.5) 87.5%, rgba(39, 107, 102, 0.5) 87.5%, rgba(39, 107, 102, 0.5) 100%), linear-gradient(135deg, #5774dd, #2304e5);
+}
+.gb2:hover{
+  background-color: white;
+  color: #262626;
+}
+.gb2:hover:after{
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  content: '';
+  z-index: -1;
+}
+.gb2:focus{
+  position: sticky;
+  outline: none;
+  transition: unset;
+  color: white;
+}
 .gb4:after{
-  background: linear-gradient(135deg, #ef0781 0%, #ef0781 6%, #d00a70 6%, #d00a70 25%, #b10d60 25%, #b10d60 40%, #93104f 40%, #93104f 45%, #74133e 45%, #74133e 53%, #55162e 53%, #55162e 66%, #36191d 66%, #36191d 100%);
+  background: linear-gradient(164deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(222, 222, 222, 0.1) 50%, rgba(222, 222, 222, 0.1) 100%), linear-gradient(73deg, rgba(182, 182, 182, 0.02) 0%, rgba(182, 182, 182, 0.02) 50%, rgba(216, 216, 216, 0.02) 50%, rgba(216, 216, 216, 0.02) 100%), linear-gradient(215deg, rgba(27, 27, 27, 0.09) 0%, rgba(27, 27, 27, 0.09) 50%, rgba(243, 243, 243, 0.09) 50%, rgba(243, 243, 243, 0.09) 100%), linear-gradient(236deg, rgba(242, 242, 242, 0.05) 0%, rgba(242, 242, 242, 0.05) 50%, rgba(16, 16, 16, 0.05) 50%, rgba(16, 16, 16, 0.05) 100%), linear-gradient(256deg, rgba(170, 170, 170, 0.07) 0%, rgba(170, 170, 170, 0.07) 50%, rgba(209, 209, 209, 0.07) 50%, rgba(209, 209, 209, 0.07) 100%), linear-gradient(126deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.1) 50%, rgba(26, 26, 26, 0.1) 50%, rgba(26, 26, 26, 0.1) 100%), linear-gradient(61deg, rgba(250, 250, 250, 0.01) 0%, rgba(250, 250, 250, 0.01) 50%, rgba(13, 13, 13, 0.01) 50%, rgba(13, 13, 13, 0.01) 100%), linear-gradient(56deg, rgba(210, 210, 210, 0.05) 0%, rgba(210, 210, 210, 0.05) 50%, rgba(79, 79, 79, 0.05) 50%, rgba(79, 79, 79, 0.05) 100%), linear-gradient(226deg, rgba(62, 62, 62, 0.1) 0%, rgba(62, 62, 62, 0.1) 50%, rgba(73, 73, 73, 0.1) 50%, rgba(73, 73, 73, 0.1) 100%), linear-gradient(90deg, #ec029e, #a1024f);
 }
 .gb4{
   background-color: white;
+  padding: 0.25rem 0.75rem !important;
 }
 .gb5{
-  padding: unset;
   background-color: #efefef;
 }
 .gb5:after{
   position: unset;
-  background: linear-gradient(0, rgba(151, 49, 241, 0.46) 0%, rgba(151, 49, 241, 0.46) 6%, rgba(163, 71, 217, 0.46) 6%, rgba(163, 71, 217, 0.46) 33%, rgba(175, 94, 193, 0.46) 33%, rgba(175, 94, 193, 0.46) 47%, rgba(187, 116, 169, 0.46) 47%, rgba(187, 116, 169, 0.46) 65%, rgba(200, 139, 146, 0.46) 65%, rgba(200, 139, 146, 0.46) 77%, rgba(212, 161, 122, 0.46) 77%, rgba(212, 161, 122, 0.46) 87%, rgba(224, 184, 98, 0.46) 87%, rgba(224, 184, 98, 0.46) 97%, rgba(236, 206, 74, 0.46) 97%, rgba(236, 206, 74, 0.46) 100%), linear-gradient(90deg, #e90e1b 0%, #e90e1b 15%, #eb291b 15%, #eb291b 39%, #ee431a 39%, #ee431a 42%, #f05e1a 42%, #f05e1a 52%, #f37819 52%, #f37819 61%, #f59319 61%, #f59319 76%, #f8ad18 76%, #f8ad18 88%, #fac818 88%, #fac818 100%);
+  background: linear-gradient(0, rgba(151, 49, 241, 0.5) 0%, rgba(151, 49, 241, 0.5) 6%, rgba(163, 71, 217, 0.5) 6%, rgba(163, 71, 217, 0.5) 33%, rgba(175, 94, 193, 0.5) 33%, rgba(175, 94, 193, 0.5) 47%, rgba(187, 116, 169, 0.5) 47%, rgba(187, 116, 169, 0.5) 65%, rgba(200, 139, 146, 0.5) 65%, rgba(200, 139, 146, 0.5) 77%, rgba(212, 161, 122, 0.5) 77%, rgba(212, 161, 122, 0.5) 87%, rgba(224, 184, 98, 0.5) 87%, rgba(224, 184, 98, 0.5) 97%, rgba(236, 206, 74, 0.5) 97%, rgba(236, 206, 74, 0.5) 100%), linear-gradient(90deg, #e90e1b 0%, #e90e1b 15%, #eb291b 15%, #eb291b 39%, #ee431a 39%, #ee431a 42%, #f05e1a 42%, #f05e1a 52%, #f37819 52%, #f37819 61%, #f59319 61%, #f59319 76%, #f8ad18 76%, #f8ad18 88%, #fac818 88%, #fac818 100%);
 }
 .gb5:hover{
   background-color: white;
@@ -3544,11 +3551,11 @@ input.shadow:-webkit-autofill:focus{
   position: sticky;
   outline: none;
   transition: unset;
-  background: linear-gradient(0, rgba(151, 49, 241, 0.46) 0%, rgba(151, 49, 241, 0.46) 6%, rgba(163, 71, 217, 0.46) 6%, rgba(163, 71, 217, 0.46) 33%, rgba(175, 94, 193, 0.46) 33%, rgba(175, 94, 193, 0.46) 47%, rgba(187, 116, 169, 0.46) 47%, rgba(187, 116, 169, 0.46) 65%, rgba(200, 139, 146, 0.46) 65%, rgba(200, 139, 146, 0.46) 77%, rgba(212, 161, 122, 0.46) 77%, rgba(212, 161, 122, 0.46) 87%, rgba(224, 184, 98, 0.46) 87%, rgba(224, 184, 98, 0.46) 97%, rgba(236, 206, 74, 0.46) 97%, rgba(236, 206, 74, 0.46) 100%), linear-gradient(90deg, #e90e1b 0%, #e90e1b 15%, #eb291b 15%, #eb291b 39%, #ee431a 39%, #ee431a 42%, #f05e1a 42%, #f05e1a 52%, #f37819 52%, #f37819 61%, #f59319 61%, #f59319 76%, #f8ad18 76%, #f8ad18 88%, #fac818 88%, #fac818 100%);
   color: white;
 }
 .gb8{
   background-color: whitesmoke;
+  padding: 0.25rem 0.75rem !important;
 }
 .gb8:after{
   background-image: linear-gradient(90deg, #f47178 0%, #f47178 14.3%, #f4da71 14.3%, #f4da71 28.6%, #9df471 28.6%, #9df471 42.9%, #71f4b5 42.9%, #71f4b5 57.2%, #71c2f4 57.2%, #71c2f4 71.5%, #9071f4 71.5%, #9071f4 85.8%, #f471e7 85.8%, #f471e7 100.1%);
@@ -3782,18 +3789,22 @@ input.shadow:-webkit-autofill:focus{
 .college-infobtn:hover{
   background-color: white;
 }
-.college-infobtn .fa-newspaper, .college-infobtn .fa-tasks,
+.college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase,
 .college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
   -webkit-text-stroke: 0.25px #e0e0e0;
 }
-.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-tasks,
+.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-briefcase,
 .college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-external-link-alt{
   -webkit-text-stroke-color: white;
 }
 .room-container{
-  padding: 2rem 3rem;
+  color: #7a7b7c;
+  padding: 2rem 0 2rem 3rem;
   border: 1px solid lightgrey;
   cursor: pointer;
+}
+.room-container:hover{
+  color: #343a40;
 }
 .chats_chevronimg{
   width: 16px;
@@ -3813,4 +3824,7 @@ input.shadow:-webkit-autofill:focus{
 }
 .page-link{
   cursor: pointer;
+}
+.flipped-verticaly{
+  transform: scaleY(-1);
 }

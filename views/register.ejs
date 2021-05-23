@@ -14,10 +14,16 @@
           <input type="text" id="inputLastName" class="form-control mb-0" name="lastName" placeholder="last name">
         </div>
       </div>
-      <label for="inputEmail" class="sr-only">Email</label>
-      <input type="email" id="inputEmail" class="form-control" name="email" placeholder="john@doe.com" required>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
+      <div class="position-relative">
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
+        <i class="fas fa-at"></i>
+      </div>
+      <div class="position-relative">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
+        <i class="fas fa-key"></i>
+      </div>
       <div id="pass_show" style="display: none;"><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
       <div id="pass_info" class="text-xs darkgrey" style="display: none;">
         <span class="redcolor"><strong>*</strong></span>

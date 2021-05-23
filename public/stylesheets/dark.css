@@ -711,15 +711,8 @@ div.carousel-img{
 .pushmsg.card{
   background-color: var(--color-dark-700);
 }
-.eventD{
-  background: repeating-linear-gradient(
-    45deg,
-    var(--color-dark-700),
-    var(--color-dark-700) 3px,
-    var(--color-dark-800) 3px,
-    var(--color-dark-800) 5px
-  );
-  border-color: var(--color-dark-700);
+.bootstrap-datetimepicker-widget{
+  background-color: var(--color-dark-700);
 }
 time.calendar{
   box-shadow: 0 1px 0 var(--color-white-300), 0 2px 0 var(--color-dark-800), 0 3px 0 var(--color-white-300), 0 4px 0 var(--color-dark-800), 0 5px 0 var(--color-white-300), 0 0 0 1px var(--color-white-300);
@@ -762,8 +755,13 @@ time.calendar{
 }
 .room-container.whitesmokeback{
   background-color: var(--color-dark-700) !important;
-  border-color: var(--color-dark-700) !important;
+}
+.room-container{
   color: var(--color-white-300);
+  border-color: var(--color-dark-600);
+}
+.room-container:hover{
+  color: white;
 }
 .text-shadow-white{
   text-shadow: none !important;
