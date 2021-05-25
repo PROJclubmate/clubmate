@@ -102,7 +102,7 @@ div.content{
   .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
   .postimgpad{padding: 0 0.5rem;}
   .topicimgpad{padding-left: 0.5rem;}
-  .story2{height: 76px !important; width: 76px !important;}
+  .story{height: 76px !important; width: 76px !important;}
   .story-label2{width: 76px !important;}
   #messages.messages2{height: calc(100vh - 1.5rem - 40px - 31px - 42px);}
   #messages.messages2.msg_dec2{height: calc(100vh - 1.5rem - 40px - 31px - 42px - 35px);}
@@ -357,6 +357,7 @@ div.content{
   .college-cover.mobileblurred{filter: blur(2px);}
   .mail-wrap{padding-top: 0.375rem !important;}
   #club-info-mar{margin-top: 2rem !important;}
+  .story-plus{padding: 1.125rem 0 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -388,7 +389,7 @@ div.content{
   .nav-link.requests{font-size: 1.25rem !important;}
   .story{height: 76px !important; width: 76px !important;}
   .story-label{width: 76px !important;}
-  .story-plus{padding: 1.325rem 0 !important;}
+  .story-plus{padding: 1.5rem 0 !important;}
   .navdp{height: 40px !important; width: 40px !important;}
   .collegedp{height: 62px !important; width: 62px !important;}
   button.vote{font-size: 1.625rem !important;}
@@ -486,7 +487,7 @@ div.content{
   .lineheight3{line-height: 0.8125rem !important;}
   .chat-discover{font-size: 1.0625rem;}
   h3{font-size: 1.8125rem;}
-  .story-square{border-radius: 1.625rem !important;}
+  .story{border-radius: 1.625rem !important;}
 }
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
@@ -546,10 +547,9 @@ div.content{
   select, .custom-file-upload{height: 32px !important; padding: 0.25rem 0.5rem !important;}
   #images-10{height: 35px !important; margin-top: 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
-  .story{height: 66px !important; width: 66px !important;}
+  .story{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
   .story-label{width: 66px !important;}
-  .story-plus{padding: 1rem 0 !important;}
-  .story-square{border-radius: 1.5rem !important;}
+  .story-plus{padding: 1.1875rem 0 !important;}
   .navdp{height: 36px !important; width: 36px !important;}
   .collegedp{height: 54px !important; width: 54px !important;}
   button.vote{font-size: 1.5rem !important;}
@@ -2991,24 +2991,20 @@ input.shadow:-webkit-autofill:focus{
   box-shadow: inset 0px 2px 2px -2px rgb(0, 0, 0, 0.35);
 }
 .story{
-  border-radius: 100%;
-  border: 3px solid white;
+  border-radius: 1.75rem;
+  border: 2px solid silver;
   height: 65px;
   width: 65px;
   cursor: pointer;
 }
-.story.story-dark{
-  border: 2px solid silver;
-}
-.story-square{
-  border-radius: 1.75rem;
-}
 .story-plus{
-  vertical-align: text-top;
+  color: silver;
+  padding: 1.4375rem 0;
 }
 .story-label{
   width: 65px;
   text-align: center;
+  width: 100%;
 }
 .story-container2{
   overflow: hidden;

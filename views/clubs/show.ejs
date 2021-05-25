@@ -210,7 +210,7 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>"><%= club.clubKeys.college %></a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>">IIT Mandi</a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&category=<%= club.clubKeys.category %>&college="><%= club.clubKeys.category %></a></div></div>
             </div>
           </div>
@@ -451,7 +451,21 @@
                 </div>
               </div>
               <!-- Stories Tab -->
-              <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab"></div>
+              <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab">
+                <% if(currentUser && 0 <= rank && rank <=2){ %>
+                  <div class="d-flex story-container scroll moz-scroll p-3">
+                    <div class="d-flex flex-column mr-3">
+                      <div class="story text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl story-plus"></i></div>
+                      <div class="story-label lightgrey2 text-xxxs boldtext pb-2">Add update</div>
+                    </div>
+                  </div>
+                <% } %>
+                <% if(currentUser && 0 <= rank && rank <=2){ %>
+                  <div class="px-3 pb-3">
+                    <em class="lightgrey boldtext text-sm"><i class="fas fa-history mr-2"></i>HISTORY</em>
+                  </div>
+                <% } %>
+              </div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
                 <!-- Rooms Tab -->
                 <div class="tab-pane fade cardpad border-light-lr p-0 pt-2" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
