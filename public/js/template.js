@@ -349,9 +349,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   });
 }
 
-if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] == 'clubs' && 
+if((location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' || 
   location.pathname.split('/')[3] == 'posts' && location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)) || 
-  (location.pathname.split('/').length == 7 && location.pathname.split('/')[5] == 'subPost'))
+  (location.pathname.split('/').length == 5 && location.pathname.split('/')[5] == 'subPost'))
 {
   if($('#load-prevMsgs-btn')){
     $('#load-prevMsgs-btn').addClass('nodisplay');
@@ -361,7 +361,7 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
     if(!$('#alltime-posts-btn').hasClass('done')){
       $.ajax({
         type: 'GET',
-        url: '/clubs-allTimeTopTopicPosts/'+location.pathname.split('/')[2],
+        url: '/clubs-allTimeTopTopicPosts/'+$(this).attr('value'),
         timeout: 3000,
         success: function (response){
           var arr = response.topTopicPosts.length;
@@ -1978,15 +1978,15 @@ function user_posts_template(response){
   return html;
 }
 
-function heart_posts_template(response){ 
+function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
   <!-- SIMPLE POSTS -->
   <% if(postsH[l].topic == ''){ %>
     <% if(l == 0){ %>
-      <div class="card mt-0 pt-3 post-head">
+      <div class="card mt-0 pt-3 post-head heartpost-head">
     <% } else{ %>
-      <div class="card post-head">
+      <div class="card post-head heartpost-head">
     <% } %>
       <div class="card-body">
         <div class="dropctn">
@@ -2141,41 +2141,6 @@ function heart_posts_template(response){
         </form>
       </div>
     </div>
-    <!-- COMMENTS -->
-    <div class="mt-1"></div>
-    <div class="card m-0 post-tail">
-      <% if(postsH[l].commentsCount != 0){ %>
-        <div class="card-body3">
-          <% var z=1; var buckets = postsH[l].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
-            <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
-            <% if(z<=2){ %>
-              <div class="valign">
-                <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
-                  </span>
-                  <span class="mobiletext"><%= comments[j].text %></span>
-                </div>
-              </div>
-            <% z++;} %>
-            <% } %>
-          <% } %>
-        </div>
-      <% } %>
-      <div class="card-body3">
-        <div class="commentdiv">
-          <form action="/posts/<%= postsH[l]._id %>/comments" method="POST">
-            <div class="input-group">
-              <input onclick="block_display('commentbtn<%= postsH[l]._id %>');" id="commentbox<%= postsH[l]._id %>" class="commentbox text-sm form-control form-control-sm" type="text" name="text" placeholder="Write a comment" required>
-            </div>
-            <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
-              <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
-        </div>
-      </div>
-    </div>
   <% } else{ %>
     <!-- TOPIC POSTS -->
     <div class="noborder d-flex flex-row justify-content-between">
@@ -2256,9 +2221,9 @@ function heart_posts_template(response){
       </div>
       <!-- TOPIC COLUMN -->
       <% if(l == 0){ %>
-        <div class="topic-column mt-0 pt-3">
+        <div class="d-flex flex-column topic-column mt-0 pt-3">
       <% } else{ %>
-        <div class="topic-column mt-3">
+        <div class="d-flex flex-column topic-column mt-3">
       <% } %>
         <div class="d-flex flex-column mb-auto">
           <div class="mx-auto my-2 py-1">
@@ -2324,6 +2289,24 @@ function heart_posts_template(response){
               </form>
             </div>
           </div>
+        </div>
+        <div>
+          <form action="/posts/<%= postsH[l]._id %>/vote" method="POST">
+            <div class="d-flex flex-column">
+              <% if(currentUser){ %>
+                <% if(hasVoteH[l] == 3){ %>
+                  <div id="heart-countH<%= postsH[l]._id %>" class="boldtext darkgrey nothing text-sm redcolor3 mx-auto topic-heart mt-2"><%= postsH[l].heartCount %></div>
+                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
+                <% } else if(hasVoteH[l] == 0){ %>
+                  <div id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm mx-auto topic-heart mt-2"><%= postsH[l].heartCount %></div>
+                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+                <% } %>
+              <% } else{ %>
+                <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+              <% } %>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
@@ -2840,16 +2823,16 @@ function allTimeTopTopicPosts_template(response){
       <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
         <span class="truncate3 mobiletext2 lineheight2 my-1">
           <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-          <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+          <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
         <div>
-          <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
+          <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
         </div>
         <div>
           <span class="truncate3 mobiletext2 lineheight2 my-1">
             <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-            <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+            <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
           </span>
         </div>
       <% } %>
@@ -2860,7 +2843,7 @@ function allTimeTopTopicPosts_template(response){
 <% } else{ %>
   <div class="lightgrey mobiletext2">No discussions created yet :/</div>
 <% } %>
-`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, club: response.club, 
+`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, clubId: response.clubId, 
   csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }

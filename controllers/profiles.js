@@ -502,18 +502,6 @@ module.exports = {
           {
             "$unwind": "$postClub"
           },
-          { "$lookup": {
-            "from": "comments",
-            "as": "commentBuckets",
-            "let": { "id": "$_id" },
-            "pipeline": [
-              { "$match": { 
-                "$expr": { "$eq": [ "$$id", "$postId" ] }
-              }},
-              { "$sort": { "_id": -1 } },
-              { "$limit": 1 }
-            ]
-          }},
           {
           "$project": {
               "_id": 1,
@@ -568,7 +556,6 @@ module.exports = {
         var userPosts = foundHeartPosts;
         var posts = postsPrivacyFilter(userPosts, req.user);
         var modPosts = postsModerationFilter(posts, req.user);
-        sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatarH = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
           if(environment === 'dev'){
@@ -938,7 +925,8 @@ module.exports = {
             lastActive: {$gt:new Date(Date.now() - 120*1000)}}, function(err, onlineClubMembersCount){
               res.render('clubs/show', {rank, currentUser: req.user, users: limitedUsers, conversationId, convClubId,
               club: foundClub, Users_50_profilePic, Posts_50_Image, topTopicPosts: modTopTopicPosts, sentMemberReq, 
-              memberRequestsLength, isFollowingClub, onlineClubMembersCount, cdn_prefix});
+              memberRequestsLength, isFollowingClub, onlineClubMembersCount, clubId: foundClub._id, clubPage: true, 
+              cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             });
           }
@@ -995,7 +983,7 @@ module.exports = {
               Posts_50_Image[l] = null;
             }
           }
-          res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts, club: req.params.club_id, 
+          res.json({Posts_50_Image, topTopicPosts: modTopTopicPosts, clubId: req.params.club_id, 
           csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }

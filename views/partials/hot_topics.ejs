@@ -1,5 +1,5 @@
 <div class="card mt-0 border-light btncollapse-div btncollapse-div-shadow btncollapse-club-div lb-absolute">
-  <% if(club.featuredPhotos.length != 0){ %>
+  <% if(clubPage && club.featuredPhotos.length != 0){ %>
     <button id="btncollapse-club" type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3 btncollapse-club btncollapse-club-dark btncollapse-club-grad collapsed" data-toggle="collapse" data-target="#hot_topics">
   <% } else{ %>
     <button id="btncollapse-club" type="button" class="btn btn-sm boldtext btncollapse text-left mobiletext3 btncollapse-club btncollapse-club-dark btncollapse-club-nongrad collapsed" data-toggle="collapse" data-target="#hot_topics">
@@ -15,16 +15,16 @@
             <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
               <span class="truncate3 mobiletext2 lineheight2 my-1">
                 <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-                <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+                <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
               </span>
             <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
               <div>
-                <a href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
+                <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
               </div>
               <div>
                 <span class="truncate3 mobiletext2 lineheight2 my-1">
                   <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
-                  <span class="linewrap"><a class="darkgrey" href="/clubs/<%= club._id %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+                  <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
                 </span>
               </div>
             <% } %>
@@ -41,14 +41,14 @@
       <% } %>
     </div>
     <div class="card-body3 tab-pane container fade" id="alltime">...</div>
-    <hr style="border-top: 2px dashed #efefef;">
+    <hr id="hot_topics_hr" style="border-top: 2px dashed #efefef;">
     <div class="card-body1">
       <ul class="nav justify-content-end">
         <li class="nav-item mr-2">
           <a class="nav-topic nothing active text-xs mobiletext4" data-toggle="tab" href="#thisweek">this week</a>
         </li>
         <li class="nav-item">
-          <a id="alltime-posts-btn" class="nav-topic nothing text-xs mobiletext4" data-toggle="tab" href="#alltime">all time</a>
+          <a id="alltime-posts-btn" value="<%= clubId %>" class="nav-topic nothing text-xs mobiletext4" data-toggle="tab" href="#alltime">all time</a>
         </li>
       </ul>
     </div>

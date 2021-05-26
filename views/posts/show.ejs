@@ -421,7 +421,7 @@
           <div class="commentdiv ml-2">
             <form action="/posts/<%= post._id %>/comments" method="POST">
               <div class="input-group">
-                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm description commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
+                <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
               </div>
               <div class="d-flex flex-row-reverse">
                 <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
@@ -456,12 +456,8 @@
 
 
   </div>
-  <% if(currentUser && post.topic == ''){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 mobileNone">
-      <% include ../partials/latest_updates %>
-    </div>
-  <% } else if(currentUser && post.topic != '' && quote == false){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-1 mt-2 order-md-last order-first">
+  <% if(currentUser){ %>
+    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 order-md-last order-first">
       <% include ../partials/hot_topics %>
     </div>
   <% } %>
