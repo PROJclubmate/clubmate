@@ -167,21 +167,25 @@ $('#input_topic').on('input', function(e){
       $('.priv_college').attr('disabled', 'true');
       $('.priv_public').attr('disabled', 'true');
       $('#priv_club').attr('selected', 'true');
+      $('#description').attr('placeholder', 'Describe your question');
     } else{
       $('#priv_everyone').attr('selected', 'true');
       $('.priv_college').removeAttr('disabled');
       $('.priv_public').removeAttr('disabled');
       $('#priv_club').removeAttr('selected');
+      $('#description').attr('placeholder', 'Describe your post');
     }
   } else{
     if($(this).val() != ''){
       $('#description').removeClass('description2');
       $('#description').removeAttr('readonly', 'true');
       $('#description').attr('required', 'true');
+      $('#description').attr('placeholder', 'Describe your question');
     } else{
       $('#description').addClass('description2');
       $('#description').attr('readonly', 'true');
       $('#description').removeAttr('required', 'true');
+      $('#description').attr('placeholder', 'Describe your post');
     }
   }
 });

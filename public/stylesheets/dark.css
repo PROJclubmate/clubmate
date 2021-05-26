@@ -228,7 +228,7 @@ button.gb.gb8:focus{
 .btn-search{
   background-color: var(--color-dark-900);
   color: var(--color-white-100);
-  border-color: #ed4245 !important;
+  border-color: #811414 !important;
 }
 .btn-search:hover{
   background-color: var(--color-dark-700);
