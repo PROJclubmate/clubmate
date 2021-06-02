@@ -20,7 +20,7 @@
 		</div>
 		<div class="d-flex flex-row">
 			<div class="mb-2">
-        <a id="chatlist-chevron" href="/chats/clubs/<%= lastOpenedChatListClub %>" class="pr-5 pointer">
+        <a id="chatlist-chevron" href="/chats/club_rooms/<%= lastOpenedChatListClub %>" class="pr-5 pointer">
 				  <img class="chats_chevronimg" src="<%= '/images/double-chevron.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621172289/icons/double-chevron.svg' %>" title="Designed by [Pixel perfect] from @flaticon">
         </a>
 			</div>
@@ -28,7 +28,7 @@
 		<div class="card mt-0 chatlist-background border-light">
 			<% if(chatList.length){ %>
 				<% for(var i=0;i<chatList.length;i++){ %>
-					<form class="chat-form" action="/chats/open" method="GET">
+					<form class="chat-form" action="/chats/feed/open" method="GET">
 						<% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
 							<div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>" class="d-flex flex-row px-2 chatlist-item active" value="<%= chatList[i].type %>">
 						<% } else{ %>
@@ -78,16 +78,16 @@
 												<% if(chatList[i].lastMsgOn && chatList[i].lastMsgOn != ''){ %>
 													<% if((Date.now() - chatList[i].lastMsgOn) < 3600000*24){ %>
 														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal1 text-xxs lightgrey nowrap"></em>
-														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC1 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC_Chats timeUTC1 text-xxs lightgrey nowrap invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
 													<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*3){ %>
 														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal3 text-xxs lightgrey nowrap"></em>
-														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC3 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC_Chats timeUTC3 text-xxs lightgrey nowrap invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
 													<% } else if((Date.now() - chatList[i].lastMsgOn) < 3600000*24*7){ %>
 														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal7 text-xxs lightgrey nowrap"></em>
-														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC7 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC_Chats timeUTC7 text-xxs lightgrey nowrap invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
 													<% } else{ %>
 														<em id="timeLocal<%= chatList[i]._id %>" class="timeLocal365 text-xxs lightgrey nowrap"></em>
-														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC365 text-xxs lightgrey nowrap nodisplay"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
+														<em id="timeUTC<%= chatList[i]._id %>" class="timeUTC_Chats timeUTC365 text-xxs lightgrey nowrap invisible"><%= moment(chatList[i].lastMsgOn).format('YYYY-MM-DD HH:mm:ss') %></em>
 													<% } %>
 												<% } %>
 											</div>

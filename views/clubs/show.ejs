@@ -462,7 +462,7 @@
                 <% } %>
                 <% if(currentUser && 0 <= rank && rank <=2){ %>
                   <div class="px-3 pb-3">
-                    <em class="lightgrey boldtext text-sm"><i class="fas fa-history mr-2"></i>HISTORY</em>
+                    <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>HISTORY</em>
                   </div>
                 <% } %>
               </div>
@@ -477,7 +477,7 @@
                     </div>
                     <div class="mt-2">
                       <div class="p-2 halfwidth" style="float: left;">
-                        <a href="#" class="nounderline">
+                        <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=Common" class="nounderline">
                           <div class="room-container whitesmokeback">
                             <div class="mobiletext truncate1"><i class="fas fa-user-friends mr-2"></i>Common</div>
                           </div>

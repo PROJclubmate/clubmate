@@ -527,7 +527,7 @@ $('.intercom-composer-popover-input2').on('input', function() {
 
 $(function (){
   $('#datetimepicker4').datetimepicker({format: 'L'});
-  setTimeout(function(){
+  // setTimeout(function(){
     var divUtc = $('#timeUTC');
     var divLocal = $('#timeLocal');
     var divUtc2 = $('#timeUTC2');
@@ -546,7 +546,7 @@ $(function (){
     var localTimeRelative = moment.utc(divUtc.text()).toDate();
     localTimeRelative = moment(localTimeRelative).fromNow();
     divLocalRelative.text(localTimeRelative);
-  }, 500);
+  // }, 500);
 
   var divUtc1 = document.getElementsByClassName('timeUTC1');
   var divLocal1 = document.getElementsByClassName('timeLocal1');
@@ -557,6 +557,12 @@ $(function (){
   var divUtc365 = document.getElementsByClassName('timeUTC365');
   var divLocal365 = document.getElementsByClassName('timeLocal365');
 
+  if(location.pathname.split('/')[1] == 'chats'){
+    var timeUTC_Chats = document.getElementsByClassName('timeUTC_Chats');
+    for(var i=0;i<timeUTC_Chats.length;i++){
+      timeUTC_Chats[i].classList.add('nodisplay');
+    }
+  }
   for(var i=0;i<divUtc1.length;i++){
     var localTime = moment.utc($('#'+divUtc1[i].id).text()).toDate();
     localTime = moment(localTime).format('LT');
@@ -849,10 +855,10 @@ if(location.pathname.split('/')[1] == 'chats'){
   var hammergesture = new Hammer.Manager(chatList);
   hammergesture.add(new Hammer.Pan({direction:Hammer.DIRECTION_HORIZONTAL, threshold:80, pointers: 0}));
   hammergesture.on("panend", function(ev) {
-    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[2] != 'clubs'){
+    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[2] != 'club_rooms'){
       $('.chats_chevronimg').addClass('anitmate-right');
       window.location.replace($('#chatlist-chevron').attr('href'));
-    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[2] == 'clubs'){
+    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[2] == 'club_rooms'){
       $('.chats_chevronimg').addClass('anitmate-left');
       window.location.replace($('#chatlist-chevron').attr('href'));
     }

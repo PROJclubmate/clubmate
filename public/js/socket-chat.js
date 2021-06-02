@@ -62,7 +62,7 @@ if(socket !== undefined){
   });
   // Listen
   socket.on('someoneJoinedRoom', function(){
-    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#77bff3'/>");
+    $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#56b0f0' stroke-width='1' fill='#92cbf5'/>");
   })
   socket.on('someoneLeftRoom', function(){
     $("#isUserInRoom").html("<circle cx='6' cy='6' r='4' stroke='#60b769' stroke-width='1' fill='#9feca6'/>");
@@ -263,7 +263,7 @@ if(socket !== undefined){
     $("#clubRoomConnectionsNum").text(data);
   });
   socket.on('someoneJoinedClubRoom', function(){
-    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#1da1f2' stroke-width='1' fill='#77bff3'/>");
+    $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#56b0f0' stroke-width='1' fill='#92cbf5'/>");
   })
   socket.on('everyoneLeftClubRoom', function(){
     $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#f9af4a' stroke-width='1' fill='#fff3d7'/>");

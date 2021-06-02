@@ -335,7 +335,7 @@ div.content{
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
-  a > .collegedp.chatsdp.active{margin-left: 0.05625rem !important;}
+  a > .collegedp.chatsdp.active{margin-left: 0.05625rem !important; margin-right: 0.125rem !important;}
   a > .collegedp.chatsdp.mr-0.active{margin-left: 0.25rem !important;}
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
@@ -1079,6 +1079,7 @@ a > .collegedp.chatsdp:hover{
 a > .collegedp.chatsdp.active{
   border-radius: 1rem;
   margin-left: -0.125rem;
+  margin-right: 0.25rem;
 }
 a > .collegedp.chatsdp.mr-0.active{
   margin-left: 0;
@@ -2764,8 +2765,8 @@ select.select1{
   line-height: 1.375rem !important;
   font-size: 0.9375rem;
   border: 1px solid #d8d8d8;
-  border-top-width: 0.5px;
-  border-right-width: 0.5px;
+  border-top-width: 0.75px;
+  border-right-width: 0.75px;
   background-color: white;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   display: inline-block;
@@ -2775,9 +2776,9 @@ select.select1{
 .chat-msg2{
   line-height: 1.375rem !important;
   font-size: 0.9375rem;
-  border: 1px solid #cccccc;
-  border-top-width: 0.5px;
-  border-left-width: 0.5px;
+  border: 1px solid #d0d0d0;
+  border-top-width: 0.75px;
+  border-left-width: 0.75px;
   background-color: #b3ffb3;
   border-radius: 0.5rem 0 0.5rem 0.5rem;
   display: inline-block;

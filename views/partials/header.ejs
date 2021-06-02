@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="<%= csrfToken %>">
     <title>clubmate - Good company</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.css">
+    <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
     <% if(currentUser && currentUser.darkTheme){ %>
@@ -84,7 +84,7 @@
         <% if(currentUser){ %>
           <div id="inbox_mobile_div" class="inbox_mobile" style="margin-right: -0.5rem;">
             <span class="notification">
-              <a href="/chats" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
+              <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
               <% if(currentUser.unreadChatsCount > 0){ %>
                 <span class="inbox_mobile inbox_count badge badge-mobile text-xxs desktopNone"><%= currentUser.unreadChatsCount %></span>
               <% } %>
@@ -133,7 +133,7 @@
             </li>
           <% } else{ %>
             <li class="nav-item notification">
-              <span><a href="/chats" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
+              <span><a href="/chats/feed" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
               <% if(currentUser.unreadChatsCount > 0){ %>
                 <span class="inbox_count badge text-xxs"><%= currentUser.unreadChatsCount %></span>
               <% } %>
