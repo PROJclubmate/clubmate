@@ -65,7 +65,15 @@ const clubSchema = new Schema({
   conversationId: {
     type: Schema.Types.ObjectId,
     ref: 'ClubConversation'
-  }
+  },
+  chatRooms: [{
+    name: String,
+    membersCount: {type: Number, default: 1},
+    conversationId: {
+      type: Schema.Types.ObjectId,
+      ref: 'ClubConversation'
+    }
+  }]
 },
 {
   timestamps: true

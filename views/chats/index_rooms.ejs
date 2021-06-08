@@ -57,9 +57,9 @@
 				<div>
 					<form class="chat-form" action="/chats/club_rooms/<%= openedClub.id %>/open" method="GET">
 						<% if(conversationId == null){ %>
-							<div id="<%= openedClub.conversationId %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
 						<% } else{ %>
-							<div id="<%= openedClub.conversationId %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
+							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
 						<% } %>
 							<div class="py-2 m-2"><i class="fas fa-user-friends mr-2"></i>Common</div>
 						</div>
@@ -88,10 +88,12 @@
 			<% } else{ %>
 				<img class="chats-img mobileNone" src="<%= '/images/chat-dark.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621173958/icons/chat-dark.svg' %>" title="Designed by [Freepik] from @flaticon">
 			<% } %>
-			<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
-				<div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
+			<div id="chatbox-loadingarea" class="chatbox-club chatbox-loadingarea2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
+				<div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= CU_50_profilePic %>">
 					<div id="lastMsgBy" value="">
-						<% include ../chats/clubchat %>
+						<% if(chatHeadName != null){ %>
+							<% include ../chats/clubchat %>
+						<% } %>
 					</div>
 				</div>
 			</div>

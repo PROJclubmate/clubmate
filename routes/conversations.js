@@ -397,6 +397,7 @@ module.exports = function(io){
 
 	router.post('/new/club-chat', function(req, res, next){
 		if(req.user){
+			console.log(JSON.stringify(req.body, null, 2))
 		  if(!req.body.clubId || req.body.clubId == ''){
 		  	return res.sendStatus(400);
 		  }

@@ -34,7 +34,7 @@ if(socket !== undefined){
           recipientId: recipientId,
           authorId: authorId
         });
-        socket.emit('notTyping', $("#pin-chatbox").attr("value"));
+        socket.emit('notTyping', $("#chatbox-loadingarea").attr("value"));
       } else{
         setStatus('Pl. enter a message');
       }
@@ -72,10 +72,10 @@ if(socket !== undefined){
   var pastInputLength = 0;
   $("#user-message").on('input', function(){
     if((pastInputLength == 0 && $("#user-message").val().length > 0) || userChatStatusReset === true){
-      socket.emit('typing', $("#pin-chatbox").attr("value"));
+      socket.emit('typing', $("#chatbox-loadingarea").attr("value"));
       userChatStatusReset = false;
     } else if(pastInputLength != 0 && $("#user-message").val().length == 0){
-      socket.emit('notTyping', $("#pin-chatbox").attr("value"));
+      socket.emit('notTyping', $("#chatbox-loadingarea").attr("value"));
     }
     pastInputLength = $("#user-message").val().length;
   });
@@ -236,7 +236,7 @@ if(socket !== undefined){
           authorName: authorFullName,
           authorProfilePic: authorprofilePic
         });
-        socket.emit('notClubTyping', $("#pin-chatbox").attr("value"));
+        socket.emit('notClubTyping', $("#chatbox-loadingarea").attr("value"));
       } else{
         setClubStatus('Pl. enter a message');
       }
@@ -272,10 +272,10 @@ if(socket !== undefined){
   var pastClubInputLength = 0;
   $("#club-message").on('input', function(){
     if((pastClubInputLength == 0 && $("#club-message").val().length > 0) ||  clubChatStatusReset === true){
-      socket.emit('clubTyping', $("#pin-chatbox").attr("value"));
+      socket.emit('clubTyping', $("#chatbox-loadingarea").attr("value"));
       clubChatStatusReset = false;
     } else if(pastClubInputLength != 0 && $("#club-message").val().length == 0){
-      socket.emit('notClubTyping', $("#pin-chatbox").attr("value"));
+      socket.emit('notClubTyping', $("#chatbox-loadingarea").attr("value"));
     }
     pastClubInputLength = $("#club-message").val().length;
   });
@@ -341,7 +341,7 @@ if(socket !== undefined){
     chatBoxOnLoad()
   }
   function newClubMessage(data){
-    var currFirstName = $("#pin-chatbox").attr("value");
+    var currFirstName = $("#chatbox-loadingarea").attr("value");
     var convIdclubIdcurrIdcurrFullNameProfilePic = $("#club-convoId").attr("value").split('^');
     var currentUserId = convIdclubIdcurrIdcurrFullNameProfilePic[2];
     var prevAuthorId = $('#lastMsgBy').attr('value');
@@ -380,6 +380,7 @@ if(socket !== undefined){
       $('#load-prevMsgs-btn').addClass('nodisplay');
       $("#messages").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
+      chatBoxOnLoad();
     } else{
       $.get('/club-chat/'+conversation.conversationId, (data) =>{
         $('#lastMsgBy').attr('value', data.messages.lastMsgBy);
@@ -419,13 +420,13 @@ if(socket !== undefined){
     setTimeout(function(){
       if($('#messages')[0].scrollHeight == 0){
         $('#messages').animate({scrollTop: 10000}, 1);
-        $('#pin-chatbox.pin-chatbox2').css('visibility', 'visible');
+        $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
       } else{
         $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1);
-        $('#pin-chatbox.pin-chatbox2').css('visibility', 'visible');
+        $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
       }
     }, 100);
-    if(window.innerWidth > 767 || $('#pin-chatbox').hasClass('pin-chatbox2')){
+    if(window.innerWidth > 767 || $('#chatbox-loadingarea').hasClass('chatbox-loadingarea2')){
       $("#chatbox").addClass('show');
     } else{
       $("#chatbox").removeClass('show');
@@ -433,18 +434,8 @@ if(socket !== undefined){
         $("#emoji-box").toggleClass('emoji-right');
       }
     }
-
-    $("#arrows-v").click(()=>{
-      $("#arrows-v").toggleClass('blackcolor');
-      $("#messages").toggleClass('messages-long');
-    });
-
-    $("#thumbstack").click(()=>{
-      $("#thumbstack").toggleClass('blackcolor');
-      $("#pin-chatbox").toggleClass('pin-chatbox');
-      $("#emoji-box2").toggleClass('emoji-up');
-    });
   }
+  
   $("#block-user-span").click(()=>{
     var conversationId = $("#user-convoId").attr("value").split(',')[0];
     if($("#block-user").attr("value") == 'true'){

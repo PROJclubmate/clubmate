@@ -3,6 +3,7 @@ const mongoose = require('mongoose'),
 
 const clubConversationSchema = new Schema({
   isActive: {type: Boolean, default: true},
+  isSecondaryRoom: {type: Boolean, default: false},
   clubId: {
     type: Schema.Types.ObjectId,
     ref: 'Club'

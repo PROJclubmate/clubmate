@@ -356,11 +356,10 @@ module.exports = {
     } else{
       var openedClub = {};
       openedClub['id'] = req.params.club_id;
-      openedClub['name'] = null;
+      openedClub['name'] = req.query.club;
       var Clubs_50_clubAvatar = [];
       for(var i=0;i<foundClubs.length;i++){
         if(foundClubs[i]._id == req.params.club_id){
-          openedClub['name'] = foundClubs[i].name;
           openedClub['conversationId'] = foundClubs[i].conversationId;
         }
         if(environment === 'dev'){
@@ -369,10 +368,16 @@ module.exports = {
           Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
         }
       }
-      var conversationId = openedClub.conversationId;
-      var chatHeadName = 'Common';
+      if(req.query.conversationId == ''){
+        var convClubId = req.params.club_id;
+        var conversationId = null;
+      } else{
+        var conversationId = openedClub.conversationId;
+        var convClubId = req.params.club_id;
+      }
+      var chatHeadName = req.query.roomName;
       res.render('chats/index_rooms', {clubs: foundClubs, Clubs_50_clubAvatar, openedClub, conversationId, 
-        convClubId: null, currentUserId: req.user._id, currentUser: req.user, chatHeadName, cdn_prefix});
+        convClubId, currentUserId: req.user._id, currentUser: req.user, chatHeadName, cdn_prefix});
       return User.updateOne({_id: req.user._id}, 
       {$set: {lastOpenedChatListClub: req.params.club_id}, $currentDate: {lastActive: true}}).exec();
     }

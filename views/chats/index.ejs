@@ -127,7 +127,7 @@
 				<img class="chats-img mobileNone" src="<%= '/images/chat-dark.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621173958/icons/chat-dark.svg' %>" title="Designed by [Freepik] from @flaticon">
 			<% } %>
 			<% if(chatType == 'user'){ %>
-				<div id="pin-chatbox" class="chatbox-user pin-chatbox2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
+				<div id="chatbox-loadingarea" class="chatbox-user chatbox-loadingarea2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
 		      <div id="user-convoId" class="user-convoId" value="<%= conversationId %>,<%= recipientId %>,<%= currentUserId %>">
 						<div id="lastMsgBy" value="">
 							<% include ../chats/userchat %>
@@ -135,7 +135,7 @@
 		      </div>
 		    </div>
 			<% } else if(chatType == 'club'){ %>
-				<div id="pin-chatbox" class="chatbox-club pin-chatbox2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
+				<div id="chatbox-loadingarea" class="chatbox-club chatbox-loadingarea2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
 		      <div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= currentUser.profilePic50 %>">
 						<div id="lastMsgBy" value="">
 							<% include ../chats/clubchat %>

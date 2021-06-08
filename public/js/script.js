@@ -697,10 +697,11 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
 });
 
 $('.chatlist-item').click(function(){
-  var convIdProfilenameProfileid = $(this).attr('id').split('^');
-  var convId = convIdProfilenameProfileid[0];
-  var profileName = convIdProfilenameProfileid[1];
-  var profileId = convIdProfilenameProfileid[2];
+  var convIdClubnameRoomnameProfileid = $(this).attr('id').split('^');
+  var convId = convIdClubnameRoomnameProfileid[0];
+  var clubName = convIdClubnameRoomnameProfileid[1];
+  var roomName = convIdClubnameRoomnameProfileid[2];
+  var profileId = convIdClubnameRoomnameProfileid[3];
   var type = $(this).attr('value');
   if(type == 'user'){
     $.post('/seen_msg/'+convId);
@@ -710,7 +711,8 @@ $('.chatlist-item').click(function(){
   $('.chat-form')
   .append('<input type="hidden" name="convId" value="'+convId+'">')
   .append('<input type="hidden" name="profileId" value="'+profileId+'">')
-  .append('<input type="hidden" name="'+type+'" value="'+profileName+'">').submit();
+  .append('<input type="hidden" name="club" value="'+clubName+'">')
+  .append('<input type="hidden" name="roomName" value="'+roomName+'">').submit();
 });
 
 var remToPx = function(count){
@@ -784,9 +786,9 @@ function updateMessageHeight3(){
 function dec_height(){
   $('#navbar').addClass('stuck');
   $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
-  if($('#pin-chatbox').hasClass("pin-chatbox2")){
+  if($('#chatbox-loadingarea').hasClass("chatbox-loadingarea2")){
     updateMessageHeight2();
-  } else if($('#pin-chatbox').hasClass("pin-chatbox3")){
+  } else if($('#chatbox-loadingarea').hasClass("chatbox-loadingarea3")){
     updateMessageHeight3();
   }
 }
@@ -933,6 +935,21 @@ $('textarea').on('input', function(){
     this.style.height = (this.scrollHeight) + 'px';
   }
 });
+
+$('.room-container-div').on('click', function(e){
+  e.stopPropagation();
+  if($(this).attr('id') != 'common-room-div' && $(this).attr('id') != 'create-new-div'){
+    var position = $(this).position().top;
+    var height = $(this).outerHeight();
+    console.log(height)
+    $(this).toggleClass('expand').css({'top': position});
+    if($(this).hasClass('expand')){
+      $(this).after('<div id="flowkeeper" class="invisible" style="height: '+height+'px; float: left;">👌</div>');
+    } else{
+      $('#flowkeeper').remove();
+    }
+  }
+})
 
 // Fake Progress bar (Nanobar)
 var options = {
