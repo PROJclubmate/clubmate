@@ -29,7 +29,7 @@ const clubSchema = new Schema({
     eventDate: Date,
     pushedAt: {type: Date, default: Date.now}
   }],
-  followerCount:{type: Number, default: 0},
+  followerCount: {type: Number, default: 0},
   allFollowerIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -73,7 +73,8 @@ const clubSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'ClubConversation'
     }
-  }]
+  }],
+  chatRoomsCount: {type: Number, default: 1}
 },
 {
   timestamps: true

@@ -19,7 +19,7 @@
                       <i class="fas fa-upload mr-2"></i>avatar
                     </label>
                     <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required>
-                    <button class="btn btn-sm btn-success noborder overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
+                    <button id="inputavatarSubmitBtn" class="btn btn-sm btn-success noborder overlay2" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
@@ -386,14 +386,14 @@
               <!-- Members Tab -->
               <div class="tab-pane fade cardpad border-light-lr" id="members" role="tabpanel" aria-labelledby="members-tab">
                 <% if(memberRequestsLength && memberRequestsLength > 0){ %>
-                  <div class="greyback px-2 mb-3" style="height: 23px; margin: 0 -0.5rem;">
+                  <div class="greyback px-2 mb-3" style="height: 24px; margin: 0 -0.5rem;">
                     <div class="valign whiteback" style="height: inherit;">
                       <div class="lightgrey text-sm my-auto ml-2"><%= memberRequestsLength %> Requests</div>
                       <div id="show-requestsbtn">
                         <button onclick="toggle_display('client-memberRequests-div');
                         document.getElementById('show-requestsbtn').style.display = 'none';
                         document.getElementById('clubmembers-div').style.display = 'none';" 
-                        class="btn btnxs text-xs btn-secondary mx-2" style="height: 27px;">Show</button>
+                        class="btn btnxs text-xs btn-secondary mx-2" style="height: 26px;">Show</button>
                       </div>
                     </div>
                   </div>
@@ -407,7 +407,7 @@
                   </div>
                 <% } %>
                 <div id="clubmembers-div">
-                  <div class="greyback valign" style="height: 23px;">
+                  <div class="greyback rounded valign" style="height: 24px;">
                     <div class="d-flex flex-row">
                       <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> members</span>
                       <% if(0 <= rank && rank <= 4){ %>
@@ -470,9 +470,9 @@
                 <!-- Rooms Tab -->
                 <div class="tab-pane fade cardpad border-light-lr p-0 pt-2" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
                   <div class="card indexcard cardbody">
-                    <div class="greyback valign my-auto m-2" style="height: 23px;">
+                    <div class="greyback rounded valign my-auto m-2" style="height: 24px;">
                       <div class="d-flex flex-row">
-                        <span class="lightgrey text-sm mx-2 my-auto"><%= 4 %> rooms</span>
+                        <span class="lightgrey text-sm mx-2 my-auto"><%= club.chatRoomsCount %> rooms</span>
                       </div>
                     </div>
                     <div class="mt-2">
@@ -483,36 +483,65 @@
                           <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
                         <% } %>
                           <div class="room-container whitesmokeback">
-                            <div class="mobiletext truncate1"><i class="fas fa-user-friends mr-2"></i>Common</div>
+                            <div class="mobiletext truncate1">Common</div>
                           </div>
                         </a>
                       </div>
-                      <div class="room-container-div">
-                        <div class="nounderline">
-                          <div class="room-container odd">
-                            <div class="mobiletext truncate1"><i class="fas fa-hashtag mr-2"></i>Room name 1</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="room-container-div">
-                        <div class="nounderline">
-                          <div class="room-container">
-                            <div class="mobiletext truncate1"><i class="fas fa-hashtag mr-2"></i>Room misc 2</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="room-container-div">
-                        <div class="nounderline">
-                          <div class="room-container odd">
-                            <div class="mobiletext truncate1"><i class="fas fa-hashtag mr-2"></i>Room random 3</div>
-                          </div>
-                        </div>
-                      </div>
+                      <% if(club.chatRoomsCount > 1){ %>
+                        <% for(var i=1;i<club.chatRoomsCount;i++){ %>
+                          <% if((i % 2) !== 0){ %>
+                            <div id="custom_room_div<%= i %>" class="room-container-div">
+                              <div class="room-container">
+                                <div id="custom_room_btn<%= i %>" class="nodisplay">
+                                  <a href="/clubs/<%= club._id %>/rooms/<%= club.chatRooms[i-1].conversationId %>" class="custom_room_btn odd">
+                                    <i class="fas fa-edit"></i>
+                                  </a>
+                                </div>
+                                <div class="mobiletext truncate1"></i><%= club.chatRooms[i-1].name %></div>
+                              </div>
+                            </div>
+                          <% } else{ %>
+                            <div id="custom_room_div<%= i %>" class="room-container-div">
+                              <div class="room-container">
+                                <div class="mobiletext truncate1"></i><%= club.chatRooms[i-1].name %></div>
+                                <div id="custom_room_btn<%= i %>" class="nodisplay">
+                                  <a href="/clubs/<%= club._id %>/rooms/<%= club.chatRooms[i-1].conversationId %>" class="pl-2 custom_room_btn text-right">
+                                    <i class="fas fa-edit"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          <% } %>
+                        <% } %>
+                      <% } %>
                       <% if(currentUser && 0 <= rank && rank <= 1){ %>
-                        <div id="create-new-div" class="room-container-div">
+                        <div id="create-new-div" class="room-container-div" href="#createNewRoom" data-toggle="modal">
                           <div class="nounderline">
                             <div class="room-container darkgrey" style="border-color: darkgrey; border-style: dashed;">
                               <div class="mobiletext truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Modal HTML -->
+                        <div id="createNewRoom" class="fixed-padding modal fade">
+                          <div class="modal-dialog modal-dialog-centered modal-confirm">
+                            <div class="modal-content">
+                              <div class="d-flex">
+                                <span class="">
+                                  <img class="icon-box" src="<%= '/images/round-table.svg' %>" title="Designed by [Freepik] from @flaticon">
+                                </span>              
+                                <span class="my-auto"><h5 class="modal-title ml-2">Create new room</h5></span>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              </div>
+                              <form class="my-2" action="/clubs/<%= club._id %>/rooms/create?_csrf=<%= csrfToken %>" method="POST">
+                                <div class="form-signin">
+                                  <label for="roomname" class="sr-only">Room name</label>
+                                  <input id="roomname" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="roomname" placeholder="Room name" required>
+                                  <br>
+                                  <br>
+                                  <button class="btn btn-sm btn-success btn-block" title="Create new room" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
+                                </div>
+                              </form>
                             </div>
                           </div>
                         </div>

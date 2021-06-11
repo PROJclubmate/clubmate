@@ -33,7 +33,7 @@ router.get('/heart-morePosts/:id', profilesUserMoreHeartPosts);
 router.put('/users/:id', middleware.isLoggedIn, upload.single('profilePic'), profilesUpdateUserProfile);
 
 // Create new club profile
-router.post('/users/:id/clubs', middleware.isLoggedIn, upload.single('avatar'), profilesNewClub);
+router.post('/users/:id/clubs/new', middleware.isLoggedIn, upload.single('avatar'), profilesNewClub);
 
 // Show club profile
 router.get('/clubs/:club_id', profilesClubProfile);

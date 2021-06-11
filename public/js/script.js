@@ -417,19 +417,13 @@ $('#inputprofilePic').change(function(){
 	var file = $('#inputprofilePic')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
-	$('.overlay2').css('display','block');
-});
-$('#inputprofilePic2').change(function(){
-  var file = $('#inputprofilePic2')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-  $('.overlay2').css('display','block');
+	$('#inputprofilePicSubmitBtn').css('display','block');
 });
 $('#inputavatar').change(function(){
 	var file = $('#inputavatar')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
-  $('.overlay2').css('display','block');
+  $('#inputavatarSubmitBtn').css('display','block');
 });
 
 var cw = $('.subPostimg').width();
@@ -697,11 +691,11 @@ $('#client-posts-discover').on('click', '.discover-overlay', function(e){
 });
 
 $('.chatlist-item').click(function(){
-  var convIdClubnameRoomnameProfileid = $(this).attr('id').split('^');
-  var convId = convIdClubnameRoomnameProfileid[0];
-  var clubName = convIdClubnameRoomnameProfileid[1];
-  var roomName = convIdClubnameRoomnameProfileid[2];
-  var profileId = convIdClubnameRoomnameProfileid[3];
+  var convIdProfilenameProfileidRoomname = $(this).attr('id').split('^');
+  var convId = convIdProfilenameProfileidRoomname[0];
+  var profileName = convIdProfilenameProfileidRoomname[1];
+  var profileId = convIdProfilenameProfileidRoomname[2];
+  var roomName = convIdProfilenameProfileidRoomname[3];
   var type = $(this).attr('value');
   if(type == 'user'){
     $.post('/seen_msg/'+convId);
@@ -711,7 +705,7 @@ $('.chatlist-item').click(function(){
   $('.chat-form')
   .append('<input type="hidden" name="convId" value="'+convId+'">')
   .append('<input type="hidden" name="profileId" value="'+profileId+'">')
-  .append('<input type="hidden" name="club" value="'+clubName+'">')
+  .append('<input type="hidden" name="'+type+'" value="'+profileName+'">')
   .append('<input type="hidden" name="roomName" value="'+roomName+'">').submit();
 });
 
@@ -869,6 +863,26 @@ if(location.pathname.split('/')[1] == 'chats'){
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
+    $('.room-container-div').on('click', function(e){
+      if($(this).attr('id') != 'common-room-div' && $(this).attr('id') != 'create-new-div'){
+        e.stopPropagation();
+        var position = $(this).position().top;
+        var height = $(this).outerHeight();
+        var roomKey = $(this).attr('id').substring(15);
+        var target = e.target.parentElement.id;
+        if(target.substring(0, target.length - 1) != 'custom_room_btn'){
+          $(this).toggleClass('expand').css({'top': position});
+          if($(this).hasClass('expand')){
+            $(this).after('<div id="flowkeeper'+roomKey+'" class="invisible" style="height: '+height+'px; float: left;">👌</div>');
+            $('#custom_room_btn'+roomKey).removeClass('nodisplay');
+          } else{
+            $('#flowkeeper'+roomKey).remove();
+            $('#custom_room_btn'+roomKey).addClass('nodisplay');
+          }
+        }
+      }
+    });
+
   // Ask for club invite
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");
@@ -935,21 +949,6 @@ $('textarea').on('input', function(){
     this.style.height = (this.scrollHeight) + 'px';
   }
 });
-
-$('.room-container-div').on('click', function(e){
-  e.stopPropagation();
-  if($(this).attr('id') != 'common-room-div' && $(this).attr('id') != 'create-new-div'){
-    var position = $(this).position().top;
-    var height = $(this).outerHeight();
-    console.log(height)
-    $(this).toggleClass('expand').css({'top': position});
-    if($(this).hasClass('expand')){
-      $(this).after('<div id="flowkeeper" class="invisible" style="height: '+height+'px; float: left;">👌</div>');
-    } else{
-      $('#flowkeeper').remove();
-    }
-  }
-})
 
 // Fake Progress bar (Nanobar)
 var options = {

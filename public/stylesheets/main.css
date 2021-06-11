@@ -142,11 +142,10 @@ div.content{
   #btncollapse-club{color: #262626 !important;}
   .carousel-inner{border-radius: 0 0.75rem 0.75rem 0;}
   .input-group-append.searchbtn-div{margin-left: -2px;}
-  #posts_view_toggle{margin-top: 7.0625rem; margin-left: -3rem; margin-right: 3rem;}
+  #posts_view_toggle{margin-top: 8.0625rem; margin-left: -3rem; margin-right: 3rem;}
   .search-bottompos.search-bottompos-desktop{width: calc(100% - 100px - 2rem) !important;}
-  .btncollapse.btncollapse-info:hover{
-    box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3) !important;
-  }
+  .btncollapse.btncollapse-info:hover{box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3) !important;}
+  .gradient-wrap.coverback{background-image: none !important;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -919,10 +918,6 @@ input{
   border-radius: 0.5rem 0.5rem 0 0 !important;
   border-top: 0.5px solid #cccccc !important;
 }
-.post-head.heartpost-head{
-  border-radius: 0.5rem !important;
-  border-bottom: 0.5px solid #cccccc !important;
-}
 .post-tail{
   border-radius: 0 0 0.5rem 0.5rem !important;
   border-bottom: 0.5px solid #cccccc !important;
@@ -975,7 +970,7 @@ input{
   border-radius: 0;
 }
 .card.discovercard{
-  border-radius: 0.25rem;
+  border-radius: 0.375rem;
   border: 0.5px solid #cccccc;
   margin: 0 0.25rem 0.5rem 0.25rem;
   width: calc(50% - 0.5rem);
@@ -1666,17 +1661,17 @@ input[type="file"]#inputavatar{
 .btn.btn-white{
   padding: 0px 4px;
   background-color: white;
-  border: 2px solid #19a86e;
-  color: #19a86e;
+  border: 2px solid #1a90d9;
+  border-width: 2px !important;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
 }
 .btn-white:hover{
   transition: .15s ease-out;
-  border-color: #007e4b;
-  color: #007e4b;
+  border-color: #407cc4;
 }
 .btn-white.focus, .btn-white:focus{
-  box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
+  border-color: white;
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,0.5);
 }
 .btn.btncollapse{
   background-color: white;
@@ -1715,11 +1710,9 @@ input[type="file"]#inputavatar{
   border-color: #2e618d;
   background-color: #346fa1;
 }
-.btn-primary.focus, .btn-primary:focus{
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
-}
+.btn-primary.focus, .btn-primary:focus, 
 .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,0.5);
 }
 .btn-primary.disabled, .btn-primary:disabled{
   border-color: #8db9df;
@@ -1753,9 +1746,7 @@ input[type="file"]#inputavatar{
   border-color: #33784f !important;
   background-color: #3b895a !important;
 }
-.btn-success.focus, .btn-success:focus{
-  box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
-}
+.btn-success.focus, .btn-success:focus, 
 .btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus{
   box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
 }
@@ -2460,10 +2451,10 @@ button.downVotebtn:hover .fas.fa-caret-down{
   -webkit-text-stroke: 1.5px #f77f00;
 }
 button.heartbtn:hover{
-  color: red;
+  color: #cc0000;
 }
 .fa-heart.grey:hover{
-  color: red;
+  color: #cc0000;
 }
 #postbutton{
   border-radius: 0.25rem 0 0 0.25rem;
@@ -2954,17 +2945,22 @@ input.shadow:-webkit-autofill:focus{
   right: 0 !important;
 }
 /**************************************************************************************************/
+.modal-backdrop{
+  background-color: white;
+}
 .modal-confirm .modal-content{
   padding: 0.5rem;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: none;
   text-align: center;
   font-size: 0.875rem;
+  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.2);
 }
 .modal-confirm .close{
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1.25rem;
+  right: 1rem;
+  line-height: 1rem;
 }
 .modal-confirm .icon-box{
   width: 50px;
@@ -3336,11 +3332,12 @@ input.shadow:-webkit-autofill:focus{
   display: none;
   margin: 0 0.25rem 0.5rem 0.25rem;
   cursor: pointer;
+  border-radius: 0.375rem;
 }
 .overlay-content{
   position: relative;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(0, -35%);
   width: 100%;
   text-align: center;
 }
@@ -3775,7 +3772,7 @@ input.shadow:-webkit-autofill:focus{
   height: 116px;
   margin-bottom: -116px;
   z-index: 2;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
 }
 .college-infobtn{
   align-items: center;
@@ -3810,12 +3807,23 @@ input.shadow:-webkit-autofill:focus{
   padding: 2rem 3rem 2rem 3rem;
   border: 1px solid lightgrey;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 .room-container:hover{
   color: #343a40;
 }
-.room-container-div.expand * .room-container.odd{
+.custom_room_btn{
+  position: absolute;
+  width: 50%;
   text-align: right;
+  right: 0.5rem;
+  top: 0.5rem;
+  padding: 2rem 3rem 2rem 3rem;
+}
+.custom_room_btn.odd{
+  text-align: left;
+  left: 0.5rem;
 }
 .chats_chevronimg{
   width: 16px;

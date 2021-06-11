@@ -56,25 +56,27 @@
 				</div>
 				<div>
 					<form class="chat-form" action="/chats/club_rooms/<%= openedClub.id %>/open" method="GET">
-						<% if(conversationId == null){ %>
-							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+						<% if(chatHeadName != null && openedRoomConvId == openedClub.conversationId){ %>
+							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^Common" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
 						<% } else{ %>
-							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^Common^<%= openedClub.id %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
+							<div id="<%= openedClub.conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^Common" class="d-flex flex-row chatlist-item chatlist-room" value="club">
 						<% } %>
 							<div class="py-2 m-2"><i class="fas fa-user-friends mr-2"></i>Common</div>
 						</div>
-						<div class="valign py-2 m-2">
-							<div class="pointer"><i class="fas fa-hashtag mr-2"></i>Admins only</div>
-							<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye-slash"></i></div>
-						</div>
-						<div class="valign py-2 m-2">
-							<div class="pointer"><i class="fas fa-hashtag mr-2"></i>Backend</div>
-							<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye-slash"></i></div>
-						</div>
-						<div class="valign py-2 m-2">
-							<div class="pointer"><i class="fas fa-hashtag mr-2"></i>Cyber Security</div>
-							<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye"></i></div>
-						</div>
+						<% if(openedClub.chatRoomsCount > 1){ %>
+							<% for(var i=0;i<openedClub.chatRoomsCount-1;i++){ %>
+								<div class="valign">
+									<% if(openedRoomConvId == openedClub.chatRooms[i].conversationId){ %>
+										<div id="<%= openedClub.chatRooms[i].conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
+									<% } else{ %>
+										<div id="<%= openedClub.chatRooms[i].conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+									<% } %>
+										<div class="pointer py-2 m-2"><i class="fas fa-hashtag mr-2"></i><%= openedClub.chatRooms[i].name %></div>
+									</div>
+									<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye-slash"></i></div>
+								</div>
+							<% } %>
+						<% } %>
 						<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 					</form>
 				</div>
@@ -89,7 +91,7 @@
 				<img class="chats-img mobileNone" src="<%= '/images/chat-dark.svg' || 'https://res.cloudinary.com/dubirhea4/image/upload/v1621173958/icons/chat-dark.svg' %>" title="Designed by [Freepik] from @flaticon">
 			<% } %>
 			<div id="chatbox-loadingarea" class="chatbox-club chatbox-loadingarea2 col-md-8 col-lg-6 col-12" value="<%= currentUser.firstName %>">
-				<div id="club-convoId" class="club-convoId" value="<%= conversationId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= CU_50_profilePic %>">
+				<div id="club-convoId" class="club-convoId" value="<%= openedRoomConvId %>^<%= convClubId %>^<%= currentUserId %>^<%= currentUser.fullName %>^<%= CU_50_profilePic %>">
 					<div id="lastMsgBy" value="">
 						<% if(chatHeadName != null){ %>
 							<% include ../chats/clubchat %>

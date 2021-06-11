@@ -133,6 +133,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .chatlist-background{
     background-image: url(/images/chat-dark.svg);
   }
+  .btncollapse-club-grad.collapsed{
+    box-shadow: 0 -0.5rem 0 1rem var(--color-dark-800) !important;
+    outline: 0.5rem solid var(--color-dark-800) !important;
+  }
 }
 button.gb{
   background-color: var(--color-dark-700) !important;
@@ -389,7 +393,7 @@ a.grey:hover{
   background-color: var(--color-dark-900);
 }
 #sidebar a:hover:not(.active){
-  background-color: var(--color-dark-750);
+  background-color: var(--color-dark-700);
   color: var(--color-white-100);
 }
 #sidebar-dropbox{
@@ -448,7 +452,7 @@ a.grey:hover{
   white-space: nowrap;
 }
 #following-switch-mobile{
-  background: linear-gradient(300deg, #fcd1b8 10%, #7ddc1f 15%, #2e4058 35%, #003366 80%);
+  background: linear-gradient(300deg, #003366 10%, #7ddc1f 15%, #2e4058 45%, #003366 100%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -598,10 +602,6 @@ a.grey.mobiletext:hover{
 div.carousel-img{
   border-color: var(--color-dark-800);
 }
-.gradient-wrap{
-  /* background-image: none !important; */
-  background-color: var(--color-dark-800) !important;
-}
 .btn.btncollapse{
   border-color: var(--color-dark-800) !important;
   background-color: var(--color-dark-800);
@@ -652,12 +652,12 @@ div.carousel-img{
   border-color: transparent;
 }
 .chat-input-tool{
-  color: var(--color-white-200);
-  background-color: transparent;
-  border-color: transparent;
+  color: var(--color-white-300);
+  background-color: var(--color-dark-800) !important;
+  border-color: var(--color-dark-800) !important;
 }
 .chat-input-tool:hover{
-  color: var(--color-white-100);
+  color: var(--color-white-200);
 }
 .custom-file-upload{
   background-color: var(--color-dark-700);
@@ -771,6 +771,9 @@ time.calendar{
 .modal-content{
   background-color: var(--color-dark-800);
 }
+.modal-backdrop{
+  background-color: black;
+}
 .slider{
   background-color: var(--color-dark-700) !important;
 }
@@ -781,7 +784,7 @@ time.calendar{
   background-color: var(--color-dark-800);
 }
 .room-container.whitesmokeback{
-  background-color: var(--color-dark-750) !important;
+  background-color: var(--color-dark-700) !important;
 }
 .room-container{
   color: var(--color-white-300);
@@ -806,4 +809,7 @@ time.calendar{
 }
 .subPostimg-div{
   border-color: var(--color-dark-700);
+}
+.gradient-wrap.coverback{
+  background-color: var(--color-dark-800) !important;
 }

@@ -502,6 +502,18 @@ module.exports = {
           {
             "$unwind": "$postClub"
           },
+          { "$lookup": {
+            "from": "comments",
+            "as": "commentBuckets",
+            "let": { "id": "$_id" },
+            "pipeline": [
+              { "$match": { 
+                "$expr": { "$eq": [ "$$id", "$postId" ] }
+              }},
+              { "$sort": { "_id": -1 } },
+              { "$limit": 1 }
+            ]
+          }},
           {
           "$project": {
               "_id": 1,
@@ -556,6 +568,7 @@ module.exports = {
         var userPosts = foundHeartPosts;
         var posts = postsPrivacyFilter(userPosts, req.user);
         var modPosts = postsModerationFilter(posts, req.user);
+        sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatarH = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
           if(environment === 'dev'){

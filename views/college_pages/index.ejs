@@ -197,7 +197,15 @@
 							</div>
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 								<div class="darkgrey text-sm mobiletext2 px-1 nowrap">
-									<em class="mobiletext2"><%= college_page.allClubs[i].categoryClubIds[j].membersCount %> <span class="text-xxxs"><span class="lightgrey">MBR</span></span></em>
+									<em class="mobiletext2">
+										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
+											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
+												<span class="lightgrey">RM</span>
+											<% } else{ %>
+												<span class="lightgrey">RMS</span>
+											<% } %>
+										</span>
+									</em>
 								</div>
 							<% } else if(keyValue == 2){ %>
 								<form action="/users/<%= currentUser._id %>/follow/<%= college_page.allClubs[i].categoryClubIds[j]._id %>?_method=PUT" method="POST">

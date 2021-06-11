@@ -1208,7 +1208,7 @@ module.exports = {
   indexViewCollegePage(req, res, next){
     var nameEsc = req.params.college_name.replace(/\+/g, ' ').replace(/\%20/g, ' ');
     CollegePage.findOne({name: nameEsc, clubCount: {$gt: 0}})
-    .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner membersCount clubUsers.id'})
+    .populate({path: 'allClubs.categoryClubIds', select: 'name avatar avatarId banner chatRoomsCount clubUsers.id'})
     .exec(function(err, foundCollegePage){
     if(err){
       console.log(Date.now()+' : '+'(index-53)foundCollegePage err:- '+JSON.stringify(err, null, 2));
