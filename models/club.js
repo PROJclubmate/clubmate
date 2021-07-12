@@ -68,7 +68,8 @@ const clubSchema = new Schema({
   },
   chatRooms: [{
     name: String,
-    membersCount: {type: Number, default: 1},
+    avatar: String,
+    avatarId: String,
     conversationId: {
       type: Schema.Types.ObjectId,
       ref: 'ClubConversation'

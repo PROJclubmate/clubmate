@@ -7,28 +7,28 @@
 	<% } else{ %>
 		<div class="ml-2 mt-4 pt-2 mobiletext4 lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.users){ %>
-				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm nothing"><%= filterKeys.users %></span>
+				<span class="lightgrey text-xs">Name=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.users %></span>
 			<% } %>
 			<% if(filterKeys.college){ %>
-				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.college %></span>
 			<% } %>
 			<% if(filterKeys.batch){ %>
-				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm nothing"><%= filterKeys.batch %></span>
+				<span class="lightgrey text-xs">Batch=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.batch %></span>
 			<% } %>
 			<% if(filterKeys.house){ %>
-				<span class="lightgrey text-xs">House=</span><span class="boldtext text-sm nothing"><%= filterKeys.house %></span>
+				<span class="lightgrey text-xs">House=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.house %></span>
 			<% } %>
 			<% if(filterKeys.branch){ %>
-				<span class="lightgrey text-xs">Branch=</span><span class="boldtext text-sm nothing"><%= filterKeys.branch %></span>
+				<span class="lightgrey text-xs">Branch=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.branch %></span>
 			<% } %>
 			<% if(filterKeys.school){ %>
-				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm nothing"><%= filterKeys.school %></span>
+				<span class="lightgrey text-xs">High School=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.school %></span>
 			<% } %>
 			<% if(filterKeys.hometown){ %>
-				<span class="lightgrey text-xs">Home Town=</span><span class="boldtext text-sm nothing"><%= filterKeys.hometown %></span>
+				<span class="lightgrey text-xs">Home Town=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.hometown %></span>
 			<% } %>
 			<% if(filterKeys.distance){ %>
-				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
+				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey m-0 p-0 text-xs">Km radius</span>
 			<% } %><strong>)</strong>
 		</div>
 	<% } %>
@@ -49,7 +49,7 @@
 			    	<div class="valign">
 			    		<div>
 					    	<a href="/users/<%= users[k]._id %>" class="grey">
-					      	<span class="nothing text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
+					      	<span class="m-0 p-0 text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
 					      </a>
 					    </div>
 			    		<div>
@@ -131,7 +131,7 @@
     <% } %>
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>">
-			<h6 class="nothing mb-1">User keys</h6>
+			<h6 class="m-0 p-0 mb-1">User keys</h6>
       <div>
       	<label for="college" class="sr-only">College</label>
 				<input list="college" class="form-control form-control-sm select_dark" name="college" pattern="JIIT Noida Sector 62" value="<%= query.college %>" placeholder="Your College">

@@ -4,66 +4,164 @@
   <div class="col-lg-9 order-md-first order-last">
     <div class="row no-gutters">
       <div class="col-md-12">
-        <div class="d-flex flex-row">
-          <div>
-            <div class="rounded-circle noshadow ml-3 mt-3" style="height: 100px; width: 100px;">
-              <div class="container" style="overflow: hidden; border-radius: 100%;">
-                <img class="image" src="<%= '/images/noRoom.png' %>">
-                <% if(currentUser){ %>
-                  <form action="" method="POST" enctype="multipart/form-data">
-                    <label for="inputprofilePic" class="overlay4 mobiletext3">
-                      <span style="top: 40%; position: absolute; left: 0; right: 0;"><i class="fas fa-camera text-xl" style="opacity: 0.85;"></i></span>
-                    </label>
-                    <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                    <button id="inputprofilePicSubmitBtn" class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+        <div class="d-flex flex-column mx-3">
+          <div class="valign mt-3">
+            <div class="d-flex flex-row">
+              <div style="height: 100px; width: 100px;">
+                <% if(isAdmin){ %>
+                  <form action="/clubs/<%= clubId %>/rooms/<%= room._id %>/edit?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                    <div class="container rounded-circle" style="overflow: hidden;">
+                      <% if(room.avatarId){ %>
+                        <img class="image cover roomAvatar" src="<%= cdn_prefix+room.avatarId %>">
+                      <% } else{ %>
+                        <img class="image cover roomAvatar" src="<%= '/images/noRoom.png' %>">
+                      <% } %>
+                      <label for="inputroomAvatar" class="overlay4 mobiletext3">
+                        <i class="fas fa-camera text-xl" style="opacity: 0.85;"></i>
+                      </label>
+                      <input type="file" id="inputroomAvatar" class="text-sm" name="inputroomAvatar" accept="image/*" required>
+                    </div>
+                    <button id="inputroomAvatarSubmitBtn" class="btn btnxs btn-success overlay2 noborder rounded-pill" style="position: absolute; top: 132px; width: 100px;" onclick="loading_spinner('load-updateinputroomAvatar','');">
+                      <span id="load-updateinputroomAvatar"></span>Submit
+                    </button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
+                <% } else{ %>
+                  <% if(room.avatarId){ %>
+                    <img class="image cover roomAvatar rounded-circle" src="<%= cdn_prefix+room.avatarId %>">
+                  <% } else{ %>
+                    <img class="image cover roomAvatar rounded-circle" src="<%= '/images/noRoom.png' %>">
+                  <% } %>
                 <% } %>
               </div>
-            </div>
-          </div>
-          <div class="d-flex flex-column">
-            <div class="my-auto">
-              <div id="username_profile_div">
-                <div>
-                  <h5 class="profilename text-left"><%= roomName %></h5>
+              <div class="d-flex flex-column">
+                <div class="my-auto">
+                  <div id="username_profile_div" style="max-width: 35vw;">
+                    <div>
+                      <h5 id="roomName" class="profilename" value="<%= clubConversation._id %>"><%= room.name %></h5>
+                    </div>
+                    <div id="clubName" value="<%= clubId %>">
+                      <a href="/clubs/<%= clubId %>" class="profilename text-sm mobiletext4 boldtext lightgrey2"><%= clubName %></a>
+                    </div>
+                  </div>
                 </div>
-                <div class="profilename text-sm mobiletext4 boldtext lightgrey2 lineheight"><%= clubName %></div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="desktopNoneFlex story-container" style="margin-bottom: 4.375rem;">
-          <div class="d-flex px-3 invisible scroll moz-scroll scroll-hide" style="overflow-x: scroll;">
-            <div class="d-flex flex-column mr-3">
-              <div class="story mt-3 story-dark" style="border-style: dashed;"></div>
-              <div class="story-label story-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
+            <div>
+              <% if(isAdmin){ %>
+                <div>
+                  <button id="removeParticipantsBtn" type="button" class="btn btn-participants" title="Remove participants"><i class="fas fa-user-minus"></i></button>
+                  <button id="removeParticipantsSubmitBtn" type="button" class="btn btn-danger rounded-circle btnshadow nodisplay" 
+                  style="border-bottom-width: 1px; padding: 0.3125rem 0.5625rem;" title="Submit" csrf-token="<%= csrfToken %>"><i class="fas fa-check"></i></button>
+                  <button id="addParticipantsBtn" type="button" class="btn btn-participants" title="Add participants"><i class="fas fa-user-plus"></i></button>
+                  <button id="addParticipantsSubmitBtn" type="button" class="btn btn-success rounded-circle btnshadow nodisplay" 
+                  style="border-bottom-width: 1px; padding: 0.3125rem 0.5625rem;" title="Submit" csrf-token="<%= csrfToken %>"><i class="fas fa-check"></i></button>
+                </div>
+              <% } else{ %>
+                <div>
+                  <button id="viewParticipantsBtn" type="button" class="btn btn-participants" title="View participants" style="padding: 0.5rem 0.9375rem;"><i class="fas fa-info"></i></button>
+                </div>
+              <% } %>
+              <div class="text-sm mobiletext4 boldtext lineheight invisible"><%= clubName %></div>
             </div>
           </div>
-        </div>
-        <!-- Modal HTML -->
-        <div id="deleteProfilePicModal" class="fixed-padding modal fade">
-          <div class="modal-dialog modal-confirm">
-            <div class="modal-content">
-              <div class="d-flex">
-                <span class="icon-box">
-                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                </span>              
-                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <div class="mt-5 valign">
+            <div class="d-flex flex-row">
+              <div id="participantsCount" value="0" class="my-auto">
+                <%= clubConversation.participantCount %> <%= clubConversation.participantCount == 1 ? 'participant': 'participants' %>
               </div>
               <div>
-                <p>Do you really want to delete your profile pic? This cannot be undone.</p>
+                <input style="width: 1px;" class="form-control form-control-sm invisible" type="text" name="" placeholder="Spacing">
               </div>
-              <div class="my-2">
-                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                <form action="" method="POST" class="delete-form inline">
-                  <button name="deleteProfilePic" type="submit" value="true" class="btn btn-danger btn-sm ml-1">Delete</button>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
+            </div>
+            <div>
+              <% if(!isAdmin && roomParticipantsList.includes(currentUser._id)){ %>
+                <div id="leave_delete_btn">
+                  <div id="leaveRoom" value="<%= clubId %>">
+                    <button class="text-sm boldtext chat-input-tool d-flex" type="button" href="#leaveRoomModal" data-toggle="modal" style="outline: none;">
+                      <div class="my-auto"><i class="fas fa-sign-out-alt mr-2"></i></div>
+                      <div class="my-auto">Leave room</div>
+                    </button>
+                    <!-- Modal HTML -->
+                    <div id="leaveRoomModal" class="fixed-padding modal fade">
+                      <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                          <div class="d-flex grey">
+                            <span class="icon-box">
+                              <i class="fas fa-exclamation text-xxxl"></i>
+                            </span>              
+                            <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          </div>
+                          <div>
+                            <p>Do you really want to leave <%= room.name %>? This cannot be undone.</p>
+                          </div>
+                          <div class="my-2">
+                            <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                            <form action="/clubs/<%= clubId %>/rooms/<%= room._id %>/edit?_method=PUT" method="POST" class="delete-form inline">
+                              <button name="removeParticipants" value="<%= currentUser._id %>" type="submit" class="btn btn-danger btn-sm ml-1">Leave</button>
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } else if(isAdmin && roomParticipantsList.includes(currentUser._id)){ %>
+                <div id="leave_delete_btn">
+                  <div id="deleteRoom" value="<%= clubId %>">
+                    <button class="text-sm boldtext chat-input-tool d-flex" type="button" href="#deleteRoomModal" data-toggle="modal" style="outline: none;">
+                      <div class="my-auto"><i class="fas fa-trash-alt mr-2"></i></div>
+                      <div class="my-auto">Delete room</div>
+                    </button>
+                    <!-- Modal HTML -->
+                    <div id="deleteRoomModal" class="fixed-padding modal fade">
+                      <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                          <div class="d-flex grey">
+                            <span class="icon-box">
+                              <i class="fas fa-exclamation text-xxxl"></i>
+                            </span>              
+                            <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          </div>
+                          <div>
+                            <p>Do you really want to delete <%= room.name %>? This cannot be undone.</p>
+                          </div>
+                          <div class="my-2">
+                            <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                            <form action="/clubs/<%= clubId %>/rooms/<%= room._id %>/edit?_method=PUT" method="POST" class="delete-form inline">
+                              <button name="deleteRoom" value="<%= room._id %>" type="submit" class="btn btn-danger btn-sm ml-1">Delete</button>
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+              <div>
+                <label for="participantsSearchViewOnly" class="sr-only">Search participants</label>
+                <input id="participantsSearchViewOnly" class="form-control form-control-sm rounded-pill nodisplay" type="text" style="max-width: 50vw;" name="participantsSearchViewOnly" placeholder="Search participants">
+              </div>
+              <div>
+                <label for="participantsSearch" class="sr-only">Search participants</label>
+                <input id="participantsSearch" class="form-control form-control-sm rounded-pill nodisplay" type="text" style="max-width: 50vw;" name="participantsSearch" placeholder="Search participants">
+              </div>
+              <div>
+                <label for="membersSearch" class="sr-only">Search members</label>
+                <input id="membersSearch" class="form-control form-control-sm rounded-pill nodisplay" type="text" style="max-width: 50vw;" name="membersSearch" placeholder="Search members">
               </div>
             </div>
           </div>
+          <div id="clubMembersList" class="nodisplay"><%= clubMembersList %></div>
+          <div id="roomParticipantsList" class="nodisplay"><%= roomParticipantsList %></div>
+          <div id="removedParticipantsDisplay" class="mb-3" value=""></div>
+          <div id="addedParticipantsDisplay" class="mb-3" value=""></div>
+          <div id="matchDisplayRemove"></div>
+          <div id="matchDisplayAdd"></div>
         </div>
       </div>
     </div>
@@ -71,3 +169,4 @@
 </div>
 
 <% include ../partials/footer %>
+<script src="/js/room_participants.js"></script>

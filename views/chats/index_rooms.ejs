@@ -66,14 +66,20 @@
 						<% if(openedClub.chatRoomsCount > 1){ %>
 							<% for(var i=0;i<openedClub.chatRoomsCount-1;i++){ %>
 								<div class="valign">
-									<% if(openedRoomConvId == openedClub.chatRooms[i].conversationId){ %>
-										<div id="<%= openedClub.chatRooms[i].conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
-									<% } else{ %>
-										<div id="<%= openedClub.chatRooms[i].conversationId %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+									<% if(openedClub.chatRooms[i].conversationId.allParticipantIds.includes(currentUser._id)){ %>
+										<% if(openedRoomConvId == openedClub.chatRooms[i].conversationId._id){ %>
+											<div id="<%= openedClub.chatRooms[i].conversationId._id %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item active chatlist-room" value="club">
+										<% } else{ %>
+											<div id="<%= openedClub.chatRooms[i].conversationId._id %>^<%= openedClub.name %>^<%= openedClub.id %>^<%= openedClub.chatRooms[i].name %>" class="d-flex flex-row chatlist-item chatlist-room" value="club">
+										<% } %>
+											<div class="pointer py-2 m-2"><i class="fas fa-hashtag mr-2"></i><%= openedClub.chatRooms[i].name %></div>
+										</div>
+										<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye-slash"></i></div>
+									<% } else { %>
+										<div id="not_in_room" class="d-flex flex-row">
+											<div class="py-2 m-2"><i class="fas fa-hashtag mr-2"></i><%= openedClub.chatRooms[i].name %></div>
+										</div>
 									<% } %>
-										<div class="pointer py-2 m-2"><i class="fas fa-hashtag mr-2"></i><%= openedClub.chatRooms[i].name %></div>
-									</div>
-									<div class="lightgrey2 mx-2" title="Not shown on feed"><i class="far fa-eye-slash"></i></div>
 								</div>
 							<% } %>
 						<% } %>

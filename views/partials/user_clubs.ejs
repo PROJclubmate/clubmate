@@ -1,75 +1,79 @@
 <div class="row no-gutters mt-2 lineheight2">
   <% for(var i=0;i<clubs.length;i++){ %>
-    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
-      <a href="/clubs/<%= clubs[i].id._id %>">
-      <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
-    </div>
-    <div class="col-md-9 col-8 my-auto pt-2 pb-1">
-      <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
-          <strong><%= clubs[i].id.name %></strong>
-        </a>
-      </span>
-      <span class="my-auto lightgrey text-xs mobiletext4">
-        <%= clubs[i].status %>
-        <div class="status" id="status<%= clubs[i].id._id %>">
-          <form action="/status-rank?_method=PUT" method="POST">
-            <div class="input-group mt-1 mb-5">
-              <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
-              <div class="input-group-append">
-                <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= user._id %>,<%= clubs[i].id._id %>">Update</button>
-              </div>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/clubs/<%= clubs[i].id._id %>">
+          <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
         </div>
-      </span>
-    </div>
-    <div class="col-md-2 col-2 my-auto text-right">
-      <div class="d-inline-flex">
-        <span class="mobileNone">
-          <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
-        </span>
-        <span class="mobileShow">
-          <em class="darkgrey text-xs"><%= rankTitle2(clubs[i].rank) %></em>
-        </span>
-      </div>
-      <span class="dropdown">
-        <% if(currentUser && match){ %>
-          <button class="btn btn-sm dropdown-toggle text-xs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-        <% } %>
-        <ul class="dropdown-menu dropdown-menu-right dropbox">
-          <div class="container drop-shadow1">
-            <li><a class="dropitems text-sm" href="#!" onclick="toggle_display('status<%= clubs[i].id._id %>')">Update status</a></li>
-            <% if(clubs[i].rank != 0){ %>
-              <hr>
-              <li>
-                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= user._id %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
-              </li>
-            <% } %>
-          </div>
-        </ul>
-      </span>
-      <!-- Modal HTML -->
-      <div id="leaveClubModal<%= user._id %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
-        <div class="modal-dialog modal-confirm">
-          <div class="modal-content">
-            <div class="d-flex">
-              <span class="icon-box">
-                <i class="fas fa-exclamation-triangle text-xxxl"></i>
-              </span>              
-              <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div>
-              <p>Do you really want to leave <%= clubs[i].id.name %>? This cannot be undone.</p>
-            </div>
-            <div class="my-2">
-              <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-              <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
-                <button type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+        <div class="my-auto mx-3 py-2">
+          <span>
+            <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
+              <strong><%= clubs[i].id.name %></strong>
+            </a>
+          </span>
+          <span class="my-auto lightgrey text-xs mobiletext4">
+            <%= clubs[i].status %>
+            <div class="status" id="status<%= clubs[i].id._id %>">
+              <form action="/status-rank?_method=PUT" method="POST">
+                <div class="input-group my-3">
+                  <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= user._id %>,<%= clubs[i].id._id %>">Update</button>
+                  </div>
+                </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex mb-auto text-right" style="padding-top: 0.75rem;">
+        <div class="my-auto">
+          <span class="mobileNone">
+            <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
+          </span>
+          <span class="mobileShow">
+            <em class="darkgrey text-xs"><%= rankTitle2(clubs[i].rank) %></em>
+          </span>
+        </div>
+        <div class="dropdown">
+          <% if(currentUser && match){ %>
+            <button class="btn btn-sm dropdown-toggle text-xs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+          <% } %>
+          <ul class="dropdown-menu dropdown-menu-right dropbox">
+            <div class="container drop-shadow1">
+              <li><a class="dropitems text-sm" href="#!" onclick="toggle_display('status<%= clubs[i].id._id %>')">Update status</a></li>
+              <% if(clubs[i].rank != 0){ %>
+                <hr>
+                <li>
+                  <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= user._id %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
+                </li>
+              <% } %>
+            </div>
+          </ul>
+        </div>
+        <!-- Modal HTML -->
+        <div id="leaveClubModal<%= user._id %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
+          <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+              <div class="d-flex grey">
+                <span class="icon-box">
+                  <i class="fas fa-exclamation text-xxxl"></i>
+                </span>              
+                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div>
+                <p>Do you really want to leave <%= clubs[i].id.name %>? This cannot be undone.</p>
+              </div>
+              <div class="my-2">
+                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                  <button type="submit" name="leave" value="<%= user._id %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              </div>
             </div>
           </div>
         </div>

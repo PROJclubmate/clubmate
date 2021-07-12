@@ -1467,17 +1467,18 @@ module.exports = {
           });
         }
         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
-        {$pull: {userClubs: {id: req.params.club_id}}}, function(err, updateUser){
-          if(err || !updateUser){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-39)updateUser err:- '+JSON.stringify(err, null, 2));
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');          }
+        {$pull: {userClubs: {id: req.params.club_id}}}, function(err, updatedUser){
+        if(err || !updatedUser){
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-39)updatedUser err:- '+JSON.stringify(err, null, 2));
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
         });
         if(foundClub.conversationId){
-          ClubConversation.updateOne({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
-          function(err, updateClubConversation){
-          if(err || !updateClubConversation){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-40)updateClubConversation err:- '+JSON.stringify(err, null, 2));
+          ClubConversation.updateMany({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
+          function(err, updatedClubConversation){
+          if(err || !updatedClubConversation){
+            console.log(Date.now()+' : '+req.user._id+' => (profiles-40)updatedClubConversation err:- '+JSON.stringify(err, null, 2));
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1790,9 +1791,9 @@ module.exports = {
   profilesLogout(req, res, next){
     if(req.user){
       User.updateOne({_id: req.user._id}, {lastLoggedOut: Date.now()}, 
-      function(err, updateUser){
-        if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (profiles-47)updateUser err:- '+JSON.stringify(err, null, 2));
+      function(err, updatedUser){
+        if(err || !updatedUser){
+          console.log(Date.now()+' : '+req.user._id+' => (profiles-47)updatedUser err:- '+JSON.stringify(err, null, 2));
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }

@@ -167,7 +167,7 @@
                       <% } %>
                     <% } %>
                   </span>
-                  <span id="navname"><%= currentUser.firstName %></span>
+                  <span id="navname" value="<%= currentUser._id %>"><%= currentUser.firstName %></span>
                 </a>
               </div>
               <div class="vr"></div>
@@ -185,7 +185,7 @@
 <div class="popup-box scroll moz-scroll" id="pop_box_requests">
   <% if (currentUser && currentUser.clubInvites.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing lightgrey text-xs"><i class="fas fa-envelope-open-text mr-2"></i>Club Invites</h6>
+      <h6 class="m-0 p-0 lightgrey text-xs"><i class="fas fa-envelope-open-text mr-2"></i>Club Invites</h6>
       <% if (currentUser.clubInvites.length != 0){ %>
         <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>
@@ -224,7 +224,7 @@
   <% } %>
   <% if(currentUser && currentUser.friendRequests.length != 0){ %>
     <div class="pop-header valign">
-      <h6 class="nothing lightgrey text-xs"><i class="fas fa-user-friends mr-2"></i>Friend Requests</h6>
+      <h6 class="m-0 p-0 lightgrey text-xs"><i class="fas fa-user-friends mr-2"></i>Friend Requests</h6>
       <% if (currentUser.clubInvites.length == 0){ %>
         <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
       <% } %>
@@ -267,7 +267,7 @@
     <% } %>
   <% } else if(currentUser && (currentUser.friendRequests.length == 0 && currentUser.clubInvites.length == 0)){ %>
     <div class="pop-header valign">
-      <span class="nothing lightgrey boldtext text-xs">No pending requests</span>
+      <span class="m-0 p-0 lightgrey boldtext text-xs">No pending requests</span>
       <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
     </div>
   <% } %>

@@ -573,7 +573,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 $('#load-prevMsgs-btn').on('click', function(e){
   e.preventDefault();
-  if($("#pin-chatbox").hasClass("chatbox-user")){
+  if($("#chatbox-loadingarea").hasClass("chatbox-user")){
     const conversationId = $("#user-convoId").attr("value").split(',')[0];
     if(conversationId){
       $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -601,7 +601,7 @@ $('#load-prevMsgs-btn').on('click', function(e){
     } else{
       $('#load-prevMsgs-btn').addClass('nodisplay');
     }
-  } else if($("#pin-chatbox").hasClass("chatbox-club")){
+  } else if($("#chatbox-loadingarea").hasClass("chatbox-club")){
     const conversationId = $("#club-convoId").attr("value").split('^')[0];
     if(conversationId){
       $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
@@ -687,7 +687,7 @@ function load_prevMsgs_template(response){
 function load_prevClubMsgs_template(response){
   html = ejs.render(`
 <% var prevDate, prevAuthorId; %>
-<% messageBucket.messages.forEach(function(message){ %>
+<% messageBucket.messages.forEach(function(message, i){ %>
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
     <div class="chat-head3"><%= moment(message.createdAt).format("MMM Do YY") %></div>
   <% } %>
@@ -702,19 +702,20 @@ function load_prevClubMsgs_template(response){
   <% } else{ %>
     <% if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
       <div class="d-flex flex-row"><div class="px-1">
-      <img class="chatdp rounded-circle" src="<%= message.authorId.profilePic50 %>"></div>
+      <img class="chatdp rounded-circle" src="<%= MA_50_profilePic[i] %>"></div>
       <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"><%= message.authorName %></span>
       <%= moment(message.createdAt).format('LT') %></div><div class="clubchat-msg-div"><%= message.text %></div> </div></div></div>
     <% } else{ %>
       <div class="d-flex flex-row"><div class="px-1">
-      <img class="chatdp rounded-circle transparent2" src="<%= message.authorId.profilePic50 %>"></div>
+      <img class="chatdp rounded-circle transparent2" src="<%= MA_50_profilePic[i] %>"></div>
       <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="clubchat-msg-div"><%= message.text %></div> </div></div></div>
     <% } %>
   <% } %>
   <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
   <% prevAuthorId = message.authorId._id; %>
 <% }); %>
-`,{messageBucket: response.messageBucket, currentUser: response.currentUser, firstName: response.firstName, cdn_prefix: response.cdn_prefix});
+`,{messageBucket: response.messageBucket, MA_50_profilePic: response.MA_50_profilePic, currentUser: response.currentUser,
+  firstName: response.firstName, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -759,7 +760,7 @@ function index_posts_template(response){
               <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
                 <div class="container drop-shadow1">
-                  <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                  <li><a class="dropitems text-sm">Help ?</a></li>
                   <% if(currentUser._id == posts[k].postAuthor.id){ %>
                     <hr>
                     <li>
@@ -772,9 +773,9 @@ function index_posts_template(response){
                 <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                   <div class="modal-dialog modal-confirm">
                     <div class="modal-content">
-                      <div class="d-flex">
+                      <div class="d-flex grey">
                         <span class="icon-box">
-                          <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          <i class="fas fa-exclamation text-xxxl"></i>
                         </span>              
                         <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -806,14 +807,14 @@ function index_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
             </span>
             <% if(posts[k].commentsCount > 0){ %>
-               . <span class="boldtext nothing text-xxs">
+               . <span class="boldtext m-0 p-0 text-xxs">
                 <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
@@ -821,24 +822,24 @@ function index_posts_template(response){
         </div>
         <hr class="hr-light mx-2">
       <% } else{ %>
-        <div class="card-body2 nounderline nothing">
+        <div class="card-body2 nounderline m-0 p-0">
           <% if(!friendsPostUrl){ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
           <% } %>
           <% if(posts[k].description.length < 200){ %>
-            <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
           <% } else{ %>
-            <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
           <% } %>
-            <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
               </span>
               <% if(posts[k].commentsCount > 0){ %>
-                 . <span class="boldtext nothing text-xxs">
+                 . <span class="boldtext m-0 p-0 text-xxs">
                   <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
@@ -855,32 +856,32 @@ function index_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm greencolor3"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm greencolor3"><%= posts[k].likeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
               <% } %>
             <% }else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>
+              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
             <% } %>
           </div>
         
           <div class="valign">
             <% if(currentUser){ %>
               <% if(hasVote[k] == 3){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% }else{ %>
-              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
@@ -898,7 +899,7 @@ function index_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -968,17 +969,17 @@ function index_posts_template(response){
           <% } %>
             <div class="topic-head">
               <div class="px-2 mb-auto">
-                <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
+                <h5 class="m-0 p-0 topic-h5"><%= posts[k].topic %></h5>
               </div>
             </div>
           </a>
         </div>
         <div>
-          <div class="nounderline nothing">
+          <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
               <% if(!friendsPostUrl){ %>
                 <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -995,7 +996,7 @@ function index_posts_template(response){
               <% } %>
                 <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
@@ -1021,7 +1022,7 @@ function index_posts_template(response){
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <li><a class="dropitems text-sm">Help ?</a></li>
                     <% if(currentUser._id == posts[k].postAuthor.id){ %>
                       <hr>
                       <li>
@@ -1034,9 +1035,9 @@ function index_posts_template(response){
                   <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
-                        <div class="d-flex">
+                        <div class="d-flex grey">
                           <span class="icon-box">
-                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                            <i class="fas fa-exclamation text-xxxl"></i>
                           </span>              
                           <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1063,15 +1064,15 @@ function index_posts_template(response){
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -1120,32 +1121,32 @@ function discover_posts_template(response){
                   <span class="d-flex mr-1"> 
                     <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote greencolor"></i></button>
                   </span>
-                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3 greencolor2"><%= posts[k].likeCount %></span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 greencolor2"><%= posts[k].likeCount %></span>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                   <span class="d-flex mr-1"> 
                     <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up discover-vote"></i></button>
                   </span>
-                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].likeCount %></span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].likeCount %></span>
                 <% } %>
               <% }else{ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].likeCount %></span>
               <% } %>
             </div>
           
             <div class="valign">
               <% if(currentUser){ %>
                 <% if(hasVote[k] == 3){ %>
-                  <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm mobiletext3 redcolor2"><%= posts[k].heartCount %></span>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm mobiletext3 redcolor2"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote redcolor2"></i></button></span>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart discover-vote"></i></button></span>
                   <% } %>
               <% }else{ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor nothing text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote"></i></button></span>
               <% } %>
             </div>
@@ -1176,14 +1177,14 @@ function discover_posts_template(response){
           <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
         <div class="card-body">
-          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="nothing mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
         </div>
       <% } else{ %>
-        <div class="card-body2 nounderline nothing">
+        <div class="card-body2 nounderline m-0 p-0">
           <span>
-            <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
-            <em class="nothing mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
           </span>
         </div>
       <% } %>
@@ -1253,7 +1254,7 @@ function club_posts_template(response){
                       </form>
                     </li>
                   <% } %>
-                  <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                  <li><a class="dropitems text-sm">Help ?</a></li>
                   <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
                     <hr>
                     <li>
@@ -1266,9 +1267,9 @@ function club_posts_template(response){
                 <div id="delPostModalclubs<%= posts[k].postClub %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                   <div class="modal-dialog modal-confirm">
                     <div class="modal-content">
-                      <div class="d-flex">
+                      <div class="d-flex grey">
                         <span class="icon-box">
-                          <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          <i class="fas fa-exclamation text-xxxl"></i>
                         </span>              
                         <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1296,15 +1297,15 @@ function club_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2 valign">
             <div>
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
               </span>
               <% if(posts[k].commentsCount > 0){ %>
-                . <span class="boldtext nothing text-xxs">
+                . <span class="boldtext m-0 p-0 text-xxs">
                   <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
@@ -1331,21 +1332,21 @@ function club_posts_template(response){
         </div>
         <hr class="hr-light mx-2">
       <% } else{ %>
-        <div class="nounderline nothing card-body2">
+        <div class="nounderline m-0 p-0 card-body2">
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <% if(posts[k].description.length < 200){ %>
               <span class="truncate2 mobiletext linewrap nolink description-short"><%= posts[k].description %></span>
             <% } else{ %>
               <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
             <% } %>
-            <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2 valign">
               <div>
                 <span>
                   <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
                 </span>
                 <% if(posts[k].commentsCount > 0){ %>
-                  . <span class="boldtext nothing text-xxs">
+                  . <span class="boldtext m-0 p-0 text-xxs">
                     <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                   </span>
                 <% } %>
@@ -1381,30 +1382,30 @@ function club_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm greencolor3"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm greencolor3"><%= posts[k].likeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>              <% } %>
+                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>              <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>            <% } %>
+              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>            <% } %>
           </div>
         
           <div class="valign">
             <% if(currentUser){ %>
               <% if(hasVote[k] == 3){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
@@ -1422,7 +1423,7 @@ function club_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -1440,7 +1441,7 @@ function club_posts_template(response){
             </div>
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
-              <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+              <button onclick="none_display('commentbtn<%= posts[k]._id %>');" class="btn  btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="reset">Cancel</button>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
@@ -1486,17 +1487,17 @@ function club_posts_template(response){
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>" style="text-decoration: none;">
             <div class="valign topic-head">
               <div class="px-2 mb-auto">
-                <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
+                <h5 class="m-0 p-0 topic-h5"><%= posts[k].topic %></h5>
               </div>
             </div>
           </a>
         </div>
         <div>
-          <div class="nounderline nothing">
+          <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
                 <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
                 <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
@@ -1505,7 +1506,7 @@ function club_posts_template(response){
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
                 <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
@@ -1543,7 +1544,7 @@ function club_posts_template(response){
                         </form>
                       </li>
                     <% } %>
-                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <li><a class="dropitems text-sm">Help ?</a></li>
                     <% if(currentUser._id == posts[k].postAuthor.id._id){ %>
                       <hr>
                       <li>
@@ -1556,9 +1557,9 @@ function club_posts_template(response){
                   <div id="delPostModalclubs<%= posts[k].postClub %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
-                        <div class="d-flex">
+                        <div class="d-flex grey">
                           <span class="icon-box">
-                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                            <i class="fas fa-exclamation text-xxxl"></i>
                           </span>              
                           <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1585,15 +1586,15 @@ function club_posts_template(response){
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -1663,7 +1664,7 @@ function user_posts_template(response){
               <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
                 <div class="container drop-shadow1">
-                  <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                  <li><a class="dropitems text-sm">Help ?</a></li>
                   <% if(currentUser._id == posts[k].postAuthor.id){ %>
                     <hr>
                     <li>
@@ -1676,9 +1677,9 @@ function user_posts_template(response){
                 <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                   <div class="modal-dialog modal-confirm">
                     <div class="modal-content">
-                      <div class="d-flex">
+                      <div class="d-flex grey">
                         <span class="icon-box">
-                          <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          <i class="fas fa-exclamation text-xxxl"></i>
                         </span>              
                         <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1706,14 +1707,14 @@ function user_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate nothing mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
             </span>
             <% if(posts[k].commentsCount > 0){ %>
-               . <span class="boldtext nothing text-xxs">
+               . <span class="boldtext m-0 p-0 text-xxs">
                 <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
@@ -1721,20 +1722,20 @@ function user_posts_template(response){
         </div>
         <hr class="hr-light mx-2">
       <% } else{ %>
-        <div class="card-body2 nounderline nothing">
+        <div class="card-body2 nounderline m-0 p-0">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <% if(posts[k].description.length < 200){ %>
-              <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
             <% } else{ %>
-              <p class="truncate2 nothing mobiletext linewrap nolink"><%= posts[k].description %></p>
+              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
             <% } %>
-            <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
               </span>
               <% if(posts[k].commentsCount > 0){ %>
-                 . <span class="boldtext nothing text-xxs">
+                 . <span class="boldtext m-0 p-0 text-xxs">
                   <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
@@ -1751,32 +1752,32 @@ function user_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm greencolor3"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm greencolor3"><%= posts[k].likeCount %></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].likeCount %></span>
+              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
             <% } %>
           </div>
         
           <div class="valign">
             <% if(currentUser){ %>
               <% if(hasVote[k] == 3){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey nothing text-sm redcolor3"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= posts[k].heartCount %></span>
+              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
@@ -1794,7 +1795,7 @@ function user_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -1812,7 +1813,7 @@ function user_posts_template(response){
             </div>
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success commentbtn commentbtn<%= posts[k]._id %> btnxs ml-2 mt-2">Submit</button>
-              <button onclick="none_display('commentbtn<%= posts[k]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+              <button onclick="none_display('commentbtn<%= posts[k]._id %>');" class="btn btn-secondary commentbtn commentbtn<%= posts[k]._id %> btnxs text-sm mt-2" type="reset">Cancel</button>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
@@ -1861,17 +1862,17 @@ function user_posts_template(response){
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" style="text-decoration: none;">
             <div class="valign topic-head">
               <div class="px-2 mb-auto">
-                <h5 class="nothing topic-h5"><%= posts[k].topic %></h5>
+                <h5 class="m-0 p-0 topic-h5"><%= posts[k].topic %></h5>
               </div>
             </div>
           </a>
         </div>
         <div>
-          <div class="nounderline nothing">
+          <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate nothing mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
                 <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
@@ -1880,7 +1881,7 @@ function user_posts_template(response){
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
                 <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
@@ -1910,7 +1911,7 @@ function user_posts_template(response){
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <li><a class="dropitems text-sm">Help ?</a></li>
                     <% if(currentUser._id == posts[k].postAuthor.id){ %>
                       <hr>
                       <li>
@@ -1923,9 +1924,9 @@ function user_posts_template(response){
                   <div id="delPostModalclubs<%= posts[k].postClub._id %>posts<%= posts[k]._id %>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
-                        <div class="d-flex">
+                        <div class="d-flex grey">
                           <span class="icon-box">
-                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                            <i class="fas fa-exclamation text-xxxl"></i>
                           </span>              
                           <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1952,15 +1953,15 @@ function user_posts_template(response){
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
                 <% if(hasModVote[k] == 1){%>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == -1){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVote[k] == 0){ %>
                   <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+                  <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
                   <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -2020,7 +2021,7 @@ function heart_posts_template(response){
               <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
                 <div class="container drop-shadow1">
-                  <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                  <li><a class="dropitems text-sm">Help ?</a></li>
                   <% if(currentUser._id == postsH[l].postAuthor.id){ %>
                     <hr>
                     <li>
@@ -2033,9 +2034,9 @@ function heart_posts_template(response){
                 <div id="delPostModalclubs<%= postsH[l].postClub._id %>postsH<%= postsH[l]._id %>" class="fixed-padding modal fade">
                   <div class="modal-dialog modal-confirm">
                     <div class="modal-content">
-                      <div class="d-flex">
+                      <div class="d-flex grey">
                         <span class="icon-box">
-                          <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                          <i class="fas fa-exclamation text-xxxl"></i>
                         </span>              
                         <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -2063,14 +2064,14 @@ function heart_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate nothing mobiletext linewrap"><%= postsH[l].description %></p>
-          <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
+          <p class="truncate m-0 p-0 mobiletext linewrap"><%= postsH[l].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
             </span>
             <% if(postsH[l].commentsCount > 0){ %>
-                . <span class="boldtext nothing text-xxs">
+                . <span class="boldtext m-0 p-0 text-xxs">
                 <%= postsH[l].commentsCount %> <i class="fas fa-comment"></i>
               </span>
             <% } %>
@@ -2078,20 +2079,20 @@ function heart_posts_template(response){
         </div>
         <hr class="hr-light mx-2">
       <% } else{ %>
-        <div class="card-body2 nounderline nothing">
+        <div class="card-body2 nounderline m-0 p-0">
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
             <% if(postsH[l].description.length < 200){ %>
-              <p class="truncate2 nothing mobiletext linewrap nolink description-short"><%= postsH[l].description %></p>
+              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= postsH[l].description %></p>
             <% } else{ %>
-              <p class="truncate2 nothing mobiletext linewrap nolink"><%= postsH[l].description %></p>
+              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= postsH[l].description %></p>
             <% } %>
-            <em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
               </span>
               <% if(postsH[l].commentsCount > 0){ %>
-                  . <span class="boldtext nothing text-xxs">
+                  . <span class="boldtext m-0 p-0 text-xxs">
                   <%= postsH[l].commentsCount %> <i class="fas fa-comment"></i>
                 </span>
               <% } %>
@@ -2108,32 +2109,32 @@ function heart_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
                 </span>
-                <span id="like-countH<%= postsH[l]._id %>" class="boldtext darkgrey nothing text-sm greencolor3"><%= postsH[l].likeCount %></span>
+                <span id="like-countH<%= postsH[l]._id %>" class="boldtext darkgrey m-0 p-0 text-sm greencolor3"><%= postsH[l].likeCount %></span>
               <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 3){ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= postsH[l].likeCount %></span>
+                <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btnH<%= postsH[l]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
               </span>
-              <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= postsH[l].likeCount %></span>
+              <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
             <% } %>
           </div>
         
           <div class="valign">
             <% if(currentUser){ %>
               <% if(hasVoteH[l] == 3){ %>
-                <span id="heart-countH<%= postsH[l]._id %>" class="boldtext darkgrey nothing text-sm redcolor3"><%= postsH[l].heartCount %></span>
+                <span id="heart-countH<%= postsH[l]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1){ %>
-                <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= postsH[l].heartCount %></span>
+                <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey nothing text-sm"><%= postsH[l].heartCount %></span>
+              <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
               <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
             <% } %>
           </div>
@@ -2151,7 +2152,7 @@ function heart_posts_template(response){
             <% if(z<=2){ %>
               <div class="valign">
                 <div class="wordwrap lineheight my-15">
-                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="nothing mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
+                  <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
                 </div>
@@ -2169,7 +2170,7 @@ function heart_posts_template(response){
             </div>
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success commentbtn commentbtn<%= postsH[l]._id %> btnxs ml-2 mt-2">Submit</button>
-              <button onclick="none_display('commentbtn<%= postsH[l]._id %>'); clear_text();" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="button">Cancel</button>
+              <button onclick="none_display('commentbtn<%= postsH[l]._id %>');" class="btn btn-secondary commentbtn commentbtn<%= postsH[l]._id %> btnxs text-sm mt-2" type="reset">Cancel</button>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
@@ -2218,17 +2219,17 @@ function heart_posts_template(response){
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>" style="text-decoration: none;">
             <div class="valign topic-head">
               <div class="px-2 mb-auto">
-                <h5 class="nothing topic-h5"><%= postsH[l].topic %></h5>
+                <h5 class="m-0 p-0 topic-h5"><%= postsH[l].topic %></h5>
               </div>
             </div>
           </a>
         </div>
         <div>
-          <div class="nounderline nothing">
+          <div class="nounderline m-0 p-0">
             <% if(postsH[l].image){ %>
-              <div class="truncate nothing mobiletext linewrap card-body3"><%= postsH[l].description %></div>
+              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= postsH[l].description %></div>
               <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
-                <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
               <% } %>
               <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
                 <div class="topicimgpad"><div class="postimgcorner"><img class="card-img-top postimg topicimg" src="<%= postsH[l].image %>"></div></div>
@@ -2237,7 +2238,7 @@ function heart_posts_template(response){
               <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
                 <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= postsH[l].description %></div>
                 <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="nothing mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
@@ -2267,7 +2268,7 @@ function heart_posts_template(response){
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <li><a class="dropitems text-sm">Help ?</a></li>
                     <% if(currentUser._id == postsH[l].postAuthor.id){ %>
                       <hr>
                       <li>
@@ -2280,9 +2281,9 @@ function heart_posts_template(response){
                   <div id="delPostModalclubs<%= postsH[l].postClub._id %>postsH<%= postsH[l]._id %>" class="fixed-padding modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
-                        <div class="d-flex">
+                        <div class="d-flex grey">
                           <span class="icon-box">
-                            <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                            <i class="fas fa-exclamation text-xxxl"></i>
                           </span>              
                           <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -2309,15 +2310,15 @@ function heart_posts_template(response){
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= postsH[l]._id %>/modvote" method="POST">
                 <% if(hasModVoteH[l] == 1){%>
                   <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext nothing text-xs text-center bluecolor3"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
                   <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVoteH[l] == -1){ %>
                   <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext nothing text-xs text-center orangecolor"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
                   <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVoteH[l] == 0){ %>
                   <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey nothing text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
                   <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -2379,9 +2380,9 @@ function post_comments_template(response){
               <div id="delBucket<%= i %>Comment<%= j %>Modal" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-confirm">
                   <div class="modal-content">
-                    <div class="d-flex">
+                    <div class="d-flex grey">
                       <span class="icon-box">
-                        <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                        <i class="fas fa-exclamation text-xxxl"></i>
                       </span>              
                       <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -2551,20 +2552,20 @@ function post_subPosts_template(response){
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
             </span>
-            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
             </span>
-            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].dislikeCount %></span>
           <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
             </span>
-            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].likeCount %></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
             </span>
-            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
           <% } else{ %>
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
@@ -2624,11 +2625,11 @@ function post_subPosts_template(response){
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
             </div>
             <div class="input-group">
-              <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin mb-1 text-sm emoji-input" name="text" placeholder="Add your opinion" rows="4"></textarea>
+              <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input" name="text" placeholder="Add your opinion" rows="4"></textarea>
             </div>
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
               <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
@@ -2671,96 +2672,100 @@ function moreMembers_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight2">
   <% for(var i=0;i<users.length;i++){ %>
-    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
-      <a href="/users/<%= users[i].id._id %>">
-        <% if(users[i].id.userKeys.sex == 'Male'){ %>
-          <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.png' %>">
-        <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
-          <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.png' %>">
-        <% } %>
-      </a>
-    </div>
-    <div class="col-md-8 col-8 my-auto pt-2 pb-1">
-      <span>
-        <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
-          <strong><%= users[i].id.fullName %></strong>
-        </a>
-      </span>
-      <span class="my-auto lightgrey text-xs mobiletext4">
-        <%= users[i].userStatus %>
-      </span>
-    </div>
-    <div class="col-md-3 col-2 my-auto text-right">
-      <div class="d-inline-flex">
-        <span class="mobileNone">
-          <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
-        </span>
-        <span class="mobileShow">
-          <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
-        </span>
-      </div>
-      <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
-        <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
-          <label for="userRank" class="sr-only">User rank</label>
-          <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
-            <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
-            <% if(rank == 0){ %>
-              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/users/<%= users[i].id._id %>">
+            <% if(users[i].id.userKeys.sex == 'Male'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.png' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.png' %>">
             <% } %>
-            <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
-            <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
-            <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
-            <option value="4,<%= users[i].id._id %>,<%= clubId %>" data-descr="Jr. Member">Jr. M</option>
-          </select>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </form>
-      </span>
-      <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
-        <span class="dropdown">
-          <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm nopoint" type="button"><i></i></button>
-        </span>
-      <% } else{ %>
-        <span class="dropdown nopad">
-          <% if(0 <= rank && rank <= 1){ %>
-            <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-          <% } %>
-          <% if(users[i].userRank != 0){ %>
-            <ul class="dropdown-menu dropdown-menu-right dropbox">
-              <div class="container drop-shadow1">
-                <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
-                <hr>
-                <li>
-                  <button class="dropitems link-button red text-sm" href="#removeClubMemberModal<%= users[i].id._id %><%= club._id %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
-                </li>
-              </div>
-            </ul>
-          <% } %>
-        </span>
-        <!-- Modal HTML -->
-        <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
-          <div class="modal-dialog modal-confirm">
-            <div class="modal-content">
-              <div class="d-flex">
-                <span class="icon-box">
-                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                </span>              
-                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div>
-                <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
-              </div>
-              <div class="my-2">
-                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
-                  <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
+          </a>
+        </div>
+        <div class="my-auto mx-3 py-2">
+          <span>
+            <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
+              <strong><%= users[i].id.fullName %></strong>
+            </a>
+          </span>
+          <span class="my-auto lightgrey text-xs mobiletext4">
+            <%= users[i].userStatus %>
+          </span>
+        </div>
+      </div>
+      <div class="my-auto text-right d-flex">
+        <div id="user_Rank<%= users[i].id._id %>" class="user_Rank mr-2">
+          <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
+            <label for="userRank" class="sr-only">User rank</label>
+            <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
+              <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
+              <% if(rank == 0){ %>
+                <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
+              <% } %>
+              <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
+              <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
+              <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
+              <option value="4,<%= users[i].id._id %>,<%= clubId %>" data-descr="Jr. Member">Jr. M</option>
+            </select>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </div>
+        <div class="my-auto">
+          <span class="mobileNone">
+            <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
+          </span>
+          <span class="mobileShow">
+            <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
+          </span>
+        </div>
+        <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
+          <div class="dropdown my-auto">
+            <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm nopoint" type="button"><i></i></button>
+          </div>
+        <% } else{ %>
+          <div class="dropdown my-auto">
+            <% if(0 <= rank && rank <= 1){ %>
+              <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+            <% } %>
+            <% if(users[i].userRank != 0){ %>
+              <ul class="dropdown-menu dropdown-menu-right dropbox">
+                <div class="container drop-shadow1">
+                  <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
+                  <hr>
+                  <li>
+                    <button class="dropitems link-button red text-sm" href="#removeClubMemberModal<%= users[i].id._id %><%= club._id %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
+                  </li>
+                </div>
+              </ul>
+            <% } %>
+          </div>
+          <!-- Modal HTML -->
+          <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
+            <div class="modal-dialog modal-confirm">
+              <div class="modal-content">
+                <div class="d-flex grey">
+                  <span class="icon-box">
+                    <i class="fas fa-exclamation text-xxxl"></i>
+                  </span>              
+                  <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div>
+                  <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
+                </div>
+                <div class="my-2">
+                  <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                  <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                    <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      <% } %>
+        <% } %>
+      </div>
     </div>
   <% } %>
 </div>
@@ -2792,34 +2797,36 @@ function moreMemberRequests_template(response){
   html = ejs.render(`
 <div class="row no-gutters mt-2 lineheight2">
   <% for(var m=0;m<users.length;m++){ %>
-    <div class="col-md-1 col-2 py-1 mb-auto">
-      <a href="/users/<%= club.memberRequests[m].userId._id %>">
-        <% if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
-          <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserMale.png' %>">
-        <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Female'){ %>
-          <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserFemale.png' %>">
-        <% } %>
-      </a>
-    </div>
-    <div class="col-md-6 col-6 my-auto">
-      <span>
-        <a href="/users/<%= club.memberRequests[m].userId._id %>" class="mobiletext2 grey">
-          <strong><%= club.memberRequests[m].userId.fullName %></strong>
-        </a>
-      </span>
-      <span class="my-auto lightgrey text-xs">
-        <%= club.memberRequests[m].message %>
-      </span>
-    </div>
-    <div class="col-md-5 col-4 d-flex">
-      <div class="ml-auto mb-auto">
-        <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST" class="form-inline pt-2">
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/users/<%= club.memberRequests[m].userId._id %>">
+            <% if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserMale.png' %>">
+            <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Female'){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserFemale.png' %>">
+            <% } %>
+          </a>
+        </div>
+        <div class="my-auto mx-3">
           <span>
-            <button class="btn btnxs btn-primary text-sm" type="submit" name="acceptReq" value="<%= club.memberRequests[m].userId._id %>">Invite</button>
+            <a href="/users/<%= club.memberRequests[m].userId._id %>" class="mobiletext2 grey">
+              <strong><%= club.memberRequests[m].userId.fullName %></strong>
+            </a>
           </span>
-          <span>
+          <span class="my-auto lightgrey text-xs">
+            <%= club.memberRequests[m].message %>
+          </span>
+        </div>
+      </div>
+      <div class="ml-auto my-auto">
+        <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST" class="d-flex flex-row">
+          <div>
+            <button class="btn btnxs btn-primary text-sm mx-1" type="submit" name="acceptReq" value="<%= club.memberRequests[m].userId._id %>">Invite</button>
+          </div>
+          <div>
             <button class="btn btnxs btn-secondary text-sm" type="submit" name="declineReq" value="<%= club.memberRequests[m].userId._id %>">Decline</button>
-          </span>
+          </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
@@ -2869,76 +2876,80 @@ function moreClubs_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight2">
   <% for(var i=0;i<clubs.length;i++){ %>
-    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
-      <a href="/clubs/<%= clubs[i].id._id %>">
-      <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
-    </div>
-    <div class="col-md-9 col-8 my-auto pt-2 pb-1">
-      <span>
-        <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
-          <strong><%= clubs[i].id.name %></strong>
-        </a>
-      </span>
-      <span class="my-auto lightgrey text-xs mobiletext4">
-        <%= clubs[i].status %>
-        <div class="status" id="status<%= clubs[i].id._id %>">
-          <form action="/status-rank?_method=PUT" method="POST">
-            <div class="input-group mt-1 mb-5">
-              <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
-              <div class="input-group-append">
-                <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= userId %>,<%= clubs[i].id._id %>">Update</button>
-              </div>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/clubs/<%= clubs[i].id._id %>">
+          <img class="navdp rounded-circle" src="<%= Clubs_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
         </div>
-      </span>
-    </div>
-    <div class="col-md-2 col-2 my-auto text-right">
-      <div class="d-inline-flex">
-        <span class="mobileNone">
-          <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
-        </span>
-        <span class="mobileShow">
-          <em class="darkgrey text-xs"><%= rankTitle2(clubs[i].rank) %></em>
-        </span>
-      </div>
-      <span class="dropdown">
-        <% if(currentUserId && match){ %>
-          <button class="btn btn-sm dropdown-toggle text-xs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-        <% } %>
-        <ul class="dropdown-menu dropdown-menu-right dropbox">
-          <div class="container drop-shadow1">
-            <li><a class="dropitems text-sm" href="#!" onclick="toggle_display('status<%= clubs[i].id._id %>')">Update status</a></li>
-            <% if(clubs[i].rank != 0){ %>
-              <hr>
-              <li>
-                <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= userId %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
-              </li>
-            <% } %>
-          </div>
-        </ul>
-      </span>
-      <!-- Modal HTML -->
-      <div id="leaveClubModal<%= userId %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
-        <div class="modal-dialog modal-confirm">
-          <div class="modal-content">
-            <div class="d-flex">
-              <span class="icon-box">
-                <i class="fas fa-exclamation-triangle text-xxxl"></i>
-              </span>              
-              <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div>
-              <p>Do you really want to leave <%= clubs[i].id.name %>? This cannot be undone.</p>
-            </div>
-            <div class="my-2">
-              <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-              <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
-                <button type="submit" name="leave" value="<%= userId %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+        <div class="my-auto mx-3 py-2">
+          <span>
+            <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext">
+              <strong><%= clubs[i].id.name %></strong>
+            </a>
+          </span>
+          <span class="my-auto lightgrey text-xs mobiletext4">
+            <%= clubs[i].status %>
+            <div class="status" id="status<%= clubs[i].id._id %>">
+              <form action="/status-rank?_method=PUT" method="POST">
+                <div class="input-group my-3">
+                  <input type="text" name="status" class="commentbox1 text-sm form-control form-control-sm" placeholder="<%= clubs[i].status %>">
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary btnxxs text-xs" type="submit" name="statusId" value="<%= userId %>,<%= clubs[i].id._id %>">Update</button>
+                  </div>
+                </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex mb-auto text-right" style="padding-top: 0.75rem;">
+        <div class="my-auto">
+          <span class="mobileNone">
+            <em class="darkgrey text-sm"><%= rankTitle(clubs[i].rank) %></em>
+          </span>
+          <span class="mobileShow">
+            <em class="darkgrey text-xs"><%= rankTitle2(clubs[i].rank) %></em>
+          </span>
+        </div>
+        <div class="dropdown">
+          <% if(currentUserId && match){ %>
+            <button class="btn btn-sm dropdown-toggle text-xs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+          <% } %>
+          <ul class="dropdown-menu dropdown-menu-right dropbox">
+            <div class="container drop-shadow1">
+              <li><a class="dropitems text-sm" href="#!" onclick="toggle_display('status<%= clubs[i].id._id %>')">Update status</a></li>
+              <% if(clubs[i].rank != 0){ %>
+                <hr>
+                <li>
+                  <button class="dropitems link-button red text-sm" href="#leaveClubModal<%= userId %><%= clubs[i].id._id %>" data-toggle="modal">Leave <%= clubs[i].id.name %></button>
+                </li>
+              <% } %>
+            </div>
+          </ul>
+        </div>
+        <!-- Modal HTML -->
+        <div id="leaveClubModal<%= userId %><%= clubs[i].id._id %>" class="fixed-padding modal fade">
+          <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+              <div class="d-flex grey">
+                <span class="icon-box">
+                  <i class="fas fa-exclamation text-xxxl"></i>
+                </span>              
+                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div>
+                <p>Do you really want to leave <%= clubs[i].id.name %>? This cannot be undone.</p>
+              </div>
+              <div class="my-2">
+                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                  <button type="submit" name="leave" value="<%= userId %>,<%= clubs[i].id._id %>" class="btn btn-danger btn-sm ml-1">Leave</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -2988,7 +2999,7 @@ function search_people_template(response){
         <div class="valign">
           <div>
             <a href="/users/<%= users[k]._id %>" class="grey">
-              <span class="nothing text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
+              <span class="m-0 p-0 text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
             </a>
           </div>
           <div>
@@ -3040,7 +3051,7 @@ function search_clubs_template(response){
         <div class="valign">
           <div>
             <a href="/clubs/<%= clubs[k]._id %>" class="grey">
-              <span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
+              <span class="m-0 p-0 text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
             </a>
           </div>
           <div>
@@ -3141,16 +3152,16 @@ function showFollowing_template(response){
     <span>
       <% var len = followingClubs.length; for(var i=len-1;i>=0;i--){ %>
         <% if(i==0 && i==len-1){ %>
-          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
+          <span class="m-0 p-0"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
           <br>
           <% } else if(i==len-1){ %>
-          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
+          <span class="m-0 p-0"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
           <br>
           <% } else if(i>0 && i<len){ %>
-          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
+          <span class="m-0 p-0"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a>,</span>
           <br>
           <% } else if(i==0){ %>
-          <span class="nothing"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
+          <span class="m-0 p-0"><a href="/clubs/<%= followingClubs[i]._id %>"><%= followingClubs[i].name %></a></span>
           <br>
       <% }} %>
     </span>

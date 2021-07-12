@@ -1,7 +1,4 @@
-const Post        = require("../models/post"),
-  Comment         = require("../models/comment"),
-  User            = require("../models/user"),
-  Club            = require("../models/club"),
+const Comment     = require("../models/comment"),
   mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 

@@ -7,16 +7,16 @@
 	<% } else{ %>
 		<div class="ml-2 mt-4 pt-2 mobiletext4 lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.clubs){ %>
-				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm nothing"><%= filterKeys.clubs %></span>
+				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.clubs %></span>
 			<% } %>
 			<% if(filterKeys.college){ %>
-				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm nothing"><%= filterKeys.college %></span>
+				<span class="lightgrey text-xs">College=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.college %></span>
 			<% } %>
 			<% if(filterKeys.category){ %>
-				<span class="lightgrey text-xs">Category=</span><span class="boldtext text-sm nothing"><%= filterKeys.category %></span>
+				<span class="lightgrey text-xs">Category=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.category %></span>
 			<% } %>
 			<% if(filterKeys.distance){ %>
-				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey nothing text-xs">Km radius</span>
+				<span class="lightgrey text-xs">In</span><span class="boldtext text-sm"><%= filterKeys.distance %></span><span class="lightgrey m-0 p-0 text-xs">Km radius</span>
 			<% } %><strong>)</strong>
 	</div>
 	<% } %>
@@ -33,7 +33,7 @@
 			    	<div class="valign">
 			    		<div>
 					    	<a href="/clubs/<%= clubs[k]._id %>" class="grey">
-					      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
+					      	<span class="m-0 p-0 text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
 					      </a>
 					    </div>
 				    	<div>
@@ -99,7 +99,7 @@
     <% } %>
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Club name" name="clubs" id="search" value="<%= query.clubs %>" autofocus>
-			<h6 class="nothing">Club keys</h6>
+			<h6 class="m-0 p-0">Club keys</h6>
 			<div>
       	<label for="college" class="sr-only">College name</label>
 				<input class="form-control form-control-sm" type="text" placeholder="College name" name="college" id="college" value="<%= query.college %>">

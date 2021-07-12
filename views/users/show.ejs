@@ -14,14 +14,14 @@
           <div id="profilePic-frame-div-desktop">
             <% if(currentUser && match && user.profilePicId){ %>
               <div>
-                <button id="delete_profilePic-desktop" class="btn btn-danger btnxs text-xxs btnshadow" type="button"
-                style="position: absolute; top: 0; left: 4px; border-radius: 50%; padding: 0.12rem 0.375rem !important; display: none;" title="Delete profile pic" href="#deleteProfilePicModal" data-toggle="modal">
+                <button id="delete_profilePic-desktop" class="btn btn-danger btnxs text-xxs btnshadow rounded-circle" type="button"
+                style="position: absolute; top: 0; left: 4px; padding: 0.15rem 0.375rem !important; display: none;" title="Delete profile pic" href="#deleteProfilePicModal" data-toggle="modal">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
             <% } %>
             <div class="card indexcard ml-1 p-1 coverback2 profilePic-frame lcov">
-              <div class="container" style="overflow: hidden; border-radius: 100%;">
+              <div class="container rounded-circle" style="overflow: hidden;">
                 <% if(user.userKeys.sex == 'Male'){ %>
                   <% if(user.profilePicId){ %>
                     <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
@@ -41,7 +41,7 @@
                       <i class="fas fa-upload mr-2"></i>profile pic
                     </label>
                     <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                    <button id="inputprofilePicSubmitBtn" class="btn btn-sm btn-success overlay2" style="border-top: none;" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                    <button id="inputprofilePicSubmitBtn" class="btn btn-success overlay2 noborder" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
@@ -75,9 +75,9 @@
         <div id="deleteProfilePicModal" class="fixed-padding modal fade">
           <div class="modal-dialog modal-confirm">
             <div class="modal-content">
-              <div class="d-flex">
+              <div class="d-flex grey">
                 <span class="icon-box">
-                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                  <i class="fas fa-exclamation text-xxxl"></i>
                 </span>              
                 <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -110,7 +110,7 @@
                     <% if(currentUser && match){ %>
                       <li onclick="toggle_display('toggle_profile_form');"><a class="dropitems text-sm" href="#">Edit user Keys</a></li>
                     <% } %>
-                    <li><a class="dropitems text-sm" href="#">Help ?</a></li>
+                    <li><a class="dropitems text-sm">Help ?</a></li>
                   </div>
                 </ul>
               </div>
@@ -144,7 +144,7 @@
                   <input list="batch" class="form-control form-control-sm select_dark" name="userKeys[batch]" 
                   pattern="2015|2016|2017|2018|2019|2020|2021" value="" placeholder="First year">
                 <% } else{ %>
-                  <input list="batch" class="form-control form-control-sm select_dark" name="userKeys[batch]" pattern="2015|2016|2017|2018|2019|2020|2021" value="<%= user.userKeys.batch %>" placeholder="Your batch">
+                  <input list="batch" class="form-control form-control-sm select_dark" name="userKeys[batch]" pattern="2015|2016|2017|2018|2019|2020|2021" value="<%= user.userKeys.batch %>" placeholder="Your batch (first year)">
                 <% } %>
                 <datalist id="batch">
                   <option value="2015">
@@ -275,7 +275,7 @@
             <div class="tab-pane fade cardpad border-light-lr" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
               <div class="greyback rounded valign my-auto" style="height: 24px;">
                 <div class="d-flex flex-row">
-                  <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> clubs</span>
+                  <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> <%= clubCount == 1 ? 'club': 'clubs' %></span>
                 </div>
                 <div class="d-flex flex-row">
                   <% if(currentUser && !match && adminClubs.length!=0){ %>
@@ -305,9 +305,9 @@
               <div id="startNewClub" class="fixed-padding modal fade">
                 <div class="modal-dialog modal-dialog-centered modal-confirm">
                   <div class="modal-content">
-                    <div class="d-flex">
-                      <span class="">
-                        <img class="icon-box" src="<%= '/images/club.svg' %>" title="Designed by [Freepik] from @flaticon">
+                    <div class="d-flex grey">
+                      <span>
+                        <img id="new_club_img" class="icon-box" src="<%= '/images/club.svg' %>" title="Designed by [Freepik] from @flaticon">
                       </span>              
                       <span class="my-auto"><h5 class="modal-title ml-2">Start new club</h5></span>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -316,10 +316,10 @@
                       <div class="form-signin">
                         <label for="name" class="sr-only">Club name</label>
                         <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
-                        <label for="inputavatar" class="custom-file-upload noshadow fullwidth text-center mt-2" title="Upload club avatar">
+                        <label for="inputclubAvatar" class="custom-file-upload noshadow fullwidth text-center mt-2" title="Upload club avatar">
                           <i class="fas fa-upload"></i> Club avatar
                         </label>
-                        <input type="file" id="inputavatar" class="text-sm" name="avatar" accept="image/*" required="">
+                        <input type="file" id="inputclubAvatar" class="text-sm" name="avatar" accept="image/*" required="">
                         <br>
                         <br>
                         <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
@@ -368,7 +368,7 @@
                     About me: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('aboutme_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('aboutme_form_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
                       <span class="clubchat-msg-div"><%= user.bio.aboutme %></span>
                       <br>
@@ -395,7 +395,7 @@
                     Find me on: 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('followon_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('followon_form_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
                       <% if(user.bio.instagram){ %>
                         <a href="<%= decodeURI(user.bio.instagram) %>" target="_blank" rel="noopener" class="text-xxxl lightgrey mr-2"><i class="fab fa-instagram"></i></a>
@@ -494,21 +494,53 @@
                   <% } %>
                   <div class="info1">
                     <% if(currentUser && (match || user.userKeys.house)){ %>
-                      House: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?house=<%= user.userKeys.house %>"><%= user.userKeys.house %></a></span>
+                      House: <span class="info30">
+                        <% if(!user.userKeys.college){ %>
+                          <a class="lightgrey2">
+                        <% } else{ %>
+                          <a href="/all_students/colleges/<%= user.userKeys.college %>?house=<%= user.userKeys.house %>">
+                        <% } %>
+                          <%= user.userKeys.house %>
+                        </a>
+                      </span>
                       <br>
                     <% } %>
                     <% if(currentUser && (match || user.userKeys.school)){ %>
-                      High School: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?school=<%= user.userKeys.school %>"><%= user.userKeys.school %></a></span>
+                      High School: <span class="info30">
+                        <% if(!user.userKeys.college){ %>
+                          <a class="lightgrey2">
+                        <% } else{ %>
+                          <a href="/all_students/colleges/<%= user.userKeys.college %>?school=<%= user.userKeys.school %>">
+                        <% } %>
+                          <%= user.userKeys.school %>
+                        </a>
+                      </span>
                       <br>
                     <% } %>
                     <% if(currentUser && (match || user.userKeys.hometown)){ %>
-                      Home Town: <span class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?hometown=<%= user.userKeys.hometown %>"><%= user.userKeys.hometown %></a></span>
+                      Home Town: <span class="info30">
+                        <% if(!user.userKeys.college){ %>
+                          <a class="lightgrey2">
+                        <% } else{ %>
+                          <a href="/all_students/colleges/<%= user.userKeys.college %>?hometown=<%= user.userKeys.hometown %>">
+                        <% } %>
+                          <%= user.userKeys.hometown %>
+                        </a>
+                      </span>
                       <br>
                     <% } %>
                     <% if(currentUser && (match || user.userKeys.birthdate)){ %>
-                      Birthday: <span class="info30"><a href="#">
-                        <% if(user.userKeys.birthdate != null){ %><%= moment(user.userKeys.birthdate).format('MMM Do YY'); %><% } %>
-                      </a></span>
+                      Birthday: <span class="info30">
+                        <% if(!user.userKeys.college){ %>
+                          <a class="lightgrey2">
+                        <% } else{ %>
+                          <a href="#">
+                        <% } %>
+                          <% if(user.userKeys.birthdate != null){ %>
+                            <%= moment(user.userKeys.birthdate).format('MMM Do YY'); %>
+                          <% } %>
+                        </a>
+                      </span>
                     <% } %>
                   </div>
                   <% if(currentUser && match){ %>
@@ -630,7 +662,7 @@
                   <% if(!match){ %>
                     Last active:
                     <% if(user.lastActive >= (new Date() - 120*1000)){ %>
-                      <span class="info30 nothing">
+                      <span class="info30 m-0 p-0">
                         <span>
                           <svg height="16" width="16">
                             <circle cx="8" cy="7" r="5" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
@@ -639,7 +671,7 @@
                         <span class="greencolor">Online</span>
                       </span>
                     <% } else if(user.lastActive >= (new Date() - 24*3600*1000)){ %>
-                      <span class="info30 nothing">
+                      <span class="info30 m-0 p-0">
                         <span>
                           <svg height="16" width="16">
                             <circle cx="8" cy="7" r="5" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"></circle>
@@ -648,7 +680,7 @@
                         <span class="orangecolor"><%= moment(user.lastActive).fromNow() %></span>
                       </span>
                     <% } else{ %>
-                      <span class="info30 nothing">
+                      <span class="info30 m-0 p-0">
                         <span>
                           <svg height="16" width="16">
                             <circle cx="8" cy="7" r="5" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"></circle>
@@ -662,13 +694,13 @@
                       <div class="info1">Mutual clubs: <div class="info30">
                         <% var len = mutualClubs.length; for(var i=len-1;i>=0;i--){ %>
                         <% if(i==0 && i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
+                          <span class="m-0 p-0"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a></span>
                           <% } else if(i==len-1){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
+                          <span class="m-0 p-0"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= mutualClubs[i].name %></a>,</span>
                           <% } else if(i>0 && i<len){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
+                          <span class="m-0 p-0"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a>,</span>
                           <% } else if(i==0){ %>
-                          <span class="nothing"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
+                          <span class="m-0 p-0"><a href="/clubs/<%= mutualClubs[i]._id %>"><%= ' '+mutualClubs[i].name %></a></span>
                         <% }} %>
                       </div></div>
                     <% } %>
@@ -676,8 +708,8 @@
                   <% if(match){ %>
                     <br>
                     <div class="info1">Following: <div class="info30">
-                      <div id="show-following-server" class="nothing">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
-                      <div id="show-following-client" class="nothing nodisplay"><a href="#">Show ++</a></div>
+                      <div id="show-following-server" class="m-0 p-0">(<%= currentUser.followingClubCount %>) <a href="#">Show ++</a></div>
+                      <div id="show-following-client" class="m-0 p-0 nodisplay"><a href="#">Show ++</a></div>
                     </div></div>
                   <% } %>
                 </div>
@@ -689,7 +721,7 @@
                     <strong class="info-size">Interests:</strong> 
                     <div class="info30">
                       <% if(currentUser && match){ %>
-                        <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                        <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
                       <% recommends_split(user.interests); %>
                       <% if((currentUser && match) || (user.interests && user.interests.length)){ %>
@@ -723,7 +755,7 @@
                       Music: 
                       <div class="info30">
                         <% if(currentUser && match){ %>
-                          <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                          <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
                         <% recommends_split(user.recommends.music); %>
                         <br>
@@ -751,7 +783,7 @@
                       Movies: 
                       <div class="info30">
                         <% if(currentUser && match){ %>
-                          <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                          <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
                         <% recommends_split(user.recommends.movies); %>
                         <br>
@@ -779,7 +811,7 @@
                       TV Shows: 
                       <div class="info30">
                         <% if(currentUser && match){ %>
-                          <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                          <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
                         <% recommends_split(user.recommends.tvshows); %>
                         <br>
@@ -807,7 +839,7 @@
                       Places: 
                       <div class="info30">
                         <% if(currentUser && match){ %>
-                          <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                          <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
                         <% recommends_split(user.recommends.places); %>
                         <br>
@@ -835,7 +867,7 @@
                       Books: 
                       <div class="info30">
                         <% if(currentUser && match){ %>
-                          <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright nothing d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
+                          <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
                         <% recommends_split(user.recommends.books); %>
                         <br>
@@ -925,7 +957,7 @@
                     <button class="dropitems2 py-1 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
                   </li>
                   <hr>
-                  <li><a class="dropitems2 py-1 text-sm" href="#">Help ?</a></li>
+                  <li><a class="dropitems2 py-1 text-sm">Help ?</a></li>
                 </div>
               </ul>
             </div>
@@ -933,9 +965,9 @@
             <div id="unfriendModal<%= user._id %>" class="fixed-padding modal fade">
               <div class="modal-dialog modal-confirm">
                 <div class="modal-content">
-                  <div class="d-flex">
+                  <div class="d-flex grey">
                     <span class="icon-box">
-                      <i class="fas fa-exclamation-triangle text-xxxl"></i>
+                      <i class="fas fa-exclamation text-xxxl"></i>
                     </span>              
                     <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

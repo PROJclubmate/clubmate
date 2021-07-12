@@ -2,6 +2,7 @@ const S3     = require('aws-sdk/clients/s3'),
   fs         = require('fs'),
   util       = require('util'),
   unlinkFile = util.promisify(fs.unlink),
+  path       = require('path'),
   multer     = require('multer'),
   sharp      = require('sharp');
   // ImageKit   = require("imagekit");
@@ -13,8 +14,11 @@ const storage = multer.diskStorage({
     cb(null, Date.now()+'_'+file.originalname);
   }
 });
-const fileFilter = function (req, file, cb) {
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif|bmp|webp)$/i)){
+const fileFilter = function (req, file, cb){
+  const filetypes = /jpg|jpeg|png|gif|bmp|webp/;
+  const mimetype = filetypes.test(file.mimetype);
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  if(!(mimetype && extname)){
     return cb(new Error('Only image files are allowed!'), false);
   }
   cb(null, true);

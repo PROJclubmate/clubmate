@@ -259,14 +259,14 @@ input:checked + .toggle .star--6{
         <% if(currentUser.darkTheme == false){ %>
           <div>Sunshade</div>
         <% } else{ %>
-          <div>Moonlight <sup class="text-xxxs ml-2 lightgrey2"><span style="color: crimson;">*</span>Work in progress</sup></div>
+          <div>Moonlight <sup class="text-xxxs ml-2 lightgrey2"></div>
         <% } %>
         <div>
           <div class="toggleWrapper">
             <% if(currentUser && currentUser.darkTheme) { %>
-            <input type="checkbox" id="dn" data-csrf="<%= csrfToken %>" checked>
+            <input type="checkbox" id="dn" csrf-token="<%= csrfToken %>" value="currentUser._id" checked>
             <% } else { %>
-            <input type="checkbox" id="dn" data-csrf="<%= csrfToken %>">
+            <input type="checkbox" id="dn" csrf-token="<%= csrfToken %>" value="currentUser._id">
             <% } %>
             <label for="dn" class="toggle">
               <span class="toggle__handler">

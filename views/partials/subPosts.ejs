@@ -108,20 +108,20 @@
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
             </span>
-            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
             </span>
-            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].dislikeCount %></span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].dislikeCount %></span>
           <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
             </span>
-            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs"><%= subPosts[j].likeCount %></span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].likeCount %></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
             </span>
-            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey nothing text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
           <% } else{ %>
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
@@ -180,7 +180,7 @@
               </div>
               <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
                 <span><em id="timeUTC2" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                <span class="lightgrey nothing"><em id="timeLocal2" class="text-xxs"></em></span>
+                <span class="lightgrey m-0 p-0"><em id="timeLocal2" class="text-xxs"></em></span>
               </div>
             </div>
             <% if(quote){ %>
@@ -197,14 +197,14 @@
             <% } %>
             <div class="input-group">
               <% if(quote){ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4" autofocus></textarea>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4" autofocus></textarea>
               <% } else{ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control nomargin mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
+                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
               <% } %>
             </div>
             <div class="d-flex flex-row-reverse">
               <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn'); clear_subpost();" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="button">Cancel</button>
+              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
               <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>
@@ -214,7 +214,7 @@
                   <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
                     <% include ../partials/emoji_picker %>
                   </div>
-                  <i class="far fa-laugh-wink"></i>
+                  <i class="far fa-laugh-beam"></i>
                 </button>
               </div>
             </div>

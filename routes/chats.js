@@ -1,8 +1,15 @@
-const express  = require('express'),
-  router       = express.Router(),
-  middleware   = require('../middleware'),
-  {chatsList, chatsOpen, chatsListClubRooms, chatsListClubRoomOpen, chatsCreateNewRoom, chatsRoom} = require('../controllers/chats');
+const express   = require('express'),
+  router        = express.Router(),
+  middleware    = require('../middleware'),
+  {environment} = require('../config/env_switch.js'),
+  {chatsList, chatsOpen, chatsListClubRooms, chatsListClubRoomOpen, chatsCreateNewRoom, chatsRoom,
+  chatsRoomEdit} = require('../controllers/chats');
 
+if(environment === 'dev'){
+  var {upload} = require('../config/cloudinary.js');
+} else if (environment === 'prod'){
+  var {upload} = require('../config/s3.js');
+}
 
 // Chat list
 router.get('/chats/feed', middleware.isLoggedIn, chatsList);
@@ -21,5 +28,8 @@ router.post('/clubs/:club_id/rooms/create', middleware.isLoggedIn, chatsCreateNe
 
 // Room page
 router.get('/clubs/:club_id/rooms/:room_id', middleware.isLoggedIn, chatsRoom);
+
+// Edit partiipants
+router.put('/clubs/:club_id/rooms/:room_id/edit', middleware.isLoggedIn, upload.single('inputroomAvatar'), chatsRoomEdit);
 
 module.exports = router;

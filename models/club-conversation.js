@@ -4,6 +4,12 @@ const mongoose = require('mongoose'),
 const clubConversationSchema = new Schema({
   isActive: {type: Boolean, default: true},
   isRoom: {type: Boolean, default: false},
+  roomName: String,
+  participantCount: {type: Number, default: 0},
+  allParticipantIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   clubId: {
     type: Schema.Types.ObjectId,
     ref: 'Club'

@@ -5,8 +5,17 @@ const express      = require('express'),
   Conversation     = require('../models/conversation'),
   ClubConversation = require('../models/club-conversation'),
   Message          = require('../models/message'),
+	{environment}    = require('../config/env_switch'),
+  clConfig         = require('../config/cloudinary'),
+  s3Config         = require('../config/s3'),
   mongoose         = require('mongoose');
 
+	if(environment === 'dev'){
+		var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
+	} else if (environment === 'prod'){
+		var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
+	}
+	
 
 module.exports = function(io){
 
@@ -55,12 +64,12 @@ module.exports = function(io){
 		    	}
 	    	};
 	  		if(contains(foundConversation.participants,req.user._id)){
-	  			Message.findById(bucket[bucket.length-1], function(err, foundMessages){
+	  			Message.findById(bucket[bucket.length-1], function(err, foundMessage){
 		        var currentUser = req.user._id;
-		        if(foundMessages){
-		        	var foundMessageId = [foundMessages._id];
+		        if(foundMessage){
+		        	var foundMessageId = [foundMessage._id];
 		        } else{var foundMessageId = null;}
-		        res.send({messageBucket: foundMessages, currentUser, foundMessageId});
+		        res.send({messageBucket: foundMessage, currentUser, foundMessageId});
 		      });
 	      } else{console.log('(conversations-4)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		  }
@@ -253,22 +262,39 @@ module.exports = function(io){
 	router.get('/club-chat/:conversationId', function(req, res){
 		if(req.user){
 			ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
-			// =========> IMPROVISE!!!! - 2nd level populate is not limited. desired only profilePic50 & _id
-		  .populate({path: 'messageBuckets', populate: {path: 'messages.authorId'}, options: {sort: {_id: -1}, limit: 2}})
+		  .populate({path: 'messageBuckets', populate: {path: 'messages.authorId', select: 'profilePic profilePicId'}, options: {sort: {_id: -1}, limit: 2}})
 		  .exec(function(err, foundClubConversation){
 		  if(err){
 		    console.log(req.user._id+' => (conversations-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
-	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
-					// console.log('BRUH'+JSON.stringify(foundClubConversation, null, 2));
+	      if(contains2(req.user.userClubs,foundClubConversation.clubId) &&
+				((foundClubConversation.isRoom === true && foundClubConversation.allParticipantIds.includes(req.user._id)) ||
+				(foundClubConversation.isRoom === false))){
+					var MA_50_profilePic = [], numBuckets = foundClubConversation.messageBuckets.length;
+					for(var i=0;i<numBuckets;i++){
+						MA_50_profilePic[i] = [];
+						for(var j=0;j<foundClubConversation.messageBuckets[i].messages.length;j++){
+							if(environment === 'dev'){
+								MA_50_profilePic[i][j] = clConfig.cloudinary.url(foundClubConversation.messageBuckets[i].messages[j].authorId.profilePicId, clConfig.thumb_100_obj);
+							} else if (environment === 'prod'){
+								MA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundClubConversation.messageBuckets[i].messages[j].authorId.profilePicId;
+							}
+						}
+					}
 	      	var foundMessageIds = foundClubConversation.messageBuckets.map(function(messages){
 		        return messages._id;
 		      });
 	        var currentUser = req.user._id;
 	        var firstName = req.user.firstName;
-	        res.send({messages: foundClubConversation, currentUser, firstName, foundMessageIds});
-	      } else{console.log('(conversations-17)Not a club member: ('+req.user._id+') '+req.user.fullName);}
+	        res.send({messages: foundClubConversation, MA_50_profilePic, currentUser, firstName, foundMessageIds});
+	      } else{
+					if(foundClubConversation.isRoom === true && !foundClubConversation.allParticipantIds.includes(req.user._id)){
+						console.log('(conversations-17A)Not a room participant: ('+req.user._id+') '+req.user.fullName);
+					} else{
+						console.log('(conversations-17B)Not a club member: ('+req.user._id+') '+req.user.fullName);
+					}
+				}
 		  }
 		  });
 		}
@@ -298,13 +324,21 @@ module.exports = function(io){
 	    	};
 	  		if(contains2(req.user.userClubs,foundClubConversation.clubId)){
 					Message.findById(bucket[bucket.length-1])
-					.populate('messages.authorId', '_id profilePic profilePic50').exec(function(err, foundMessages){
+					.populate('messages.authorId', '_id profilePic profilePicId').exec(function(err, foundMessage){
+						var MA_50_profilePic = [];
+						for(var i=0;i<foundMessage.messages.length;i++){
+							if(environment === 'dev'){
+								MA_50_profilePic[i] = clConfig.cloudinary.url(foundMessage.messages.authorId.profilePicId, clConfig.thumb_100_obj);
+							} else if (environment === 'prod'){
+								MA_50_profilePic[i] = s3Config.thumb_100_prefix+foundMessage.messages.authorId.profilePicId;
+							}
+						}
 		        var currentUser = req.user._id;
 		        var firstName = req.user.firstName;
-		        if(foundMessages){
-		        	var foundMessageId = [foundMessages._id];
+		        if(foundMessage){
+		        	var foundMessageId = [foundMessage._id];
 						} else{var foundMessageId = null;}
-		        res.send({messageBucket: foundMessages, currentUser, foundMessageId, firstName});
+		        res.send({messageBucket: foundMessage, MA_50_profilePic, currentUser, foundMessageId, firstName});
 		      });
 	      } else{console.log('(conversations-19)Not a club member: ('+req.user._id+') '+req.user.fullName);}
 		  }

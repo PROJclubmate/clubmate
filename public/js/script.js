@@ -31,26 +31,6 @@ window.onscroll = function(){
   }
 }
 
-function postRequest(params, path="", method='post') {
-  const form = document.createElement('form');
-  form.method = method;
-  form.action = path;
-
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.type = 'hidden';
-      hiddenField.name = key;
-      hiddenField.value = params[key];
-
-      form.appendChild(hiddenField);
-    }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
-}
-
 //Sidebar dropdown
 var dropdown = document.getElementsByClassName('dropdown-sidebar');
 for (var i=0;i<dropdown.length;i++){
@@ -338,16 +318,6 @@ function recommends_add(id,name,placeholder){
   divelement.appendChild(input);
 }
 
-function clear_text(){
-	var divelement = document.getElementById('commentbox');
-	divelement.value = '';
-}
-
-function clear_subpost(){
-  var divelement = document.getElementById('subpostbox');
-  divelement.value = '';
-}
-
 function showpw(){
   var x = document.getElementById('inputPassword');
   if (x.type === 'password'){
@@ -419,11 +389,17 @@ $('#inputprofilePic').change(function(){
 	$(this).prev('label').text(truncated);
 	$('#inputprofilePicSubmitBtn').css('display','block');
 });
-$('#inputavatar').change(function(){
-	var file = $('#inputavatar')[0].files[0].name;
+$('#inputclubAvatar').change(function(){
+	var file = $('#inputclubAvatar')[0].files[0].name;
 	var truncated = file.trunc(15);
 	$(this).prev('label').text(truncated);
-  $('#inputavatarSubmitBtn').css('display','block');
+  $('#inputclubAvatarSubmitBtn').css('display','block');
+});
+$('#inputroomAvatar').change(function(){
+	var file = $('#inputroomAvatar')[0].files[0].name;
+	var truncated = file.trunc(15);
+	$(this).prev('label').text(truncated);
+  $('#inputroomAvatarSubmitBtn').css('display','block');
 });
 
 var cw = $('.subPostimg').width();
@@ -793,14 +769,15 @@ $("#myTab").on('click', '.nav-link', function(e){
   }
 });
 
-$('#dn').on("change", function(e){
+$('#dn').on('change', function(e){
   e.stopPropagation();
-
-  // Find checked or not, if checked implies dark theme
-  const darkTheme = this.checked ? "dark" : "light";
-  const csrfToken = $(this).attr("data-csrf");
-
-  postRequest({ darkTheme: darkTheme, _csrf: csrfToken }, "");
+  const darkTheme = this.checked ? 'dark' : 'light';
+  const csrfToken = $(this).attr('csrf-token');
+  const currentUserId = $(this).attr('value');
+  $(`<form action="/users/${currentUserId}/settings" method="POST">
+    <input type="hidden" name="theme" value="${darkTheme}">
+    <input type="hidden" name="_csrf" value="${csrfToken}">
+  </form>`).appendTo('body').submit();
 });
 
 if(window.innerWidth < 768){
@@ -863,26 +840,6 @@ if(location.pathname.split('/')[1] == 'chats'){
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-    $('.room-container-div').on('click', function(e){
-      if($(this).attr('id') != 'common-room-div' && $(this).attr('id') != 'create-new-div'){
-        e.stopPropagation();
-        var position = $(this).position().top;
-        var height = $(this).outerHeight();
-        var roomKey = $(this).attr('id').substring(15);
-        var target = e.target.parentElement.id;
-        if(target.substring(0, target.length - 1) != 'custom_room_btn'){
-          $(this).toggleClass('expand').css({'top': position});
-          if($(this).hasClass('expand')){
-            $(this).after('<div id="flowkeeper'+roomKey+'" class="invisible" style="height: '+height+'px; float: left;">👌</div>');
-            $('#custom_room_btn'+roomKey).removeClass('nodisplay');
-          } else{
-            $('#flowkeeper'+roomKey).remove();
-            $('#custom_room_btn'+roomKey).addClass('nodisplay');
-          }
-        }
-      }
-    });
-
   // Ask for club invite
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
     $('#memberReq-div').addClass("nodisplay");

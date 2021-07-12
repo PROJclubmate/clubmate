@@ -353,10 +353,12 @@ div.content{
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
   .college-infobtn{min-width: 56px; min-height: 56px;}
-  .college-cover.mobileblurred{filter: blur(2px);}
+  .college-cover.mobileblurred{filter: blur(3px);}
   .mail-wrap{padding-top: 0.375rem !important;}
   #club-info-mar{margin-top: 2rem !important;}
   .story-plus{padding: 1.125rem 0 !important;}
+  #not_a_clubmember_margin{margin-top: 3.125rem;}
+  .coverback.rcov.mobilepad{padding: 0 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -584,7 +586,7 @@ div.content{
   .gradient-wrap.rcov.nofill{margin-top: 50px !important;}
   .overlay3.overlay3-grad{top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
-  .discover-overlay .discovertop-left{padding: 0.6875rem !important;}
+  .discover-overlay .discovertop-left{padding: 0.6875rem 0.5625rem !important; }
   .circle-plus .circle{margin-left: 0.0625rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .check-label{transform: scale(1);}
@@ -763,7 +765,7 @@ hr{
 .form-signin{
   width: 100%;
   max-width: 18rem;
-  padding: 10px;
+  padding: 0.625rem;
   margin: 0 auto;
 }
 .fa-at, .fa-key{
@@ -1160,6 +1162,7 @@ time.calendar span{
   padding: 0.75rem 0.5rem;
   border: 0.5px solid darkgrey;
   line-height: 1.25rem;
+  margin: 0.25rem 0;
 }
 .collegename-search{
   background-color: white;
@@ -1288,6 +1291,9 @@ time.calendar span{
   border-radius: 100%;
   width: 208px;
 }
+.roomAvatar{
+  height: 100px;
+}
 .avatar{
   height: 200px;
 }
@@ -1380,25 +1386,9 @@ button.dropdown-toggle2:focus{
   color: white;
   box-shadow: 0px 2px 7px -1px rgba(0,0,0,0.4);
 }
-.dropdown-toggle2::after{
-  display: none;
-}
-input[type="file"].featuredImage{
-  display: none;
-}
-input[type="file"]#inputImage{
-  display: none;
-}
-input[type="file"]#inputImages10{
-  display: none;
-}
-input[type="file"]#inputprofilePic{
-  display: none;
-}
-input[type="file"]#inputprofilePic2{
-  display: none;
-}
-input[type="file"]#inputavatar{
+.dropdown-toggle2::after, input[type="file"].featuredImage, input[type="file"]#inputImage, 
+input[type="file"]#inputImages10, input[type="file"]#inputprofilePic, input[type="file"]#inputclubAvatar,
+input[type="file"]#inputroomAvatar{
   display: none;
 }
 .custom-file-upload{
@@ -1424,47 +1414,28 @@ input[type="file"]#inputavatar{
   border-bottom-width: 1px;
   box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5);
 }
+.custom-file-upload.noshadow{
+  box-shadow: inset 0px 1px 1px rgba(255,255,255, 0.5) !important;
+}
 #edit-account-info{padding: 0;}
 .clear_updatex:hover{
   color: red !important;
 }
 /*None elements*/
 .nodisplay{display: none !important;}
-.commentbtn{display: none;}
-.newClub_form{display: none;}
-.user_Rank{display: none;}
-.status{display: none;}
-.pushmsg{display: none;}
-.subpostbtn{display: none;}
-.clear_update{display: none;}
-.clear_update2{visibility: hidden;}
-#toggle_profile_form{display: none;}
-#account_info_form_div{display: none;}
-#personal_info_form_div{display: none;}
-#aboutme_form_div{display: none;}
-#followon_form_div{display: none;}
-#interests_form_div{display: none;}
-#recommends_form1_div{display: none;}
-#recommends_form2_div{display: none;}
-#recommends_form3_div{display: none;}
-#recommends_form4_div{display: none;}
-#recommends_form5_div{display: none;}
-#recommends_form6_div{display: none;}
-#interests_display{display: block;}
-#toggle_club_form{display: none;}
-#post_edit_form{display: none;}
-#post_edit_history{display: none;}
-#club_desc{display: none;}
-#club_rules{display: none;}
-#club_filter{display: none;}
-#user_filter{display: none;}
-#user_email{display: block;}
-#location_status{display: none;}
-#searchMember_form{display: none;}
-#hyperlink{display: none;}
-#memberReq-div{display: none;}
-#enable-notifications{display: none;}
-#client-memberRequests-div{display: none;}
+.commentbtn, .newClub_form, .user_Rank, .status, .pushmsg, .subpostbtn, .clear_update, #toggle_profile_form,
+#account_info_form_div, #personal_info_form_div, #aboutme_form_div, #followon_form_div, #interests_form_div,
+#recommends_form1_div, #recommends_form2_div, #recommends_form3_div, #recommends_form4_div, #recommends_form5_div, 
+#toggle_club_form, #post_edit_form, #post_edit_history, #club_desc, #club_rules, #club_filter, #user_filter, 
+#location_status, #searchMember_form, #hyperlink, #memberReq-div, #enable-notifications, #client-memberRequests-div{
+  display: none;
+}
+#interests_display, #user_email{
+  display: block;
+}
+.clear_update2{
+  visibility: hidden;
+}
 /*--------------*/
 .dropctn{
   width: 100% !important;
@@ -1478,9 +1449,7 @@ input[type="file"]#inputavatar{
   align-items: center;
 }
 .dropitems{
-  padding-left:0.5rem;
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
+  padding: 0.375rem 0.5rem;
   color: inherit;
   display: block;
 }
@@ -1493,8 +1462,8 @@ input[type="file"]#inputavatar{
 .dropitems2{
   transition: ease-out 0.15s;
   padding-left:1rem;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
   color: inherit;
   display: block;
 }
@@ -1509,7 +1478,7 @@ input[type="file"]#inputavatar{
   display: inline-block;
 }
 .container.drop-shadow1.drop-items{
-  padding: 0.3rem 0;
+  padding: 0.375rem 0;
 }
 .bootstrap-datetimepicker-widget{
   z-index: 2;
@@ -1711,7 +1680,8 @@ input[type="file"]#inputavatar{
   background-color: #346fa1;
 }
 .btn-primary.focus, .btn-primary:focus, 
-.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus,
+.btn-participants:focus{
   box-shadow: 0 0 0 0.2rem rgba(38,143,255,0.5);
 }
 .btn-primary.disabled, .btn-primary:disabled{
@@ -1720,7 +1690,6 @@ input[type="file"]#inputavatar{
 }
 .btn-info{
   border-color: #ebf1f9;
-  border-style: dashed;
   background-color: white;
   color: #407cc4;
   font-weight: 500;
@@ -1811,6 +1780,20 @@ input[type="file"]#inputavatar{
   margin: -0.5rem 0;
   border-bottom-width: 1px;
   text-transform: uppercase;
+  border-style: dashed;
+}
+.btn-participants{
+  padding: 0.5rem;
+  background-color: white;
+  color: #343a40;
+  border: none;
+  border-radius: 50%;
+  line-height: 1.25rem;
+  box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.5);
+  transition: 0.15s ease;
+}
+.btn-participants:hover{
+  background-color: whitesmoke;
 }
 /*--------------------*/
 .drop-shadow1{
@@ -1841,10 +1824,7 @@ a{color: #3384ff;}
 .black{color: #343a40;}
 .pitchblack{color: #262626;}
 a.green:hover{color: #007e4b;}
-a.grey:hover{color: black;}
-a.darkgrey:hover{color: black;}
-a.lightgrey:hover{color: black;}
-a.black:hover{color: black;}
+a.grey:hover, a.darkgrey:hover, a.lightgrey:hover, a.black:hover{color: black;}
 a.red:hover{color: #d6312e;}
 .blackcolor{
   color: black !important;
@@ -2208,7 +2188,7 @@ div.carousel-img{
   transition: 0.15s ease;
   opacity: 0.25;
   font-size: 0.875rem;
-  padding: 10px;
+  padding: 0.625rem;
   text-align: center;
   cursor: pointer;
   border-radius: 0 0 0 0.5rem;
@@ -2222,7 +2202,7 @@ div.carousel-img{
   width: 100%;
   transition: 0.15s ease;
   font-size: 0.875rem;
-  padding: 10px;
+  padding: 0.625rem;
   text-align: center;
   cursor: pointer;
   border-bottom-width: 0.5px;
@@ -2266,30 +2246,15 @@ div.carousel-img{
   transition: 0.15s ease;
   opacity: 0;
   font-size: 0.875rem;
-  padding: 10px;
+  padding: 2.5rem 0.625rem;
   text-align: center;
   cursor: pointer;
 }
-.container:hover .overlay{
+.container:hover .overlay, .container:hover .overlay4{
   opacity: 1;
 }
 .carousel:hover .overlay3{
   opacity: 0.85;
-}
-.container:hover .overlay4{
-  opacity: 1;
-}
-/*Padding and margins*/
-.nothing{
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-.nopadding{
-  padding: 0;
-}
-.nomargin{
-  margin: 0;
 }
 .ellipsis-sm{
   padding: 0.25rem 0.25rem;
@@ -2458,7 +2423,7 @@ button.heartbtn:hover{
 }
 #postbutton{
   border-radius: 0.25rem 0 0 0.25rem;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6), inset 0px 1px 1px rgba(255,255,255,0.125);
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6), inset 0px 1px 1px rgba(255,255,255,0.15);
 }
 #postbutton:focus{
   box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
@@ -2471,7 +2436,7 @@ select{
   color: #19ae69;
   border-radius: 0 0.25rem 0.25rem 0;
   height: 32px;
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.3);
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
   cursor: pointer;
 }
 select:hover{
@@ -2491,14 +2456,14 @@ select.select1{
   font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.25rem;
-  height: 27px;
+  height: 28px;
 }
 .select3{
   width: 136px;
   font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.25rem;
-  height: 27px;
+  height: 28px;
 }
 .select4{
   -webkit-appearance: none;
@@ -2507,7 +2472,7 @@ select.select1{
   font-size: 0.875rem;
   padding: 0 4px;
   border-radius: 0.25rem;
-  height: 27px;
+  height: 28px;
 }
 .card.tabcard{
   border-radius: 0.25rem 0.25rem 0 0;
@@ -2967,8 +2932,6 @@ input.shadow:-webkit-autofill:focus{
   height: 50px;
 }
 .modal-confirm .icon-box i{
-  color: #f15e5e;
-  font-size: 48px;
   display: inline-block;
   margin-top: 13px;
 }
@@ -3798,10 +3761,6 @@ input.shadow:-webkit-autofill:focus{
   width: 50%;
   background-color: white;
 }
-.room-container-div.expand{
-  width: 100%;
-  position: absolute;
-}
 .room-container{
   color: #7a7b7c;
   padding: 2rem 3rem 2rem 3rem;
@@ -3813,17 +3772,9 @@ input.shadow:-webkit-autofill:focus{
 .room-container:hover{
   color: #343a40;
 }
-.custom_room_btn{
-  position: absolute;
-  width: 50%;
-  text-align: right;
-  right: 0.5rem;
-  top: 0.5rem;
-  padding: 2rem 3rem 2rem 3rem;
-}
-.custom_room_btn.odd{
-  text-align: left;
-  left: 0.5rem;
+#create-new-room-container{
+  border-color: darkgrey;
+  border-style: dashed;
 }
 .chats_chevronimg{
   width: 16px;
@@ -3846,4 +3797,7 @@ input.shadow:-webkit-autofill:focus{
 }
 .flipped-verticaly{
   transform: scaleY(-1);
+}
+#not_in_room{
+  opacity: 0.35;
 }

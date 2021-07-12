@@ -1542,7 +1542,7 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       Club.find({_id: {$in: req.user.followingClubIds}})
       .select({_id: 1, name: 1}).exec(function(err, followingClubs){
-        res.json({followingClubs, cdn_prefix});
+        res.json({followingClubs, csrfToken: res.locals.csrfToken, cdn_prefix});
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       });
     }
@@ -1554,13 +1554,13 @@ module.exports = {
 
   indexSettingsPagePost(req, res, next){
     // 1. Dark theme toggler
-    if(req.body.darkTheme){
-      const toSet = (req.body.darkTheme === "dark") ? true : false;
+    if(req.body.theme){
+      const toSet = (req.body.theme === "dark") ? true : false;
       User.updateOne({_id: req.user._id}, { darkTheme: toSet }, function(err){
         if(err){
           return res.redirect('back');
         } else{
-          return res.redirect('back');
+          return res.redirect('/users/'+req.user._id+'/settings');
         }
       });
     }

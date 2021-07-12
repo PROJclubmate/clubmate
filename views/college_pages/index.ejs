@@ -3,7 +3,7 @@
 <div class="row no-gutters">
 	<div id="college-scroll" class="col-lg-9 card chatlist-box scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
 		<div class="college-infodiv desktopNone">
-			<div class="d-flex justify-content-around my-2 pb-2 pitchblack fullwidth">
+			<div class="d-flex justify-content-around my-2 py-1 pitchblack fullwidth">
 				<div class="d-flex flex-column px-1 my-2 college-infobtn">
 					<div class="text-xxxl my-auto" style="font-size: 1.75rem !important;">
 						<i class="far fa-newspaper"></i>
@@ -35,7 +35,7 @@
 				<img class="cover college-cover mobileblurred" src="<%= college_page.cover %>">
 			</div>
 		<% } %>
-		<div class="border-light">
+		<div class="border-light" style="z-index: 1;">
 			<div class="college valign collegediv-name">
 				<div class="boldtext">
 					<div class="collegename d-flex">
@@ -68,7 +68,7 @@
 				<div class="valign">
 					<div class="d-flex flex-row">
 						<div class="mobilebold lightgrey text-md mr-1">
-							<span><span class="boldtext text-sm"><%= college_page.clubCount %></span><span class="nothing text-sm"> clubs</span></span>
+							<span><span class="boldtext text-sm"><%= college_page.clubCount %></span><span class="m-0 p-0 text-sm"> clubs</span></span>
 						</div>
 						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
@@ -200,9 +200,9 @@
 									<em class="mobiletext2">
 										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
 											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
-												<span class="lightgrey">RM</span>
+												<span class="lightgrey d-inline-flex">R<span class="mobileNone">OO</span>M</span>
 											<% } else{ %>
-												<span class="lightgrey">RMS</span>
+												<span class="lightgrey d-inline-flex">R<span class="mobileNone">OO</span>MS</span>
 											<% } %>
 										</span>
 									</em>
@@ -230,7 +230,7 @@
 	</div>
 	<div class="col-md-4 col-lg-3 px-2">
 		<div class="mobileNone">
-			<div class="d-flex flex-column mt-3 darkgrey">
+			<div class="d-flex flex-column mt-3 py-1 darkgrey">
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
 					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">
 						<i class="far fa-newspaper"></i>

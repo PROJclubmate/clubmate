@@ -182,8 +182,8 @@ userSchema.plugin(passportLocalMongoose,{
   usernameUnique: false,
   errorMessages: {
     IncorrectPasswordError: 'Password incorrect',
-    IncorrectUsernameError: 'There is either no account registered with that email or the account may not have been verified',
-    UserExistsError: 'A user with the given email is already registered'
+    IncorrectUsernameError: 'If registered already, Please verify your account through the link sent to your email id',
+    UserExistsError: 'A user with the given email already exists. Not you? Try resetting your password.'
   },
   findByUsername: function(model, queryParameters){
     // Add additional query parameter - AND condition - isVerified: true

@@ -1,95 +1,99 @@
-<div class="row no-gutters mt-2 lineheight2">
+<div class="mt-2 lineheight2">
   <% for(var i=0;i<users.length;i++){ %>
-    <div class="col-md-1 col-2 pt-2 pb-1 mb-auto">
-      <a href="/users/<%= users[i].id._id %>">
-        <% if(users[i].id.userKeys.sex == 'Male'){ %>
-          <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.jpg' %>">
-        <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
-          <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.jpg' %>">
-        <% } %>
-      </a>
-    </div>
-    <div class="col-md-8 col-8 my-auto pt-2 pb-1">
-      <span>
-        <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
-          <strong><%= users[i].id.fullName %></strong>
-        </a>
-      </span>
-      <span class="my-auto lightgrey text-xs mobiletext4">
-        <%= users[i].userStatus %>
-      </span>
-    </div>
-    <div class="col-md-3 col-2 my-auto text-right">
-      <div class="d-inline-flex">
-        <span class="mobileNone">
-          <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
-        </span>
-        <span class="mobileShow">
-          <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
-        </span>
-      </div>
-      <span id="user_Rank<%= users[i].id._id %>" class="user_Rank nopad">
-        <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
-          <label for="userRank" class="sr-only">User rank</label>
-          <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
-            <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
-            <% if(rank == 0){ %>
-              <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/users/<%= users[i].id._id %>">
+            <% if(users[i].id.userKeys.sex == 'Male'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.jpg' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.jpg' %>">
             <% } %>
-            <option value="1,<%= users[i].id._id %>,<%= club._id %>" data-descr="Administrator">Admin</option>
-            <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Moderator">Mod.</option>
-            <option value="3,<%= users[i].id._id %>,<%= club._id %>" data-descr="Sr. Member">Sr. M</option>
-            <option value="4,<%= users[i].id._id %>,<%= club._id %>" data-descr="Jr. Member">Jr. M</option>
-          </select>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </form>
-      </span>
-      <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
-        <span class="dropdown">
-          <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm nopoint" type="button"><i></i></button>
-        </span>
-      <% } else{ %>
-        <span class="dropdown nopad">
-          <% if(0 <= rank && rank <= 1){ %>
-            <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-          <% } %>
-          <% if(users[i].userRank != 0){ %>
-            <ul class="dropdown-menu dropdown-menu-right dropbox">
-              <div class="container drop-shadow1">
-                <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
-                <hr>
-                <li>
-                  <button class="dropitems link-button red text-sm" href="#removeClubMemberModal<%= users[i].id._id %><%= club._id %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
-                </li>
-              </div>
-            </ul>
-          <% } %>
-        </span>
-        <!-- Modal HTML -->
-        <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
-          <div class="modal-dialog modal-confirm">
-            <div class="modal-content">
-              <div class="d-flex">
-                <span class="icon-box">
-                  <i class="fas fa-exclamation-triangle text-xxxl"></i>
-                </span>              
-                <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div>
-                <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
-              </div>
-              <div class="my-2">
-                <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
-                  <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                </form>
+          </a>
+        </div>
+        <div class="my-auto mx-3 py-2">
+          <span>
+            <a href="/users/<%= users[i].id._id %>" class="grey mobiletext">
+              <strong><%= users[i].id.fullName %></strong>
+            </a>
+          </span>
+          <span class="my-auto lightgrey text-xs mobiletext4">
+            <%= users[i].userStatus %>
+          </span>
+        </div>
+      </div>
+      <div class="my-auto text-right d-flex">
+        <div id="user_Rank<%= users[i].id._id %>" class="user_Rank mr-2">
+          <form action="/status-rank?_method=PUT" method="POST" class="form-inline">
+            <label for="userRank" class="sr-only">User rank</label>
+            <select id="userRank<%= users[i].id._id %>" name="userRank" class="shortened-select select4" data-toggle="tooltip" title="User rank" onchange="this.form.submit()">
+              <option value="-1" data-descr="" disabled selected>&#x25BC;</option>
+              <% if(rank == 0){ %>
+                <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
+              <% } %>
+              <option value="1,<%= users[i].id._id %>,<%= club._id %>" data-descr="Administrator">Admin</option>
+              <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Moderator">Mod.</option>
+              <option value="3,<%= users[i].id._id %>,<%= club._id %>" data-descr="Sr. Member">Sr. M</option>
+              <option value="4,<%= users[i].id._id %>,<%= club._id %>" data-descr="Jr. Member">Jr. M</option>
+            </select>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </div>
+        <div class="my-auto">
+          <span class="mobileNone">
+            <em class="darkgrey text-sm"><%= rankTitle(users[i].userRank) %></em>
+          </span>
+          <span class="mobileShow">
+            <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
+          </span>
+        </div>
+        <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
+          <div class="dropdown my-auto">
+            <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm nopoint" type="button"><i></i></button>
+          </div>
+        <% } else{ %>
+          <div class="dropdown my-auto">
+            <% if(0 <= rank && rank <= 1){ %>
+              <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+            <% } %>
+            <% if(users[i].userRank != 0){ %>
+              <ul class="dropdown-menu dropdown-menu-right dropbox">
+                <div class="container drop-shadow1">
+                  <li onclick="toggle_inline_display('user_Rank<%= users[i].id._id %>');"><a class="dropitems text-sm" href="#!">Set user rank</a></li>
+                  <hr>
+                  <li>
+                    <button class="dropitems link-button red text-sm" href="#removeClubMemberModal<%= users[i].id._id %><%= club._id %>" data-toggle="modal">Remove <%= users[i].id.firstName %></button>
+                  </li>
+                </div>
+              </ul>
+            <% } %>
+          </div>
+          <!-- Modal HTML -->
+          <div id="removeClubMemberModal<%= users[i].id._id %><%= club._id %>" class="fixed-padding modal fade">
+            <div class="modal-dialog modal-confirm">
+              <div class="modal-content">
+                <div class="d-flex grey">
+                  <span class="icon-box">
+                    <i class="fas fa-exclamation text-xxxl"></i>
+                  </span>              
+                  <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div>
+                  <p>Do you really want to remove <%= users[i].id.firstName %>? This cannot be undone.</p>
+                </div>
+                <div class="my-2">
+                  <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+                  <form action="/status-rank?_method=PUT" method="POST" class="delete-form inline text-sm">
+                    <button type="submit" name="leave" value="<%= users[i].id._id %>,<%= club._id %>" class="btn btn-danger btn-sm ml-1">Remove</button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      <% } %>
+        <% } %>
+      </div>
     </div>
   <% } %>
 </div>
