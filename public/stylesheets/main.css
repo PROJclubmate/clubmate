@@ -54,12 +54,12 @@ div.content{
 @media screen and (min-width: 1200px){
   .chatbox-loadingarea{margin: 0 0 0 77.25%; left: 0; right: 0;}
   #side-home{height: 40px;}
-  .story-container{width: 45vw;}
+  .story-alt-container{width: 45vw;}
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
-  .name{color: white !important; background-color: #373737; margin-left: -0.25rem; padding-left: 0.5rem !important;}
+  .navname{color: white !important; background-color: #373737; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
   .navback{background-color: rgba(44,44,44,0.95);}
   .desktopNone{display: none !important;}
@@ -102,8 +102,8 @@ div.content{
   .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
   .postimgpad{padding: 0 0.5rem;}
   .topicimgpad{padding-left: 0.5rem;}
-  .story, .story-loader{height: 76px !important; width: 76px !important;}
-  .story-label2{width: 76px !important;}
+  .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
+  .story-alt-label2{width: 76px !important;}
   #messages.messages2{height: calc(100vh - 1.5rem - 40px - 31px - 42px);}
   #messages.messages2.msg_dec2{height: calc(100vh - 1.5rem - 40px - 31px - 42px - 35px);}
   #messages.messages3{height: calc(100vh - 1.5rem - 40px - 42px);}
@@ -153,7 +153,7 @@ div.content{
     z-index: 8; box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);}
   .navbar{padding: 1px 10px !important;}
   .navback{background-color: #353535 !important;}
-  .name{background-color: unset !important;}
+  .navname{background-color: unset !important;}
   #sidebar-dropbox{position: fixed; top: 42px; left: 96px; border: 3px solid #f1f1f1;
     box-shadow: 4px 11px 5px -6px rgba(0,0,0,0.2);}
   a.hr2{border: none;}
@@ -171,12 +171,11 @@ div.content{
   a.side-drop-elem{padding: 10px 11px; min-width: 12rem;}
   a.hr2.active{padding-top: 5.5px; padding-bottom: 5.5px;}
   .btnxxs{padding: 0 4px !important;}
-  .story-container.mobilepad{padding: 0 0.5rem !important;}
 }
 /* iPad Pro */
 @media screen and (min-width: 992px) and (max-width: 1200px){
   .chatbox-loadingarea{margin: 0 0 0 75%; left: 0; right: 0;}
-  .story-container{width: 50vw;}
+  .story-alt-container{width: 50vw;}
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
@@ -191,7 +190,7 @@ div.content{
   .desktopNone.tabletShow{display: block !important;}
   .discover-icon{font-size: 1.75rem;}
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
-  .story-container{width: 65vw;}
+  .story-alt-container{width: 65vw;}
   .lb-absolute{position:  absolute; bottom: 0.25rem; left: 0.25rem;}
   #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
   .navbar{height: 42px;}
@@ -212,7 +211,7 @@ div.content{
     padding: 0.1875rem 0.5rem !important; border-radius: 1rem 1rem 0.25rem 0.25rem;}
   .navbar-toggler:hover, .navbar-toggler:focus{border-color: #eaecf0 !important; outline: none; background-color: white;}
   .navback{background-image: linear-gradient(white, #eaecf0);}
-  .name{color: #262223 !important; background-color: unset !important;}
+  .navname{color: #262223 !important; background-color: unset !important;}
   #navbar.stuck{transform: translateY(0px) !important;}
   .discover-icon{font-size: 1.75rem;}
   .badge-mobile{background: whitesmoke !important; color: #262626 !important; top: -0.25rem !important;
@@ -273,7 +272,7 @@ div.content{
   .helpmar{margin-top: 6.5rem !important;}
   button.vote{font-size: 1.5rem !important;}
   .nocaretmar{margin-left: 0.5rem;}
-  .story-container{width: 100vw;}
+  .story-alt-container{width: 100vw;}
   .collapsing:not(#navbarCollapse){transition: none !important; display: none !important;}
   .vote-subpost{-webkit-text-stroke: 0.5px #fafafa !important;}
   .chatlist-box{height: calc(100vh - 1rem - 40px) !important;}
@@ -356,20 +355,24 @@ div.content{
   .college-cover.mobileblurred{filter: blur(3px);}
   .mail-wrap{padding-top: 0.375rem !important;}
   #club-info-mar{margin-top: 2rem !important;}
-  .story-plus{padding: 1.125rem 0 !important;}
+  .story-alt-plus{padding: 1.125rem 0 !important;}
   #not_a_clubmember_margin{margin-top: 3.125rem;}
   .coverback.rcov.mobilepad{padding: 0 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
-  .name{font-size: 1.625rem !important; padding: 0.1565rem 0.5rem 0.1565rem 0.325rem !important;}
-  .sidebar-back{height: 50px !important;}
+  .navname{font-size: 1.625rem !important; padding: 0.1565rem 0.5rem 0.1565rem 0.325rem !important;}
   .navbar{padding: 3px 10px !important;}
-  #sidebar-dropbox{top: 50px; left: 91px;}
-  .sidebar a{padding: 14px 13.25px; height: 50px !important;}
-  a.side-drop-elem{padding: 14px 13.25px;}
+  .sidebar-back{height: 50px !important;}
+  .sidebar{width: 100vw;}
+  .sidebar a{width: 25%; padding: 14px 14px; height: 50px !important;}
+  #sidebar-dropbox{top: 50px; left: 24%; right: 24%; overflow-x: hidden;}
+  a.side-drop-elem{padding: 14px 14px; height: unset !important; min-height: 50px;}
+  #side-home{width: 24%;}
+  #side-clubs{width: 26%;}
+  #side-clubs{padding-left: 0.25rem; padding-right: 0.25rem;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
-  .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem;}
+  .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem; font-weight: 300;}
   .friends-dp{height: 6.9065rem !important;}
   button.modvote{font-size: 2.625rem !important;}
   .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 3rem !important; margin: 0 -0.25rem !important;}
@@ -388,9 +391,9 @@ div.content{
   .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px !important; font-size: 1.125rem !important;}
   .nav-link.requests{font-size: 1.25rem !important;}
-  .story, .story-loader{height: 76px !important; width: 76px !important;}
-  .story-label{width: 76px !important;}
-  .story-plus{padding: 1.5rem 0 !important;}
+  .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
+  .story-alt-label{width: 76px !important;}
+  .story-alt-plus{padding: 1.5rem 0 !important;}
   .navdp{height: 40px !important; width: 40px !important;}
   .collegedp{height: 62px !important; width: 62px !important;}
   button.vote{font-size: 1.625rem !important;}
@@ -441,24 +444,19 @@ div.content{
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
+  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .friends-dp{height: 5.875rem !important;}
   .navbar-toggler{font-size: 1.375rem !important;}
   #inbox_mobile{font-size: 1.8125rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
-  #sidebar-dropbox{top: 50px; left: 91px;}
-  .sidebar a{padding: 14px 13px;}
-  a.side-drop-elem{padding: 14px 13px;}
-  a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .friends-dp{height: 5.8445rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Redmi Note 7 => 393px*/
 @media screen and (max-width: 394px){
-  #sidebar-dropbox{top: 50px; left: 86px;}
-  .sidebar a{padding: 14px 11.25px;}
-  a.side-drop-elem{padding: 14px 11.25px;}
+  .sidebar a, a.side-drop-elem{padding: 14px 12.25px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .sidebar-icon{font-size: 1.375rem;}
   .friends-dp{height: 5.5475rem !important;}
@@ -468,9 +466,7 @@ div.content{
 }
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
-  #sidebar-dropbox{top: 50px; left: 84px;}
-  .sidebar a{padding: 14px 10px;}
-  a.side-drop-elem{padding: 14px 10px;}
+  .sidebar a, a.side-drop-elem{padding: 14px 11px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .friends-dp{height: 5.4065rem !important;}
   .mobiletext{font-size: 0.9375rem !important;}
@@ -488,14 +484,12 @@ div.content{
   .lineheight3{line-height: 0.8125rem !important;}
   .chat-discover{font-size: 1.0625rem;}
   h3{font-size: 1.8125rem;}
-  .story{border-radius: 1.625rem !important;}
+  .story-alt{border-radius: 1.625rem !important;}
 }
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
   .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
-  #sidebar-dropbox{top: 50px; left: 82px;}
-  .sidebar a{padding: 14px 9.5px;}
-  a.side-drop-elem{padding: 14px 9.5px;}
+  .sidebar a, a.side-drop-elem{padding: 14px 10.5px;}
   a.hr2.active{padding-top: 12.5px; padding-bottom: 12.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
@@ -507,12 +501,12 @@ div.content{
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
 @media screen and (max-width: 361px){
-  .name{font-size: 1.375rem !important; padding: 0.2195rem 0.55rem 0.2195rem 0.25rem !important;}
+  .navname{font-size: 1.375rem !important; padding: 0.2195rem 0.55rem 0.2195rem 0.25rem !important;}
   .sidebar-back{height: 42px !important;}
   .navbar{padding: 1px 10px !important;}
-  #sidebar-dropbox{top: 42px; left: 78px;}
-  .sidebar a{padding: 10.5px 9px; height: 42px !important;}
-  a.side-drop-elem{padding: 10.5px 9px;}
+  #sidebar-dropbox{top: 42px;}
+  .sidebar a{padding: 10.5px 10px; height: 42px !important;}
+  a.side-drop-elem{padding: 10.5px 10px; height: unset !important; min-height: 42px;}
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.6875rem !important;}
   .mobile-cover{height: 160px !important;}
@@ -548,9 +542,9 @@ div.content{
   select, .custom-file-upload{height: 32px !important; padding: 0.25rem 0.5rem !important;}
   #images-10{height: 35px !important; margin-top: 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
-  .story, .story-loader{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
-  .story-label{width: 66px !important;}
-  .story-plus{padding: 1.1875rem 0 !important;}
+  .story-alt, .story-alt-loader{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
+  .story-alt-label{width: 66px !important;}
+  .story-alt-plus{padding: 1.1875rem 0 !important;}
   .navdp{height: 36px !important; width: 36px !important;}
   .collegedp{height: 54px !important; width: 54px !important;}
   button.vote{font-size: 1.5rem !important;}
@@ -598,16 +592,15 @@ div.content{
 }
 /*iPhone 5/SE => 320px*/
 @media screen and (max-width: 321px){
-  #sidebar-dropbox{top: 38px; left: 70px;}
-  .sidebar a{padding: 8.5px 4px;}
-  a.side-drop-elem{padding: 8.5px 4px;}
+  #sidebar-dropbox{top: 38px;}
+  .sidebar a, a.side-drop-elem{padding: 8.5px 4px;}
   .discover-icon{font-size: 1.5rem;}
   .friends-dp{height: 4.4065rem !important;}
 }
 /*----------------------------------------------------------------*/
 .fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
 .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke: 0.75px #fafafa;}
-.fas.fa-thumbs-up.greencolor{-webkit-text-stroke: 1px #14b514;}
+.fas.fa-thumbs-up.greencolor{-webkit-text-stroke: 1px #5cb85c;}
 .fab.fa-gratipay{-webkit-text-stroke: 0.25px grey;}
 .vote-subpost2{-webkit-text-stroke-width: 0.5px !important;}
 .fas.fa-heart.redcolor2{-webkit-text-stroke: 1px #e7303d;}
@@ -1095,7 +1088,7 @@ a > .collegedp.chatsdp.mr-0.active{
   padding: 0;
 }
 #thisweek, #alltime{
-  height: 200px;
+  height: 176px;
   overflow-y: scroll;
   overflow-y: overlay;
 }
@@ -1323,7 +1316,7 @@ span.nopad{
   padding: 0.5rem 0.85rem;
   z-index: 6;
 }
-.name{
+.navname{
   font-family: 'Lato', sans-serif;
   font-size: 1.375rem;
   padding: 0.2195rem 0.55rem 0.2195rem 0.25rem;
@@ -1426,7 +1419,7 @@ input[type="file"]#inputroomAvatar{
 .commentbtn, .newClub_form, .user_Rank, .status, .pushmsg, .subpostbtn, .clear_update, #toggle_profile_form,
 #account_info_form_div, #personal_info_form_div, #aboutme_form_div, #followon_form_div, #interests_form_div,
 #recommends_form1_div, #recommends_form2_div, #recommends_form3_div, #recommends_form4_div, #recommends_form5_div, 
-#toggle_club_form, #post_edit_form, #post_edit_history, #club_desc, #club_rules, #club_filter, #user_filter, 
+#toggle_club_form, #post_edit_form, #post_edit_history-alt, #club_desc, #club_rules, #club_filter, #user_filter, 
 #location_status, #searchMember_form, #hyperlink, #memberReq-div, #enable-notifications, #client-memberRequests-div{
   display: none;
 }
@@ -2416,10 +2409,10 @@ button.downVotebtn:hover .fas.fa-caret-down{
   -webkit-text-stroke: 1.5px #f77f00;
 }
 button.heartbtn:hover{
-  color: #cc0000;
+  color: #bb2020;
 }
 .fa-heart.grey:hover{
-  color: #cc0000;
+  color: #bb2020;
 }
 #postbutton{
   border-radius: 0.25rem 0 0 0.25rem;
@@ -2951,26 +2944,26 @@ input.shadow:-webkit-autofill:focus{
 .memberRequest_form{
   box-shadow: inset 0px 2px 2px -2px rgb(0, 0, 0, 0.35);
 }
-.story{
+.story-alt{
   border-radius: 1.75rem;
   border: 2px solid silver;
   height: 65px;
   width: 65px;
   cursor: pointer;
 }
-.story-plus{
+.story-alt-plus{
   color: silver;
   padding: 1.4375rem 0;
 }
-.story-label{
+.story-alt-label{
   width: 65px;
   text-align: center;
   width: 100%;
 }
-.story-container2{
+.story-alt-container2{
   overflow: hidden;
 }
-.story-container2:hover{
+.story-alt-container2:hover{
   overflow-x: scroll;
 }
 .topnotch-left:before{
@@ -3290,7 +3283,8 @@ input.shadow:-webkit-autofill:focus{
   z-index: 1;
   left: 0;
   top: 0;
-  background-color: rgba(0,0,0,0.85);
+  background-color: rgba(0,0,0,0.75);
+  backdrop-filter: blur(3px);
   overflow: hidden;
   display: none;
   margin: 0 0.25rem 0.5rem 0.25rem;

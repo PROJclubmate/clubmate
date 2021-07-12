@@ -57,7 +57,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .navbar-light .navbar-nav .nav-link{
     color: var(--color-white-100);
   }
-  .name{
+  .navname{
     background-color: var(--color-dark-850);
     color: var(--color-white-100) !important;
   }
@@ -108,7 +108,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
-  .name{
+  .navname{
     color: var(--color-white-100) !important;
   }
   .navback{
@@ -200,8 +200,16 @@ button.gb.gb8:focus{
   border-color: var(--color-dark-600);
 }
 .btn.btn-success{
+  background-color: #2db582 !important;
+  border-color: #2db582 !important;
   border-bottom-width: 2px;
   color: white;
+}
+#postbutton{
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4), inset 0px 1px 1px rgba(255,255,255,0.15);
+}
+select{
+  border-color: #2db582;
 }
 .btn-info{
   background-color: var(--color-dark-800);
@@ -270,6 +278,9 @@ select:focus-visible{
 .darkgrey{
   color: var(--color-white-300) !important;
 }
+.lightgrey2{
+  color: #646667 !important;
+}
 a{
   color: var(--color-light-blue);
 }
@@ -305,6 +316,9 @@ a.black:hover{
   background-color: var(--color-dark-900) !important;
   color: var(--color-white-100);
   box-shadow: none !important;
+}
+.form-control.shadow:focus{
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.35) !important;
 }
 textarea#club-message.form-control.shadow , textarea#user-message.form-control.shadow{
   background-color: var(--color-dark-850) !important;
@@ -514,7 +528,8 @@ button.upVotebtn:hover, button.downVotebtn:hover{
   -webkit-text-stroke: 1.3125px var(--color-white-200);
 }
 .far.fa-thumbs-up, .far.fa-heart{
-  -webkit-text-stroke: 0.75px var(--color-dark-800);
+  -webkit-text-stroke-width: 0.75px !important;
+  -webkit-text-stroke-color: var(--color-dark-800);
 }
 .vote-subpost.fa-thumbs-up, .vote-subpost.fa-thumbs-down{
   -webkit-text-stroke: 0.25px var(--color-dark-800) !important;
@@ -522,6 +537,9 @@ button.upVotebtn:hover, button.downVotebtn:hover{
 .fas.fa-thumbs-down{
   color: black !important;
   -webkit-text-stroke-color: lightslategrey;
+}
+.greencolor{
+  color: #2db582 !important;
 }
 .greencolor3{
   color: var(--color-white-200) !important;
@@ -531,6 +549,9 @@ button.upVotebtn:hover, button.downVotebtn:hover{
 }
 .redcolor{
   color: #bd3a44 !important;
+}
+.redcolor2{
+  color: #d25c61 !important;
 }
 .redcolor3{
   color: var(--color-white-300) !important;
@@ -607,6 +628,8 @@ div.carousel-img{
   border-color: var(--color-dark-800) !important;
   background-color: var(--color-dark-800);
   box-shadow: 0px 1px 3px -1px rgb(0, 0, 0, 0.75);
+}.btn.btncollapse#dropchat{
+  box-shadow: 0px 1px 3px -1px rgb(0, 0, 0, 0.35);
 }
 .btncollapse-content{
   background-color: var(--color-dark-800);
@@ -825,4 +848,13 @@ time.calendar{
 }
 #not_in_room{
   opacity: 0.25;
+}
+.info > .name{
+  color: var(--color-white-300);
+}
+.stories.facesnap .story > .item-link > .item-preview {
+  background: #33ca91;
+}
+.stories.facesnap .story > .item-link > .item-preview img{
+  border-color: var(--color-dark-800) !important;
 }

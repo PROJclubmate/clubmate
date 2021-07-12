@@ -49,11 +49,11 @@
       </button>
       <div>
         <span id="brandname">
-          <a href="/" class="navbar-brand name mobileNone">
+          <a href="/" class="navbar-brand navname mobileNone">
             <em>clubmate</em>
           </a>
           <% if(locals.college_page){ %>
-            <a href="/users/<%= currentUser.id %>" class="navbar-brand name desktopNoneFlex">
+            <a href="/users/<%= currentUser.id %>" class="navbar-brand navname desktopNoneFlex">
               <span class="valign lineheight">
                 <span>
                   <% if(currentUser.userKeys.sex == 'Male'){ %>
@@ -74,7 +74,7 @@
               </span>
             </a>
           <% } else{ %>
-            <a href="/" class="navbar-brand name desktopNone">
+            <a href="/" class="navbar-brand navname desktopNone">
               <em>clubmate</em>
             </a>
           <% } %>

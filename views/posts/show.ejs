@@ -254,13 +254,11 @@
                 <div class="d-flex flex-column">
                   <% if(currentUser){ %>
                     <% if(hasVote == 3){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3 mx-auto mt-2" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
                       <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
                     <% } else if(hasVote == 0){ %>
-                      <div id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm mx-auto mt-2" style="margin-bottom: -0.25rem;"><%= post.heartCount %></div>
                       <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                      <% } %>
-                        <div class="invisible" id="modVisibility<%= post._id %>"></div>
+                    <% } %>
+                      <div class="invisible" id="modVisibility<%= post._id %>"></div>
                   <% } else{ %>
                     <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
                   <% } %>
@@ -274,7 +272,6 @@
     </div>
     <!-- EDIT POST Display: none -->
     <div id="post_edit_history">
-      <hr>
       <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
       <div class="card-body3 greyback2">
         <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>

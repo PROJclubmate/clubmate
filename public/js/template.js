@@ -2309,22 +2309,39 @@ function heart_posts_template(response){
             <div class="mx-2 mb-auto d-flex flex-column">
               <form class="d-flex flex-column post-modvote-form" action="/posts/<%= postsH[l]._id %>/modvote" method="POST">
                 <% if(hasModVoteH[l] == 1){%>
-                  <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
-                  <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                  <button id="upVote-btnH<%= postsH[l]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                  <span id="modVote-countH<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <button id="downVote-btnH<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVoteH[l] == -1){ %>
-                  <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
-                  <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                  <button id="upVote-btnH<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                  <span id="modVote-countH<%= postsH[l]._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <button id="downVote-btnH<%= postsH[l]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } else if(hasModVoteH[l] == 0){ %>
-                  <button id="upVote-btn<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                  <span id="modVote-count<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
-                  <button id="downVote-btn<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                  <button id="upVote-btnH<%= postsH[l]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                  <span id="modVote-countH<%= postsH[l]._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= postsH[l].upVoteCount - postsH[l].downVoteCount %></span>
+                  <button id="downVote-btnH<%= postsH[l]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
                 <% } %>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
           </div>
+        </div>
+        <div>
+          <form action="/posts/<%= postsH[l]._id %>/vote" method="POST">
+            <div class="d-flex flex-column">
+              <% if(currentUser){ %>
+                <% if(hasVoteH[l] == 3){ %>
+                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
+                <% } else if(hasVoteH[l] == 0){ %>
+                  <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+                <% } %>
+                  <div class="invisible" id="modVisibility<%= postsH[l]._id %>"></div>
+              <% } else{ %>
+                <div class="mx-auto pb-1"><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+              <% } %>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
         </div>
       </div>
     </div>
