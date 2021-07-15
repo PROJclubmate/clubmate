@@ -5,14 +5,14 @@ const express      = require('express'),
   Conversation     = require('../models/conversation'),
   ClubConversation = require('../models/club-conversation'),
   Message          = require('../models/message'),
-	{environment}    = require('../config/env_switch'),
   clConfig         = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
+	logger           = require('../logger'),
   mongoose         = require('mongoose');
 
-	if(environment === 'dev'){
+	if(process.env.ENVIRONMENT === 'dev'){
 		var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-	} else if (environment === 'prod'){
+	} else if (process.env.ENVIRONMENT === 'prod'){
 		var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 	}
 	
@@ -26,7 +26,7 @@ module.exports = function(io){
 		  .populate({path: 'messageBuckets', options: {sort: {_id: -1}, limit: 2}})
 		  .exec(function(err, foundConversation){ 
 		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-1)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-1)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 	      if(contains(foundConversation.participants,req.user._id)){
@@ -35,7 +35,7 @@ module.exports = function(io){
 		      });
 	        var currentUser = req.user._id;
 	        res.send({messages: foundConversation, currentUser, foundMessageIds});
-	      } else{console.log('(conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{logger.warn(req.user._id+' : (conversations-2)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  });
 		}
@@ -51,7 +51,7 @@ module.exports = function(io){
 		  Conversation.findOne({_id: req.params.conversationId})
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-3)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-3)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 	    	var bucket = foundConversation.messageBuckets;
@@ -71,7 +71,7 @@ module.exports = function(io){
 		        } else{var foundMessageId = null;}
 		        res.send({messageBucket: foundMessage, currentUser, foundMessageId});
 		      });
-	      } else{console.log('(conversations-4)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{logger.warn(req.user._id+' : (conversations-4)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  });
 		}
@@ -84,7 +84,7 @@ module.exports = function(io){
 		  }
 		  Conversation.findOne({_id: req.params.conversationId, isBlocked: false}, function(err, foundConversation){
 		  if(err){
-		    console.log(req.user._id+' => (conversations-5)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-5)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 		    if(foundConversation){
@@ -96,7 +96,7 @@ module.exports = function(io){
 		          }
 		        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 		        if(err || !newMessageBucket){
-		          console.log(req.user._id+' => (conversations-6)newMessageBucket err:- '+JSON.stringify(err, null, 2));
+							logger.error(req.user._id+' : (conversations-6)newMessageBucket err => '+err);
 		          return res.sendStatus(500);
 		        } else{
 		        	for(var i=0;i<foundConversation.seenMsgCursors.length;i++){
@@ -125,7 +125,7 @@ module.exports = function(io){
 		            foundConversation.save();
 		          }
 		          if(err){
-		            console.log(req.user._id+' => (conversations-7) err:- '+JSON.stringify(err, null, 2));
+								logger.error(req.user._id+' : (conversations-7) err => '+err);
 		            return res.sendStatus(500);
 		          }
 		          var reciever;
@@ -140,7 +140,7 @@ module.exports = function(io){
 			        return res.sendStatus(200);
 		        }
 		        });
-		      } else{console.log('(conversations-9)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+		      } else{logger.warn(req.user._id+' : (conversations-9)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		    }
 		  }
 		  })
@@ -151,7 +151,7 @@ module.exports = function(io){
 		if(req.user){
 			Conversation.findOne({_id: req.params.conversationId}, function(err, foundConversation){
 		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-10)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-10)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 		  	for(var i=0;i<foundConversation.seenMsgCursors.length;i++){
@@ -180,7 +180,7 @@ module.exports = function(io){
 			Conversation.findOne({_id: req.params.conversationId, isBlocked: false})
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-12)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-12)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 	    	foundConversation.isBlocked = true;
@@ -193,7 +193,7 @@ module.exports = function(io){
 			Conversation.findOne({_id: req.params.conversationId, isBlocked: true})
 		  .exec(function(err, foundConversation){
 		  if(err || !foundConversation){
-		    console.log(req.user._id+' => (conversations-13)foundConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-13)foundConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 	    	foundConversation.isBlocked = false;
@@ -244,13 +244,13 @@ module.exports = function(io){
 	    currentUserUserChats.push(currentUserObj);
 	    User.updateOne({_id: req.user._id},{$push: {userChats: currentUserUserChats}}, function(err, currentUser){
 	      if(err || !currentUser){
-	        console.log(req.user._id+' => (conversations-14)currentUser err:- '+JSON.stringify(err, null, 2));
+					logger.error(req.user._id+' : (conversations-14)currentUser err => '+err);
 	        return res.sendStatus(500);
 	      }
 	    });
 	    User.updateOne({_id: req.body.recipientId}, {$push: {userChats: foundUserUserChats}}, function(err, foundUser){
 	      if(err || !foundUser){
-	        console.log(req.user._id+' => (conversations-15)foundUser err:- '+JSON.stringify(err, null, 2));
+					logger.error(req.user._id+' : (conversations-15)foundUser err => '+err);
 	        return res.sendStatus(500);
 	      }
 		    return res.sendStatus(200);
@@ -265,7 +265,7 @@ module.exports = function(io){
 		  .populate({path: 'messageBuckets', populate: {path: 'messages.authorId', select: 'profilePic profilePicId'}, options: {sort: {_id: -1}, limit: 2}})
 		  .exec(function(err, foundClubConversation){
 		  if(err){
-		    console.log(req.user._id+' => (conversations-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-16)foundClubConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId) &&
@@ -275,9 +275,9 @@ module.exports = function(io){
 					for(var i=0;i<numBuckets;i++){
 						MA_50_profilePic[i] = [];
 						for(var j=0;j<foundClubConversation.messageBuckets[i].messages.length;j++){
-							if(environment === 'dev'){
+							if(process.env.ENVIRONMENT === 'dev'){
 								MA_50_profilePic[i][j] = clConfig.cloudinary.url(foundClubConversation.messageBuckets[i].messages[j].authorId.profilePicId, clConfig.thumb_100_obj);
-							} else if (environment === 'prod'){
+							} else if (process.env.ENVIRONMENT === 'prod'){
 								MA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundClubConversation.messageBuckets[i].messages[j].authorId.profilePicId;
 							}
 						}
@@ -290,9 +290,9 @@ module.exports = function(io){
 	        res.send({messages: foundClubConversation, MA_50_profilePic, currentUser, firstName, foundMessageIds});
 	      } else{
 					if(foundClubConversation.isRoom === true && !foundClubConversation.allParticipantIds.includes(req.user._id)){
-						console.log('(conversations-17A)Not a room participant: ('+req.user._id+') '+req.user.fullName);
+						logger.warn(req.user._id+' : (conversations-17A)Not a room participant: ('+req.user._id+') '+req.user.fullName);
 					} else{
-						console.log('(conversations-17B)Not a club member: ('+req.user._id+') '+req.user.fullName);
+						logger.warn(req.user._id+' : (conversations-17B)Not a club member: ('+req.user._id+') '+req.user.fullName);
 					}
 				}
 		  }
@@ -310,7 +310,7 @@ module.exports = function(io){
 		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
 		  .exec(function(err, foundClubConversation){
 		  if(err){
-		    console.log(req.user._id+' => (conversations-18)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-18)foundClubConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	    	var bucket = foundClubConversation.messageBuckets;
@@ -327,9 +327,9 @@ module.exports = function(io){
 					.populate('messages.authorId', '_id profilePic profilePicId').exec(function(err, foundMessage){
 						var MA_50_profilePic = [];
 						for(var i=0;i<foundMessage.messages.length;i++){
-							if(environment === 'dev'){
+							if(process.env.ENVIRONMENT === 'dev'){
 								MA_50_profilePic[i] = clConfig.cloudinary.url(foundMessage.messages.authorId.profilePicId, clConfig.thumb_100_obj);
-							} else if (environment === 'prod'){
+							} else if (process.env.ENVIRONMENT === 'prod'){
 								MA_50_profilePic[i] = s3Config.thumb_100_prefix+foundMessage.messages.authorId.profilePicId;
 							}
 						}
@@ -340,7 +340,7 @@ module.exports = function(io){
 						} else{var foundMessageId = null;}
 		        res.send({messageBucket: foundMessage, MA_50_profilePic, currentUser, foundMessageId, firstName});
 		      });
-	      } else{console.log('(conversations-19)Not a club member: ('+req.user._id+') '+req.user.fullName);}
+	      } else{logger.warn(req.user._id+' : (conversations-19)Not a club member: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  });
 		}
@@ -354,7 +354,7 @@ module.exports = function(io){
 		  ClubConversation.findOne({_id: req.params.conversationId, isActive: true})
 		  .exec(function(err, foundClubConversation){
 		  if(err){
-		    console.log(req.user._id+' => (conversations-20)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-20)foundClubConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else if(foundClubConversation){
 	      if(contains2(req.user.userClubs,foundClubConversation.clubId)){
@@ -366,7 +366,7 @@ module.exports = function(io){
 	          }
 	        }, {fields: {count:1} , upsert: true, new: true}, function(err, newMessageBucket){
 	        if(err || !newMessageBucket){
-	          console.log(req.user._id+' => (conversations-21)newMessageBucket err:- '+JSON.stringify(err, null, 2));
+						logger.error(req.user._id+' : (conversations-21)newMessageBucket err => '+err);
 	          return res.sendStatus(500);
 	        } else{
 	        	for(var i=0;i<foundClubConversation.seenMsgCursors.length;i++){
@@ -395,14 +395,14 @@ module.exports = function(io){
 	            foundClubConversation.save();
 	          }
 	          if(err){
-	            console.log(req.user._id+' => (conversations-22) err:- '+JSON.stringify(err, null, 2));
+							logger.error(req.user._id+' : (conversations-22) err => '+err);
 	            return res.sendStatus(500);
 	          }
 	          io.to(req.params.conversationId).emit('clubMessage', req.body); 
 	          return res.sendStatus(200);
 	        }
 	        });
-	      } else{console.log('(conversations-23)Not a participant: ('+req.user._id+') '+req.user.fullName);}
+	      } else{logger.warn(req.user._id+' : (conversations-23)Not a participant: ('+req.user._id+') '+req.user.fullName);}
 		  }
 		  })
 		}
@@ -412,7 +412,7 @@ module.exports = function(io){
 		if(req.user){
 			ClubConversation.findOne({_id: req.params.conversationId}, function(err, foundClubConversation){
 		  if(err || !foundClubConversation){
-		    console.log(req.user._id+' => (conversations-24)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+				logger.error(req.user._id+' : (conversations-24)foundClubConversation err => '+err);
 		    return res.sendStatus(500);
 		  } else{
 		  	for(var i=0;i<foundClubConversation.seenMsgCursors.length;i++){
@@ -453,7 +453,7 @@ module.exports = function(io){
 	    Club.findOneAndUpdate({_id: req.body.clubId, isActive: true}, 
 	    {$set: {conversationId: clubConversation._id}}, function(err, foundClub){
 	      if(err){
-	        console.log(req.user._id+' => (conversations-25)foundClub err:- '+JSON.stringify(err, null, 2));
+					logger.error(req.user._id+' : (conversations-25)foundClub err => '+err);
 	        return res.sendStatus(500);
 	      }
 	      var clubMembersArr = foundClub.clubUsers.map(function(clubUser){
@@ -470,7 +470,7 @@ module.exports = function(io){
 		    User.updateMany({_id: {$in: clubMembersArr}, userClubs: {$elemMatch: {id: foundClub._id}}}, 
 		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err, updateUsers){
 		      if(err){
-		        console.log(req.user._id+' => (conversations-26)updateUsers err:- '+JSON.stringify(err, null, 2));
+						logger.error(req.user._id+' : (conversations-26)updateUsers err => '+err);
 		        return res.sendStatus(500);
 		      }
 		    });

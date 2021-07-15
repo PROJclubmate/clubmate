@@ -1,4 +1,5 @@
 const Comment     = require("../models/comment"),
+  logger          = require('../logger'),
   mbxGeocoding    = require('@mapbox/mapbox-sdk/services/geocoding'),
   geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
@@ -22,7 +23,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
     Comment.findOne({_id: req.params.bucket_id}, {comments: {$elemMatch: {_id: req.params.comment_id}}},
     function(err, foundBucket){
     if(err || !foundBucket){
-      console.log('(middleware-2)foundBucket err:- '+JSON.stringify(err, null, 2));
+      logger.error('(middleware-1)foundBucket err => '+err);
       req.flash('error', 'Comment Bucket not found');
       res.redirect('back');
     } else{

@@ -497,17 +497,3 @@
     margin-right: 18px;
   }
 }
-
-/* Modifications */
-@media screen and (max-width: 481px){
-  #zuck-modal-content .story-viewer .slides .item > .media {
-    width: 100%;
-    height: unset;
-    position: absolute;
-    left: unset;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    margin: auto;
-  }
-}

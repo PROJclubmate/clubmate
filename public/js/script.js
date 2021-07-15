@@ -655,10 +655,13 @@ if(location.pathname.split('/').length == 2 && location.pathname.split('/')[1] =
     var height = $(this).height();
 
     $(votecard).css({top: top, left: left, position:'absolute'}).width(width).height(height + 2);
+    if(!$(this).hasClass('right')){
+      $(votecard).addClass('votecard_left');
+    }
     $(votecard).css('display', 'block');
     
-    var votecardNoHash = votecard.substring(1);
-    $(".discover-overlay:not([id*='"+votecardNoHash+"'])").css('display', 'none');
+    var votecardIdWithoutHash = votecard.substring(1);
+    $(".discover-overlay:not([id*='"+votecardIdWithoutHash+"'])").css('display', 'none');
   });
 
   $('#client-posts-discover').on('click', '.discover-overlay', function(e){

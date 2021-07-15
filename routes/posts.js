@@ -1,14 +1,13 @@
 const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
-  {environment} = require('../config/env_switch.js'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
   postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, 
   postsUpdate, postsDelete, postsVote, postsModVote} = require('../controllers/posts');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var {upload} = require('../config/s3.js');
 }
 

@@ -137,8 +137,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-image: url(/images/chat-dark.svg);
   }
   .btncollapse-club-grad.collapsed{
-    box-shadow: 0 -0.5rem 0 1rem var(--color-dark-800) !important;
-    outline: 0.5rem solid var(--color-dark-800) !important;
+    box-shadow: 0 -0.5rem 0 1rem var(--color-dark-900) !important;
+    outline: 0.5rem solid var(--color-dark-900) !important;
   }
 }
 button.gb{
@@ -844,7 +844,7 @@ time.calendar{
   border-color: var(--color-dark-700);
 }
 .gradient-wrap.coverback{
-  background-color: var(--color-dark-800) !important;
+  background-color: var(--color-dark-900) !important;
 }
 #not_in_room{
   opacity: 0.25;

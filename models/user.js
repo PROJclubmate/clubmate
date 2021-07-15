@@ -117,19 +117,19 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post'
   }],
-  clubUpdates: [{
-    clubId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Club'
-    },
-    clubName: String,
-    pusherName: String,
-    deleterName: String,
-    updateId: Schema.Types.ObjectId,
-    news: String,
-    eventDate: Date,
-    pushedAt: {type: Date, default: Date.now}
-  }],
+  // clubUpdates: [{
+  //   clubId: {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Club'
+  //   },
+  //   clubName: String,
+  //   pusherName: String,
+  //   deleterName: String,
+  //   updateId: Schema.Types.ObjectId,
+  //   news: String,
+  //   eventDate: Date,
+  //   pushedAt: {type: Date, default: Date.now}
+  // }],
   userClubs: [{
     id: {
       type: Schema.Types.ObjectId,

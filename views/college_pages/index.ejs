@@ -41,14 +41,14 @@
 					<div class="collegename d-flex">
 						<% if(match){ %>
 							<span>
-								<sup class="greencolor2 text-xs pb-auto boldtext" style="margin-right: -0.125rem;">My </sup>
+								<sup class="greencolor2 text-xs pb-auto" style="margin-right: -0.0625rem;">My </sup>
 								<i class="fas fa-university lightgrey text-xxl"></i>
 								<!-- Change to college_page.name -->
 								<span id="copyTxt">IIT Mandi</span>
 							</span>
 						<% } else{ %>
 							<span>
-								<sup class="greencolor2 text-xs pb-auto boldtext invisible" style="margin-right: -0.125rem;">My </sup>
+								<sup class="greencolor2 text-xs pb-auto invisible" style="margin-right: -0.0625rem;">My </sup>
 								<i id="collegeicon" class="fas fa-university lightgrey text-xxl"></i>
 								<!-- Change to college_page.name -->
 								<span id="copyTxt">IIT Mandi</span>
@@ -183,7 +183,7 @@
 									<% } else if(currentUser && keyValue == 2){ %>
 										<% if(clubUserIdsArr[i][j].length){ %>
 											<br/>
-											<span class="pl-2 nowrap d-inline-flex" style="margin-left: 1rem;">
+											<span class="pl-2 nowrap d-inline-flex">
 												<% var count = 0; %>
 												<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
 													<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>

@@ -1,13 +1,12 @@
 const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
-  {environment} = require('../config/env_switch.js'),
   {chatsList, chatsOpen, chatsListClubRooms, chatsListClubRoomOpen, chatsCreateNewRoom, chatsRoom,
   chatsRoomEdit} = require('../controllers/chats');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var {upload} = require('../config/s3.js');
 }
 

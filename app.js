@@ -13,14 +13,14 @@ const express    = require('express'),
   methodOverride = require('method-override'),
   dotenv         = require('dotenv').config(),
   User           = require('./models/user'),
-  {environment}  = require('./config/env_switch'),
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
+  logger         = require('./logger'),
   port           = 8080;
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var url = 'mongodb://localhost/ghost_dev';
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var url = 'mongodb://localhost/ghost_prod';
 }
 
@@ -39,13 +39,13 @@ const indexRoutes    = require('./routes/index'),
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
 useUnifiedTopology: true}, function(err, client){
   if(err){
-    return console.log(Date.now()+' : '+'(app-1)'+JSON.stringify(err, null, 2));
+    return logger.error('(app-1) => '+err);
   }
-  console.log(Date.now()+' : '+'MongoDB connected...');
+  logger.info('MongoDB connected...');
 
   // Connect to Socket.io
   io.on('connection', function(socket){
-    // console.log(Date.now()+' : '+'socket: '+ socket.id +' connected');
+    // logger.info('socket: '+ socket.id +' connected');
 
     socket.on('joinRoom', room =>{
       socket.join(room);
@@ -93,14 +93,14 @@ useUnifiedTopology: true}, function(err, client){
   });
 
   http.listen(port, function(){
-    console.log(Date.now()+' : '+'socket is listening');
+    logger.info('socket is listening');
   });
 });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  console.log(Date.now()+' : '+"clubmate server has started on port "+port+"!!");
+  logger.info('clubmate server has started on port '+port+'!!');
 });
 
 app.use(helmet());
@@ -136,9 +136,9 @@ app.use(async function(req, res, next){
   res.locals.currentUser = req.user;
   if(req.user){
     try{
-      if(environment === 'dev'){
+      if(process.env.ENVIRONMENT === 'dev'){
         res.locals.CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-      } else if (environment === 'prod'){
+      } else if (process.env.ENVIRONMENT === 'prod'){
         res.locals.CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
       }
       //REQUESTS
@@ -157,23 +157,23 @@ app.use(async function(req, res, next){
 
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = [];
       for(var i=0;i<foundUser.clubInvites.length;i++){
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           fUCI_50_clubAvatar[i] = clConfig.cloudinary.url(foundUser.clubInvites[i].avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           fUCI_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundUser.clubInvites[i].avatarId;
         }
       }
       for(var j=0;j<foundUser.friendRequests.length;j++){
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           fUFR_50_profilePic[j] = clConfig.cloudinary.url(foundUser.friendRequests[j].profilePicId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           fUFR_50_profilePic[j] = s3Config.thumb_100_prefix+foundUser.friendRequests[j].profilePicId;
         }
       }
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
       res.locals.FR_50_profilePic = fUFR_50_profilePic;
     } catch(err){
-      console.log(Date.now()+' : '+req.user._id+' => (app-2)request population err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (app-2) => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }

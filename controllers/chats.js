@@ -4,13 +4,13 @@ const User         = require('../models/user'),
   ClubConversation = require('../models/club-conversation'),
   Message          = require('../models/message'),
   mongoose         = require('mongoose'),
-  {environment}    = require('../config/env_switch'),
   clConfig         = require('../config/cloudinary'),
-  s3Config         = require('../config/s3');
+  s3Config         = require('../config/s3'),
+  logger           = require('../logger');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -33,7 +33,7 @@ module.exports = {
     ClubConversation.find({_id: {$in: clubConversationIds}, isActive: true})
     .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
     if(err){
-      console.log(req.user._id+' => (chats-1)foundClubConversations err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-1)foundClubConversations err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       var lastOpenedChatListClub; var chatList = [];
@@ -52,9 +52,9 @@ module.exports = {
         }
         obja['id'] = foundClubConversations[i].clubId._id;
         obja['name'] = foundClubConversations[i].clubId.name;
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
         }
         obja['lastMessage'] = foundClubConversations[i].lastMessage;
@@ -72,7 +72,7 @@ module.exports = {
       .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
       .exec(function(err, foundUserConversations){
       if(err){
-        console.log(req.user._id+' => (chats-2)foundUserConversations err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (chats-2)foundUserConversations err => '+err);
         req.flash('error', 'Something went wrong :(');
       } else{
         for(var i=0;i<foundUserConversations.length;i++){
@@ -92,9 +92,9 @@ module.exports = {
               objb['id'] = foundUserConversations[i].participants[k].id;
               objb['name'] = foundUserConversations[i].participants[k].fullName;
               objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
               }
               break;
@@ -120,7 +120,7 @@ module.exports = {
         return User.updateOne({_id: req.user._id}, 
         {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
         if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (chats-3)updateUser err:- '+JSON.stringify(err, null, 2));
+          logger.error(req.user._id+' : (chats-3)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
         });
@@ -147,7 +147,7 @@ module.exports = {
     ClubConversation.find({_id: {$in: clubConversationIds}, isActive: true})
     .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
     if(err){
-      console.log(req.user._id+' => (chats-7)foundClubConversations err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-4)foundClubConversations err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       var lastOpenedChatListClub ; var chatList = [];
@@ -166,9 +166,9 @@ module.exports = {
         }
         obja['id'] = foundClubConversations[i].clubId._id;
         obja['name'] = foundClubConversations[i].clubId.name;
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
         }
         obja['lastMessage'] = foundClubConversations[i].lastMessage;
@@ -186,7 +186,7 @@ module.exports = {
       .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
       .exec(function(err, foundUserConversations){
       if(err){
-        console.log(req.user._id+' => (chats-8)foundUserConversations err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (chats-5)foundUserConversations err => '+err);
         req.flash('error', 'Something went wrong :(');
       } else{
         for(var i=0;i<foundUserConversations.length;i++){
@@ -206,9 +206,9 @@ module.exports = {
               objb['id'] = foundUserConversations[i].participants[k]._id;
               objb['name'] = foundUserConversations[i].participants[k].fullName;
               objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
               }
               break;
@@ -234,7 +234,7 @@ module.exports = {
           chatHeadName = req.query.user;
           Conversation.findOne({_id: req.query.convId}, function(err, foundConversation){ 
           if(err || !foundConversation){
-            console.log(req.user._id+' => (chats-9)foundConversation err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (chats-6)foundConversation err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -259,7 +259,7 @@ module.exports = {
             }
             User.findById(recipientId2).select({lastActive: 1}).exec(function(err, foundRecepient){
             if(err || !foundRecepient){
-              console.log(Date.now()+' : '+req.user._id+' => (chats-10)foundRecepient err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (chats-7)foundRecepient err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -272,7 +272,7 @@ module.exports = {
               return User.updateOne({_id: req.user._id}, 
               {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
               if(err || !updateUser){
-                console.log(Date.now()+' : '+req.user._id+' => (chats-11)updateUser err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (chats-8)updateUser err => '+err);
                 req.flash('error', 'Something went wrong :(');
               }
               });
@@ -285,7 +285,7 @@ module.exports = {
           chatHeadName = req.query.club;
           ClubConversation.findOne({_id: req.query.convId, isActive: true}, function(err, foundClubConversation){
           if(err || !foundClubConversation){
-            console.log(req.user._id+' => (chats-12)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (chats-9)foundClubConversation err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -299,7 +299,7 @@ module.exports = {
               return User.updateOne({_id: req.user._id}, 
               {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
               if(err || !updateUser){
-                console.log(Date.now()+' : '+req.user._id+' => (chats-13)updateUser err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (chats-10)updateUser err => '+err);
                 req.flash('error', 'Something went wrong :(');
               }
               });
@@ -322,7 +322,7 @@ module.exports = {
     .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
     .exec(function(err, foundClubs){
     if(err){
-      console.log(req.user._id+' => (chats-14)foundClubs err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-11)foundClubs err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       var openedClub = {};
@@ -343,9 +343,9 @@ module.exports = {
             }
           }
         }
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
         }
       }
@@ -373,7 +373,7 @@ module.exports = {
     .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
     .exec(function(err, foundClubs){
     if(err){
-      console.log(req.user._id+' => (chats-14)foundClubs err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-12)foundClubs err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       var openedClub = {};
@@ -386,9 +386,9 @@ module.exports = {
           openedClub['chatRoomsCount'] = foundClubs[i].chatRoomsCount;
           openedClub['chatRooms'] = foundClubs[i].chatRooms;
         }
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
         }
       }
@@ -415,7 +415,7 @@ module.exports = {
     .select({_id: 1, name: 1, avatar: 1, avatarId: 1, clubUsers: 1, chatRooms: 1, chatRoomsCount: 1})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log(Date.now()+' : '+req.user._id+' => (chats-15)foundClub err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-13)foundClub err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       admin = checkRank(foundClub.clubUsers,req.user._id,1);
@@ -458,7 +458,7 @@ module.exports = {
     .populate({path: 'clubUsers.id', select: 'firstName fullName profilePic profilePicId userKeys'})
     .exec(function(err, foundClub){
     if(err || !foundClub){
-      console.log(Date.now()+' : '+req.user._id+' => (chats-15)foundClub err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-14)foundClub err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       var room = {}; var clubName = foundClub.name;
@@ -474,16 +474,16 @@ module.exports = {
       ClubConversation.findOne({_id: room.conversationId, isActive: true})
       .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversation){
       if(err){
-        console.log(req.user._id+' => (chats-16)foundClubConversation err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (chats-15)foundClubConversation err => '+err);
         req.flash('error', 'Something went wrong :(');
       } else{
         var roomParticipantsList = JSON.stringify(foundClubConversation.allParticipantIds);
         isAdmin = checkRank(foundClub.clubUsers,req.user._id,1);
         if(isAdmin){
           var clubMembersList = foundClub.clubUsers.map(function(clubUser){
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               clubUser.id.profilePic = clConfig.cloudinary.url(clubUser.id.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               clubUser.id.profilePic = s3Config.thumb_100_prefix+clubUser.id.profilePicId;
             }
             return clubUser.id;
@@ -505,7 +505,7 @@ module.exports = {
     .select({_id: 1, name: 1, avatar: 1, avatarId: 1, clubUsers: 1, chatRooms: 1, chatRoomsCount: 1})
     .exec(async function(err, foundClub){
     if(err || !foundClub){
-      console.log(Date.now()+' : '+req.user._id+' => (chats-17)foundClub err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (chats-16)foundClub err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
       admin = checkRank(foundClub.clubUsers,req.user._id,1);
@@ -516,14 +516,14 @@ module.exports = {
             roomConversationId = foundClub.chatRooms[i].conversationId;
             if(req.file){
               try{
-                if(environment === 'dev'){
+                if(process.env.ENVIRONMENT === 'dev'){
                   if(foundClub.chatRooms[i].avatarId != null){
                     clConfig.cloudinary.v2.uploader.destroy(foundClub.chatRooms[i].avatarId);
                   }
                   var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.roomAvatars_400_obj);
                   foundClub.chatRooms[i].avatar = result.secure_url;
                   foundClub.chatRooms[i].avatarId = result.public_id;
-                } else if (environment === 'prod'){
+                } else if (process.env.ENVIRONMENT === 'prod'){
                   if(foundClub.chatRooms[i].avatarId != null){
                     s3Config.deleteFile(foundClub.chatRooms[i].avatarId);
                   }
@@ -535,7 +535,7 @@ module.exports = {
                 foundClub.save();
                 res.redirect('/clubs/'+req.params.club_id+'/rooms/'+req.params.room_id);
               } catch(err){
-                console.log(Date.now()+' : '+req.user._id+' => (chats-18)roomAvatarUpload err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (chats-17)roomAvatarUpload err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -553,7 +553,7 @@ module.exports = {
             {$addToSet: {allParticipantIds: newParticipants}, $inc: {participantCount: newParticipants.length}}, 
             function(err, updateClubConversation){
             if(err || !updateClubConversation){
-              console.log(Date.now()+' : '+req.user._id+' => (chats-19)updateClubConversation err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (chats-18)updateClubConversation err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -569,7 +569,7 @@ module.exports = {
             {$pull: {allParticipantIds: {$in: oldParticipants}}, $inc: {participantCount: -oldParticipants.length}}, 
             function(err, updateClubConversation){
             if(err || !updateClubConversation){
-              console.log(Date.now()+' : '+req.user._id+' => (chats-20)updateClubConversation err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (chats-19)updateClubConversation err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -580,13 +580,13 @@ module.exports = {
         } else if(req.body.deleteRoom){
           for(var i=0;i<foundClub.chatRooms.length;i++){
             if(foundClub.chatRooms[i].conversationId.equals(req.params.room_id)){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 if(foundClub.chatRooms[i].avatarId != null){
                   clConfig.cloudinary.v2.uploader.destroy(foundClub.chatRooms[i].avatarId);
                 }
                 foundClub.chatRooms[i].avatar = null;
                 foundClub.chatRooms[i].avatarId = null;
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 if(foundClub.chatRooms[i].avatarId != null){
                   s3Config.deleteFile(foundClub.chatRooms[i].avatarId);
                 }
@@ -599,18 +599,18 @@ module.exports = {
           Club.updateOne({_id: req.params.club_id, chatRooms: {$elemMatch: {conversationId: roomConversationId}}},
           {$pull: {chatRooms: {conversationId: roomConversationId}}, $inc: {chatRoomsCount: -1}}, function(err, updatedClub){
           if(err || !updatedClub){
-            console.log(Date.now()+' : '+req.user._id+' => (profiles-39)updatedClub err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (chats-20)updatedClub err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
             ClubConversation.deleteOne({_id: roomConversationId, isActive: true, isRoom: true}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (profiles-40)deletedClubConversation err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (chats-21)deletedClubConversation err => '+err);
               return req.flash('error', 'Something went wrong :(');
             } else{
               Message.deleteMany({conversationId: roomConversationId}, function(err){
               if(err){
-                console.log(Date.now()+' : '+req.user._id+' => (profiles-41)deletedClubMessages err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (chats-22)deletedClubMessages err => '+err);
                 return req.flash('error', 'Something went wrong :(');
               } else{
                 return res.redirect('/clubs/'+req.params.club_id);

@@ -4,13 +4,13 @@ const mongoose  = require('mongoose'),
   Club          = require('../models/club'),
   Comment       = require('../models/comment'),
   Discussion    = require('../models/discussion'),
-  {environment} = require('../config/env_switch'),
   clConfig      = require('../config/cloudinary'),
-  s3Config      = require('../config/s3');
+  s3Config      = require('../config/s3'),
+  logger        = require('../logger');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
   
@@ -52,7 +52,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, homePosts){
       if(err || !homePosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-1)homePosts err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-1)homePosts err => '+err);
         return res.sendStatus(500);
       } else{
         var arrLength = homePosts.length;
@@ -65,9 +65,9 @@ module.exports = {
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
-          if(environment === 'dev'){
+          if(process.env.ENVIRONMENT === 'dev'){
             PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (environment === 'prod'){
+          } else if (process.env.ENVIRONMENT === 'prod'){
             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
           }
           hasVote[k] = voteCheck(req.user,modPosts[k]);
@@ -77,13 +77,13 @@ module.exports = {
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
         function(err, updatePosts){
           if(err || !updatePosts){
-            console.log(Date.now()+' => (posts-2)updatePosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-2)updatePosts err => '+err);
             return res.sendStatus(500);
           }
         });
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
         }
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
@@ -128,7 +128,7 @@ module.exports = {
       .sort({createdAt: -1}).limit(10)
       .exec(function(err, friendsPosts){
       if(err || !friendsPosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-3)friendsPosts err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-3)friendsPosts err => '+err);
         return res.sendStatus(500);
       } else{
         var arrLength = friendsPosts.length;
@@ -141,9 +141,9 @@ module.exports = {
         sortComments(modPosts);
         var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
         for(var k=0;k<modPosts.length;k++){
-          if(environment === 'dev'){
+          if(process.env.ENVIRONMENT === 'dev'){
             PA_50_profilePic[k] = clConfig.cloudinary.url(modPosts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
-          } else if (environment === 'prod'){
+          } else if (process.env.ENVIRONMENT === 'prod'){
             PA_50_profilePic[k] = s3Config.thumb_100_prefix+modPosts[k].postAuthor.id.profilePicId;
           }
           hasVote[k] = voteCheck(req.user,modPosts[k]);
@@ -153,13 +153,13 @@ module.exports = {
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
         function(err, updatePosts){
           if(err || !updatePosts){
-            console.log(Date.now()+' => (posts-4)updatePosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
             return res.sendStatus(500);
           }
         });
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
         }
         res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, 
@@ -178,7 +178,7 @@ module.exports = {
         User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
         function(err, updateUser){
         if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (posts-5)updateUser err:- '+JSON.stringify(err, null, 2));
+          logger.error(req.user._id+' : (posts-5)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -188,7 +188,7 @@ module.exports = {
         User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
         function(err, updateUser){
         if(err || !updateUser){
-          console.log(Date.now()+' : '+req.user._id+' => (posts-6)updateUser err:- '+JSON.stringify(err, null, 2));
+          logger.error(req.user._id+' : (posts-6)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -203,7 +203,7 @@ module.exports = {
       User.updateOne({_id: req.user._id}, {$set: {postsViewToggle: req.body.postsViewKey}}, 
       function(err, updateUser){
       if(err || !updateUser){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-7)updateUser err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-7)updateUser err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       }
@@ -314,7 +314,7 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-8)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-8)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -325,9 +325,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -337,13 +337,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-9)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-9)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -363,7 +363,7 @@ module.exports = {
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-10)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-10)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -374,9 +374,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -386,13 +386,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-11)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-11)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -472,7 +472,7 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-12)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-12)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -483,9 +483,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -495,13 +495,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-13)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-13)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -591,7 +591,7 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-14)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-14)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -602,9 +602,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -614,13 +614,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-15)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-15)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -639,7 +639,7 @@ module.exports = {
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-16)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-16)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -650,9 +650,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -662,13 +662,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-17)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-17)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -746,7 +746,7 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-18)discoverPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-18)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
             var arrLength = discoverPosts.length;
@@ -757,9 +757,9 @@ module.exports = {
             sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
               }
               hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -769,13 +769,13 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                console.log(Date.now()+' => (posts-19)updatePosts err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-19)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
@@ -865,7 +865,7 @@ module.exports = {
       ])
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-20)discoverPosts err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-20)discoverPosts err => '+err);
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
@@ -876,9 +876,9 @@ module.exports = {
         sortComments(discoverPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<discoverPosts.length;k++){
-          if(environment === 'dev'){
+          if(process.env.ENVIRONMENT === 'dev'){
             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (environment === 'prod'){
+          } else if (process.env.ENVIRONMENT === 'prod'){
             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
           }
           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
@@ -888,7 +888,7 @@ module.exports = {
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
         function(err, updatePosts){
           if(err || !updatePosts){
-            console.log(Date.now()+' => (posts-21)updatePosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-21)updatePosts err => '+err);
             return res.sendStatus(500);
           }
         });
@@ -908,31 +908,31 @@ module.exports = {
         ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
           (async () => {
             try{
-              if(environment === 'dev'){
+              if(process.env.ENVIRONMENT === 'dev'){
                 var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.postImages_1080_obj);
                 req.body.image = result.secure_url;
                 req.body.imageId = result.public_id;
-              } else if (environment === 'prod'){
+              } else if (process.env.ENVIRONMENT === 'prod'){
                 var result = await s3Config.uploadFile(req.file, 'postImages/', 1080);
                 s3Config.removeTmpUpload(req.file.path);
                 req.body.image = result.Location;
                 req.body.imageId = result.Key;
               }
             } catch(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-22)imageUpload err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-22)imageUpload err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
             req.body.moderation = 1;
             Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
             if(err || !foundClub){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-23)foundClub err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-23)foundClub err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
               Post.create(req.body, function(err, newPost){
               if(err || !newPost){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-24)newPost err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-24)newPost err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -942,7 +942,7 @@ module.exports = {
                 newPost.postAuthor.authorName = req.user.fullName;
                 newPost.save(function(err, newPost){
                 if(err || !newPost){
-                  console.log(Date.now()+' : '+req.user._id+' => (posts-25)newPost err:- '+JSON.stringify(err, null, 2));
+                  logger.error(req.user._id+' : (posts-25)newPost err => '+err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
@@ -965,13 +965,13 @@ module.exports = {
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
           if(err || !foundClub){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-26)foundClub err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-26)foundClub err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
             Post.create(req.body, function(err, newPost){
             if(err || !newPost){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-27)newPost err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-27)newPost err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -981,7 +981,7 @@ module.exports = {
               newPost.postAuthor.authorName = req.user.fullName;
               newPost.save(function(err, newPost){
               if(err || !newPost){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-28)newPost err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-28)newPost err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -1009,7 +1009,7 @@ module.exports = {
       Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
       .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+'(posts-29)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-29)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -1019,9 +1019,9 @@ module.exports = {
         var modPost = postsModerationFilter(post, req.user);
         if(modPost.length){
           var modPost = modPost[0];
-          if(environment === 'dev'){
+          if(process.env.ENVIRONMENT === 'dev'){
             var PC_50_clubAvatar = clConfig.cloudinary.url(modPost.postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (environment === 'prod'){
+          } else if (process.env.ENVIRONMENT === 'prod'){
             var PC_50_clubAvatar = s3Config.thumb_100_prefix+modPost.postClub.avatarId;
           }
           var hasVote = voteCheck(req.user,modPost);
@@ -1037,16 +1037,16 @@ module.exports = {
             .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
             postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
             if(err || !topTopicPosts){
-            console.log(Date.now()+' : '+req.user._id+' => (posts-31)topTopicPosts err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-30)topTopicPosts err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
             } else{
               var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user), Posts_50_Image = [];
               for(var l=0;l<modTopTopicPosts.length;l++){
                 if(modTopTopicPosts[l].imageId && modTopTopicPosts[l].imageId != ''){
-                  if(environment === 'dev'){
+                  if(process.env.ENVIRONMENT === 'dev'){
                     Posts_50_Image[l] = clConfig.cloudinary.url(modTopTopicPosts[l].imageId, clConfig.thumb_100_obj);
-                  } else if (environment === 'prod'){
+                  } else if (process.env.ENVIRONMENT === 'prod'){
                     Posts_50_Image[l] = s3Config.thumb_100_prefix+modTopTopicPosts[l].imageId;
                   }
                 } else{
@@ -1061,7 +1061,7 @@ module.exports = {
                 .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
                 .exec(function(err, foundBuckets){
                 if(err || !foundBuckets){
-                  console.log(Date.now()+' : '+'(posts-30)foundBuckets err:- '+JSON.stringify(err, null, 2));
+                  logger.error(req.user._id+' : (posts-31)foundBuckets err => '+err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
@@ -1069,9 +1069,9 @@ module.exports = {
                   for(var i=0;i<numBuckets;i++){
                     CA_50_profilePic[i] = [];
                     for(var j=0;j<foundBuckets[i].comments.length;j++){
-                      if(environment === 'dev'){
+                      if(process.env.ENVIRONMENT === 'dev'){
                         CA_50_profilePic[i][j] = clConfig.cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                      } else if (environment === 'prod'){
+                      } else if (process.env.ENVIRONMENT === 'prod'){
                         CA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundBuckets[i].comments[j].commentAuthor.id.profilePicId;
                       }
                     }
@@ -1082,9 +1082,9 @@ module.exports = {
                   var index = len-3;
                   if(req.user){
                     var upComments = commentCheck(req.user._id,foundBuckets);
-                    if(environment === 'dev'){
+                    if(process.env.ENVIRONMENT === 'dev'){
                       var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-                    } else if (environment === 'prod'){
+                    } else if (process.env.ENVIRONMENT === 'prod'){
                       var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
                     }
                   } else{
@@ -1098,9 +1098,9 @@ module.exports = {
                 }
                 });
               } else if(modPost.topic != '' && req.user){
-                if(environment === 'dev'){
+                if(process.env.ENVIRONMENT === 'dev'){
                   var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-                } else if (environment === 'prod'){
+                } else if (process.env.ENVIRONMENT === 'prod'){
                   var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
                 }
                 if(modPost.subpostBuckets != ''){
@@ -1109,15 +1109,15 @@ module.exports = {
                   .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
                   .exec(function(err, foundBucket){
                   if(err || !foundBucket){
-                    console.log(Date.now()+' : '+'(posts-32)foundBucket err:- '+JSON.stringify(err, null, 2));
+                    logger.error(req.user._id+' : (posts-32)foundBucket err => '+err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   } else{
                     var sPA_50_profilePic = [];
                     for(var j=0;j<foundBucket.subPosts.length;j++){
-                      if(environment === 'dev'){
+                      if(process.env.ENVIRONMENT === 'dev'){
                         sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                      } else if (environment === 'prod'){
+                      } else if (process.env.ENVIRONMENT === 'prod'){
                         sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket.subPosts[j].subPostAuthor.id.profilePicId;
                       }
                     }
@@ -1140,9 +1140,9 @@ module.exports = {
             }
             });
           } else{
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             var index = null;
@@ -1157,13 +1157,13 @@ module.exports = {
       Post.findOne({_id: req.params.post_id, moderation: 0, privacy: 0})
       .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+'(posts-33)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error('(posts-33)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           var PC_50_clubAvatar = clConfig.cloudinary.url(foundPost.postClub.avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           var PC_50_clubAvatar = s3Config.thumb_100_prefix+foundPost.postClub.avatarId;
         }
         var hasVote = null;
@@ -1177,7 +1177,7 @@ module.exports = {
           .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
           .exec(function(err, foundBuckets){
           if(err || !foundBuckets){
-            console.log(Date.now()+' : '+'(posts-34)foundBuckets err:- '+JSON.stringify(err, null, 2));
+            logger.error('(posts-34)foundBuckets err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -1185,9 +1185,9 @@ module.exports = {
             for(var i=0;i<numBuckets;i++){
               CA_50_profilePic[i] = [];
               for(var j=0;j<foundBuckets[i].comments.length;j++){
-                if(environment === 'dev'){
+                if(process.env.ENVIRONMENT === 'dev'){
                   CA_50_profilePic[i][j] = clConfig.cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                } else if (environment === 'prod'){
+                } else if (process.env.ENVIRONMENT === 'prod'){
                   CA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundBuckets[i].comments[j].commentAuthor.id.profilePicId;
                 }
               }
@@ -1216,13 +1216,13 @@ module.exports = {
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
       .exec(function (err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+'(posts-35)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-35)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        if(environment === 'dev'){
+        if(process.env.ENVIRONMENT === 'dev'){
           var PC_50_clubAvatar = clConfig.cloudinary.url(foundPost.postClub.avatarId, clConfig.thumb_100_obj);
-        } else if (environment === 'prod'){
+        } else if (process.env.ENVIRONMENT === 'prod'){
           var PC_50_clubAvatar = s3Config.thumb_100_prefix+foundPost.postClub.avatarId;
         }
         var hasVote = voteCheck(req.user,foundPost);
@@ -1236,9 +1236,9 @@ module.exports = {
           }
         }
         if(foundPost.topic != '' && req.user){
-          if(environment === 'dev'){
+          if(process.env.ENVIRONMENT === 'dev'){
             var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-          } else if (environment === 'prod'){
+          } else if (process.env.ENVIRONMENT === 'prod'){
             var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
           }
           if(foundPost.subpostBuckets != ''){
@@ -1247,22 +1247,22 @@ module.exports = {
             .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
             .exec(function(err, foundBucket){
             if(err || !foundBucket){
-              console.log(Date.now()+' : '+'(posts-36)foundBucket err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-36)foundBucket err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
               var sPA_50_profilePic = [];
               for(var j=0;j<foundBucket.subPosts.length;j++){
-                if(environment === 'dev'){
+                if(process.env.ENVIRONMENT === 'dev'){
                   sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                } else if (environment === 'prod'){
+                } else if (process.env.ENVIRONMENT === 'prod'){
                   sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket.subPosts[j].subPostAuthor.id.profilePicId;
                 }
               }
               var subVotes = subVoteCheck(req.user._id,foundBucket);
               Discussion.findOne({_id: req.params.bucket_id}, function(err, foundQuoteBucket){
               if(err || !foundQuoteBucket){
-                console.log(Date.now()+' : '+'(posts-37)foundQuoteBucket err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-37)foundQuoteBucket err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -1292,7 +1292,7 @@ module.exports = {
   postsUpdate(req, res, next){
     Post.findById(req.params.post_id, function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-38)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (posts-38)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1317,30 +1317,30 @@ module.exports = {
   postsDelete(req, res, next){
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-39)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (posts-39)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
       if(foundPost.postAuthor.id.equals(req.user._id)){
         if(foundPost.image && foundPost.imageId){
           try{
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               clConfig.cloudinary.v2.uploader.destroy(foundPost.imageId);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               s3Config.deleteFile(foundPost.imageId);
             }
             foundPost.remove();
             //deletes all comments associated with the post
             Comment.deleteMany({postId: foundPost._id}, function(err){
               if(err){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-40)foundComment err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-40)foundComment err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
             });
             Discussion.deleteMany({postId: foundPost._id}, function(err){
               if(err){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-41)foundDiscussion err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-41)foundDiscussion err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -1348,23 +1348,22 @@ module.exports = {
             req.flash('success', 'Post deleted successfully!');
             res.redirect('back');
           }catch(err){
-            console.log(Date.now()+' : '+'(posts-42)foundPost catch err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (posts-42)foundPost catch err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
         } else{
           foundPost.remove();
-          //deletes all comments associated with the post
           Comment.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-43)foundComment err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-43)foundComment err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           Discussion.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (posts-44)foundDiscussion err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (posts-44)foundDiscussion err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1384,7 +1383,7 @@ module.exports = {
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'clubUsers'})
       .exec(function(err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-45)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-45)foundPost err => '+err);
         return res.sendStatus(500);
       } else{
         var isModerator = checkRank2(foundPost.postClub.clubUsers,req.user._id,2);
@@ -1415,7 +1414,7 @@ module.exports = {
     } else{
       Post.findById(req.params.post_id, function(err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+req.user._id+' => (posts-46)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (posts-46)foundPost err => '+err);
         return res.sendStatus(500);
       } else{
         var i, k; var clickIdFound = false, otherIdFound = false;
@@ -1443,7 +1442,7 @@ module.exports = {
             if(otherIdFound == true){
               User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
                 if(err || !updateUser){
-                  console.log(Date.now()+' : '+req.user._id+' => (posts-47)updateUser err:- '+JSON.stringify(err, null, 2));
+                  logger.error(req.user._id+' : (posts-47)updateUser err => '+err);
                   return res.sendStatus(500);
                 }
               });
@@ -1470,7 +1469,7 @@ module.exports = {
           if(clickIdFound == true){
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
               if(err || !updateUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-48)updateUser err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-48)updateUser err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -1489,7 +1488,7 @@ module.exports = {
             foundPost.heartCount +=1;
             User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
               if(err || !updateUser){
-                console.log(Date.now()+' : '+req.user._id+' => (posts-49)updateUser err:- '+JSON.stringify(err, null, 2));
+                logger.error(req.user._id+' : (posts-49)updateUser err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -1506,7 +1505,7 @@ module.exports = {
   postsModVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (posts-50)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (posts-50)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;

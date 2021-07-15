@@ -1,13 +1,13 @@
 const Post      = require('../models/post'),
   User          = require('../models/user'),
   Comment       = require('../models/comment'),
-  {environment} = require('../config/env_switch'),
   clConfig      = require('../config/cloudinary'),
-  s3Config      = require('../config/s3');
+  s3Config      = require('../config/s3'),
+  logger        = require('../logger');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -16,7 +16,7 @@ module.exports = {
   commentsCreate(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (comments-1)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (comments-1)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -27,7 +27,7 @@ module.exports = {
         }
       }, {fields: {count:1}, upsert: true, new: true}, function(err, newCommentBucket){
       if(err || !newCommentBucket){
-        console.log(Date.now()+' : '+req.user._id+' => (comments-2)newCommentBucket err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (comments-2)newCommentBucket err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -55,7 +55,7 @@ module.exports = {
     Comment.findOne({_id: req.params.bucket_id}, {comments: {$elemMatch: {_id: req.params.comment_id}}},
     function(err, foundBucket){
     if(err || !foundBucket){
-      console.log(Date.now()+' : '+req.user._id+' => (comments-3)foundBucket err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (comments-3)foundBucket err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -75,7 +75,7 @@ module.exports = {
     Comment.updateOne({_id: req.params.bucket_id, 'comments._id': req.params.comment_id}, 
     {$set: {'comments.$.text': req.body.text}}, function(err, updateBucket){
     if(err || !updateBucket){
-      console.log(Date.now()+' : '+req.user._id+' => (comments-4)updateBucket err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (comments-4)updateBucket err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -88,7 +88,7 @@ module.exports = {
   commentsDelete(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+req.user._id+' => (comments-5)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (comments-5)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -96,7 +96,7 @@ module.exports = {
       {$inc: {count: -1}, $pull: {comments: {_id: req.params.comment_id}}}, {fields: {count:1} , new: true}, 
       function(err, deleteBucket){
       if(err || !deleteBucket){
-        console.log(Date.now()+' : '+req.user._id+' => (comments-6)deleteBucket err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (comments-6)deleteBucket err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -124,7 +124,7 @@ module.exports = {
     Post.findById(req.params.post_id).select({topic: 1, commentBuckets: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+'(comments-7)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error('(comments-7)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
       if(foundPost.topic == '' && foundPost.commentBuckets != ''){
@@ -132,14 +132,14 @@ module.exports = {
         .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
-          console.log(Date.now()+' : '+'(comments-8)foundBucket err:- '+JSON.stringify(err, null, 2));
+          logger.error('(comments-8)foundBucket err => '+err);
           return res.sendStatus(500);
         } else if(!err && foundBucket != ''){
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               CA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               CA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].comments[j].commentAuthor.id.profilePicId;
             }
           }
@@ -175,7 +175,7 @@ module.exports = {
     {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}}, new: true},
     function(err, notFoundComment){
     if(err){
-      console.log(Date.now()+' : '+req.user._id+' => (comments-9)notFoundComment err:- '+JSON.stringify(err, null, 2));
+      logger.error(req.user._id+' : (comments-9)notFoundComment err => '+err);
       return res.sendStatus(500);
     } else{
       if(notFoundComment){
@@ -188,7 +188,7 @@ module.exports = {
         {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}}, new: true},
         function(err, foundComment){
         if(err){
-          console.log(Date.now()+' : '+req.user._id+' => (comments-10)foundComment err:- '+JSON.stringify(err, null, 2));
+          logger.error(req.user._id+' : (comments-10)foundComment err => '+err);
           return res.sendStatus(500);
         } else{
           res.json({foundComment, csrfToken: res.locals.csrfToken, cdn_prefix});

@@ -22,13 +22,13 @@ const clubSchema = new Schema({
     college: String,
     category: String
   },
-  updates: [{
-    pusherId: this,
-    pusherName: String,
-    news: String,
-    eventDate: Date,
-    pushedAt: {type: Date, default: Date.now}
-  }],
+  // updates: [{
+  //   pusherId: this,
+  //   pusherName: String,
+  //   news: String,
+  //   eventDate: Date,
+  //   pushedAt: {type: Date, default: Date.now}
+  // }],
   followerCount: {type: Number, default: 0},
   allFollowerIds: [{
     type: Schema.Types.ObjectId,

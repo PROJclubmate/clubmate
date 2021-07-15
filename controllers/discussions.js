@@ -1,13 +1,13 @@
 const Post      = require('../models/post'),
   User          = require('../models/user'),
   Discussion    = require('../models/discussion'),
-  {environment} = require('../config/env_switch'),
   clConfig      = require('../config/cloudinary'),
-  s3Config      = require('../config/s3');
+  s3Config      = require('../config/s3'),
+  logger        = require('../logger');
 
-if(environment === 'dev'){
+if(process.env.ENVIRONMENT === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
-} else if (environment === 'prod'){
+} else if (process.env.ENVIRONMENT === 'prod'){
   var cdn_prefix = 'https://d367cfssgkev4p.cloudfront.net/';
 }
 
@@ -17,7 +17,7 @@ module.exports = {
     if((req.body.text && req.body.text != '') || (req.files && req.files != '')){
       Post.findById(req.params.post_id, async function(err, foundPost){
       if(err || !foundPost){
-        console.log(Date.now()+' : '+req.user._id+' => (discussions-1)foundPost err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (discussions-1)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -26,14 +26,14 @@ module.exports = {
           multiImagesArr = [];
           // upload images
           for(var file of req.files){
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               var result = await clConfig.cloudinary.v2.uploader.upload(file.path, clConfig.subPostImages_1080_obj);
               // add images to multiImagesArr array
               multiImagesArr.push({
                 image: result.secure_url,
                 imageId: result.public_id
               });
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               var result = await s3Config.uploadFile(file, 'subPostImages/', 1080);
               s3Config.removeTmpUpload(file.path);
               // add images to multiImagesArr array
@@ -50,7 +50,7 @@ module.exports = {
           text: req.body.text, images: multiImagesArr, quoteNum: req.body.quoteNum, quoteText: req.body.quoteText}}
         }, {fields: {count:1} , upsert: true, new: true}, function(err, newSubPostBucket){
         if(err || !newSubPostBucket){
-          console.log(Date.now()+' : '+req.user._id+' => (discussions-2)newSubPostBucket err:- '+JSON.stringify(err, null, 2));
+          logger.error(req.user._id+' : (discussions-2)newSubPostBucket err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -79,16 +79,16 @@ module.exports = {
   },
 
   discussionsPagination(req, res, next){
-    if(environment === 'dev'){
+    if(process.env.ENVIRONMENT === 'dev'){
       var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-    } else if (environment === 'prod'){
+    } else if (process.env.ENVIRONMENT === 'prod'){
       var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
     }
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
     .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
-      console.log(Date.now()+' : '+'(discussions-3)foundPost err:- '+JSON.stringify(err, null, 2));
+      logger.error('(discussions-3)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
       if(foundPost.topic != '' && foundPost.subpostBuckets != ''){
@@ -101,14 +101,14 @@ module.exports = {
         .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundBucket){
         if(err || !foundBucket){
-          console.log(Date.now()+' : '+'(discussions-4)foundBucket err:- '+JSON.stringify(err, null, 2));
+          logger.error('(discussions-4)foundBucket err => '+err);
           return res.sendStatus(500);
         } else{
           var sPA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].subPosts.length;j++){
-            if(environment === 'dev'){
+            if(process.env.ENVIRONMENT === 'dev'){
               sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
-            } else if (environment === 'prod'){
+            } else if (process.env.ENVIRONMENT === 'prod'){
               sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket[0].subPosts[j].subPostAuthor.id.profilePicId;
             }
           }
@@ -144,7 +144,7 @@ module.exports = {
       {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: {$ne: req.user._id}}}}, new: true},
       function(err, foundClickId){
       if(err){
-        console.log(Date.now()+' : '+req.user._id+' => (discussions-5)foundClickId err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (discussions-5)foundClickId err => '+err);
         return res.sendStatus(500);
       } else{
         if(foundClickId){
@@ -157,7 +157,7 @@ module.exports = {
           {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: {$ne: req.user._id}}}}, new: true},
           function(err, foundSecondId){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (discussions-6)foundSecondId err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (discussions-6)foundSecondId err => '+err);
             return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -166,7 +166,7 @@ module.exports = {
             {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: req.user._id}}}, new: true},
             function(err, notFoundClickId){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (discussions-7)notFoundClickId err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (discussions-7)notFoundClickId err => '+err);
               return res.sendStatus(500);
             } else{
               res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
@@ -185,7 +185,7 @@ module.exports = {
       {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: {$ne: req.user._id}}}}, new: true},
       function(err, foundClickId){
       if(err){
-        console.log(Date.now()+' : '+req.user._id+' => (discussions-8)foundClickId err:- '+JSON.stringify(err, null, 2));
+        logger.error(req.user._id+' : (discussions-8)foundClickId err => '+err);
         return res.sendStatus(500);
       } else{
         if(foundClickId){
@@ -198,7 +198,7 @@ module.exports = {
           {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, likeUserIds: {$ne: req.user._id}}}}, new: true},
           function(err, foundSecondId){
           if(err){
-            console.log(Date.now()+' : '+req.user._id+' => (discussions-9)foundSecondId err:- '+JSON.stringify(err, null, 2));
+            logger.error(req.user._id+' : (discussions-9)foundSecondId err => '+err);
             return res.sendStatus(500);
           } else{
             Discussion.findOneAndUpdate({_id: req.params.bucket_id, 
@@ -207,7 +207,7 @@ module.exports = {
             {fields: {subPosts: {$elemMatch: {_id: req.params.subpost_id, dislikeUserIds: req.user._id}}}, new: true},
             function(err, notFoundClickId){
             if(err){
-              console.log(Date.now()+' : '+req.user._id+' => (discussions-10)notFoundClickId err:- '+JSON.stringify(err, null, 2));
+              logger.error(req.user._id+' : (discussions-10)notFoundClickId err => '+err);
               return res.sendStatus(500);
             } else{
               res.json({foundClickId: notFoundClickId, csrfToken: res.locals.csrfToken, cdn_prefix});
