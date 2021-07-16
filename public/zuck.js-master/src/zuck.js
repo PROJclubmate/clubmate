@@ -1081,7 +1081,7 @@ module.exports = (window => {
         zuck.data[storyId].name = story.querySelector('.name').innerText;
         zuck.data[storyId].link = story.querySelector('.item-link').getAttribute('href');
         zuck.data[storyId].lastUpdated = story.getAttribute('data-last-updated');
-        zuck.data[storyId].seen = seen;
+        zuck.data[storyId].seen = seen; // Here i am, rock you like a hurricane
 
         if (!zuck.data[storyId].items) {
           zuck.data[storyId].items = [];
@@ -1220,7 +1220,7 @@ module.exports = (window => {
       } catch (e) {}
     };
 
-    const getLocalData = function (key) {
+    const getLocalData = function (key, seenStoryIdsArr) {
       if (option('localStorage')) {
         const keyName = `zuck-${id}-${key}`;
 
@@ -1228,14 +1228,23 @@ module.exports = (window => {
           ? JSON.parse(window.localStorage[keyName])
           : false;
       } else {
-        return false;
+        // return false;
+        const seenStoryIdsObj = {};
+        for(var i=0;i<seenStoryIdsArr.length;i++){
+          var keyName = seenStoryIdsArr[i];
+          seenStoryIdsObj[keyName] = true;
+        }
+        return seenStoryIdsObj;
       }
     };
 
     /* api */
     zuck.data = option('stories') || {};
+    const seenStoryIdsArr = zuck.data.filter(function(obj){ return obj.seen == true }).map(function(story){
+      return story.id;
+    });
     zuck.internalData = {};
-    zuck.internalData.seenItems = getLocalData('seenItems') || {};
+    zuck.internalData.seenItems = getLocalData('seenItems', seenStoryIdsArr) || {};
 
     zuck.add = zuck.update = (data, append) => {
       const storyId = get(data, 'id');
@@ -1250,7 +1259,7 @@ module.exports = (window => {
       }
 
       if (zuck.internalData.seenItems[storyId] === true) {
-        data.seen = true;
+        data.seen = true; // do this without Local data, if key seen:true is given
       }
 
       data.currentPreview = preview;
@@ -1416,7 +1425,7 @@ module.exports = (window => {
       }
 
       if (!option('reactive')) {
-        const seenItems = getLocalData('seenItems');
+        const seenItems = getLocalData('seenItems', seenStoryIdsArr);
 
         each(Object.keys(seenItems), (keyIndex, key) => {
           if (zuck.data[key]) {

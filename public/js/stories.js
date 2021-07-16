@@ -73,7 +73,7 @@ const stories = new Zuck('stories', {
 			name:'The Weeknd',
 			link:'',
 			lastUpdated:1492665454,
-			seen: false,
+			seen: true,
 			items: [
 			buildItem('starboy', 'photo', 5, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/8.jpg', '', '', '', false, 1492665454)
 			]
