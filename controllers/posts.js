@@ -238,7 +238,7 @@ module.exports = {
           Post.aggregate([
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
             ]}},
@@ -355,7 +355,7 @@ module.exports = {
         } else if(req.user.sortByKey === 2){
           Post.find({
             postClub: {$in: req.user.followingClubIds},
-            createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))},
+            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: {$in: [0,1,2]}, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
@@ -405,7 +405,7 @@ module.exports = {
           Post.aggregate([
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
             ]}},
@@ -516,7 +516,7 @@ module.exports = {
         if(req.user.sortByKey === 1){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},
@@ -631,7 +631,7 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 2){
           Post.find({
-            createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}, 
+            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}, 
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
@@ -680,7 +680,7 @@ module.exports = {
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}, {topic: ''}
             ]}},
@@ -790,7 +790,7 @@ module.exports = {
     } else{
       Post.aggregate([
         {$match: {$and: [
-          {createdAt: {$gte: new Date(new Date() - (2*365*60*60*24*1000))}}, 
+          {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
           {_id: {$nin: seenIds}}, 
           {moderation: 0}, {privacy: 0}, {topic: ''}
         ]}},

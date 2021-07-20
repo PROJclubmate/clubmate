@@ -1,6 +1,6 @@
 /* dist/skins/facesnap */
 .stories.facesnap .story > .item-link > .item-preview {
-  box-shadow: 0 0 1px 0 #999;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,0.25);
   background: #00bfa5;
 }
 .stories.facesnap .story.seen > .item-link > .item-preview {
@@ -11,6 +11,7 @@
 }
 .stories.facesnap .story > .item-link > .item-preview img {
   border-radius: 1.9375rem !important;
+  background-color: #e0e0e0;
 }
 @media screen and (max-width: 481px){
   .stories.facesnap .story > .item-link > .item-preview {

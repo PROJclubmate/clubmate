@@ -32,7 +32,9 @@
 		</div>
 		<% if(college_page.cover && college_page.cover != ''){  %>
 			<div class="greyback">
-				<img class="cover college-cover mobileblurred" src="<%= college_page.cover %>">
+				<div class="college-cover-div">
+					<img id="college-cover" class="cover mobileblurred desktopFit" src="<%= college_page.cover %>">
+				</div>
 			</div>
 		<% } %>
 		<div class="border-light" style="z-index: 1;">
@@ -142,9 +144,9 @@
 					<% if(college_page.allClubs[i].category != ''){ %>
 						<% if(college_page.allClubs[i].categoryCount>0){ %>
 							<% if(college_page.allClubs[college_page.allClubs.length-1].category == college_page.allClubs[i].category){ %>
-								<div class="boldtext category">
+								<div class="mobilebold category">
 							<% } else{ %>
-								<div class="boldtext category mt-3">
+								<div class="mobilebold category mt-4">
 							<% } %>
 								<%= college_page.allClubs[i].category %> (<%= college_page.allClubs[i].categoryCount %>)
 							</div>
@@ -152,9 +154,9 @@
 					<% } else{ %>
 						<% if(college_page.allClubs[i].categoryCount>0){ %>
 							<% if(college_page.allClubs[college_page.allClubs.length-1].category == college_page.allClubs[i].category){ %>
-								<div class="boldtext category">
+								<div class="mobilebold category">
 							<% } else{ %>
-								<div class="boldtext category mt-3">
+								<div class="mobilebold category mt-4">
 							<% } %>
 								<span class="redcolor text-xl lineheight3 mr-1">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
 							</div>

@@ -170,6 +170,14 @@ $('#input_topic').on('input', function(e){
   }
 });
 
+$('#description').on('input', function(e){
+  if($(this).val() != ''){
+    $('#preview-postimg').removeClass('invisible');
+  } else{
+    $('#preview-postimg').addClass('invisible');
+  }
+});
+
 $('#inputPassword').on('input', function(e){
   if($(this).val() != ''){
     $('#pass_show').css('display','block');
@@ -374,9 +382,19 @@ $('#featuredImage4').change(function(){
 
 // Label path for input image file
 $('#inputImage').change(function(){
-	var file = $('#inputImage')[0].files[0].name;
-	var truncated = file.trunc(15);
+	var fileName = $('#inputImage')[0].files[0].name;
+	var truncated = fileName.trunc(15);
 	$(this).prev('label').text(truncated);
+
+  var file = this.files[0];
+  if (file){
+    let reader = new FileReader();
+    reader.onload = function(event){
+      $('#preview-postimg').attr('src', event.target.result);
+    }
+    reader.readAsDataURL(file);
+    $('#preview-postimg').removeClass('invisible').addClass('active');
+  }
 });
 $('#inputImages10').change(function(){
 	var fileNum = $('#inputImages10')[0].files.length;
@@ -384,20 +402,20 @@ $('#inputImages10').change(function(){
 	$(this).prev('label').text(labelText);
 });
 $('#inputprofilePic').change(function(){
-	var file = $('#inputprofilePic')[0].files[0].name;
-	var truncated = file.trunc(15);
+	var fileName = $('#inputprofilePic')[0].files[0].name;
+	var truncated = fileName.trunc(15);
 	$(this).prev('label').text(truncated);
 	$('#inputprofilePicSubmitBtn').css('display','block');
 });
 $('#inputclubAvatar').change(function(){
-	var file = $('#inputclubAvatar')[0].files[0].name;
-	var truncated = file.trunc(15);
+	var fileName = $('#inputclubAvatar')[0].files[0].name;
+	var truncated = fileName.trunc(15);
 	$(this).prev('label').text(truncated);
   $('#inputclubAvatarSubmitBtn').css('display','block');
 });
 $('#inputroomAvatar').change(function(){
-	var file = $('#inputroomAvatar')[0].files[0].name;
-	var truncated = file.trunc(15);
+	var fileName = $('#inputroomAvatar')[0].files[0].name;
+	var truncated = fileName.trunc(15);
 	$(this).prev('label').text(truncated);
   $('#inputroomAvatarSubmitBtn').css('display','block');
 });
@@ -568,16 +586,32 @@ $(function (){
 
 // College cover
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'colleges'){
+  // Setting height of list based on window height instead of using non performant css calc property
+  var vh = $(window).height();
+  if(window.innerWidth > 768){
+    var heightVal = vh - 16 - 50;
+  } else if(window.innerWidth <= 768 && window.innerWidth > 480){
+    var heightVal = vh - 16 - 44;
+  } else if(window.innerWidth <= 480 && window.innerWidth > 360){
+    var heightVal = vh - 16 - 50;
+  } else if(window.innerWidth <= 360){
+    var heightVal = vh - 16 - 42;
+  }
+  var height = 'height:'+heightVal+'px !important';
+  $('#college-scroll').css('cssText', height);
+
   var coverTall = false;
   $('#college-scroll').scroll(function(){
     if(!coverTall){
       if($('#college-scroll').scrollTop() > 116){
         coverTall = true;
         if(window.innerWidth <= 768){
-          $('img.college-cover').height(200).removeClass('mobileblurred');
+          $('.college-cover-div').height(200);
+          $('img#college-cover').removeClass('mobileblurred');
           $('.college-infodiv').addClass('nodisplay');
         } else{
-          $('img.college-cover').height(350);
+          $('.college-cover-div').height(350);
+          $('img#college-cover').removeClass('desktopFit');
         }
       }
     }

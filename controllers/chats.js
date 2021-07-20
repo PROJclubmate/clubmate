@@ -314,100 +314,121 @@ module.exports = {
   },
 
   chatsListClubRooms(req, res, next){
-    var clubIds = req.user.userClubs.map(function(userClub){
+    var userClubIds = req.user.userClubs.map(function(userClub){
       return userClub.id;
     });
-    Club.find({_id: {$in: clubIds}, conversationId: {$exists: true}, isActive: true})
-    .populate({path: 'chatRooms.conversationId', select: 'allParticipantIds participantCount'})
-    .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
-    .exec(function(err, foundClubs){
-    if(err){
-      logger.error(req.user._id+' : (chats-11)foundClubs err => '+err);
-      req.flash('error', 'Something went wrong :(');
-    } else{
-      var openedClub = {};
-      openedClub['id'] = req.params.club_id;
-      openedClub['name'] = null;
-      var Clubs_50_clubAvatar = [];
-      for(var i=0;i<foundClubs.length;i++){
-        if(foundClubs[i]._id == req.params.club_id){
-          openedClub['name'] = foundClubs[i].name;
-          openedClub['chatRoomsCount'] = foundClubs[i].chatRoomsCount;
-          openedClub['chatRooms'] = foundClubs[i].chatRooms;
-          openedClub['conversationId'] = foundClubs[i].conversationId;
-          for(var j=0;j<openedClub.chatRooms.length;j++){
-            if(openedClub.chatRooms[j].conversationId.allParticipantIds.includes(req.user._id)){
-              openedClub.chatRooms[j].isParticipant = true;
-            } else{
-              openedClub.chatRooms[j].isParticipant = false;
+    if(userClubIds.includes(req.params.club_id)){
+      Club.find({_id: {$in: userClubIds}, conversationId: {$exists: true}, isActive: true})
+      .populate({path: 'chatRooms.conversationId', select: 'allParticipantIds participantCount'})
+      .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
+      .exec(function(err, foundClubs){
+      if(err || !foundClubs){
+        logger.error(req.user._id+' : (chats-11)foundClubs err => '+err);
+        req.flash('error', 'Something went wrong :(');
+      } else{
+        var openedClub = {};
+        openedClub['id'] = null;
+        var Clubs_50_clubAvatar = [];
+        for(var i=0;i<foundClubs.length;i++){
+          if(foundClubs[i]._id == req.params.club_id){
+            openedClub['id'] = foundClubs[i]._id;
+            openedClub['name'] = foundClubs[i].name;
+            openedClub['chatRoomsCount'] = foundClubs[i].chatRoomsCount;
+            openedClub['chatRooms'] = foundClubs[i].chatRooms;
+            openedClub['conversationId'] = foundClubs[i].conversationId;
+            for(var j=0;j<openedClub.chatRooms.length;j++){
+              if(openedClub.chatRooms[j].conversationId.allParticipantIds.includes(req.user._id)){
+                openedClub.chatRooms[j].isParticipant = true;
+              } else{
+                openedClub.chatRooms[j].isParticipant = false;
+              }
             }
           }
+          if(process.env.ENVIRONMENT === 'dev'){
+            Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
+          }
         }
-        if(process.env.ENVIRONMENT === 'dev'){
-          Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
-        } else if (process.env.ENVIRONMENT === 'prod'){
-          Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
+        if(openedClub.id == null){
+          openedClub['id'] = foundClubs[0]._id;
+          openedClub['name'] = foundClubs[0].name;
+          openedClub['chatRoomsCount'] = foundClubs[0].chatRoomsCount;
+          openedClub['chatRooms'] = foundClubs[0].chatRooms;
+          openedClub['conversationId'] = foundClubs[0].conversationId;
         }
+        openedClub.chatRooms.sort(function(a, b){
+          return b.conversationId.participantCount - a.conversationId.participantCount;
+        });
+        openedClub.chatRooms.sort(function(a, b){
+          return b.isParticipant - a.isParticipant;
+        });
+        res.render('chats/index_rooms', {clubs: foundClubs, Clubs_50_clubAvatar, openedClub, conversationId: null,
+        convClubId: null, currentUserId: req.user._id, currentUser: req.user, openedRoomConvId: null, chatHeadName: null,
+        cdn_prefix});
+        return User.updateOne({_id: req.user._id}, 
+        {$set: {lastOpenedChatListClub: req.params.club_id}, $currentDate: {lastActive: true}}).exec();
       }
-      openedClub.chatRooms.sort(function(a, b){
-        return b.conversationId.participantCount - a.conversationId.participantCount;
       });
-      openedClub.chatRooms.sort(function(a, b){
-        return b.isParticipant - a.isParticipant;
-      });
-      res.render('chats/index_rooms', {clubs: foundClubs, Clubs_50_clubAvatar, openedClub, conversationId: null,
-      convClubId: null, currentUserId: req.user._id, currentUser: req.user, openedRoomConvId: null, chatHeadName: null,
-      cdn_prefix});
-      return User.updateOne({_id: req.user._id}, 
-      {$set: {lastOpenedChatListClub: req.params.club_id}, $currentDate: {lastActive: true}}).exec();
+    } else{
+      logger.warn(req.user._id+' : memberCheck fail :Cannot see club chat rooms');
+      req.flash('error', 'You are not a member of this club');
+      res.redirect('back');
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
-    });
   },
 
   chatsListClubRoomOpen(req, res, next){
-    var clubIds = req.user.userClubs.map(function(userClub){
+    var userClubIds = req.user.userClubs.map(function(userClub){
       return userClub.id;
     });
-    Club.find({_id: {$in: clubIds}, conversationId: {$exists: true}, isActive: true})
-    .populate({path: 'chatRooms.conversationId', select: 'allParticipantIds participantCount'})
-    .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
-    .exec(function(err, foundClubs){
-    if(err){
-      logger.error(req.user._id+' : (chats-12)foundClubs err => '+err);
-      req.flash('error', 'Something went wrong :(');
-    } else{
-      var openedClub = {};
-      openedClub['id'] = req.params.club_id;
-      openedClub['name'] = req.query.club;
-      var Clubs_50_clubAvatar = [];
-      for(var i=0;i<foundClubs.length;i++){
-        if(foundClubs[i]._id == req.params.club_id){
-          openedClub['conversationId'] = foundClubs[i].conversationId;
-          openedClub['chatRoomsCount'] = foundClubs[i].chatRoomsCount;
-          openedClub['chatRooms'] = foundClubs[i].chatRooms;
-        }
-        if(process.env.ENVIRONMENT === 'dev'){
-          Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
-        } else if (process.env.ENVIRONMENT === 'prod'){
-          Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
-        }
-      }
-      if(req.query.conversationId == ''){
-        var convClubId = req.params.club_id;
-        var conversationId = null;
+    if(userClubIds.includes(req.params.club_id)){
+      Club.find({_id: {$in: userClubIds}, conversationId: {$exists: true}, isActive: true})
+      .populate({path: 'chatRooms.conversationId', select: 'allParticipantIds participantCount'})
+      .select({_id: 1, name: 1, avatar: 1, avatarId: 1, conversationId: 1, chatRooms: 1, chatRoomsCount: 1})
+      .exec(function(err, foundClubs){
+      if(err || !foundClubs){
+        logger.error(req.user._id+' : (chats-12)foundClubs err => '+err);
+        req.flash('error', 'Something went wrong :(');
       } else{
-        var conversationId = openedClub.conversationId;
-        var convClubId = req.params.club_id;
+        var openedClub = {};
+        openedClub['id'] = req.params.club_id;
+        openedClub['name'] = req.query.club;
+        var Clubs_50_clubAvatar = [];
+        for(var i=0;i<foundClubs.length;i++){
+          if(foundClubs[i]._id == req.params.club_id && foundClubs[i].name == req.query.club){
+            openedClub['conversationId'] = foundClubs[i].conversationId;
+            openedClub['chatRoomsCount'] = foundClubs[i].chatRoomsCount;
+            openedClub['chatRooms'] = foundClubs[i].chatRooms;
+          }
+          if(process.env.ENVIRONMENT === 'dev'){
+            Clubs_50_clubAvatar[i] = clConfig.cloudinary.url(foundClubs[i].avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            Clubs_50_clubAvatar[i] = s3Config.thumb_100_prefix+foundClubs[i].avatarId;
+          }
+        }
+        if(req.query.conversationId == ''){
+          var convClubId = req.params.club_id;
+          var conversationId = null;
+        } else{
+          var conversationId = openedClub.conversationId;
+          var convClubId = req.params.club_id;
+        }
+        var chatHeadName = req.query.roomName;
+        var openedRoomConvId = req.query.convId;
+        res.render('chats/index_rooms', {clubs: foundClubs, Clubs_50_clubAvatar, openedClub, conversationId, 
+        convClubId, currentUserId: req.user._id, currentUser: req.user, chatHeadName, openedRoomConvId,
+        cdn_prefix});
+        return User.updateOne({_id: req.user._id}, 
+        {$set: {lastOpenedChatListClub: req.params.club_id}, $currentDate: {lastActive: true}}).exec();
       }
-      var chatHeadName = req.query.roomName;
-      var openedRoomConvId = req.query.convId;
-      res.render('chats/index_rooms', {clubs: foundClubs, Clubs_50_clubAvatar, openedClub, conversationId, 
-      convClubId, currentUserId: req.user._id, currentUser: req.user, chatHeadName, openedRoomConvId,
-      cdn_prefix});
-      return User.updateOne({_id: req.user._id}, 
-      {$set: {lastOpenedChatListClub: req.params.club_id}, $currentDate: {lastActive: true}}).exec();
+      });
+    } else{
+      logger.warn(req.user._id+' : memberCheck fail :Cannot open club chats');
+      req.flash('error', 'You are not a member of this club');
+      res.redirect('back');
+      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     }
-    });
   },
 
   chatsCreateNewRoom(req, res, next){
@@ -508,8 +529,8 @@ module.exports = {
       logger.error(req.user._id+' : (chats-16)foundClub err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
-      admin = checkRank(foundClub.clubUsers,req.user._id,1);
-      if(admin){
+      isAdmin = checkRank(foundClub.clubUsers,req.user._id,1);
+      if(isAdmin){
         var roomConversationId;
         for(var i=0;i<foundClub.chatRooms.length;i++){
           if(foundClub.chatRooms[i].conversationId.equals(req.params.room_id)){

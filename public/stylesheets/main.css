@@ -146,6 +146,7 @@ div.content{
   .search-bottompos.search-bottompos-desktop{width: calc(100% - 100px - 2rem) !important;}
   .btncollapse.btncollapse-info:hover{box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.3) !important;}
   .gradient-wrap.coverback{background-image: none !important;}
+  #college-cover.desktopFit{height: 116px;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -270,6 +271,7 @@ div.content{
   .mobilebold{font-weight: 500 !important;}
   .nav-link.burgernav{margin: 0.5rem 0.25rem !important;}
   .nav-link.burgernav.requests{margin: 0 0.25rem !important; color: #202020; text-shadow: none !important;}
+  .nav-link.burgernav.requests-active{color: #19ae69 !important; opacity: 1;}
   .helppad{padding: 0 1rem;}
   .helppad2{padding: 0 2.5rem;}
   .helpmar{margin-top: 6.5rem !important;}
@@ -346,7 +348,6 @@ div.content{
   .subpostdp{height: 28px !important; width: 28px !important;}
   .subPost-text{min-height: 2rem !important;}
   #drop-chat{padding-top: 0.375rem !important; padding-bottom: 0.375rem !important;}
-  #college-scroll{height: calc(100vh - 1rem - 42px) !important;}
   .chatlist-background{min-height: 100%; background-image: url(/images/chat.svg); background-size: 35vw;
     background-repeat: no-repeat; background-position: bottom;}
   .room-container{padding: 2rem 1rem 2rem 1rem !important;}
@@ -355,7 +356,7 @@ div.content{
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
   .college-infobtn{min-width: 56px; min-height: 56px;}
-  .college-cover.mobileblurred{filter: blur(3px);}
+  #college-cover.mobileblurred{filter: blur(3px);}
   .mail-wrap{padding-top: 0.375rem !important;}
   #club-info-mar{margin-top: 2rem !important;}
   .story-alt-plus{padding: 1.125rem 0 !important;}
@@ -1015,6 +1016,15 @@ div.card-title{
 .delete-form:hover{
   color: #ea0027;
 }
+#delete_profilePic-desktop{
+  position: absolute;
+  top: 0;
+  left: 4px;
+  height: 24px;
+  width: 24px;
+  padding: 0.15rem 0.375rem !important;
+  display: none;
+}
 .checked{
   color: #f48024;
 }
@@ -1153,6 +1163,7 @@ time.calendar span{
     white 5px
   );
   border-bottom: 0.5px solid lightgrey;
+  box-shadow: 0px 2px 3px -2px rgb(0, 0, 0, 0.15);
 }
 .collegename{
   font-size: 1.625rem;
@@ -1233,6 +1244,7 @@ time.calendar span{
   margin-bottom: 1rem;
 }
 .category{
+  opacity: 0.75;
   font-size: 0.75rem;
   color: grey;
   background-color: #ededed;
@@ -1296,7 +1308,7 @@ time.calendar span{
 .avatar{
   height: 200px;
 }
-.college-cover{
+.college-cover-div{
   height: 116px;
   overflow: hidden;
 }
@@ -1353,7 +1365,7 @@ a.nav-link{
 .nav-link.requests:focus, .nav-link.requests:hover{
   transition: ease-out 0.15s;
   background-color: #505050 !important;
-  color: #4aac71 !important;
+  color: #13d18f !important;
   text-shadow: none;
   padding: 0 0.5rem;
   border-radius: 1rem;
@@ -1361,8 +1373,7 @@ a.nav-link{
 .nav-link.requests-active{
   transition: ease-out 0.15s;
   background-color: #505050 !important;
-  color: #19ae69 !important;
-  opacity: 1;
+  color: #13d18f !important;
   padding: 0 0.5rem;
   border-radius: 1rem;
   text-shadow: none;
@@ -1415,6 +1426,18 @@ input[type="file"]#inputroomAvatar{
 }
 .custom-file-upload.noshadow{
   box-shadow: inset 0px 1px 1px rgba(255,255,255, 0.5) !important;
+}
+#preview-postimg{
+  height: 32px;
+  width: 32px;
+  position: absolute;
+  left: 0.5rem;
+}
+#preview-postimg:not(.active){
+  opacity: 0.5;
+}
+#preview-postimg.active{
+  object-fit: cover;
 }
 #edit-account-info{padding: 0;}
 .clear_updatex:hover{
@@ -1687,20 +1710,23 @@ input[type="file"]#inputroomAvatar{
   border-color: #8db9df;
   background-color: #8db9df;
 }
-.btn-info{
-  border-color: #ebf1f9;
+.btn.moderation.btn-light{
+  background-color: whitesmoke;
+  border-color: white;
+}
+.btn.moderation.btn-light:hover{
+  border-color: #e0e0e0;
+}
+.btn.moderation.btn-info{
+  border-color: white;
   background-color: white;
-  color: #407cc4;
+  color: #3384ff;
   font-weight: 500;
 }
-.btn-info:hover{
-  border-color: #1a90d9;
-  background-color: #1a90d9;
-  font-weight: 600;
-}
-.btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
-  border-color: #1470a9;
-  background-color: #1780c1;
+.btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
+  border-color: #d7e6f9;
+  background-color: white;
+  color: #3384ff;
 }
 .btn-success{
   border-color: #429a65 !important;
@@ -1777,9 +1803,13 @@ input[type="file"]#inputroomAvatar{
 }
 .btn.moderation{
   margin: -0.5rem 0;
-  border-bottom-width: 1px;
+  border-width: 1px;
   text-transform: uppercase;
-  border-style: dashed;
+}
+.btn.moderation:hover{
+  border-width: 2px;
+  border-style: solid;
+  transition: none;
 }
 .btn-participants{
   padding: 0.5rem;
@@ -1818,7 +1848,7 @@ input[type="file"]#inputroomAvatar{
   padding: 0.5rem;
 }
 a{color: #3384ff;}
-.green{color: #30c376;}
+.green{color: #46da99;}
 .grey{color: #454545;}
 .black{color: #343a40;}
 .pitchblack{color: #262626;}
@@ -1841,7 +1871,7 @@ a.red:hover{color: #d6312e;}
   color: #a8aaac !important;
 }
 .greencolor{
-  color: #30c376 !important;
+  color: #46da99 !important;
 }
 .greencolor2{
   color: #19ae69 !important;
@@ -2415,10 +2445,10 @@ button.downVotebtn:hover .fas.fa-caret-down{
   -webkit-text-stroke: 1.5px #f77f00;
 }
 button.heartbtn:hover{
-  color: #bb2020;
+  color: #cc1010;
 }
 .fa-heart.grey:hover{
-  color: #bb2020;
+  color: #cc1010;
 }
 #postbutton{
   border-radius: 0.25rem 0 0 0.25rem;
@@ -3582,7 +3612,7 @@ input.shadow:-webkit-autofill:focus{
 .hamburger.is-active .hamburger-inner::before,
 .hamburger.is-active .hamburger-inner::after{
   z-index: 10;
-  background-color: #19ae69;
+  background-color: #1abd86;
 }
 .hamburger:focus{
   outline: 0;
@@ -3601,7 +3631,7 @@ input.shadow:-webkit-autofill:focus{
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
   width: 0.875rem;
   height: 0.125rem;
-  background-color: #19ae69;
+  background-color: #1abd86;
   border-radius: 0.125rem;
   position: absolute;
   transition-property: transform;

@@ -200,24 +200,34 @@ button.gb.gb8:focus{
   border-color: var(--color-dark-600);
 }
 .btn.btn-success{
-  background-color: #2db582 !important;
-  border-color: #2db582 !important;
+  background-color: #26b07c !important;
+  border-color: #26b07c !important;
   border-bottom-width: 2px;
   color: white;
 }
 #postbutton{
-  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4), inset 0px 1px 1px rgba(255,255,255,0.15);
+  box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.45), inset 0px 1px 1px rgba(255,255,255,0.15);
+}
+#preview-postimg:not(.active){
+  filter: brightness(0.25);
 }
 select{
-  border-color: #2db582;
+  border-color: #26b07c;
 }
-.btn-info{
-  background-color: var(--color-dark-800);
-  border: 1px dashed var(--color-dark-700) !important;
-  color: var(--color-light-blue);
+.btn.moderation.btn-light{
+  background-color: var(--color-dark-800) !important;;
+  border-color: var(--color-dark-800);
+  color: var(--color-white-300);
 }
-.btn-info:hover{
-  color: var(--color-light-blue);
+.btn.moderation.btn-light:hover{
+  border-color: var(--color-dark-600);
+}
+.btn.moderation.btn-info{
+  background-color: var(--color-dark-800) !important;
+  border: 1px solid var(--color-dark-800) !important;
+}
+.btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
+  border: 2px solid var(--color-dark-500) !important;
 }
 .btn-college2{
   background-color: var(--color-dark-800) !important;
@@ -531,6 +541,9 @@ button.upVotebtn:hover, button.downVotebtn:hover{
   -webkit-text-stroke-width: 0.75px !important;
   -webkit-text-stroke-color: var(--color-dark-800);
 }
+button.heartbtn:hover, .fa-heart.grey:hover{
+  color: #bb2020;
+}
 .vote-subpost.fa-thumbs-up, .vote-subpost.fa-thumbs-down{
   -webkit-text-stroke: 0.25px var(--color-dark-800) !important;
 }
@@ -539,7 +552,7 @@ button.upVotebtn:hover, button.downVotebtn:hover{
   -webkit-text-stroke-color: lightslategrey;
 }
 .greencolor{
-  color: #2db582 !important;
+  color: #26b07c !important;
 }
 .greencolor3{
   color: var(--color-white-200) !important;
@@ -853,8 +866,9 @@ time.calendar{
   color: var(--color-white-300);
 }
 .stories.facesnap .story > .item-link > .item-preview {
-  background: #33ca91;
+  background: #2bc48a;
 }
 .stories.facesnap .story > .item-link > .item-preview img{
   border-color: var(--color-dark-800) !important;
+  background-color: var(--color-dark-800) !important;
 }
