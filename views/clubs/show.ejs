@@ -468,13 +468,15 @@
                 <% if(currentUser && 0 <= rank && rank <=2){ %>
                   <div class="d-flex story-alt-container scroll moz-scroll p-3">
                     <div class="d-flex flex-column mr-3">
-                      <div id="new_story" class="story-alt text-center" title="Coming Soon.."><i class="fas fa-plus text-xxxl story-alt-plus"></i></div>
-                      <div id="new_story_label" class="story-alt-label lightgrey2 text-xxxs boldtext pb-2">Add update</div>
+                      <div id="new_story" class="story-alt text-center">
+                        <div class="story-alt-plus">+</div>
+                      </div>
+                      <div id="new_story_label" class="story-alt-label lightgrey2 text-xxxs boldtext pb-2">New update</div>
                     </div>
                   </div>
                 <% } %>
                 <% if(currentUser && 0 <= rank && rank <=2){ %>
-                  <div class="p-3">
+                  <div class="p-3 mt-2">
                     <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
                   </div>
                 <% } %>

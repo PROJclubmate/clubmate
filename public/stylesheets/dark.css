@@ -784,11 +784,16 @@ time.calendar{
 .story-label{
   color: var(--color-white-400) !important;
 }
-.story-plus, #new_story_label{
+.story-alt-plus{
+  color: var(--color-dark-300);
+  font-weight: 300;
+}
+#new_story_label{
   color: #7a7b7c !important;
 }
 #new_story{
-  border-color: #7a7b7c !important;
+  border-color: #666666 !important;
+  background-color: var(--color-dark-900);
 }
 .page-link, .page-item.disabled .page-link{
   background-color: var(--color-dark-900);

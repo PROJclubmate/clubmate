@@ -104,6 +104,7 @@ div.content{
   .topicimgpad{padding-left: 0.5rem;}
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label2{width: 76px !important;}
+  .story-alt-plus{margin-top: -0.3125rem;}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 42px) !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{padding: 0.3125rem 0.625rem !important;}
@@ -187,7 +188,7 @@ div.content{
   .discover-icon{font-size: 1.75rem;}
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
   .story-alt-container{width: 65vw;}
-  .lb-absolute{position:  absolute; bottom: 0.25rem; left: 0.25rem;}
+  .lb-absolute{position:  absolute; bottom: 0; left: 0; margin: 0.5rem 0.25rem; width: calc(100% - 0.5rem);}
   #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
@@ -355,7 +356,6 @@ div.content{
   #college-cover.mobileblurred{filter: blur(3px);}
   .mail-wrap{padding-top: 0.375rem !important;}
   #club-info-mar{margin-top: 2rem !important;}
-  .story-alt-plus{padding: 1.125rem 0 !important;}
   #not_a_clubmember_margin{margin-top: 3.125rem;}
   .coverback.rcov.mobilepad{padding: 0 !important;}
 }
@@ -393,7 +393,6 @@ div.content{
   .nav-link.requests{font-size: 1.25rem !important;}
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label{width: 76px !important;}
-  .story-alt-plus{padding: 1.5rem 0 !important;}
   .navdp{height: 40px !important; width: 40px !important;}
   .collegedp{height: 62px !important; width: 62px !important;}
   button.vote{font-size: 1.625rem !important;}
@@ -544,7 +543,6 @@ div.content{
   .chat-input-tool{padding: 0 0.25rem !important;}
   .story-alt, .story-alt-loader{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
   .story-alt-label{width: 66px !important;}
-  .story-alt-plus{padding: 1.1875rem 0 !important;}
   .navdp{height: 36px !important; width: 36px !important;}
   .collegedp{height: 54px !important; width: 54px !important;}
   button.vote{font-size: 1.5rem !important;}
@@ -1707,8 +1705,9 @@ input[type="file"]#inputroomAvatar{
   background-color: #8db9df;
 }
 .btn.moderation.btn-light{
-  background-color: whitesmoke;
+  background-color: white;
   border-color: white;
+  color: inherit;
 }
 .btn.moderation.btn-light:hover{
   border-color: #e0e0e0;
@@ -1717,7 +1716,6 @@ input[type="file"]#inputroomAvatar{
   border-color: white;
   background-color: white;
   color: #216fdb;
-  font-weight: 500;
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   border-color: #d7e6f9;
@@ -1801,6 +1799,7 @@ input[type="file"]#inputroomAvatar{
   margin: -0.5rem 0;
   border-width: 1px;
   text-transform: uppercase;
+  font-weight: 500;
 }
 .btn.moderation:hover{
   border-width: 2px;
@@ -2983,9 +2982,16 @@ input.shadow:-webkit-autofill:focus{
   width: 65px;
   cursor: pointer;
 }
+#new_story{
+  background-color: #e0e0e0;
+  border-width: 1px;
+}
 .story-alt-plus{
-  color: silver;
-  padding: 1.4375rem 0;
+  font-size: 2.75rem;
+  color: #454545;
+  height: 100%;
+  line-height: 0;
+  padding: 50% 0 !important;
 }
 .story-alt-label{
   width: 65px;
