@@ -1,5 +1,5 @@
 <div class="card mt-0 border-light btncollapse-div" style="border-bottom-width: 1px !important;">
-  <div id="drop-chat" onclick="none_display('pushmsg');" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
+  <div id="drop-chat" onclick="none_display('pushmsg'); mobileShowChatsList();" class="btn btn-sm boldtext btncollapse text-left valign" data-toggle="collapse" data-target="#chatbox">
     <div class="text-sm mobilebold">
       <span><%= chatHeadName %></span>
       <% if(conversationId && conversationId != '' && isBlocked && isBlockedByFoundUser){ %>
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div id="chatbox" class="yellowback collapse btncollapse-content">
-    <div id="messages" class="messages2 card-body3 scroll moz-scroll">
+    <div id="messages_container" class="chats-feedpage card-body3 scroll moz-scroll">
       <div class="text-center" style="margin-bottom: -4.5rem;">
         <button id="load-prevMsgs-btn" class="chat-head4 nodisplay" value="" type="button">
           <span id="load-prevMsgs-span"></span>LOAD PREV
@@ -43,8 +43,8 @@
     </div>
   </div>
 </div>
-<div class="pushmsg chat-statusbar card mt-0">
-  <div id="status-chin" class="text-sm darkgrey valign ml-1">
+<div class="pushmsg card mt-0">
+  <div id="chat_status_chin" class="text-sm darkgrey valign ml-1">
     <div id="msg-status">Status: Idle</div>
     <div class="text-xs darkgrey chat-input-tool">
       <span class="emoji-panel2">

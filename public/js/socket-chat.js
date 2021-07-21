@@ -100,27 +100,27 @@ if(socket !== undefined){
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){
-          $("#messages").append(`
+          $("#messages_container").append(`
             <div class="chat-head3"> ${moment(message.createdAt).format("MMM Do YY")} </div>`);
         }
         if(message.authorId == data.currentUser){
           if(moment(message.createdAt).format('LT') != prevDate2){
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             } else{
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
                 <div class="chat-msg-div"> ${message.text} </div><div class="chat-head2">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             }
           } else{
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="flex-end mt-2"><div class="chat-msg2"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
             } else{
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
                 <div class="chat-msg-div"> ${message.text} </div></div></div>`);
             }
@@ -128,21 +128,21 @@ if(socket !== undefined){
         } else{
           if(moment(message.createdAt).format('LT') != prevDate2){
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             } else{
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
                 <div class="chat-msg-div"> ${message.text} </div><div class="chat-head">
                 ${moment(message.createdAt).format('LT')} </div></div></div>`);
             }
           } else{
             if(prevAuthorId != message.authorId || moment(message.createdAt).format("MMM Do YY") != prevDate){
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div class="mt-2"><div class="chat-msg"><div class="chat-msg-div"> ${message.text} </div></div></div>`);
             } else{
-              $("#messages").append(`
+              $("#messages_container").append(`
                 <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
                 <div class="chat-msg-div"> ${message.text} </div></div></div>`);
             }
@@ -161,18 +161,18 @@ if(socket !== undefined){
     var prevAuthorId = $('#lastMsgBy').attr('value');
     if(currentUserId == data.authorId){
       if(data.authorId == prevAuthorId){
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="flex-end"><div class="chat-msg2 chat-msg-div" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;"> ${data.composedMessage} </div></div>`);
       } else{
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="flex-end mt-2"><div class="chat-msg2 chat-msg-div"> ${data.composedMessage} </div></div>`);
       }
     } else{
       if(data.authorId == prevAuthorId){
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div><div class="chat-msg chat-msg-div" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"> ${data.composedMessage} </div></div>`);
       } else{
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="mt-2"><div class="chat-msg chat-msg-div"> ${data.composedMessage} </div></div>`);
       }
     }
@@ -182,7 +182,7 @@ if(socket !== undefined){
   function getMessages(conversation){
     if(conversation.conversationId == ''){
       $('#load-prevMsgs-btn').addClass('nodisplay');
-      $("#messages").append(`
+      $("#messages_container").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
     } else{
       $.get('/chat/'+conversation.conversationId, (data) =>{
@@ -307,28 +307,28 @@ if(socket !== undefined){
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message, j){
         if(moment(message.createdAt).format("MMM Do YY") != prevDate){
-          $("#messages").append(`
+          $("#messages_container").append(`
             <div class="chat-head3"> ${moment(message.createdAt).format("MMM Do YY")} </div>`);
         }
         if(message.authorId._id == data.currentUser){
           if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
-            $("#messages").append(`
+            $("#messages_container").append(`
               <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span> ${data.firstName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="clubchat-msg-div"> ${message.text}</div> </div></div>`);
           } else{
-            $("#messages").append(`
+            $("#messages_container").append(`
               <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
               <div class="clubchat-msg-div"> ${message.text}</div> </div></div>`);
           }
         } else{
           if(prevAuthorId != message.authorId._id || moment(message.createdAt).format("MMM Do YY") != prevDate){
-            $("#messages").append(`
+            $("#messages_container").append(`
               <div class="d-flex flex-row"><div>
               <a href="/users/${message.authorId._id}"><img class="chatdp rounded-circle" src="${data.MA_50_profilePic[i][j]}"></a></div>
               <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"> ${message.authorName} </span>
               <span> ${moment(message.createdAt).format('LT')} </span></div><div class="clubchat-msg-div"> ${message.text}</div> </div></div></div>`);
           } else{
-            $("#messages").append(`
+            $("#messages_container").append(`
               <div class="d-flex flex-row"><div>
               <a href="/users/${message.authorId._id}"><img class="chatdp rounded-circle transparent2" src="${data.MA_50_profilePic[i][j]}"></a></div>
               <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;"><div class="clubchat-msg-div"> ${message.text}</div> </div></div></div>`);
@@ -347,25 +347,25 @@ if(socket !== undefined){
     var prevAuthorId = $('#lastMsgBy').attr('value');
     if(currentUserId == data.authorId){
       if(data.authorId == prevAuthorId){
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="flex-end"><div class="chat-msg2" style="border-radius: 0.5rem 0.375rem 0.5rem 0.5rem;">
           <div class="chat-head2 chat-head-clubpad"><span></span> ${currFirstName} </div>
           <div class="clubchat-msg-div"> ${data.composedMessage} </div></div></div>`);
       } else{
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="flex-end"><div class="chat-msg2"><div class="chat-head2 chat-head-clubpad"><span></span> ${currFirstName} </div>
           <div class="clubchat-msg-div"> ${data.composedMessage} </div></div></div>`);
       }
     } else{
       if(data.authorId == prevAuthorId){
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="d-flex flex-row"><div>
           <a href="/users/${data.authorId}"><img class="chatdp rounded-circle transparent2" src="${data.authorProfilePic}"></a></div>
           <div><div class="chat-msg" style="border-radius: 0.375rem 0.5rem 0.5rem 0.5rem;">
           <div class="chat-head chat-head-clubpad bluecolor"><span class="text-xs"> ${data.authorName} </span></div>
           <div class="clubchat-msg-div"> ${data.composedMessage}</div></div></div></div>`);
       } else{
-        $("#messages").append(`
+        $("#messages_container").append(`
           <div class="d-flex flex-row"><div>
           <a href="/users/${data.authorId}"><img class="chatdp rounded-circle transparent" src="${data.authorProfilePic}"></a></div>
           <div><div class="chat-msg"><div class="chat-head chat-head-clubpad bluecolor" class="text-xs"> ${data.authorName} </div>
@@ -378,7 +378,7 @@ if(socket !== undefined){
   function getClubMessages(conversation){
     if(conversation.conversationId == ''){
       $('#load-prevMsgs-btn').addClass('nodisplay');
-      $("#messages").append(`
+      $("#messages_container").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
       chatBoxOnLoad();
     } else{
@@ -402,7 +402,7 @@ if(socket !== undefined){
 
   // ==================================== MISC. SCROLL CHATBOX ======================================== //
   function scrollToNext(){
-    var checkbottom; var msgbox = $("#messages");
+    var checkbottom; var msgbox = $("#messages_container");
     // slack of about two one liners ~ 100px
     var diff = ((msgbox.scrollTop() + msgbox.innerHeight() + 200) - msgbox[0].scrollHeight);
     var check = diff>0;
@@ -418,12 +418,15 @@ if(socket !== undefined){
   }
   function chatBoxOnLoad(){
     setTimeout(function(){
-      if($('#messages')[0].scrollHeight == 0){
-        $('#messages').animate({scrollTop: 10000}, 1);
+      if($('#messages_container')[0].scrollHeight == 0){
+        $('#messages_container').animate({scrollTop: 10000}, 1);
         $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
       } else{
-        $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1);
+        $('#messages_container').animate({scrollTop: $('#messages_container')[0].scrollHeight}, 1);
         $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
+      }
+      if(window.innerWidth < 767){
+        $('#chats-list').addClass('nodisplay');
       }
     }, 100);
     if(window.innerWidth > 767 || $('#chatbox-loadingarea').hasClass('chatbox-loadingarea2')){

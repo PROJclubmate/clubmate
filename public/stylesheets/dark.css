@@ -73,7 +73,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .post-head, .post-tail, .topic-column, .show-comments{
     border-color: var(--color-dark-800) !important;
   }
-  .college-infobtn .fa-newspaper, .college-infobtn .fa-tasks,
+  .college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase,
   .college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
     -webkit-text-stroke-color: var(--color-dark-900) !important;
   }
@@ -601,7 +601,7 @@ button.heartbtn:hover, .fa-heart.grey:hover{
 .border-light{
   border: 0.5px solid var(--color-dark-800) !important;
 }
-#college-scroll{
+#college_scroll{
   border-bottom: 1px solid var(--color-dark-700) !important;
 }
 .collegename{
@@ -611,6 +611,9 @@ button.heartbtn:hover, .fa-heart.grey:hover{
 .collegename-search{
   background-color: var(--color-dark-850);
   border: 0.5px solid var(--color-dark-900);
+}
+.searchdp.noImage{
+  filter: brightness(0.25);
 }
 
 a > .collegedp.chatsdp{

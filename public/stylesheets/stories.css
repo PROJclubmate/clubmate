@@ -11,7 +11,7 @@
 }
 .stories.facesnap .story > .item-link > .item-preview img {
   border-radius: 1.9375rem !important;
-  background-color: #e0e0e0;
+  background-color: white;
 }
 @media screen and (max-width: 481px){
   .stories.facesnap .story > .item-link > .item-preview {

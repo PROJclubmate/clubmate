@@ -71,7 +71,7 @@ div.content{
   .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
-  #college-scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
+  #college_scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     transition: ease-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
@@ -104,15 +104,11 @@ div.content{
   .topicimgpad{padding-left: 0.5rem;}
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label2{width: 76px !important;}
-  #messages.messages2{height: calc(100vh - 1.5rem - 40px - 31px - 42px);}
-  #messages.messages2.msg_dec2{height: calc(100vh - 1.5rem - 40px - 31px - 42px - 35px);}
-  #messages.messages3{height: calc(100vh - 1.5rem - 40px - 42px);}
-  #messages.messages3.msg_dec3{height: calc(100vh - 1.5rem - 40px - 42px - 35px);}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 42px) !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{padding: 0.3125rem 0.625rem !important;}
   #club-send{padding: 0.3125rem 0.625rem !important;}
-  #messages{margin-bottom: 42px;}
+  #messages_container{margin-bottom: 42px;}
   .searchdp{height: 100px !important; width: 100px!important;}
   .text-xxxxs{font-size: 0.4375rem !important;}
   .text-xxxs{font-size: 0.5625rem !important;}
@@ -280,7 +276,7 @@ div.content{
   .story-alt-container{width: 100vw;}
   .collapsing:not(#navbarCollapse){transition: none !important; display: none !important;}
   .vote-subpost{-webkit-text-stroke: 0.5px #fafafa !important;}
-  .chatlist-box{height: calc(100vh - 1rem - 40px) !important;}
+  .scroll_list_container{height: calc(100vh - 1rem - 40px) !important;}
   #chatbox-loadingarea.chatbox-loadingarea2{bottom: 0 !important; padding: 0 !important;}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 38px) !important;}
   .chatpad{padding: 0 0.5rem; margin: 0 0.25rem 0.5rem 0.25rem;}
@@ -310,7 +306,7 @@ div.content{
   .mobiletext4{font-size: 0.875rem !important;}
   .form-control.chatinput{padding: 0.625rem 0.75rem !important;}
   #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
-  #messages{margin-bottom: 54px;}
+  #messages_container{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
   .chat-msg3{top: 45% !important;}
@@ -410,7 +406,7 @@ div.content{
   .discover-overlay .discovertop-left{font-size: 0.75rem !important; padding: 0.75rem !important;}
   .discoverlink{left: 42% !important;}
   .discover-vote{font-size: 1.875rem !important;}
-  .chatlist-box{height: calc(100vh - 1rem - 50px) !important;}
+  .scroll_list_container{height: calc(100vh - 1rem - 50px) !important;}
   .chat-msg{font-size: 1rem !important; margin: 0.15rem 5rem 0.15rem 0.5rem !important;}
   .chat-msg2{font-size: 1rem !important; margin: 0.15rem 0.5rem 0.15rem 5rem !important;}
   .chat-msg3{font-size: 1rem !important;}
@@ -555,7 +551,7 @@ div.content{
   img.postimg{height: 22.5rem !important;}
   img.postimg.topicimg{height: 18rem !important;}
   .discover-vote{font-size: 1.625rem !important;}
-  .chatlist-box{height: calc(100vh - 1rem - 42px) !important;}
+  .scroll_list_container{height: calc(100vh - 1rem - 42px) !important;}
   .mobiletext{font-size: 0.875rem !important;}
   .mobiletext2{font-size: 0.875rem !important;}
   .mobiletext3{font-size: 0.8125rem !important;}
@@ -564,7 +560,7 @@ div.content{
   .lastmsg{font-size: 0.9375rem !important;}
   .form-control.chatinput{padding: 0.5rem 0.75rem !important;}
   #user-send, #club-send{font-size: 1rem; height: 38px; width: 38px;}
-  #messages{margin-bottom: 46px;}
+  #messages_container{margin-bottom: 46px;}
   .chat-msg3{top: 42.5% !important;}
   .navbar-toggler{font-size: 1.25rem !important;}
   #inbox_mobile{font-size: 1.6875rem !important;}
@@ -1720,13 +1716,13 @@ input[type="file"]#inputroomAvatar{
 .btn.moderation.btn-info{
   border-color: white;
   background-color: white;
-  color: #3384ff;
+  color: #216fdb;
   font-weight: 500;
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   border-color: #d7e6f9;
   background-color: white;
-  color: #3384ff;
+  color: #216fdb;
 }
 .btn-success{
   border-color: #429a65 !important;
@@ -1847,7 +1843,7 @@ input[type="file"]#inputroomAvatar{
 .nav-tabs.nav-link{
   padding: 0.5rem;
 }
-a{color: #3384ff;}
+a{color: #216fdb;}
 .green{color: #46da99;}
 .grey{color: #454545;}
 .black{color: #343a40;}
@@ -2559,7 +2555,7 @@ select.select1{
   background-color: white;
 }
 /*****************************************/
-#status-chin{
+#chat_status_chin{
   height: 35px;
 }
 .intercom-composer-popover-input{
@@ -2712,15 +2708,15 @@ select.select1{
 .emoji-panel{
   position: relative;
 }
-#messages{
+#messages_container{
   position: relative;
-  height: 158px;
+  height: calc(100vh - 1.5rem - 40px - 31px - 42px);
   overflow-y: scroll;
   overflow-y: overlay;
   overflow-x: hidden;
-  will-change: transform;
+  will-change: scroll-position;
 }
-#messages:hover{
+#messages_container:hover{
   margin-right: 0;
 }
 .input-bottom{
@@ -3399,15 +3395,15 @@ input.shadow:-webkit-autofill:focus{
   width: max-content;
   border-radius: 2rem;
 }
-.chatlist-box{
+.scroll_list_container{
   height: calc(100vh - 2rem - 40px);
   overflow-y: scroll;
   overflow-y: overlay;
   overflow-x: hidden;
   bottom: -1rem;
-  will-change: transform;
+  will-change: scroll-position;
 }
-#college-scroll{
+#college_scroll{
   bottom: unset;
 }
 .chatlist-content{

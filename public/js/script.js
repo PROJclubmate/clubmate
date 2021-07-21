@@ -597,13 +597,13 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   } else if(window.innerWidth <= 360){
     var heightVal = vh - 16 - 42;
   }
-  var height = 'height:'+heightVal+'px !important';
-  $('#college-scroll').css('cssText', height);
+  var heightText = 'height:'+heightVal+'px !important';
+  $('#college_scroll').css('cssText', heightText);
 
   var coverTall = false;
-  $('#college-scroll').scroll(function(){
+  $('#college_scroll').scroll(function(){
     if(!coverTall){
-      if($('#college-scroll').scrollTop() > 116){
+      if($('#college_scroll').scrollTop() > 116){
         coverTall = true;
         if(window.innerWidth <= 768){
           $('.college-cover-div').height(200);
@@ -738,17 +738,20 @@ var remToPx = function(count){
   }
 }
 
-function updateMessageHeight2(){
+function updateMsgsContainerHeight_feedpage(){
   function updateHeight(adjustment){
     if($('.pushmsg').css('display') == 'block'){
       var newMsgHeight = window.innerHeight - 1*remToPx() - 31 - 42 - 35 + adjustment;
-      $('#messages').height(newMsgHeight);
+      $('#messages_container').height(newMsgHeight);
     } else{
       var newMsgHeight = window.innerHeight - 1*remToPx() - 31 - 42 + adjustment;
-      $('#messages').height(newMsgHeight);
+      $('#messages_container').height(newMsgHeight);
     }
   }
-  if(window.innerWidth <= 768 && window.innerWidth > 480){
+
+  if(window.innerWidth > 768){
+    updateHeight(-16 -40);
+  } else if(window.innerWidth <= 768 && window.innerWidth > 480){
     updateHeight(-16);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
@@ -757,52 +760,43 @@ function updateMessageHeight2(){
   } else if(window.innerWidth <= 360){
     updateHeight(-4);
     document.getElementById("navbar").style.top = "0px";
-  } else{
-    if($('.pushmsg').css('display') == 'block'){
-      $('#messages').addClass("msg_dec2");
-    } else{
-      $('#messages').removeClass("msg_dec2");
-    }
   }
-  return $('#messages').height();
+  return $('#messages_container').height();
 }
 
-function updateMessageHeight3(){
+function updateMsgsContainerHeight_profilepage(){
   function updateHeight(navheight,tabheight){
     if($('.pushmsg').css('display') == 'block'){
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 42 - 35;
-      $('#messages').height(newMsgHeight);
+      $('#messages_container').height(newMsgHeight);
     } else{
       var newMsgHeight = window.innerHeight - 1.5*remToPx() - navheight - tabheight - 42;
-      $('#messages').height(newMsgHeight);
+      $('#messages_container').height(newMsgHeight);
     }
   }
-  if(window.innerWidth <= 768 && window.innerWidth > 480){
-    updateHeight(40 + 16,47);
+
+  if(window.innerWidth > 768){
+    updateHeight(0, 47);
+  } else if(window.innerWidth <= 768 && window.innerWidth > 480){
+    updateHeight(40 + 16, 47);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-    updateHeight(50 + 8 + 8,52);
+    updateHeight(50 + 8 + 8, 52);
     document.getElementById("navbar").style.top = "0px";
   } else if(window.innerWidth <= 360){
-    updateHeight(42 + 4,47);
+    updateHeight(42 + 4, 47);
     document.getElementById("navbar").style.top = "0px";
-  } else{
-    if($('.pushmsg').css('display') == 'block'){
-      $('#messages').addClass("msg_dec3");
-    } else{
-      $('#messages').removeClass("msg_dec3");
-    }
   }
-  return $('#messages').height();
+  return $('#messages_container').height();
 }
 
 function dec_height(){
   $('#navbar').addClass('stuck');
-  $('#messages').animate({scrollTop: $('#messages')[0].scrollHeight}, 1000);
+  $('#messages_container').animate({scrollTop: $('#messages_container')[0].scrollHeight}, 1000);
   if($('#chatbox-loadingarea').hasClass("chatbox-loadingarea2")){
-    updateMessageHeight2();
+    updateMsgsContainerHeight_feedpage();
   } else if($('#chatbox-loadingarea').hasClass("chatbox-loadingarea3")){
-    updateMessageHeight3();
+    updateMsgsContainerHeight_profilepage();
   }
 }
 
@@ -862,9 +856,9 @@ if(location.pathname.split('/')[1] == 'chats'){
   $('.inbox_count').text($('#chats-notificationCount').attr('value'));
   $("#inbox").addClass('requests-active');
 
-  oldMsgHeightMobile = updateMessageHeight2();
+  oldMsgHeightMobile = updateMsgsContainerHeight_feedpage();
   $(window).resize(function(){
-    oldMsgHeightMobile = updateMessageHeight2() + 35;
+    oldMsgHeightMobile = updateMsgsContainerHeight_feedpage() + 35;
   });
 
   var chatList = document.getElementById('chats-list');
@@ -879,6 +873,16 @@ if(location.pathname.split('/')[1] == 'chats'){
       window.location.replace($('#chatlist-chevron').attr('href'));
     }
   });
+
+  function mobileShowChatsList(){
+    if(window.innerWidth < 767){
+      if($('#chats-list').hasClass('nodisplay')){
+        $('#chats-list').removeClass('nodisplay');
+      } else{
+        $('#chats-list').addClass('nodisplay');
+      }
+    }
+  }
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
@@ -888,9 +892,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     $('#memberReq-div').addClass("nodisplay");
   }
 
-  oldMsgHeightMobile = updateMessageHeight3();
+  oldMsgHeightMobile = updateMsgsContainerHeight_profilepage();
   $(window).resize(function(){
-    oldMsgHeightMobile = updateMessageHeight3() + 35;
+    oldMsgHeightMobile = updateMsgsContainerHeight_profilepage() + 35;
   });
 }
 
@@ -902,46 +906,46 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     }
   }
   
-  oldMsgHeightMobile = updateMessageHeight3();
+  oldMsgHeightMobile = updateMsgsContainerHeight_profilepage();
   $(window).resize(function(){
-    oldMsgHeightMobile = updateMessageHeight3() + 35;
+    oldMsgHeightMobile = updateMsgsContainerHeight_profilepage() + 35;
   });
 }
 
-// Multi line chat input - readjust #messages margins and height
-oldMsgHeightDesktop = $('#messages').height();
+// Multi line chat input - readjust #messages_container margins and height
+oldMsgHeightDesktop = $('#messages_container').height();
 $('textarea').on('input', function(){
   if($(this).hasClass('chatinput')){
     this.style.height = 'auto';
     if(this.scrollHeight < 100){
       this.style.height = (this.scrollHeight) + 'px';
-      if(window.innerWidth <= 768 && window.innerWidth > 480){
-        $('#messages').css('margin-bottom', (this.scrollHeight + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (this.scrollHeight + 1));
+      if(window.innerWidth > 768){
+        $('#messages_container').css('margin-bottom', (this.scrollHeight + 12) + 'px');
+        $('#messages_container').height(oldMsgHeightDesktop - (this.scrollHeight + 5));
+      } else if(window.innerWidth <= 768 && window.innerWidth > 480){
+        $('#messages_container').css('margin-bottom', (this.scrollHeight + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (this.scrollHeight + 1));
       } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-        $('#messages').css('margin-bottom', (this.scrollHeight + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (this.scrollHeight - 3));
+        $('#messages_container').css('margin-bottom', (this.scrollHeight + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (this.scrollHeight - 3));
       } else if(window.innerWidth <= 360){
-        $('#messages').css('margin-bottom', (this.scrollHeight + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (this.scrollHeight + 1));
-      } else{
-        $('#messages').css('margin-bottom', (this.scrollHeight + 12) + 'px');
-        $('#messages').height(oldMsgHeightDesktop - (this.scrollHeight + 5));
+        $('#messages_container').css('margin-bottom', (this.scrollHeight + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (this.scrollHeight + 1));
       }
     } else{
       this.style.height = 96 + 'px';
-      if(window.innerWidth <= 768 && window.innerWidth > 480){
-        $('#messages').css('margin-bottom', (96 + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (96 + 1));
+      if(window.innerWidth > 768){
+        $('#messages_container').css('margin-bottom', (96 + 12) + 'px');
+        $('#messages_container').height(oldMsgHeightDesktop - (96 + 5));
+      } else if(window.innerWidth <= 768 && window.innerWidth > 480){
+        $('#messages_container').css('margin-bottom', (96 + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (96 + 1));
       } else if(window.innerWidth <= 480 && window.innerWidth > 360){
-        $('#messages').css('margin-bottom', (96 + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (96 - 3));
+        $('#messages_container').css('margin-bottom', (96 + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (96 - 3));
       } else if(window.innerWidth <= 360){
-        $('#messages').css('margin-bottom', (96 + 8) + 'px');
-        $('#messages').height(oldMsgHeightMobile - (96 + 1));
-      } else{
-        $('#messages').css('margin-bottom', (96 + 12) + 'px');
-        $('#messages').height(oldMsgHeightDesktop - (96 + 5));
+        $('#messages_container').css('margin-bottom', (96 + 8) + 'px');
+        $('#messages_container').height(oldMsgHeightMobile - (96 + 1));
       }
     }
   } else{
