@@ -240,7 +240,7 @@ module.exports = {
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
+              {moderation: 0}, {privacy: {$in: [0,1,2]}}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -251,18 +251,6 @@ module.exports = {
             {
               "$unwind": "$postClub"
             },
-            { "$lookup": {
-              "from": "comments",
-              "as": "commentBuckets",
-              "let": { "id": "$_id" },
-              "pipeline": [
-                { "$match": { 
-                  "$expr": { "$eq": [ "$$id", "$postId" ] }
-                }},
-                { "$sort": { "_id": -1 } },
-                { "$limit": 1 }
-              ]
-            }},
             {$project: {
             "_id": 1,
             "description": 1,
@@ -274,7 +262,6 @@ module.exports = {
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
-            "isAdminModerationLock": 1,
             "likeCount": 1,
             "heartCount": 1,
             "likeUserIds": 1,
@@ -288,6 +275,11 @@ module.exports = {
             "postClub.avatarId": 1,
             "postAuthor": 1,
             "topic": 1,
+            "upVoteCount": 1,
+            "downVoteCount": 1,
+            "upVoteUserIds": 1,
+            "downVoteUserIds": 1,
+            "subpostsCount": 1,
             "createdAt": 1,
             "__v": 1,
             // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
@@ -322,7 +314,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -357,9 +348,8 @@ module.exports = {
             postClub: {$in: req.user.followingClubIds},
             createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
             _id: {$nin: seenIds}, 
-            moderation: 0, privacy: {$in: [0,1,2]}, topic: ''})
+            moderation: 0, privacy: {$in: [0,1,2]}})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -371,7 +361,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -407,7 +396,7 @@ module.exports = {
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}, {topic: ''}
+              {moderation: 0}, {privacy: {$in: [0,1,2]}}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -418,18 +407,6 @@ module.exports = {
             {
               "$unwind": "$postClub"
             },
-            { "$lookup": {
-              "from": "comments",
-              "as": "commentBuckets",
-              "let": { "id": "$_id" },
-              "pipeline": [
-                { "$match": { 
-                  "$expr": { "$eq": [ "$$id", "$postId" ] }
-                }},
-                { "$sort": { "_id": -1 } },
-                { "$limit": 1 }
-              ]
-            }},
             {$project: {
             "_id": 1,
             "description": 1,
@@ -441,7 +418,6 @@ module.exports = {
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
-            "isAdminModerationLock": 1,
             "likeCount": 1,
             "heartCount": 1,
             "likeUserIds": 1,
@@ -455,6 +431,11 @@ module.exports = {
             "postClub.avatarId": 1,
             "postAuthor": 1,
             "topic": 1,
+            "upVoteCount": 1,
+            "downVoteCount": 1,
+            "upVoteUserIds": 1,
+            "downVoteUserIds": 1,
+            "subpostsCount": 1,
             "createdAt": 1,
             "__v": 1,
             // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
@@ -480,7 +461,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -529,18 +509,6 @@ module.exports = {
             {
               "$unwind": "$postClub"
             },
-            { "$lookup": {
-              "from": "comments",
-              "as": "commentBuckets",
-              "let": { "id": "$_id" },
-              "pipeline": [
-                { "$match": { 
-                  "$expr": { "$eq": [ "$$id", "$postId" ] }
-                }},
-                { "$sort": { "_id": -1 } },
-                { "$limit": 1 }
-              ]
-            }},
             {$project: {
             "_id": 1,
             "description": 1,
@@ -552,7 +520,6 @@ module.exports = {
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
-            "isAdminModerationLock": 1,
             "likeCount": 1,
             "heartCount": 1,
             "likeUserIds": 1,
@@ -599,7 +566,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -635,7 +601,6 @@ module.exports = {
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: 0, topic: ''})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
@@ -647,7 +612,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -693,18 +657,6 @@ module.exports = {
             {
               "$unwind": "$postClub"
             },
-            { "$lookup": {
-              "from": "comments",
-              "as": "commentBuckets",
-              "let": { "id": "$_id" },
-              "pipeline": [
-                { "$match": { 
-                  "$expr": { "$eq": [ "$$id", "$postId" ] }
-                }},
-                { "$sort": { "_id": -1 } },
-                { "$limit": 1 }
-              ]
-            }},
             {$project: {
             "_id": 1,
             "description": 1,
@@ -716,7 +668,6 @@ module.exports = {
             "viewsCount": 1,
             "privacy": 1,
             "moderation": 1,
-            "isAdminModerationLock": 1,
             "likeCount": 1,
             "heartCount": 1,
             "likeUserIds": 1,
@@ -754,7 +705,6 @@ module.exports = {
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
-            sortComments(discoverPosts);
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
             for(var k=0;k<discoverPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
@@ -803,18 +753,6 @@ module.exports = {
         {
           "$unwind": "$postClub"
         },
-        { "$lookup": {
-          "from": "comments",
-          "as": "commentBuckets",
-          "let": { "id": "$_id" },
-          "pipeline": [
-            { "$match": { 
-              "$expr": { "$eq": [ "$$id", "$postId" ] }
-            }},
-            { "$sort": { "_id": -1 } },
-            { "$limit": 1 }
-          ]
-        }},
         {$project: {
         "_id": 1,
         "description": 1,
@@ -826,7 +764,6 @@ module.exports = {
         "viewsCount": 1,
         "privacy": 1,
         "moderation": 1,
-        "isAdminModerationLock": 1,
         "likeCount": 1,
         "heartCount": 1,
         "likeUserIds": 1,
@@ -873,7 +810,6 @@ module.exports = {
         var foundPostIds = discoverPosts.map(function(post){
           return post._id;
         });
-        sortComments(discoverPosts);
         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
         for(var k=0;k<discoverPosts.length;k++){
           if(process.env.ENVIRONMENT === 'dev'){
@@ -904,7 +840,7 @@ module.exports = {
     // Only rank 0-3 can create a simple post
     if(((req.body.topic != '') && (0<=rank && rank<=4)) || ((req.body.topic == '') && (0<=rank && rank<=3))){
       if(req.file){
-        if(req.body.privacy && (((req.body.topic != '') && (3<=req.body.privacy && req.body.privacy<=5)) || 
+        if(req.body.privacy && (((req.body.topic != '') && (1<=req.body.privacy && req.body.privacy<=5)) || 
         ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
           (async () => {
             try{
@@ -937,7 +873,8 @@ module.exports = {
                 return res.redirect('back');
               } else{
                 newPost.clubCollegeKey = foundClub.clubKeys.college;
-                newPost.postClub = req.params.club_id;
+                newPost.clubCategory = foundClub.clubKeys.category;
+                newPost.postClub = foundClub._id;
                 newPost.postAuthor.id = req.user._id;
                 newPost.postAuthor.authorName = req.user.fullName;
                 newPost.save(function(err, newPost){
@@ -960,7 +897,7 @@ module.exports = {
           return res.redirect('back');
         }
       } else{
-        if(req.body.privacy && (((req.body.topic != '') && (3<=req.body.privacy && req.body.privacy<=5)) || 
+        if(req.body.privacy && (((req.body.topic != '') && (1<=req.body.privacy && req.body.privacy<=5)) || 
         ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
@@ -976,7 +913,8 @@ module.exports = {
               return res.redirect('back');
             } else{
               newPost.clubCollegeKey = foundClub.clubKeys.college;
-              newPost.postClub = req.params.club_id;
+              newPost.clubCategory = foundClub.clubKeys.category;
+              newPost.postClub = foundClub._id;
               newPost.postAuthor.id = req.user._id;
               newPost.postAuthor.authorName = req.user.fullName;
               newPost.save(function(err, newPost){

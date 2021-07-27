@@ -138,7 +138,7 @@
                     <div>
                       <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
                     </div>
-                    <div class="lineheight">
+                    <div class="lineheight2">
                       <div class="mobiletext2 truncate1">
                         <span>
                           <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
@@ -148,8 +148,16 @@
                           <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
                         </span>
                       </div>
-                      <div class="lineheight3">
-                        <% if(post.moderation == -1){ %>
+                      <div>
+                        <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
+                        <% if(0 <= post.moderation && post.moderation <= 1){ %>
+                          <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
+                            <% if(post.isAdminLock){ %>
+                              <i class="fas fa-lock"></i> 
+                            <% } %>
+                            <%= post.moderation %>
+                          </div>
+                        <% } else if(post.moderation == -1){ %>
                           <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
                         <% } %>
                         <% if(post.descEdit.length != 0){ %>
@@ -192,7 +200,7 @@
               <% } %>
                 <div class="valign">
                   <div class="d-flex flex-row">
-                    <div class="lightgrey text-xs" style="padding-top: 0.125rem;"><strong><%= post.subpostsCount %></strong> subPosts</div>
+                    <div class="lightgrey2 text-xs" style="padding-top: 0.125rem;"><span class="boldtext"><%= post.subpostsCount %></span> subPosts</div>
                     <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
                       <strong id="following-switch-mobile" class="text-sm nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
                     <% } %>
@@ -308,15 +316,15 @@
               <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
               <select id="privacy" name="privacy" class="shortened-select select1 blackcolor">
                 <% if(post.topic == ''){ %>
-                  <option value="0" data-descr="Everyone" selected></option>
+                  <option value="0" data-descr="Outside College" selected></option>
                   <option value="1" data-descr="This College"></option>
                   <option value="2" data-descr="My Friends"></option>
                   <option value="3" data-descr="This Club"></option>
                 <% } else{ %>
-                  <option value="0" data-descr="Everyone" disabled></option>
-                  <option value="1" data-descr="This College" disabled></option>
-                  <option value="2" data-descr="My Friends" disabled></option>
-                  <option value="3" data-descr="This Club" selected></option>
+                  <option value="0" data-descr="Outside College" disabled></option>
+                  <option value="1" data-descr="This College" selected></option>
+                  <option value="2" data-descr="My Friends"></option>
+                  <option value="3" data-descr="This Club"></option>
                 <% } %>
                 <option value="4" data-descr="#Room" disabled></option>
                 <option value="5" data-descr="Only Me"></option>
@@ -454,7 +462,7 @@
 
   </div>
   <% if(currentUser){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 order-md-last order-first mobileNone">
+    <div class="col-md-4 col-lg-3 px-2 pb-2 mt-3 order-md-last order-first mobileNone tabletNone">
       <% include ../partials/hot_topics %>
     </div>
   <% } %>

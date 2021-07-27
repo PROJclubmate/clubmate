@@ -526,7 +526,6 @@ module.exports = {
               "viewsCount": 1,
               "privacy": 1,
               "moderation": 1,
-              "isAdminModerationLock": 1,
               "likeCount": 1,
               "dislikeCount": 1,
               "heartCount": 1,

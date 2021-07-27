@@ -144,15 +144,13 @@ $('#input_topic').on('input', function(e){
   if(!$('#description').hasClass('junior')){
     if($(this).val() != ''){
       $('#priv_everyone').removeAttr('selected');
-      $('.priv_college').attr('disabled', 'true');
-      $('.priv_public').attr('disabled', 'true');
-      $('#priv_club').attr('selected', 'true');
+      $('#priv_everyone').attr('disabled', 'true');
+      $('#priv_college').attr('selected', 'true');
       $('#description').attr('placeholder', 'Describe your question');
     } else{
+      $('#priv_college').removeAttr('selected');
+      $('#priv_everyone').removeAttr('disabled');
       $('#priv_everyone').attr('selected', 'true');
-      $('.priv_college').removeAttr('disabled');
-      $('.priv_public').removeAttr('disabled');
-      $('#priv_club').removeAttr('selected');
       $('#description').attr('placeholder', 'Describe your post');
     }
   } else{
@@ -967,7 +965,6 @@ nanobar.go(100);
 //================================================================================
 // AJAX
 //================================================================================
-// Expensive event delegation?
 if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] == 'clubs' && 
   location.pathname.split('/')[3] == 'posts' && location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/))){
   $("div#delegated-posts").on('click', '.vote', function(e){
@@ -1078,7 +1075,6 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
     e.stopImmediatePropagation();
     var formData = $(this).closest('form').serializeArray();
     formData.push({ name: this.name, value: this.value });
-    //now use formData, it includes the submit button
     var formAction = $(this).closest('form').attr('action');
     $.ajax({
       url: formAction,
@@ -1188,47 +1184,96 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
   })
 });
 
-$("div#delegated-posts").on('click', '.modvote', function(e){
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  var formData = $(this).closest('form').serializeArray();
-  formData.push({ name: this.name, value: this.value });
-  var formAction = $(this).closest('form').attr('action');
-  $.ajax({
-    url: formAction,
-    timeout: 3000,
-    data: formData,
-    type: 'PUT',
-    success: function(data){
-      $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
-
-      if(formData[1].name == 'upVote'){
-        $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
-        if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor3')){
-          $('#modVote-count'+data.foundPost._id).removeClass('bluecolor3');
-        } else{
-          $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
+if(location.pathname.split('/').length == 2 && location.pathname.split('/').pop() == 'discover'){
+  $("div#delegated-posts-discover").on('click', '.modvote', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var formData = $(this).closest('form').serializeArray();
+    formData.push({ name: this.name, value: this.value });
+    var formAction = $(this).closest('form').attr('action');
+    $.ajax({
+      url: formAction,
+      timeout: 3000,
+      data: formData,
+      type: 'PUT',
+      success: function(data){
+        $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
+  
+        if(formData[1].name == 'upVote'){
+          $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
+          if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor')){
+            $('#modVote-count'+data.foundPost._id).removeClass('bluecolor');
+          } else{
+            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor');
+          }
+          $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
         }
-        $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
-      }
-      if(formData[1].name == 'downVote'){
-        $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
-        if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
-          $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
-        } else{
-          $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
+        if(formData[1].name == 'downVote'){
+          $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
+          if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
+            $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
+          } else{
+            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor').addClass('orangecolor');
+          }
+          $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
         }
-        $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
+        
+        setTimeout(function(){
+          var votecard = '#votecard'+data.foundPost._id;
+          $(votecard).css('display', 'none');
+        }, 1000);
+      },
+      error: function(xhr) {
+        if(xhr.status == 404){
+          alert("Please Login first");
+          location = "/login";
+        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
       }
-    },
-    error: function(xhr) {
-      if(xhr.status == 404){
-        alert("Please Login first");
-        location = "/login";
-      } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
-    }
-  })
-});
+    })
+  });
+} else{
+  $("div#delegated-posts").on('click', '.modvote', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var formData = $(this).closest('form').serializeArray();
+    formData.push({ name: this.name, value: this.value });
+    var formAction = $(this).closest('form').attr('action');
+    $.ajax({
+      url: formAction,
+      timeout: 3000,
+      data: formData,
+      type: 'PUT',
+      success: function(data){
+        $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
+  
+        if(formData[1].name == 'upVote'){
+          $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
+          if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor3')){
+            $('#modVote-count'+data.foundPost._id).removeClass('bluecolor3');
+          } else{
+            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
+          }
+          $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
+        }
+        if(formData[1].name == 'downVote'){
+          $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
+          if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
+            $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
+          } else{
+            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
+          }
+          $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
+        }
+      },
+      error: function(xhr) {
+        if(xhr.status == 404){
+          alert("Please Login first");
+          location = "/login";
+        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
+      }
+    })
+  });
+}
 
 ////////////////// HEART POSTS ////////////////////
 $('div#delegated-heart-posts').on('click', '.vote', function(e){

@@ -56,7 +56,7 @@ const userSchema = new Schema({
       default: 2,
       min: 1,
       max: 2,
-      required: '1-Members in clubs & their banners, 2-Following which clubs & my friends in that club',
+      required: '1-Shows num of rooms in clubs & their banners, 2-Shows Following which clubs & my friends in that club',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'

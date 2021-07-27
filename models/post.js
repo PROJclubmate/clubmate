@@ -12,13 +12,15 @@ const postSchema = new Schema({
   image: String,
   imageId: String,
   clubCollegeKey: String,
-  // +1 for minified view (Load more), +5 for expand; open in modal JSON to prevent page refresh => +5s
+  clubCategory: String,
+  // +1 for minified view (Load more), +5 for view;
+  // Bug --> Someone might refresh page indefinately (F5) to boost score
   viewsCount: {type: Number, default: 0},
   privacy: {
     type: Number,
     min: 0,
     max: 5,
-    required: 'Please provide a (privacySetting:0-Public,1-College,2-Friends,3-Club(members),4-Club(friends),5-Private)',
+    required: 'Please provide a (privacySetting:0-Outside College, 1-This College, 2-My Friends, 3-This Club, 4-Room, 5-Only Me)',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'
@@ -28,13 +30,12 @@ const postSchema = new Schema({
     type: Number,
     min: -1,
     max: 1,
-    required: 'Please provide a (moderationSetting:(-1)-Hidden,0-Published,1-Exclusive)',
+    required: 'Please provide a (moderationSetting:(-1)-Hidden, 0-Published, 1-Exclusive)',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'
     }
   },
-  isAdminModerationLock: {type: Boolean, default: false},
   likeCount: {type: Number, default: 0},
   heartCount: {type: Number, default: 0},
   likeUserIds: [{
@@ -88,6 +89,7 @@ const postSchema = new Schema({
   createdAt: {type: Date, default: Date.now}
 });
 
+postSchema.index({clubCollegeKey: 1});
 postSchema.index({postClub: 1});
 postSchema.index({'postAuthor.id': 1});
 postSchema.index({createdAt: 1});
