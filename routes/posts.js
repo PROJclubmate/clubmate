@@ -2,7 +2,7 @@ const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
   {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
-  postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsShow, subPostQuote, 
+  postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsView, subPostQuote, 
   postsUpdate, postsDelete, postsVote, postsModVote} = require('../controllers/posts');
 
 if(process.env.ENVIRONMENT === 'dev'){
@@ -39,8 +39,8 @@ router.get('/discover-morePosts', postsDiscoverMorePosts);
 // Create new post
 router.post('/clubs/:club_id/posts', middleware.isLoggedIn, upload.single('image'), postsCreate);
 
-// Show a post
-router.get('/clubs/:club_id/posts/:post_id', postsShow);
+// View post
+router.get('/clubs/:club_id/posts/:post_id', postsView);
 
 // Quote a subPost
 router.get('/clubs/:club_id/posts/:post_id/subPost/:bucket_id', middleware.isLoggedIn, subPostQuote);

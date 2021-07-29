@@ -942,7 +942,7 @@ module.exports = {
     }
   },
 
-  postsShow(req, res, next){
+  postsView(req, res, next){
     if(req.user){
       Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
       .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
@@ -964,130 +964,118 @@ module.exports = {
           }
           var hasVote = voteCheck(req.user,modPost);
           var hasModVote = modVoteCheck(req.user,modPost);
-          if(req.user){
-            for(var i=0;i<req.user.userClubs.length;i++){
-              if(req.user.userClubs[i].id.equals(req.params.club_id)){
-                var rank = req.user.userClubs[i].rank;
-                break;
+          for(var i=0;i<req.user.userClubs.length;i++){
+            if(req.user.userClubs[i].id.equals(req.params.club_id)){
+              var rank = req.user.userClubs[i].rank;
+              break;
+            }
+          }
+          Post.find({postClub: foundPost.postClub._id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
+          .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+          postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
+          if(err || !topTopicPosts){
+          logger.error(req.user._id+' : (posts-30)topTopicPosts err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+          } else{
+            var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user), Posts_50_Image = [];
+            for(var l=0;l<modTopTopicPosts.length;l++){
+              if(modTopTopicPosts[l].imageId && modTopTopicPosts[l].imageId != ''){
+                if(process.env.ENVIRONMENT === 'dev'){
+                  Posts_50_Image[l] = clConfig.cloudinary.url(modTopTopicPosts[l].imageId, clConfig.thumb_100_obj);
+                } else if (process.env.ENVIRONMENT === 'prod'){
+                  Posts_50_Image[l] = s3Config.thumb_100_prefix+modTopTopicPosts[l].imageId;
+                }
+              } else{
+                Posts_50_Image[l] = null;
               }
             }
-            Post.find({postClub: foundPost.postClub._id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
-            .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
-            postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
-            if(err || !topTopicPosts){
-            logger.error(req.user._id+' : (posts-30)topTopicPosts err => '+err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-            } else{
-              var modTopTopicPosts = postsModerationFilter(topTopicPosts, req.user), Posts_50_Image = [];
-              for(var l=0;l<modTopTopicPosts.length;l++){
-                if(modTopTopicPosts[l].imageId && modTopTopicPosts[l].imageId != ''){
+            if(modPost.topic == ''){
+              var lastTwoBuckets = [], len = modPost.commentBuckets.length;
+              lastTwoBuckets.push(modPost.commentBuckets[len-1]);
+              lastTwoBuckets.push(modPost.commentBuckets[len-2]);
+              Comment.find({_id: {$in: lastTwoBuckets}})
+              .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
+              .exec(function(err, foundBuckets){
+              if(err || !foundBuckets){
+                logger.error(req.user._id+' : (posts-31)foundBuckets err => '+err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              } else{
+                var CA_50_profilePic = [], numBuckets = foundBuckets.length;
+                for(var i=0;i<numBuckets;i++){
+                  CA_50_profilePic[i] = [];
+                  for(var j=0;j<foundBuckets[i].comments.length;j++){
+                    if(process.env.ENVIRONMENT === 'dev'){
+                      CA_50_profilePic[i][j] = clConfig.cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
+                    } else if (process.env.ENVIRONMENT === 'prod'){
+                      CA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundBuckets[i].comments[j].commentAuthor.id.profilePicId;
+                    }
+                  }
+                  foundBuckets[i].comments.sort(function(a, b){
+                    return a.upvotesCount - b.upvotesCount;
+                  });
+                }
+                var index = len-3;
+                if(req.user){
+                  var upComments = commentCheck(req.user._id,foundBuckets);
                   if(process.env.ENVIRONMENT === 'dev'){
-                    Posts_50_Image[l] = clConfig.cloudinary.url(modTopTopicPosts[l].imageId, clConfig.thumb_100_obj);
+                    var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
                   } else if (process.env.ENVIRONMENT === 'prod'){
-                    Posts_50_Image[l] = s3Config.thumb_100_prefix+modTopTopicPosts[l].imageId;
+                    var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
                   }
                 } else{
-                  Posts_50_Image[l] = null;
+                  var upComments = [];
+                  var CU_50_profilePic = null;
                 }
+                res.render("posts/show", {hasVote, hasModVote, post: modPost, upComments, rank, buckets: foundBuckets,
+                index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, Posts_50_Image, 
+                clubId: foundPost.postClub._id, topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
+                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
-              if(modPost.topic == '' && modPost.commentBuckets != ''){
-                var lastTwoBuckets = [], len = modPost.commentBuckets.length;
-                lastTwoBuckets.push(modPost.commentBuckets[len-1]);
-                lastTwoBuckets.push(modPost.commentBuckets[len-2]);
-                Comment.find({_id: {$in: lastTwoBuckets}})
-                .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
-                .exec(function(err, foundBuckets){
-                if(err || !foundBuckets){
-                  logger.error(req.user._id+' : (posts-31)foundBuckets err => '+err);
+              });
+            } else if(modPost.topic != ''){
+              if(process.env.ENVIRONMENT === 'dev'){
+                var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+              } else if (process.env.ENVIRONMENT === 'prod'){
+                var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+              }
+              if(modPost.subpostBuckets != ''){
+                var len = index = modPost.subpostBuckets.length;
+                Discussion.findOne({_id: modPost.subpostBuckets[len-1]})
+                .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
+                .exec(function(err, foundBucket){
+                if(err || !foundBucket){
+                  logger.error(req.user._id+' : (posts-32)foundBucket err => '+err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
-                  var CA_50_profilePic = [], numBuckets = foundBuckets.length;
-                  for(var i=0;i<numBuckets;i++){
-                    CA_50_profilePic[i] = [];
-                    for(var j=0;j<foundBuckets[i].comments.length;j++){
-                      if(process.env.ENVIRONMENT === 'dev'){
-                        CA_50_profilePic[i][j] = clConfig.cloudinary.url(foundBuckets[i].comments[j].commentAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                      } else if (process.env.ENVIRONMENT === 'prod'){
-                        CA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundBuckets[i].comments[j].commentAuthor.id.profilePicId;
-                      }
-                    }
-                    foundBuckets[i].comments.sort(function(a, b){
-                      return a.upvotesCount - b.upvotesCount;
-                    });
-                  }
-                  var index = len-3;
-                  if(req.user){
-                    var upComments = commentCheck(req.user._id,foundBuckets);
+                  var sPA_50_profilePic = [];
+                  for(var j=0;j<foundBucket.subPosts.length;j++){
                     if(process.env.ENVIRONMENT === 'dev'){
-                      var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+                      sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
                     } else if (process.env.ENVIRONMENT === 'prod'){
-                      var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+                      sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket.subPosts[j].subPostAuthor.id.profilePicId;
                     }
-                  } else{
-                    var upComments = [];
-                    var CU_50_profilePic = null;
                   }
-                  res.render("posts/show", {hasVote, hasModVote, post: modPost, upComments, rank, buckets: foundBuckets,
-                  index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, Posts_50_Image, 
-                  clubId: foundPost.postClub._id, topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
+                  var subVotes = subVoteCheck(req.user._id,foundBucket);
+                  var quote = false;
+                  res.render("posts/show", {hasVote, hasModVote, post: modPost, subVotes, rank, bucket: foundBucket,
+                  index, CU_50_profilePic, PC_50_clubAvatar, sPA_50_profilePic, quote, clubId: foundPost.postClub._id,
+                  Posts_50_Image, topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
                   return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
                 }
                 });
-              } else if(modPost.topic != '' && req.user){
-                if(process.env.ENVIRONMENT === 'dev'){
-                  var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-                } else if (process.env.ENVIRONMENT === 'prod'){
-                  var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-                }
-                if(modPost.subpostBuckets != ''){
-                  var len = index = modPost.subpostBuckets.length;
-                  Discussion.findOne({_id: modPost.subpostBuckets[len-1]})
-                  .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
-                  .exec(function(err, foundBucket){
-                  if(err || !foundBucket){
-                    logger.error(req.user._id+' : (posts-32)foundBucket err => '+err);
-                    req.flash('error', 'Something went wrong :(');
-                    return res.redirect('back');
-                  } else{
-                    var sPA_50_profilePic = [];
-                    for(var j=0;j<foundBucket.subPosts.length;j++){
-                      if(process.env.ENVIRONMENT === 'dev'){
-                        sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
-                      } else if (process.env.ENVIRONMENT === 'prod'){
-                        sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket.subPosts[j].subPostAuthor.id.profilePicId;
-                      }
-                    }
-                    var subVotes = subVoteCheck(req.user._id,foundBucket);
-                    var quote = false;
-                    res.render("posts/show", {hasVote, hasModVote, post: modPost, subVotes, rank, bucket: foundBucket,
-                    index, CU_50_profilePic, PC_50_clubAvatar, sPA_50_profilePic, quote, clubId: foundPost.postClub._id,
-                    Posts_50_Image, topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
-                    return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-                  }
-                  });
-                } else{
-                  var quote = false;
-                  res.render("posts/show", {hasVote, hasModVote, post: modPost, rank, CU_50_profilePic, 
-                  PC_50_clubAvatar, quote, clubId: foundPost.postClub._id, Posts_50_Image,
-                  topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
-                  return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-                }
+              } else{
+                var quote = false;
+                res.render("posts/show", {hasVote, hasModVote, post: modPost, rank, CU_50_profilePic, 
+                PC_50_clubAvatar, quote, clubId: foundPost.postClub._id, Posts_50_Image,
+                topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
+                return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
             }
-            });
-          } else{
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            var index = null;
-            res.render("posts/show", {hasVote, hasModVote, post: modPost, rank, index, PC_50_clubAvatar,
-            CU_50_profilePic, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
+          });
         }
       }
       });
@@ -1107,7 +1095,7 @@ module.exports = {
         var hasVote = null;
         var hasModVote = null;
         var rank = null;
-        if(foundPost.topic == '' && foundPost.commentBuckets != ''){
+        if(foundPost.topic == ''){
           var lastTwoBuckets = [], len = foundPost.commentBuckets.length;
           lastTwoBuckets.push(foundPost.commentBuckets[len-1]);
           lastTwoBuckets.push(foundPost.commentBuckets[len-2]);

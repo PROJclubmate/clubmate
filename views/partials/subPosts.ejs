@@ -49,7 +49,7 @@
           <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
         </div>
         <div class="mobiletext">
-          <div class="valign lineheight2 mb-1">
+          <div class="valign lineheight-lower mb-1">
             <div>
               <div>
                 <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>" class="darkgrey">
@@ -83,13 +83,13 @@
           <hr>
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
-          <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
+          <div class="quote px-1 pb-1 my-1 lineheight-lowest greyback">
             <span class="linewrap text-xs boldtext redcolor text-bitter text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
         <% } %>
-        <div class="mobiletext linewrap lineheight subPost-text"><%= subPosts[j].text %></div>
+        <div class="mobiletext linewrap lineheight-low subPost-text"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <div>
             <% for(var k=0;k<subPosts[j].images.length;k++){ %>
@@ -163,7 +163,7 @@
 
 <% if(index == post.subpostBuckets.length){ %>
   <div class="card indexcard2">
-    <div class="card-body3">
+    <div class="card-body py-1">
       <div class="valign">
         <div class="mb-auto d-flex flex-column">
           <div>
@@ -184,7 +184,7 @@
               </div>
             </div>
             <% if(quote){ %>
-              <div class="quote px-1 pb-1 my-1 lineheight2">
+              <div class="quote px-1 pb-1 my-1 lineheight-lower">
                 <span class="mobiletext linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
                 <span class="mobiletext linewrap text-xs"><strong># <%= quoteNum %></strong></span>
                 <span class="mobiletext linewrap text-xs boldtext"><%= quoteText %></span>

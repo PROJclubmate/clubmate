@@ -71,7 +71,7 @@
 												<% if(chatList[i].type == 'user'){ %>
 													<span><%= chatList[i].name %></span>
 												<% } else if(chatList[i].type == 'club'){ %>
-													<span class="text-xs" style="vertical-align: bottom;"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
+													<span class="text-xs mr-1"><i class="fas fa-user-friends"></i></span><span><%= chatList[i].name %></span>
 												<% } %>
 											</div>
 											<div>
@@ -93,7 +93,7 @@
 											</div>
 										</div>
 										<div class="valign">
-											<div class="my-auto lightgrey lastmsg truncate1">
+											<div class="my-auto lightgrey lastmsg truncate-1">
 												<% if(chatList[i].lastMsgBy && chatList[i].lastMsgBy.toString() == currentUser._id){ %>
 													<span class="bluecolor boldtext">></span>
 												<% } %>

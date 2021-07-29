@@ -781,7 +781,7 @@ function index_posts_template(response){
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div>
-                        <p>Do you really want to delete this post? This cannot be undone.</p>
+                        <p>Do you want to permanently delete this post?</p>
                       </div>
                       <div class="my-2">
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -807,8 +807,8 @@ function index_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate-3 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
@@ -821,18 +821,18 @@ function index_posts_template(response){
           </div>
         </div>
       <% } else{ %>
-        <div class="card-body2 nounderline m-0 p-0">
+        <div class="card-body pt-0 nounderline">
           <% if(!friendsPostUrl){ %>
             <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
           <% } else{ %>
             <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
           <% } %>
           <% if(posts[k].description.length < 200){ %>
-            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+            <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
           <% } else{ %>
-            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
+            <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
           <% } %>
-            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).fromNow() %></em>
@@ -846,7 +846,7 @@ function index_posts_template(response){
           </a>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
           <div class="valign">
             <% if(currentUser){ %>
@@ -891,12 +891,12 @@ function index_posts_template(response){
     <!-- COMMENTS -->
     <div class="card m-0 post-tail">
       <% if(posts[k].commentsCount != 0){ %>
-        <div class="card-body3">
+        <div class="card-body py-1">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){ %>
             <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
             <% if(z<=2){ %>
               <div class="valign">
-                <div class="wordwrap lineheight my-15">
+                <div class="wordwrap lineheight-low my-15">
                   <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
@@ -907,7 +907,7 @@ function index_posts_template(response){
           <% } %>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <div class="commentdiv">
           <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
             <div class="input-group">
@@ -975,9 +975,9 @@ function index_posts_template(response){
         <div>
           <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate-3 mobiletext linewrap card-body m-0 py-1"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
               <% if(!friendsPostUrl){ %>
                 <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
@@ -1000,15 +1000,15 @@ function index_posts_template(response){
               <% } else{ %>
                 <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
               <% } %>
-                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <div class="truncate-16 card-body py-1 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
           </div>
           <% if(posts[k].subpostsCount > 0){ %>
-            <div class="card-body5 lineheight">
+            <div class="px-2 lineheight">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
@@ -1051,7 +1051,7 @@ function index_posts_template(response){
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div>
-                          <p>Do you really want to delete this post? This cannot be undone.</p>
+                          <p>Do you want to permanently delete this post?</p>
                         </div>
                         <div class="my-2">
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -1105,7 +1105,7 @@ function discover_posts_template(response){
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <div class="discovertop-left lineheight2">
+      <div class="discovertop-left lineheight-lower">
         <% if(posts[k].commentsCount > 0){ %>
           <span class="boldtext">
             <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
@@ -1113,11 +1113,11 @@ function discover_posts_template(response){
         <% } %>
       </div>
       <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-        <div class="discovertop-left discoverlink lineheight2">
+        <div class="discovertop-left discoverlink lineheight-lower">
           <a style="padding: 0 !important;" target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index mobiletext4"></i></a>
         </div>
       <% } %>
-      <div class="discovertop lineheight2 boldtext">
+      <div class="discovertop lineheight-lower boldtext">
         <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg arrowshowpost">view</span></a>
       </div>
       <div class="overlay-content">
@@ -1134,13 +1134,13 @@ function discover_posts_template(response){
                   <span class="d-flex mr-1"> 
                     <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up discover-vote"></i></button>
                   </span>
-                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].likeCount %></span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].likeCount %></span>
                 <% } %>
               <% }else{ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].likeCount %></span>
               <% } %>
             </div>
           
@@ -1150,11 +1150,11 @@ function discover_posts_template(response){
                   <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm mobiletext3 redcolor2"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote redcolor2"></i></button></span>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart discover-vote"></i></button></span>
                   <% } %>
               <% }else{ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote"></i></button></span>
               <% } %>
             </div>
@@ -1165,7 +1165,7 @@ function discover_posts_template(response){
     </div>
   <% } else{ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <div class="discovertop-left lineheight2">
+      <div class="discovertop-left lineheight-lower">
         <% if(posts[k].subpostsCount >= 0){ %>
           <span class="boldtext">
             <%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i>
@@ -1173,11 +1173,11 @@ function discover_posts_template(response){
         <% } %>
       </div>
       <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-        <div class="discovertop-left discoverlink lineheight2">
+        <div class="discovertop-left discoverlink lineheight-lower">
           <a style="padding: 0 !important;" target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index mobiletext4"></i></a>
         </div>
       <% } %>
-      <div class="discovertop lineheight2 boldtext">
+      <div class="discovertop lineheight-lower boldtext">
         <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg arrowshowpost">view</span></a>
       </div>
       <div class="overlay-content overlay-content-modvote">
@@ -1204,7 +1204,7 @@ function discover_posts_template(response){
   <% } %>
   <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
     <div class="card-body">
-      <div class="card-heading dropctn">
+      <div class="black dropctn">
         <div class="valign">
           <div>
             <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
@@ -1212,7 +1212,7 @@ function discover_posts_template(response){
           <div>
             <div>
               <span class="mobiletext3">
-                <span class="truncate1"><strong><%= posts[k].postClub.name %></strong></span>
+                <span class="truncate-1"><strong><%= posts[k].postClub.name %></strong></span>
               </span>
             </div>
           </div>
@@ -1225,39 +1225,39 @@ function discover_posts_template(response){
           <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
         <div class="card-body">
-          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+          <p class="truncate-3 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><span class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></span></em>
         </div>
       <% } else{ %>
-        <div class="card-body2 nounderline m-0 p-0">
+        <div class="card-body pt-0 nounderline" style="min-height: 6rem;">
           <span>
-            <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
-            <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+            <p class="truncate-16 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+            <em class="m-0 p-0 mobiletext linewrap"><span class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></span></em>
           </span>
         </div>
       <% } %>
     <% } else{ %>
       <% if(posts[k].image){ %>
         <div class="px-2 pb-2">
-          <h5 class="m-0 p-0 topic-h5 truncate"><%= posts[k].topic %></h5>
-          <p class="truncate1 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
+          <h5 class="m-0 p-0 topic-h5 truncate-3"><%= posts[k].topic %></h5>
+          <p class="truncate-1 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
         </div>
         <span>
           <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0 0 0.3125rem 0.3125rem;"></div>
         </span>
           <% if(posts[k].hyperlink){ %>
           <div class="card-body">
-            <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+            <em class="m-0 p-0 mobiletext linewrap"><span class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></span></em>
           </div>
         <% } %>
       <% } else{ %>
-        <div class="card-body2 nounderline m-0 p-0" style="min-height: 8rem;">
+        <div class="card-body pt-0 nounderline" style="min-height: 6rem;">
           <div>
-            <div><h5 class="m-0 p-0 pb-2 topic-h5 truncate"><%= posts[k].topic %></h5></div>
+            <div><h5 class="m-0 p-0 pb-2 topic-h5 truncate-3"><%= posts[k].topic %></h5></div>
             <div>
-              <p class="truncate m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
+              <p class="truncate-5 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
               <% if(posts[k].hyperlink){ %>
-                <em class="m-0 p-0 mobiletext linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+                <em class="m-0 p-0 mobiletext linewrap"><span class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></span></em>
               <% } %>
             </div>
           </div>
@@ -1291,7 +1291,7 @@ function club_posts_template(response){
                 <% } %>
               </a>
             </div>
-            <div class="lineheight2">
+            <div class="lineheight-lower">
               <div>
                 <span class="mobiletext2">
                   <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
@@ -1307,7 +1307,7 @@ function club_posts_template(response){
                 <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
               <% } %>
               <% if(posts[k].descEdit.length != 0){ %>
-                <div class="badge badge-warning text-xxs">Edited</div>
+                <div class="badge badge-light text-xxs">Edited</div>
               <% } %>
               </div>
             </div>
@@ -1350,7 +1350,7 @@ function club_posts_template(response){
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div>
-                        <p>Do you really want to delete this post? This cannot be undone.</p>
+                        <p>Do you want to permanently delete this post?</p>
                       </div>
                       <div class="my-2">
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -1372,8 +1372,8 @@ function club_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate-3 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2 valign">
             <div>
               <span>
@@ -1406,14 +1406,14 @@ function club_posts_template(response){
           </div>
         </div>
       <% } else{ %>
-        <div class="nounderline m-0 p-0 card-body2">
+        <div class="nounderline card-body pt-0">
           <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
             <% if(posts[k].description.length < 200){ %>
-              <span class="truncate2 mobiletext linewrap nolink description-short"><%= posts[k].description %></span>
+              <span class="truncate-16 mobiletext linewrap nolink description-short"><%= posts[k].description %></span>
             <% } else{ %>
-              <span class="truncate2 mobiletext linewrap nolink"><%= posts[k].description %></span>
+              <span class="truncate-16 mobiletext linewrap nolink"><%= posts[k].description %></span>
             <% } %>
-            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2 valign">
               <div>
                 <span>
@@ -1447,7 +1447,7 @@ function club_posts_template(response){
           </a>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
           <div class="valign">
             <% if(currentUser){ %>
@@ -1490,12 +1490,12 @@ function club_posts_template(response){
     <!-- COMMENTS -->
     <div class="card m-0 post-tail">
       <% if(posts[k].commentsCount != 0){ %>
-        <div class="card-body3">
+        <div class="card-body py-1">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
             <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
             <% if(z<=2){ %>
               <div class="valign">
-                <div class="wordwrap lineheight my-15">
+                <div class="wordwrap lineheight-low my-15">
                   <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
@@ -1506,7 +1506,7 @@ function club_posts_template(response){
           <% } %>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <div class="commentdiv">
           <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
             <div class="input-group">
@@ -1538,7 +1538,7 @@ function club_posts_template(response){
                     <% } %>
                   </a>
                 </div>
-                <div class="lineheight2">
+                <div class="lineheight-lower">
                   <div>
                     <span class="mobiletext2">
                       <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
@@ -1555,7 +1555,7 @@ function club_posts_template(response){
                       <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
                     <% } %>
                     <% if(posts[k].descEdit.length != 0){ %>
-                      <div class="badge badge-warning text-xxs">Edited</div>
+                      <div class="badge badge-light text-xxs">Edited</div>
                     <% } %>
                   </div>
                 </div>
@@ -1573,9 +1573,9 @@ function club_posts_template(response){
         <div>
           <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate-3 mobiletext linewrap card-body m-0 py-1"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
                 <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
                 <div class="topicimgpad">
@@ -1594,19 +1594,23 @@ function club_posts_template(response){
               </a>
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub %>/posts/<%= posts[k]._id %>">
-                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <div class="truncate-16 card-body py-1 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
           </div>
-          <% if(0 <= rank && rank <= 2){ %>
-            <div class="card-body5">
+          <% if((0 == rank || rank == 2) || posts[k].subpostsCount > 0){ %>
+            <div class="px-2">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
-              <div class="lightgrey2 valign my-1">
+              <% if(rank == 0 || rank == 2){ %>
+                <div class="lightgrey2 valign my-2">
+              <% } else{ %>
+                <div class="lightgrey2 valign my-1">
+              <% } %>
                 <div class="boldtext text-xxs"><%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i></div>
                 <div>
                   <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -1675,7 +1679,7 @@ function club_posts_template(response){
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div>
-                          <p>Do you really want to delete this post? This cannot be undone.</p>
+                          <p>Do you want to permanently delete this post?</p>
                         </div>
                         <div class="my-2">
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -1748,7 +1752,7 @@ function user_posts_template(response){
             <div>
               <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
             </div>
-            <div class="lineheight2">
+            <div class="lineheight-lower">
               <div>
                 <span class="mobiletext2">
                   <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
@@ -1764,7 +1768,7 @@ function user_posts_template(response){
                   <% } %>
                 <% } %>
                 <% if(posts[k].descEdit.length != 0){ %>
-                  <div class="badge badge-warning text-xxs">Edited</div>
+                  <div class="badge badge-light text-xxs">Edited</div>
                 <% } %>
               </div>
             </div>
@@ -1795,7 +1799,7 @@ function user_posts_template(response){
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div>
-                        <p>Do you really want to delete this post? This cannot be undone.</p>
+                        <p>Do you want to permanently delete this post?</p>
                       </div>
                       <div class="my-2">
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -1817,8 +1821,8 @@ function user_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+          <p class="truncate-3 m-0 p-0 mobiletext linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
@@ -1831,14 +1835,14 @@ function user_posts_template(response){
           </div>
         </div>
       <% } else{ %>
-        <div class="card-body2 nounderline m-0 p-0">
+        <div class="card-body pt-0 nounderline">
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <% if(posts[k].description.length < 200){ %>
-              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
+              <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink description-short"><%= posts[k].description %></p>
             <% } else{ %>
-              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
+              <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink"><%= posts[k].description %></p>
             <% } %>
-            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(posts[k].createdAt).calendar() %></em>
@@ -1852,7 +1856,7 @@ function user_posts_template(response){
           </a>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
           <div class="valign">
             <% if(currentUser){ %>
@@ -1897,12 +1901,12 @@ function user_posts_template(response){
     <!-- COMMENTS -->
     <div class="card m-0 post-tail">
       <% if(posts[k].commentsCount != 0){ %>
-        <div class="card-body3">
+        <div class="card-body py-1">
           <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
             <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
             <% if(z<=2){ %>
               <div class="valign">
-                <div class="wordwrap lineheight my-15">
+                <div class="wordwrap lineheight-low my-15">
                   <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
@@ -1913,7 +1917,7 @@ function user_posts_template(response){
           <% } %>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <div class="commentdiv">
           <form action="/posts/<%= posts[k]._id %>/comments" method="POST">
             <div class="input-group">
@@ -1939,7 +1943,7 @@ function user_posts_template(response){
                 <div>
                   <a href="/clubs/<%= posts[k].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></a>
                 </div>
-                <div class="lineheight2">
+                <div class="lineheight-lower">
                   <div>
                     <span class="mobiletext2">
                       <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
@@ -1956,7 +1960,7 @@ function user_posts_template(response){
                       <% } %>
                     <% } %>
                     <% if(posts[k].descEdit.length != 0){ %>
-                      <div class="badge badge-warning text-xxs">Edited</div>
+                      <div class="badge badge-light text-xxs">Edited</div>
                     <% } %>
                   </div>
                 </div>
@@ -1974,9 +1978,9 @@ function user_posts_template(response){
         <div>
           <div class="nounderline m-0 p-0">
             <% if(posts[k].image){ %>
-              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= posts[k].description %></div>
+              <div class="truncate-3 mobiletext linewrap card-body m-0 py-1"><%= posts[k].description %></div>
               <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
               <% } %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
                 <div class="topicimgpad">
@@ -1991,15 +1995,15 @@ function user_posts_template(response){
               </a>
             <% } else{ %>
               <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
-                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= posts[k].description %></div>
+                <div class="truncate-16 card-body py-1 mobiletext linewrap nolink"><%= posts[k].description %></div>
                 <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
+                  <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(posts[k].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
           </div>
           <% if(posts[k].subpostsCount > 0){ %>
-            <div class="card-body5 lineheight">
+            <div class="px-2 lineheight">
               <% if(!posts[k].image){ %>
                 <hr class="hr-light">
               <% } %>
@@ -2042,7 +2046,7 @@ function user_posts_template(response){
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div>
-                          <p>Do you really want to delete this post? This cannot be undone.</p>
+                          <p>Do you want to permanently delete this post?</p>
                         </div>
                         <div class="my-2">
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -2105,7 +2109,7 @@ function heart_posts_template(response){
             <div>
               <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
             </div>
-            <div class="lineheight2">
+            <div class="lineheight-lower">
               <div>
                 <span class="mobiletext2">
                   <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
@@ -2121,7 +2125,7 @@ function heart_posts_template(response){
                   <% } %>
                 <% } %>
                 <% if(postsH[l].descEdit.length != 0){ %>
-                  <div class="badge badge-warning text-xxs">Edited</div>
+                  <div class="badge badge-light text-xxs">Edited</div>
                 <% } %>
               </div>
             </div>
@@ -2152,7 +2156,7 @@ function heart_posts_template(response){
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div>
-                        <p>Do you really want to delete this post? This cannot be undone.</p>
+                        <p>Do you want to permanently delete this post?</p>
                       </div>
                       <div class="my-2">
                         <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -2174,8 +2178,8 @@ function heart_posts_template(response){
           <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
         </a>
         <div class="card-body">
-          <p class="truncate m-0 p-0 mobiletext linewrap"><%= postsH[l].description %></p>
-          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
+          <p class="truncate-3 m-0 p-0 mobiletext linewrap"><%= postsH[l].description %></p>
+          <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
           <div class="lightgrey2">
             <span>
               <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
@@ -2188,14 +2192,14 @@ function heart_posts_template(response){
           </div>
         </div>
       <% } else{ %>
-        <div class="card-body2 nounderline m-0 p-0">
+        <div class="card-body pt-0 nounderline">
           <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
             <% if(postsH[l].description.length < 200){ %>
-              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink description-short"><%= postsH[l].description %></p>
+              <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink description-short"><%= postsH[l].description %></p>
             <% } else{ %>
-              <p class="truncate2 m-0 p-0 mobiletext linewrap nolink"><%= postsH[l].description %></p>
+              <p class="truncate-16 m-0 p-0 mobiletext linewrap nolink"><%= postsH[l].description %></p>
             <% } %>
-            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
+            <em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>
@@ -2209,7 +2213,7 @@ function heart_posts_template(response){
           </a>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <form class="valign" action="/posts/<%= postsH[l]._id %>/vote" method="POST">
           <div class="valign">
             <% if(currentUser){ %>
@@ -2254,12 +2258,12 @@ function heart_posts_template(response){
     <!-- COMMENTS -->
     <div class="card m-0 post-tail">
       <% if(postsH[l].commentsCount != 0){ %>
-        <div class="card-body3">
+        <div class="card-body py-1">
           <% var z=1; var buckets = postsH[l].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
             <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
             <% if(z<=2){ %>
               <div class="valign">
-                <div class="wordwrap lineheight my-15">
+                <div class="wordwrap lineheight-low my-15">
                   <span><a href="/users/<%= comments[j].commentAuthor.id %>" class="black"><span class="m-0 p-0 mobiletext boldtext"><%= comments[j].commentAuthor.authorName %></span></a>
                   </span>
                   <span class="mobiletext"><%= comments[j].text %></span>
@@ -2270,7 +2274,7 @@ function heart_posts_template(response){
           <% } %>
         </div>
       <% } %>
-      <div class="card-body3">
+      <div class="card-body py-1">
         <div class="commentdiv">
           <form action="/posts/<%= postsH[l]._id %>/comments" method="POST">
             <div class="input-group">
@@ -2296,7 +2300,7 @@ function heart_posts_template(response){
                 <div>
                   <a href="/clubs/<%= postsH[l].postClub._id %>"><img class="navdp rounded-circle mr-2" src="<%= PC_50_clubAvatarH[l] || '/images/noClub.png' %>"></a>
                 </div>
-                <div class="lineheight2">
+                <div class="lineheight-lower">
                   <div>
                     <span class="mobiletext2">
                       <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
@@ -2313,7 +2317,7 @@ function heart_posts_template(response){
                       <% } %>
                     <% } %>
                     <% if(postsH[l].descEdit.length != 0){ %>
-                      <div class="badge badge-warning text-xxs">Edited</div>
+                      <div class="badge badge-light text-xxs">Edited</div>
                     <% } %>
                   </div>
                 </div>
@@ -2331,9 +2335,9 @@ function heart_posts_template(response){
         <div>
           <div class="nounderline m-0 p-0">
             <% if(postsH[l].image){ %>
-              <div class="truncate m-0 p-0 mobiletext linewrap card-body3"><%= postsH[l].description %></div>
+              <div class="truncate-3 mobiletext linewrap card-body m-0 py-1"><%= postsH[l].description %></div>
               <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
-                <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+                <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
               <% } %>
               <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
                 <div class="topicimgpad">
@@ -2348,15 +2352,15 @@ function heart_posts_template(response){
               </a>
             <% } else{ %>
               <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-                <div class="truncate2 card-body3 mobiletext linewrap nolink"><%= postsH[l].description %></div>
+                <div class="truncate-16 card-body py-1 mobiletext linewrap nolink"><%= postsH[l].description %></div>
                 <% if(postsH[l].hyperlink && postsH[l].hyperlink != ''){ %>
-                  <div class="card-body3"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
+                  <div class="card-body py-1"><em class="m-0 p-0 mobiletext linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate-1"><%= decodeURI(postsH[l].hyperlink) %></a></em></div>
                 <% } %>
               </a>
             <% } %>
           </div>
           <% if(postsH[l].subpostsCount > 0){ %>
-            <div class="card-body5 lineheight">
+            <div class="px-2 lineheight">
               <% if(!postsH[l].image){ %>
                 <hr class="hr-light">
               <% } %>
@@ -2399,7 +2403,7 @@ function heart_posts_template(response){
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div>
-                          <p>Do you really want to delete this post? This cannot be undone.</p>
+                          <p>Do you want to permanently delete this post?</p>
                         </div>
                         <div class="my-2">
                           <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -2467,7 +2471,7 @@ function post_comments_template(response){
   html = ejs.render(`
 <% var comments = buckets[0].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
   <div class="mb-1">
-    <div class="valign card-body1">
+    <div class="valign card-body py-0">
       <div class="mb-auto py-2 commentpad">
         <a href="/users/<%= comments[j].commentAuthor.id._id %>">
           <% if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
@@ -2477,7 +2481,7 @@ function post_comments_template(response){
           <% } %>
         </a>
       </div>
-      <div class="commentdiv ml-2 my-1 pb-1 lineheight hr2">
+      <div class="commentdiv ml-2 my-1 pb-1 lineheight-low hr2">
         <div class="commentpad commentpad2">
           <div>
             <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -2529,7 +2533,7 @@ function post_comments_template(response){
               </div>
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
-              <div class="commentwrap lineheight0 mb-2">
+              <div class="commentwrap lineheight-0 mb-2">
                 <% if(upComments.includes(comments[j]._id)){ %>
                   <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
@@ -2621,7 +2625,7 @@ function post_subPosts_template(response){
           <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
         </div>
         <div class="mobiletext">
-          <div class="valign lineheight2 mb-1">
+          <div class="valign lineheight-lower mb-1">
             <div>
               <div>
                 <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>" class="darkgrey">
@@ -2656,13 +2660,13 @@ function post_subPosts_template(response){
           <hr>
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
-          <div class="quote px-1 pb-1 my-1 lineheight3 greyback">
+          <div class="quote px-1 pb-1 my-1 lineheight-lowest greyback">
             <span class="linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
         <% } %>
-        <div class="mobiletext linewrap lineheight subPost-text"><%= subPosts[j].text %></div>
+        <div class="mobiletext linewrap lineheight-low subPost-text"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <% for(var k=0;k<subPosts[j].images.length;k++){ %>
             <div class="subPostimg-div">
@@ -2734,7 +2738,7 @@ function post_subPosts_template(response){
 
 <% if(index == post.subpostBuckets.length-1){ %>
   <div class="card indexcard2">
-    <div class="card-body3">
+    <div class="card-body py-1">
       <div class="valign">
         <div class="mb-auto d-flex flex-column">
           <div>
@@ -2797,7 +2801,7 @@ function post_subPosts_template(response){
 
 function moreMembers_template(response){
   html = ejs.render(`
-<div class="row no-gutters lineheight2">
+<div class="row no-gutters lineheight-lower">
   <% for(var i=0;i<users.length;i++){ %>
     <div class="valign fullwidth">
       <div class="d-flex flex-row">
@@ -2922,7 +2926,7 @@ function moreMembers_template(response){
 
 function moreMemberRequests_template(response){
   html = ejs.render(`
-<div class="row no-gutters mt-2 lineheight2">
+<div class="row no-gutters mt-2 lineheight-lower">
   <% for(var m=0;m<users.length;m++){ %>
     <div class="valign fullwidth">
       <div class="d-flex flex-row">
@@ -2972,7 +2976,7 @@ function allTimeTopTopicPosts_template(response){
   <div class="valign">
     <div class="valign">
       <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
-        <span class="truncate3 mobiletext2 lineheight2 my-1">
+        <span class="truncate-2 mobiletext2 lineheight-lower my-1">
           <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
           <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
         </span>
@@ -2981,7 +2985,7 @@ function allTimeTopTopicPosts_template(response){
           <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
         </div>
         <div>
-          <span class="truncate3 mobiletext2 lineheight2 my-1">
+          <span class="truncate-2 mobiletext2 lineheight-lower my-1">
             <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
             <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
           </span>
@@ -3001,7 +3005,7 @@ function allTimeTopTopicPosts_template(response){
 
 function moreClubs_template(response){
   html = ejs.render(`
-<div class="row no-gutters lineheight2">
+<div class="row no-gutters lineheight-lower">
   <% for(var i=0;i<clubs.length;i++){ %>
     <div class="valign fullwidth">
       <div class="d-flex flex-row">
@@ -3122,7 +3126,7 @@ function search_people_template(response){
           <% } %>
         </a>
       </div>
-      <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+      <div class="card-body py-1 lineheight-lower fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
             <a href="/users/<%= users[k]._id %>" class="grey">
@@ -3151,7 +3155,7 @@ function search_people_template(response){
             <% } %>
           </div>
           <% if(users[k].userKeys){ %>
-            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= users[k].userKeys.hometown %></div>
+            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight-lower ml-1" style="max-width: 30%;"><%= users[k].userKeys.hometown %></div>
           <% } %>
         </div>
       </div>
@@ -3174,7 +3178,7 @@ function search_clubs_template(response){
           <img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
         </a>
       </div>
-      <div class="card-body3 lineheight2 fullwidth" style="overflow: hidden;">
+      <div class="card-body py-1 lineheight-lower fullwidth" style="overflow: hidden;">
         <div class="valign">
           <div>
             <a href="/clubs/<%= clubs[k]._id %>" class="grey">
@@ -3199,7 +3203,7 @@ function search_clubs_template(response){
             <% } %>
           </div>
           <% if(clubs[k].clubKeys){ %>
-            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight2 ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
+            <div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight-lower ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
           <% } %>
         </div>
       </div>
@@ -3234,7 +3238,7 @@ function search_college_pages_template(response){
 <% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
-      <div class="card-body3 lineheight1 fullwidth">
+      <div class="card-body py-1 lineheight1 fullwidth">
         <div class="notification px-2 py-1 college d-flex flex-column">
           <div class="boldtext text-xxl">
             <div class="collegename-search d-flex">

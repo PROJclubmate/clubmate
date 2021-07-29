@@ -873,8 +873,8 @@ time.calendar{
 .info > .name{
   color: var(--color-white-300);
 }
-.stories.facesnap .story > .item-link > .item-preview {
-  background: #2bc48a;
+.stories.facesnap .story:not(.seen) > .item-link > .item-preview {
+  background: #2bc48a !important;
 }
 .stories.facesnap .story > .item-link > .item-preview img{
   border-color: var(--color-dark-800) !important;

@@ -83,7 +83,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div>
-                <p>Do you really want to delete your profile pic? This cannot be undone.</p>
+                <p>Do you want to delete your profile pic?</p>
               </div>
               <div class="my-2">
                 <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
@@ -209,7 +209,7 @@
                       <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserFemale.png' %>">
                     <% } %>
                   </a>
-                  <div class="lineheight3">
+                  <div class="lineheight-lowest">
                     <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>
                   </div>
                 </div>
@@ -973,7 +973,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div>
-                    <p>Do you really want to unfriend <%= user.firstName %>? This cannot be undone.</p>
+                    <p>Do you really want to unfriend <%= user.fullName %>?</p>
                   </div>
                   <div class="my-2">
                     <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>

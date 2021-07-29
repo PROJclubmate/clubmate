@@ -200,7 +200,7 @@
                 <img class="navdp" src="<%= CI_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
             </span>
             <span>
-              <div class="d-flex flex-column lineheight2 mx-2">
+              <div class="d-flex flex-column lineheight-lower mx-2">
                 <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="grey">
                   <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
                 <span class="lightgrey text-xs"><%= clubInviteRequests[i].banner %></span>
@@ -244,7 +244,7 @@
               </a>
             </span>
             <span>
-              <div class="d-flex flex-column lineheight2 mx-2">
+              <div class="d-flex flex-column lineheight-lower mx-2">
                 <a href="/users/<%= friendRequests[j]._id %>" class="grey">
                   <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
                 <span class="lightgrey text-xs"><%= friendRequests[j].note %></span>
@@ -309,7 +309,7 @@
             <div><a class="text-sm boldtext side-drop-elem" href="/clubs/<%= club.id %>"><%= club.clubName %></a></div>
           <% }); %>
         <% } else{ %>
-          <div><a class="text-sm side-drop-elem px-3 py-5 lightgrey2 lineheight0" href="#">No clubs joined</a></div>
+          <div><a class="text-sm side-drop-elem px-3 py-5 lightgrey2 lineheight-0" href="#">No clubs joined</a></div>
         <% } %>
       </div>
     <% } %>

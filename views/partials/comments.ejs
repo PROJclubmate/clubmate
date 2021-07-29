@@ -1,7 +1,7 @@
 <% var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){ %>
   <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
     <div class="mb-1">
-      <div class="valign card-body1">
+      <div class="valign card-body py-0">
         <div class="mb-auto py-2 commentpad">
           <a href="/users/<%= comments[j].commentAuthor.id._id %>">
             <% if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
@@ -11,7 +11,7 @@
             <% } %>
           </a>
         </div>
-        <div class="commentdiv ml-2 my-1 pb-1 lineheight hr2">
+        <div class="commentdiv ml-2 my-1 pb-1 lineheight-low hr2">
           <div class="commentpad commentpad2">
             <div>
               <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
@@ -63,7 +63,7 @@
                 </div>
               <% } %>
               <form action="/comments/<%= buckets[i]._id %>/<%= comments[j]._id %>/vote" method="POST">
-                <div class="commentwrap lineheight0 mb-2">
+                <div class="commentwrap lineheight-0 mb-2">
                   <% if(upComments.includes(comments[j]._id)){ %>
                     <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                       <div>

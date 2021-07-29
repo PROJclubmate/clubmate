@@ -146,7 +146,7 @@ $('#input_topic').on('input', function(e){
       $('#priv_everyone').removeAttr('selected');
       $('#priv_everyone').attr('disabled', 'true');
       $('#priv_college').attr('selected', 'true');
-      $('#description').attr('placeholder', 'Describe your question');
+      $('#description').attr('placeholder', 'Describe your question / discussion');
     } else{
       $('#priv_college').removeAttr('selected');
       $('#priv_everyone').removeAttr('disabled');
@@ -603,13 +603,18 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
     if(!coverTall){
       if($('#college_scroll').scrollTop() > 116){
         coverTall = true;
-        if(window.innerWidth <= 768){
+        if(window.innerWidth > 992){
+          $('.college-cover-div').height(350);
+          $('img#college-cover').removeClass('desktopFit');
+        } else if(window.innerWidth <= 992 && window.innerWidth > 768){
+          $('.college-cover-div').height(200);
+          $('img#college-cover').removeClass('mobileblurred');
+          $('.college-infodiv').addClass('nodisplay').removeClass('tabletShow');
+          $('img#college-cover').removeClass('desktopFit');
+        } else if(window.innerWidth <= 768){
           $('.college-cover-div').height(200);
           $('img#college-cover').removeClass('mobileblurred');
           $('.college-infodiv').addClass('nodisplay');
-        } else{
-          $('.college-cover-div').height(350);
-          $('img#college-cover').removeClass('desktopFit');
         }
       }
     }
@@ -1034,25 +1039,29 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
         if(formData[1].name == 'like'){
           if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
+            $('#like-count'+data.foundPost._id).addClass('nodisplay');
           }
           else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up discover-vote"></i>'
           || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up discover-vote greencolor"></i>');
+            $('#like-count'+data.foundPost._id).removeClass('nodisplay');
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
           }
           $('#like-count'+data.foundPost._id).toggleClass('greencolor2');
-          $('#heart-count'+data.foundPost._id).removeClass('redcolor2');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor2').addClass('nodisplay');
         }
         if(formData[1].name == 'heart'){
           if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
+            $('#heart-count'+data.foundPost._id).addClass('nodisplay');
           }
           else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart discover-vote"></i>'
           || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart discover-vote redcolor2"></i>');
+            $('#heart-count'+data.foundPost._id).removeClass('nodisplay');
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
           }
-          $('#like-count'+data.foundPost._id).removeClass('greencolor2');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor2').addClass('nodisplay');
           $('#heart-count'+data.foundPost._id).toggleClass('redcolor2');
         }
 

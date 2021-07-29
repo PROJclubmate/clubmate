@@ -6,14 +6,14 @@
   <div id="delegated-posts" class="col-lg-7 col-md-10 centerpad-posts">
     <!-- SIMPLE POSTS -->
     <% if(post.topic == ''){ %>
-      <div class="card post-head">
+      <div class="card post-head" style="border-radius: 0.5rem !important;">
         <div class="card-body">
           <div class="dropctn">
             <div class="valign">
               <div>
                 <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
               </div>
-              <div class="lineheight2">
+              <div class="lineheight-lower">
                 <div class="info-size">
                   <span>
                     <a href="/clubs/<%= post.postClub._id %>" class="darkgrey text-sm"><strong><%= post.postClub.name %></strong></a>
@@ -36,7 +36,7 @@
                     <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
                   <% } %>
                   <% if(post.descEdit.length != 0){ %>
-                    <div class="badge badge-warning text-xxs">Edited</div>
+                    <div class="badge badge-light text-xxs">Edited</div>
                   <% } %>
                 </div>
               </div>
@@ -65,14 +65,14 @@
           <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
           <div class="card-body">
         <% } else{ %>
-          <div class="card-body3">
+          <div class="card-body py-1">
         <% } %>
         <% if(!post.image && post.description.length < 200){ %>
-          <p class="m-0 p-0 mobiletext linewrap description-short-show"><%= post.description %></p>
+          <p class="m-0 mobiletext linewrap description-short-show"><%= post.description %></p>
         <% } else{ %>
           <p class="m-0 p-0 mobiletext linewrap"><%= post.description %></p>
         <% } %>
-          <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+          <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
           <div class="valign">
             <div>
               <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs"></em></span>
@@ -86,7 +86,7 @@
           </div>
         </div>
         <hr class="hr-light mx-2">
-        <div class="card-body3">
+        <div class="card-body py-1">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">
               <% if(currentUser){ %>
@@ -138,8 +138,8 @@
                     <div>
                       <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
                     </div>
-                    <div class="lineheight2">
-                      <div class="mobiletext2 truncate1">
+                    <div class="lineheight-lower">
+                      <div class="mobiletext2 truncate-1">
                         <span>
                           <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
                         </span>
@@ -161,7 +161,7 @@
                           <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
                         <% } %>
                         <% if(post.descEdit.length != 0){ %>
-                          <div class="badge badge-warning text-xxs">Edited</div>
+                          <div class="badge badge-light text-xxs">Edited</div>
                         <% } %>
                       </div>
                     </div>
@@ -177,24 +177,24 @@
             <div>
               <div class="nounderline m-0 p-0">
                 <% if(post.image){ %>
-                  <div class="mobiletext linewrap card-body3"><%= post.description %></div>
+                  <div class="mobiletext linewrap card-body py-1"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
-                    <div class="card-body3">
-                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                    <div class="card-body py-1">
+                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                   <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
                 <% } else{ %>
-                  <div class="card-body3 mobiletext linewrap nolink"><%= post.description %></div>
+                  <div class="card-body py-1 mobiletext linewrap nolink"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
-                    <div class="card-body3">
-                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                    <div class="card-body py-1">
+                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                 <% } %>
               </div>
               <!-- Vote bar -->
-              <div class="card-body5">
+              <div class="px-2">
               <% if(!post.image){ %>
                 <hr class="hr-light">
               <% } %>
@@ -278,10 +278,9 @@
         </div>
     <% } %>
     </div>
-    <!-- EDIT POST Display: none -->
     <div id="post_edit_history">
       <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
-      <div class="card-body3 greyback2">
+      <div class="card-body py-1 mt-2 rounded greyback2">
         <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
         <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
       </div>
@@ -291,7 +290,7 @@
     <div id="post_edit_form" class="card border-light-lr">
       <hr>
       <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
-      <form class="card-body2" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
+      <form class="card-body pt-0" action="/clubs/<%= post.postClub._id %>/posts/<%= post._id %>?_method=PUT" method="POST">
         <label for="description" class="sr-only">Post description</label>
         <textarea type="text" id="description" class="emoji-input form-control shadow whitesmokeback" name="description" placeholder="Describe your post" rows="10" autofocus><%= post.description %></textarea>
         <label for="hyperlink_edit" class="sr-only">Hyperlink</label>
@@ -350,12 +349,12 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-body3 d-flex mx-auto">
+          <div class="card-body py-1 d-flex mx-auto">
             <span class="text-sm lightgrey">No sub-posts yet.</span>
           </div>
         </div>
         <div class="card indexcard2">
-          <div class="card-body3">
+          <div class="card-body py-1">
             <div class="valign">
               <div class="mb-auto d-flex flex-column">
                 <div>
@@ -406,7 +405,7 @@
 
     <!-- COMMENTS -->
     <% if(post.topic == ''){ %>
-      <div class="card show-comments mb-3">
+      <div class="card show-comments mb-3" style="border-radius: 0.5rem !important;">
         <div class="valign p-2 mb-2">
           <div class="mb-auto">
             <% if(currentUser){ %>
@@ -451,7 +450,7 @@
             <% } %>
           </div>
         <% } else if(post.commentsCount == 0){ %>
-          <div class="card-body2 d-flex mx-auto">
+          <div class="card-body pt-0 d-flex mx-auto">
             <span class="text-sm lightgrey">No comments yet.</span>
           </div>
         <% } %>

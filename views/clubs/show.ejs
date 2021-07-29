@@ -112,7 +112,7 @@
       <div id="club-info-mar" class="col-md-4 px-1 mobilepad mt-2 keys keyspad">
         <div class="card border-light btncollapse-div">
           <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info noshadow" data-toggle="collapse" data-target="#infobox"><i class="fas fa-angle-up flipped-verticaly mr-2"></i>Info</button>
-          <div id="infobox" class="collapse btncollapse-content card-body5">
+          <div id="infobox" class="collapse btncollapse-content px-2">
             <% if(currentUser){ %>
               <form action="/users/<%= currentUser._id %>/follow/<%= club._id %>?_method=PUT" method="POST">
                 <div class="text-sm boldtext lightgrey my-3 text-center"><%= club.followerCount %></div>
@@ -137,7 +137,7 @@
                   </div>
                 <% } %>
               </div>
-              <div class="text-sm linewrap lineheight mb-2"><%= club.info.description %></div>
+              <div class="text-sm linewrap lineheight-low mb-2"><%= club.info.description %></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_desc" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
@@ -155,7 +155,7 @@
                   </div>
                 <% } %>
               </div>
-              <div class="text-sm linewrap lineheight mb-2"><%= club.info.rules %></div>
+              <div class="text-sm linewrap lineheight-low mb-2"><%= club.info.rules %></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_rules" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
@@ -310,7 +310,7 @@
               <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
-                    <form id="create-new-post" class="card-body2 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
+                    <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
                       <% if(rank >= 0 && rank <=3){ %>
                         <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="Topic">
@@ -498,7 +498,7 @@
                           <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
                         <% } %>
                           <div class="room-container whitesmokeback">
-                            <div class="mobiletext truncate1">Common</div>
+                            <div class="mobiletext truncate-1">Common</div>
                           </div>
                         </a>
                       </div>
@@ -507,7 +507,7 @@
                           <div id="custom_room_div<%= i %>" class="room-container-div">
                             <a href="/clubs/<%= club._id %>/rooms/<%= club.chatRooms[i-1].conversationId %>" class="nounderline">
                               <div class="room-container">
-                                <div class="mobiletext truncate1"></i><%= club.chatRooms[i-1].name %></div>
+                                <div class="mobiletext truncate-1"></i><%= club.chatRooms[i-1].name %></div>
                               </div>
                             </a>
                           </div>
@@ -517,7 +517,7 @@
                         <div id="create-new-div" class="room-container-div" href="#createNewRoom" data-toggle="modal">
                           <div class="nounderline">
                             <div id="create-new-room-container" class="room-container darkgrey">
-                              <div class="mobiletext truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                              <div class="mobiletext truncate-1"><i class="fas fa-plus mr-2"></i>Create new</div>
                             </div>
                           </div>
                         </div>
@@ -562,11 +562,11 @@
   <% } else if(currentUser && !(0 <= rank && rank <= 4)){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="m-0">
-        <div class="lightgrey lineheight text-sm text-center">
+        <div class="lightgrey lineheight-low text-sm text-center">
           <i class="fas fa-exclamation redcolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & discussions ;)
         </div>
         <div class="card-body hr1 mx-3">
-          <div class="lightgrey lineheight text-sm text-center">
+          <div class="lightgrey lineheight-low text-sm text-center">
             <% if(!sentMemberReq){ %>
               <button id="memberReq-btn" class="gb gb8 gb-bordered hover-slide gb-rounded btnshadow text-sm boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
             <% } else{ %>
