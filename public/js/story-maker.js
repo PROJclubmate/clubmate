@@ -47,7 +47,7 @@ WebFont.load({
       }
       if(canvas.getActiveObject().type == 'textbox' && canvas.getActiveObject().isEditing){
         document.getElementById('story-maker-next').classList.add('nodisplay');
-        document.getElementById('footer').classList.add('nodisplay');
+        document.getElementById('story-footer').classList.add('nodisplay');
       } else{
         document.getElementById('story-maker-next').classList.remove('nodisplay');
       }
@@ -57,11 +57,11 @@ WebFont.load({
     cropCanvasBtn.addEventListener('click', function(e){
       if(cropCanvasBtn.classList.contains('active')){
         document.getElementById('story-maker-next').classList.remove('nodisplay');
-        document.getElementById('footer').classList.add('nodisplay');
+        document.getElementById('story-footer').classList.add('nodisplay');
         cropCanvasBtn.classList.remove('active');
       } else{
         document.getElementById('story-maker-next').classList.add('nodisplay');
-        document.getElementById('footer').classList.remove('nodisplay');
+        document.getElementById('story-footer').classList.remove('nodisplay');
         cropCanvasBtn.classList.add('active');
 
         // Select option - what Aspect Ratio to crop
@@ -71,7 +71,7 @@ WebFont.load({
           cropCanvasTemplate(canvas, aspectRatio);
           setTimeout(function(){ 
             document.getElementById('story-maker-next').classList.remove('nodisplay');
-            document.getElementById('footer').classList.add('nodisplay');
+            document.getElementById('story-footer').classList.add('nodisplay');
           }, 1000);
           cropCanvasBtn.classList.remove('active');
         };

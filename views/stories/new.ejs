@@ -1,80 +1,26 @@
 <% include ../partials/header %>
 <style>
   @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
-  @media screen and (min-width: 768px){
-    #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
-  }
-  @media screen and (min-width: 1200px){
-    #footer{width: calc(100% - 10rem - 2rem) !important;}
-  }
-  @media screen and (max-width: 767px){
-    #story-maker-container{height: calc(100vh - 44px - 56px - 56px) !important;}
-    .story-maker-options{padding: 0.25rem 0.5rem !important;}
-  }
-  @media screen and (max-width: 481px){
-    #story-maker-container{height: calc(100vh - 50px - 56px - 56px) !important;}
-  }
-  @media screen and (max-width: 361px){
-    #story-maker-container{height: calc(100vh - 42px - 56px - 56px) !important;}
-  }
-  #header, #footer {
-    width: 100%;
-    height:56px;
-    background:#fff;
-    z-index:10;
-    /* margin-bottom: 3rem; */
-  }
-  #footer{
-    position: absolute;
-    bottom: 0;
-    margin: 0;
-  }
   h1 {
     font-family: sans-serif;
     color: #343a40;
     font-size: 20px;
   }
-  .story-maker-options{
-    font-size: 1.25rem;
-    color: #343a40;
-    padding: 0.25rem 1rem;
-    cursor: pointer;
-  }
-  .crop-canvas-options{
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #343a40;
-    padding: 0.25rem 0.5rem;
-    margin: 0.5rem 0.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 0.25rem;
-    cursor: pointer;
-  }
-  input[type="file"]#backgroundpick{
-    display: none;
-  }
-  button#story-maker-next{
-    position: absolute;
-    right: 1rem;
-    bottom: 0.5rem;
-    border-radius: 2rem !important;
-    z-index: 11;
-  }
 </style>
 
 <div id="story-maker-container">
-  <div id="header">
+  <div id="story-header">
     <div class="p-2 pt-3 valign">
-      <div><h1 class="m-0">Create Story</h1></div>
+      <div><h1 class="m-0 darkgrey">Create Story</h1></div>
       <div>
         <span>
-          <label class="story-maker-options text-xxl" title="Upload Image" for="backgroundpick" title="Upload image">
+          <label class="story-maker-options darkgrey text-xxl" title="Upload Image" for="backgroundpick" title="Upload image">
             <i class="far fa-image"></i>
           </label>
           <input type="file" id="backgroundpick" name="" accept="image/*">
         </span>
-        <span id="addtextbox" class="story-maker-options" title="Add Text"><i class="fas fa-font"></i></span>
-        <span id="cropcanvas" class="story-maker-options" title="Crop"><i class="fas fa-crop-alt"></i></span>
+        <span id="addtextbox" class="story-maker-options darkgrey" title="Add Text"><i class="fas fa-font"></i></span>
+        <span id="cropcanvas" class="story-maker-options darkgrey" title="Crop"><i class="fas fa-crop-alt"></i></span>
         <span class="story-maker-options" title="Download" style="padding-right: 0 !important;">
           <a href="" id="saveimage" class="darkgrey"><i class="fas fa-download"></i></a>
         </span>
@@ -82,7 +28,7 @@
     </div>
   </div>
   <canvas id="story-maker"></canvas>
-  <div id="footer" class="d-flex nodisplay">
+  <div id="story-footer" class="d-flex nodisplay">
     <div class="mx-auto">
       <div class="d-flex flex-row">
         <div id="4_3" class="crop-canvas-options">4:3</div>
