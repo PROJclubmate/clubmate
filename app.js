@@ -28,6 +28,7 @@ if(process.env.ENVIRONMENT === 'dev'){
 //Requiring routes
 const indexRoutes    = require('./routes/index'),
   chatRoutes         = require('./routes/chats'),
+  storyRoutes        = require('./routes/stories'),
   profileRoutes      = require('./routes/profiles'),
   postRoutes         = require('./routes/posts'),
   commentRoutes      = require('./routes/comments'),
@@ -186,6 +187,7 @@ app.use(async function(req, res, next){
 // Mount routes
 app.use('/', indexRoutes);
 app.use('/', chatRoutes);
+app.use('/', storyRoutes);
 app.use('/', profileRoutes);
 app.use('/', postRoutes);
 app.use('/', commentRoutes);

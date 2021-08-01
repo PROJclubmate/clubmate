@@ -140,7 +140,7 @@
               <div class="text-sm linewrap lineheight-low mb-2"><%= club.info.description %></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_desc" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
-                  <textarea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
+                  <textchiveea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
                   <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update description</button>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
@@ -468,18 +468,20 @@
                 <% if(currentUser && 0 <= rank && rank <=2){ %>
                   <div class="d-flex story-alt-container scroll moz-scroll p-3">
                     <div class="d-flex flex-column mr-3">
-                      <div id="new_story" class="story-alt text-center">
-                        <div class="story-alt-plus">+</div>
-                      </div>
-                      <div id="new_story_label" class="story-alt-label lightgrey2 text-xxxs boldtext pb-2">New update</div>
+                      <a href="/clubs/<%= club._id %>/story/new" class="nounderline">
+                        <div id="new_story" class="story-alt text-center">
+                          <div class="story-alt-plus">+</div>
+                        </div>
+                        <div id="new_story_label" class="story-alt-label lightgrey2 text-xxxs boldtext pb-2">New update</div>
+                      </a>
                     </div>
                   </div>
                 <% } %>
-                <% if(currentUser && 0 <= rank && rank <=2){ %>
+                <% //if(currentUser && 0 <= rank && rank <=4){ %>
                   <div class="p-3 mt-2">
                     <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
                   </div>
-                <% } %>
+                <% //} %>
               </div>
               <% if(currentUser && 0 <= rank && rank <=4){ %>
                 <!-- Rooms Tab -->

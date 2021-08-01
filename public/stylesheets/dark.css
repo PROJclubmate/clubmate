@@ -140,6 +140,9 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     box-shadow: 0 -0.5rem 0 1rem var(--color-dark-900) !important;
     outline: 0.5rem solid var(--color-dark-900) !important;
   }
+  .gradient-wrap.coverback{
+    background-color: var(--color-dark-900) !important;
+  }
 }
 button.gb{
   background-color: var(--color-dark-700) !important;
@@ -215,18 +218,16 @@ select{
   border-color: #26b07c;
 }
 .btn.moderation.btn-light{
-  background-color: var(--color-dark-800) !important;;
-  border-color: var(--color-dark-800);
-  color: var(--color-white-300);
+  background-color: transparent !important;
+  border-color: transparent;
+  color: #646667 !important;
 }
 .btn.moderation.btn-light:hover{
+  background-color: var(--color-dark-800) !important;
   border-color: var(--color-dark-600);
 }
-.btn.moderation.btn-info{
-  background-color: var(--color-dark-800) !important;
-  border: 1px solid var(--color-dark-800) !important;
-}
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
+  background-color: var(--color-dark-800) !important;
   border: 2px solid var(--color-dark-500) !important;
 }
 .btn-college2{
@@ -307,10 +308,10 @@ a.black:hover{
   color: white;
 }
 .hr-light{
-  border-top: 0.5px solid var(--color-dark-700);
+  border-top: 0.5px solid var(--color-dark-750);
 }
 .hr1{
-  border-color: var(--color-dark-700);
+  border-color: var(--color-dark-750);
 }
 .form-control{
   background-color: var(--color-dark-850);
@@ -360,15 +361,16 @@ input.form-control.search:focus{
   background-color: var(--color-dark-900);
 }
 .black{
-  color: var(--color-white-300);
+  color: var(--color-white-200);
 }
 .badge-white{
   background: var(--color-dark-600) !important;
   color: var(--color-white-200) !important;
 }
 .badge-light{
-  background: var(--color-dark-600);
-  color: var(--color-white-200);
+  border-color: var(--color-dark-700);
+  background: var(--color-dark-800);
+  color: #646667;
 }
 .badge-success{
   background-color: #19ae69;
@@ -658,7 +660,7 @@ div.carousel-img{
   border-right: 0.5px solid var(--color-dark-800) !important;
 }
 .card-header.tabcontainer{
-  box-shadow: 0px 1px 3px 0px rgb(0, 0, 0, 0.75);
+  box-shadow: 0px 1px 3px 0px rgb(0, 0, 0, 0.65);
   background-color: var(--color-dark-850);
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
@@ -792,6 +794,7 @@ time.calendar{
   color: #7a7b7c !important;
 }
 #new_story{
+  color: #7a7b7c;
   border-color: #666666 !important;
   background-color: var(--color-dark-900);
 }
@@ -865,7 +868,7 @@ time.calendar{
   border-color: var(--color-dark-700);
 }
 .gradient-wrap.coverback{
-  background-color: var(--color-dark-900) !important;
+  background-color: var(--color-dark-800) !important;
 }
 #not_in_room{
   opacity: 0.25;

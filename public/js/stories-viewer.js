@@ -92,71 +92,71 @@ const stories = new Zuck('stories', {
 	],
 	
 	callbacks:  {
-    onOpen (storyId, callback) {
-      callback();  // on open story viewer
-    },
+		onOpen (storyId, callback) {
+			callback();  // on open story viewer
+		},
 
-    onView (storyId) {
-      // on view story
-    },
+		onView (storyId) {
+			// on view story
+		},
 
-    onEnd (storyId, callback) {
-      callback();  // on end story
-    },
+		onEnd (storyId, callback) {
+			callback();  // on end story
+		},
 
-    onClose (storyId, callback) {
-      callback();  // on close story viewer
-    },
+		onClose (storyId, callback) {
+			callback();  // on close story viewer
+		},
 
-    onNavigateItem (storyId, nextStoryId, callback) {
-      callback();  // on navigate item of story
-    },
+		onNavigateItem (storyId, nextStoryId, callback) {
+			callback();  // on navigate item of story
+		},
 
-    onDataUpdate (currentState, callback) {
-      callback(); // use to update state on your reactive framework
-    }
-  },
+		onDataUpdate (currentState, callback) {
+			callback(); // use to update state on your reactive framework
+		}
+	},
 
 	// template: {
-  //   // use these functions to render custom templates
-  //   // see src/zuck.js for more details
+	//   // use these functions to render custom templates
+	//   // see src/zuck.js for more details
 
-  //   timelineItem (itemData) {
-  //     return ``;
-  //   },
+	//   timelineItem (itemData) {
+	//     return ``;
+	//   },
 
-  //   timelineStoryItem (itemData) {
-  //     return ``;
-  //   },
+	//   timelineStoryItem (itemData) {
+	//     return ``;
+	//   },
 
-  //   viewerItem (storyData, currentStoryItem) {
-  //     return ``;
-  //   },
+	//   viewerItem (storyData, currentStoryItem) {
+	//     return ``;
+	//   },
 
-  //   viewerItemPointer (index, currentIndex, item) {
-  //     return ``;
-  //   },
+	//   viewerItemPointer (index, currentIndex, item) {
+	//     return ``;
+	//   },
 
-  //   viewerItemBody (index, currentIndex, item) {
-  //     return ``;
-  //   }
-  // },
+	//   viewerItemBody (index, currentIndex, item) {
+	//     return ``;
+	//   }
+	// },
 
-  language: { // if you need to translate :)
-    unmute: 'Touch to unmute',
-    keyboardTip: 'Press space to see next',
-    visitLink: 'Visit link',
-    time: {
-      ago:'ago', 
-      hour:'hour', 
-      hours:'hours', 
-      minute:'minute', 
-      minutes:'minutes', 
-      fromnow: 'from now', 
-      seconds:'seconds', 
-      yesterday: 'yesterday', 
-      tomorrow: 'tomorrow', 
-      days:'days'
-    }
+	language: { // if you need to translate :)
+		unmute: 'Touch to unmute',
+		keyboardTip: 'Press space to see next',
+		visitLink: 'Visit link',
+		time: {
+			ago:'ago', 
+			hour:'hour', 
+			hours:'hours', 
+			minute:'minute', 
+			minutes:'minutes', 
+			fromnow: 'from now', 
+			seconds:'seconds', 
+			yesterday: 'yesterday', 
+			tomorrow: 'tomorrow', 
+			days:'days'
+		}
 	}
 });

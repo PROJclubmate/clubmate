@@ -1020,7 +1020,7 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
       }
     })
   });
-} else if(location.pathname.split('/').length == 2 && location.pathname.split('/').pop() == 'discover'){
+} else if(location.pathname.split('/').length == 2 && location.pathname.split('/')[1] == 'discover'){
   $("div#delegated-posts-discover").on('click', '.vote', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -1193,7 +1193,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
   })
 });
 
-if(location.pathname.split('/').length == 2 && location.pathname.split('/').pop() == 'discover'){
+if(location.pathname.split('/').length == 2 && location.pathname.split('/')[1] == 'discover'){
   $("div#delegated-posts-discover").on('click', '.modvote', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();

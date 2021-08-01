@@ -133,7 +133,7 @@ div.content{
   .discoverlink{top: 0 !important; left: 45% !important;}
   #copyTxt{padding: 0 0.25rem !important;}
   #toggleCollegePage-form{position: absolute; left: 4.875rem !important;}
-  #collegeicon{margin-left: -0.875rem !important; margin-right: 0.875rem !important;}
+  #collegeicon{margin-left: -0.9375rem !important; margin-right: 0.8125rem !important;}
   img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
   img.cover.mobile-cover, div.carousel-img{border-radius: 0 0.5rem 0.5rem 0 !important;}
   #btncollapse-club{color: #262626 !important;}
@@ -1709,8 +1709,8 @@ input[type="file"]#inputroomAvatar{
   background-color: white !important;
 }
 .btn.moderation.btn-info{
-  border-color: white;
-  background-color: white;
+  border-color: transparent;
+  background-color: transparent;
   color: #216fdb;
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
