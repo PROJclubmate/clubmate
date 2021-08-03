@@ -16,16 +16,16 @@
   .heart{
     position: unset;
     margin: -0.65rem -0.25rem;
-    transform: scale(0.5);
+    transform: scale(0.65);
   }
   @media screen and (max-width: 1200px){
     .heart{left: 50%;}
   }
   @media screen and (max-width: 481px){
-    .heart{transform: scale(0.6);}
+    .heart{transform: scale(0.75);}
   }
   @media screen and (max-width: 361px){
-    .heart{transform: scale(0.5);}
+    .heart{transform: scale(0.65);}
   }
   .heart:hover::before{
     -webkit-animation-play-state: paused;
@@ -49,32 +49,10 @@
     }
   }
 </style>
-<div class="row no-gutters justify-content-center">
+<div class="row no-gutters justify-content-center absolute-center">
   <div class="d-flex flex-row mx-auto mt-5 mb-4">
-    <div class="heart"></div>
-    <div>How would you rate our concept?</div>
-  </div>
-  <div class="col-10 col-lg-4 col-md-6 landing-bottom">
-    <div class="d-flex valign justify-content-center">
-      <div class="mr-2">Hi <%= currentUser.firstName %></div>
-      <div>
-        <% if(currentUser.userKeys.sex == 'Male'){ %>
-          <img class="navdp rounded-circle" style="image-rendering: auto;" src="<%='/images/noUserMale.png' %>">
-        <% } else if(currentUser.userKeys.sex == 'Female'){ %>
-          <img class="navdp rounded-circle" style="image-rendering: auto;" src="<%='/images/noUserFemale.png' %>">
-        <% } %>
-      </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="d-flex flex-column" style="margin-top: -0.5rem;">
-      <div class="text-xs lightgrey mx-auto pl-4">
-        <span>BETA release | <a class="boldtext" href="/help">Know more</a> | <a class="boldtext" href="/faq">FAQ</a></span>
-        <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
-      </div>
-      <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
-    </div>
+    <div class="heart mr-3"></div>
+    <div class="text-lg">Hello there !</div>
   </div>
 </div>
 

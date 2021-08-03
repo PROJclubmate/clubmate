@@ -1,7 +1,7 @@
 const express  = require('express'),
   router       = express.Router(),
   middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexHelp, indexFAQ, indexSearch, indexSearchEmail, indexSearchPeople, 
+  {indexSubscription, indexRoot, indexAbout, indexHelp, indexSearch, indexSearchEmail, indexSearchPeople, 
   indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, 
   indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
   indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
@@ -15,11 +15,11 @@ router.post('/api/save-subscription/', middleware.isLoggedIn, indexSubscription)
 // Root(Landing) page
 router.get('/', indexRoot);
 
+// About page
+router.get('/about', indexAbout);
+
 // Help page
 router.get('/help', indexHelp);
-
-// FAQ page
-router.get('/faq', indexFAQ);
 
 // Search
 router.get('/search', indexSearch);

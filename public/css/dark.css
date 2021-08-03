@@ -158,7 +158,7 @@ button.gb.gb8:focus{
 .btn{
   background-color: var(--color-dark-700);
   border: 1px solid var(--color-dark-700);
-  color: var(--color-white-200);
+  color: var(--color-white-100);
 }
 .btn:hover{
   background-color: var(--color-dark-600);
@@ -391,10 +391,10 @@ input.form-control.search:focus{
   background-color: var(--color-dark-900);
 }
 .grey{
-  color: var(--color-white-200);
+  color: var(--color-white-300);
 }
 a.grey:hover{
-  color: var(--color-white-100);
+  color: var(--color-white-200);
 }
 
 /* Friend requests */

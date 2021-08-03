@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
-<div class="row no-gutters">
-  <div class="col-md-12 mt-4">
+<div class="row no-gutters absolute-center">
+  <div class="col-md-12">
     <form class="form-signin" action="/register" method="POST">
       <h4 class="my-3">Register new account</h4>
       <div class="valign">
@@ -40,7 +40,7 @@
           <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
         </label>
       </div>
-      <button class="btn btn-lg btn-success btn-round btn-block mt-5" type="submit">Sign up!</button>
+      <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Sign up!</button>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     </form> 
     <div class="form-signin">

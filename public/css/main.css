@@ -55,7 +55,7 @@ div.content{
   .chatbox-loadingarea{margin: 0 0 0 77.25%; left: 0; right: 0;}
   #side-home{height: 40px;}
   .story-alt-container{width: 45vw;}
-  #story-footer{width: calc(100% - 10rem - 2rem) !important;}
+  #story-footer, .absolute-center{width: calc(100% - 10rem - 2rem) !important;}
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
@@ -69,7 +69,7 @@ div.content{
   .mobileNoneFlex{display: flex !important;}
   .scroll::-webkit-scrollbar{width: 0.25rem; height: 0.25rem;}
   .scroll::-webkit-scrollbar-track{background: transparent;}
-  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 1px;}
+  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 0.25rem;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
   #college_scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
@@ -105,7 +105,7 @@ div.content{
   .topicimgpad{padding-left: 0.5rem;}
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label2{width: 76px !important;}
-  .story-alt-plus{margin-top: -0.3125rem;}
+  .story-alt-plus{margin-top: -0.3125rem !important;}
   .messages-long{height: calc(100vh - 3.5rem - 40px - 31px - 42px) !important;}
   .form-control.chatinput{padding: 0.375rem 0.75rem !important;}
   #user-send{padding: 0.3125rem 0.625rem !important;}
@@ -279,6 +279,7 @@ div.content{
   button.vote{font-size: 1.5rem !important;}
   .nocaretmar{margin-left: 0.5rem;}
   .story-alt-container{width: 100vw;}
+  .story-alt-plus{margin-top: 0 !important;}
   .collapsing:not(#navbarCollapse){transition: none !important; display: none !important;}
   .vote-subpost{-webkit-text-stroke: 0.5px #fafafa !important;}
   .scroll_list_container{height: calc(100vh - 1rem - 40px) !important;}
@@ -328,7 +329,7 @@ div.content{
   .btncollapse-user.collapsed{border-radius: 0.5rem;}
   .btncollapse-div-user{border-radius: 1rem !important; background-color: #efefef; margin: 1px 0;}
   .border-light.btncollapse-div-shadow{background-color: transparent; border: none !important; box-shadow: inset 0px 1px 2px rgba(255,255,255,0.25);}
-  .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: 0px 1px 3px -1px rgb(0,0,0,0.15) !important;}
+  .btncollapse-club-grad.collapsed{background-color: rgba(255, 255, 255, 0.1) !important; box-shadow: none !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
@@ -344,7 +345,6 @@ div.content{
   .truncate2{-webkit-line-clamp: 15 !important;}
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
-  .landing-bottom{bottom: 2rem !important;}
   .settings-img{top: 0 !important;}
   .subpostdp{height: 28px !important; width: 28px !important;}
   .subPost-text{min-height: 2rem !important;}
@@ -700,6 +700,27 @@ div.content{
 #side-clubs{
   cursor: pointer;
 }
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus{
+  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
+  transition: background-color 5000s ease-out 0s !important;
+}
+input.shadow:-webkit-autofill,
+input.shadow:-webkit-autofill:hover, 
+input.shadow:-webkit-autofill:focus{
+  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
+  transition: background-color 5000s ease-out 0s !important;
+}
+::-moz-selection { /* Code for Firefox */
+  color: white;
+  background: #3390ff;
+}
+::selection {
+  color: white;
+  background: #3390ff;
+}
 html{
   scroll-behavior: smooth;
   position: relative;
@@ -778,6 +799,12 @@ option:disabled{
 }
 .fullwidth{
   width: 100% !important;
+}
+.absolute-center{
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 100%;
 }
 .form-signin{
   width: 100%;
@@ -1592,13 +1619,6 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .nopoint{
   cursor: default !important;
 }
-.btn.btn-round{
-  border-radius: 5rem;
-  box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.5), inset 0px 1px 1px rgba(255,255,255,0.15);
-}
-.btn.btn-round:focus{
-  border-radius: 2rem;
-}
 .btn.btn-dark{
   background-color: white;
   border: 0.5px solid darkgrey;
@@ -1776,6 +1796,9 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .btn:focus{
   border-bottom-width: 1px;
+}
+.btn.btn-round{
+  border-radius: 5rem !important;
 }
 .noshadow{
   box-shadow: none !important;
@@ -2114,11 +2137,8 @@ img.cover{
   top: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.75;
-  background-image: url(/images/doodleBack.png);
-  background-size: 150px 150px;
-  background-repeat: repeat;
-  image-rendering: -webkit-optimize-contrast;
+  opacity: 0.05;
+  background-image: url(/images/pattern-astronaut.svg);
 }
 .whiteback{
   background-color: white;
@@ -2919,19 +2939,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   text-align: center;
   max-width: 100px;
 }
-/* Change Autocomplete styles in Chrome*/
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
-  transition: background-color 5000s ease-out 0s !important;
-}
-input.shadow:-webkit-autofill,
-input.shadow:-webkit-autofill:hover, 
-input.shadow:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
-  transition: background-color 5000s ease-out 0s !important;
-}
 .page-index-back{
   width: 6rem !important;
   background-color: white;
@@ -3002,6 +3009,15 @@ input.shadow:-webkit-autofill:focus{
 #new_story{
   background-color: #e0e0e0;
   border-width: 1px;
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 0.5rem !important;
+}
+#new_story_label{
+  width: 100px !important;
+}
+#new_story:hover + #new_story_label {
+  color: #343a40 !important;
 }
 .story-alt-plus{
   font-size: 2.75rem;
@@ -3011,6 +3027,7 @@ input.shadow:-webkit-autofill:focus{
   padding: 50% 0 !important;
 }
 .story-alt-label{
+  font-weight: 300;
   width: 65px;
   text-align: center;
   width: 100%;
@@ -3570,13 +3587,6 @@ button#story-maker-next{
   transition: unset;
   color: white;
 }
-.gb4:after{
-  background: linear-gradient(164deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(222, 222, 222, 0.1) 50%, rgba(222, 222, 222, 0.1) 100%), linear-gradient(73deg, rgba(182, 182, 182, 0.02) 0%, rgba(182, 182, 182, 0.02) 50%, rgba(216, 216, 216, 0.02) 50%, rgba(216, 216, 216, 0.02) 100%), linear-gradient(215deg, rgba(27, 27, 27, 0.09) 0%, rgba(27, 27, 27, 0.09) 50%, rgba(243, 243, 243, 0.09) 50%, rgba(243, 243, 243, 0.09) 100%), linear-gradient(236deg, rgba(242, 242, 242, 0.05) 0%, rgba(242, 242, 242, 0.05) 50%, rgba(16, 16, 16, 0.05) 50%, rgba(16, 16, 16, 0.05) 100%), linear-gradient(256deg, rgba(170, 170, 170, 0.07) 0%, rgba(170, 170, 170, 0.07) 50%, rgba(209, 209, 209, 0.07) 50%, rgba(209, 209, 209, 0.07) 100%), linear-gradient(126deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.1) 50%, rgba(26, 26, 26, 0.1) 50%, rgba(26, 26, 26, 0.1) 100%), linear-gradient(61deg, rgba(250, 250, 250, 0.01) 0%, rgba(250, 250, 250, 0.01) 50%, rgba(13, 13, 13, 0.01) 50%, rgba(13, 13, 13, 0.01) 100%), linear-gradient(56deg, rgba(210, 210, 210, 0.05) 0%, rgba(210, 210, 210, 0.05) 50%, rgba(79, 79, 79, 0.05) 50%, rgba(79, 79, 79, 0.05) 100%), linear-gradient(226deg, rgba(62, 62, 62, 0.1) 0%, rgba(62, 62, 62, 0.1) 50%, rgba(73, 73, 73, 0.1) 50%, rgba(73, 73, 73, 0.1) 100%), linear-gradient(90deg, #ec029e, #a1024f);
-}
-.gb4{
-  background-color: white;
-  padding: 0.25rem 0.75rem !important;
-}
 .gb5{
   background-color: #efefef;
 }
@@ -3649,11 +3659,6 @@ button#story-maker-next{
 }
 .gb11:focus:after{
   background-position: 100% 0;
-}
-.landing-bottom{
-  position: absolute;
-  width: 100%;
-  bottom: 0.25rem;
 }
 .hamburger{
   position: absolute;

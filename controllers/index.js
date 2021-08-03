@@ -57,12 +57,12 @@ module.exports = {
     }
   },
 
-  indexHelp(req, res, next){
-    return res.render('help');
+  indexAbout(req, res, next){
+    return res.render('about');
   },
 
-  indexFAQ(req, res, next){
-    return res.render('faq');
+  indexHelp(req, res, next){
+    return res.render('help');
   },
 
   indexSearch(req, res, next){

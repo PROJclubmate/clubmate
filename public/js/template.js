@@ -2982,7 +2982,7 @@ function allTimeTopTopicPosts_template(response){
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
         <div>
-          <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
+          <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp rounded my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
         </div>
         <div>
           <span class="truncate-2 mobiletext2 lineheight-lower my-1">
