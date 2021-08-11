@@ -64,9 +64,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     background-color: var(--color-dark-800);
   }
-  #menu-toggle:hover{
-    background-color: var(--color-dark-750);
-  }
   .post-head, .post-tail, .topic-break, .post-head.heartpost-head{
     border-color: var(--color-dark-800) !important;
   }
@@ -137,6 +134,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-image: url(/images/chat-dark.svg);
   }
   .btncollapse-club-grad.collapsed{
+    background-color: rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 -0.5rem 0 1rem var(--color-dark-900) !important;
     outline: 0.5rem solid var(--color-dark-900) !important;
   }
@@ -155,6 +153,15 @@ button.gb.gb8:focus{
   background-color: var(--color-dark-800) !important;
   color: var(--color-white-100) !important;
 }
+.input-group-text{
+  background-color: var(--color-dark-500);
+  border: 1px solid var(--color-dark-500);
+  color: var(--color-white-200);
+}
+.input-group-text:hover{
+  background-color: var(--color-dark-600);
+  border: 1px solid var(--color-dark-600);
+}
 .btn{
   background-color: var(--color-dark-700);
   border: 1px solid var(--color-dark-700);
@@ -168,11 +175,15 @@ button.gb.gb8:focus{
 .btnxs.btnshadow{
   box-shadow: 0px 2px 5px -2px rgb(0, 0, 0, 0.5);
 }
-.btn-secondary{
+#delete_profilePic-desktop{
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75);
+}
+.btn-primary, .input-group-append > .btn.btn-secondary{
   border-color: var(--color-dark-500) !important;
   background-color: var(--color-dark-500) !important;
 }
-.btn-secondary:hover, .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle,
+.input-group-append > .btn.btn-secondary:hover{
   border-color: var(--color-dark-650) !important;
   background-color: var(--color-dark-600) !important;
 }
@@ -180,14 +191,17 @@ button.gb.gb8:focus{
   border-color: var(--color-dark-600) !important;
   background-color: var(--color-dark-600) !important;
 }
-.btn.btn-light{
-  background-color: var(--color-dark-700);
+.btn.btn-light, .btn.btn-secondary{
+  background-color: var(--color-dark-700) !important;
   color: var(--color-white-100) !important;
-  border-color: var(--color-dark-700);
+  border-color: var(--color-dark-700) !important;
+}
+.btn.btn-light{
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
-.btn.btn-light:hover{
-  background-color: var(--color-dark-800);
+.btn.btn-light:hover,
+.btn-secondary:hover, .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+  background-color: var(--color-dark-800) !important;
 }
 .btn-light.btn-college:focus{
   border-color: var(--color-dark-600) !important;
@@ -212,14 +226,14 @@ button.gb.gb8:focus{
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.45), inset 0px 1px 1px rgba(255,255,255,0.15);
 }
 #preview-postimg:not(.active){
-  filter: brightness(0.25);
+  filter: brightness(0.35);
 }
 select{
   border-color: #26b07c;
 }
 .btn.moderation.btn-light{
   background-color: transparent !important;
-  border-color: transparent;
+  border-color: transparent !important;
   color: #646667 !important;
 }
 .btn.moderation.btn-light:hover{
@@ -265,6 +279,12 @@ select{
 .btn-search:hover{
   background-color: var(--color-dark-700);
 }
+.fa-edit{
+  color: var(--color-white-400);
+}
+.fa-edit:hover{
+  color: var(--color-white-200);
+}
 button.dropdown-toggle{
   color: var(--color-white-200);
   background-color: transparent !important;
@@ -286,8 +306,11 @@ select:focus-visible{
 .blackcolor{
   color: var(--color-white-200) !important;
 }
-.darkgrey{
+.grey, .darkgrey{
   color: var(--color-white-300) !important;
+}
+a.grey:hover{
+  color: var(--color-white-200);
 }
 .lightgrey2{
   color: #646667 !important;
@@ -314,12 +337,13 @@ a.black:hover{
   border-color: var(--color-dark-750);
 }
 .form-control{
-  background-color: var(--color-dark-850);
+  background-color: var(--color-dark-800);
   color: var(--color-white-200);
-  border: 1px solid var(--color-dark-850);
+  border: 1px solid var(--color-dark-700);
 }
 .form-control:focus{
-  background-color: var(--color-dark-900);
+  background-color: var(--color-dark-850);
+  border: 1px solid var(--color-dark-600);
   color: var(--color-white-100);
   box-shadow: none !important;
 }
@@ -329,13 +353,15 @@ a.black:hover{
   box-shadow: none !important;
 }
 .form-control.shadow:focus{
-  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.35) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--color-dark-650);
 }
 textarea#club-message.form-control.shadow , textarea#user-message.form-control.shadow{
   background-color: var(--color-dark-850) !important;
 }
 input.form-control.search{
   border: 1px solid var(--color-dark-750);
+  background-color: var(--color-dark-850) !important;
 }
 input.form-control.search:focus{
   background-color: var(--color-dark-750);
@@ -351,7 +377,7 @@ input.form-control.search:focus{
 .card-heading{
   color: var(--color-white-100);
 }
-.hamburger{
+#menu-toggle{
   background-color: var(--color-dark-850);
 }
 .bluecolor3{
@@ -389,12 +415,6 @@ input.form-control.search:focus{
 }
 .list-group-item{
   background-color: var(--color-dark-900);
-}
-.grey{
-  color: var(--color-white-300);
-}
-a.grey:hover{
-  color: var(--color-white-200);
 }
 
 /* Friend requests */
@@ -559,6 +579,9 @@ button.heartbtn:hover, .fa-heart.grey:hover{
 .greencolor3{
   color: var(--color-white-200) !important;
 }
+.fas.fa-thumbs-up.greencolor{
+  -webkit-text-stroke-color: #2d8900;
+}
 .orangecolor2{
   color: #cc7000 !important;
 }
@@ -684,8 +707,12 @@ div.carousel-img{
 #input_topic:focus{
   border: 1px solid var(--color-light-blue) !important;
 }
+.description{
+  background-color: var(--color-dark-850);
+}
 .description:focus{
-  border: 1px solid var(--color-light-blue);
+  border: 1px solid var(--color-dark-600);
+  background-color: var(--color-dark-800);
 }
 .description2{
   background-color: var(--color-dark-800) !important;
@@ -720,6 +747,9 @@ div.carousel-img{
 }
 
 /* === Chats === */
+.chatname{
+  color: var(--color-white-200) !important;
+}
 .chat-item{
   background-color: var(--color-dark-700);
   border-bottom: var(--color-dark-900);
@@ -741,20 +771,23 @@ div.carousel-img{
   border: none;
 }
 .chat-msg2{
-  background-color: rgb(5,71,64);
+  background-color: #1d5953;
   border: none;
 }
 .chat-msg3{
   background-color: transparent;
 }
 .chat-msg-div{
-  color: var(--color-white-100);
+  color: var(--color-white-200);
 }
 .chat-head4{
   background-color: var(--color-dark-700);
 }
 #prevMessage-div{
   background-color: rgba(255,255,255,0.15);
+}
+.lastmsg, .timeLocal1, .timeLocal3, .timeLocal7, .timeLocal365{
+  color: var(--color-white-400) !important;
 }
 .chatlist-item{
   background-color: var(--color-dark-800);
@@ -777,8 +810,38 @@ div.carousel-img{
 .bootstrap-datetimepicker-widget{
   background-color: var(--color-dark-700);
 }
+.bootstrap-datetimepicker-widget.dropdown-menu.bottom:after, .bootstrap-datetimepicker-widget table td.active.today:before{
+  border-bottom-color: var(--color-dark-700);
+}
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
+.bootstrap-datetimepicker-widget table td.day:hover{
+  background: var(--color-dark-500);
+}
+.bootstrap-datetimepicker-widget table td.hour:hover,
+.bootstrap-datetimepicker-widget table td.minute:hover,
+.bootstrap-datetimepicker-widget table td.second:hover,
+.bootstrap-datetimepicker-widget table td span:hover{
+  background: var(--color-dark-600);
+}
+.bootstrap-datetimepicker-widget table td span.active {
+  color: var(--color-white-100);
+}
+.bootstrap-datetimepicker-widget table{
+  color: var(--color-white-200);
+}
+.bootstrap-datetimepicker-widget table td.new,
+.bootstrap-datetimepicker-widget table td.old{
+  color: var(--color-dark-600);
+}
+.bootstrap-datetimepicker-widget table td,
+.bootstrap-datetimepicker-widget table th{
+  border-color: #454545;
+}
+.bootstrap-datetimepicker-widget table th.picker-switch{
+  border-color: transparent;
+}
 time.calendar{
-  box-shadow: 0 1px 0 var(--color-white-300), 0 2px 0 var(--color-dark-800), 0 3px 0 var(--color-white-300), 0 4px 0 var(--color-dark-800), 0 5px 0 var(--color-white-300), 0 0 0 1px var(--color-white-300);
+  border-color: var(--color-dark-800);
 }
 .story{
   border-color: var(--color-dark-700);
@@ -800,13 +863,19 @@ time.calendar{
 #new_story_label{
   color: #7a7b7c !important;
 }
+#new_story:hover + #new_story_label {
+  color: var(--color-white-300) !important;
+}
 #new_story{
   color: #7a7b7c;
-  border-color: #666666 !important;
+  border-color: #454545 !important;
   background-color: var(--color-dark-900);
 }
 #story-header, #story-footer{
   background: var(--color-dark-800);
+}
+button#story-maker-next.inactive{
+  color: #646667 !important;
 }
 .crop-canvas-options{
   color: var(--color-white-300);
@@ -844,6 +913,9 @@ time.calendar{
 }
 .slider{
   background-color: var(--color-dark-700) !important;
+}
+input[type=checkbox]:checked + .slider{
+  background-color: #2196f3 !important;
 }
 .intercom-composer-popover, .intercom-composer-popover-input, .intercom-composer-popover-input2{
   background-color: var(--color-dark-800);

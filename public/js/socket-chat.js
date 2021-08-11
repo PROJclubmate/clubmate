@@ -418,15 +418,14 @@ if(socket !== undefined){
   }
   function chatBoxOnLoad(){
     setTimeout(function(){
-      if($('#messages_container')[0].scrollHeight == 0){
-        $('#messages_container').animate({scrollTop: 10000}, 1);
-        $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
-      } else{
-        $('#messages_container').animate({scrollTop: $('#messages_container')[0].scrollHeight}, 1);
-        $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
-      }
-      if(window.innerWidth < 767){
-        $('#chats-list').addClass('nodisplay');
+      if($('#messages_container')[0]){
+        if($('#messages_container')[0].scrollHeight == 0){
+          $('#messages_container').animate({scrollTop: 10000}, 1);
+          $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
+        } else{
+          $('#messages_container').animate({scrollTop: $('#messages_container')[0].scrollHeight}, 1);
+          $('#chatbox-loadingarea.chatbox-loadingarea2').css('visibility', 'visible');
+        }
       }
     }, 100);
     if(window.innerWidth > 767 || $('#chatbox-loadingarea').hasClass('chatbox-loadingarea2')){

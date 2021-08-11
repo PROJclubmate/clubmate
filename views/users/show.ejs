@@ -572,9 +572,9 @@
                             <label for="hometown" class="sr-only">HomeTown</label>
                             <input type="text" id="hometown" class="form-control form-control-sm" name="userKeys[hometown]" value="<%= user.userKeys.hometown %>" placeholder="Home Town">
                           </div>
-                          <div class="input-group mt-1 px-2 date" id="datetimepicker4" data-target-input="nearest">
-                            <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker4" placeholder="birth date (mm/dd/yyyy)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
-                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                          <div class="input-group mt-1 px-2 date" id="datetimepicker-dateonly" data-target-input="nearest">
+                            <input id="edit_birthdate" name="userKeys[birthdate]" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" data-target="#datetimepicker-dateonly" placeholder="birth date (MM/DD/YYYY)" value="<%= moment(user.userKeys.birthdate).format('L'); %>" required>
+                            <div class="input-group-append" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
                               <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                             </div>
                           </div>
@@ -625,23 +625,21 @@
                               </div>
                             </div>
                             <div class="px-2">
-                              <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <% if(user.userKeys.sex == 'Male'){ %>
-                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required checked>Male
-                                  <% } else{ %>
-                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
-                                  <% } %>
-                                </label>
+                              <div class="form-check-inline radio">
+                                <% if(user.userKeys.sex == 'Male'){ %>
+                                  <input id="radio-1" name="userKeys[sex]" value="Male" type="radio" required checked>
+                                <% } else{ %>
+                                  <input id="radio-1" name="userKeys[sex]" value="Male" type="radio" required>
+                                <% } %>
+                                <label for="radio-1" class="radio-label">Male</label>
                               </div>
-                              <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <% if(user.userKeys.sex == 'Female'){ %>
-                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female" checked>Female
-                                  <% } else{ %>
-                                    <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
-                                  <% } %>
-                                </label>
+                              <div class="form-check-inline radio">
+                                <% if(user.userKeys.sex == 'Female'){ %>
+                                  <input id="radio-2" name="userKeys[sex]" type="radio" value="Female" checked>
+                                <% } else{ %>
+                                  <input id="radio-2" name="userKeys[sex]" type="radio" value="Female">
+                                <% } %>
+                                <label  for="radio-2" class="radio-label">Female</label>
                               </div>
                             </div>
                             <div class="d-flex flex-row-reverse fullwidth mt-2">

@@ -134,9 +134,9 @@ function hidesidebar(hideValueNum){
     content.style.marginLeft = '0';
   }
   if(sidebar.style.display === 'block'){
-    $('.hamburger').removeClass('is-active');
+    $('#menu-toggle').html('<i class="fas fa-bars"></i>');
   } else if(sidebar.style.display === 'none'){
-    $('.hamburger').addClass('is-active');
+    $('#menu-toggle').html('<i class="fas fa-minus"></i>');
   }
 }
 
@@ -511,8 +511,59 @@ $('.intercom-composer-popover-input2').on('input', function() {
   }
 });
 
+// EVENT DATE WIDGETS
+$("#datetimepicker-dateonly").on("change.datetimepicker", ({date}) => {
+  if($("#datetimepicker-dateonly").find("input").val()){
+    $('#event-date').css('opacity', '');
+    $('#calendar-outerdiv').css('opacity', '');
+    $('#calendar-strong, #calendar-span, #calendar-em').removeClass('transparent-text');
+  } else{
+    $('#event-date').css('opacity', '0.5');
+    $('#calendar-outerdiv').css('opacity', '0.25');
+    $('#calendar-strong, #calendar-span, #calendar-em').addClass('transparent-text');
+  }
+  $('#calendar-strong').text(moment(date).format('MMM'));
+  $('#calendar-span').text(moment(date).format('D'));
+  $('#calendar-em').text(moment(date).format('dddd'));
+});
+
+$("#datetimepicker-timeonly").on("change.datetimepicker", ({date}) => {
+  if($("#datetimepicker-timeonly").find("input").val()){
+    $('#eventTime').css('opacity', '');
+    $('#clock-outerdiv').css('opacity', '');
+    $('#clock-hour, #clock-minute').removeClass('transparent-text');
+  } else{
+    $('#eventTime').css('opacity', '0.5');
+    $('#clock-outerdiv').css('opacity', '0.25');
+    $('#clock-hour, #clock-minute').addClass('transparent-text');
+  }
+  $('#clock-hour').text(moment(date).format('HH'));
+  $('#clock-minute').text(moment(date).format('mm'));
+
+  // Also set date to current if not previously set
+  if(!$("#datetimepicker-dateonly").find("input").val()){
+    $('#event-date').css('opacity', '');
+    $('#calendar-outerdiv').css('opacity', '');
+    $('#calendar-strong, #calendar-span, #calendar-em').removeClass('transparent-text');
+
+    $('#datetimepicker-dateonly').data("datetimepicker").date(moment(new Date ).format('L'));
+    $('#calendar-strong').text(moment(date).format('MMM'));
+    $('#calendar-span').text(moment(date).format('D'));
+    $('#calendar-em').text(moment(date).format('dddd'));
+  }
+});
+
+$('#event-notice').on('input', function(e){
+  if($(this).val() != ''){
+    $(this).css('opacity', '');
+  } else{
+    $(this).css('opacity', '0.5');
+  }
+});
+
 $(function (){
-  $('#datetimepicker4').datetimepicker({format: 'L'});
+  $('#datetimepicker-dateonly').datetimepicker({format: 'L'});
+  $('#datetimepicker-timeonly').datetimepicker({format: 'LT'});
   // setTimeout(function(){
     var divUtc = $('#timeUTC');
     var divLocal = $('#timeLocal');

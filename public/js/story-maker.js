@@ -1,3 +1,4 @@
+// IMAGE EDITOR
 // Load our code - we're putting it all into a function so we can use diff templates in diff situations
 WebFont.load({
   google: {
@@ -68,6 +69,7 @@ WebFont.load({
         var cropCanvasOptions = document.getElementsByClassName('crop-canvas-options');
         var selectAspectRatio = function() {
           var aspectRatio = this.id;
+          document.getElementById('story-draftimg').setAttribute('is_edited', 'true');
           cropCanvasTemplate(canvas, aspectRatio);
           setTimeout(function(){ 
             document.getElementById('story-maker-next').classList.remove('nodisplay');
@@ -88,8 +90,25 @@ WebFont.load({
       // var strDataURI = imgData.substr(22, imgData.length);
       var blob = dataURLtoBlob(imgData);
       var objurl = URL.createObjectURL(blob);
-      link.download = "story.jpg";
+      link.download = 'story.jpg';
       link.href = objurl;
+    });
+
+    // Upload Draft image, move to step 2 - options
+    var nextBtn = document.getElementById('story-maker-next');   
+    nextBtn.addEventListener('click', function(ev) {
+      var nextBtn = document.getElementById('story-maker-next');
+      if(!nextBtn.classList.contains('inactive')){
+        if(document.getElementById('story-draftimg').getAttribute('is_edited') == 'false'){
+          return location.replace('/clubs/'+ nextBtn.getAttribute('club-id') +'/story/create/options');
+        } else{
+          var imgData = canvas.toDataURL({format:'webp', quality: 1, multiplier: 3});
+          var aspectRatio = document.getElementById('story-draftimg').getAttribute('aspect_ratio');
+          var clubId = nextBtn.getAttribute('club-id');
+          var csrfToken = nextBtn.getAttribute('csrf-token');
+          sendImageDraftToServer(imgData, aspectRatio, clubId, csrfToken);
+        }
+      }
     });
   }
 });
@@ -128,10 +147,17 @@ var initCanvas = (id) => {
 
 // Put all canvas code in a function so we can call it after google fonts have loaded
 function setPlaceholderImgTemplate(canvas) {
+  // canvas.backgroundColor = null;
   canvas.backgroundColor = 'black';
   var canvCenter = canvas.getCenter();
   // Loading placeholder image onto canvas
-  var tempImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAA1BMVEUAAACnej3aAAAASElEQVR4nO3BgQAAAADDoPlTX+AIVQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwDcaiAAFXD1ujAAAAAElFTkSuQmCC';
+  var storyDraftImgSrc = document.getElementById('story-draftimg').getAttribute('value');
+  if(storyDraftImgSrc != ''){
+    document.getElementById('story-maker-next').classList.remove('inactive');
+    var tempImg = storyDraftImgSrc;
+  } else{
+    var tempImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+  }
   var backgroundObj;
   var backgroundImg = new Image();
   backgroundImg.onload = function () {
@@ -166,25 +192,31 @@ function setPlaceholderImgTemplate(canvas) {
     canvas.add(backgroundObj);
     // This is like z-index, this keeps the image behind the text
     canvas.moveTo(backgroundObj, 0);
+    cropCanvasTemplate(canvas, document.getElementById('story-draftimg').getAttribute('aspect_ratio'));
   };
+  backgroundImg.crossOrigin = 'anonymous';
   backgroundImg.src = tempImg;
 }
 
 function addImageTemplate(canvas, img) {
+  document.getElementById('story-maker-next').classList.remove('inactive');
+  document.getElementById('story-draftimg').setAttribute('is_edited', 'true');
   // Update image src - timeout added to fix image loading bug
   var backgroundObj = canvas.item(0);
   backgroundObj.setSrc(img, function () {
     fitImgToCanvas(canvas)
     setTimeout(function(){ 
       canvas.requestRenderAll(); 
-    }, 1);
+    }, 10);
   });
 }
 
 function cropCanvasTemplate(canvas, aspectRatio) {
+  document.getElementById('story-draftimg').setAttribute('aspect_ratio', aspectRatio);
+  
   var x = Number(aspectRatio.split('_')[0]);
   var y = Number(aspectRatio.split('_')[1]);
-  if((x == 4 || x == 1 || x == 3 || x == 9) && (y == 3 || y == 1 || y == 4 || y == 16)){
+  if((x == 4 && y == 3) || (x == 1 && y == 1) || (x == 3 && y == 4) || (x == 9 && y == 16)){
     var storyMaker = document.getElementById("story-maker");
     // BUG?!    ------------------>    Haven't checked yet, (- 4) adjustment is for 2px border
     var storyMakerContainerWidth = document.getElementById("story-maker-container").clientWidth - 4;
@@ -258,6 +290,8 @@ function fitImgToCanvas(canvas) {
 }
 
 function addTextBoxTemplate(canvas) {
+  document.getElementById('story-maker-next').classList.remove('inactive');
+  document.getElementById('story-draftimg').setAttribute('is_edited', 'true');
   var canvCenter = canvas.getCenter();
   // Load text onto canvas
   var textboxObj = new fabric.Textbox('', {
@@ -298,4 +332,18 @@ function dataURLtoBlob(dataurl) {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new Blob([u8arr], {type:mime});
+}
+
+//Sending image data to server
+function sendImageDraftToServer(imgData, aspectRatio, clubId, csrfToken){
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", '/clubs/'+ clubId +'/story/create/edit', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+  xhr.send(JSON.stringify({image: imgData, aspectRatio}));
+  xhr.onloadend = function() {
+    if(xhr.status == 200) {
+      return location.replace('/clubs/'+ clubId +'/story/create/options');
+    }
+  }
 }

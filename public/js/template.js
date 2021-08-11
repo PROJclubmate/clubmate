@@ -1212,7 +1212,7 @@ function discover_posts_template(response){
           <div>
             <div>
               <span class="mobiletext3">
-                <span class="truncate-1 darkgrey"><strong><%= posts[k].postClub.name %></strong></span>
+                <span class="truncate-1 grey"><strong><%= posts[k].postClub.name %></strong></span>
               </span>
             </div>
           </div>

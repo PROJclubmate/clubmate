@@ -3,9 +3,8 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time){
 	return{
 		id,					// item id
 		type,				// photo or video
-		length,			// photo timeout or video length in seconds - uses 3 seconds timeout for images if not set or 0 or type: video
+		length,			// photo timeout or video length in seconds - uses 3 seconds timeout for images if not set or 0 for type: video
 		src,				// photo or video src
-		// preview,	// simillar to Youtube/Facebook stories
 		preview,		// optional - item thumbnail to show in the story carousel instead of the story defined image
 		link,				// a link to click on story
 		linkText, 	// link text

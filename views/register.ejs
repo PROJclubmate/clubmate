@@ -30,15 +30,13 @@
         <span>Password must contain (6-18) characters, at least one letter and one number</span>
       </div>
       <br>
-      <div class="form-check-inline">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="userKeys[sex]" value="Male" required>Male
-        </label>
+      <div class="form-check-inline radio">
+        <input id="radio-1" name="userKeys[sex]" type="radio" value="Male" required>
+        <label for="radio-1" class="radio-label">Male</label>
       </div>
-      <div class="form-check-inline">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="userKeys[sex]" value="Female">Female
-        </label>
+      <div class="form-check-inline radio">
+        <input id="radio-2" name="userKeys[sex]" type="radio" value="Female">
+        <label  for="radio-2" class="radio-label">Female</label>
       </div>
       <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Sign up!</button>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">

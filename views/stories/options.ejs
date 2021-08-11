@@ -1,0 +1,213 @@
+<% include ../partials/header %>
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
+  @media screen and (max-width: 767px){
+    #event-btn, #hyperlink-btn{
+      padding: 0 1rem !important;
+    }
+  }
+
+  h1{
+    font-family: sans-serif;
+    color: #343a40;
+    font-size: 20px;
+  }
+  .switch{
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.75rem;
+  }
+  .switch input[type=checkbox]{
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  .slider:before{
+    position: absolute;
+    content: "";
+    height: 1.25rem;
+    width: 1.25rem;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    box-shadow: 1px 1px 3px -2px #262626;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  input[type=checkbox]:checked + .slider{
+    background-color: #007bff;
+  }
+  input[type=checkbox]:checked + .slider:before{
+    -webkit-transform: translateX(1.25rem);
+    -ms-transform: translateX(1.25rem);
+    transform: translateX(1.25rem);
+  }
+  .slider.round{
+    border-radius: 1.75rem;
+  }
+  .slider.round:before{
+    border-radius: 50%;
+  }
+  .options-btn{
+    background-color: #efefef;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+  .options-btn:hover{
+    background-color: white;
+  }
+</style>
+
+<div class="row no-gutters justify-content-center">
+  <div class="col-12 col-lg-3 col-md-4 d-flex p-2">
+    <div id="story-draft-preview" class="my-auto mr-auto">
+      <img src="<%= storyDraftImage %>" class="rounded" style="max-width: 100%; max-height: 25vh;">
+    </div>
+  </div>
+  <div class="col-12 col-lg-5 col-md-8 mt-5">
+    <div class="valign">
+      <div id="event-btn" class="mx-2 px-5 mb-5" onclick="eventBtnClick()">
+        <span class="px-2 py-1 options-btn"><i class="fas fa-calendar-plus mr-2"></i>Add event</span>
+      </div>
+      <div id="hyperlink-btn" class="mx-2 px-5 mb-5" onclick="hyperlinkBtnClick()">
+        <span class="px-2 py-1 options-btn"><i class="fas fa-link mr-2"></i>Add hyperlink</span>
+      </div>
+    </div>
+    <div id="event-div" class="d-flex flex-row mx-2 mb-5 nodisplay">
+      <div class="d-flex flex-column mx-2 my-auto" style="transform: scale(1.25);">
+        <div id="calendar-outerdiv" class="text-md mx-2 mb-1" style="opacity: 0.25;">
+          <time id="calendar-time" datetime="<%= moment().format('LL') %>" class="calendar">
+            <div id="calendar-innerdiv">
+              <strong id="calendar-strong" class="transparent-text"><%= moment().format('MMM') %></strong>
+              <span id="calendar-span" class="transparent-text"><%= moment().format('D') %></span>
+              <em id="calendar-em" class="transparent-text"><%= moment().format('dddd') %></em>
+            </div>
+          </time>
+        </div>
+        <div id="clock-outerdiv" class="clock mx-auto mt-4" style="opacity: 0.25;">
+          <div class="top">
+            <div class="t1 clockbtn"></div>
+            <div class="t2 clockbtn"></div>
+            <div class="t3 clockbtn"></div>
+          </div>
+          <div class="d-flex flex-row inside">
+            <div id="clock-hour" class="hour screen transparent-text"><%= moment().format('HH') %></div>
+            <div id="clock-minute" class="minute screen transparent-text"><%= moment().format('mm') %></div>
+          </div>
+        </div>
+      </div>
+      <div class="fullwidth mx-2">
+        <form action="" method="POST">
+          <div class="d-flex flex-column">
+            <div class="input-group date mt-1" id="datetimepicker-dateonly" data-target-input="nearest">
+              <div class="input-group-prepend nodisplay" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+              </div>
+              <input id="event-date" name="eventDate" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-dateonly" placeholder="MM/DD/YYYY (event date)" value="">
+              <div class="input-group-append" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+              </div>
+            </div>
+            <div class="input-group date mt-1" id="datetimepicker-timeonly" data-target-input="nearest">
+              <div class="input-group-prepend nodisplay" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+              </div>
+              <input id="eventTime" name="eventTime" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-timeonly" placeholder="h:m:a (event time)" value="">
+              <div class="input-group-append" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="far fa-clock" style="margin: 0 -1px;"></i></div>
+              </div>
+            </div>
+            <div class="input-group mt-3">
+              <textarea id="event-notice" type="text" name="eventNotice" class="form-control mt-0" placeholder="Write a notice" rows="2" style="border-radius: 0.25rem; opacity: 0.5;"></textarea>
+            </div>
+          </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </form>
+      </div>
+    </div>
+    <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 nodisplay">
+      <div class="form-signin">
+        <input type="text" class="form-control" name="link" placeholder="Add link to ..page" value="">
+        <input type="text" class="form-control" name="linkText" placeholder="Link Text" value="">
+      </div>
+    </div>
+    <div class="mx-3 mb-5">
+      <h5>Send to</h5>
+      <div class="radio my-3">
+        <input id="radio-1" name="userKeys[sex]" type="radio" value="College" required>
+        <label for="radio-1" class="radio-label darkgrey">Everyone in College</label>
+      </div>
+      <div class="radio my-3">
+        <input id="radio-2" name="userKeys[sex]" type="radio" value="Club" checked>
+        <label  for="radio-2" class="radio-label darkgrey">Only club members</label>
+      </div>
+    </div>
+    <div class="mx-3">
+      <h5><em><i class="fas fa-history mr-2"></i>ARCHIVE</em></h5>
+      <div class="valign">
+        <div class="darkgrey">Save to club history</div>
+        <div>
+          <label class="switch">
+            <input id="save_checkbox" type="checkbox" name="savestory" value="true">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div id="save_to_album" class="valign mt-3 nodisplay">
+        <div class="darkgrey">Save to album</div>
+        <div>
+          / Miscelaneous
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="valign mt-5 fullwidth">
+    <div>
+      <a href="/clubs/<%= clubId %>/story/create/edit" class="nounderline">
+        <button id="story-maker-back" class="story-maker-next btn back" type="button"><i class="fas fa-angle-left mr-2"></i> Back</button>
+      </a>
+    </div>
+    <div>
+      <button id="story-maker-done" class="story-maker-next btn btn-light darkgrey inactive" type="button">Done <i class="fas fa-check ml-2"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function eventBtnClick(){
+    $('#event-btn').addClass('nodisplay');
+    $('#event-div').removeClass('nodisplay');
+    if($('#content').height() >= ($(window).height() - 42 - 36)){
+      $('#story-maker-done,#story-maker-back').addClass('relative');
+    }
+  }
+
+  function hyperlinkBtnClick(){
+    $('#hyperlink-btn').addClass('nodisplay');
+    $('#hyperlink-div').removeClass('nodisplay');
+    if($('#content').height() >= ($(window).height() - 42 - 36)){
+      $('#story-maker-done,#story-maker-back').addClass('relative');
+    }
+  }
+
+  document.getElementById('save_checkbox').addEventListener('change', (event) => {
+    if(event.currentTarget.checked){
+      $('#save_to_album').removeClass('nodisplay');
+    } else{
+      $('#save_to_album').addClass('nodisplay');
+    }
+  })
+</script>
+<% include ../partials/footer %>

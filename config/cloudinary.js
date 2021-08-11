@@ -38,8 +38,11 @@ const postImages_1080_obj = {folder: 'postImages/',
   use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'};
 const subPostImages_1080_obj = {folder: 'subPostImages/', 
   use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', format: 'webp', crop: 'limit'};
+const clubStories_obj = {folder: 'clubStories/',
+  use_filename: true, width: 1080, height: 1080, quality: 'auto:eco', effect: 'sharpen:25', crop: 'limit'};
 const thumb_100_obj = {width: 100, height: 100, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'};
 const thumb_200_obj = {width: 200, height: 200, quality: 90, effect: 'sharpen:50', secure: true, crop: 'fill', format: 'webp'};
 
 module.exports = {cloudinary, upload, profilePics_1080_obj, clubAvatars_1080_obj, roomAvatars_400_obj,
-  featuredClubPhotos_1080_obj, postImages_1080_obj, subPostImages_1080_obj, thumb_100_obj, thumb_200_obj}
+  featuredClubPhotos_1080_obj, postImages_1080_obj, subPostImages_1080_obj, clubStories_obj,
+  thumb_100_obj, thumb_200_obj}

@@ -14,7 +14,7 @@ const postSchema = new Schema({
   clubCollegeKey: String,
   clubCategory: String,
   // +1 for minified view (Load more), +5 for view;
-  // Bug --> Someone might refresh page indefinately (F5) to boost score
+  // Unwanted --> Someone might refresh page indefinately (F5) to boost score
   viewsCount: {type: Number, default: 0},
   privacy: {
     type: Number,

@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<%= csrfToken %>">
     <title>clubmate | The Front Page of your College</title>
-    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/lib/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="/css/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/libs/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="/css/main.css">
     <% if(currentUser && currentUser.darkTheme){ %>
@@ -42,11 +42,7 @@
       <div class="bar"></div>
     </div>
     <nav id="navbar" class="navbar navbar-expand-md navbar-light fixed-top navback drop-shadow">
-      <button id="menu-toggle" onclick="hidesidebar(0);" class="hamburger hamburger--arrow-r mobileNoneFlex" type="button">
-        <span class="hamburger-box">
-          <span class="hamburger-inner"></span>
-        </span>
-      </button>
+      <button id="menu-toggle" onclick="hidesidebar(0);" class="mobileNoneFlex" type="button"><i class="fas fa-bars"></i></button>
       <div>
         <span id="brandname">
           <a href="/" class="navbar-brand navname mobileNone">

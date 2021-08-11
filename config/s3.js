@@ -41,13 +41,28 @@ async function uploadFile(file, folder, size){
   const {data, info} = await sharp(file.path)
   .resize(size, size, {fit: 'inside'})
   .webp()
-  //.jpeg({quality: 80})
   .toBuffer({resolveWithObject: true});
   let format = info.format == 'jpeg' ? 'jpg' : info.format;
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Body: data,
     Key: folder+Date.now()+'_'+fileName+'.'+format,
+    ContentType: 'image/'+format,
+    ContentLength: info.size
+  }
+  return s3.upload(uploadParams).promise();
+}
+async function clubStoriesUpload(file){
+  const uri = file.split(';base64,').pop();
+  let imgBuffer = Buffer.from(uri, 'base64');
+  const {data, info} = await sharp(imgBuffer)
+  .resize(1080, 1080, {fit: 'inside'})
+  .toBuffer({resolveWithObject: true});
+  let format = info.format;
+  const uploadParams = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Body: data,
+    Key: 'clubStories/'+Date.now()+'.'+format,
     ContentType: 'image/'+format,
     ContentLength: info.size
   }
@@ -89,4 +104,5 @@ const ik_UrlEndpoint = process.env.IK_URL_ENDPOINT;
 const thumb_100_prefix = ik_UrlEndpoint+'tr:h-100,w-100,q-90,e-sharpen,c-maintain_ratio,f-webp/';
 const thumb_200_prefix = ik_UrlEndpoint+'tr:h-200,w-200,q-90,e-sharpen,c-maintain_ratio,f-webp/';
 
-module.exports = {upload, uploadFile, removeTmpUpload, deleteFile, thumb_100_prefix, thumb_200_prefix};
+module.exports = {upload, uploadFile, clubStoriesUpload, removeTmpUpload, deleteFile,
+  thumb_100_prefix, thumb_200_prefix};
