@@ -1,23 +1,63 @@
 <% include ./partials/header %>
+<style>
+  h6{
+    text-align: center; 
+    border-bottom: 1px solid silver; 
+    line-height: 0.1875rem;
+    margin: 2.5rem 6.5rem;
+  } 
+  h6 span{ 
+    background: #e0e0e0; 
+    padding: 0 0.5rem;
+  }
+</style>
 
 <div class="row no-gutters absolute-center">
   <div class="col-md-12">
-    <form class="form-signin" action="/login" method="POST">
+    <form class="form-signin pb-0" action="/login" method="POST">
       <h3 class="my-3">Get inside</h3>
-      <label for="inputEmail" class="sr-only">Email id</label>
-      <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
-      <div><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
-      <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Login!</button>
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="position-relative">
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
+        <i class="fas fa-at"></i>
+      </div>
+      <div id="register-options">
+        <button class="btn btn-light btn-block noshadow mt-3" type="button"
+        onclick="hideOptions()" style="border-bottom-width: 1px;">
+          Login with email
+        </button>
+        <h6>
+          <span class="lightgrey slimtext">or</span>
+        </h6>
+        <button class="btn btn-light btn-block mt-5 mb-3" type="button"
+        style="border-bottom-width: 1px; border-color: transparent; box-shadow: 0px 2px 3px -1px rgba(0,0,0,0.25);">
+          <i class="fab fa-google mr-2"></i>Login with Google
+        </button>
+      </div>
+      <div id="register-email" class="nodisplay">
+        <div class="position-relative">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
+          <i class="fas fa-key"></i>
+        </div>
+        <div><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
+        <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Login!</button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-signin px-0 pb-0 pt-4">
+          <a class="lightgrey" href="/forgot">Forgot Password?</a>
+        </div>
+      </div>
     </form>
-    <div class="form-signin">
-      <a class="lightgrey" href="/forgot">Forgot Password?</a>
-      <br>
+    <div class="form-signin pt-0">
       <a href="/discover">Discover</a>
     </div>
   </div>
 </div>
 
+<script>
+  function hideOptions(){
+    document.getElementById('register-options').classList.add('nodisplay');
+    document.getElementById('register-email').classList.remove('nodisplay');
+  }
+</script>
 <% include ./partials/footer %>

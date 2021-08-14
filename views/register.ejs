@@ -1,52 +1,91 @@
 <% include ./partials/header %>
+<style>
+  h6{
+    text-align: center; 
+    border-bottom: 1px solid silver; 
+    line-height: 0.1875rem;
+    margin: 2.5rem 6.5rem;
+  } 
+  h6 span{ 
+    background: #e0e0e0; 
+    padding: 0 0.5rem;
+  }
+</style>
 
 <div class="row no-gutters absolute-center">
   <div class="col-md-12">
-    <form class="form-signin" action="/register" method="POST">
+    <form class="form-signin pb-0" action="/register" method="POST">
       <h4 class="my-3">Register new account</h4>
-      <div class="valign">
-        <div class="mr-1">
-          <label for="inputFirstName" class="sr-only">First Name</label>
-          <input type="text" id="inputFirstName" class="form-control mb-0" name="firstName" placeholder="first name" required autofocus>
-        </div>
-        <div class="ml-1">
-          <label for="inputLastName" class="sr-only">Last Name</label>
-          <input type="text" id="inputLastName" class="form-control mb-0" name="lastName" placeholder="last name">
-        </div>
-      </div>
       <div class="position-relative">
         <label for="inputEmail" class="sr-only">Email</label>
         <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
         <i class="fas fa-at"></i>
       </div>
-      <div class="position-relative">
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
-        <i class="fas fa-key"></i>
+      <div id="register-options">
+        <div class="position-relative">
+          <button class="btn btn-light btn-block noshadow mt-3" type="button"
+          onclick="hideOptions()" style="border-bottom-width: 1px;">
+            Continue with email
+          </button>
+        </div>
+        <h6>
+          <span class="lightgrey slimtext">or</span>
+        </h6>
+        <div class="position-relative">
+          <button class="btn btn-light btn-block mt-5 mb-3" type="button"
+          style="border-bottom-width: 1px; border-color: transparent; box-shadow: 0px 2px 3px -1px rgba(0,0,0,0.25);">
+            <i class="fab fa-google mr-2"></i>Continue with Google
+          </button>
+        </div>
       </div>
-      <div id="pass_show" style="display: none;"><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
-      <div id="pass_info" class="text-xs darkgrey" style="display: none;">
-        <span class="redcolor"><strong>*</strong></span>
-        <span>Password must contain (6-18) characters, at least one letter and one number</span>
+      <div id="register-email" class="nodisplay">
+        <div class="position-relative">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
+          <i class="fas fa-key"></i>
+        </div>
+        <div id="pass_show" style="display: none;"><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
+        <div id="pass_info" class="text-xs darkgrey" style="display: none;">
+          <span class="redcolor"><strong>*</strong></span>
+          <span>Password must contain (6-18) characters, at least one letter and one number</span>
+        </div>
+        <br>
+        <div class="valign">
+          <div class="mr-1">
+            <label for="inputFirstName" class="sr-only">First Name</label>
+            <input type="text" id="inputFirstName" class="form-control mb-0" name="firstName" placeholder="first name" required autofocus>
+          </div>
+          <div class="ml-1">
+            <label for="inputLastName" class="sr-only">Last Name</label>
+            <input type="text" id="inputLastName" class="form-control mb-0" name="lastName" placeholder="last name">
+          </div>
+        </div>
+        <br>
+        <div class="form-check-inline radio">
+          <input id="radio-1" name="userKeys[sex]" type="radio" value="Male" required>
+          <label for="radio-1" class="radio-label">Male</label>
+        </div>
+        <div class="form-check-inline radio">
+          <input id="radio-2" name="userKeys[sex]" type="radio" value="Female">
+          <label  for="radio-2" class="radio-label">Female</label>
+        </div>
+        <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Sign up!</button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-signin px-0 pb-0 pt-4">
+          <a class="lightgrey" href="/resend_verification">Resend verification token?</a>
+        </div>
       </div>
-      <br>
-      <div class="form-check-inline radio">
-        <input id="radio-1" name="userKeys[sex]" type="radio" value="Male" required>
-        <label for="radio-1" class="radio-label">Male</label>
-      </div>
-      <div class="form-check-inline radio">
-        <input id="radio-2" name="userKeys[sex]" type="radio" value="Female">
-        <label  for="radio-2" class="radio-label">Female</label>
-      </div>
-      <button class="btn btn-lg btn-success btn-round btn-block btnshadow mt-5" type="submit">Sign up!</button>
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    </form> 
-    <div class="form-signin">
-      <a class="lightgrey" href="/resend_verification">Resend verification token?</a>
-      <br>
+    </form>
+    <div class="form-signin pt-0">
       <a href="/discover">Discover</a>
     </div>
   </div>
 </div>
 
+<script>
+  function hideOptions(){
+    document.getElementById('register-options').classList.add('nodisplay');
+    document.getElementById('register-email').classList.remove('nodisplay');
+  }
+</script>
 <% include ./partials/footer %>
