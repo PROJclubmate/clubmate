@@ -22,40 +22,40 @@ router.get('/about', indexAbout);
 router.get('/help', indexHelp);
 
 // Search
-router.get('/search', indexSearch);
+router.get('/search', middleware.checkWaitingWall, indexSearch);
 
 // Search using email
-router.get('/find_email/search', indexSearchEmail);
+router.get('/find_email/search', middleware.checkWaitingWall, indexSearchEmail);
 
 // Search people
-router.get('/find_people/search', indexSearchPeople);
+router.get('/find_people/search', middleware.checkWaitingWall, indexSearchPeople);
 
 // Search people(Load more using AJAX)
-router.get('/people-moreResults/search/:query', indexSearchMorePeople);
+router.get('/people-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMorePeople);
 
 // Filter search people
-router.get('/find_people/filter_search', middleware.searchAndFilterPeople, indexFilterSearchPeople);
+router.get('/find_people/filter_search', middleware.checkWaitingWall, middleware.searchAndFilterPeople, indexFilterSearchPeople);
 
 // Filter search people(Load more using AJAX)
-router.get('/people-moreResults/filter_search', indexFilterSearchMorePeople);
+router.get('/people-moreResults/filter_search', middleware.checkWaitingWall, indexFilterSearchMorePeople);
 
 // Search clubs
-router.get('/find_clubs/search', indexSearchClubs);
+router.get('/find_clubs/search', middleware.checkWaitingWall, indexSearchClubs);
 
 // Search clubs(Load more using AJAX)
-router.get('/clubs-moreResults/search/:query', indexSearchMoreClubs);
+router.get('/clubs-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMoreClubs);
 
 // Filter search clubs
-router.get('/find_clubs/filter_search', middleware.searchAndFilterClubs, indexFilterSearchClubs);
+router.get('/find_clubs/filter_search', middleware.checkWaitingWall, middleware.searchAndFilterClubs, indexFilterSearchClubs);
 
 // Filter search clubs(Load more using AJAX)
-router.get('/clubs-moreResults/filter_search', indexFilterSearchMoreClubs);
+router.get('/clubs-moreResults/filter_search', middleware.checkWaitingWall, indexFilterSearchMoreClubs);
 
 // Search college pages
-router.get('/find_colleges/search', indexSearchCollegePages);
+router.get('/find_colleges/search', middleware.checkWaitingWall, indexSearchCollegePages);
 
 // Search college pages(Load more using AJAX)
-router.get('/colleges-moreResults/search/:query', indexSearchMoreCollegePages);
+router.get('/colleges-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMoreCollegePages);
 
 // Friend requests / Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);
@@ -70,10 +70,10 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 // View list of all students in college
-router.get('/all_students/colleges/:college_key', middleware.searchAndFilterPeople, indexViewAllStudents);
+router.get('/all_students/colleges/:college_key', middleware.checkWaitingWall, middleware.searchAndFilterPeople, indexViewAllStudents);
 
 // View college page
-router.get('/colleges/:college_name', indexViewCollegePage);
+router.get('/colleges/:college_name', middleware.checkWaitingWall, indexViewCollegePage);
 
 // Follow all clubs at once in CollegePage
 router.put('/colleges/:college_id/followall/user/:user_id', middleware.isLoggedIn, indexFollowAllCollegePage);

@@ -10,9 +10,26 @@ function escapeRegExp(str){
 // all the middleare goes here
 var middlewareObj = {};
 
+// Copy of isLoggedIn middleware
+middlewareObj.checkWaitingWall = function(req, res, next){
+  if(req.isAuthenticated()){
+    if(process.env.WAITING_WALL == 'true'){
+      return res.redirect('/waiting');
+    } else{
+      return next();
+    }
+  }
+  req.flash('error', 'Please Login to go to the waiting area.');
+  res.redirect('/login');
+};
+
 middlewareObj.isLoggedIn = function(req, res, next){
   if(req.isAuthenticated()){
-    return next();
+    if(process.env.WAITING_WALL == 'true'){
+      return res.redirect('/waiting');
+    } else{
+      return next();
+    }
   }
   req.flash('error', 'Please Login First');
   res.redirect('/login');

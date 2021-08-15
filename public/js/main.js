@@ -862,19 +862,6 @@ $('#dn').on('change', function(e){
   </form>`).appendTo('body').submit();
 });
 
-if(window.innerWidth < 768){
-  if(!((location.pathname.split('/')[1] == 'chats') || 
-  location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/) || 
-  location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/))){
-    if($('#notLoggedIn').length == 0){
-      $('#mobile_toggler').addClass("nodisplay");
-      $('.inbox_mobile').removeClass("nodisplay");
-    }
-  }
-}
-
 $('div.btncollapse-div').on("click",".btncollapse", function(e){
   var btn = $(this);
   if(window.innerWidth < 768){

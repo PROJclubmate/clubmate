@@ -8,8 +8,9 @@ const express   = require('express'),
   profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetClubsFeaturedPhotos, 
   profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, 
   profilesReVerify,  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, 
-  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass, profilesGoogleAuthCallback} = 
-  require('../controllers/profiles');
+  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass, profilesWaitingPage
+  // , profilesGoogleAuthCallback
+  } = require('../controllers/profiles');
 
 if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');
@@ -18,16 +19,16 @@ if(process.env.ENVIRONMENT === 'dev'){
 }
 
 // Show user profile page
-router.get('/users/:id', profilesUserProfile);
+router.get('/users/:id', middleware.checkWaitingWall, profilesUserProfile);
 
 // Load user joined clubs(AJAX)
-router.get('/users-moreClubs/:user_id', profilesUserMoreClubs);
+router.get('/users-moreClubs/:user_id', middleware.checkWaitingWall, profilesUserMoreClubs);
 
 // Load user created posts(AJAX)
-router.get('/users-morePosts/:id', profilesUserMorePosts);
+router.get('/users-morePosts/:id', middleware.checkWaitingWall, profilesUserMorePosts);
 
 // Load user heart posts(AJAX)
-router.get('/heart-morePosts/:id', profilesUserMoreHeartPosts);
+router.get('/heart-morePosts/:id', middleware.checkWaitingWall, profilesUserMoreHeartPosts);
 
 // Update user profile
 router.put('/users/:id', middleware.isLoggedIn, upload.single('profilePic'), profilesUpdateUserProfile);
@@ -36,22 +37,22 @@ router.put('/users/:id', middleware.isLoggedIn, upload.single('profilePic'), pro
 router.post('/users/:id/clubs/new', middleware.isLoggedIn, upload.single('avatar'), profilesNewClub);
 
 // Show club profile
-router.get('/clubs/:club_id', profilesClubProfile);
+router.get('/clubs/:club_id', middleware.checkWaitingWall, profilesClubProfile);
 
 // Load all time top topic posts(AJAX)
-router.get('/clubs-allTimeTopTopicPosts/:club_id', profilesCluballTimeTopPosts);
+router.get('/clubs-allTimeTopTopicPosts/:club_id', middleware.checkWaitingWall, profilesCluballTimeTopPosts);
 
 // Load club members(AJAX)
-router.get('/clubs-moreMembers/:club_id', profilesClubMoreMembers);
+router.get('/clubs-moreMembers/:club_id', middleware.checkWaitingWall, profilesClubMoreMembers);
 
 // Search club members(AJAX)
-router.get('/clubs-searchMembers/:club_id', profilesClubSearchMembers);
+router.get('/clubs-searchMembers/:club_id', middleware.checkWaitingWall, profilesClubSearchMembers);
 
 // Load users with member-requests(AJAX)
 router.get('/clubs-moreMemberRequests/:id', middleware.isLoggedIn, profilesClubMoreMemberRequests);
 
 // Load club posts(AJAX)
-router.get('/clubs-morePosts/:club_id', profilesClubMorePosts);
+router.get('/clubs-morePosts/:club_id', middleware.checkWaitingWall, profilesClubMorePosts);
 
 // Update club profile
 router.put('/clubs/:club_id', middleware.isLoggedIn, upload.single('avatar'), profilesUpdateClubProfile);
@@ -105,9 +106,12 @@ router.get('/reset/:token', profilesForgotToken);
 // Reset user password
 router.post('/reset/:token', profilesResetPass);
 
-// Oauth 2.0
-router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+// Redirect people to waiting area
+router.get('/waiting', profilesWaitingPage);
 
-router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), profilesGoogleAuthCallback);
+// Oauth 2.0
+// router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+
+// router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), profilesGoogleAuthCallback);
 
 module.exports = router;

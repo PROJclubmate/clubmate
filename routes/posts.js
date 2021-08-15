@@ -13,34 +13,34 @@ if(process.env.ENVIRONMENT === 'dev'){
 
 
 // Home page
-router.get('/home', postsHome);
+router.get('/home', middleware.checkWaitingWall, postsHome);
 
 // Home load more posts(AJAX)
-router.get('/home-morePosts', postsHomeMorePosts);
+router.get('/home-morePosts', middleware.checkWaitingWall, postsHomeMorePosts);
 
 // Friends' posts page
-router.get('/friends_posts', postsFriends_posts);
+router.get('/friends_posts', middleware.checkWaitingWall, postsFriends_posts);
 
 // Friends' posts load more posts(AJAX)
-router.get('/friends_posts-morePosts', postsFriends_postsMorePosts);
+router.get('/friends_posts-morePosts', middleware.checkWaitingWall, postsFriends_postsMorePosts);
 
 // Index posts view settings
 router.put('/indexposts/settings/user/:id', middleware.isLoggedIn, postsViewSettings);
 
 // Discover page
-router.get('/discover', postsDiscover);
+router.get('/discover', middleware.checkWaitingWall, postsDiscover);
 
 // Discover settings
 router.put('/discover/settings/user/:id', middleware.isLoggedIn, postsDiscoverSettings);
 
 // Discover load more posts(AJAX)
-router.get('/discover-morePosts', postsDiscoverMorePosts);
+router.get('/discover-morePosts', middleware.checkWaitingWall, postsDiscoverMorePosts);
 
 // Create new post
 router.post('/clubs/:club_id/posts', middleware.isLoggedIn, upload.single('image'), postsCreate);
 
 // View post
-router.get('/clubs/:club_id/posts/:post_id', postsView);
+router.get('/clubs/:club_id/posts/:post_id', middleware.checkWaitingWall, postsView);
 
 // Quote a subPost
 router.get('/clubs/:club_id/posts/:post_id/subPost/:bucket_id', middleware.isLoggedIn, subPostQuote);

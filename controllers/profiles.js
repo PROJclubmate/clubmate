@@ -1665,7 +1665,11 @@ module.exports = {
             });
           });
           req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to "'+req.body.email+'" for verification.');
-          return res.redirect('/discover');
+          if(process.env.WAITING_WALL == 'true'){
+            return res.redirect('/waiting');
+          } else{
+            return res.redirect('/discover');
+          }
         }
         });
       } else{
@@ -1708,7 +1712,11 @@ module.exports = {
               return next(err);
             }
             req.flash('success', 'Thank you for verification, you are now logged in :)');
-            return res.redirect('/users/' + req.user._id);
+            if(process.env.WAITING_WALL == 'true'){
+              return res.redirect('/waiting');
+            } else{
+              return res.redirect('/users/' + req.user._id);
+            }
           });
         });
       });
@@ -1763,7 +1771,11 @@ module.exports = {
         });
       });
       req.flash('success', 'An email has been sent to your account for verification.');
-      return res.redirect('/discover');
+      if(process.env.WAITING_WALL == 'true'){
+        return res.redirect('/waiting');
+      } else{
+        return res.redirect('/discover');
+      }
     });
   },
 
@@ -1784,7 +1796,11 @@ module.exports = {
       req.session.userId = user._id;
       req.logIn(user, function(err){
         if(err){return next(err);}
-        return res.redirect('/discover');
+        if(process.env.WAITING_WALL == 'true'){
+          return res.redirect('/waiting');
+        } else{
+          return res.redirect('/discover');
+        }
       });
     })(req, res, next);
   },
@@ -1802,9 +1818,11 @@ module.exports = {
       req.logout();
       delete req.session.userId;
       req.flash('success', 'Logged out');
-      res.redirect('/discover');
+      // res.redirect('/discover');
+      return res.redirect('/');
     } else{
-      res.redirect('/discover');
+      // res.redirect('/discover');
+      return res.redirect('/');
     }
   },
 
@@ -1942,17 +1960,27 @@ module.exports = {
           });
         }
       ], function(err){
-        res.redirect('/discover');
+        if(process.env.WAITING_WALL == 'true'){
+          return res.redirect('/waiting');
+        } else{
+          return res.redirect('/discover');
+        }
       });
     } else{
       req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number.');
       return res.redirect('back');
     }
   },
-  
-  profilesGoogleAuthCallback(req, res, next){
-    return res.redirect('/discover');
+
+  profilesWaitingPage(req, res, next){
+    User.countDocuments({}, function(err, count) {
+      return res.render('waiting', {count});
+    });
   }
+  
+  // profilesGoogleAuthCallback(req, res, next){
+  //   return res.redirect('/discover');
+  // }
 };
 
 //*******************FUNCTIONS***********************
