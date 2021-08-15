@@ -7,6 +7,8 @@ const userSchema = new Schema({
   lastName: String,
   fullName: {type: String, required: true},
   email: {type: String, unique: true, required: true},
+  googleId: String,
+  provider: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   isVerified: {type: Boolean, default: false},

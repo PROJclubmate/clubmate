@@ -1,4 +1,5 @@
 const express   = require('express'),
+  passport      = require('passport'),
   router        = express.Router(),
   middleware    = require('../middleware'),
   {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
@@ -7,7 +8,7 @@ const express   = require('express'),
   profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetClubsFeaturedPhotos, 
   profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, 
   profilesReVerify,  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, 
-  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass} = 
+  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass, profilesGoogleAuthCallback} = 
   require('../controllers/profiles');
 
 if(process.env.ENVIRONMENT === 'dev'){
@@ -103,5 +104,10 @@ router.get('/reset/:token', profilesForgotToken);
 
 // Reset user password
 router.post('/reset/:token', profilesResetPass);
+
+// Oauth 2.0
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), profilesGoogleAuthCallback);
 
 module.exports = router;

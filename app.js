@@ -10,6 +10,7 @@ const express    = require('express'),
   flash          = require('connect-flash'),
   passport       = require('passport'),
   LocalStrategy  = require('passport-local'),
+  GoogleStrategy = require('passport-google-oauth20').Strategy,
   methodOverride = require('method-override'),
   dotenv         = require('dotenv').config(),
   User           = require('./models/user'),
@@ -22,6 +23,12 @@ if(process.env.ENVIRONMENT === 'dev'){
   var url = 'mongodb://localhost/ghost_dev';
 } else if (process.env.ENVIRONMENT === 'prod'){
   var url = 'mongodb://localhost/ghost_prod';
+}
+
+if(process.env.MACHINE === 'localhost'){
+  var oAuthCallbackUrl = 'http://localhost:8080/auth/google/callback';
+} else if(process.env.MACHINE === 'digitalocean'){
+  var oAuthCallbackUrl = 'https://clubmate.co.in/auth/google/callback';
 }
 
 
@@ -128,6 +135,36 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(User.createStrategy());
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: oAuthCallbackUrl
+}, (accessToken, refreshToken, profile, done) => {
+  User.findOne({email: profile.emails[0].value}).then((data) => {
+    if(data){
+      // user exists
+      return done(null, data);
+    } else{
+      var userKeys = {['sex']: profile.gender};
+      User({
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        fullName: profile.displayName,
+        email: profile.emails[0].value,
+        isVerified: true,
+        googleId: profile.id,
+        userKeys: userKeys,
+        profilePic: null,
+        profilePicId: null,
+        password: null,
+        provider: 'google'
+      }).save(function (err, data){
+        return done(null, data);
+      })
+    }
+  });
+}
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

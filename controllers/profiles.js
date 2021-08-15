@@ -1948,6 +1948,10 @@ module.exports = {
       req.flash('error', 'Password must contain (6-18) characters, at least one letter and one number.');
       return res.redirect('back');
     }
+  },
+  
+  profilesGoogleAuthCallback(req, res, next){
+    return res.redirect('/discover');
   }
 };
 

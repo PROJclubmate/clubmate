@@ -324,15 +324,6 @@ function recommends_add(id,name,placeholder){
   divelement.appendChild(input);
 }
 
-function showpw(){
-  var x = document.getElementById('inputPassword');
-  if (x.type === 'password'){
-    x.type = 'text';
-  } else{
-    x.type = 'password';
-  }
-}
-
 $('div#paginate-go-to').on('click', '#page-index-button2', function(e){
   e.preventDefault();
   var value = Math.abs($('#page-index-input2').val());
