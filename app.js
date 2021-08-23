@@ -175,13 +175,13 @@ app.use(async function(req, res, next){
   if(req.user){
     try{
       if(process.env.ENVIRONMENT === 'dev'){
-        if(res.locals.CU_50_profilePic != null){
+        if(clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj) != null){
           res.locals.CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
         } else{
           res.locals.CU_50_profilePic = null;
         }
       } else if (process.env.ENVIRONMENT === 'prod'){
-        if(res.locals.CU_50_profilePic != null){
+        if(clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj) != null){
           res.locals.CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
         } else{
           res.locals.CU_50_profilePic = null;

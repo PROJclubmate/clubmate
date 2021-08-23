@@ -14,7 +14,7 @@
           <div id="profilePic-frame-div-desktop">
             <% if(currentUser && match && user.profilePicId){ %>
               <div>
-                <button id="delete_profilePic-desktop" class="btn btn-danger btnxs text-xxs btnshadow rounded-circle" type="button"
+                <button id="delete_profilePic-desktop" class="btn btn-danger btnxs text-xxs btn-shadow rounded-circle" type="button"
                 title="Delete profile pic" href="#deleteProfilePicModal" data-toggle="modal">
                   <i class="fas fa-trash-alt"></i>
                 </button>
@@ -209,7 +209,7 @@
                       <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserFemale.png' %>">
                     <% } %>
                   </a>
-                  <div class="lineheight-lowest">
+                  <div class="lineheight-least">
                     <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>
                   </div>
                 </div>
@@ -218,7 +218,7 @@
             </div>
           </div>
         </div>
-        <div class="text-center"><a href="/users/<%= user._id %>/all_friends" class="black text-sm mobiletext2">View all friends</a></div>
+        <div class="text-center"><a href="/users/<%= user._id %>/all_friends" class="black text-sm mobiletext1">View all friends</a></div>
       </div>
       <div class="col-md-8 px-1 mobilepad desktop-mt-2">
         <div class="card tabcard">
@@ -296,7 +296,7 @@
                   <% } %>
                   <% if(currentUser && match){ %>
                     <span class="d-flex">
-                      <button class="btn btnxs text-xs btn-white my-auto" style="height: 26px;" href="#startNewClub" data-toggle="modal"><i class="fas fa-plus mr-2 lightgrey"></i>New</button>
+                      <button id="new-club" class="btn btnxs text-xs btn-white my-auto" style="height: 26px;" href="#startNewClub" data-toggle="modal"><i class="fas fa-plus mr-2 lightgrey"></i>New</button>
                     </span>
                   <% } %>
                 </div>

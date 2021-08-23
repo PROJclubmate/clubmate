@@ -68,11 +68,11 @@
       <div>
         <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
           <% if(currentUser.discoverSwitch == 1){ %>
-            <div id="following-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
+            <div id="following-switch" class="btn btn-light discoverswitch noshadow"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
             <button class="btn btn-light discoverswitch" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas"></i></button>
           <% } else if(currentUser.discoverSwitch == 2){ %>
             <button class="btn btn-light discoverswitch" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university"></i></button>
-            <div id="explore-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
+            <div id="explore-switch" class="btn btn-light discoverswitch noshadow"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
           <% } %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
@@ -82,8 +82,8 @@
     <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 0.65rem;">
       <div><em class="lightgrey">Logged out</em></div>
       <div class="mt-3 valign" style="padding-top: 0.65rem;">
-        <a href="/login" class="btn btn-light discoverswitch noshadow noborder noback"><i class="fas fa-university"></i></a>
-        <div id="explore-switch" class="btn btn-light discoverswitch noshadow noborder"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
+        <a href="/login" class="btn btn-light discoverswitch noshadow noback"><i class="fas fa-university"></i></a>
+        <div id="explore-switch" class="btn btn-light discoverswitch noshadow"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
       </div>
     </div>
   <% } %>
@@ -93,14 +93,14 @@
     <% if(currentUser){ %>
       <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
         <% if(currentUser.discoverSwitch == 1){ %>
-          <div class="btn btn-light discoverswitch-mobile noshadow noborder valign noback">
+          <div class="btn btn-light discoverswitch-mobile noshadow valign noback">
             <div><i id="following-switch-mobile" class="fas fa-university discover-icon"></i></div>
             <div id="following-switch-mobile-txt" class="text-sm pl-2 mobilebold">Following..</div>
           </div>
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas discover-icon"></i></button>
         <% } else if(currentUser.discoverSwitch == 2){ %>
           <button class="btn btn-light discoverswitch-mobile" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university discover-icon"></i></button>
-          <div class="btn btn-light discoverswitch-mobile noshadow noborder valign noback">
+          <div class="btn btn-light discoverswitch-mobile noshadow valign noback">
             <div><i id="explore-switch-mobile" class="fas fa-globe-americas discover-icon"></i></div>
             <div id="explore-switch-mobile-txt" class="text-sm pl-2 my-auto mobilebold">Explore!</div>
           </div>
@@ -110,7 +110,7 @@
     <% } else{ %>
       <div class="valign">
         <a href="/login" class="btn btn-light discoverswitch-mobile noshadow noback"><i class="fas fa-university discover-icon"></i></a>
-        <div class="btn btn-light discoverswitch-mobile noshadow noborder valign noback">
+        <div class="btn btn-light discoverswitch-mobile noshadow valign noback">
           <div><i id="explore-switch-mobile" class="fas fa-globe-americas discover-icon"></i></div>
           <div class="text-sm pl-2 mobilebold" style="color: #312b23;">Explore!</div>
         </div>

@@ -1,5 +1,5 @@
 :root{
-  --color-white-100: whitesmoke;
+  --color-white-100: #eaecf0;
   --color-white-200: #dcddde;
   --color-white-300: #b9bbbe;
   --color-white-400: #818285;
@@ -13,11 +13,9 @@
   --color-dark-850: #202225;
   --color-dark-900: #18191c;
 
-  --gradient-blue-purp: linear-gradient(to right, #30CFD0 0%, #8337df 100%);
-
   --color-secondary-washed-out: #879eed;
   --color-secondary: #55a5e7;
-  --color-light-blue: #80bdff;
+  --color-light-blue: cornflowerblue;
 }
 ::placeholder{
   color: var(--color-white-300) !important;
@@ -133,10 +131,13 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .chatlist-background{
     background-image: url(/images/chat-dark.svg);
   }
+  .border-light.btncollapse-div-shadow{
+    box-shadow: inset 0px 0px 1px 0px rgba(255 ,255, 255, 0.35);
+  }
   .btncollapse-club-grad.collapsed{
     background-color: rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 -0.5rem 0 1rem var(--color-dark-900) !important;
-    outline: 0.5rem solid var(--color-dark-900) !important;
+    outline: 0.5625rem solid var(--color-dark-900) !important;
   }
   .gradient-wrap.coverback{
     background-color: var(--color-dark-900) !important;
@@ -195,6 +196,7 @@ button.gb.gb8:focus{
   background-color: var(--color-dark-700) !important;
   color: var(--color-white-100) !important;
   border-color: var(--color-dark-700) !important;
+  box-shadow: inset 0px 3px 1px -2px rgb(255, 255, 255, 0.1);
 }
 .btn.btn-light{
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3);
@@ -211,6 +213,9 @@ button.gb.gb8:focus{
 }
 .btn.btn-white:focus{
   border-color: var(--color-dark-700);
+}
+#new-club.btn.btn-white{
+  color: var(--color-white-100);
 }
 .btn.btn-dark{
   background-color: var(--color-dark-800);
@@ -239,6 +244,12 @@ select{
 .btn.moderation.btn-light:hover{
   background-color: var(--color-dark-800) !important;
   border-color: var(--color-dark-600);
+}
+.btn.moderation.btn-info{
+  color: #646667 !important;
+}
+.btn.moderation.btn-info:hover{
+  color: var(--color-light-blue) !important;
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   background-color: var(--color-dark-800) !important;
@@ -507,7 +518,7 @@ input.form-control.search:focus{
 #explore-switch{
   color: white;
   background: rgb(100,149,237);
-  background: linear-gradient(90deg, #444152 25%, #7a637f 65%, #e4b4ad 85%, #ff7062 100%);
+  background: linear-gradient(90deg, #444152 25%, #7a637f 60%, #e4b4ad 90%, #ff7062 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.35);
   white-space: nowrap;
@@ -724,6 +735,7 @@ div.carousel-img{
   color: var(--color-white-300);
   background-color: transparent !important;
   border-color: transparent !important;
+  box-shadow: none;
 }
 .chat-input-tool:hover{
   color: var(--color-white-100);
@@ -747,6 +759,9 @@ div.carousel-img{
 }
 
 /* === Chats === */
+.yellowback:before{
+  filter: invert(1);
+}
 .chatname{
   color: var(--color-white-200) !important;
 }
@@ -767,7 +782,7 @@ div.carousel-img{
   border-right: 3px solid var(--color-dark-600);
 }
 .chat-msg{
-  background-color: var(--color-dark-700);
+  background-color: var(--color-dark-650);
   border: none;
 }
 .chat-msg2{
@@ -783,6 +798,12 @@ div.carousel-img{
 .chat-head4{
   background-color: var(--color-dark-700);
 }
+.chat-head.chat-head-clubpad.bluecolor{
+  color: aliceblue !important;
+}
+.chatdp{
+  border-color: aliceblue;
+}
 #prevMessage-div{
   background-color: rgba(255,255,255,0.15);
 }
@@ -797,6 +818,9 @@ div.carousel-img{
   background-color: var(--color-dark-750);
   border-color: var(--color-dark-600);
   border-bottom-color: var(--color-dark-750);
+}
+.chatlist-item.active{
+  box-shadow: -12px 0px 0px 0px var(--color-dark-900), 12px 0px 0px 0px var(--color-dark-900);
 }
 .chatlist-club{
   border-color: var(--color-dark-900);
@@ -897,7 +921,7 @@ button#story-maker-next.inactive{
   border-color: var(--color-dark-800);
 }
 .check-label{
-  background: var(--color-dark-600);
+  background: var(--color-dark-650);
 }
 .smalldppad{
   background-color: var(--color-dark-800);

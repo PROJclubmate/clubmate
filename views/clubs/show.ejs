@@ -43,7 +43,7 @@
               <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
             <% } %>
                 <% if(club.featuredPhotos.length == 0){ %>
-                  <div class="carousel-inner d-flex">
+                  <div class="carousel-inner d-flex" style="border-radius: 0 0.5rem 0.5rem 0;">
                     <div class="carousel-item active carousel-div carousel-img">
                       <img class="cover mobile-cover" src="/images/noImage.png" style="opacity: 0;">
                     </div>
@@ -137,7 +137,7 @@
                   </div>
                 <% } %>
               </div>
-              <div class="text-sm linewrap lineheight-low mb-2"><%= club.info.description %></div>
+              <div class="text-sm linewrap lineheight-less mb-2"><%= club.info.description %></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_desc" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textchiveea class="form-control form-control-sm" type="text" name="info[description]" rows="10" required><%= club.info.description %></textarea>
@@ -155,7 +155,7 @@
                   </div>
                 <% } %>
               </div>
-              <div class="text-sm linewrap lineheight-low mb-2"><%= club.info.rules %></div>
+              <div class="text-sm linewrap lineheight-less mb-2"><%= club.info.rules %></div>
               <% if(0 <= rank && rank <= 1){ %>
                 <form id="club_rules" action="/clubs/<%= club._id %>?_method=PUT" method="POST">
                   <textarea class="form-control form-control-sm" type="text" name="info[rules]" rows="10" required><%= club.info.rules %></textarea>
@@ -442,7 +442,7 @@
                         <div class="input-group input-group-sm">
                           <input id="search-members-input" type="text" name="name" class="form-control search ml-1" placeholder="Search member" autofocus required style="height: 28px; width: 185px; border: none;">
                           <div class="input-group-append">
-                            <button id="search-members-btn" class="btn btn-secondary search py-0 px-1 btnshadow" type="submit" style="height: 28px;">
+                            <button id="search-members-btn" class="btn btn-secondary search py-0 px-1 btn-shadow" type="submit" style="height: 28px;">
                               <span id="search-members-span"></span>Go
                             </button>
                           </div>
@@ -500,7 +500,7 @@
                           <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
                         <% } %>
                           <div class="room-container whitesmokeback">
-                            <div class="mobiletext truncate-1">Common</div>
+                            <div class="mobiletext2 truncate1">Common</div>
                           </div>
                         </a>
                       </div>
@@ -509,7 +509,7 @@
                           <div id="custom_room_div<%= i %>" class="room-container-div">
                             <a href="/clubs/<%= club._id %>/rooms/<%= club.chatRooms[i-1].conversationId %>" class="nounderline">
                               <div class="room-container">
-                                <div class="mobiletext truncate-1"></i><%= club.chatRooms[i-1].name %></div>
+                                <div class="mobiletext2 truncate1"></i><%= club.chatRooms[i-1].name %></div>
                               </div>
                             </a>
                           </div>
@@ -519,7 +519,7 @@
                         <div id="create-new-div" class="room-container-div" href="#createNewRoom" data-toggle="modal">
                           <div class="nounderline">
                             <div id="create-new-room-container" class="room-container darkgrey">
-                              <div class="mobiletext truncate-1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                              <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
                             </div>
                           </div>
                         </div>
@@ -564,13 +564,13 @@
   <% } else if(currentUser && !(0 <= rank && rank <= 4)){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="m-0">
-        <div class="lightgrey lineheight-low text-sm text-center">
+        <div class="lightgrey lineheight-less text-sm text-center">
           <i class="fas fa-exclamation redcolor"></i> You are not a member of this club. Ask for an invite to participate in exclusive content & conversations ;)
         </div>
         <div class="card-body hr1 mx-3">
-          <div class="lightgrey lineheight-low text-sm text-center">
+          <div class="lightgrey lineheight-less text-sm text-center">
             <% if(!sentMemberReq){ %>
-              <button id="memberReq-btn" class="gb gb8 gb-bordered hover-slide gb-rounded btnshadow text-sm boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
+              <button id="memberReq-btn" class="gb gb8 gb-bordered hover-slide gb-rounded btn-shadow text-sm boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
                 <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
@@ -586,7 +586,7 @@
                 <div class="form-signin">
                   <label for="message" class="sr-only">Club name</label>
                     <textarea id="message" class="form-control form-control-sm rounded" type="text" name="message" placeholder="Request message" rows="3" required></textarea>
-                  <button class="btn btn-sm btn-success btnshadow d-flex ml-auto" title="member request" name="memberReq" value="<%= club._id %>">Send</button>
+                  <button class="btn btn-sm btn-success btn-shadow d-flex ml-auto" title="member request" name="memberReq" value="<%= club._id %>">Send</button>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>

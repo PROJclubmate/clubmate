@@ -51,10 +51,10 @@
               <% if(isAdmin){ %>
                 <div>
                   <button id="removeParticipantsBtn" type="button" class="btn btn-participants" title="Remove participants"><i class="fas fa-user-minus"></i></button>
-                  <button id="removeParticipantsSubmitBtn" type="button" class="btn btn-danger rounded-circle btnshadow nodisplay" 
+                  <button id="removeParticipantsSubmitBtn" type="button" class="btn btn-danger rounded-circle btn-shadow nodisplay" 
                   style="border-bottom-width: 1px; padding: 0.3125rem 0.5625rem;" title="Submit" csrf-token="<%= csrfToken %>"><i class="fas fa-check"></i></button>
                   <button id="addParticipantsBtn" type="button" class="btn btn-participants" title="Add participants"><i class="fas fa-user-plus"></i></button>
-                  <button id="addParticipantsSubmitBtn" type="button" class="btn btn-success rounded-circle btnshadow nodisplay" 
+                  <button id="addParticipantsSubmitBtn" type="button" class="btn btn-success rounded-circle btn-shadow nodisplay" 
                   style="border-bottom-width: 1px; padding: 0.3125rem 0.5625rem;" title="Submit" csrf-token="<%= csrfToken %>"><i class="fas fa-check"></i></button>
                 </div>
               <% } else{ %>
@@ -62,7 +62,7 @@
                   <button id="viewParticipantsBtn" type="button" class="btn btn-participants" title="View participants" style="padding: 0.5rem 0.9375rem;"><i class="fas fa-info"></i></button>
                 </div>
               <% } %>
-              <div class="text-sm mobiletext4 boldtext lineheight-low invisible"><%= clubName %></div>
+              <div class="text-sm mobiletext4 boldtext lineheight-less invisible"><%= clubName %></div>
             </div>
           </div>
           <div class="mt-5 valign">

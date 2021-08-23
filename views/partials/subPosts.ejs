@@ -22,7 +22,7 @@
             <div class="input-group input-group-sm px-2">
               <input href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" type="number" id="page-index-input" class="form-control search text-xs px-1" placeholder="Page ..">
               <div class="input-group-append">
-                <button id="page-index-button" class="btn btn-secondary text-sm btnxs btnshadow" type="submit"> Go </button>
+                <button id="page-index-button" class="btn btn-secondary text-sm btnxs btn-shadow" type="submit"> Go </button>
               </div>
             </div>
           </div>
@@ -48,8 +48,8 @@
           </div>
           <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
         </div>
-        <div class="mobiletext">
-          <div class="valign lineheight-lower mb-1">
+        <div class="mobiletext2">
+          <div class="valign lineheight-lesser mb-1">
             <div>
               <div>
                 <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>" class="darkgrey">
@@ -83,13 +83,13 @@
           <hr>
         </div>
         <% if(subPosts[j].quoteText && subPosts[j].quoteText != ''){ %>
-          <div class="quote px-1 pb-1 my-1 lineheight-lowest greyback">
+          <div class="quote px-1 pb-1 my-1 lineheight-least greyback">
             <span class="linewrap text-xs boldtext redcolor text-bitter text-bitter">Quote:</span>
             <span class="linewrap text-xs"><strong># <%= subPosts[j].quoteNum %></strong></span>
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
         <% } %>
-        <div class="mobiletext linewrap lineheight-low subPost-text"><%= subPosts[j].text %></div>
+        <div class="mobiletext2 linewrap lineheight-less subPost-text"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <div>
             <% for(var k=0;k<subPosts[j].images.length;k++){ %>
@@ -184,10 +184,10 @@
               </div>
             </div>
             <% if(quote){ %>
-              <div class="quote px-1 pb-1 my-1 lineheight-lower">
-                <span class="mobiletext linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
-                <span class="mobiletext linewrap text-xs"><strong># <%= quoteNum %></strong></span>
-                <span class="mobiletext linewrap text-xs boldtext"><%= quoteText %></span>
+              <div class="quote px-1 pb-1 my-1 lineheight-lesser">
+                <span class="mobiletext2 linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
+                <span class="mobiletext2 linewrap text-xs"><strong># <%= quoteNum %></strong></span>
+                <span class="mobiletext2 linewrap text-xs boldtext"><%= quoteText %></span>
               </div>
               <input type="hidden" name="quoteNum" value="<%= quoteNum %>">
               <input type="hidden" name="quoteText" value="<%= quoteText %>">
@@ -203,8 +203,8 @@
               <% } %>
             </div>
             <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success subpostbtn btnshadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+              <button class="btn btn-sm btn-success subpostbtn btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
               <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                 <i class="fas fa-upload"></i> Images<sup>10</sup>
               </label>

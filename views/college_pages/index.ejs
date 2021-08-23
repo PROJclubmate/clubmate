@@ -149,11 +149,11 @@
 							<% } else{ %>
 								<div class="mobilebold category mt-4">
 							<% } %>
-								<span class="redcolor text-xl lineheight-lowest mr-1">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
+								<span class="redcolor text-xl lineheight-least mr-1">*</span><em>Miscellaneous</em> (<%= college_page.allClubs[i].categoryCount %>)
 							</div>
 						<% } %>
 					<% } %>
-					<div class="my-2 lineheight-lower">
+					<div class="my-2 lineheight-lesser">
 					<% for(var j=college_page.allClubs[i].categoryClubIds.length-1;j>=0;j--){ %>
 						<div class="valign">
 							<div class="d-flex flex-row">
@@ -165,9 +165,9 @@
 									<% if(currentUser && keyValue == 2){ %>
 										<span class="mr-1 lineheight" style="vertical-align: top;">
 									<% } else{ %>
-										<span class="lineheight-low" style="vertical-align: baseline; display: inline-block;">
+										<span class="lineheight-less" style="vertical-align: baseline; display: inline-block;">
 									<% } %>
-										<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext">
+										<a href="/clubs/<%= college_page.allClubs[i].categoryClubIds[j]._id %>" class="grey mobiletext2">
 											<strong><%= college_page.allClubs[i].categoryClubIds[j].name %></strong>
 										</a>
 									</span>
@@ -197,8 +197,8 @@
 								</div>
 							</div>
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-								<div class="darkgrey text-sm mobiletext2 px-1 nowrap">
-									<em class="mobiletext2">
+								<div class="darkgrey text-sm mobiletext1 px-1 nowrap">
+									<em class="mobiletext1">
 										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
 											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
 												<span class="lightgrey">MBR</span>

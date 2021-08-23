@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/libs/bootstrap.min.css">
     <link rel="stylesheet" href="/css/libs/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/index.css">
     <% if(currentUser && currentUser.darkTheme){ %>
     <link rel="stylesheet" href="/css/dark.css">
     <% } %>
@@ -82,7 +82,7 @@
             <span class="notification">
               <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
               <% if(currentUser.unreadChatsCount > 0){ %>
-                <span class="inbox_mobile inbox_count badge badge-mobile text-xxs desktopNone"><%= currentUser.unreadChatsCount %></span>
+                <span class="inbox_mobile inbox_count badge badge-mobile text-xs desktopNone"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </span>
           </div>
@@ -90,8 +90,12 @@
         <div id="mobile_toggler_div" class="nodisplay" style="margin-right: -0.5rem;">
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
-              <% if (currentUser && currentUser.friendRequests.length + currentUser.clubInvites.length != 0){ %>
-                <span class="badge badge-mobile text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
+                <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
+                  <span class="badge badge-mobile text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+                <% } else{ %>
+                  <span class="badge badge-mobile text-xs">9+</span>
+                <% } %>
               <% } %>
             </span>
           </button>
@@ -131,15 +135,19 @@
             <li class="nav-item notification">
               <span><a href="/chats/feed" id="inbox" class="text-xxl nav-link burgernav requests" title="Chats"><i class="fas fa-comment-dots" onclick="toggle_requests('inbox');"></i></a></span>
               <% if(currentUser.unreadChatsCount > 0){ %>
-                <span class="inbox_count badge text-xxs"><%= currentUser.unreadChatsCount %></span>
+                <span class="inbox_count badge text-xs"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </li>
             <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
               <span id="requestslink" class="text-xxl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
                 <i class="fas fa-bell"></i>
               </span>
-              <% if (currentUser && (currentUser.friendRequests.length!=0 || currentUser.clubInvites.length!=0)){ %>
-                <span class="badge text-xxs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
+                <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
+                  <span class="badge text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+                <% } else{ %>
+                  <span class="badge text-xs">9+</span>
+                <% } %>
               <% } %>
             </li>
             <li class="nav-item">
@@ -196,7 +204,7 @@
                 <img class="navdp" src="<%= CI_50_clubAvatar[i] || '/images/noClub.png' %>"></a>
             </span>
             <span>
-              <div class="d-flex flex-column lineheight-lower mx-2">
+              <div class="d-flex flex-column lineheight-lesser mx-2">
                 <a href="/clubs/<%= clubInviteRequests[i]._id %>" class="grey">
                   <strong class="text-sm"><%= clubInviteRequests[i].name %></strong></a>
                 <span class="lightgrey text-xs"><%= clubInviteRequests[i].banner %></span>
@@ -240,7 +248,7 @@
               </a>
             </span>
             <span>
-              <div class="d-flex flex-column lineheight-lower mx-2">
+              <div class="d-flex flex-column lineheight-lesser mx-2">
                 <a href="/users/<%= friendRequests[j]._id %>" class="grey">
                   <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
                 <span class="lightgrey text-xs"><%= friendRequests[j].note %></span>

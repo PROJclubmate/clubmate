@@ -20,7 +20,7 @@
 		              <input type="file" id="featuredImage<%= i %>" class="text-sm featuredImage" name="image" accept="image/*">
 						    </div>
 						  </div>
-						  <div class="px-2 lineheight-lower fullwidth">
+						  <div class="px-2 lineheight-lesser fullwidth">
 				    		<div class="valign">
 				    			<div class="d-flex flex-column fullwidth">
 				    				<div>
@@ -41,8 +41,8 @@
 				    				</div>
 				    			</div>
 				    			<div class="ml-2">
-				    				<div><button class="btn btn-danger btnxs text-xxs mb-3 floatright btnshadow" name="delete" value="<%= featuredPhotos[i]._id %>" type="submit"><i class="fas fa-trash-alt"></i></button></div>
-				    				<div><button class="btn btn-primary btnxs text-sm mt-3 btnshadow" name="update" value="<%= featuredPhotos[i]._id %>" type="submit" onclick="loading_spinner('load-updatefCP<%= i+1 %>','featuredImage<%= i %>');"><span id="load-updatefCP<%= i+1 %>"></span>Update</button></div>
+				    				<div><button class="btn btn-danger btnxs text-xxs mb-3 floatright btn-shadow" name="delete" value="<%= featuredPhotos[i]._id %>" type="submit"><i class="fas fa-trash-alt"></i></button></div>
+				    				<div><button class="btn btn-primary btnxs text-sm mt-3 btn-shadow" name="update" value="<%= featuredPhotos[i]._id %>" type="submit" onclick="loading_spinner('load-updatefCP<%= i+1 %>','featuredImage<%= i %>');"><span id="load-updatefCP<%= i+1 %>"></span>Update</button></div>
 				    			</div>
 				    		</div>
 				    	</div>
@@ -66,7 +66,7 @@
 		              <input type="file" id="featuredImage<%= index %>" class="text-sm featuredImage" name="image" accept="image/*" required>
 						    </div>
 						  </div>
-					    <div class="px-2 lineheight-lower fullwidth">
+					    <div class="px-2 lineheight-lesser fullwidth">
 				    		<div class="valign">
 				    			<div class="d-flex flex-column fullwidth">
 				    				<div>
@@ -79,7 +79,7 @@
 				    				</div>
 				    			</div>
 				    			<div class="ml-2">
-				    				<div><button class="btn btn-success btnxs text-sm btnshadow" name="button" value="submit" type="submit" onclick="loading_spinner('load-submitfCP<%= index+1 %>','featuredImage<%= index %>');" style="margin-top: 3.15rem;"><span id="load-submitfCP<%= index+1 %>"></span>Submit</button></div>
+				    				<div><button class="btn btn-success btnxs text-sm btn-shadow" name="button" value="submit" type="submit" onclick="loading_spinner('load-submitfCP<%= index+1 %>','featuredImage<%= index %>');" style="margin-top: 3.15rem;"><span id="load-submitfCP<%= index+1 %>"></span>Submit</button></div>
 				    			</div>
 				    		</div>
 				    	</div>

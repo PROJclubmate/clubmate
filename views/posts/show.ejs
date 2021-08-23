@@ -13,7 +13,7 @@
               <div>
                 <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
               </div>
-              <div class="lineheight-lower">
+              <div class="lineheight-lesser">
                 <div class="info-size">
                   <span>
                     <a href="/clubs/<%= post.postClub._id %>" class="darkgrey text-sm"><strong><%= post.postClub.name %></strong></a>
@@ -68,11 +68,11 @@
           <div class="card-body py-1">
         <% } %>
         <% if(!post.image && post.description.length < 200){ %>
-          <p class="m-0 mobiletext linewrap description-short-show"><%= post.description %></p>
+          <p class="m-0 mobiletext2 linewrap description-short-show"><%= post.description %></p>
         <% } else{ %>
-          <p class="m-0 p-0 mobiletext linewrap"><%= post.description %></p>
+          <p class="m-0 p-0 mobiletext2 linewrap"><%= post.description %></p>
         <% } %>
-          <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
+          <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
           <div class="valign">
             <div>
               <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs"></em></span>
@@ -138,8 +138,8 @@
                     <div>
                       <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
                     </div>
-                    <div class="lineheight-lower">
-                      <div class="mobiletext2 truncate-1">
+                    <div class="lineheight-lesser">
+                      <div class="mobiletext1 truncate1">
                         <span>
                           <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
                         </span>
@@ -177,18 +177,18 @@
             <div>
               <div class="nounderline m-0 p-0">
                 <% if(post.image){ %>
-                  <div class="mobiletext linewrap card-body py-1"><%= post.description %></div>
+                  <div class="mobiletext2 linewrap card-body py-1"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
                     <div class="card-body py-1">
-                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
+                      <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                   <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
                 <% } else{ %>
-                  <div class="card-body py-1 mobiletext linewrap nolink"><%= post.description %></div>
+                  <div class="card-body py-1 mobiletext2 linewrap nolink"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
                     <div class="card-body py-1">
-                      <p class="m-0 p-0 mobiletext linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate-1"><%= post.hyperlink %></a></p>
+                      <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                 <% } %>
@@ -202,7 +202,7 @@
                   <div class="d-flex flex-row">
                     <div class="lightgrey2 text-xs" style="padding-top: 0.125rem;"><span class="boldtext"><%= post.subpostsCount %></span> subPosts</div>
                     <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                      <strong id="following-switch-mobile" class="text-sm nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
+                      <strong class="text-sm lightgrey2 nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
                     <% } %>
                   </div>
                   <div style="line-height: 0;">
@@ -378,8 +378,8 @@
                     <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
-                    <button class="btn btn-success subpostbtn btnshadow btnxs text-sm ml-2 mt-2">Submit</button>
-                    <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btnshadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                    <button class="btn btn-success subpostbtn btn-shadow btnxs text-sm ml-2 mt-2">Submit</button>
+                    <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
                     <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
                       <i class="fas fa-upload"></i> Image(s)
                     </label>

@@ -46,7 +46,7 @@
 	            <div class="input-group input-group-sm px-2">
 	              <input href="/all_students/colleges/<%= collegeKey %>?<%= queryName %>=<%= queryValue %>&page=" type="number" id="page-index-input2" class="form-control search text-xs px-1" placeholder="Page ..">
 	              <div class="input-group-append">
-	                <button id="page-index-button2" class="btn btn-secondary text-sm btnxs btnshadow" type="submit"> Go </button>
+	                <button id="page-index-button2" class="btn btn-secondary text-sm btnxs btn-shadow" type="submit"> Go </button>
 	              </div>
 	            </div>
 	          </div>
@@ -73,7 +73,7 @@
 											<% } %>
 				          	</a>
 							    </div>
-							    <div class="card-body py-1 lineheight-low fullwidth">
+							    <div class="card-body py-1 lineheight-less fullwidth">
 							    	<div class="valign">
 								    	<div>
 									    	<a href="/users/<%= users[k]._id %>" class="grey">
@@ -98,7 +98,7 @@
 							      <br>
 										<div class="valign search-bottompos">
 											<div></div>
-							      	<div class="darkgrey text-xs mobiletext4 text-right lineheight-lower ml-1" style="max-width: 50%;"><%= users[k].userKeys.hometown %></div>
+							      	<div class="darkgrey text-xs mobiletext4 text-right lineheight-lesser ml-1" style="max-width: 50%;"><%= users[k].userKeys.hometown %></div>
 										</div>
 							    </div>
 							  </div>
