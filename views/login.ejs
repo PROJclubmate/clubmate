@@ -45,15 +45,17 @@
       <div class="position-relative">
         <label for="inputEmail" class="sr-only">Email</label>
         <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
-        <i class="fas fa-at"></i>
       </div>
       <div id="register-email">
-        <div class="position-relative">
+        <div class="input-group mt-1">
           <label for="inputPassword" class="sr-only">Password</label>
-          <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
-          <i class="fas fa-key"></i>
+          <input id="inputPassword" class="form-control m-0" name="password" type="password" placeholder="password" required>
+          <div class="input-group-append">
+            <div id="showpw_btn" class="input-group-text pointer" onclick="showpw();" title="Show Password" style="background-color: white;">
+              <i class="far fa-eye-slash"></i>
+            </div>
+          </div>
         </div>
-        <div><input type="checkbox" onclick="showpw();"><span class="text-sm lightgrey mx-1">Show Password</span></div>
         <button class="btn btn-lg btn-success btn-round btn-block btn-shadow mt-5" type="submit">Login!</button>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="form-signin px-0 pb-0 pt-4">
@@ -93,13 +95,15 @@
 <script>
   function showpw(){
     var x = document.getElementById('inputPassword');
+    var btn = document.getElementById('showpw_btn');
     if (x.type === 'password'){
       x.type = 'text';
+      btn.innerHTML = '<i class="far fa-eye"></i>'
     } else{
       x.type = 'password';
+      btn.innerHTML = '<i class="far fa-eye-slash"></i>'
     }
   }
-
   // function hideOptions(){
   //   document.getElementById('register-options').classList.add('nodisplay');
   //   document.getElementById('register-email').classList.remove('nodisplay');
