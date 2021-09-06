@@ -712,13 +712,13 @@ div.content{
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
+  box-shadow: 0 0 0px 1000px #ffecdc inset !important;
   transition: background-color 5000s ease-out 0s !important;
 }
 input.shadow:-webkit-autofill,
 input.shadow:-webkit-autofill:hover, 
 input.shadow:-webkit-autofill:focus{
-  box-shadow: 0 0 0px 1000px #ffead9 inset !important;
+  box-shadow: 0 0 0px 1000px #ffecdc inset !important;
   transition: background-color 5000s ease-out 0s !important;
 }
 ::-moz-selection { /* Code for Firefox */
@@ -2986,7 +2986,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   font-family: 'Bitter', serif;
   font-weight: 600;
   font-size: 0.875rem;
-  background-color: #ffead9 !important;
+  background-color: #ffecdc !important;
 }
 .hyperlink{
   border-radius: 0 0 0.15rem 0.15rem;

@@ -48,6 +48,19 @@
       }
       body{
         background-color: white;
+        background: no-repeat left -250px top 98vh url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);
+      }
+      body:before{
+        content: ' ';
+        display: block;
+        position: absolute;
+        background-repeat: no-repeat;
+        left: -200px;
+        top: 100vh;
+        width: 100%;
+        height: 150%;
+        opacity: 0.5;
+        background-image: url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);
       }
       #landing-hero{
         position: absolute;
@@ -125,6 +138,7 @@
         .screen-heading{margin-left: 0.5rem !important;}
         .screen-description{margin-left: -1.4375rem !important; margin-top: 0 !important;}
         .illustrations.screen-illustrations{max-width: 50vw !important; float: right; margin-right: 1rem;}
+        .illustrations1and2{padding-bottom: 3rem;}
         .screenshots{margin-left: 3.5rem;}
         .screenshots-container-mobile{padding: 0 1.25rem !important; width: 100vw;
           height: 20rem; overflow-x: scroll; overflow-y: hidden; scrollbar-width: none;}
@@ -133,6 +147,8 @@
         .screenshots-mobileview{width: 30vw !important; position: relative; left: 0; top: -12rem;}
         .screenshots-mobileview-container{height: 0 !important; margin-left: -0.25rem;}
         .half_height{max-width: unset !important;}
+        body{background: no-repeat left -325px top 100vh url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);}
+        body:before{left: -275px;}
       }
       @media screen and (max-width: 481px){
         #welcome_to_clubmate{margin-left: 1.375rem !important;}
@@ -193,7 +209,7 @@
       <div class="eggshell">
         <div class="text-center mb-3" style="height: 10vh; line-height: 10vh;">How it works</div>
         <div class="text-center px-2">clubmate is one-stop solution for all your college communications</div>
-        <div id="clubmate_uses" class="pb-4">
+        <div id="clubmate_uses" class="pb-4 mb-5">
           <h6>You can use clubmate to:</h6>
           <ul class="darkgrey" style="list-style-type: disc; list-style-position: inside;">
             <li>See the list of 100s of clubs in your college</li>
@@ -208,7 +224,7 @@
       </div>
       <div class="row no-gutters justify-content-center">
         <div class="col-12 col-lg-8 col-md-10">
-          <div class="d-flex flex-column mt-5 pt-5">
+          <div class="d-flex flex-column mt-5 pt-5 illustrations1and2">
             <div class="screen-container mt-5 valign">
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>1</span><span class="desktopNone notbold ml-0">.</span></div>
@@ -228,7 +244,7 @@
               <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898671/illustrations/collegepage_mobile.png"></div>
             </div>
           </div>
-          <div class="d-flex flex-column mt-5 pt-5">
+          <div class="d-flex flex-column mt-5 pt-5 illustrations1and2">
             <div class="screen-container mt-5 valign">
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>2</span><span class="desktopNone notbold ml-0">.</span></div>
