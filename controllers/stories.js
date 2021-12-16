@@ -2,7 +2,8 @@ const User         = require('../models/user'),
   Club             = require('../models/club'),
   clConfig         = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
-  logger           = require('../logger');
+  logger           = require('../logger'),
+  Story            = require('../models/story');
 
 if(process.env.ENVIRONMENT === 'dev'){
   var cdn_prefix = 'https://res.cloudinary.com/dubirhea4/';
@@ -61,6 +62,9 @@ module.exports = {
               if(process.env.ENVIRONMENT === 'dev'){
                 clConfig.cloudinary.v2.uploader.destroy(foundClub.clubUsers[i].storyDraftImageId);
                 var result = await clConfig.cloudinary.v2.uploader.upload(req.body.image, clConfig.clubStories_obj);
+                story = new Story({ image : result.secure_url , imageId : result.public_id , aspectRatio : aspectRatio});
+                story.save();
+                foundClub.stories.push(story);
                 foundClub.clubUsers[i].storyDraftImage = result.secure_url;
                 foundClub.clubUsers[i].storyDraftImageId = result.public_id;
                 foundClub.clubUsers[i].storyDraftAspectRatio = aspectRatio;

@@ -6,6 +6,7 @@ const storySchema = new Schema({
   length: {type: Number, default: 3},
   image: String,
   imageId: String,
+  aspectRatio: String,
   preview: String,
   link: String,
   linkText: String,

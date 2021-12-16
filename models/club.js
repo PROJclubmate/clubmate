@@ -8,6 +8,7 @@ const clubSchema = new Schema({
   banner: String,
   avatar: String,
   avatarId: String,
+  stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
   featuredPhotos:[{
     image: String,
     imageId: String,
