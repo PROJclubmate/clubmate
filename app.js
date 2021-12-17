@@ -14,6 +14,8 @@ const express    = require('express'),
   methodOverride = require('method-override'),
   dotenv         = require('dotenv').config(),
   User           = require('./models/user'),
+  Club           = require('./models/club'),
+  Story          = require('./models/story');
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
   logger         = require('./logger'),
@@ -192,6 +194,15 @@ app.use(async function(req, res, next){
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
       .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId userKeys note'})
       .exec();
+      var stories = [];
+      for(var i = 0; i < foundUser.userClubs.length; i++){
+        let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+        for(var j = 0; j < foundClub.stories.length; j++){
+          let foundStory = await Story.findById(foundClub.stories[j]).exec();
+          if(foundStory) stories.push(foundStory);
+        }
+      }
+      res.locals.stories = stories;
       res.locals.userClubs = foundUser.userClubs.sort(function(a, b){
         if(a.clubName < b.clubName) { return -1; }
         if(a.clubName > b.clubName) { return 1; }

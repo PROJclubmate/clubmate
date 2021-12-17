@@ -214,6 +214,7 @@ module.exports = {
 
   postsDiscover(req, res, next){
     if(req.user){
+      // console.log(res.locals);
       res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     } else{
