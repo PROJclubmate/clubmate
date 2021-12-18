@@ -199,24 +199,29 @@ app.use(async function(req, res, next){
       var stories = [];
       for(var i = 0; i < foundUser.userClubs.length; i++){
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
-
         const clubStories = [];
+        let lastUpdated = 0;
         for(var j = 0; j < foundClub.stories.length; j++){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
-
           // TODO add check if the user has already seen it or not, and give that also in the result
-          if(foundStory) clubStories.push(foundStory);
+          if(foundStory) {
+            clubStories.push(foundStory);
+            if(foundStory.timestamp)
+              lastUpdated = Math.max(lastUpdated , foundStory.timestamp);
+          }
         }
-
-        stories.push(
-          {
-            id: foundClub._id,
-            name: foundClub.name,
-            photo: foundClub.avatar,
-            lastUpdated: 1492665454,
-            storiesCount: foundClub.stories.length,
-            clubStories: clubStories
-          });
+        if(clubStories.length){
+          // console.log(foundClub.name , lastUpdated);
+          stories.push(
+            {
+              id: foundClub._id,
+              name: foundClub.name,
+              photo: foundClub.avatar,
+              lastUpdated: lastUpdated,
+              storiesCount: foundClub.stories.length,
+              clubStories: clubStories
+            });
+        }
       }
 
       res.locals.stories = stories;
