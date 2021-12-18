@@ -112,6 +112,21 @@ module.exports = {
       }
     }
     });
+  },
+
+  storiesUserGet(req, res, next) {
+    // TODO as we did in app.js
+
+    return [];
+  },
+
+  async storiesClubGet(req, res, next) {
+    let foundClub = await Club.findById(req.params.club_id).exec();
+    const clubStories = await getClubStories(foundClub);
+
+    console.log(clubStories);
+
+    return res.json(clubStories);
   }
 };
 
@@ -125,3 +140,18 @@ function checkRank(clubUsers,userId,rank){
   });
   return ok;
 };
+
+
+async function getClubStories(foundClub) {
+  const clubStories = [];
+  for(var j = 0; j < foundClub.stories.length; j++){
+    let foundStory = await Story.findById(foundClub.stories[j]).exec();
+
+    console.log("Found story", foundStory);
+
+    // TODO add check if the user has already seen it or not, and give that also in the result
+    if(foundStory) clubStories.push(foundStory);
+  }
+
+  return clubStories;
+}
