@@ -56,7 +56,7 @@ createStory = (ele_id, storiesObject) => {
     backNative: true,					// uses window history to enable back button on browsers/android
     previousTap: true,				// use 1/3 of the screen to navigate to previous item when tap the story
     paginationArrows: false,	// indicator icons
-    localStorage: false,			// set true to save "seen" position. Element must have a id to save properly.
+    localStorage: true,			// set true to save "seen" position. Element must have a id to save properly.
     reactive: false,					// set true if you use frameworks like React to control the timeline (see react.sample.html)
     rtl: false, 							// enable/disable RTL
     stories: storiesObject,	// storiesData object is get from the backend and stored in the discover.ejs,
