@@ -194,15 +194,33 @@ app.use(async function(req, res, next){
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
       .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId userKeys note'})
       .exec();
+
+      // Give stories array group by clubs
       var stories = [];
       for(var i = 0; i < foundUser.userClubs.length; i++){
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+
+        const clubStories = [];
         for(var j = 0; j < foundClub.stories.length; j++){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
-          if(foundStory) stories.push(foundStory);
+
+          // TODO add check if the user has already seen it or not, and give that also in the result
+          if(foundStory) clubStories.push(foundStory);
         }
+
+        stories.push(
+          {
+            id: foundClub._id,
+            name: foundClub.name,
+            photo: foundClub.avatar,
+            lastUpdated: 1492665454,
+            storiesCount: foundClub.stories.length,
+            clubStories: clubStories
+          });
       }
+
       res.locals.stories = stories;
+
       res.locals.userClubs = foundUser.userClubs.sort(function(a, b){
         if(a.clubName < b.clubName) { return -1; }
         if(a.clubName > b.clubName) { return 1; }

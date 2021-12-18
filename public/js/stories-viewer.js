@@ -13,28 +13,42 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time){
 	};
 }
 
-const stories = new Zuck('stories', {
-	skin: 'Facesnap',					// container class
-	avatars: true,						// shows user photo instead of last story item preview
-	list: false,							// displays a timeline instead of carousel
-	openEffect: true, 				// enables effect when opening story
-	cubeEffect: false,				// enables the 3d cube effect when sliding story
-	autoFullScreen: true,			// enables fullscreen on mobile browsers
-	backButton: true,					// adds a back button to close the story viewer
-	backNative: true,					// uses window history to enable back button on browsers/android
-	previousTap: true,				// use 1/3 of the screen to navigate to previous item when tap the story
-	paginationArrows: false,	// indicator icons
-	localStorage: false,			// set true to save "seen" position. Element must have a id to save properly.
-	reactive: false,					// set true if you use frameworks like React to control the timeline (see react.sample.html)
-	rtl: false, 							// enable/disable RTL
-	stories: [
+function getStoriesDataInZuckForm(storiesData) {
+	// Expected that the first loop gives the club data
+
+	console.log(storiesData);
+
+	const finalStoriesData = [];
+
+	for (club of storiesData) {
+		const thisClubStories = [];
+		for (story of club.clubStories) {
+			thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
+		}
+
+		const thisClubData = {
+			id: club.id,
+			photo: club.photo,
+			name: club.name,
+			link: '',
+			lastUpdated: club.lastUpdated,
+			seen: false,
+			items: thisClubStories
+		}
+
+		finalStoriesData.push(thisClubData);
+	}
+
+	return finalStoriesData;
+
+	return [
 		{
 			id:'ramon',
 			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/1.jpg',
 			name:'Ramon',
 			link:'',
 			lastUpdated:1492665454,
-			seen: true,
+			seen: false,
 			items: [
 			buildItem('ramon-1', 'photo', 3, 'https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg', '', '', '', true, 1492665454),
 			buildItem('ramon-2', 'photo', 3, 'https://vignette4.wikia.nocookie.net/ironman/images/5/59/Robert-Downey-Jr-Tony-Stark-Iron-Man-3-Marvel-Disney.jpg/revision/latest?cb=20130611164804', '', '', '', true, 1492665454),
@@ -88,8 +102,25 @@ const stories = new Zuck('stories', {
 			buildItem('riverscuomo', 'photo', 10, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/9.jpg', '', '', '', false, 1492665454)
 			]
 		}
-	],
-	
+	];
+}
+
+const discoverStories = new Zuck('stories', {
+	skin: 'Facesnap',					// container class
+	avatars: true,						// shows user photo instead of last story item preview
+	list: false,							// displays a timeline instead of carousel
+	openEffect: true, 				// enables effect when opening story
+	cubeEffect: false,				// enables the 3d cube effect when sliding story
+	autoFullScreen: true,			// enables fullscreen on mobile browsers
+	backButton: true,					// adds a back button to close the story viewer
+	backNative: true,					// uses window history to enable back button on browsers/android
+	previousTap: true,				// use 1/3 of the screen to navigate to previous item when tap the story
+	paginationArrows: false,	// indicator icons
+	localStorage: false,			// set true to save "seen" position. Element must have a id to save properly.
+	reactive: false,					// set true if you use frameworks like React to control the timeline (see react.sample.html)
+	rtl: false, 							// enable/disable RTL
+	stories: getStoriesDataInZuckForm(storiesData),	// storiesData object is get from the backend and stored in the discover.ejs,
+
 	callbacks:  {
 		onOpen (storyId, callback) {
 			callback();  // on open story viewer
@@ -97,6 +128,7 @@ const stories = new Zuck('stories', {
 
 		onView (storyId) {
 			// on view story
+			console.log("story watched", storyId);
 		},
 
 		onEnd (storyId, callback) {
@@ -159,3 +191,7 @@ const stories = new Zuck('stories', {
 		}
 	}
 });
+
+
+// discoverStories.addItem('ramon', buildItem('ramon-4', 'photo', 3, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/3.png', '', 'https://ramon.codes', 'Visit my Portfolio', false, 1492665454));
+console.log("Add done")
