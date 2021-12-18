@@ -10,6 +10,7 @@ const storySchema = new Schema({
   preview: String,
   link: String,
   linkText: String,
+  timestamp: Number,
   seenByUserIds: [{
     type: Schema.Types.ObjectId,
     ref: "User"
