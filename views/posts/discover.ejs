@@ -121,10 +121,11 @@
 
 <% include ../partials/footer %>
 <script src="/zuck.js-master/dist/zuck.js"></script>
+<script src="/js/stories-viewer.js"></script>
 
 <script>
-  var storiesData = <%- JSON.stringify(stories) %>;
+  const storiesData = <%- JSON.stringify(stories) %>;
+  createDiscoverStory('stories', storiesData);   // from stories-viewer.js
 </script>
 
-<script src="/js/stories-viewer.js"></script>
 

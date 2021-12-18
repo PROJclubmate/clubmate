@@ -1,197 +1,138 @@
-function buildItem(id, type, length, src, preview, link, linkText, seen, time){
-	// Using object short hand (id: id)
-	return{
-		id,					// item id
-		type,				// photo or video
-		length,			// photo timeout or video length in seconds - uses 3 seconds timeout for images if not set or 0 for type: video
-		src,				// photo or video src
-		preview,		// optional - item thumbnail to show in the story carousel instead of the story defined image
-		link,				// a link to click on story
-		linkText, 	// link text
-		seen,		 		// set true if current story was read
-		time				// optional a date to display with the story item. unix timestamp are converted to "time ago" format
-	};
+function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
+  // Using object short hand (id: id)
+  return {
+    id,					// item id
+    type,				// photo or video
+    length,			// photo timeout or video length in seconds - uses 3 seconds timeout for images if not set or 0 for type: video
+    src,				// photo or video src
+    preview,		// optional - item thumbnail to show in the story carousel instead of the story defined image
+    link,				// a link to click on story
+    linkText, 	// link text
+    seen,		 		// set true if current story was read
+    time				// optional a date to display with the story item. unix timestamp are converted to "time ago" format
+  };
 }
 
 function getStoriesDataInZuckForm(storiesData) {
-	// Expected that the first loop gives the club data
+  // Expected that the first loop gives the club data
 
-	console.log(storiesData);
+  console.log(storiesData);
 
-	const finalStoriesData = [];
+  const finalStoriesData = [];
 
-	for (club of storiesData) {
-		const thisClubStories = [];
-		for (story of club.clubStories) {
-			thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
-		}
+  for (club of storiesData) {
+    const thisClubStories = [];
+    for (story of club.clubStories) {
+      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
+    }
 
-		const thisClubData = {
-			id: club.id,
-			photo: club.photo,
-			name: club.name,
-			link: '',
-			lastUpdated: club.lastUpdated,
-			seen: false,
-			items: thisClubStories
-		}
+    const thisClubData = {
+      id: club.id,
+      photo: club.photo,
+      name: club.name,
+      link: '',
+      lastUpdated: club.lastUpdated,
+      seen: false,
+      items: thisClubStories
+    }
 
-		finalStoriesData.push(thisClubData);
-	}
+    finalStoriesData.push(thisClubData);
+  }
 
-	return finalStoriesData;
-
-	return [
-		{
-			id:'ramon',
-			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/1.jpg',
-			name:'Ramon',
-			link:'',
-			lastUpdated:1492665454,
-			seen: false,
-			items: [
-			buildItem('ramon-1', 'photo', 3, 'https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg', '', '', '', true, 1492665454),
-			buildItem('ramon-2', 'photo', 3, 'https://vignette4.wikia.nocookie.net/ironman/images/5/59/Robert-Downey-Jr-Tony-Stark-Iron-Man-3-Marvel-Disney.jpg/revision/latest?cb=20130611164804', '', '', '', true, 1492665454),
-			buildItem('ramon-3', 'video', 0, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/2.mp4', '', '', '', true, 1492665454),
-			buildItem('ramon-4', 'photo', 3, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/3.png', '', 'https://ramon.codes', 'Visit my Portfolio', true, 1492665454)
-			]
-		},
-		{
-			id:'gorillaz',
-			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/2.jpg',
-			name:'Gorillaz',
-			link:'',
-			lastUpdated:1492665454,
-			seen: false,
-			items: [
-			buildItem('gorillaz-1', 'video', 0, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/4.mp4', '', '', '', false, 1492665454),
-			buildItem('gorillaz-2', 'photo', 3, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/5.jpg', '', '', '', false, 1492665454)
-			]
-		},
-		{
-			id:'ladygaga',
-			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/3.jpg',
-			name:'Lady Gaga',
-			link:'',
-			lastUpdated:1492665454,
-			seen: false,
-			items: [
-			buildItem('ladygaga-1', 'photo', 5, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/6.jpg', '', '', '', false, 1492665454),
-			buildItem('ladygaga-2', 'photo', 3, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/7.jpg', '', 'http://ladygaga.com', '', false, 1492665454)
-			]
-		},
-		{
-			id:'starboy',
-			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/4.jpg',
-			name:'The Weeknd',
-			link:'',
-			lastUpdated:1492665454,
-			seen: true,
-			items: [
-			buildItem('starboy', 'photo', 5, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/8.jpg', '', '', '', false, 1492665454)
-			]
-		},
-		{
-			id:'riversquomo',
-			photo:'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/5.jpg',
-			name:'Rivers Cuomo',
-			link:'',
-			lastUpdated:1492665454,
-			seen: false,
-			items: [
-			buildItem('riverscuomo', 'photo', 10, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/9.jpg', '', '', '', false, 1492665454)
-			]
-		}
-	];
+  return finalStoriesData;
 }
 
-const discoverStories = new Zuck('stories', {
-	skin: 'Facesnap',					// container class
-	avatars: true,						// shows user photo instead of last story item preview
-	list: false,							// displays a timeline instead of carousel
-	openEffect: true, 				// enables effect when opening story
-	cubeEffect: false,				// enables the 3d cube effect when sliding story
-	autoFullScreen: true,			// enables fullscreen on mobile browsers
-	backButton: true,					// adds a back button to close the story viewer
-	backNative: true,					// uses window history to enable back button on browsers/android
-	previousTap: true,				// use 1/3 of the screen to navigate to previous item when tap the story
-	paginationArrows: false,	// indicator icons
-	localStorage: false,			// set true to save "seen" position. Element must have a id to save properly.
-	reactive: false,					// set true if you use frameworks like React to control the timeline (see react.sample.html)
-	rtl: false, 							// enable/disable RTL
-	stories: getStoriesDataInZuckForm(storiesData),	// storiesData object is get from the backend and stored in the discover.ejs,
 
-	callbacks:  {
-		onOpen (storyId, callback) {
-			callback();  // on open story viewer
-		},
+createStory = (ele_id, storiesObject) => {
 
-		onView (storyId) {
-			// on view story
-			console.log("story watched", storyId);
-		},
+  const discoverStories = new Zuck(ele_id, {
+    skin: 'Facesnap',					// container class
+    avatars: true,						// shows user photo instead of last story item preview
+    list: false,							// displays a timeline instead of carousel
+    openEffect: true, 				// enables effect when opening story
+    cubeEffect: false,				// enables the 3d cube effect when sliding story
+    autoFullScreen: true,			// enables fullscreen on mobile browsers
+    backButton: true,					// adds a back button to close the story viewer
+    backNative: true,					// uses window history to enable back button on browsers/android
+    previousTap: true,				// use 1/3 of the screen to navigate to previous item when tap the story
+    paginationArrows: false,	// indicator icons
+    localStorage: false,			// set true to save "seen" position. Element must have a id to save properly.
+    reactive: false,					// set true if you use frameworks like React to control the timeline (see react.sample.html)
+    rtl: false, 							// enable/disable RTL
+    stories: storiesObject,	// storiesData object is get from the backend and stored in the discover.ejs,
 
-		onEnd (storyId, callback) {
-			callback();  // on end story
-		},
+    callbacks: {
+      onOpen(storyId, callback) {
+        callback();  // on open story viewer
+      },
 
-		onClose (storyId, callback) {
-			callback();  // on close story viewer
-		},
+      onView(storyId) {
+        // on view story
+        console.log("story watched", storyId);
+      },
 
-		onNavigateItem (storyId, nextStoryId, callback) {
-			callback();  // on navigate item of story
-		},
+      onEnd(storyId, callback) {
+        callback();  // on end story
+      },
 
-		onDataUpdate (currentState, callback) {
-			callback(); // use to update state on your reactive framework
-		}
-	},
+      onClose(storyId, callback) {
+        callback();  // on close story viewer
+      },
 
-	// template: {
-	//   // use these functions to render custom templates
-	//   // see src/zuck.js for more details
+      onNavigateItem(storyId, nextStoryId, callback) {
+        callback();  // on navigate item of story
+      },
 
-	//   timelineItem (itemData) {
-	//     return ``;
-	//   },
+      onDataUpdate(currentState, callback) {
+        callback(); // use to update state on your reactive framework
+      }
+    },
 
-	//   timelineStoryItem (itemData) {
-	//     return ``;
-	//   },
+    // template: {
+    //   // use these functions to render custom templates
+    //   // see src/zuck.js for more details
 
-	//   viewerItem (storyData, currentStoryItem) {
-	//     return ``;
-	//   },
+    //   timelineItem (itemData) {
+    //     return ``;
+    //   },
 
-	//   viewerItemPointer (index, currentIndex, item) {
-	//     return ``;
-	//   },
+    //   timelineStoryItem (itemData) {
+    //     return ``;
+    //   },
 
-	//   viewerItemBody (index, currentIndex, item) {
-	//     return ``;
-	//   }
-	// },
+    //   viewerItem (storyData, currentStoryItem) {
+    //     return ``;
+    //   },
 
-	language: { // if you need to translate :)
-		unmute: 'Touch to unmute',
-		keyboardTip: 'Press space to see next',
-		visitLink: 'Visit link',
-		time: {
-			ago:'ago', 
-			hour:'hour', 
-			hours:'hours', 
-			minute:'minute', 
-			minutes:'minutes', 
-			fromnow: 'from now', 
-			seconds:'seconds', 
-			yesterday: 'yesterday', 
-			tomorrow: 'tomorrow', 
-			days:'days'
-		}
-	}
-});
+    //   viewerItemPointer (index, currentIndex, item) {
+    //     return ``;
+    //   },
 
+    //   viewerItemBody (index, currentIndex, item) {
+    //     return ``;
+    //   }
+    // },
 
-// discoverStories.addItem('ramon', buildItem('ramon-4', 'photo', 3, 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/stories/3.png', '', 'https://ramon.codes', 'Visit my Portfolio', false, 1492665454));
-console.log("Add done")
+    language: { // if you need to translate :)
+      unmute: 'Touch to unmute',
+      keyboardTip: 'Press space to see next',
+      visitLink: 'Visit link',
+      time: {
+        ago: 'ago',
+        hour: 'hour',
+        hours: 'hours',
+        minute: 'minute',
+        minutes: 'minutes',
+        fromnow: 'from now',
+        seconds: 'seconds',
+        yesterday: 'yesterday',
+        tomorrow: 'tomorrow',
+        days: 'days'
+      }
+    }
+  });
+}
+
+createDiscoverStory = (ele_id, storiesData) => {
+  createStory(ele_id, getStoriesDataInZuckForm(storiesData));
+}
