@@ -114,6 +114,32 @@ module.exports = {
     });
   },
 
+  
+  storiesPublish(req, res, next){
+    Club.findById(req.params.club_id, function(err, foundClub){
+    if(err || !foundClub){
+      logger.error(req.user._id+' : (stories-2)foundClub err => '+err);
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } 
+    else{
+      for(let i=foundClub.clubUsers.length-1;i>=0;i--){
+        if(foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2){
+          story = new Story({ 
+            image : foundClub.clubUsers[i].storyDraftImage , 
+            imageId : foundClub.clubUsers[i].storyDraftImageId , 
+            aspectRatio : foundClub.clubUsers[i].storyDraftAspectRatio , 
+            storyClub : foundClub._id , 
+            timestamp : Date.now()
+          });
+          story.save();
+          foundClub.stories.push(story);
+        }
+      }
+    }
+    });
+  },
+
   storiesUserGet(req, res, next) {
     // TODO as we did in app.js
 
