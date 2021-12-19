@@ -70,120 +70,123 @@
   }
 </style>
 
-<div class="row no-gutters justify-content-center">
-  <div class="col-12 col-lg-3 col-md-4 d-flex p-2">
-    <div id="story-draft-preview" class="my-auto mr-auto">
-      <img src="<%= storyDraftImage %>" class="rounded" style="max-width: 100%; max-height: 25vh;">
-    </div>
-  </div>
-  <div class="col-12 col-lg-5 col-md-8 mt-5">
-    <div class="valign">
-      <div id="event-btn" class="mx-2 px-5 mb-5" onclick="eventBtnClick()">
-        <span class="px-2 py-1 options-btn"><i class="fas fa-calendar-plus mr-2"></i>Add event</span>
-      </div>
-      <div id="hyperlink-btn" class="mx-2 px-5 mb-5" onclick="hyperlinkBtnClick()">
-        <span class="px-2 py-1 options-btn"><i class="fas fa-link mr-2"></i>Add hyperlink</span>
+<form action="" method="POST">
+  <div class="row no-gutters justify-content-center">
+    <div class="col-12 col-lg-3 col-md-4 d-flex p-2">
+      <div id="story-draft-preview" class="my-auto mr-auto">
+        <img src="<%= storyDraftImage %>" class="rounded" style="max-width: 100%; max-height: 25vh;">
       </div>
     </div>
-    <div id="event-div" class="d-flex flex-row mx-2 mb-5 nodisplay">
-      <div class="d-flex flex-column mx-2 my-auto" style="transform: scale(1.25);">
-        <div id="calendar-outerdiv" class="text-md mx-2 mb-1" style="opacity: 0.25;">
-          <time id="calendar-time" datetime="<%= moment().format('LL') %>" class="calendar">
-            <div id="calendar-innerdiv">
-              <strong id="calendar-strong" class="transparent-text"><%= moment().format('MMM') %></strong>
-              <span id="calendar-span" class="transparent-text"><%= moment().format('D') %></span>
-              <em id="calendar-em" class="transparent-text"><%= moment().format('dddd') %></em>
-            </div>
-          </time>
-        </div>
-        <div id="clock-outerdiv" class="clock mx-auto mt-4" style="opacity: 0.25;">
-          <div class="top">
-            <div class="t1 clockbtn"></div>
-            <div class="t2 clockbtn"></div>
-            <div class="t3 clockbtn"></div>
-          </div>
-          <div class="d-flex flex-row inside">
-            <div id="clock-hour" class="hour screen transparent-text"><%= moment().format('HH') %></div>
-            <div id="clock-minute" class="minute screen transparent-text"><%= moment().format('mm') %></div>
-          </div>
-        </div>
-      </div>
-      <div class="fullwidth mx-2">
-        <form action="" method="POST">
-          <div class="d-flex flex-column">
-            <div class="input-group date mt-1" id="datetimepicker-dateonly" data-target-input="nearest">
-              <div class="input-group-prepend nodisplay" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
-                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-              </div>
-              <input id="event-date" name="eventDate" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-dateonly" placeholder="MM/DD/YYYY (event date)" value="">
-              <div class="input-group-append" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
-                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-              </div>
-            </div>
-            <div class="input-group date mt-1" id="datetimepicker-timeonly" data-target-input="nearest">
-              <div class="input-group-prepend nodisplay" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
-                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-              </div>
-              <input id="eventTime" name="eventTime" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-timeonly" placeholder="h:m:a (event time)" value="">
-              <div class="input-group-append" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
-                <div class="input-group-text"><i class="far fa-clock" style="margin: 0 -1px;"></i></div>
-              </div>
-            </div>
-            <div class="input-group mt-3">
-              <textarea id="event-notice" type="text" name="eventNotice" class="form-control mt-0" placeholder="Write a notice" rows="2" style="border-radius: 0.25rem; opacity: 0.5;"></textarea>
-            </div>
-          </div>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </form>
-      </div>
-    </div>
-    <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 nodisplay">
-      <div class="form-signin">
-        <input type="text" class="form-control" name="link" placeholder="Add link to ..page" value="">
-        <input type="text" class="form-control" name="linkText" placeholder="Link Text" value="">
-      </div>
-    </div>
-    <div class="mx-3 mb-5">
-      <h5>Send to</h5>
-      <div class="radio my-3">
-        <input id="radio-1" name="userKeys[sex]" type="radio" value="College" required>
-        <label for="radio-1" class="radio-label darkgrey">Everyone in College</label>
-      </div>
-      <div class="radio my-3">
-        <input id="radio-2" name="userKeys[sex]" type="radio" value="Club" checked>
-        <label  for="radio-2" class="radio-label darkgrey">Only club members</label>
-      </div>
-    </div>
-    <div class="mx-3">
-      <h5><em><i class="fas fa-history mr-2"></i>ARCHIVE</em></h5>
+    <div class="col-12 col-lg-5 col-md-8 mt-5">
       <div class="valign">
-        <div class="darkgrey">Save to club history</div>
-        <div>
-          <label class="switch">
-            <input id="save_checkbox" type="checkbox" name="savestory" value="true">
-            <span class="slider round"></span>
-          </label>
+        <div id="event-btn" class="mx-2 px-5 mb-5" onclick="eventBtnClick()">
+          <span class="px-2 py-1 options-btn"><i class="fas fa-calendar-plus mr-2"></i>Add event</span>
+        </div>
+        <div id="hyperlink-btn" class="mx-2 px-5 mb-5" onclick="hyperlinkBtnClick()">
+          <span class="px-2 py-1 options-btn"><i class="fas fa-link mr-2"></i>Add hyperlink</span>
         </div>
       </div>
-      <div id="save_to_album" class="valign mt-3 nodisplay">
-        <div class="darkgrey">Save to album</div>
-        <div>
-          / Miscelaneous
+      <div id="event-div" class="d-flex flex-row mx-2 mb-5 nodisplay">
+        <div class="d-flex flex-column mx-2 my-auto" style="transform: scale(1.25);">
+          <div id="calendar-outerdiv" class="text-md mx-2 mb-1" style="opacity: 0.25;">
+            <time id="calendar-time" datetime="<%= moment().format('LL') %>" class="calendar">
+              <div id="calendar-innerdiv">
+                <strong id="calendar-strong" class="transparent-text"><%= moment().format('MMM') %></strong>
+                <span id="calendar-span" class="transparent-text"><%= moment().format('D') %></span>
+                <em id="calendar-em" class="transparent-text"><%= moment().format('dddd') %></em>
+              </div>
+            </time>
+          </div>
+          <div id="clock-outerdiv" class="clock mx-auto mt-4" style="opacity: 0.25;">
+            <div class="top">
+              <div class="t1 clockbtn"></div>
+              <div class="t2 clockbtn"></div>
+              <div class="t3 clockbtn"></div>
+            </div>
+            <div class="d-flex flex-row inside">
+              <div id="clock-hour" class="hour screen transparent-text"><%= moment().format('HH') %></div>
+              <div id="clock-minute" class="minute screen transparent-text"><%= moment().format('mm') %></div>
+            </div>
+          </div>
+        </div>
+        <div class="fullwidth mx-2">
+
+            <div class="d-flex flex-column">
+              <div class="input-group date mt-1" id="datetimepicker-dateonly" data-target-input="nearest">
+                <div class="input-group-prepend nodisplay" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                </div>
+                <input id="event-date" name="eventDate" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-dateonly" placeholder="MM/DD/YYYY (event date)" value="">
+                <div class="input-group-append" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                </div>
+              </div>
+              <div class="input-group date mt-1" id="datetimepicker-timeonly" data-target-input="nearest">
+                <div class="input-group-prepend nodisplay" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                </div>
+                <input id="eventTime" name="eventTime" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-timeonly" placeholder="h:m:a (event time)" value="">
+                <div class="input-group-append" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="far fa-clock" style="margin: 0 -1px;"></i></div>
+                </div>
+              </div>
+              <div class="input-group mt-3">
+                <textarea id="event-notice" type="text" name="eventNotice" class="form-control mt-0" placeholder="Write a notice" rows="2" style="border-radius: 0.25rem; opacity: 0.5;"></textarea>
+              </div>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        </div>
+      </div>
+      <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 nodisplay">
+        <div class="form-signin">
+          <input type="text" class="form-control" name="link" placeholder="Add link to ..page" value="">
+          <input type="text" class="form-control" name="linkText" placeholder="Link Text" value="">
+        </div>
+      </div>
+      <div class="mx-3 mb-5">
+        <h5>Send to</h5>
+        <div class="radio my-3">
+          <input id="radio-1" name="userKeys[sex]" type="radio" value="College" required>
+          <label for="radio-1" class="radio-label darkgrey">Everyone in College</label>
+        </div>
+        <div class="radio my-3">
+          <input id="radio-2" name="userKeys[sex]" type="radio" value="Club" checked>
+          <label  for="radio-2" class="radio-label darkgrey">Only club members</label>
+        </div>
+      </div>
+      <div class="mx-3">
+        <h5><em><i class="fas fa-history mr-2"></i>ARCHIVE</em></h5>
+        <div class="valign">
+          <div class="darkgrey">Save to club history</div>
+          <div>
+            <label class="switch">
+              <input id="save_checkbox" type="checkbox" name="savestory" value="true" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div id="save_to_album" class="valign mt-3 nodisplay">
+          <div class="darkgrey">Save to album</div>
+          <div>
+            / Miscelaneous
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="valign mt-5 fullwidth">
-    <div>
-      <a href="/clubs/<%= clubId %>/story/create/edit" class="nounderline">
-        <button id="story-maker-back" class="story-maker-next btn back" type="button"><i class="fas fa-angle-left mr-2"></i> Back</button>
-      </a>
+    <div class="valign mt-5 fullwidth">
+      <div>
+        <a href="/clubs/<%= clubId %>/story/create/edit" class="nounderline">
+          <button id="story-maker-back" class="story-maker-next btn back" type="button"><i class="fas fa-angle-left mr-2"></i> Back</button>
+        </a>
+      </div>
+      <div>
+        <button type="submit" id="story-maker-done" class="submit story-maker-next btn btn-light darkgrey" type="button">Done <i class="fas fa-check ml-2"></i></button>
+      </div>
     </div>
-    <div>
-      <button id="story-maker-done" class="story-maker-next btn btn-light darkgrey inactive" type="button">Done <i class="fas fa-check ml-2"></i></button>
-    </div>
+
   </div>
-</div>
+</form>
 
 <script>
   function eventBtnClick(){

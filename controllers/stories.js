@@ -116,6 +116,20 @@ module.exports = {
 
   
   storiesPublish(req, res, next){
+
+    // The object is of this form {
+    //   eventDate: '',
+    //   eventTime: '',
+    //   eventNotice: '',
+    //   _csrf: 'gJGDMDvi-xTdxiiOX9j9_dadzhDs0D32sn18',
+    //   link: '',
+    //   linkText: '',
+    //   userKeys: { sex: 'Club' },   // to show whom, everyone or club only, 'Club' or 'College'
+    //   savestory: 'true'            // true or does not come
+    // }
+
+    console.log(req.body);
+
     Club.findById(req.params.club_id, function(err, foundClub){
     if(err || !foundClub){
       logger.error(req.user._id+' : (stories-2)foundClub err => '+err);
@@ -137,6 +151,10 @@ module.exports = {
         }
       }
     }
+
+    return res.json({
+      timestamp : Date.now()
+    });
     });
   },
 
