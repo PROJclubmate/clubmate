@@ -1,7 +1,7 @@
 const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
-  {storiesEdit, storiesDraft, storiesOptions, storiesPublish, storiesUserGet, storiesClubGet , storiesDelete} = require('../controllers/stories');
+  {storiesEdit, storiesDraft, storiesOptions, storiesPublish, storiesUserGet, storiesClubGet , storiesDelete , storySeen} = require('../controllers/stories');
 
 
 // Get create story page

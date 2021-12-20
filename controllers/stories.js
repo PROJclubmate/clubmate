@@ -178,6 +178,15 @@ module.exports = {
     });
   },
 
+  storySeen(req, res, next){
+    // req.params.story_id , req.params.user_id , req.params.club_id
+    Club.updateOne(
+      { _id: req.params.club_id }, 
+      { $push: { seenByUserIds: req.params.user_id } }
+    );
+    return res.statusCode(200);
+  },
+
   async storiesClubGet(req, res, next) {
     let foundClub = await Club.findById(req.params.club_id).exec();
     const clubStories = await getClubStories(foundClub);
