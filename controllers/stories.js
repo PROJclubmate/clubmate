@@ -62,9 +62,9 @@ module.exports = {
               if(process.env.ENVIRONMENT === 'dev'){
                 clConfig.cloudinary.v2.uploader.destroy(foundClub.clubUsers[i].storyDraftImageId);
                 var result = await clConfig.cloudinary.v2.uploader.upload(req.body.image, clConfig.clubStories_obj);
-                story = new Story({ image : result.secure_url , imageId : result.public_id , aspectRatio : aspectRatio , storyClub : foundClub._id , timestamp : Date.now()});
-                story.save();
-                foundClub.stories.push(story);
+                // story = new Story({ image : result.secure_url , imageId : result.public_id , aspectRatio : aspectRatio , storyClub : foundClub._id , timestamp : Date.now()});
+                // story.save();
+                // foundClub.stories.push(story);
                 foundClub.clubUsers[i].storyDraftImage = result.secure_url;
                 foundClub.clubUsers[i].storyDraftImageId = result.public_id;
                 foundClub.clubUsers[i].storyDraftAspectRatio = aspectRatio;
@@ -113,8 +113,7 @@ module.exports = {
     }
     });
   },
-
-  
+ 
   storiesPublish(req, res, next){
 
     // The object is of this form {
@@ -148,13 +147,11 @@ module.exports = {
           });
           story.save();
           foundClub.stories.push(story);
+          foundClub.save();
         }
       }
+      return res.redirect('/clubs/' + req.params.club_id);
     }
-
-    return res.json({
-      timestamp : Date.now()
-    });
     });
   },
 
