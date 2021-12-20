@@ -164,6 +164,23 @@ module.exports = {
     return [];
   },
 
+  storiesDelete(req, res, next){
+    Story.find({_id: req.params.story_id}).remove().exec();
+    Club.updateOne({ _id : req.params.club_id }, {
+      $pullAll: {
+          stories: [req.params.story_id],
+      }, 
+    }, function (err, docs) {
+      if (err){
+        console.log(err);
+        return res.sendStatus(500);
+      }
+      else{
+        return res.sendStatus(200);
+      }
+    });
+  },
+
   async storiesClubGet(req, res, next) {
     let foundClub = await Club.findById(req.params.club_id).exec();
     const clubStories = await getClubStories(foundClub);
