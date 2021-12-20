@@ -127,8 +127,6 @@ module.exports = {
     //   savestory: 'true'            // true or does not come
     // }
 
-    console.log(req.body);
-
     Club.findById(req.params.club_id, function(err, foundClub){
     if(err || !foundClub){
       logger.error(req.user._id+' : (stories-2)foundClub err => '+err);
@@ -162,6 +160,7 @@ module.exports = {
   },
 
   storiesDelete(req, res, next){
+    // Takes club_id in params and story_id in POST body
     // TODO Add authenticity that the user has the proper rights to do so
     console.log("Deleting story", req.body.story_id, " from ", req.params.club_id);
 
@@ -185,16 +184,16 @@ module.exports = {
     // req.params.story_id , req.params.user_id , req.params.club_id
     Club.updateOne(
       { _id: req.params.club_id }, 
-      { $push: { seenByUserIds: req.params.user_id } }
+      { $push: { seenByUserIds: req.user._id } }
     );
+
     return res.statusCode(200);
   },
 
   async storiesClubGet(req, res, next) {
+
     let foundClub = await Club.findById(req.params.club_id).exec();
     const clubStories = await getClubStories(foundClub);
-
-    console.log(clubStories);
 
     return res.json(clubStories);
   }
@@ -216,8 +215,6 @@ async function getClubStories(foundClub) {
   const clubStories = [];
   for(var j = 0; j < foundClub.stories.length; j++){
     let foundStory = await Story.findById(foundClub.stories[j]).exec();
-
-    console.log("Found story", foundStory);
 
     // TODO add check if the user has already seen it or not, and give that also in the result
     if(foundStory) clubStories.push(foundStory);
