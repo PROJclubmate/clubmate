@@ -205,7 +205,9 @@ app.use(async function(req, res, next){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
           // TODO add check if the user has already seen it or not, and give that also in the result
           if(foundStory) {
+            foundStory['seen'] = false;
             clubStories.push(foundStory);
+
             if(foundStory.timestamp)
               lastUpdated = Math.max(lastUpdated , foundStory.timestamp);
           }
@@ -219,6 +221,8 @@ app.use(async function(req, res, next){
               photo: foundClub.avatar,
               lastUpdated: lastUpdated,
               storiesCount: foundClub.stories.length,
+              currentItem: clubStories.length - 1, // To be updated based on the user seen thing
+              seen: false,
               clubStories: clubStories
             });
         }

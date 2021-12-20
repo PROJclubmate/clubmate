@@ -23,7 +23,7 @@ function getStoriesDataInZuckForm(storiesData) {
   for (club of storiesData) {
     const thisClubStories = [];
     for (story of club.clubStories) {
-      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
+      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', story.seen ? story.seen : false, 1492665454));
     }
 
     const thisClubData = {
@@ -32,19 +32,21 @@ function getStoriesDataInZuckForm(storiesData) {
       name: club.name,
       link: '',
       lastUpdated: club.lastUpdated,
-      seen: false,
-      items: thisClubStories
+      currentItem: club.currentItem,
+      seen: club.seen ? club.seen : false,
+      items: thisClubStories,
     }
 
     finalStoriesData.push(thisClubData);
   }
 
+  console.log("Final stories data", finalStoriesData);
   return finalStoriesData;
 }
 
 createStory = (ele_id, storiesObject) => {
 
-  const clubStories = new Zuck(ele_id, {
+  const discoverStories = new Zuck(ele_id, {
     skin: 'Facesnap',					// container class
     avatars: true,						// shows user photo instead of last story item preview
     list: false,							// displays a timeline instead of carousel
@@ -71,6 +73,10 @@ createStory = (ele_id, storiesObject) => {
       },
 
       onEnd(storyId, callback) {
+        console.log("Story end came", storyId);
+
+        // Make the story to restart next time when the story has been completely end
+        discoverStories.data[storyId].currentItem = 0;
         callback();  // on end story
       },
 
@@ -133,5 +139,14 @@ createStory = (ele_id, storiesObject) => {
     }
   });
 
-  return clubStories;
+  for (club of storiesObject) {
+    discoverStories.data[club.id].currentItem = club.currentItem;
+  }
+  
+
+  return discoverStories;
+}
+
+createDiscoverStory = (ele_id, storiesData) => {
+  return createStory(ele_id, getStoriesDataInZuckForm(storiesData));
 }
