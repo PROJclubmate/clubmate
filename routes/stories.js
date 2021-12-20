@@ -16,6 +16,9 @@ router.get('/clubs/:club_id/story/create/options', middleware.isLoggedIn, storie
 // Publish the story to the database and show it to all users
 router.post('/clubs/:club_id/story/create/options', middleware.isLoggedIn, storiesPublish);
 
+// To delete the club story
+router.post('/clubs/:club_id/story/delete', middleware.isLoggedIn, storiesDelete);
+
 // get the story data from API if the user wish to refresh
 router.get('/stories/user/:user_id', middleware.isLoggedIn, storiesUserGet);
 

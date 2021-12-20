@@ -110,3 +110,6 @@ span.info{
     width: 74px;
   }
 }
+.delete-story {
+  cursor: pointer;
+}

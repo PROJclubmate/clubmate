@@ -162,7 +162,10 @@ module.exports = {
   },
 
   storiesDelete(req, res, next){
-    Story.find({_id: req.params.story_id}).remove().exec();
+    // TODO Add authenticity that the user has the proper rights to do so
+    console.log("Deleting story", req.body.story_id, " from ", req.params.club_id);
+
+    Story.find({_id: req.body.story_id}).deleteOne().exec();
     Club.updateOne({ _id : req.params.club_id }, {
       $pullAll: {
           stories: [req.params.story_id],
@@ -173,7 +176,7 @@ module.exports = {
         return res.sendStatus(500);
       }
       else{
-        return res.sendStatus(200);
+        return res.json({success: true});
       }
     });
   },

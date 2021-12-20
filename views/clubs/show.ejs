@@ -603,9 +603,10 @@
 </div>
 
 <script src="/zuck.js-master/dist/zuck.js"></script>
-<script src="/js/stories-viewer.js"></script>
+<script src="/js/club-stories.js"></script>
 <script type='text/javascript'>
   var club = <%- JSON.stringify(club) %>;
+  var csrfToken = "<%= csrfToken %>";
 
   console.log(club);
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(stories) {
@@ -627,7 +628,8 @@
     }
 
     // From stories-viewer.js
-    createStory('stories', zuckStoriesObject);
+    // TODO add rank here also
+    window.zuckObject = createStory('stories', zuckStoriesObject, club, csrfToken=csrfToken);
 
   }).catch(function(err) {
     ok = true;
