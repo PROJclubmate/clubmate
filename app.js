@@ -221,7 +221,7 @@ app.use(async function(req, res, next){
               photo: foundClub.avatar,
               lastUpdated: lastUpdated,
               storiesCount: foundClub.stories.length,
-              currentItem: clubStories.length - 1, // To be updated based on the user seen thing
+              currentItem: 0, // To be updated based on the user seen thing
               seen: false,
               clubStories: clubStories
             });

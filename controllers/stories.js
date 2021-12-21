@@ -1,6 +1,4 @@
-const User         = require('../models/user'),
-  Club             = require('../models/club'),
-  clConfig         = require('../config/cloudinary'),
+const clConfig     = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
   logger           = require('../logger'),
   Story            = require('../models/story');
@@ -181,13 +179,15 @@ module.exports = {
   },
 
   storySeen(req, res, next){
-    // req.params.story_id , req.params.user_id , req.params.club_id
-    Club.updateOne(
-      { _id: req.params.club_id }, 
+    // req.params.story_id , req.params.user_id
+    console.log("Story seen", req.params.story_id);
+
+    Story.updateOne(
+      { _id: req.params.story_id }, 
       { $push: { seenByUserIds: req.user._id } }
     );
 
-    return res.statusCode(200);
+    return res.json({ success: true });
   },
 
   async storiesClubGet(req, res, next) {

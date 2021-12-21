@@ -125,7 +125,8 @@
 
 <script>
   const storiesData = <%- JSON.stringify(stories) %>;
-  var zuckObject = createDiscoverStory('stories', storiesData);   // from stories-viewer.js
+  const csrfToken = "<%= csrfToken %>";
+  var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from stories-viewer.js
 </script>
 
 
