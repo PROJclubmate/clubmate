@@ -181,16 +181,12 @@ module.exports = {
 
   storySeen(req, res, next){
     // req.params.story_id , req.params.user_id
-    console.log("Story seen", req.params.story_id);
-    console.log(req.user._id);
+    // console.log("Story seen", req.params.story_id);
+    // console.log(req.user._id);
   
     Story.updateOne(
       { _id: req.params.story_id }, 
-      { $push: { seenByUserIds: req.user._id } },
-      function(err, docs){
-        if(err) console.log(err);
-        else console.log("Updated docs : " , docs);
-      }
+      { $push: { seenByUserIds: req.user._id } }
     );
 
 

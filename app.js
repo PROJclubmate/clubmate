@@ -200,12 +200,16 @@ app.use(async function(req, res, next){
       for(var i = 0; i < foundUser.userClubs.length; i++){
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
         const clubStories = [];
-        let lastUpdated = 0;
+        let lastUpdated = 0 , currentItem = 0 , allSeen = true;
         for(var j = 0; j < foundClub.stories.length; j++){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
           // TODO add check if the user has already seen it or not, and give that also in the result
           if(foundStory) {
-            foundStory['seen'] = false;
+            var curStorySeen = false;
+            if(foundStory.seenByUserIds.includes(req.user._id)) curStorySeen = true;
+            allSeen = (allSeen && curStorySeen);
+            if(curStorySeen) currentItem++;
+
             clubStories.push(foundStory);
 
             if(foundStory.timestamp)
@@ -221,8 +225,8 @@ app.use(async function(req, res, next){
               photo: foundClub.avatar,
               lastUpdated: lastUpdated,
               storiesCount: foundClub.stories.length,
-              currentItem: 0, // To be updated based on the user seen thing
-              seen: false,
+              currentItem: currentItem, // To be updated based on the user seen thing
+              seen: allSeen,
               clubStories: clubStories
             });
         }
