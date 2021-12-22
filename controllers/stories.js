@@ -1,4 +1,5 @@
-const clConfig     = require('../config/cloudinary'),
+const Club         = require('../models/club'),
+  clConfig         = require('../config/cloudinary'),
   s3Config         = require('../config/s3'),
   logger           = require('../logger'),
   Story            = require('../models/story');
