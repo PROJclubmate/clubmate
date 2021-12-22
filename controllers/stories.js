@@ -186,7 +186,11 @@ module.exports = {
   
     Story.updateOne(
       { _id: req.params.story_id }, 
-      { $push: { seenByUserIds: req.user._id } }
+      { $push: { seenByUserIds: req.user._id } },
+      function(err, docs){
+        if(err) console.log(err);
+        else console.log("Updated docs : " , docs);
+      }
     );
 
 
