@@ -48,19 +48,7 @@
       }
       body{
         background-color: white;
-        background: no-repeat left -250px top 98vh url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);
-      }
-      body:before{
-        content: ' ';
-        display: block;
-        position: absolute;
-        background-repeat: no-repeat;
-        left: -200px;
-        top: 100vh;
-        width: 100%;
-        height: 150%;
-        opacity: 0.5;
-        background-image: url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);
+        color: #212121;
       }
       #landing-hero{
         position: absolute;
@@ -83,8 +71,14 @@
         width: 100%;
       }
       .eggshell{
-        background-color: #f9f5f1;
         color: #111;
+        /* background-color: #f9f5f1; */
+        background-attachment: fixed;
+        background-size: contain;
+        background-color: #ebface;
+        /* background-color: #ffffe6; */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpolygon fill='%23D2F2C5' points='120 120 60 120 90 90 120 60 120 0 120 0 60 60 0 0 0 60 30 90 60 120 120 120 '/%3E%3C/svg%3E");
+        /* background by SVGBackgrounds.com */
       }
       #clubmate_uses{
         width: 100%;
@@ -120,6 +114,25 @@
         height: 50%;
         max-width: 25vw;
       }
+      #drop-info{
+        text-align: left;
+        box-shadow: none !important;
+        border-image: none !important;
+      }
+      #knowmore_arrow{
+        animation: pulse 1s linear infinite;
+      }
+      @-webkit-keyframes "pulse" {
+        0% {
+          transform: scale(1.2);
+        }
+        50% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.2);
+        }
+      }
       @media screen and (min-width: 768px){
         #landing-hero{padding-left: 2rem;}
         .screenshots-mobileview{box-shadow: none !important; width: 10rem !important;
@@ -138,7 +151,7 @@
         .screen-heading{margin-left: 0.5rem !important;}
         .screen-description{margin-left: -1.4375rem !important; margin-top: 0 !important;}
         .illustrations.screen-illustrations{max-width: 50vw !important; float: right; margin-right: 1rem;}
-        .illustrations1and2{padding-bottom: 3rem;}
+        .illustrations1and2{padding-bottom: 1.5rem;}
         .screenshots{margin-left: 3.5rem;}
         .screenshots-container-mobile{padding: 0 1.25rem !important; width: 100vw;
           height: 20rem; overflow-x: scroll; overflow-y: hidden; scrollbar-width: none;}
@@ -147,8 +160,6 @@
         .screenshots-mobileview{width: 30vw !important; position: relative; left: 0; top: -12rem;}
         .screenshots-mobileview-container{height: 0 !important; margin-left: -0.25rem;}
         .half_height{max-width: unset !important;}
-        body{background: no-repeat left -325px top 100vh url(https://res.cloudinary.com/dubirhea4/image/upload/v1630662559/illustrations/swoosh.jpg);}
-        body:before{left: -275px;}
       }
       @media screen and (max-width: 481px){
         #welcome_to_clubmate{margin-left: 1.375rem !important;}
@@ -183,7 +194,7 @@
         <img id="clubmate-logo" src="https://res.cloudinary.com/dubirhea4/image/upload/v1596706954/icons/app-icon-144x144.png" height="30" class="d-inline-block align-center" alt="clubamte">
       </div>
       <div>
-        <span class="text-lato navname transparent greencolor2">clubmate</span>
+        <span class="text-lato navname transparent darkgrey">clubmate</span>
       </div>
     </div>
   </nav>
@@ -230,8 +241,8 @@
                 <div class="screen-number d-inline-flex"><span>1</span><span class="desktopNone notbold ml-0">.</span></div>
                 <div class="flex-column">
                   <div class="screen-heading half_height ml-4">The List</div>
-                  <div class="screen-description half_height lightgrey ml-4" style="max-width: 20vw;">
-                    <span>Your college page. Find every club here.</span>
+                  <div class="screen-description mobiletext3 half_height lightgrey ml-4" style="max-width: 20vw;">
+                    <span>Your college page. Find all kinds of clubs / info here.</span>
                   </div>
                 </div>
               </div>
@@ -240,8 +251,8 @@
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898670/illustrations/collegepage_desktop.png"></div>
-              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898671/illustrations/collegepage_mobile.png"></div>
+              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590746/illustrations/collegepage_desktop.png"></div>
+              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631661014/illustrations/collegepage_mobile_framed.png"></div>
             </div>
           </div>
           <div class="d-flex flex-column mt-5 pt-5 illustrations1and2">
@@ -250,7 +261,7 @@
                 <div class="screen-number d-inline-flex"><span>2</span><span class="desktopNone notbold ml-0">.</span></div>
                 <div class="flex-column">
                   <div class="screen-heading half_height ml-4">Discover feed</div>
-                  <div class="screen-description half_height lightgrey ml-4">
+                  <div class="screen-description mobiletext3 half_height lightgrey ml-4">
                     <span>The front page. See what's happening in college right now.</span>
                   </div>
                 </div>
@@ -260,8 +271,8 @@
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898670/illustrations/discover_desktop.png"></div>
-              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898669/illustrations/discover_mobile.png"></div>
+              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590747/illustrations/discover_desktop.png"></div>
+              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631714055/illustrations/discover_mobile_framed.png"></div>
             </div>
           </div>
           <div class="d-flex flex-column mt-5 pt-5">
@@ -269,8 +280,8 @@
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>3</span><span class="desktopNone notbold ml-0">.</span></div>
                 <div class="flex-column">
-                  <div class="screen-heading half_height ml-4">Chats</div>
-                  <div class="screen-description half_height lightgrey ml-4">
+                  <div class="screen-heading half_height ml-4">Chat #rooms</div>
+                  <div class="screen-description mobiletext3 half_height lightgrey ml-4">
                     <span>Simpler than Discord. More powerful than Whatsapp.</span>
                   </div>
                 </div>
@@ -280,8 +291,8 @@
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898668/illustrations/chats_desktop.png"></div>
-              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628898667/illustrations/chats_mobile.png"></div>
+              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590745/illustrations/chats_desktop.png"></div>
+              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631661010/illustrations/chats_mobile_framed.png"></div>
             </div>
           </div>
         </div>
@@ -289,12 +300,38 @@
       <br>
       <br>
       <br>
+      <br>
+      <br>
       <div class="d-flex flex-column mb-2">
-        <div class="text-xs lightgrey mx-auto pl-4">
-          <span>pre ALPHA release | <a class="boldtext" href="/about">About</a> | <a class="boldtext" href="/help">Help</a></span>
-          <span><img style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+        <div class="lightgrey mx-auto">
+          <span><img style="width: 32px; height: 32px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1640189701/icons/newspaper.png"></span>
+          <span>also Coming Soon..</span>
         </div>
-        <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
+        <div class="text-lg mx-auto">Clubmate weekly newspaper</div>
+        <div id="clubmate_uses" class="pb-4 mb-5 mt-3">
+          <div class="card border-light btncollapse-div">
+            <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info valign" data-toggle="collapse" data-target="#comingsoon">
+              <div class="pl-2">Pages will include:</div>
+              <div class="pr-2"><i class="fas fa-angle-up flipped-verticaly mr-2"></i></div>
+            </button>
+            <div id="comingsoon" class="collapse btncollapse-content px-2">
+              <ul class="darkgrey py-2" style="list-style-type: disc; list-style-position: inside;">
+                <li>Faculty, Alumni & Student articles</li>
+                <li>Inter-IIT (college) current affairs</li>
+                <li>Research projects being undertaken in your college</li>
+                <li>Market trends & opportunities in every branch</li>
+                <li>Exhibition for companies in the placement season</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column mb-2">
+        <div class="text-sm lightgrey mx-auto pl-4">
+          <span>pre ALPHA release | <a class="boldtext" href="/about">Know more</a></span>
+          <span><img id="knowmore_arrow" style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
+        </div>
+        <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2022</div>
       </div>
     </div>
 
