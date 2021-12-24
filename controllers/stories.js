@@ -123,9 +123,9 @@ module.exports = {
     //   link: '',
     //   linkText: '',
     //   userKeys: { sex: 'Club' },   // to show whom, everyone or club only, 'Club' or 'College'
-    //   savestory: 'true'            // true or does not come
+    //   savestory: 'true'            // true or does not come  
+    //   album : // add code in frontend to send this also
     // }
-
     Club.findById(req.params.club_id, function(err, foundClub){
     if(err || !foundClub){
       logger.error(req.user._id+' : (stories-2)foundClub err => '+err);
@@ -140,7 +140,15 @@ module.exports = {
             imageId : foundClub.clubUsers[i].storyDraftImageId , 
             aspectRatio : foundClub.clubUsers[i].storyDraftAspectRatio , 
             storyClub : foundClub._id , 
-            timestamp : Date.now()
+            timestamp : Date.now() ,
+            link : req.body.link,
+            linkText : req.body.linkText,
+            storyAuthor :  {id : req.user._id , authorName : req.user.fullName},
+            eventDate : req.body.eventDate,
+            eventTime : req.body.eventTime , 
+            eventNotice : req.body.eventNotice,
+            isSaved : req.body.savestory,
+            album : req.body.album
           });
           story.save();
           foundClub.stories.push(story);
