@@ -218,6 +218,10 @@ app.use(async function(req, res, next){
         }
         if(clubStories.length){
           // console.log(foundClub.name , lastUpdated);
+
+          if (currentItem >= clubStories.length)
+            currentItem = 0;      // All stories are seen, so start from 0
+
           stories.push(
             {
               id: foundClub._id,
