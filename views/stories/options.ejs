@@ -213,5 +213,18 @@
       $('#save_to_album').addClass('nodisplay');
     }
   })
+
+  fetch('/clubs/<%= clubId %>/albums').then(res => res.json()).then(function(albumsData) {
+    // { "albums" : []}
+    let albums_list_html = "";
+
+    for (let album_name of albumsData['albums']) {
+      albums_list_html += `<option value="${album_name}">`;
+    }
+
+    document.getElementById('archive_list').innerHTML = albums_list_html;
+  }).catch(function(err) {
+    console.log("Albums fetch failed", err);
+  })
 </script>
 <% include ../partials/footer %>

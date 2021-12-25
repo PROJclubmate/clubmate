@@ -2,7 +2,7 @@ const express = require('express'),
   router = express.Router(),
   middleware = require('../middleware'),
   { storiesEdit, storiesDraft, storiesOptions, storiesPublish, storiesUserGet,
-    storiesClubGet, storiesDelete, storySeen, archivesClubGet } = require('../controllers/stories');
+    storiesClubGet, storiesDelete, storySeen, archivesClubGet, storiesClubAlbums } = require('../controllers/stories');
 
 
 // Get create story page
@@ -26,8 +26,14 @@ router.post('/stories/:story_id/seen', middleware.isLoggedIn, storySeen);
 // get the story data from API if the user wish to refresh
 router.get('/stories/user/:user_id', middleware.isLoggedIn, storiesUserGet);
 
+// Get all currently available club stories
 router.get('/clubs/:club_id/stories', storiesClubGet);
 
+// Get all the club archives
 router.get('/clubs/:club_id/archives', archivesClubGet);
+
+// Get all the available album archives of the club
+router.get('/clubs/:clubs_id/albums', storiesClubAlbums);
+
 
 module.exports = router;

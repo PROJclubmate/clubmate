@@ -420,6 +420,12 @@ module.exports = {
           ]
         })
   },
+
+  storiesClubAlbums(req, res, next) {
+    return res.json({
+      albums : ['folder_1', 'folder_2', 'folder_3']
+    })
+  }
 };
 
 //*******************FUNCTIONS***********************
