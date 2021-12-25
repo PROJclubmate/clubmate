@@ -609,33 +609,20 @@
   var club = <%- JSON.stringify(club) %>;
   var csrfToken = "<%= csrfToken %>";
 
-  console.log(club);
-  fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(stories) {
-    
-    const zuckStoriesObject = [];
-
-    for (story of stories) {
-      const thisStoryData = {
-        id: story._id,
-        photo: story.image,
-        name: '',
-        link: '',
-        lastUpdated: club.lastUpdated,
-        seen: false,
-        items: [buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454)]
-      }
-
-      zuckStoriesObject.push(thisStoryData);
-    }
-
-    // From stories-viewer.js
-    // TODO add rank here also
-    window.zuckObject = createStory('storiesViewer', zuckStoriesObject, club, csrfToken=csrfToken);
-
+  fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
+    createCurrentStories('storiesViewer', storiesData, club, csrfToken = csrfToken);
   }).catch(function(err) {
     ok = true;
     console.log("Fetching stories failed", err);
   });
+
+  fetch('/clubs/' + club._id + '/archives').then(res => res.json()).then(function(archives) {
+    
+  }).catch(function(err) {
+    ok = true;
+    console.log("Fetching archives failed", err);
+  });
+
 
 </script>
 

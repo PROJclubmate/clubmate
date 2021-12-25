@@ -1,7 +1,8 @@
-const express   = require('express'),
-  router        = express.Router(),
-  middleware    = require('../middleware'),
-  {storiesEdit, storiesDraft, storiesOptions, storiesPublish, storiesUserGet, storiesClubGet , storiesDelete , storySeen} = require('../controllers/stories');
+const express = require('express'),
+  router = express.Router(),
+  middleware = require('../middleware'),
+  { storiesEdit, storiesDraft, storiesOptions, storiesPublish, storiesUserGet,
+    storiesClubGet, storiesDelete, storySeen, archivesClubGet } = require('../controllers/stories');
 
 
 // Get create story page
@@ -26,5 +27,7 @@ router.post('/stories/:story_id/seen', middleware.isLoggedIn, storySeen);
 router.get('/stories/user/:user_id', middleware.isLoggedIn, storiesUserGet);
 
 router.get('/clubs/:club_id/stories', storiesClubGet);
+
+router.get('/clubs/:club_id/archives', archivesClubGet);
 
 module.exports = router;
