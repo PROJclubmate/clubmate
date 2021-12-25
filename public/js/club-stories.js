@@ -5,7 +5,7 @@ const get = function (array, what) {
     return '';
   }
 }
-  
+
 function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
   // Using object short hand (id: id)
   return {
@@ -21,37 +21,7 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
   };
 }
 
-
-function getStoriesDataInZuckForm(storiesData) {
-  // Expected that the first loop gives the club data
-
-  console.log(storiesData);
-
-  const finalStoriesData = [];
-
-  for (club of storiesData) {
-    const thisClubStories = [];
-    for (story of club.clubStories) {
-      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
-    }
-
-    const thisClubData = {
-      id: club.id,
-      photo: club.photo,
-      name: club.name,
-      link: '',
-      lastUpdated: club.lastUpdated,
-      seen: false,
-      items: thisClubStories
-    }
-
-    finalStoriesData.push(thisClubData);
-  }
-
-  return finalStoriesData;
-}
-
-createStory = (ele_id, storiesObject, club, csrfToken , userRank=0) => {
+createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
 
   const clubStories = new Zuck(ele_id, {
     skin: 'Facesnap',					// container class
@@ -77,7 +47,7 @@ createStory = (ele_id, storiesObject, club, csrfToken , userRank=0) => {
       onView(storyId) {
         console.log("Story viewed", storyId);
 
-        document.getElementById(`delete-img-${storyId}`).onclick = function() {
+        document.getElementById(`delete-img-${storyId}`).onclick = function () {
           console.log("Delete story", storyId);
 
           async function postData(url = '', data = {}) {
@@ -187,4 +157,30 @@ createStory = (ele_id, storiesObject, club, csrfToken , userRank=0) => {
   });
 
   return clubStories;
+}
+
+createCurrentStories = (ele_id, storiesData, club, csrfToken, userRank = 0) => {
+  const zuckStoriesObject = [];
+
+  for (story of storiesData) {
+    const thisStoryData = {
+      id: story._id,
+      photo: story.image,
+      name: '',
+      link: '',
+      lastUpdated: club.lastUpdated,
+      seen: false,
+      items: [buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454)]
+    }
+
+    zuckStoriesObject.push(thisStoryData);
+  }
+
+  // From stories-viewer.js
+  // TODO add rank here also
+  return createStory(ele_id, zuckStoriesObject, club, csrfToken = csrfToken);
+}
+
+createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
+  // TODO
 }
