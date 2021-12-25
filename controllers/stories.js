@@ -187,6 +187,18 @@ module.exports = {
     });
   },
 
+
+  getArchivesData(req , res , next){
+    // req.params.club_id
+    let foundClub = Club.findById(req.params.club_id).exec();
+    archiveData = {};
+    for(let i = 0; i < foundClub.stories.length; i++){
+      let foundStory = Story.findById(foundClub.stories[i]).exec();
+      archiveData[foundStory.archive].push(foundStory);
+    }
+    return res.end(JSON.stringify(archiveData));
+  },
+
   storySeen(req, res, next) {
     // req.params.story_id , req.params.user_id
     // console.log("Story seen", req.params.story_id);
