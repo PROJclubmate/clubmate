@@ -124,8 +124,11 @@ module.exports = {
     //   linkText: '',
     //   userKeys: { sex: 'Club' },   // to show whom, everyone or club only, 'Club' or 'College'
     //   savestory: 'true'            // true or does not come  
-    //   album : // add code in frontend to send this also
+    //   album : // add code in frontend to send this also DONE Will be empty, implies default misc album
     // }
+
+    console.log(req.body);
+
     Club.findById(req.params.club_id, function (err, foundClub) {
       if (err || !foundClub) {
         logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);

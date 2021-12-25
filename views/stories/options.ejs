@@ -166,11 +166,12 @@
             </label>
           </div>
         </div>
-        <div id="save_to_album" class="valign mt-3 nodisplay">
+        <div id="save_to_album" class="valign mt-3">
           <div class="darkgrey">Save to album</div>
-          <div>
-            / Miscelaneous
-          </div>
+          <input type="text" name="album" list="archive_list" value="" placeholder="Album name">
+          <datalist id="archive_list">
+              <option value="Miscellaneous">
+          </datalist>
         </div>
       </div>
     </div>
