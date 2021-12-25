@@ -484,7 +484,7 @@
                   <div class="p-3 mt-2">
                     <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
                     <!-- Will be added by javascript API -->
-                    <!-- <div id="archive" class="storiesWrapper"></div> -->
+                    <div id="archivesViewer" class="storiesWrapper"></div>
                   </div>
                 <% //} %>
               </div>
@@ -610,14 +610,14 @@
   var csrfToken = "<%= csrfToken %>";
 
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
-    createCurrentStories('storiesViewer', storiesData, club, csrfToken = csrfToken);
+    // createCurrentStories('storiesViewer', storiesData, club, csrfToken = csrfToken);
   }).catch(function(err) {
     ok = true;
     console.log("Fetching stories failed", err);
   });
 
   fetch('/clubs/' + club._id + '/archives').then(res => res.json()).then(function(archives) {
-    
+    createArchives('archivesViewer', archives, club, csrfToken);
   }).catch(function(err) {
     ok = true;
     console.log("Fetching archives failed", err);

@@ -45,8 +45,6 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
       },
 
       onView(storyId) {
-        console.log("Story viewed", storyId);
-
         document.getElementById(`delete-img-${storyId}`).onclick = function () {
           console.log("Delete story", storyId);
 
@@ -176,11 +174,37 @@ createCurrentStories = (ele_id, storiesData, club, csrfToken, userRank = 0) => {
     zuckStoriesObject.push(thisStoryData);
   }
 
-  // From stories-viewer.js
   // TODO add rank here also
   return createStory(ele_id, zuckStoriesObject, club, csrfToken = csrfToken);
 }
 
 createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
   // TODO
+  const finalZuckObject = [];
+
+  let i = 11;
+  for (const folder_name in archivesData) {
+    if (archivesData[folder_name].length <= 0)
+      continue;
+
+    const thisClubStories = [];
+    for (story of archivesData[folder_name]) {
+      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454, story._id));
+    }
+
+    const thisGroupData = {
+      id: i,
+      photo: archivesData[folder_name][0].image,
+      name: folder_name,
+      link: '',
+      lastUpdated: 1492665454,  // To update
+      seen: false,
+      items: thisClubStories,
+    }
+
+    finalZuckObject.push(thisGroupData);
+    i++;
+  }
+
+  return createStory(ele_id, finalZuckObject, club, csrfToken = csrfToken);
 }
