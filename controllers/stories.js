@@ -182,6 +182,9 @@ module.exports = {
       $pullAll: {
         stories: [req.params.story_id],
       },
+      $pullAll: {
+        storyArchives: [req.params.story_id]
+      },
     }, function (err, docs) {
       if (err) {
         console.log(err);
@@ -191,18 +194,6 @@ module.exports = {
         return res.json({ success: true });
       }
     });
-  },
-
-
-  getArchivesData(req , res , next){
-    // req.params.club_id
-    let foundClub = Club.findById(req.params.club_id).exec();
-    archiveData = {};
-    for(let i = 0; i < foundClub.stories.length; i++){
-      let foundStory = Story.findById(foundClub.stories[i]).exec();
-      archiveData[foundStory.archive].push(foundStory);
-    }
-    return res.end(JSON.stringify(archiveData));
   },
 
   storySeen(req, res, next) {
@@ -233,200 +224,19 @@ module.exports = {
 
   archivesClubGet(req, res, next) {
     console.log("Archives club get");
-
-    return res.json(
-      {
-        "folder_1":
-          [
-            {
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": false,
-              "_id": "61c44f7512098021a234b348",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640252411/clubStories/e34s3sk3igpdgrhmi1np.webp",
-              "imageId": "clubStories/e34s3sk3igpdgrhmi1np",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640255349832,
-              "createdAt": "2021-12-23T10:29:09.834Z",
-              "__v": 0
-            },
-            {
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": false,
-              "_id": "61c44fe112098021a234b349",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640255387/clubStories/vqrctey00ksrcwmzlrpq.webp",
-              "imageId": "clubStories/vqrctey00ksrcwmzlrpq",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640255457192,
-              "createdAt": "2021-12-23T10:30:57.192Z",
-              "__v": 0
-            },
-            {
-              "storyAuthor": {
-                "id": "605710a1d08ccf6a808aa278",
-                "authorName": "Priyam Seth"
-              },
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": true,
-              "_id": "61c6de9e9bd7c63136f9f431",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640423050/clubStories/w24gaqac2efov1yr0kby.webp",
-              "imageId": "clubStories/w24gaqac2efov1yr0kby",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640423070844,
-              "link": "",
-              "linkText": "",
-              "eventDate": null,
-              "eventNotice": "",
-              "createdAt": "2021-12-25T09:04:30.845Z",
-              "__v": 0
-            }
-          ],
-
-          "folder_2" : [
-            {
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": false,
-              "_id": "61c44fe112098021a234b349",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640255387/clubStories/vqrctey00ksrcwmzlrpq.webp",
-              "imageId": "clubStories/vqrctey00ksrcwmzlrpq",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640255457192,
-              "createdAt": "2021-12-23T10:30:57.192Z",
-              "__v": 0
-            },
-            {
-              "storyAuthor": {
-                "id": "605710a1d08ccf6a808aa278",
-                "authorName": "Priyam Seth"
-              },
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": true,
-              "_id": "61c6de9e9bd7c63136f9f431",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640423050/clubStories/w24gaqac2efov1yr0kby.webp",
-              "imageId": "clubStories/w24gaqac2efov1yr0kby",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640423070844,
-              "link": "",
-              "linkText": "",
-              "eventDate": null,
-              "eventNotice": "",
-              "createdAt": "2021-12-25T09:04:30.845Z",
-              "__v": 0
-            }
-          ],
-
-          "folder_3" : [
-            {
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278",
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": false,
-              "_id": "61c44f7512098021a234b348",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640252411/clubStories/e34s3sk3igpdgrhmi1np.webp",
-              "imageId": "clubStories/e34s3sk3igpdgrhmi1np",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640255349832,
-              "createdAt": "2021-12-23T10:29:09.834Z",
-              "__v": 0
-            },
-            {
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": false,
-              "_id": "61c44fe112098021a234b349",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640255387/clubStories/vqrctey00ksrcwmzlrpq.webp",
-              "imageId": "clubStories/vqrctey00ksrcwmzlrpq",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640255457192,
-              "createdAt": "2021-12-23T10:30:57.192Z",
-              "__v": 0
-            },
-            {
-              "storyAuthor": {
-                "id": "605710a1d08ccf6a808aa278",
-                "authorName": "Priyam Seth"
-              },
-              "length": 3,
-              "seenByUserIds": [
-                "605710a1d08ccf6a808aa278"
-              ],
-              "isClubExclusive": true,
-              "isSaved": true,
-              "_id": "61c6de9e9bd7c63136f9f431",
-              "image": "https://res.cloudinary.com/dubirhea4/image/upload/v1640423050/clubStories/w24gaqac2efov1yr0kby.webp",
-              "imageId": "clubStories/w24gaqac2efov1yr0kby",
-              "aspectRatio": "1_1",
-              "storyClub": "5e1b012024c9073d37df4b03",
-              "timestamp": 1640423070844,
-              "link": "",
-              "linkText": "",
-              "eventDate": null,
-              "eventNotice": "",
-              "createdAt": "2021-12-25T09:04:30.845Z",
-              "__v": 0
-            }
-          ]
-        })
+    let foundClub = Club.findById(req.params.club_id).exec();
+    archiveData = {};
+    for(let i = 0; i < foundClub.storyArchives.length; i++){
+      let foundStory = Story.findById(foundClub.storyArchives[i]).exec();
+      archiveData[album].push(foundStory);
+    }
+    return res.json(archiveData);
   },
 
   storiesClubAlbums(req, res, next) {
+    let foundClub = Club.findById(req.params.club_id).exec();
     return res.json({
-      albums : ['folder_1', 'folder_2', 'folder_3']
+      albums : foundClub.albums
     })
   }
 };
@@ -456,10 +266,10 @@ async function getClubStories(foundClub) {
 }
 
 /*
-complete storiesClubAlbums
+complete storiesClubAlbums (DONE)
 complete archiveClubGet
-change storiesPublish to store album names as well ()
+change storiesPublish to store album names as well (DONE)
 change app.js to check date and remove old stories from stories array
 change storiesPublish to add new story to both into archives and stories (DONE)
-in storiesDelete, delete from both the archive array and the stories array
+in storiesDelete, delete from both the archive array and the stories array (DONE)
 */
