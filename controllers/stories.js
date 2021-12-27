@@ -136,6 +136,7 @@ module.exports = {
         return res.redirect('back');
       }
       else {
+        if(req.body.album == '') req.body.album = 'Misc';
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
             story = new Story({
@@ -154,7 +155,9 @@ module.exports = {
               album: req.body.album
             });
             story.save();
-            foundClub.stories.push(story);
+            foundClub.stories.addToSet(story);
+            foundClub.storyArchives.addToSet(story);
+            foundClub.albums.addToSet(req.body.album);
             foundClub.save();
           }
         }
@@ -451,3 +454,12 @@ async function getClubStories(foundClub) {
 
   return clubStories;
 }
+
+/*
+complete storiesClubAlbums
+complete archiveClubGet
+change storiesPublish to store album names as well ()
+change app.js to check date and remove old stories from stories array
+change storiesPublish to add new story to both into archives and stories (DONE)
+in storiesDelete, delete from both the archive array and the stories array
+*/
