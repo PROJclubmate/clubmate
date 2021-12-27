@@ -267,9 +267,9 @@ async function getClubStories(foundClub) {
 
 /*
 complete storiesClubAlbums (DONE)
-complete archiveClubGet
+complete archiveClubGet (DONE)
 change storiesPublish to store album names as well (DONE)
-change app.js to check date and remove old stories from stories array
+change app.js to check date and remove old stories from stories array (DONE)
 change storiesPublish to add new story to both into archives and stories (DONE)
 in storiesDelete, delete from both the archive array and the stories array (DONE)
 */

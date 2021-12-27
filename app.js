@@ -205,6 +205,10 @@ app.use(async function(req, res, next){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
           // TODO add check if the user has already seen it or not, and give that also in the result
           if(foundStory) {
+            if((Date.now() - foundStory.createdAt)/86400000 >= 7){
+              foundClub.stories.pull({ _id: foundStory._id })
+              continue;
+            }
             var curStorySeen = false;
             if(foundStory.seenByUserIds.includes(req.user._id)) curStorySeen = true;
             allSeen = (allSeen && curStorySeen);
