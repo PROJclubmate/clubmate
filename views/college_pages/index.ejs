@@ -40,28 +40,22 @@
 		<div class="border-light" style="z-index: 1;">
 			<div class="college valign collegediv-name">
 				<div class="boldtext">
-					<div class="collegename d-flex">
+					<div class="collegename d-flex pr-3">
 						<span>
 							<sup class="greencolor2 text-xs pb-auto invisible">My </sup>
 							<i id="collegeicon" class="fas fa-university lightgrey text-xxl"></i>
 							<!-- Change to college_page.name -->
-							<span id="copyTxt">IIT Mandi</span>
+							<span id="collegeText">IIT Mandi</span>
 						</span>
-						<div class="tooltip">
-						<button class="copyBtn" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-							<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-							<i class="far fa-copy lightgrey"></i>
-							</button>
-						</div>
 					</div>
 				</div>
-				<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.userCount %><span class="text-sm my-auto ml-1 mobilebold"> users</span></div>
+				<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.clubCount %><span class="text-sm my-auto ml-1 mobilebold"> clubs</span></div>
 			</div>
 			<div class="collegediv-clubcnt">
 				<div class="valign">
-					<div class="d-flex flex-row">
-						<div class="mobilebold lightgrey text-md mr-1">
-							<span><span class="boldtext text-sm"><%= college_page.clubCount %></span><span class="m-0 p-0 text-sm"> clubs</span></span>
+					<div class="valign">
+						<div class="mobilebold lightgrey text-md mr-2">
+							<div class="boldtext text-xxxxs">SWITCH</div><div class="m-0 p-0 text-xxxxs">VIEW</div>
 						</div>
 						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">

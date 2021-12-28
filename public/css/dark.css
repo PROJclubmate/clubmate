@@ -518,13 +518,13 @@ input.form-control.search:focus{
 #explore-switch{
   color: white;
   background: rgb(100,149,237);
-  background: linear-gradient(90deg, #444152 25%, #7a637f 60%, #e4b4ad 90%, #ff7062 100%);
+  background: radial-gradient(circle at bottom left, #444152 25%, #7a637f 60%, #e4b4ad 90%, #ff7062 100%);
   cursor: default;
   text-shadow: 0 0 3px rgba(0,0,0,0.35);
   white-space: nowrap;
 }
 #explore-switch-mobile{
-  background: linear-gradient(80deg, #444152 10%, #7a637f 65%, #ff7062 80%, #e4b4ad 85%);
+  background: radial-gradient(circle at left, #444152 10%, #7a637f 65%, #ff7062 80%, #e4b4ad 85%);
   cursor: default;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

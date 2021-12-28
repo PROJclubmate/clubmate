@@ -663,37 +663,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   });
 }
 
-// Copy college name
-function copyTxtFn(){
-  var range, selection, worked;
-  var copyText = document.getElementById('copyTxt');
-  if (document.body.createTextRange){
-    range = document.body.createTextRange();
-    range.moveToElementText(copyText);
-    range.select();
-  } else if (window.getSelection){
-    selection = window.getSelection();        
-    range = document.createRange();
-    range.selectNodeContents(copyText);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-  
-  try{
-    document.execCommand('copy');
-    var tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copied: " + $('#copyTxt').text();
-  }
-  catch(err){
-    alert('unable to copy text');
-  }
-}
-
-function outCopyTxtFn(){
-  var tooltip = document.getElementById("myTooltip");
-  tooltip.innerHTML = "Copy to clipboard";
-}
-
 $('.togglePostsView-form').on('click', function(){
   $('.circle-plus').toggleClass('opened');
   setTimeout(function(){
