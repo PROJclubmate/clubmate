@@ -240,8 +240,11 @@ module.exports = {
 
   },
 
-  storiesClubAlbums(req, res, next) {
-    let foundClub = Club.findById(req.params.club_id).exec();
+  async storiesClubAlbums(req, res, next) {
+    // console.log(req.params)
+    // console.log(req.body)
+    let foundClub = await Club.findById(req.params.clubs_id).exec();
+    // console.log(foundClub);
     return res.json({
       albums : foundClub.albums
     })
