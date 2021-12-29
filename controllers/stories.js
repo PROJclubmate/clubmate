@@ -226,11 +226,16 @@ module.exports = {
     console.log("Archives club get");
     let foundClub = Club.findById(req.params.club_id).exec();
     archiveData = {};
-    for(let i = 0; i < foundClub.storyArchives.length; i++){
-      let foundStory = Story.findById(foundClub.storyArchives[i]).exec();
-      archiveData[album].push(foundStory);
+    if(foundClub.storyArchives){
+      for(let i = 0; i < foundClub.storyArchives.length; i++){
+        let foundStory = Story.findById(foundClub.storyArchives[i]).exec();
+        archiveData[album].push(foundStory);
+      }
+      return res.json(archiveData);
     }
-    return res.json(archiveData);
+    else{
+      return res.json({});
+    }
   },
 
   storiesClubAlbums(req, res, next) {
