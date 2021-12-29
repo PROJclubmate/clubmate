@@ -222,20 +222,22 @@ module.exports = {
     return res.json(clubStories);
   },
 
-  archivesClubGet(req, res, next) {
-    console.log("Archives club get");
-    let foundClub = Club.findById(req.params.club_id).exec();
+  async archivesClubGet(req, res, next) {
+    console.log("Archives club get", req.params.club_id);
+    let foundClub = await Club.findById(req.params.club_id).exec();
+
     archiveData = {};
     if(foundClub.storyArchives){
       for(let i = 0; i < foundClub.storyArchives.length; i++){
-        let foundStory = Story.findById(foundClub.storyArchives[i]).exec();
-        archiveData[album].push(foundStory);
+        let foundStory = await Story.findById(foundClub.storyArchives[i]).exec();
+        if(archiveData[foundStory.album])
+          archiveData[foundStory.album].push(foundStory);
+        else
+          archiveData[foundStory.album] = [foundStory];
       }
-      return res.json(archiveData);
     }
-    else{
-      return res.json({});
-    }
+    return res.json(archiveData);
+
   },
 
   storiesClubAlbums(req, res, next) {
