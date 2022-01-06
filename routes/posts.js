@@ -1,9 +1,9 @@
 const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
-  {postsHome, postsHomeMorePosts, postsFriends_posts, postsFriends_postsMorePosts,postsDiscoverSettings, 
-  postsViewSettings, postsDiscover, postsDiscoverMorePosts, postsCreate, postsView, subPostQuote, 
-  postsUpdate, postsDelete, postsVote, postsModVote} = require('../controllers/posts');
+  {postsDiscoverSettings, postsDiscover, postsDiscoverMorePosts, 
+  postsCreate, postsView, subPostQuote, postsUpdate, postsDelete, postsVote, 
+  postsModVote} = require('../controllers/posts');
 
 if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');
@@ -12,20 +12,6 @@ if(process.env.ENVIRONMENT === 'dev'){
 }
 
 
-// Home page
-router.get('/home', middleware.checkWaitingWall, postsHome);
-
-// Home load more posts(AJAX)
-router.get('/home-morePosts', middleware.checkWaitingWall, postsHomeMorePosts);
-
-// Friends' posts page
-router.get('/friends_posts', middleware.checkWaitingWall, postsFriends_posts);
-
-// Friends' posts load more posts(AJAX)
-router.get('/friends_posts-morePosts', middleware.checkWaitingWall, postsFriends_postsMorePosts);
-
-// Index posts view settings
-router.put('/indexposts/settings/user/:id', middleware.isLoggedIn, postsViewSettings);
 
 // Discover page
 router.get('/discover', middleware.checkWaitingWall, postsDiscover);

@@ -17,168 +17,13 @@ if(process.env.ENVIRONMENT === 'dev'){
 
 
 module.exports = {
-  postsHome(req, res, next){
-    if(req.user && req.user.userClubs.length != 0){
-      res.render('posts/index', {friendsPostUrl: false, cdn_prefix});
-      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-    } else if(req.user && req.user.userClubs.length == 0){
-      req.flash('success', 'Become a club member to start seeing their posts at HOME.');
-      return res.redirect('/discover');
-    } else if(!req.user){
-      req.flash('success', 'Please Login to go HOME :)');
-      return res.redirect('/discover');
-    }
-  },
-
-  postsHomeMorePosts(req, res, next){
-    if(req.user){
-      const dbQueries = [];
-      var userClubIds = req.user.userClubs.map(function(club){
-        return club.id;
-      });
-      dbQueries.push({postClub: {$in: userClubIds}});
-      if(req.user.postsViewToggle == 2){
-        dbQueries.push({topic: {$ne: ''}});
-      }
-      if(req.query.ids.split(',') != ''){
-        var seenIds = req.query.ids.split(',');
-      } else{
-        var seenIds = [];
-      }
-      dbQueries.push({_id: {$nin: seenIds}});
-      Post.find({$and: dbQueries})
-      .populate({path: 'postClub', select: 'name avatar avatarId'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, homePosts){
-      if(err || !homePosts){
-        logger.error(req.user._id+' : (posts-1)homePosts err => '+err);
-        return res.sendStatus(500);
-      } else{
-        var arrLength = homePosts.length;
-        var friendsPostUrl = false; var currentUser2 = req.user;
-        var foundPostIds = homePosts.map(function(post){
-          return post._id;
-        });
-        var posts = postsPrivacyFilter(homePosts, req.user);
-        var modPosts = postsModerationFilter(posts, req.user);
-        sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-        for(var k=0;k<modPosts.length;k++){
-          if(process.env.ENVIRONMENT === 'dev'){
-            PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (process.env.ENVIRONMENT === 'prod'){
-            PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
-          }
-          hasVote[k] = voteCheck(req.user,modPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
-          seenPostIds.push(modPosts[k]._id);
-        }
-        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
-            logger.error(req.user._id+' : (posts-2)updatePosts err => '+err);
-            return res.sendStatus(500);
-          }
-        });
-        if(process.env.ENVIRONMENT === 'dev'){
-          var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-        } else if (process.env.ENVIRONMENT === 'prod'){
-          var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-        }
-        res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2,
-        foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
-        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-      }
-      });
-    } else{
-      return res.redirect('/discover');
-    }
-  },
-
-  postsFriends_posts(req, res, next){
-    if(req.user && req.user.friendsCount != 0){
-      res.render('posts/index', {friendsPostUrl: true, cdn_prefix});
-      return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-    } else if(req.user && req.user.friendsCount == 0){
-      req.flash('success', 'Add friends to start seeing their posts.');
-      return res.redirect('/discover');
-    } else if(!req.user){
-      req.flash('success', 'Please Login to see your FRIENDS\' posts :)');
-      return res.redirect('/discover');
-    }
-  },
-
-  postsFriends_postsMorePosts(req, res, next){
-    if(req.user){
-      const dbQueries = [];
-      dbQueries.push({'postAuthor.id': {$in: req.user.friends}});
-      if(req.user.postsViewToggle == 2){
-        dbQueries.push({topic: {$ne: ''}});
-      }
-      if(req.query.ids != ''){
-        var seenIds = req.query.ids.split(',');
-      } else{
-        var seenIds = [];
-      }
-      dbQueries.push({_id: {$nin: seenIds}});
-      Post.find({$and: dbQueries})
-      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
-      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
-      .sort({createdAt: -1}).limit(10)
-      .exec(function(err, friendsPosts){
-      if(err || !friendsPosts){
-        logger.error(req.user._id+' : (posts-3)friendsPosts err => '+err);
-        return res.sendStatus(500);
-      } else{
-        var arrLength = friendsPosts.length;
-        var friendsPostUrl = true; var currentUser2 = req.user;
-        var foundPostIds = friendsPosts.map(function(post){
-          return post._id;
-        });
-        var posts = postsPrivacyFilter(friendsPosts, req.user);
-        var modPosts = postsModerationFilter(posts, req.user);
-        sortComments(modPosts);
-        var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
-        for(var k=0;k<modPosts.length;k++){
-          if(process.env.ENVIRONMENT === 'dev'){
-            PA_50_profilePic[k] = clConfig.cloudinary.url(modPosts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
-          } else if (process.env.ENVIRONMENT === 'prod'){
-            PA_50_profilePic[k] = s3Config.thumb_100_prefix+modPosts[k].postAuthor.id.profilePicId;
-          }
-          hasVote[k] = voteCheck(req.user,modPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
-          seenPostIds.push(modPosts[k]._id);
-        }
-        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
-            logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
-            return res.sendStatus(500);
-          }
-        });
-        if(process.env.ENVIRONMENT === 'dev'){
-          var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-        } else if (process.env.ENVIRONMENT === 'prod'){
-          var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-        }
-        res.json({hasVote, hasModVote, posts: modPosts, friendsPostUrl, currentUser: currentUser2, 
-        foundPostIds, CU_50_profilePic, PA_50_profilePic, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
-        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-      }
-      });
-    } else{
-      return res.redirect('/discover');
-    }
-  },
-
   postsDiscoverSettings(req, res, next){
     if(req.user && req.user._id.equals(req.params.id)){
       if(req.body.discoverSwitch){
         User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
         function(err, updateUser){
         if(err || !updateUser){
-          logger.error(req.user._id+' : (posts-5)updateUser err => '+err);
+          logger.error(req.user._id+' : (posts-1)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -188,27 +33,13 @@ module.exports = {
         User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
         function(err, updateUser){
         if(err || !updateUser){
-          logger.error(req.user._id+' : (posts-6)updateUser err => '+err);
+          logger.error(req.user._id+' : (posts-2)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
         });
       }
       return res.redirect('/discover');
-    }
-  },
-
-  postsViewSettings(req, res, next){
-    if(req.user && req.body.postsViewKey != 0){
-      User.updateOne({_id: req.user._id}, {$set: {postsViewToggle: req.body.postsViewKey}}, 
-      function(err, updateUser){
-      if(err || !updateUser){
-        logger.error(req.user._id+' : (posts-7)updateUser err => '+err);
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      }
-      });
-      return res.redirect('back');
     }
   },
 
@@ -306,11 +137,10 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-8)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-3)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -328,7 +158,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-9)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -337,8 +167,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -353,11 +183,10 @@ module.exports = {
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-10)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-5)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -375,7 +204,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-11)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-6)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -384,8 +213,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -453,11 +282,10 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-12)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-7)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -475,7 +303,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-13)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-8)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -484,8 +312,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -558,11 +386,10 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-14)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-9)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -580,7 +407,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-15)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-10)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -589,8 +416,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -604,11 +431,10 @@ module.exports = {
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-16)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-11)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -626,7 +452,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-17)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-12)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -635,8 +461,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -697,11 +523,10 @@ module.exports = {
           ])
           .exec(function(err, discoverPosts){
           if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-18)discoverPosts err => '+err);
+            logger.error(req.user._id+' : (posts-13)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length;
-            var friendsPostUrl = false; var currentUser2 = req.user;
+            var arrLength = discoverPosts.length; var currentUser2 = req.user;
             var foundPostIds = discoverPosts.map(function(post){
               return post._id;
             });
@@ -719,7 +544,7 @@ module.exports = {
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err, updatePosts){
               if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-19)updatePosts err => '+err);
+                logger.error(req.user._id+' : (posts-14)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -728,8 +553,8 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, 
-            currentUser: currentUser2, foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -802,11 +627,10 @@ module.exports = {
       ])
       .exec(function(err, discoverPosts){
       if(err || !discoverPosts){
-        logger.error(req.user._id+' : (posts-20)discoverPosts err => '+err);
+        logger.error(req.user._id+' : (posts-15)discoverPosts err => '+err);
         return res.sendStatus(500);
       } else{
         var arrLength = discoverPosts.length;
-        var friendsPostUrl = false;
         var foundPostIds = discoverPosts.map(function(post){
           return post._id;
         });
@@ -824,11 +648,11 @@ module.exports = {
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
         function(err, updatePosts){
           if(err || !updatePosts){
-            logger.error(req.user._id+' : (posts-21)updatePosts err => '+err);
+            logger.error(req.user._id+' : (posts-16)updatePosts err => '+err);
             return res.sendStatus(500);
           }
         });
-        return res.json({hasVote, hasModVote, posts: discoverPosts, friendsPostUrl, foundPostIds, 
+        return res.json({hasVote, hasModVote, posts: discoverPosts, foundPostIds, 
         PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
       }
       });
@@ -855,20 +679,20 @@ module.exports = {
                 req.body.imageId = result.Key;
               }
             } catch(err){
-              logger.error(req.user._id+' : (posts-22)imageUpload err => '+err);
+              logger.error(req.user._id+' : (posts-17)imageUpload err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
             req.body.moderation = 1;
             Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
             if(err || !foundClub){
-              logger.error(req.user._id+' : (posts-23)foundClub err => '+err);
+              logger.error(req.user._id+' : (posts-18)foundClub err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
               Post.create(req.body, function(err, newPost){
               if(err || !newPost){
-                logger.error(req.user._id+' : (posts-24)newPost err => '+err);
+                logger.error(req.user._id+' : (posts-19)newPost err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -879,7 +703,7 @@ module.exports = {
                 newPost.postAuthor.authorName = req.user.fullName;
                 newPost.save(function(err, newPost){
                 if(err || !newPost){
-                  logger.error(req.user._id+' : (posts-25)newPost err => '+err);
+                  logger.error(req.user._id+' : (posts-20)newPost err => '+err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
@@ -902,13 +726,13 @@ module.exports = {
           req.body.moderation = 1;
           Club.findById(req.params.club_id).select({clubKeys: 1}).exec(function(err, foundClub){
           if(err || !foundClub){
-            logger.error(req.user._id+' : (posts-26)foundClub err => '+err);
+            logger.error(req.user._id+' : (posts-21)foundClub err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
             Post.create(req.body, function(err, newPost){
             if(err || !newPost){
-              logger.error(req.user._id+' : (posts-27)newPost err => '+err);
+              logger.error(req.user._id+' : (posts-22)newPost err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -919,7 +743,7 @@ module.exports = {
               newPost.postAuthor.authorName = req.user.fullName;
               newPost.save(function(err, newPost){
               if(err || !newPost){
-                logger.error(req.user._id+' : (posts-28)newPost err => '+err);
+                logger.error(req.user._id+' : (posts-23)newPost err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -947,7 +771,7 @@ module.exports = {
       Post.findByIdAndUpdate(req.params.post_id, {$inc: {viewsCount: 5}})
       .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
       if(err || !foundPost){
-        logger.error(req.user._id+' : (posts-29)foundPost err => '+err);
+        logger.error(req.user._id+' : (posts-24)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -974,7 +798,7 @@ module.exports = {
           .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
           postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
-          logger.error(req.user._id+' : (posts-30)topTopicPosts err => '+err);
+          logger.error(req.user._id+' : (posts-25)topTopicPosts err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
           } else{
@@ -998,7 +822,7 @@ module.exports = {
               .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
               .exec(function(err, foundBuckets){
               if(err || !foundBuckets){
-                logger.error(req.user._id+' : (posts-31)foundBuckets err => '+err);
+                logger.error(req.user._id+' : (posts-26)foundBuckets err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -1046,7 +870,7 @@ module.exports = {
                 .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
                 .exec(function(err, foundBucket){
                 if(err || !foundBucket){
-                  logger.error(req.user._id+' : (posts-32)foundBucket err => '+err);
+                  logger.error(req.user._id+' : (posts-27)foundBucket err => '+err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 } else{
@@ -1083,7 +907,7 @@ module.exports = {
       Post.findOne({_id: req.params.post_id, moderation: 0, privacy: 0})
       .populate({path: 'postClub', select: 'name avatar avatarId clubUsers'}).exec(function (err, foundPost){
       if(err || !foundPost){
-        logger.error('(posts-33)foundPost err => '+err);
+        logger.error('(posts-28)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -1103,7 +927,7 @@ module.exports = {
           .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
           .exec(function(err, foundBuckets){
           if(err || !foundBuckets){
-            logger.error('(posts-34)foundBuckets err => '+err);
+            logger.error('(posts-29)foundBuckets err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
@@ -1142,7 +966,7 @@ module.exports = {
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
       .exec(function (err, foundPost){
       if(err || !foundPost){
-        logger.error(req.user._id+' : (posts-35)foundPost err => '+err);
+        logger.error(req.user._id+' : (posts-30)foundPost err => '+err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
@@ -1173,7 +997,7 @@ module.exports = {
             .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
             .exec(function(err, foundBucket){
             if(err || !foundBucket){
-              logger.error(req.user._id+' : (posts-36)foundBucket err => '+err);
+              logger.error(req.user._id+' : (posts-31)foundBucket err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
@@ -1188,7 +1012,7 @@ module.exports = {
               var subVotes = subVoteCheck(req.user._id,foundBucket);
               Discussion.findOne({_id: req.params.bucket_id}, function(err, foundQuoteBucket){
               if(err || !foundQuoteBucket){
-                logger.error(req.user._id+' : (posts-37)foundQuoteBucket err => '+err);
+                logger.error(req.user._id+' : (posts-32)foundQuoteBucket err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
@@ -1218,7 +1042,7 @@ module.exports = {
   postsUpdate(req, res, next){
     Post.findById(req.params.post_id, function (err, foundPost){
     if(err || !foundPost){
-      logger.error(req.user._id+' : (posts-38)foundPost err => '+err);
+      logger.error(req.user._id+' : (posts-33)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1243,7 +1067,7 @@ module.exports = {
   postsDelete(req, res, next){
     Post.findById(req.params.post_id, async function(err, foundPost){
     if(err || !foundPost){
-      logger.error(req.user._id+' : (posts-39)foundPost err => '+err);
+      logger.error(req.user._id+' : (posts-34)foundPost err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
@@ -1259,14 +1083,14 @@ module.exports = {
             //deletes all comments associated with the post
             Comment.deleteMany({postId: foundPost._id}, function(err){
               if(err){
-                logger.error(req.user._id+' : (posts-40)foundComment err => '+err);
+                logger.error(req.user._id+' : (posts-35)foundComment err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
             });
             Discussion.deleteMany({postId: foundPost._id}, function(err){
               if(err){
-                logger.error(req.user._id+' : (posts-41)foundDiscussion err => '+err);
+                logger.error(req.user._id+' : (posts-36)foundDiscussion err => '+err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -1274,7 +1098,7 @@ module.exports = {
             req.flash('success', 'Post deleted successfully!');
             res.redirect('back');
           }catch(err){
-            logger.error(req.user._id+' : (posts-42)foundPost catch err => '+err);
+            logger.error(req.user._id+' : (posts-37)foundPost catch err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -1282,14 +1106,14 @@ module.exports = {
           foundPost.remove();
           Comment.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              logger.error(req.user._id+' : (posts-43)foundComment err => '+err);
+              logger.error(req.user._id+' : (posts-38)foundComment err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           });
           Discussion.deleteMany({postId: foundPost._id}, function(err){
             if(err){
-              logger.error(req.user._id+' : (posts-44)foundDiscussion err => '+err);
+              logger.error(req.user._id+' : (posts-39)foundDiscussion err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1309,7 +1133,7 @@ module.exports = {
       Post.findById(req.params.post_id).populate({path: 'postClub', select: 'clubUsers'})
       .exec(function(err, foundPost){
       if(err || !foundPost){
-        logger.error(req.user._id+' : (posts-45)foundPost err => '+err);
+        logger.error(req.user._id+' : (posts-40)foundPost err => '+err);
         return res.sendStatus(500);
       } else{
         var isModerator = checkRank2(foundPost.postClub.clubUsers,req.user._id,2);
@@ -1340,7 +1164,7 @@ module.exports = {
     } else{
       Post.findById(req.params.post_id, function(err, foundPost){
       if(err || !foundPost){
-        logger.error(req.user._id+' : (posts-46)foundPost err => '+err);
+        logger.error(req.user._id+' : (posts-41)foundPost err => '+err);
         return res.sendStatus(500);
       } else{
         var i, k; var clickIdFound = false, otherIdFound = false;
@@ -1368,7 +1192,7 @@ module.exports = {
             if(otherIdFound == true){
               User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
                 if(err || !updateUser){
-                  logger.error(req.user._id+' : (posts-47)updateUser err => '+err);
+                  logger.error(req.user._id+' : (posts-42)updateUser err => '+err);
                   return res.sendStatus(500);
                 }
               });
@@ -1395,7 +1219,7 @@ module.exports = {
           if(clickIdFound == true){
             User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
               if(err || !updateUser){
-                logger.error(req.user._id+' : (posts-48)updateUser err => '+err);
+                logger.error(req.user._id+' : (posts-43)updateUser err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -1414,7 +1238,7 @@ module.exports = {
             foundPost.heartCount +=1;
             User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
               if(err || !updateUser){
-                logger.error(req.user._id+' : (posts-49)updateUser err => '+err);
+                logger.error(req.user._id+' : (posts-44)updateUser err => '+err);
                 return res.sendStatus(500);
               }
             });
@@ -1431,7 +1255,7 @@ module.exports = {
   postsModVote(req, res, next){
     Post.findById(req.params.post_id, function(err, foundPost){
     if(err || !foundPost){
-      logger.error(req.user._id+' : (posts-50)foundPost err => '+err);
+      logger.error(req.user._id+' : (posts-45)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
       var i, j; var clickIdFound = false, secondIdFound = false;

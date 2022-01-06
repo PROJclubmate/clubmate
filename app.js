@@ -35,6 +35,7 @@ if(process.env.MACHINE === 'localhost'){
 //Requiring routes
 const indexRoutes    = require('./routes/index'),
   chatRoutes         = require('./routes/chats'),
+  audioRoomRoutes    = require('./routes/audio_rooms'),
   storyRoutes        = require('./routes/stories'),
   profileRoutes      = require('./routes/profiles'),
   postRoutes         = require('./routes/posts'),
@@ -232,6 +233,7 @@ app.use(async function(req, res, next){
 // Mount routes
 app.use('/', indexRoutes);
 app.use('/', chatRoutes);
+app.use('/', audioRoomRoutes);
 app.use('/', storyRoutes);
 app.use('/', profileRoutes);
 app.use('/', postRoutes);

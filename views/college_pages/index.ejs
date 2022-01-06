@@ -49,13 +49,13 @@
 						</span>
 					</div>
 				</div>
-				<div class="boldtext text-md badge badge-danger collegediv-usercnt"><%= college_page.clubCount %><span class="text-sm my-auto ml-1 mobilebold"> clubs</span></div>
+				<div class="boldtext text-md badge badge-danger collegediv-clubcount"><%= college_page.clubCount %><span class="text-sm my-auto ml-1 mobilebold"> clubs</span></div>
 			</div>
-			<div class="collegediv-clubcnt">
+			<div class="collegediv-switchview">
 				<div class="valign">
 					<div class="valign">
 						<div class="mobilebold lightgrey text-md mr-2">
-							<div class="boldtext text-xxxxs">SWITCH</div><div class="m-0 p-0 text-xxxxs">VIEW</div>
+							<div class="text-xxxxs lightgrey2 font-italic">SWITCH</div><div class="m-0 p-0 text-xxxxs lightgrey2 font-italic">VIEW</div>
 						</div>
 						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">

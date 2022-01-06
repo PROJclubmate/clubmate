@@ -200,7 +200,7 @@
               <% } %>
                 <div class="valign">
                   <div class="d-flex flex-row">
-                    <div class="lightgrey2 text-xs" style="padding-top: 0.125rem;"><span class="boldtext"><%= post.subpostsCount %></span> subPosts</div>
+                    <div class="lightgrey2 text-xs" style="padding-top: 0.125rem;"><span class="boldtext"><%= post.subpostsCount %></span> answers</div>
                     <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
                       <strong class="text-sm lightgrey2 nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
                     <% } %>
@@ -350,7 +350,7 @@
         </div>
         <div class="card">
           <div class="card-body py-1 d-flex mx-auto">
-            <span class="text-sm lightgrey">No sub-posts yet.</span>
+            <span class="text-sm lightgrey">No answers yet.</span>
           </div>
         </div>
         <div class="card indexcard2">
@@ -375,7 +375,7 @@
                     </div>
                   </div>
                   <div class="input-group">
-                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your opinion" rows="4"></textarea>
+                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4"></textarea>
                   </div>
                   <div class="d-flex flex-row-reverse">
                     <button class="btn btn-success subpostbtn btn-shadow btnxs text-sm ml-2 mt-2">Submit</button>

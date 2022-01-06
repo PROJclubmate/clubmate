@@ -275,8 +275,8 @@ div.content{
   .collegename{font-size: 1.5rem !important; line-height: 1.375rem !important;}
   .collegepad{padding: 0.25rem 0.5rem !important;}
   .collegediv-name{padding: 0.25rem 0.25rem !important;}
-  .collegediv-usercnt{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
-  .collegediv-clubcnt{margin: 0.5rem 0 !important; padding: 0 0.5rem !important; margin-bottom: 1rem !important;}
+  .collegediv-clubcount{margin-top: auto !important; margin-bottom: 0 !important; margin-left: 1.5rem !important;}
+  .collegediv-switchview{margin: 0.5rem 0 !important; padding: 0 0.5rem !important; margin-bottom: 2rem !important;}
   .mobilebold{font-weight: 500 !important;}
   .nav-link.burgernav{margin: 0.5rem 0.25rem !important;}
   .nav-link.burgernav.requests{margin: 0 0.25rem !important; color: #202020; text-shadow: none !important;}
@@ -1330,10 +1330,10 @@ time.calendar span{
 .btn-followall.lightgrey2:hover{
   color: #262626 !important;
 }
-.collegediv-usercnt{
+.collegediv-clubcount{
   margin: auto 0;
 }
-.collegediv-clubcnt{
+.collegediv-switchview{
   margin: 1rem 0;
   padding: 0 1rem;
   margin-bottom: 1rem;
@@ -1776,13 +1776,14 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border-color: white;
 }
 .btn.moderation.btn-light:hover{
+  color: #555555;
   border-color: #efefef;
   background-color: white !important;
 }
 .btn.moderation.btn-info{
   border-color: transparent;
   background-color: transparent;
-  color: #454545;
+  color: inherit;
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   border-color: #d7e6f9;
@@ -3538,6 +3539,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   color: white;
   -webkit-text-stroke-width: 0 !important;
 }
+.fas.fa-thumbs-up.discover-vote, .fas.fa-heart.discover-vote{
+  color: rgba(255,255,255,0.25);
+}
 .fa-caret-up.discover-vote, .fa-caret-down.discover-vote{
   font-size: 3.875rem;
   color: transparent;
@@ -3758,30 +3762,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .gb11:focus:after{
   background-position: 100% 0;
 }
-.img-comp-container{
-  position: relative;
-}
-.img-comp-img{
-  position: absolute;
-  width: auto;
-  height: auto;
-  overflow: hidden;
-}
-.img-comp-img img{
-  display: block;
-  vertical-align: middle;
-}
-.img-comp-slider{
-  position: absolute;
-  z-index: 5;
-  cursor: ew-resize;
-  width: 40px;
-  height: 40px;
-  opacity: 0.7;
-  border-radius: 50%;
-  box-shadow: 0 0 0 5px rgba(0,0,0,0.2), 0 0 10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
-  background: #dc717d url(https://res.cloudinary.com/dubirhea4/image/upload/v1601571229/icons/cd-arrows.svg) no-repeat center center;
-}
 .cover-help{
   width: 40vw;
   object-fit: cover;
@@ -3790,60 +3770,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   color: goldenrod;
   -webkit-text-stroke-width: 0.25px;
   -webkit-text-stroke-color: black;
-}
-.closed .vertical{
-  transition: all 0.5s ease-out;
-  transform: rotate(-90deg);
-}
-.closed .horizontal{
-  transition: all 0.5s ease-out;
-  transform: rotate(-90deg);
-  opacity: 1;
-}
-.opened{
-  opacity: 1;
-}
-.opened .vertical{
-  transition: all 0.5s ease-out;
-  transform: rotate(90deg);
-}
-.opened .horizontal{
-  transition: all 0.5s ease-out;
-  transform: rotate(90deg);
-  opacity: 0;
-}
-.circle-plus{
-  height: 2rem;
-  width: 2rem;
-  font-size: 1rem;
-}
-.circle-plus .circle{
-  position: relative;
-  width: 2.05rem;
-  height: 2rem;
-  border-radius: 100%;
-  border: solid 2.5px #e0e0e0;
-  cursor: pointer;
-}
-.circle-plus .circle .horizontal{
-  position: absolute;
-  background-color: #7a7b7c;
-  width: 15px;
-  height: 2.5px;
-  left: 50%;
-  margin-left: -7.5px;
-  top: 50%;
-  margin-top: -1.25px;
-}
-.circle-plus .circle .vertical{
-  position: absolute;
-  background-color: #7a7b7c;
-  width: 2.5px;
-  height: 15px;
-  left: 50%;
-  margin-left: -1.25px;
-  top: 50%;
-  margin-top: -7.5px;
 }
 .settings-img{
   width: 35%;

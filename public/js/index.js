@@ -36,15 +36,15 @@ var dropdown = document.getElementsByClassName('dropdown-sidebar');
 for (var i=0;i<dropdown.length;i++){
   dropdown[i].addEventListener('click', function(){
     this.classList.toggle('active');
-    if(location.pathname == '/home'){
+    if(location.pathname.split('/')[1] == 'colleges'){
       var home = document.getElementById('side-home');
       home.classList.toggle('active');
     } else if(location.pathname == '/discover'){
       var discover = document.getElementById('side-discover');
       discover.classList.toggle('active');
-    } else if(location.pathname == '/friends_posts'){
-      var friends = document.getElementById('side-friends');
-      friends.classList.toggle('active');
+    } else if(location.pathname == '/lobby'){
+      var lobby = document.getElementById('side-lobby');
+      lobby.classList.toggle('active');
     }
     var drop = document.getElementById('side-drop');
     var club = document.getElementById('club-door');
@@ -64,15 +64,15 @@ for (var i=0;i<dropdown.length;i++){
   });
 }
 
-if(location.pathname == '/home'){
+if(location.pathname.split('/')[1] == 'colleges'){
   var home = document.getElementById('side-home');
   home.classList.toggle('active');
 } else if(location.pathname == '/discover'){
   var discover = document.getElementById('side-discover');
   discover.classList.toggle('active');
-} else if(location.pathname == '/friends_posts'){
-  var friends = document.getElementById('side-friends');
-  friends.classList.toggle('active');
+} else if(location.pathname == '/lobby'){
+  var lobby = document.getElementById('side-lobby');
+  lobby.classList.toggle('active');
 }
 
 $('#latestUpdates').on('shown.bs.collapse', function(){
