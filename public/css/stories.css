@@ -98,6 +98,20 @@ span.info{
   border: none;
 }
 
+.story-viewer .foot {
+  position: absolute;
+  color: white;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}
+
+.story-viewer .view_counter {
+  margin: auto;
+  padding: 4px;
+}
+
 @media screen and (min-width: 768px){
   .stories.carousel .story:first-child {
     margin-left: 0 !important;

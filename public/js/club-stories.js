@@ -6,7 +6,15 @@ const get = function (array, what) {
   }
 }
 
-function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
+function buildItem(id, type, length, src, preview, link, linkText, seen, time, seenByUserIds = []) {
+
+  let story_views = 0;
+  if (seenByUserIds) {
+    story_views = seenByUserIds.length;
+  }
+
+  console.log(seenByUserIds);
+
   // Using object short hand (id: id)
   return {
     id,					// item id
@@ -17,13 +25,12 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
     link,				// a link to click on story
     linkText, 	// link text
     seen,		 		// set true if current story was read
-    time				// optional a date to display with the story item. unix timestamp are converted to "time ago" format
+    time,				// optional a date to display with the story item. unix timestamp are converted to "time ago" format
+    story_views,// optional, story views of the current story
   };
 }
 
 createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
-  console.log("USER Rank", userRank);
-
   const clubStories = new Zuck(ele_id, {
     skin: 'Facesnap',					// container class
     avatars: true,						// shows user photo instead of last story item preview
@@ -48,6 +55,10 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
       onView(storyId) {
         document.getElementById(`delete-img-${storyId}`).onclick = function () {
           console.log("Delete story", storyId);
+
+          // To pause the story and if we intent to add one more modal to confirm delete
+          // document.getElementsByClassName('story-viewer')[1].classList.add('paused');
+          // Number to be used need to be found btw, :(
 
           async function postData(url = '', data = {}) {
             const response = await fetch(url, {
@@ -101,8 +112,6 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
 
       viewerItem(storyData, currentStoryItem) {
         console.log(storyData);
-        // console.log(currentStoryItem);
-        // console.log(get(storyData[currentStoryItem], 'timeAgo'));
 
         return `<div class="story-viewer">
           <div class="head">
@@ -123,6 +132,11 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
           </div>
           <div class="slides-pointers">
             <div class="wrap"></div>
+          </div>
+          <div class="foot">
+          ${userRank < 3 ? `
+          <h4 class="view_counter"> ${get(get(storyData, 'items')[0], 'story_views')} (view) </h4>
+          ` : ''}
           </div>
         </div>`;
       },
@@ -169,18 +183,16 @@ createCurrentStories = (ele_id, storiesData, club, csrfToken, userRank = 0) => {
       link: '',
       lastUpdated: club.lastUpdated,
       seen: false,
-      items: [buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454)]
+      items: [buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454, story.seenByUserIds)]
     }
 
     zuckStoriesObject.push(thisStoryData);
   }
 
-  // TODO add rank here also
   return createStory(ele_id, zuckStoriesObject, club, csrfToken = csrfToken, userRank = userRank);
 }
 
 createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
-  // TODO
   const finalZuckObject = [];
 
   let i = 11;
@@ -190,7 +202,7 @@ createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
 
     const thisClubStories = [];
     for (story of archivesData[folder_name]) {
-      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454, story._id));
+      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
     }
 
     const thisGroupData = {
