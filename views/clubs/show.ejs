@@ -470,15 +470,15 @@
                 <div class="d-flex story-alt-container scroll moz-scroll p-3">
                   <% if(currentUser && 0 <= rank && rank <=2){ %>
                   <div class="d-flex flex-column mr-3">
-                    <a href="/clubs/<%= club._id %>/story/create/edit" class="nounderline">
+                    <a id="new_story_wrapper" href="/clubs/<%= club._id %>/story/create/edit" class="nounderline">
                       <div id="new_story" class="story-alt text-center">
                         <div class="story-alt-plus">+</div>
                       </div>
-                      <div id="new_story_label" class="story-alt-label lightgrey text-sm mobiletext3 pb-2">New update</div>
+                      <!-- <div id="new_story_label" class="story-alt-label lightgrey text-sm mobiletext3 pb-2">New update</div> -->
                     </a>
                   </div>
                   <% } %>
-                  <div id="storiesViewer" class="storiesWrapper"></div>
+                  <div id="club_current_stories" class="storiesWrapper"></div>
                 </div>
                 <% //if(currentUser && 0 <= rank && rank <=4){ %>
                   <div class="p-3 mt-2">
@@ -610,7 +610,7 @@
   var csrfToken = "<%= csrfToken %>";
 
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
-    // createCurrentStories('storiesViewer', storiesData, club, csrfToken = csrfToken);
+    createCurrentStories('club_current_stories', storiesData, club, csrfToken = csrfToken);
   }).catch(function(err) {
     ok = true;
     console.log("Fetching stories failed", err);

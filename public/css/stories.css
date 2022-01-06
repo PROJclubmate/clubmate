@@ -66,6 +66,19 @@ span.info{
   height: 86px;
   width: 86px;
 }
+
+/* For club show page */
+#club_current_stories .item-preview {
+  border-radius: 0.5rem !important;
+  padding: 0;
+  background: white !important;
+}
+
+#club_current_stories .item-preview img {
+  border-radius: 0.5rem !important;
+  border: none;
+}
+
 @media screen and (min-width: 768px){
   .stories.carousel .story:first-child {
     margin-left: 0 !important;

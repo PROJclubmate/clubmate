@@ -223,7 +223,6 @@ module.exports = {
   },
 
   async archivesClubGet(req, res, next) {
-    console.log("Archives club get", req.params.club_id);
     let foundClub = await Club.findById(req.params.club_id).exec();
 
     archiveData = {};
