@@ -22,6 +22,7 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
 }
 
 createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
+  console.log("USER Rank", userRank);
 
   const clubStories = new Zuck(ele_id, {
     skin: 'Facesnap',					// container class
@@ -175,7 +176,7 @@ createCurrentStories = (ele_id, storiesData, club, csrfToken, userRank = 0) => {
   }
 
   // TODO add rank here also
-  return createStory(ele_id, zuckStoriesObject, club, csrfToken = csrfToken);
+  return createStory(ele_id, zuckStoriesObject, club, csrfToken = csrfToken, userRank = userRank);
 }
 
 createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
@@ -206,5 +207,5 @@ createArchives = (ele_id, archivesData, club, csrfToken, userRank = 0) => {
     i++;
   }
 
-  return createStory(ele_id, finalZuckObject, club, csrfToken = csrfToken);
+  return createStory(ele_id, finalZuckObject, club, csrfToken = csrfToken, userRank = userRank);
 }
