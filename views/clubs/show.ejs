@@ -484,7 +484,7 @@
                   <div class="p-3 mt-2">
                     <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
                     <!-- Will be added by javascript API -->
-                    <div id="archivesViewer" class="storiesWrapper"></div>
+                    <div id="club_archives_stories" class="storiesWrapper"></div>
                   </div>
                 <% //} %>
               </div>
@@ -626,7 +626,7 @@
   });
 
   fetch('/clubs/' + club._id + '/archives').then(res => res.json()).then(function(archives) {
-    createArchives('archivesViewer', archives, club, csrfToken, userRank = guserRank);
+    createArchives('club_archives_stories', archives, club, csrfToken, userRank = guserRank);
   }).catch(function(err) {
     ok = true;
     console.log("Fetching archives failed", err);
