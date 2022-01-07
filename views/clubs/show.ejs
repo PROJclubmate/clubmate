@@ -315,9 +315,9 @@
                     <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
                       <% if(rank >= 0 && rank <=3){ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="Topic">
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
                       <% } else{ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="Topic" required>
+                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question" required>
                       <% } %>
                       <label for="description" class="sr-only">Description</label>
                       <% if(rank >= 0 && rank <=3){ %>
@@ -387,9 +387,7 @@
                   </div>
                 <% } %>
                 <div id="delegated-posts">
-                  <div id="server-posts">
-                    <% //include ../partials/posts_club %>
-                  </div>
+                  <div id="server-posts"></div>
                   <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
                   <div class="text-center">
                     <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">

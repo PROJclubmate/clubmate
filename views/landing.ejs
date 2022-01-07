@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<%= csrfToken %>">
     <meta name="google-site-verification" content="OTHxbxMTA7F3GJc5r8h4BPmnWbZn54mbm97wyq-mTTQ" />
-    <title>clubmate | The Front Page of your College</title>
+    <title>clubmate - The Front Page of Your College</title>
     <link rel="stylesheet" href="/css/libs/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="/css/index.css">
@@ -43,11 +43,12 @@
     <style>
       nav.navbar{
         box-shadow: none;
-        background-color: white !important;
+        background-color: #f1efe3 !important;
         padding: 0.5rem 1.5rem !important;
       }
       body{
-        background-color: white;
+        background-color: #f1efe3;
+        color: #221f14;
       }
       #landing-hero{
         position: absolute;
@@ -61,7 +62,7 @@
         font-weight: 700;
       }
       .illustrations{
-        filter: grayscale(1) brightness(0.9) contrast(1.1);
+        filter: grayscale(1) brightness(0.9) contrast(1.25);
         width: 50%;
       }
       #landing-bottom{
@@ -69,17 +70,15 @@
         top: 90vh;
         width: 100%;
       }
-      .eggshell{
+      .how_back{
         color: #111;
-        /* background-color: #f9f5f1; */
         background-attachment: fixed;
         background-size: contain;
         background-color: #ebface;
-        /* background-color: #ffffe6; */
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpolygon fill='%23D2F2C5' points='120 120 60 120 90 90 120 60 120 0 120 0 60 60 0 0 0 60 30 90 60 120 120 120 '/%3E%3C/svg%3E");
         /* background by SVGBackgrounds.com */
       }
-      #clubmate_uses{
+      .clubmate_uses{
         width: 100%;
         max-width: 35vw;
         padding: 0.625rem;
@@ -108,10 +107,16 @@
       .screenshots{
         z-index: 2;
         box-shadow: 0 2px 8px rgb(84, 70, 35, 0.15), 0 1px 3px rgb(84, 70, 35, 0.15);
+        border-radius: 0.75rem;
       }
       .half_height{
         height: 50%;
         max-width: 25vw;
+      }
+      #drop-info{
+        text-align: left;
+        box-shadow: none !important;
+        border-image: none !important;
       }
       #knowmore_arrow{
         animation: pulse 1s linear infinite;
@@ -133,52 +138,67 @@
           position: relative; left: 0; top: -18rem;}
         .screenshots-mobileview-container{height: 2rem !important; float: right;}
         .screenshots-container-mobile{padding: 0 0.375rem;}
+        .screen-description2{margin-top: 0; text-align: center;}
       }
       @media screen and (max-width: 767px){
         nav.navbar{padding: 0.5rem 1rem !important;}
         #clubmate-logo{height: 30px;}
         #landing-hero{text-align: center;}
-        h4{font-size: 2.125rem; line-height: 2.5rem;}
+        .how_back{background-attachment: unset !important; border-radius: 0 0 10rem 10rem; padding-bottom: 0.5rem;}
+        h4{line-height: 2.5rem; font-size: 2.5rem;}
         .illustrations{width: 65% !important;}
-        #clubmate_uses{max-width: 90vw !important;}
+        .clubmate_uses{max-width: 90vw !important;}
+        .screen-description2{margin: -2rem 0.75rem 2rem 0.75rem; text-align: center;}
         .screen-number{font-size: 1.875rem !important; margin-left: 1rem; line-height: 2.675rem !important;}
-        .screen-heading{margin-left: 0.5rem !important;}
-        .screen-description{margin-left: -1.4375rem !important; margin-top: 0 !important;}
-        .illustrations.screen-illustrations{max-width: 50vw !important; float: right; margin-right: 1rem;}
-        .illustrations1and2{padding-bottom: 1.5rem;}
-        .screenshots{margin-left: 3.5rem;}
+        .screen-heading{margin-left: 0.5rem !important; font-weight: 700 !important;}
+        .screen-description{margin-left: -1.4375rem !important; margin-top: 0.5rem !important; margin-right: 0.5rem !important;}
+        .illustrations.screen-illustrations{max-width: 35vw !important; float: unset; margin-left: 1rem;}
+        .mobile1and2{padding-bottom: 1.5rem;}
+        .screenshots{margin-left: 3.5rem; border-radius: 0.25rem !important;}
         .screenshots-container-mobile{padding: 0 1.25rem !important; width: 100vw;
           height: 20rem; overflow-x: scroll; overflow-y: hidden; scrollbar-width: none;}
           .screenshots-container-mobile::-webkit-scrollbar{display: none;}
-        .screen-container{margin-top: 0 !important;}
+        .screen-container{margin-top: 0 !important; flex-direction: column-reverse !important;
+          align-items: flex-start !important;}
         .screenshots-mobileview{width: 30vw !important; position: relative; left: 0; top: -12rem;}
         .screenshots-mobileview-container{height: 0 !important; margin-left: -0.25rem;}
         .half_height{max-width: unset !important;}
       }
       @media screen and (max-width: 481px){
-        #welcome_to_clubmate{margin-left: 1.375rem !important;}
+        h4{font-size: 2.5rem;}
+        #welcome_to_clubmate{margin-left: 0.75rem !important;}
         .screenshots-mobileview{top: -12rem;}
+        .screen-description2{margin: 2rem 0.75rem 2rem 0.75rem !important;}
+        .mobile123{margin-top: 5rem !important;}
       }
       @media screen and (max-width: 415px){
-        #welcome_to_clubmate{margin-left: 2.125rem !important;}
+        #welcome_to_clubmate{margin-left: 0.375rem !important;}
         .screenshots-mobileview{top: -11.5rem;}
+        .screen-description2{margin: 1rem 0.75rem 2rem 0.75rem !important;}
       }
       @media screen and (max-width: 394px){
-        #welcome_to_clubmate{margin-left: 1.675rem !important;}
+        h4{font-size: 2.375rem;}
+        #welcome_to_clubmate{margin-left: 0.375rem !important;}
         .screenshots-mobileview{top: -11rem;}
+        .screen-description2{margin: -1rem 0.75rem 2rem 0.75rem !important;}
       }
       @media screen and (max-width: 385px){
-        #welcome_to_clubmate{margin-left: 1.375rem !important;}
+        h4{font-size: 2.25rem;}
+        #welcome_to_clubmate{margin-left: 0.625rem !important;}
         .screen-container{margin-top: -2rem !important;}
         .screenshots-mobileview{top: -10.5rem;}
       }
       @media screen and (max-width: 376px){
-        #welcome_to_clubmate{margin-left: 1.125rem !important;}
+        #welcome_to_clubmate{margin-left: 0.375rem !important;}
+        .screen-description2{margin: -2rem 0.75rem 2rem 0.75rem !important;}
+        .mobile123{margin-top: 6.5rem !important;}
       }
       @media screen and (max-width: 361px){
-        #welcome_to_clubmate{margin-left: 0.875rem !important;}
+        h4{font-size: 2.125rem;}
+        #welcome_to_clubmate{margin-left: 0.5rem !important;}
         .screen-container{margin-top: -4rem !important;}
         .screenshots-mobileview{top: -10rem;}
+        .mobile123{margin-top: 7.5rem !important;}
       }
     </style>
 
@@ -194,8 +214,8 @@
   </nav>
     <div id="landing-hero" class="row no-gutters justify-content-center">
       <div class="col-10 col-lg-4 col-md-5 mb-5">
-        <img class="illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628847405/illustrations/Browsing.svg">
-        <div id="welcome_to_clubmate" class="text-left mt-4 mobiletext2">Welcome to clubmate</div>
+        <img class="illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628847405/illustrations/Browsing.svg" style="filter: grayscale(1) brightness(0.9) contrast(1.1) sepia(0.1) !important;">
+        <div id="welcome_to_clubmate" class="text-left mt-4 mobiletext3">Welcome to clubmate</div>
         <h4>The Front Page of Your College</h4>
       </div>
       <div class="col-10 col-lg-4 col-md-5 my-auto">
@@ -211,25 +231,26 @@
       </div>
     </div>
     <div id="landing-bottom">
-      <div class="eggshell">
+      <div class="how_back">
         <div class="text-center mb-3" style="height: 10vh; line-height: 10vh;">How it works</div>
         <div class="text-center px-2">clubmate is one-stop solution for all your college communications</div>
-        <div id="clubmate_uses" class="pb-4 mb-5">
+        <div class="pb-4 mb-5 clubmate_uses">
           <h6>You can use clubmate to:</h6>
           <ul class="darkgrey" style="list-style-type: disc; list-style-position: inside;">
             <li>See the list of 100s of clubs in your college</li>
             <li>Become a member of some, loosely follow others</li>
             <li>Discover all the cool stuff happening in your college RN</li>
             <li>Find what your friends are upto ;)</li>
-            <li>Ask questions / Discuss topics / Seek advice</li>
-            <li>If club member, participate in exclusive content. Talk in its many Chat #ROOMS</li>
+            <li>Ask questions, Discuss topics, Seek advice</li>
+            <li>Talk in its many #ROOMS in Voice / Chats</li>
+            <li>If club member, participate in exclusive content</li>
             <li>Push club updates. Maintain an archive of events & resources to leave a legacy.</li>
           </ul>
         </div>
       </div>
       <div class="row no-gutters justify-content-center">
         <div class="col-12 col-lg-8 col-md-10">
-          <div class="d-flex flex-column mt-5 pt-5 illustrations1and2">
+          <div class="d-flex flex-column mt-5 pt-5 mobile1and2 mobile123">
             <div class="screen-container mt-5 valign">
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>1</span><span class="desktopNone notbold ml-0">.</span></div>
@@ -241,15 +262,18 @@
                 </div>
               </div>
               <div>
-                <img class="illustrations screen-illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628847405/illustrations/Collaboration.svg">
+                <img class="illustrations screen-illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1641157184/illustrations/file_searching.svg">
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590746/illustrations/collegepage_desktop.png"></div>
-              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631661014/illustrations/collegepage_mobile_framed.png"></div>
+              <div><img class="cover screenshots mt-3" src="https://res.cloudinary.com/dubirhea4/image/upload/v1641141308/illustrations/collegepage_desktop.png"></div>
+              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1641141307/illustrations/collegepage_mobile_framed.png"></div>
+            </div>
+            <div class="screen-description2 darkgrey">
+              <span>Clubs can be any student group, even something like Batch 2019,20,21 etc.</span>
             </div>
           </div>
-          <div class="d-flex flex-column mt-5 pt-5 illustrations1and2">
+          <div class="d-flex flex-column mt-5 pt-5 mobile1and2 mobile123">
             <div class="screen-container mt-5 valign">
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>2</span><span class="desktopNone notbold ml-0">.</span></div>
@@ -265,32 +289,44 @@
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590747/illustrations/discover_desktop.png"></div>
+              <div><img class="cover screenshots mt-3" src="https://res.cloudinary.com/dubirhea4/image/upload/v1640349818/illustrations/discover_desktop.png"></div>
               <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631714055/illustrations/discover_mobile_framed.png"></div>
             </div>
+            <div class="screen-description2 darkgrey">
+              <span>Stories can be archived & grouped into albums to maintain a sense of club's history.</span>
+            </div>
           </div>
-          <div class="d-flex flex-column mt-5 pt-5">
+          <div class="d-flex flex-column mt-5 pt-5 mobile123">
             <div class="screen-container mt-5 valign">
               <div class="screen-info-mobile d-flex flex-row">
                 <div class="screen-number d-inline-flex"><span>3</span><span class="desktopNone notbold ml-0">.</span></div>
                 <div class="flex-column">
-                  <div class="screen-heading half_height ml-4">Chat #rooms</div>
+                  <div class="screen-heading half_height ml-4">#Rooms</div>
                   <div class="screen-description half_height lightgrey ml-4">
                     <span>Simpler than Discord. More powerful than Whatsapp.</span>
                   </div>
                 </div>
               </div>
               <div>
-                <img class="illustrations screen-illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1628847407/illustrations/Group_chat.svg">
+                <img class="illustrations screen-illustrations" src="https://res.cloudinary.com/dubirhea4/image/upload/v1640375530/illustrations/Group_chat.svg">
               </div>
             </div>
             <div class="screenshots-container-mobile">
-              <div><img class="cover screenshots mt-3 rounded" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631590745/illustrations/chats_desktop.png"></div>
-              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1631661010/illustrations/chats_mobile_framed.png"></div>
+              <div><img class="cover screenshots mt-3" src="https://res.cloudinary.com/dubirhea4/image/upload/v1641141313/illustrations/chats_desktop.png"></div>
+              <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1641141307/illustrations/chats_mobile_framed.png"></div>
+            </div>
+            <div class="screen-description2 darkgrey">
+              <span class="nodisplay">👋</span>
+              <span>Drop-by in <span class="whitesmokeback rounded p-1"><i class="fas fa-microphone-alt"></i> Rooms</span> for ephemeral real-time voice conversations.</span>
             </div>
           </div>
         </div>
       </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
       <br>
       <br>
       <br>
@@ -299,7 +335,7 @@
           <span>pre ALPHA release | <a class="boldtext" href="/about">Know more</a></span>
           <span><img id="knowmore_arrow" style="width: 25px; height: 25px;" title="Designed by [Freepik] from @flaticon" src="https://res.cloudinary.com/dubirhea4/image/upload/v1573725971/icons/reply.png"></span>
         </div>
-        <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2021</div>
+        <div class="text-xs lightgrey mx-auto">clubmate &#9400; 2022</div>
       </div>
     </div>
 

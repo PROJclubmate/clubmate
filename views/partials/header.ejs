@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<%= csrfToken %>">
-    <title>clubmate | The Front Page of your College</title>
+    <title>clubmate - The Front Page of Your College</title>
     <link rel="stylesheet" href="/css/libs/bootstrap.min.css">
     <link rel="stylesheet" href="/css/libs/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
@@ -45,7 +45,7 @@
       <button id="menu-toggle" onclick="hidesidebar(0);" class="mobileNoneFlex" type="button"><i class="fas fa-bars"></i></button>
       <div>
         <span id="brandname">
-          <a href="/" class="navbar-brand navname mobileNone">
+          <a href="#" class="navbar-brand navname mobileNone" style="cursor: default;">
             <em>clubmate</em>
           </a>
           <% if(locals.college_page){ %>
@@ -104,7 +104,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto" style="margin-left: -0.25rem;">
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
-            <a href="/home" class="nav-link burgernav">Home</a>
+            <a href="/" class="nav-link burgernav">Home</a>
           </li>
           <!--Search bar-->
           <li class="nav-item">
@@ -281,7 +281,7 @@
     <!-- The sidebar -->
     <div class="sidebar-back"></div>
     <div id="sidebar" class="sidebar scroll moz-scroll">
-      <a class="hr2" id="side-home" href="/home">
+      <a class="hr2" id="side-home" href="/">
         <div class="d-flex justify-content-start">
           <div><i class="fas fa-home sidebar-icon px-1"></i></div>
           <div class="sidebar-label my-auto">Home</div>
@@ -317,10 +317,10 @@
         <% } %>
       </div>
     <% } %>
-      <a class="hr2" id="side-friends" href="/friends_posts">
+      <a class="hr2" id="side-lobby" href="/lobby">
         <div class="d-flex justify-content-start">
-          <div><i class="fas fa-chalkboard-teacher sidebar-icon px-1"></i></div>
-          <div class="sidebar-label my-auto">Friends'</div>
+          <div><i class="fas fa-microphone-alt sidebar-icon px-1" style="font-size: 1.5rem"></i></div>
+          <div class="sidebar-label my-auto">Rooms</div>
         </div>
       </a>
       <a class="hr2" id="side-discover" href="/discover">
