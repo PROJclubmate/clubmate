@@ -201,24 +201,33 @@ app.use(async function(req, res, next){
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
         const clubStories = [];
         let lastUpdated = 0 , currentItem = 0 , allSeen = true;
+        var toBeDeleted = []
         for(var j = 0; j < foundClub.stories.length; j++){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
-          // TODO add check if the user has already seen it or not, and give that also in the result
           if(foundStory) {
-            if((Date.now() - foundStory.createdAt)/86400000 >= 7){
-              foundClub.stories.pull({ _id: foundStory._id })
+            if((Date.now() - foundStory.createdAt)/1000 >= 60){
+              toBeDeleted.push(foundStory._id)
               continue;
             }
             var curStorySeen = false;
             if(foundStory.seenByUserIds.includes(req.user._id)) curStorySeen = true;
             allSeen = (allSeen && curStorySeen);
             if(curStorySeen) currentItem++;
-
+            // console.log("here")
             clubStories.push(foundStory);
 
             if(foundStory.timestamp)
               lastUpdated = Math.max(lastUpdated , foundStory.timestamp);
           }
+        }
+
+        for(var j = 0; j < toBeDeleted.length; j++){
+          Club.updateOne({ _id: foundClub._id }, {
+            $pullAll: {
+              stories: [toBeDeleted[j]],
+            },
+          }, function (err, docs) {
+          });
         }
         if(clubStories.length){
           // console.log(foundClub.name , lastUpdated);
