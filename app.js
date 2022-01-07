@@ -205,7 +205,7 @@ app.use(async function(req, res, next){
         for(var j = 0; j < foundClub.stories.length; j++){
           let foundStory = await Story.findById(foundClub.stories[j]).exec();
           if(foundStory) {
-            if((Date.now() - foundStory.createdAt)/1000 >= 60){
+            if((Date.now() - foundStory.createdAt)/86400000 >= 7){
               toBeDeleted.push(foundStory._id)
               continue;
             }
