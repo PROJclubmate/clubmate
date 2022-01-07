@@ -113,7 +113,7 @@ module.exports = {
     });
   },
 
-  storiesPublish(req, res, next) {
+  async storiesPublish(req, res, next) {
 
     // The object is of this form {
     //   eventDate: '',
