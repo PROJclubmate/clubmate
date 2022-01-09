@@ -14,6 +14,8 @@ const express    = require('express'),
   methodOverride = require('method-override'),
   dotenv         = require('dotenv').config(),
   User           = require('./models/user'),
+  Club           = require('./models/club'),
+  Story          = require('./models/story');
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
   logger         = require('./logger'),
@@ -193,6 +195,63 @@ app.use(async function(req, res, next){
       .populate({path: 'clubInvites',select: 'name avatar avatarId banner'})
       .populate({path: 'friendRequests',select: 'fullName profilePic profilePicId userKeys note'})
       .exec();
+
+      // Give stories array group by clubs
+      var stories = [];
+      for(var i = 0; i < foundUser.userClubs.length; i++){
+        let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+        const clubStories = [];
+        let lastUpdated = 0 , currentItem = 0 , allSeen = true;
+        var toBeDeleted = []
+        for(var j = 0; j < foundClub.stories.length; j++){
+          let foundStory = await Story.findById(foundClub.stories[j]).exec();
+          if(foundStory) {
+            if((Date.now() - foundStory.createdAt)/86400000 >= 7){
+              toBeDeleted.push(foundStory._id)
+              continue;
+            }
+            var curStorySeen = false;
+            if(foundStory.seenByUserIds.includes(req.user._id)) curStorySeen = true;
+            allSeen = (allSeen && curStorySeen);
+            if(curStorySeen) currentItem++;
+            // console.log("here")
+            clubStories.push(foundStory);
+
+            if(foundStory.timestamp)
+              lastUpdated = Math.max(lastUpdated , foundStory.timestamp);
+          }
+        }
+
+        for(var j = 0; j < toBeDeleted.length; j++){
+          Club.updateOne({ _id: foundClub._id }, {
+            $pullAll: {
+              stories: [toBeDeleted[j]],
+            },
+          }, function (err, docs) {
+          });
+        }
+        if(clubStories.length){
+          // console.log(foundClub.name , lastUpdated);
+
+          if (currentItem >= clubStories.length)
+            currentItem = 0;      // All stories are seen, so start from 0
+
+          stories.push(
+            {
+              id: foundClub._id,
+              name: foundClub.name,
+              photo: foundClub.avatar,
+              lastUpdated: lastUpdated,
+              storiesCount: foundClub.stories.length,
+              currentItem: currentItem, // To be updated based on the user seen thing
+              seen: allSeen,
+              clubStories: clubStories
+            });
+        }
+      }
+
+      res.locals.stories = stories;
+
       res.locals.userClubs = foundUser.userClubs.sort(function(a, b){
         if(a.clubName < b.clubName) { return -1; }
         if(a.clubName > b.clubName) { return 1; }

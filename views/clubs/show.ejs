@@ -1,5 +1,7 @@
 <% include ../partials/header %>
-
+<link rel="stylesheet" href="/zuck.js-master/dist/zuck.min.css">
+<link rel="stylesheet" href="/zuck.js-master/dist/skins/facesnap.min.css">
+<link rel="stylesheet" href="/css/stories.css">
 
 <div class="row no-gutters content-toppad">
   <% if(currentUser && !(0 <= rank && rank <= 4)){ %>
@@ -463,21 +465,24 @@
               </div>
               <!-- Stories Tab -->
               <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab">
-                <% if(currentUser && 0 <= rank && rank <=2){ %>
-                  <div class="d-flex story-alt-container scroll moz-scroll p-3">
-                    <div class="d-flex flex-column mr-3">
-                      <a href="/clubs/<%= club._id %>/story/create/edit" class="nounderline">
-                        <div id="new_story" class="story-alt text-center">
-                          <div class="story-alt-plus">+</div>
-                        </div>
-                        <div id="new_story_label" class="story-alt-label lightgrey text-sm mobiletext3 pb-2">New update</div>
-                      </a>
-                    </div>
+                <div class="d-flex story-alt-container scroll moz-scroll p-3">
+                  <% if(currentUser && 0 <= rank && rank <=2){ %>
+                  <div class="d-flex flex-column mr-3">
+                    <a id="new_story_wrapper" href="/clubs/<%= club._id %>/story/create/edit" class="nounderline">
+                      <div id="new_story" class="story-alt text-center">
+                        <div class="story-alt-plus">+</div>
+                      </div>
+                      <!-- <div id="new_story_label" class="story-alt-label lightgrey text-sm mobiletext3 pb-2">New update</div> -->
+                    </a>
                   </div>
-                <% } %>
+                  <% } %>
+                  <div id="club_current_stories" class="storiesWrapper"></div>
+                </div>
                 <% //if(currentUser && 0 <= rank && rank <=4){ %>
                   <div class="p-3 mt-2">
                     <em class="lightgrey2 boldtext text-sm"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
+                    <!-- Will be added by javascript API -->
+                    <div id="club_archives_stories" class="storiesWrapper"></div>
                   </div>
                 <% //} %>
               </div>
@@ -596,9 +601,38 @@
   <% } %>
 </div>
 
+<script>
+  <% if(currentUser){ %>
+    const guserRank = <%= rank %>;
+  <% } else { %>
+    const guserRank = 4;
+  <% } %>
+
+</script>
+
+<script src="/zuck.js-master/dist/zuck.js"></script>
+<script src="/js/club-stories.js"></script>
 <script type='text/javascript'>
   var club = <%- JSON.stringify(club) %>;
+  var csrfToken = "<%= csrfToken %>";
+
+  fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
+    createCurrentStories('club_current_stories', storiesData, club, csrfToken = csrfToken, userRank = guserRank);
+  }).catch(function(err) {
+    ok = true;
+    console.log("Fetching stories failed", err);
+  });
+
+  fetch('/clubs/' + club._id + '/archives').then(res => res.json()).then(function(archives) {
+    createArchives('club_archives_stories', archives, club, csrfToken, userRank = guserRank);
+  }).catch(function(err) {
+    ok = true;
+    console.log("Fetching archives failed", err);
+  });
+
+
 </script>
+
 <% include ../partials/footer %>
 
 <%

@@ -121,4 +121,12 @@
 
 <% include ../partials/footer %>
 <script src="/zuck.js-master/dist/zuck.js"></script>
-<script src="/js/stories-viewer.js"></script>
+<script src="/js/discover-stories.js"></script>
+
+<script>
+  const storiesData = <%- JSON.stringify(stories) %>;
+  const csrfToken = "<%= csrfToken %>";
+  var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from stories-viewer.js
+</script>
+
+

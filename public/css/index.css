@@ -3053,12 +3053,16 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   width: 65px;
   cursor: pointer;
 }
+#new_story_wrapper {
+  margin: 4px auto;
+}
 #new_story{
   background-color: #e0e0e0;
   border-width: 1px;
-  width: 100px !important;
-  height: 100px !important;
+  width: 86px !important;
+  height: 86px !important;
   border-radius: 0.5rem !important;
+  margin: auto;
 }
 #new_story_label{
   width: 100px !important;

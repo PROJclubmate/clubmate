@@ -986,3 +986,6 @@ input[type=checkbox]:checked + .slider{
 .info > .name{
   color: var(--color-white-300);
 }
+#club_current_stories .item-preview {
+  background: var(--color-dark-800) !important;
+}

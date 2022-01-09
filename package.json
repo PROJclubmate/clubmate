@@ -43,5 +43,8 @@
     "tempusdominus-bootstrap-4": "^5.1.2",
     "web-push": "^3.4.3",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "kill-port": "^1.6.1"
   }
 }

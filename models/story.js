@@ -6,9 +6,11 @@ const storySchema = new Schema({
   length: {type: Number, default: 3},
   image: String,
   imageId: String,
+  aspectRatio: String,
   preview: String,
   link: String,
   linkText: String,
+  timestamp: Number,
   seenByUserIds: [{
     type: Schema.Types.ObjectId,
     ref: "User"
@@ -30,7 +32,8 @@ const storySchema = new Schema({
   isClubExclusive: {type: Boolean, default: true},
   // If true, story & its media will not be deleted after 24 hours
   isSaved: {type: Boolean, default: false},
-  createdAt: {type: Date, default: Date.now}
+  createdAt: {type: Date, default: Date.now},
+  album: String,
 });
 
 storySchema.index({storyClub: 1});

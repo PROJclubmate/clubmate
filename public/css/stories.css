@@ -66,6 +66,52 @@ span.info{
   height: 86px;
   width: 86px;
 }
+
+/* For club show page */
+#club_current_stories .item-preview {
+  border-radius: 0.5rem !important;
+  padding: 0;
+  background: white !important;
+}
+
+#club_current_stories .item-preview img {
+  border-radius: 0.5rem !important;
+  border: none;
+}
+
+#club_archives_stories .story {
+  max-width: 120px;
+  width: 120px;
+}
+
+#club_archives_stories .item-preview {
+  border-radius: 0.5rem !important;
+  padding: 0;
+  background: white !important;
+  height: 120px;
+  width: 120px;
+  max-height: 120px;
+}
+
+#club_archives_stories .item-preview img {
+  border-radius: 0.5rem !important;
+  border: none;
+}
+
+.story-viewer .foot {
+  position: absolute;
+  color: white;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}
+
+.story-viewer .view_counter {
+  margin: auto;
+  padding: 4px;
+}
+
 @media screen and (min-width: 768px){
   .stories.carousel .story:first-child {
     margin-left: 0 !important;
@@ -85,6 +131,10 @@ span.info{
     height: 82px;
     width: 82px;
   }
+  #new_story {
+    height: 82px !important;
+    width: 82px !important;
+  }
 }
 @media screen and (max-width: 385px){
   span.info{
@@ -96,6 +146,10 @@ span.info{
   .stories.carousel .story > .item-link > .item-preview{
     height: 78px;
     width: 78px;
+  }
+  #new_story {
+    height: 78px !important;
+    width: 78px !important;
   }
 }
 @media screen and (max-width: 361px){
@@ -109,4 +163,11 @@ span.info{
     height: 74px;
     width: 74px;
   }
+  #new_story {
+    height: 74px !important;
+    width: 74px !important;
+  }
+}
+.delete-story {
+  cursor: pointer;
 }

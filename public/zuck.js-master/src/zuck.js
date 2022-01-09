@@ -1344,6 +1344,8 @@ module.exports = (window => {
     };
 
     zuck.navigateItem = zuck.nextItem = (direction, event) => {
+      console.log("ZUCK", direction, event);
+
       const currentStory = zuck.internalData.currentStory;
       const currentItem = zuck.data[currentStory].currentItem;
       const storyViewer = query(`#zuck-modal .story-viewer[data-story-id="${currentStory}"]`);
