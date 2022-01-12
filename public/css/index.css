@@ -3064,9 +3064,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   border-radius: 0.5rem !important;
   margin: auto;
 }
-#new_story_label{
-  width: 100px !important;
-}
 #new_story:hover + #new_story_label {
   color: #343a40 !important;
 }
