@@ -67,7 +67,7 @@ module.exports = {
 
   indexSearch(req, res, next){
     const query = req.query.search;
-    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}}, 
+    User.find({$text: {$search: query}, isVerified: true}, 
       {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1}).limit(3)
     .exec(function(err, foundUsers){
@@ -152,7 +152,7 @@ module.exports = {
 
   indexSearchPeople(req, res, next){
     const query = req.query.user;
-    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}}, 
+    User.find({$text: {$search: query}, isVerified: true}, 
       {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
@@ -188,7 +188,7 @@ module.exports = {
     } else{
       var seenIds = [];
     }
-    User.find({$text: {$search: query}, isVerified: true, profilePic: {$ne: null}, _id: {$nin: seenIds}}, 
+    User.find({$text: {$search: query}, isVerified: true, _id: {$nin: seenIds}}, 
       {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
     .select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1}).limit(10)
     .exec(function(err, foundUsers){
