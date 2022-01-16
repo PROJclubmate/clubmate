@@ -353,7 +353,7 @@ div.content{
   .subpostdp{height: 28px !important; width: 28px !important;}
   .subPost-text{min-height: 2rem !important;}
   #drop-chat{padding-top: 0.375rem !important; padding-bottom: 0.375rem !important;}
-  .chatlist-background{min-height: 100%; background-image: url(/images/chat.svg); background-size: 35%;
+  .chatlist-background{min-height: 100%; background-image: url(/images/chat-light.svg); background-size: 35%;
     background-repeat: no-repeat; background-position: bottom;}
   .room-container{padding: 2rem 1rem 2rem 1rem !important;}
   .chats_chevronimg.flipped{margin: 0 2.125rem !important;}

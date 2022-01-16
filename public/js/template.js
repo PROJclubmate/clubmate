@@ -2546,7 +2546,7 @@ function allTimeTopTopicPosts_template(response){
     <div class="valign">
       <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
         <span class="truncate2 mobiletext1 lineheight-lesser my-1">
-          <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
+          <span class="badge">[<%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i>]</span>
           <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
@@ -2555,7 +2555,7 @@ function allTimeTopTopicPosts_template(response){
         </div>
         <div>
           <span class="truncate2 mobiletext1 lineheight-lesser my-1">
-            <span class="badge">[<%= topTopicPosts[i].subpostsCount %>]</span>
+            <span class="badge">[<%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i>]</span>
             <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
           </span>
         </div>
