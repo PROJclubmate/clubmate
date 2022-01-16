@@ -2253,6 +2253,7 @@ function post_subPosts_template(response){
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
             </span>
             <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
+            <span class="vr2"></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
             </span>
@@ -2261,6 +2262,7 @@ function post_subPosts_template(response){
             <span> 
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
             </span>
+            <span class="vr2"></span>
             <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].likeCount %></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
@@ -2271,6 +2273,7 @@ function post_subPosts_template(response){
               <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
             </span>
             <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
+            <span class="vr2"></span>
             <span>
               <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
             </span>
@@ -2282,6 +2285,7 @@ function post_subPosts_template(response){
         <span class="mr-2"> 
           <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2"></i></button>
         </span>
+        <span class="vr2"></span>
         <span class="ml-2">
           <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2"></i></button>
         </span>

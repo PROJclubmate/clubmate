@@ -995,7 +995,7 @@ module.exports = {
           if(foundPost.subpostBuckets != ''){
             var len = index = foundPost.subpostBuckets.length;
             Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
-            .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId'})
+            .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
             .exec(function(err, foundBucket){
             if(err || !foundBucket){
               logger.error(req.user._id+' : (posts-31)foundBucket err => '+err);
@@ -1027,7 +1027,7 @@ module.exports = {
                 }
                 res.render("posts/show", {hasVote, hasModVote, post: foundPost, subVotes, rank, bucket: foundBucket,
                 index, clubId: req.params.club_id, CU_50_profilePic, PC_50_clubAvatar, sPA_50_profilePic,
-                quoteText, quoteNum, quote, cdn_prefix});
+                topTopicPosts: '', clubPage: false, quoteText, quoteNum, quote, cdn_prefix});
                 return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
               });
