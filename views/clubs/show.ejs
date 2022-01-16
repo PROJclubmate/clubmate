@@ -314,17 +314,9 @@
                   <div class="card noborder">
                     <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
-                      <% if(rank >= 0 && rank <=3){ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
-                      <% } else{ %>
-                        <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question" required>
-                      <% } %>
+                      <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
                       <label for="description" class="sr-only">Description</label>
-                      <% if(rank >= 0 && rank <=3){ %>
-                        <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="4" required></textarea>
-                      <% } else{ %>
-                        <textarea id="description" class="emoji-input form-control text-sm description description2 junior" type="text" name="description" placeholder="Describe your post" rows="4" readonly></textarea>
-                      <% } %>
+                      <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Describe your post" rows="4" required></textarea>
                       <label for="hyperlink" class="sr-only">Hyperlink</label>
                       <input id="hyperlink" type="text" name="hyperlink" class="form-control text-sm hyperlink" placeholder="Hyperlink">
                       <div class="d-flex flex-row righttext my-auto">
@@ -359,20 +351,10 @@
                           <span>
                             <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
                             <select id="privacy" name="privacy" class="shortened-select select1 blackcolor" data-toggle="tooltip" title="Privacy setting">
-                              <% if(rank >= 0 && rank <=3){ %>
-                                <option id="priv_everyone" value="0" data-descr="Outside College" selected></option>
-                                <option id="priv_college" value="1" data-descr="This College"></option>
-                                <option id="priv_friends" value="2" data-descr="My Friends"></option>
-                              <% } else if(rank == 4){ %>
-                                <option id="priv_everyone" value="0" data-descr="Outside College" disabled></option>
-                                <option id="priv_college" value="1" data-descr="This College" disabled></option>
-                                <option id="priv_friends" value="2" data-descr="My Friends" disabled></option>
-                              <% } %>
-                              <% if(rank == 4){ %>
-                                <option id="priv_club" value="3" data-descr="This Club" selected></option>
-                              <% } else if(rank >= 0 && rank <=3){ %>
-                                <option id="priv_club" value="3" data-descr="This Club"></option>
-                              <% } %>
+                              <option id="priv_everyone" value="0" data-descr="Outside College" selected></option>
+                              <option id="priv_college" value="1" data-descr="This College"></option>
+                              <option id="priv_friends" value="2" data-descr="My Friends"></option>
+                              <option id="priv_club" value="3" data-descr="This Club"></option>
                               <option id="priv_room" value="4" data-descr="#Room" disabled></option>
                               <option id="priv_me" value="5" data-descr="Only Me"></option>
                             </select>

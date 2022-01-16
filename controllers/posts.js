@@ -662,8 +662,8 @@ module.exports = {
 
   postsCreate(req, res, next){
     var rank = currentRank2(req.params.club_id,req.user.userClubs);
-    // Only rank 0-3 can create a simple post
-    if(((req.body.topic != '') && (0<=rank && rank<=4)) || ((req.body.topic == '') && (0<=rank && rank<=3))){
+    // Every club member can create a post (with & without topic)
+    if(0<=rank && rank<=4){
       if(req.file){
         if(req.body.privacy && (((req.body.topic != '') && (1<=req.body.privacy && req.body.privacy<=5)) || 
         ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){

@@ -141,30 +141,16 @@ function hidesidebar(hideValueNum){
 }
 
 $('#input_topic').on('input', function(e){
-  if(!$('#description').hasClass('junior')){
-    if($(this).val() != ''){
-      $('#priv_everyone').removeAttr('selected');
-      $('#priv_everyone').attr('disabled', 'true');
-      $('#priv_college').attr('selected', 'true');
-      $('#description').attr('placeholder', 'Describe your question / discussion');
-    } else{
-      $('#priv_college').removeAttr('selected');
-      $('#priv_everyone').removeAttr('disabled');
-      $('#priv_everyone').attr('selected', 'true');
-      $('#description').attr('placeholder', 'Describe your post');
-    }
+  if($(this).val() != ''){
+    $('#priv_everyone').removeAttr('selected');
+    $('#priv_everyone').attr('disabled', 'true');
+    $('#priv_college').attr('selected', 'true');
+    $('#description').attr('placeholder', 'Describe your question / discussion topic');
   } else{
-    if($(this).val() != ''){
-      $('#description').removeClass('description2');
-      $('#description').removeAttr('readonly', 'true');
-      $('#description').attr('required', 'true');
-      $('#description').attr('placeholder', 'Describe your question');
-    } else{
-      $('#description').addClass('description2');
-      $('#description').attr('readonly', 'true');
-      $('#description').removeAttr('required', 'true');
-      $('#description').attr('placeholder', 'Describe your post');
-    }
+    $('#priv_college').removeAttr('selected');
+    $('#priv_everyone').removeAttr('disabled');
+    $('#priv_everyone').attr('selected', 'true');
+    $('#description').attr('placeholder', 'Describe your post');
   }
 });
 
