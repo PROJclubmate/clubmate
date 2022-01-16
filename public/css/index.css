@@ -2015,7 +2015,7 @@ a .nolink:hover{
 }
 .chatinput{
   margin: 0;
-  border-radius: 1.5rem;
+  border-radius: 1.5rem !important;
 }
 .commentbox{
   margin: 0;

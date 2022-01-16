@@ -123,10 +123,10 @@
 <script src="/zuck.js-master/dist/zuck.js"></script>
 <script src="/js/discover-stories.js"></script>
 
-<script>
-  const storiesData = <%- JSON.stringify(stories) %>;
-  const csrfToken = "<%= csrfToken %>";
-  var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from stories-viewer.js
-</script>
-
-
+<% if(currentUser){ %>
+  <script>
+    const storiesData = <%- JSON.stringify(stories) %>;
+    const csrfToken = "<%= csrfToken %>";
+    var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from stories-viewer.js
+  </script>
+<% } %>

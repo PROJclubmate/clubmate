@@ -117,7 +117,7 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>">IIT Mandi</a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= user.userKeys.college %>"><%= user.userKeys.college %></a></div></div>
               <div class="info1">Batch: <div class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?batch=<%= user.userKeys.batch %>"><%= user.userKeys.batch %></a></div></div>
               <div class="info1">Branch: <div class="info30"><a href="/all_students/colleges/<%= user.userKeys.college %>?branch=<%= user.userKeys.branch %>"><%= user.userKeys.branch %></a></div></div>
             </div>
@@ -132,12 +132,12 @@
                 <label for="college" class="sr-only text-xs lightgrey"><span class="redcolor">* </span> Unique college key</label>
                 <% if(!user.userKeys.college){ %>
                   <input list="college" class="form-control form-control-sm select_dark" name="userKeys[college]" 
-                  pattern="JIIT Noida Sector 62" value="" placeholder="Your College">
+                  pattern="IIT Mandi" value="" placeholder="Your College">
                 <% } else{ %>
-                  <input list="college" class="form-control form-control-sm select_dark" name="userKeys[college]" pattern="JIIT Noida Sector 62" value="<%= user.userKeys.college %>" placeholder="Your College">
+                  <input list="college" class="form-control form-control-sm select_dark" name="userKeys[college]" pattern="IIT Mandi" value="<%= user.userKeys.college %>" placeholder="Your College">
                 <% } %>
                 <datalist id="college">
-                  <option value="JIIT Noida Sector 62">
+                  <option value="IIT Mandi">
                 </datalist>
                 <label for="batch" class="sr-only">Batch</label>
                 <% if(!user.userKeys.batch){ %>

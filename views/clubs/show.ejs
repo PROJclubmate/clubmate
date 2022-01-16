@@ -224,7 +224,7 @@
             </div>
             <hr class="hr-light mobileNone">
             <div class="d-flex flex-column text-sm">
-              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>">IIT Mandi</a></div></div>
+              <div class="info1">College: <div class="info30 boldtext"><a href="/colleges/<%= club.clubKeys.college %>"><%= club.clubKeys.college %></a></div></div>
               <div class="info1">Category: <div class="info30"><a href="/find_clubs/filter_search?clubs=&category=<%= club.clubKeys.category %>&college="><%= club.clubKeys.category %></a></div></div>
             </div>
           </div>
@@ -239,12 +239,12 @@
                 <br>
                 <% if(!club.clubKeys.college){ %>
                   <input list="college" class="form-control form-control-sm select_dark" name="clubKeys[college]" 
-                  pattern="JIIT Noida Sector 62" value="" placeholder="Your College">
+                  pattern="IIT Mandi" value="" placeholder="Your College">
                 <% } else{ %>
-                  <input list="college" class="form-control form-control-sm select_dark" name="clubKeys[college]" pattern="JIIT Noida Sector 62" value="<%= club.clubKeys.college %>" placeholder="Your College">
+                  <input list="college" class="form-control form-control-sm select_dark" name="clubKeys[college]" pattern="IIT Mandi" value="<%= club.clubKeys.college %>" placeholder="Your College">
                 <% } %>
                 <datalist id="college">
-                  <option value="JIIT Noida Sector 62">
+                  <option value="IIT Mandi">
                 </datalist>
                 <label for="category" class="sr-only" title="Category">Category</label>
                 <% if(!club.clubKeys.category){ %>

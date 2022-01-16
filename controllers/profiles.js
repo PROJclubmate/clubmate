@@ -645,15 +645,6 @@ module.exports = {
             return res.redirect('back');
           }
         }
-        // if(req.body.delUpdate){
-        //   if(foundUser.clubUpdates.length != 0){
-        //     for(i=foundUser.clubUpdates.length-1;i>=0;i--){
-        //       if(foundUser.clubUpdates[i]._id.equals(req.body.delUpdate)){
-        //         foundUser.clubUpdates.splice(i,1);
-        //       }
-        //     }
-        //   };
-        // }
         if(req.body.note && foundUser.note != req.body.note){
           foundUser.note = req.body.note;
         }
