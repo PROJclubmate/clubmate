@@ -1225,13 +1225,8 @@ module.exports = {
         }
         currentUserId = req.user._id;
         var keyValue = 0;
-        if(req.user.collegePageKeys){
-          for(var i=0;i<req.user.collegePageKeys.length;i++){
-            if(req.user.collegePageKeys[i].id.equals(foundCollegePage._id)){
-              keyValue = req.user.collegePageKeys[i].key;
-              break;
-            }
-          }
+        if(req.user.collegePagesView){
+          keyValue = req.user.collegePagesView;
         }
         if(keyValue == 1){
           User.countDocuments({_id: {$in: foundCollegePage.allUserIds}, 
@@ -1450,40 +1445,15 @@ module.exports = {
         } else{
           var toggleCollegePageViewKey = 1;
         }
-        var collegePageKeyId = mongoose.Types.ObjectId(req.params.college_id);
-        var keyExists = false;
-        if(req.user.collegePageKeys){
-          for(var i=0;i<req.user.collegePageKeys.length;i++){
-            if(req.user.collegePageKeys[i].id.equals(collegePageKeyId)){
-              keyExists = true;
-              break;
-            }
-          }
-        }
-        if(keyExists){
-          User.updateOne({_id: req.user._id, collegePageKeys: {$elemMatch: {id: collegePageKeyId}}},
-          {$set: {'collegePageKeys.$.key': toggleCollegePageViewKey}}, function(err, updateUser){
-          if(err || !updateUser){
+        User.updateOne({_id: req.user._id},
+        {$set: {'collegePagesView': toggleCollegePageViewKey}}, function(err, updateUser){
+        if(err || !updateUser){
           logger.error(req.user._id+' : (index-60)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
-          } else{
-            return res.redirect('back');
-          }
-          });
         } else{
-          var obj = {};
-          obj['id'] = collegePageKeyId;
-          obj['key'] = toggleCollegePageViewKey;
-          User.updateOne({_id: req.user._id},
-          {$push: {collegePageKeys: obj}}, function(err, updateUser){
-          if(err || !updateUser){
-          logger.error(req.user._id+' : (index-61)updateUser err => '+err);
-          req.flash('error', 'Something went wrong :(');
-          } else{
-            return res.redirect('back');
-          }
-          });
+          return res.redirect('back');
         }
+        });
       }
     }
   },
@@ -1495,7 +1465,7 @@ module.exports = {
         {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, 
         $inc: {followerCount: 1}}, function(err, updateClub){
         if(err || !updateClub){
-          logger.error(req.user._id+' : (index-62)updateClub err => '+err);
+          logger.error(req.user._id+' : (index-61)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
@@ -1503,7 +1473,7 @@ module.exports = {
           {$addToSet: {followingClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
           $inc: {followingClubCount: 1}}, function(err, updateUser){
           if(err || !updateUser){
-          logger.error(req.params.user_id+' : (index-63)updateUser err => '+err);
+          logger.error(req.params.user_id+' : (index-62)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');
@@ -1515,14 +1485,14 @@ module.exports = {
         Club.updateOne({_id: req.params.club_id, isActive: true}, 
         {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClub){
         if(err || !updateClub){
-          logger.error(req.user._id+' : (index-64)updateClub err => '+err);
+          logger.error(req.user._id+' : (index-63)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
           User.updateOne({_id: req.params.user_id}, 
           {$pull: {followingClubIds: req.params.club_id}, $inc: {followingClubCount: -1}}, function(err, updateUser){
           if(err || !updateUser){
-          logger.error(req.user._id+' : (index-65)updateUser err => '+err);
+          logger.error(req.user._id+' : (index-64)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           } else{
             return res.redirect('back');

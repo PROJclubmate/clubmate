@@ -37,24 +37,17 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  collegePageKeys: [{
-    id: {
-      type: Schema.Types.ObjectId,
-      ref: 'CollegePage'
-    },
-    key: {
-      type: Number,
-      default: 2,
-      min: 1,
-      max: 2,
-      required: '1-Shows num of rooms in clubs & their banners, 2-Shows Following which clubs & my friends in that club',
-      validate: {
-        validator: Number.isInteger,
-        message: '{VALUE} is not an integer value.'
-      }
-    },
-    _id: false
-  }],
+  collegePagesView: {
+    type: Number,
+    default: 2,
+    min: 1,
+    max: 2,
+    required: '1-Shows num of rooms in clubs & their banners, 2-Shows Following which clubs & my friends in that club',
+    validate: {
+      validator: Number.isInteger,
+      message: '{VALUE} is not an integer value.'
+    }
+  },
   followingClubCount: {type: Number, default: 0},
   followingClubIds: [{
     type: Schema.Types.ObjectId,
