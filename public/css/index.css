@@ -135,7 +135,6 @@ div.content{
   h5.topic-h5{font-size: 1.25rem !important;}
   .description-short-show{font-size: 1.25rem !important;}
   .chatdp{margin-left: 0.125rem !important; margin-right: 0.125rem !important;}
-  .discoverlink{top: 0 !important; left: 45% !important;}
   #collegeText{padding: 0 0 0 0.25rem !important;}
   #collegeicon{margin-left: -0.9375rem !important; margin-right: 0.8125rem !important;}
   img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
@@ -341,7 +340,6 @@ div.content{
   #carouselControls.hascover{margin-top: -50px !important;}
   .nofill-color{color: #262626 !important;}
   .carousel-indicators{top: 54px !important;}
-  .discoverlink{top: 0.125rem !important; left: 45% !important;}
   .text-shadow-white{text-shadow: 0.25px 0.25px white, -0.25px 0.25px white, 
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
@@ -416,9 +414,7 @@ div.content{
   .check-label .face{top: 0.125rem !important;}
   #edit-account-info{padding: 0 0.5rem !important;}
   .discover-overlay a{padding: 0.875rem 0.75rem !important; font-size: 1rem !important;}
-  .discover-overlay .discovertop{font-size: 1rem !important;}
-  .discover-overlay .discovertop-left{font-size: 0.75rem !important; padding: 0.75rem !important;}
-  .discoverlink{left: 42% !important;}
+  .discoverfooter{font-size: 1rem !important;}
   .fa-thumbs-up.discover-vote, .fa-heart.discover-vote{font-size: 2.125rem !important;}
   .fa-caret-up.discover-vote, .fa-caret-down.discover-vote{font-size: 3.375rem !important; -webkit-text-stroke: 2.5px white !important;}
   .on > .fas.fa-caret-up.discover-vote, .on > .fas.fa-caret-down.discover-vote{font-size: 3.875rem !important;}
@@ -447,7 +443,7 @@ div.content{
   .overlay3.overlay3-grad{top: 58px !important;}
   #carouselControls.hascover{margin-top: -58px !important;}
   .arrowshowpost{font-size: 0.875rem !important;}
-  .discovertop:hover{color: whitesmoke !important;}
+  .discoverfooter:hover{color: whitesmoke !important;}
   .topic-head{min-height: 3.5rem !important;}
   .circle-plus .circle{margin-left: 0.1875rem !important;}
   .posts_view_toggle-pad{padding-left: 1rem !important;}
@@ -601,7 +597,6 @@ div.content{
   .gradient-wrap.rcov.nofill{margin-top: 50px !important;}
   .overlay3.overlay3-grad{top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
-  .discover-overlay .discovertop-left{padding: 0.6875rem 0.5625rem !important; }
   .circle-plus .circle{margin-left: 0.0625rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .check-label{transform: scale(1);}
@@ -1002,7 +997,7 @@ input{
 }
 .card.discovercard{
   min-height: 20rem;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   border: 0.5px solid #cccccc;
   margin: 0 0.25rem 0.5rem 0.25rem;
   width: calc(50% - 0.5rem);
@@ -3064,9 +3059,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   border-radius: 0.5rem !important;
   margin: auto;
 }
-#new_story_label{
-  width: 100px !important;
-}
 #new_story:hover + #new_story_label {
   color: #343a40 !important;
 }
@@ -3493,12 +3485,12 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   left: 0;
   top: 0;
   background-color: rgba(0,0,0,0.75);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(5px);
   overflow: hidden;
   display: none;
   margin: 0 0.25rem 0.5rem 0.25rem;
   cursor: pointer;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
 }
 .overlay-content{
   position: relative;
@@ -3515,24 +3507,27 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   display: block;
   transition: ease-out 0.15s;
 }
+.discover-overlay-text{
+  color: #818181;
+}
 .discover-overlay a:hover, .discover-overlay a:focus{
   color: whitesmoke;
 }
-.discover-overlay .discovertop{
+.discoverheader{
   position: absolute;
-  top: 0;
+  width: 100%;
+  padding: 1rem 1rem 0 1rem;
+}
+.discoverfooter{
+  position: absolute;
+  bottom: 0;
   right: 0;
   font-size: 1rem;
   z-index: 3;
 }
-.discover-overlay .discovertop-left{
-  position: absolute;
-  top: 0.25rem;
-  font-size: 1rem;
-  z-index: 3;
-  left: 0.25rem;
-  color: #818181;
-  padding: 0.875rem 0.5rem;
+.discoverfooter.discoverfooter-left{
+  right: unset;
+  left: 0;
 }
 .overlay-content-modvote{
   margin: 0 35%;
