@@ -101,11 +101,11 @@
                   </span>
                   <span id="like-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.likeCount %></span>
                 <% } %>
-              <% }else{ %>
+              <% } else{ %>
                 <span class="d-flex mr-1"> 
-                  <button id="like-btn<%= post._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                  <button id="like-btn<%= post._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
                 </span>
-                <span id="like-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.likeCount %></span>
+                <span id="like-count<%= post._id %>" class="boldtext lightgrey m-0 p-0 text-sm"><%= post.likeCount %></span>
               <% }%>
             </div>
 
@@ -118,9 +118,9 @@
                   <span id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.heartCount %></span>
                   <span><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                   <% } %>
-              <% }else{ %>
-                <span id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.heartCount %></span>
-                <span><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <% } else{ %>
+                <span id="heart-count<%= post._id %>" class="boldtext lightgrey m-0 p-0 text-sm"><%= post.heartCount %></span>
+                <span><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
               <% } %>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -239,18 +239,24 @@
               <div style="margin-top: -1rem; margin-bottom: -0.5rem;">
                 <div class="mx-2 mb-auto d-flex flex-column">
                   <form class="d-flex flex-column post-modvote-form" action="/posts/<%= post._id %>/modvote" method="POST">
-                    <% if(hasModVote == 1){ %>
-                      <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                      <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= post.upVoteCount - post.downVoteCount %></span>
-                      <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
-                    <% } else if(hasModVote == -1){ %>
-                      <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                      <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= post.upVoteCount - post.downVoteCount %></span>
-                      <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
-                    <% } else if(hasModVote == 0){ %>
-                      <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                      <span id="modVote-count<%= post._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
-                      <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                    <% if(currentUser){ %>
+                      <% if(hasModVote == 1){ %>
+                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= post.upVoteCount - post.downVoteCount %></span>
+                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                      <% } else if(hasModVote == -1){ %>
+                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= post.upVoteCount - post.downVoteCount %></span>
+                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                      <% } else if(hasModVote == 0){ %>
+                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
+                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
+                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
+                      <% } %>
+                    <% } else{ %>
+                      <button id="upVote-btn<%= post._id %>" class="modvote" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up offline"></i></button>
+                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext lightgrey m-0 p-0 text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
+                        <button id="downVote-btn<%= post._id %>" class="modvote" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down offline"></i></button>
                     <% } %>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
@@ -268,7 +274,7 @@
                     <% } %>
                       <div class="invisible" id="modVisibility<%= post._id %>"></div>
                   <% } else{ %>
-                    <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
+                    <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></div>
                   <% } %>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -280,7 +286,7 @@
     </div>
     <div id="post_edit_history">
       <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
-      <div class="card-body py-1 mt-2 rounded greyback2">
+      <div class="px-2 py-1 mt-2 rounded greyback2">
         <div class="text-xs text-right" style="color: #ffe152;"><em><%= moment(edits[i].createdAt).format('lll'); %></em></div>
         <div class="linewrap text-sm pr-2"><%= edits[i].desc %></div>
       </div>
@@ -314,17 +320,10 @@
             <span>
               <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
               <select id="privacy" name="privacy" class="shortened-select select1 blackcolor">
-                <% if(post.topic == ''){ %>
-                  <option value="0" data-descr="Outside College" selected></option>
-                  <option value="1" data-descr="This College"></option>
-                  <option value="2" data-descr="My Friends"></option>
-                  <option value="3" data-descr="This Club"></option>
-                <% } else{ %>
-                  <option value="0" data-descr="Outside College" disabled></option>
-                  <option value="1" data-descr="This College" selected></option>
-                  <option value="2" data-descr="My Friends"></option>
-                  <option value="3" data-descr="This Club"></option>
-                <% } %>
+                <option value="0" data-descr="Outside College"></option>
+                <option value="1" data-descr="This College"></option>
+                <option value="2" data-descr="My Friends"></option>
+                <option value="3" data-descr="This Club"></option>
                 <option value="4" data-descr="#Room" disabled></option>
                 <option value="5" data-descr="Only Me"></option>
               </select>
@@ -358,7 +357,11 @@
             <div class="valign">
               <div class="mb-auto d-flex flex-column">
                 <div>
-                  <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+                  <% if(currentUser){ %>
+                    <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+                  <% } else{ %>
+                    <span><img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
+                  <% } %>
                 </div>
                 <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
               </div>
@@ -366,8 +369,12 @@
                 <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
                   <div class="valign mb-1">
                     <div class="d-flex flex-column">
-                      <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                      <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                      <% if(currentUser){ %>
+                        <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
+                        <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                      <% } else{ %>
+                        <div class="darkgrey boldtext subpostbtn text-xxs"><em>Logged out</em></div>
+                      <% } %>
                     </div>
                     <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
                       <span><em id="timeUTC2" class="text-xxs lightgrey nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>

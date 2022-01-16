@@ -748,7 +748,7 @@ function discover_posts_template(response){
               </div>
             </div>
             <div class="lineheight-lesser">
-              <% if(posts[k].subpostsCount >= 0){ %>
+              <% if(posts[k].subpostsCount > 0){ %>
                 <span class="boldtext mobiletext3 discover-overlay-text nowrap">
                   <%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i>
                 </span>
@@ -768,18 +768,24 @@ function discover_posts_template(response){
       <div class="overlay-content overlay-content-modvote">
         <div>
         <form class="d-flex flex-column" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
-          <% if(hasModVote[k] == 1){%>
-            <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
-            <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3 bluecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-            <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
-          <% } else if(hasModVote[k] == -1){ %>
-            <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
-            <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3 orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-            <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
-          <% } else if(hasModVote[k] == 0){ %>
-            <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
-            <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
-            <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
+          <% if(currentUser){ %>
+            <% if(hasModVote[k] == 1){%>
+              <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
+              <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3 bluecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+              <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
+            <% } else if(hasModVote[k] == -1){ %>
+              <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
+              <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3 orangecolor"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+              <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
+            <% } else if(hasModVote[k] == 0){ %>
+              <button id="upVote-btn<%= posts[k]._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote"></i></button>
+              <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3"><%= posts[k].upVoteCount - posts[k].downVoteCount %></span>
+              <button id="downVote-btn<%= posts[k]._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote"></i></button>
+            <% } %>
+          <% } else{ %>
+            <button id="upVote-btn<%= posts[k]._id %>" class="modvote" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up discover-vote offline"></i></button>
+            <span id="modVote-count<%= posts[k]._id %>" class="modvote-count boldtext whitecolor m-0 p-0 text-sm mobiletext3 invisible">0</span>
+            <button id="downVote-btn<%= posts[k]._id %>" class="modvote" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down discover-vote offline"></i></button>
           <% } %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
@@ -1032,7 +1038,7 @@ function club_posts_template(response){
                 <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>              <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
-                <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
               <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>            <% } %>
           </div>
@@ -1048,7 +1054,7 @@ function club_posts_template(response){
                 <% } %>
             <% } else{ %>
               <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
-              <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -1442,7 +1448,7 @@ function user_posts_template(response){
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
-                <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
               <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
             <% } %>
@@ -1459,7 +1465,7 @@ function user_posts_template(response){
                 <% } %>
             <% } else{ %>
               <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
-              <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -1799,7 +1805,7 @@ function heart_posts_template(response){
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
-                <button id="like-btnH<%= postsH[l]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                <button id="like-btnH<%= postsH[l]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
               <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
             <% } %>
@@ -1816,7 +1822,7 @@ function heart_posts_template(response){
                 <% } %>
             <% } else{ %>
               <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
-              <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart"></i></button></span>
+              <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -2246,7 +2252,7 @@ function post_subPosts_template(response){
       </div>
     </div>
     <div class="d-flex flex-row mr-auto px-2">
-      <% if(0 <= rank && rank <= 4){ %>
+      <% if(currentUser){ %>
         <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
           <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
             <span> 
@@ -2282,13 +2288,15 @@ function post_subPosts_template(response){
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       <% } else{ %>
-        <span class="mr-2"> 
-          <button id="like-btn<%= subPosts[j]._id %>" class="vote2" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2"></i></button>
+        <span class="mr-1"> 
+          <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 offline"></i></button>
         </span>
-        <span class="vr2"></span>
-        <span class="ml-2">
-          <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2"></i></button>
+        <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey mx-0 mt-auto pb-1 pr-1 text-xxs"><%= subPosts[j].likeCount %></span>
+        <span class="vr2" style="margin-top: 0.5rem !important;"></span>
+        <span class="mr-1">
+          <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 offline"></i></button>
         </span>
+        <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey mx-0 mt-auto pb-1 pr-1 text-xxs"><%= subPosts[j].dislikeCount %></span>
       <% } %>
     </div>
   </div>

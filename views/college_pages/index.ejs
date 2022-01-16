@@ -54,10 +54,10 @@
 			<div class="collegediv-switchview">
 				<div class="valign">
 					<div class="valign">
-						<div class="mobilebold lightgrey text-md mr-2">
-							<div class="text-xxxxs lightgrey2 font-italic">SWITCH</div><div class="m-0 p-0 text-xxxxs lightgrey2 font-italic">VIEW</div>
-						</div>
 						<% if(currentUser && (keyValue == 0 || keyValue == 1)){ %>
+							<div class="mobilebold lightgrey text-md mr-2">
+								<div class="text-xxxxs lightgrey2 font-italic">SWITCH</div><div class="m-0 p-0 text-xxxxs lightgrey2 font-italic">VIEW</div>
+							</div>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
 								<div id="container-collegePage">
 									<div class="toggleCollegePage">

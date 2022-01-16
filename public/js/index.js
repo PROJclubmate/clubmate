@@ -142,14 +142,8 @@ function hidesidebar(hideValueNum){
 
 $('#input_topic').on('input', function(e){
   if($(this).val() != ''){
-    $('#priv_everyone').removeAttr('selected');
-    $('#priv_everyone').attr('disabled', 'true');
-    $('#priv_college').attr('selected', 'true');
     $('#description').attr('placeholder', 'Describe your question / discussion topic');
   } else{
-    $('#priv_college').removeAttr('selected');
-    $('#priv_everyone').removeAttr('disabled');
-    $('#priv_everyone').attr('selected', 'true');
     $('#description').attr('placeholder', 'Describe your post');
   }
 });
