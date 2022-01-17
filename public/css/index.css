@@ -210,7 +210,7 @@ div.content{
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.8125rem !important;}
   #college-cover.mobileblurred{filter: blur(10px);}
-  .college-infobtn{min-width: 56px; min-height: 56px;}
+  .college-infobtn{width: 56px !important; height: 56px !important;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -360,7 +360,7 @@ div.content{
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
-  .college-infobtn{min-width: 56px; min-height: 56px; box-shadow: 0px 0px 3px -1px rgb(0, 0, 0, 0.4);}
+  .college-infobtn{width: 56px !important; height: 56px !important; box-shadow: 0px 0px 3px -1px rgb(0, 0, 0, 0.4);}
   #college-cover.mobileblurred{filter: blur(10px);}
   #college-infobtn-mobile{padding: 1rem 0 !important;}
   .mail-wrap{padding-top: 0.375rem !important;}
@@ -3820,7 +3820,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   background-color: rgba(255, 255, 255, 0.25);
 }
 .college-infobtn{
-  align-items: center;
+  text-align: center;
   border-radius: 1.5rem;
   cursor: pointer;
   width: max-content;
@@ -3829,11 +3829,11 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .college-infobtn:hover{
   background-color: rgba(255, 255, 255, 0.75);
 }
-.college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase,
+.college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase, .fa-store,
 .college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
   -webkit-text-stroke: 0.25px #e0e0e0;
 }
-.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-briefcase,
+.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-briefcase, .college-infobtn:hover .fa-store,
 .college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-external-link-alt{
   -webkit-text-stroke-color: white;
 }

@@ -5,22 +5,22 @@
 
 <div class="row no-gutters">
   <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5"></div>
-  <% if(currentUser){ %>
-    <div class="col-lg-7 col-md-10 story-alt-container mt-3 pt-1">
-      <% if(currentUser.discoverSwitch == 1){ %>
-        <div id="stories" class="storiesWrapper"></div>
-      <% } else if(currentUser.discoverSwitch == 2){ %>
-        <div class="d-flex flex-row p-2">
-          <div class="lightgrey my-auto">Show category: <em class="lightgrey2 px-2">All</em></div>
-          <div class="d-flex flex-column invisible">
-            <div class="story-alt">
-            </div>
-            <div class="story-alt-label story-alt-label2 lightgrey2 text-sm mobiletext3 pb-2">News <i class="far fa-newspaper"></i></div>
-          </div>
+  <div class="col-lg-7 col-md-10 story-alt-container mt-3 pt-1">
+    <% if(currentUser && currentUser.discoverSwitch == 1){ %>
+      <div id="stories" class="storiesWrapper"></div>
+    <% } else if(!currentUser || currentUser.discoverSwitch == 2){ %>
+      <div class="d-flex flex-row p-2">
+        <div class="d-flex flex-column my-auto">
+          <div class="lightgrey mb-2">Show category: <em class="lightgrey2 px-2">All</em></div>
+          <div class="nodisplay" style="line-height: 0;"><i class="fa fa-search lightgrey2" style="-webkit-text-stroke: 0.5px #e0e0e0;"></i></div>
         </div>
-      <% } %>
-    </div>
-  <% } %>
+        <div class="d-flex flex-column invisible">
+          <div class="story-alt"></div>
+          <div class="story-alt-label story-alt-label2 lightgrey2 text-sm mobiletext3 pb-2">News <i class="far fa-newspaper"></i></div>
+        </div>
+      </div>
+    <% } %>
+  </div>
 </div>
 <div class="row no-gutters">
   <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
@@ -64,7 +64,7 @@
     </div>
   </div>
   <% if(currentUser){ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.75rem;">
+    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.875rem;">
       <div>
         <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
           <% if(currentUser.discoverSwitch == 1){ %>
