@@ -35,5 +35,8 @@ router.get('/clubs/:club_id/archives', archivesClubGet);
 // Get all the available album archives of the club
 router.get('/clubs/:clubs_id/albums', storiesClubAlbums);
 
+router.get('/audiotest', function(req, res, next) {
+  res.render('audio_test');
+});
 
 module.exports = router;
