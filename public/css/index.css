@@ -3151,6 +3151,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   content: '';
   z-index: 2;
 }
+.topnotch-right.offline:before{
+  padding: 0.25rem;
+}
 #container-collegePage{
   width: 3.0625rem;
   height: 1.375rem;
@@ -3519,7 +3522,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .discoverheader{
   position: absolute;
   width: 100%;
-  padding: 1rem;
+  padding: 0.75rem;
   background-color: rgba(255,255,255,0.05);
 }
 .discoverfooter{
@@ -3549,6 +3552,27 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   font-size: 3.875rem;
   color: transparent;
   -webkit-text-stroke: 2.875px white !important;
+}
+.fa-caret-up.discover-vote.offline, .fa-caret-down.discover-vote.offline{
+  -webkit-text-stroke: 0 !important;
+  color: rgba(255,255,255,0.25) !important;
+}
+/* Offline vote icons */
+.fa-caret-up:not(.discover-vote).offline, .fa-caret-down:not(.discover-vote).offline{
+  -webkit-text-stroke: 0 !important;
+  color: #808080;
+  background-color: #f3e6e8;
+  background-image: linear-gradient(315deg, #f3e6e8 0%, #d5d0e5 74%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.fa-thumbs-up:not(.discover-vote).offline, .fa-thumbs-down.offline, .fa-heart:not(.discover-vote).offline, .fa-gratipay.offline{
+  color: #808080 !important;
+  -webkit-text-stroke: 0 !important;
+  background-color: #f3e6e8;
+  background-image: linear-gradient(315deg, #f3e6e8 0%, #d5d0e5 74%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .chatlist-item{
   width: 100%;

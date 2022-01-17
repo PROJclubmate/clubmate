@@ -48,7 +48,7 @@
           <a href="#" class="navbar-brand navname mobileNone" style="cursor: default;">
             <em>clubmate</em>
           </a>
-          <% if(locals.college_page){ %>
+          <% if(currentUser && locals.college_page){ %>
             <a href="/users/<%= currentUser.id %>" class="navbar-brand navname desktopNoneFlex">
               <span class="valign lineheight">
                 <span>

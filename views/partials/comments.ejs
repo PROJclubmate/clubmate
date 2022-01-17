@@ -64,19 +64,34 @@
               <% } %>
               <form action="/comments/<%= buckets[i]._id %>/<%= comments[j]._id %>/vote" method="POST">
                 <div class="commentwrap lineheight-0 mb-2">
-                  <% if(upComments.includes(comments[j]._id)){ %>
-                    <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
-                      <div>
-                        <i class="fab fa-gratipay"></i>
-                      </div>
-                      <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
-                        <%= comments[j].upvotesCount %>
-                      </div>
-                    </button>
+                  <% if(currentUser){ %>
+                    <% if(upComments.includes(comments[j]._id)){ %>
+                      <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                        <div>
+                          <i class="fab fa-gratipay"></i>
+                        </div>
+                        <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
+                          <%= comments[j].upvotesCount %>
+                        </div>
+                      </button>
+                    <% } else{ %>
+                      <button id="comment-up-btn<%= comments[j]._id %>" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+                        <div>
+                          <i class="fab fa-gratipay"></i>
+                        </div>
+                        <% if(comments[j].upvotesCount > 0){ %>
+                          <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
+                        <% } else{ %>
+                          <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">
+                        <% } %>
+                          <%= comments[j].upvotesCount %>
+                        </div>
+                      </button>
+                    <% } %>
                   <% } else{ %>
                     <button id="comment-up-btn<%= comments[j]._id %>" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                       <div>
-                        <i class="fab fa-gratipay"></i>
+                        <i class="fab fa-gratipay offline"></i>
                       </div>
                       <% if(comments[j].upvotesCount > 0){ %>
                         <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">

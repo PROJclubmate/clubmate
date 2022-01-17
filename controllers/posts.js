@@ -327,7 +327,7 @@ module.exports = {
             {$match: {$and: [
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}, {topic: ''}
+              {moderation: 0}, {privacy: 0}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -427,7 +427,7 @@ module.exports = {
           Post.find({
             createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}, 
             _id: {$nin: seenIds}, 
-            moderation: 0, privacy: 0, topic: ''})
+            moderation: 0, privacy: 0})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
@@ -473,7 +473,7 @@ module.exports = {
             {$match: {$and: [
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}, {topic: ''}
+              {moderation: 0}, {privacy: 0}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -568,7 +568,7 @@ module.exports = {
         {$match: {$and: [
           {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
           {_id: {$nin: seenIds}}, 
-          {moderation: 0}, {privacy: 0}, {topic: ''}
+          {moderation: 0}, {privacy: 0}
         ]}},
         { "$lookup": {
           "from": "clubs",
@@ -947,15 +947,43 @@ module.exports = {
             var upComments = [];
             var CU_50_profilePic = null;
             return res.render("posts/show", {hasVote, hasModVote, post: foundPost, upComments, rank, buckets: foundBuckets,
-            index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, cdn_prefix});
+            index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, clubId: foundPost.postClub._id, cdn_prefix});
           }
           });
-        } else{
+        } else if(foundPost.topic != ''){
           var CU_50_profilePic = null;
-          var index = null;
           var rank = null;
-          return res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, index, PC_50_clubAvatar,
-          CU_50_profilePic, cdn_prefix});
+          if(foundPost.subpostBuckets != ''){
+            var len = index = foundPost.subpostBuckets.length;
+            Discussion.findOne({_id: foundPost.subpostBuckets[len-1]})
+            .populate({path: 'subPosts.subPostAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
+            .exec(function(err, foundBucket){
+            if(err || !foundBucket){
+              logger.error(req.user._id+' : (posts-27)foundBucket err => '+err);
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            } else{
+              var sPA_50_profilePic = [];
+              for(var j=0;j<foundBucket.subPosts.length;j++){
+                if(process.env.ENVIRONMENT === 'dev'){
+                  sPA_50_profilePic[j] = clConfig.cloudinary.url(foundBucket.subPosts[j].subPostAuthor.id.profilePicId, clConfig.thumb_100_obj);
+                } else if (process.env.ENVIRONMENT === 'prod'){
+                  sPA_50_profilePic[j] = s3Config.thumb_100_prefix+foundBucket.subPosts[j].subPostAuthor.id.profilePicId;
+                }
+              }
+              var subVotes = [];
+              var quote = false;
+              res.render("posts/show", {hasVote, hasModVote, post: foundPost, subVotes, rank, bucket: foundBucket,
+              index, CU_50_profilePic, PC_50_clubAvatar, sPA_50_profilePic, quote, clubId: foundPost.postClub._id,
+              Posts_50_Image: null, topTopicPosts: null, clubPage: false, cdn_prefix});
+            }
+            });
+          } else{
+            var quote = false;
+            res.render("posts/show", {hasVote, hasModVote, post: foundPost, rank, CU_50_profilePic, 
+            PC_50_clubAvatar, quote, clubId: foundPost.postClub._id, Posts_50_Image: null,
+            topTopicPosts: null, clubPage: false, cdn_prefix});
+          }
         }
       }
       });
