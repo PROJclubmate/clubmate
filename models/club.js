@@ -9,6 +9,7 @@ const clubSchema = new Schema({
   avatar: String,
   avatarId: String,
   stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
+  audiorooms: [{ type: Schema.Types.ObjectId, ref: 'Audioroom' }],
   storyArchives: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
   albums : [{type: String}],
   featuredPhotos:[{
