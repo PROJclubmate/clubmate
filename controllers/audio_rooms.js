@@ -6,6 +6,15 @@ const Club = require('../models/club'),
 module.exports = {
 
   async newAudioroom(req, res, next) {
+    /*
+      "club_id" in params,
+      body : {
+        roomName,
+        roomId,
+        capacity,
+      }
+    */
+
     Club.findById(req.params.club_id, function (err, foundClub) {
       if (err || !foundClub) {
         logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
@@ -15,7 +24,7 @@ module.exports = {
       else {
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
-            audioroom = new Audioroom({
+            let audioroom = new Audioroom({
               roomName: req.body.roomName,
               roomId: req.body.roomId,
               timestamp: Date.now(),
@@ -33,27 +42,53 @@ module.exports = {
     });
   },
 
-  async audioroomsLobby(req, res, next){
+  async audioroomsLobby(req, res, next) {
     // req.user._id
     User.findById(req.user._id, async function (err, foundUser) {
       if (err || !foundUser) {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       }
-      else{
-        audioroomsData = {}
-        for(var i = 0; i < foundUser.userClubs.length; i++){
-          let foundClub = await Club.findById(foundUser.userClubs[i]).exec();
-          if(foundClub && foundClub.audiorooms.length){
-            audioroomsData[foundClub.name] = []
-            for(var j = 0; j < foundClub.audiorooms.length; j++){
-              let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
-              audioroomsData[foundClub.name].push(foundAudioroom);
-            }
+      else {
+        let audioroomsData = [
+          {
+            club_name: "JPEG",
+            audio_rooms: [
+              {
+                roomName: "Room JPEG 1",
+                roomId: "abcdefghijklmn",   // Take it as the id of the room, unique key mongodb
+              },
+              {
+                roomName: "Room Jpeg 2",
+                roomId: "wowthisisthekey"
+              }
+            ],
+          },
+          {
+            club_name : "Backpack ready",
+            audio_rooms: [
+              {
+                roomName: "Wow"
+              }
+            ]
           }
-        }
-        return res.render('audio_rooms/lobby' , {audioroomsData});
+        ];
+        // for(var i = 0; i < foundUser.userClubs.length; i++){
+        //   let foundClub = await Club.findById(foundUser.userClubs[i]._id).exec();
+        //   if(foundClub && foundClub.audiorooms.length){
+        //     audioroomsData[foundClub.name] = []
+        //     for(var j = 0; j < foundClub.audiorooms.length; j++){
+        //       let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
+        //       audioroomsData[foundClub.name].push(foundAudioroom);
+        //     }
+        //   }
+        // }
+        return res.render('audio_rooms/lobby', { audioroomsData });
       }
     });
   },
+
+  joinAudioRoom(req, res, next) {
+    res.render('audio_test.ejs');
+  }
 };
