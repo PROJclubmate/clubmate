@@ -4,9 +4,9 @@ const Club = require('../models/club'),
   Audioroom = require('../models/audioroom');
 
 module.exports = {
-
-  async newAudioroom(req, res, next) {
+  async postNewAudioroom(req, res, next) {
     /*
+      REST API
       "club_id" in params,
       body : {
         roomName,
@@ -15,31 +15,37 @@ module.exports = {
       }
     */
 
-    Club.findById(req.params.club_id, function (err, foundClub) {
-      if (err || !foundClub) {
-        logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      }
-      else {
-        for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
-          if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
-            let audioroom = new Audioroom({
-              roomName: req.body.roomName,
-              roomId: req.body.roomId,
-              timestamp: Date.now(),
-              audioroomClub: foundClub._id,
-              audioroomCreator: req.user._id,
-              capacity: req.body.capacity,
-            });
-            audioroom.save();
-            foundClub.audiorooms.addToSet(audioroom);
-            foundClub.save();
-          }
-        }
-        return res.redirect('/clubs/' + req.params.club_id);
-      }
-    });
+    console.log(req);
+    // Will make a REST API
+    // Do not render, give json
+
+    res.json({'name': "Hello"});
+
+    // Club.findById(req.params.club_id, function (err, foundClub) {
+    //   if (err || !foundClub) {
+    //     logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
+    //     req.flash('error', 'Something went wrong :(');
+    //     return res.redirect('back');
+    //   }
+    //   else {
+    //     for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
+    //       if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
+    //         let audioroom = new Audioroom({
+    //           roomName: req.body.roomName,
+    //           roomId: req.body.roomId,
+    //           timestamp: Date.now(),
+    //           audioroomClub: foundClub._id,
+    //           audioroomCreator: req.user._id,
+    //           capacity: req.body.capacity,
+    //         });
+    //         audioroom.save();
+    //         foundClub.audiorooms.addToSet(audioroom);
+    //         foundClub.save();
+    //       }
+    //     }
+    //     return res.redirect('/clubs/' + req.params.club_id);
+    //   }
+    // });
   },
 
   async audioroomsLobby(req, res, next) {
@@ -90,5 +96,27 @@ module.exports = {
 
   joinAudioRoom(req, res, next) {
     res.render('audio_rooms/audio_room.ejs');
+  },
+
+  getClubAudioRooms(req, res, next) {
+    //  TODO, get the audio rooms of a specific club provided params.club_id
+
+    return res.json([
+      {
+        roomId: "abcdef",
+        name: "Name 1",
+        desc: "Room description 1"
+      },
+      {
+        roomId: "abafaf",
+        name: "Name 2",
+        desc: "Room description 2"
+      },
+      {
+        roomId: "ghfajj",
+        name: "Name 3",
+        desc: "Room description 3"
+      },
+    ]);
   }
 };
