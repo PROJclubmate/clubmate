@@ -140,18 +140,18 @@
       </div>
       <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 nodisplay">
         <div class="form-signin">
-          <input type="text" class="form-control" name="link" placeholder="Add link to ..page" value="">
+          <input type="text" class="form-control" name="link" placeholder="Add link for virtual event, etc." value="">
           <input type="text" class="form-control" name="linkText" placeholder="Link Text" value="">
         </div>
       </div>
       <div class="mx-3 mb-5">
         <h5>Send to</h5>
         <div class="radio my-3">
-          <input id="radio-1" name="userKeys[sex]" type="radio" value="College" required>
+          <input id="radio-1" name="isClubExclusive" type="radio" value="College" required>
           <label for="radio-1" class="radio-label darkgrey">Everyone in College</label>
         </div>
         <div class="radio my-3">
-          <input id="radio-2" name="userKeys[sex]" type="radio" value="Club" checked>
+          <input id="radio-2" name="isClubExclusive" type="radio" value="Club" checked>
           <label  for="radio-2" class="radio-label darkgrey">Only club members</label>
         </div>
       </div>
@@ -161,7 +161,7 @@
           <div class="darkgrey">Save to club history</div>
           <div>
             <label class="switch">
-              <input id="save_checkbox" type="checkbox" name="savestory" value="true" checked>
+              <input id="save_checkbox" type="checkbox" name="isSaved" value="true" checked>
               <span class="slider round"></span>
             </label>
           </div>
