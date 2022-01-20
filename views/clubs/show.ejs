@@ -538,7 +538,43 @@
                     <div class="mt-2">
                       <h3> Audio Rooms </h3>
 
-                      
+                        <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
+                          <div class="nounderline">
+                            <div id="create-new-room-container" class="room-container darkgrey">
+                              <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Modal HTML -->
+                        <div id="createNewAudioRoom" class="fixed-padding modal fade">
+                          <div class="modal-dialog modal-dialog-centered modal-confirm">
+                            <div class="modal-content">
+                              <div class="d-flex grey">
+                                <span>
+                                  <img class="icon-box" src="<%= '/images/round-table.svg' %>" title="Designed by [Freepik] from @flaticon">
+                                </span>
+                                <span class="my-auto"><h5 class="modal-title ml-2">Create new audio room</h5></span>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              </div>
+                              <form id="new-audio-room-form" class="my-2" action="/clubs/<%= club._id %>/audio/create" method="POST">
+                                <div class="form-signin">
+                                  <div class="form-group">
+                                    <label for="aroomname" class="sr-only">Room name</label>
+                                    <input id="aroomname" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="aroomname" placeholder="Room name" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="aroomdesc" class="sr-only">Room desc</label>
+                                    <input id="aroomdesc" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="aroomdesc" placeholder="Room description" required>
+                                  </div>
+                                  <br>
+                                  <br>
+                                  <button class="btn btn-sm btn-success btn-block" title="Create new room" type="submit"><span id="load-createaudioclub"></span>Submit</button>
+                                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
                       
                     </div>
                   </div>
@@ -618,6 +654,18 @@
     ok = true;
     console.log("Fetching archives failed", err);
   });
+
+  // New audio form
+  document.getElementById('new-audio-room-form').onsubmit = function(e) {
+    e.preventDefault();
+
+    const aroomname = document.getElementById('aroomname');
+    const aroomdesc = document.getElementById('aroomdesc');
+
+    console.log(aroomdesc, aroomname);
+
+    loading_spinner('load-createaudioclub','name');
+  }
 
 
 </script>
