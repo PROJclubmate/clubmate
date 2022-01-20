@@ -89,6 +89,6 @@ module.exports = {
   },
 
   joinAudioRoom(req, res, next) {
-    res.render('audio_test.ejs');
+    res.render('audio_rooms/audio_room.ejs');
   }
 };

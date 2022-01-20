@@ -1,0 +1,70 @@
+<% include ../partials/header %>
+
+  <div style="height: calc(100vh - 42px); width: 100%;">
+
+    <iframe
+      src="https://audio.clubmate.co.in/PRIYAM_ROOM_ID1#eyJyb29tIjp7Im5hbWUiOiJSb29tIE5hbWUiLCJkZXNjcmlwdGlvbiI6IlJvb20gY3JlYXRlZCBieSB1cyIsImNvbG9yIjoiUm9vbSBjb2xvciIsInN0YWdlT25seSI6dHJ1ZX0sInV4Ijp7ImF1dG9DcmVhdGUiOnRydWUsImF1dG9Kb2luIjp0cnVlfSwiaWRlbnRpdHkiOnsibmFtZSI6IlVTRVIgTkFNRSIsImF2YXRhciI6Imh0dHBzOi8vYXZhdGFycy5naXRodWJ1c2VyY29udGVudC5jb20vdS8yMDk4OTk2OCJ9fQ"
+      allow="microphone *; screen-wake-lock *" style="width: 100%; height: 100%; border: none;">
+    </iframe>
+
+  </div>
+
+
+  <script>
+
+    function encodeBase64Url(object) {
+      let bytes = new TextEncoder().encode(JSON.stringify(object));
+      let n = bytes.length;
+      let chars = new Array(n);
+      for (let i = 0; i < n; i++) {
+        chars[i] = String.fromCharCode(bytes[i]);
+      }
+      return btoa(chars.join("")).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+    }
+
+    function createJAMFrame(jamUrl, roomId, params) {
+      jamUrl = jamUrl || "https://jam.systems";
+      if (!jamUrl.endsWith("/"))
+        jamUrl = jamUrl + "/";
+      let hash = !params ? "" : "#" + encodeBase64Url(params);
+      let src = `${jamUrl}${roomId || ""}${hash}`
+
+      console.log("src", src);
+    }
+
+    const jam_configs = {
+      jamUrl: "https://audio.clubmate.co.in",
+      room_id: "ROOM_ID_TEST_1",
+      params: {
+        rooom: {
+          name: "Room Name",
+          description: "Room description",
+          color: "My color",
+          stageOnly: true
+        },
+        ux: {
+          autoCreate: true,
+          autoJoin: true,
+        },
+        identity: {
+          name: "Priyam",
+          avatar: "https://avatars.githubusercontent.com/u/56730716?v=4"
+        }
+      },
+      style: {
+        width: "400px",
+        height: "600px",
+        border: "none"
+      }
+    }
+
+    createJAMFrame(jam_configs.jamUrl, jam_configs.room_id, jam_configs.params);
+
+        // {
+        //     "room": { "name": "Room Name", "description": "Room created by us", "color": "Room color", "stageOnly": true },
+        //     "ux": { "autoCreate": true, "autoJoin": true },
+        //     "identity": { "name": "USER NAME", "avatar": "https://avatars.githubusercontent.com/u/20989968" }
+        // }
+  </script>
+
+  <% include ../partials/footer %>
