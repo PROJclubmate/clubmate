@@ -57,7 +57,7 @@ const clubSchema = new Schema({
     memberSince: {type: Date, default: Date.now},
     storyDraftImage: String,
     storyDraftImageId: String,
-    // x_y
+    // aspect ratio format - X_Y (Used for how to load the canvas for draftImg in story maker)
     storyDraftAspectRatio: String,
     _id: false
   }],

@@ -16,11 +16,7 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time, i
 
 function getStoriesDataInZuckForm(storiesData) {
   // Expected that the first loop gives the club data
-
-  console.log(storiesData);
-
   const finalStoriesData = [];
-
   for (club of storiesData) {
     const thisClubStories = [];
     for (story of club.clubStories) {
@@ -37,23 +33,16 @@ function getStoriesDataInZuckForm(storiesData) {
       seen: club.seen ? club.seen : false,
       items: thisClubStories,
     }
-
     finalStoriesData.push(thisClubData);
   }
-
-  console.log("Final stories data", finalStoriesData);
   return finalStoriesData;
 }
 
 markThisStorySeen = (storyId, csrfToken, discoverStories) => {
-  console.log("mark story seen", storyId, discoverStories.data[storyId]);
-
   const storyItems = discoverStories.data[storyId].items;
   const currentItem = discoverStories.data[storyId].currentItem;
 
   // Get the current item and add that it is seen once a request is made
-  console.log("Item id", storyItems[currentItem].item_id);
-
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
       method: 'POST',
@@ -67,9 +56,7 @@ markThisStorySeen = (storyId, csrfToken, discoverStories) => {
 
   // We actually need to send the item id as the story id, this is the value we are looking for
   postData(`/stories/${storyItems[currentItem].item_id}/seen`, { _csrf: csrfToken })
-  .then(data => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
+  .then(data => {});
 }
 
 
@@ -98,13 +85,10 @@ createStory = (ele_id, storiesObject, csrfToken) => {
 
       onView(storyId) {
         // on view story
-        console.log("story watched", storyId);
         markThisStorySeen(storyId, csrfToken, discoverStories);
       },
 
       onEnd(storyId, callback) {
-        console.log("Story end came", storyId);
-
         // Make the story to restart next time when the story has been completely end
         discoverStories.data[storyId].currentItem = 0;
         callback();  // on end story
@@ -115,9 +99,7 @@ createStory = (ele_id, storiesObject, csrfToken) => {
       },
 
       onNavigateItem(storyId, nextStoryId, callback) {
-        console.log("Navigate", storyId);
         markThisStorySeen(storyId, csrfToken, discoverStories);
-
         callback();  // on navigate item of story
       },
 
@@ -174,7 +156,6 @@ createStory = (ele_id, storiesObject, csrfToken) => {
     discoverStories.data[club.id].currentItem = club.currentItem;
   }
   
-
   return discoverStories;
 }
 

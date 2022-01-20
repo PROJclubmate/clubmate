@@ -20,18 +20,16 @@ const storySchema = new Schema({
     ref: 'Club'
   },
   storyAuthor: {
-    id:{
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    authorName: String
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
+  authorName: String,
   eventNotice: String,
   eventDate: Date,
-  // If false story can be seen by everyone in this college, else only by club members
+  // If true, story cannot be seen by anyone but the club members
   isClubExclusive: {type: Boolean, default: true},
-  // If true, story & its media will not be deleted after 24 hours
-  isSaved: {type: Boolean, default: false},
+  // If true, story & its media will not get deleted after 7 days
+  isSaved: {type: Boolean, default: true},
   createdAt: {type: Date, default: Date.now},
   album: String,
 });
