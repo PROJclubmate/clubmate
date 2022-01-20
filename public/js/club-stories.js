@@ -7,10 +7,13 @@ const get = function (array, what) {
 }
 
 function buildItem(id, type, length, src, preview, link, linkText, seen, time, seenByUserIds = []) {
+
   let story_views = 0;
   if (seenByUserIds) {
     story_views = seenByUserIds.length;
   }
+
+  console.log(seenByUserIds);
 
   // Using object short hand (id: id)
   return {
@@ -51,6 +54,8 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
 
       onView(storyId) {
         document.getElementById(`delete-img-${storyId}`).onclick = function () {
+          console.log("Delete story", storyId);
+
           // To pause the story and if we intent to add one more modal to confirm delete
           // document.getElementsByClassName('story-viewer')[1].classList.add('paused');
           // Number to be used need to be found btw, :(
@@ -67,7 +72,9 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
           }
 
           postData(`/clubs/${club._id}/story/delete`, { story_id: storyId, _csrf: csrfToken })
-            .then(data => {});
+            .then(data => {
+              console.log(data); // JSON data parsed by `data.json()` call
+            });
 
           clubStories.remove(storyId);
           clubStories.next();
@@ -104,6 +111,8 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
       // },
 
       viewerItem(storyData, currentStoryItem) {
+        console.log(storyData);
+
         return `<div class="story-viewer">
           <div class="head">
             <div class="left">
@@ -126,7 +135,7 @@ createStory = (ele_id, storiesObject, club, csrfToken, userRank = 0) => {
           </div>
           <div class="foot">
           ${userRank < 3 ? `
-          <h6 class="view_counter"><i class="far fa-eye"></i> ${get(get(storyData, 'items')[0], 'story_views')} </h6>
+          <h4 class="view_counter"> ${get(get(storyData, 'items')[0], 'story_views')} (view) </h4>
           ` : ''}
           </div>
         </div>`;

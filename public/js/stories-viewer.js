@@ -1,4 +1,4 @@
-function buildItem(id, type, length, src, preview, link, linkText, seen, time, item_id) {
+function buildItem(id, type, length, src, preview, link, linkText, seen, time) {
   // Using object short hand (id: id)
   return {
     id,					// item id
@@ -9,8 +9,7 @@ function buildItem(id, type, length, src, preview, link, linkText, seen, time, i
     link,				// a link to click on story
     linkText, 	// link text
     seen,		 		// set true if current story was read
-    time,				// optional a date to display with the story item. unix timestamp are converted to "time ago" format,
-    item_id
+    time				// optional a date to display with the story item. unix timestamp are converted to "time ago" format
   };
 }
 
@@ -24,7 +23,7 @@ function getStoriesDataInZuckForm(storiesData) {
   for (club of storiesData) {
     const thisClubStories = [];
     for (story of club.clubStories) {
-      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', story.seen ? story.seen : false, 1492665454, story._id));
+      thisClubStories.push(buildItem(story._id, 'photo', story.length, story.image, '', '', '', false, 1492665454));
     }
 
     const thisClubData = {
@@ -33,49 +32,19 @@ function getStoriesDataInZuckForm(storiesData) {
       name: club.name,
       link: '',
       lastUpdated: club.lastUpdated,
-      currentItem: club.currentItem,
-      seen: club.seen ? club.seen : false,
-      items: thisClubStories,
+      seen: false,
+      items: thisClubStories
     }
 
     finalStoriesData.push(thisClubData);
   }
 
-  console.log("Final stories data", finalStoriesData);
   return finalStoriesData;
 }
 
-markThisStorySeen = (storyId, csrfToken, discoverStories) => {
-  console.log("mark story seen", storyId, discoverStories.data[storyId]);
+createStory = (ele_id, storiesObject) => {
 
-  const storyItems = discoverStories.data[storyId].items;
-  const currentItem = discoverStories.data[storyId].currentItem;
-
-  // Get the current item and add that it is seen once a request is made
-  console.log("Item id", storyItems[currentItem].item_id);
-
-  async function postData(url = '', data = {}) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-  }
-
-  // We actually need to send the item id as the story id, this is the value we are looking for
-  postData(`/stories/${storyItems[currentItem].item_id}/seen`, { _csrf: csrfToken })
-  .then(data => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
-}
-
-
-createStory = (ele_id, storiesObject, csrfToken) => {
-
-  const discoverStories = new Zuck(ele_id, {
+  const clubStories = new Zuck(ele_id, {
     skin: 'Facesnap',					// container class
     avatars: true,						// shows user photo instead of last story item preview
     list: false,							// displays a timeline instead of carousel
@@ -99,14 +68,9 @@ createStory = (ele_id, storiesObject, csrfToken) => {
       onView(storyId) {
         // on view story
         console.log("story watched", storyId);
-        markThisStorySeen(storyId, csrfToken, discoverStories);
       },
 
       onEnd(storyId, callback) {
-        console.log("Story end came", storyId);
-
-        // Make the story to restart next time when the story has been completely end
-        discoverStories.data[storyId].currentItem = 0;
         callback();  // on end story
       },
 
@@ -115,9 +79,8 @@ createStory = (ele_id, storiesObject, csrfToken) => {
       },
 
       onNavigateItem(storyId, nextStoryId, callback) {
-        console.log("Navigate", storyId);
-        markThisStorySeen(storyId, csrfToken, discoverStories);
-
+        console.log(storyId);
+        console.log(nextStoryId);
         callback();  // on navigate item of story
       },
 
@@ -170,14 +133,5 @@ createStory = (ele_id, storiesObject, csrfToken) => {
     }
   });
 
-  for (club of storiesObject) {
-    discoverStories.data[club.id].currentItem = club.currentItem;
-  }
-  
-
-  return discoverStories;
-}
-
-createDiscoverStory = (ele_id, storiesData, csrfToken) => {
-  return createStory(ele_id, getStoriesDataInZuckForm(storiesData), csrfToken);
+  return clubStories;
 }
