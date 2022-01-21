@@ -3,17 +3,18 @@ const mongoose = require('mongoose'),
 
 const audioroomSchema = new Schema({  
   roomName: String,
-  roomId: String,
+  roomDesc: String,
+  roomColor: String,
   timestamp: Number,
-  usersInside: [{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }],
-  speakers: [{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }],
-  moderators: [{
+  // usersInside: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: "User"
+  // }],
+  // speakers: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: "User"
+  // }],
+  initialModerators: [{
     type: Schema.Types.ObjectId,
     ref: "User"
   }],

@@ -1,0 +1,41 @@
+1) How to handle moderator thing using iframe method
+
+And now, if I generate a random seed for every user, and store it in my database. 
+
+Then while creating the room, I can ask the user for choose who all other users it wants as moderators. Then I generate room specific ids for all of them, push them to the moderators list and create the api call for creating the room. 
+
+And now everyone specified by the person creating the room is a moderator, and as long as these people join the room specifying their seed and their names, then they get moderator privileges. 
+
+2) Code which converts seed and identity data into room specific keys
+
+https://gitlab.com/jam-systems/jam/-/blob/master/ui/jam-core/identity.ts#L135
+
+3) Using seed and name to generate identities 
+
+Figured it out! This works well:
+https://jam.systems/some-room-1594?keys.seed=my-users-id-6343&identity.name=Joe
+This creates public and private key deterministically from the "seed". The seed can be any string.
+
+To confirm this works, paste the URL into two different browsers - in the second one it'll show you our special UI for when you try to access a room with the same identity twice
+It doesn't work without the identity.name part currently, which I consider a bug and will fix
+(fixed now in master)
+@tosh should we also document this? The keys.seed option seems to improve identity management via URL (consistent public key across devices) 
+FWIW there's also keys.secretKey to recreate the keypair from the secret key, but less useful IMO 
+
+4) Live room API in Jam 
+
+Announcement: Live Room API
+I have finally added a feature that has been much requested by people building on Jam:
+
+There is now an API endpoint which tells you the users that are currently connected to a Jam room.
+
+The endpoint looks like this:
+https:<JAM-DOMAIN>/_/pantry/api/v1/rooms/<ROOM-ID>/live
+
+This is a simple GET request (i.e. you can just paste this into a browser to see the result), and it will return a JSON array with all the identities of users currently in a room.
+
+You could, for example, use this to show a user a list of existing rooms, with additional info about the users that are currently inside the room. For example, only show rooms that currently have any users in them.
+
+5) Room creation API 
+
+curl -X POST https://jam.systems/_/pantry/api/v1/rooms/<ROOM-ID> -H 'Content-Type: application/json' -d '{"moderators": ["<USER-ID>"],"speakers":[]}'
