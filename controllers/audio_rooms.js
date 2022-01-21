@@ -10,16 +10,22 @@ module.exports = {
       "club_id" in params,
       body : {
         roomName,
-        roomId,
-        capacity,
+        roomDesc,
+        roomColor,
       }
     */
 
     console.log(req);
-    // Will make a REST API
+    // Will make a REST API, will return the room id on successfully creating the room
     // Do not render, give json
 
-    res.json({'name': "Hello"});
+    let success = true;
+
+    if (!success) {
+      return res.json({success: false, msg: "Error message"});
+    } else {
+      return res.json({success: true, roomId: "priyamroomid1"});
+    }
 
     // Club.findById(req.params.club_id, function (err, foundClub) {
     //   if (err || !foundClub) {
@@ -95,7 +101,7 @@ module.exports = {
   },
 
   joinAudioRoom(req, res, next) {
-    res.render('audio_rooms/audio_room.ejs');
+    res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
   },
 
   getClubAudioRooms(req, res, next) {
