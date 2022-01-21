@@ -20,7 +20,7 @@ router.post('/clubs/:club_id/story/create/options', middleware.isLoggedIn, stori
 // To delete the club story
 router.post('/clubs/:club_id/story/delete', middleware.isLoggedIn, storiesDelete);
 
-// To mark the story as seen for the loggined user
+// To mark the story as seen for the logged-in user
 router.post('/stories/:story_id/seen', middleware.isLoggedIn, storySeen);
 
 // get the story data from API if the user wish to refresh

@@ -619,7 +619,7 @@ div.content{
 .fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
 .far.fa-thumbs-up, .far.fa-heart{-webkit-text-stroke: 0.75px #fafafa;}
 .fas.fa-thumbs-up.greencolor{-webkit-text-stroke: 1px #5ab45a;}
-.fab.fa-gratipay{-webkit-text-stroke: 0.25px grey;}
+.fab.fa-gratipay{-webkit-text-stroke: 1px #262626; color: white;}
 .vote-subpost2{-webkit-text-stroke-width: 0.5px !important;}
 .fas.fa-heart.redcolor2{-webkit-text-stroke: 1px #e7303d;}
 .fas.fa-thumbs-down{-webkit-text-stroke: 0.5px black; color: #262626 !important; -webkit-text-stroke-width: 0.25px !important;}
@@ -2501,13 +2501,10 @@ button.commentvote{
 }
 button.commentvote:hover * .fab.fa-gratipay{
   color: white;
-  -webkit-text-stroke: 1px #f44133;
+  -webkit-text-stroke: 1px #cc1010;
 }
-button.redcolor2.commentvote * .fab.fa-gratipay{
-  -webkit-text-stroke: 0.25px #f44133;
-}
-button.redcolor2.commentvote:hover * .fab.fa-gratipay{
-  color: #f76d6f;
+button.redcolor2.commentvote * .fab.fa-gratipay, button.redcolor2.commentvote:hover * .fab.fa-gratipay{
+  color: #f4475e;
   -webkit-text-stroke: 0.25px #f44133;
 }
 .commentcount{
