@@ -566,6 +566,15 @@
                                     <label for="aroomdesc" class="sr-only">Room desc</label>
                                     <input id="aroomdesc" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="aroomdesc" placeholder="Room description" required>
                                   </div>
+                                  <div class="form-group">
+                                    <label for="aroomdesc" class="sr-only">Room desc</label>
+                                    <select id="aroomcolor" class="form-control form-control-sm shadow commentbox2 text-center" name="aroomcolor">
+                                      <option value="black" selected>Black</option>
+                                      <option value="red">Red</option>
+                                      <option value="green">Green</option>
+                                      <option value="blue">Blue</option>
+                                    </select>
+                                  </div>
                                   <br>
                                   <br>
                                   <button class="btn btn-sm btn-success btn-block" title="Create new room" type="submit"><span id="load-createaudioclub"></span>Submit</button>
@@ -659,12 +668,46 @@
   document.getElementById('new-audio-room-form').onsubmit = function(e) {
     e.preventDefault();
 
-    const aroomname = document.getElementById('aroomname');
-    const aroomdesc = document.getElementById('aroomdesc');
+    const aroomname = document.getElementById('aroomname').value;
+    const aroomdesc = document.getElementById('aroomdesc').value;
+    const aroomcolor = document.getElementById('aroomcolor').value;
 
-    console.log(aroomdesc, aroomname);
+    console.log(aroomdesc, aroomname, aroomcolor);
+
+    async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    // HARDCODED moderators list right now
+    const dataObject = {
+      _csrf: csrfToken,
+      roomName: aroomname,
+      roomDesc: aroomdesc,
+      roomColor: aroomcolor,
+      moderators: ["5dc19df7792d0826e97ba442"]
+    }
 
     loading_spinner('load-createaudioclub','name');
+
+    postData(`/clubs/${club._id}/audio/create`, dataObject)
+      .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+        
+        if (data.success) {
+          window.location = "/audio/join/" + data.roomId;
+        } else {
+          // TODO: Show the error message
+        }
+      }).finally(() => {
+        // TODO: stop the loading spinner!!
+      });
   }
 
 
