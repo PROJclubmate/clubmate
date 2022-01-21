@@ -12,6 +12,12 @@
 
 
   <script>
+    const room_id = "<%= room_id %>";
+    const user_id  = "<%= user._id %>";
+    const user_name = "<%= user.firstName %> <%=user.lastName %>";
+    const user_avatar = "<%= user.profilePic %>"
+    // TODO: Give the seed in the iframe also
+
 
     function encodeBase64Url(object) {
       let bytes = new TextEncoder().encode(JSON.stringify(object));
@@ -37,37 +43,32 @@
 
     const jam_configs = {
       jamUrl: "https://audio.clubmate.co.in",
-      room_id: "ROOM_ID_TEST_5",
+      room_id: room_id,
       params: {
         room: {
-          name: "Room name",
-          description: "Room descr",
-          color: "#eee",
-          stageOnly: true
+          // These details will be added when the room will be created from the backend
+          // name: "Room name",
+          // description: "Room descr",
+          // color: "#eee",
+          // stageOnly: true
         },
         ux: {
-          autoCreate: true,
+          autoCreate: false,  // Room will be created from backend side, also add a check there that room exists
           autoJoin: true,
         },
         identity: {
-          name: "Priyam",
-          avatar: "https://avatars.githubusercontent.com/u/56730716?v=4"
+          name: user_name,
+          avatar: user_avatar
+        },
+        keys: {
+          seed: user_id
         }
-      },
-      style: {
-        width: "400px",
-        height: "600px",
-        border: "none"
       }
     }
 
     createJAMFrame(jam_configs.jamUrl, jam_configs.room_id, jam_configs.params);
-
-        // {
-        //     "room": { "name": "Room Name", "description": "Room created by us", "color": "Room color", "stageOnly": true },
-        //     "ux": { "autoCreate": true, "autoJoin": true },
-        //     "identity": { "name": "USER NAME", "avatar": "https://avatars.githubusercontent.com/u/20989968" }
-        // }
   </script>
+
+  <script type="module" src="/js/jam-util.js"></script>
 
   <% include ../partials/footer %>
