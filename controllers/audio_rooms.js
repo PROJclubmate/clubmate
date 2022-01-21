@@ -1,7 +1,8 @@
 const Club = require('../models/club'),
   logger = require('../logger'),
   User = require('../models/user'),
-  Audioroom = require('../models/audioroom');
+  Audioroom = require('../models/audioroom'),
+  fetch = require('node-fetch');
 
 module.exports = {
   async postNewAudioroom(req, res, next) {
@@ -15,44 +16,52 @@ module.exports = {
       }
     */
 
-    console.log(req);
-    // Will make a REST API, will return the room id on successfully creating the room
-    // Do not render, give json
-    // TODO
+    // console.log(req);
+    Club.findById(req.params.club_id, function (err, foundClub) {
+      if (err || !foundClub) {
+        logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      }
+      else {
+        for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
+          if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
+            let success = true;
+            let audioroom = new Audioroom({
+              roomName: req.body.roomName,
+              roomDesc: req.body.roomDesc,
+              roomColor: req.body.roomColor,
+              timestamp: Date.now(),
+              audioroomClub: foundClub._id,
+              audioroomCreator: req.user._id,
+              capacity: 50
+            });
+            audioroom.save();
+            foundClub.audiorooms.addToSet(audioroom);
+            foundClub.save();
+            // write code to make an api call to audio.clubmate.co.in
 
-    let success = true;
+            fetch("https://audio.clubmate.co.in/_/pantry/api/v1/rooms/" + audioroom._id, {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({moderators: [], speakers: []})
+            }).then(res => {
+              if(res.status != 200) success = false;
+              console.log(res.status);
+              res.text().then(text => console.log(text));
+            });
 
-    if (!success) {
-      return res.json({success: false, msg: "Error message"});
-    } else {
-      return res.json({success: true, roomId: "priyamroomid1"});
-    }
 
-    // Club.findById(req.params.club_id, function (err, foundClub) {
-    //   if (err || !foundClub) {
-    //     logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
-    //     req.flash('error', 'Something went wrong :(');
-    //     return res.redirect('back');
-    //   }
-    //   else {
-    //     for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
-    //       if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
-    //         let audioroom = new Audioroom({
-    //           roomName: req.body.roomName,
-    //           roomId: req.body.roomId,
-    //           timestamp: Date.now(),
-    //           audioroomClub: foundClub._id,
-    //           audioroomCreator: req.user._id,
-    //           capacity: req.body.capacity,
-    //         });
-    //         audioroom.save();
-    //         foundClub.audiorooms.addToSet(audioroom);
-    //         foundClub.save();
-    //       }
-    //     }
-    //     return res.redirect('/clubs/' + req.params.club_id);
-    //   }
-    // });
+            if (!success)
+              return res.json({success: false, msg: "Error message"});
+            else
+              return res.json({success: true, roomId: audioroom._id});
+          }
+        }
+      }
+    });
   },
 
   async audioroomsLobby(req, res, next) {
