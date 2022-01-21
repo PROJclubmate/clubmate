@@ -478,7 +478,7 @@
                       </div>
                     </div>
                     <div class="mt-2">
-                      <h3> Chat Rooms </h3>
+                      <h3 class="px-3"> Chat Rooms </h3>
                       <div id="common-room-div" class="room-container-div">
                         <% if(conversationId != ''){ %>
                           <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=<%= conversationId %>&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
@@ -535,16 +535,21 @@
                         <% } %>
                       <% } %>
                     </div>
-                    <div class="mt-2">
-                      <h3> Audio Rooms </h3>
+                    <div class="mt-2" id="audio_rooms_container">
+                      <h3 class="px-3"> Audio Rooms </h3>
 
-                        <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
-                          <div class="nounderline">
-                            <div id="create-new-room-container" class="room-container darkgrey">
-                              <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
-                            </div>
+                      <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
+                        <div class="nounderline">
+                          <div id="create-new-room-container" class="room-container darkgrey">
+                            <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
                           </div>
                         </div>
+                      </div>
+
+                      <!-- Audio rooms will be added here by the AJAX call -->
+
+                    </div>
+
                         <!-- Modal HTML -->
                         <div id="createNewAudioRoom" class="fixed-padding modal fade">
                           <div class="modal-dialog modal-dialog-centered modal-confirm">
@@ -585,7 +590,6 @@
                           </div>
                         </div>
                       
-                    </div>
                   </div>
                 </div>
               <% } %>
@@ -662,6 +666,25 @@
   }).catch(function(err) {
     ok = true;
     console.log("Fetching archives failed", err);
+  });
+
+  fetch('/clubs/' + club._id + '/audio/rooms').then(res => res.json()).then(function(audioRooms) {
+    let audioRoomsHTML = ``;
+
+    for (const room of audioRooms) {
+      audioRoomsHTML += `<div class="room-container-div">
+        <a href="/audio/join/${room.roomId}" class="nounderline">
+          <div class="room-container whitesmokeback">
+            <div class="mobiletext2 truncate1"></i>${room.name}</div>
+          </div>
+        </a>
+      </div>`;
+    }
+
+    document.getElementById("audio_rooms_container").innerHTML += audioRoomsHTML;
+  }).catch(function(err) {
+    ok = true;
+    console.log("Fetching audio rooms failed", err);
   });
 
   // New audio form
