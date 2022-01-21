@@ -2,19 +2,23 @@ const express   = require('express'),
   router        = express.Router(),
   middleware    = require('../middleware'),
   {audioroomsLobby , postNewAudioroom, joinAudioRoom, getNewAudioRoom,
-  getClubAudioRooms } = require('../controllers/audio_rooms');
+  getClubAudioRooms, deleteAudioRoom } = require('../controllers/audio_rooms');
 
 
 // Get create story page
 router.get('/lobby', middleware.isLoggedIn, audioroomsLobby);
 
-// Post request to make the new
+// Post request to make the new audio room
 router.post('/clubs/:club_id/audio/create' , middleware.isLoggedIn , postNewAudioroom);
 
 // REST API to get the audio rooms of a specific room
 router.get('/clubs/:club_id/audio/rooms', middleware.isLoggedIn, getClubAudioRooms);
 
 // Page to join an already created audio room
-router.get('/audio/join/:room_id', joinAudioRoom);
+router.get('/audio/join/:room_id', middleware.isLoggedIn, joinAudioRoom);
+
+// Post request to delete the audio room in the club
+router.post('/audio/delete/:room_id', middleware.isLoggedIn, deleteAudioRoom);
+
 
 module.exports = router;
