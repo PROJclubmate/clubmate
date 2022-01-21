@@ -18,6 +18,7 @@ module.exports = {
     console.log(req);
     // Will make a REST API, will return the room id on successfully creating the room
     // Do not render, give json
+    // TODO
 
     let success = true;
 
@@ -56,6 +57,8 @@ module.exports = {
 
   async audioroomsLobby(req, res, next) {
     // req.user._id
+
+    // TODO, also check if this user.find by needed or not
     User.findById(req.user._id, async function (err, foundUser) {
       if (err || !foundUser) {
         req.flash('error', 'Something went wrong :(');
@@ -80,7 +83,8 @@ module.exports = {
             club_name : "Backpack ready",
             audio_rooms: [
               {
-                roomName: "Wow"
+                roomName: "Wow",
+                roomId: "priyamroomid1"
               }
             ]
           }
@@ -95,12 +99,16 @@ module.exports = {
         //     }
         //   }
         // }
+        // TODO Pranshu
         return res.render('audio_rooms/lobby', { audioroomsData });
       }
     });
   },
 
   joinAudioRoom(req, res, next) {
+    // TODO, check if the audio room exists
+    // Also, is the user allowed to enter or not
+
     res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
   },
 
@@ -124,5 +132,11 @@ module.exports = {
         desc: "Room description 3"
       },
     ]);
+  },
+
+  deleteAudioRoom(req, res, next) {
+    // TODO: delete an audio room
+
+    res.json({"hello": "world"});
   }
 };
