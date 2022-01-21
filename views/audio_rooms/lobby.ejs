@@ -6,13 +6,15 @@
     <% for (const club_rooms of audioroomsData) { %>
       <div class="card py-3">
 
-        <div class="mt-2">
+        <div class="mt-2 mx-4">
           <div class="club_name"> <%= club_rooms.club_name %> </div>
-          <div id="common-room-div" class="room-container-div">
+          <div id="common-room-div" class="row">
 
               <% for (const audio_room of club_rooms.audio_rooms) { %>
-                <div class="room-container whitesmokeback px-3 col-sm-3">
-                  <a href="/audio/join/<%= audio_room.roomId %>"> <%= audio_room.roomName %> </a>
+                <div class="px-1 col-sm-3 my-2">
+                  <div class="room-container whitesmokeback">
+                    <a href="/audio/join/<%= audio_room.roomId %>"> <%= audio_room.roomName %> </a>
+                  </div>
                 </div>
               <% } %>
 
