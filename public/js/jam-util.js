@@ -17,12 +17,11 @@ function encode(binaryData) {
 async function seedToPublicKey(seedString) {
   const hash = new Uint8Array(await crypto.subtle.digest('SHA-512', new TextEncoder().encode(seedString))).slice(0, 32);
   const keypair = await keyPairFromSeed(hash);
-  console.log(keypair);
 
   let publicKey = encode(keypair.publicKey);
-  console.log("public key", publicKey);
+  return publicKey;
 }
 
-seedToPublicKey("priyamxyz");
-
-console.log("Hello");
+export {
+  seedToPublicKey
+}
