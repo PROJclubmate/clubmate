@@ -147,5 +147,13 @@ module.exports = {
     // TODO: delete an audio room
 
     res.json({"hello": "world"});
+  },
+
+  setUserJamKey(req, res, next) {
+    // req.body.public_key
+
+    console.log(req.body);
+
+    res.json({ success: true });
   }
 };
