@@ -349,3 +349,33 @@
           </div>
         </div>
       <% } %>
+
+      <% if(currentUser && !(currentUser.jamKey)){ %>
+        <!-- <script type="module" src="/js/jam-util.js"></script> -->
+        <script type="module">
+          // Jam public key doesn't exists, so create and set for this user
+          import { seedToPublicKey } from "/js/jam-util.js";
+          const csrfToken = "<%= csrfToken %>";
+
+          async function postData(url = '', data = {}) {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+          }
+
+          (async function setJamKey() {
+            const jamKey = await seedToPublicKey("priyamxyz");
+
+            postData(`/audio/setkey`, { public_key: jamKey , _csrf: csrfToken })
+              .then(data => {
+                // Jam key will be set on the server, no need to do anything here
+                console.log("JAM key set ", data); // JSON data parsed by `data.json()` call
+              });
+          }) ();
+        </script>
+      <% } %>
