@@ -827,8 +827,13 @@ module.exports = {
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
-                var CA_50_profilePic = [], numBuckets = foundBuckets.length;
-                for(var i=0;i<numBuckets;i++){
+                var CA_50_profilePic = [], bucketsNum = foundBuckets.length;
+                for(var i=0;i<bucketsNum;i++){
+                  foundBuckets[i].comments.sort(function(a, b){
+                    return a.upvotesCount - b.upvotesCount;
+                  });
+                }
+                for(var i=0;i<bucketsNum;i++){
                   CA_50_profilePic[i] = [];
                   for(var j=0;j<foundBuckets[i].comments.length;j++){
                     if(process.env.ENVIRONMENT === 'dev'){
@@ -837,9 +842,6 @@ module.exports = {
                       CA_50_profilePic[i][j] = s3Config.thumb_100_prefix+foundBuckets[i].comments[j].commentAuthor.id.profilePicId;
                     }
                   }
-                  foundBuckets[i].comments.sort(function(a, b){
-                    return a.upvotesCount - b.upvotesCount;
-                  });
                 }
                 var index = len-3;
                 if(req.user){
@@ -932,8 +934,13 @@ module.exports = {
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           } else{
-            var CA_50_profilePic = [], numBuckets = foundBuckets.length;
-            for(var i=0;i<numBuckets;i++){
+            var CA_50_profilePic = [], bucketsNum = foundBuckets.length;
+            for(var i=0;i<bucketsNum;i++){
+              foundBuckets[i].comments.sort(function(a, b){
+                return a.upvotesCount - b.upvotesCount;
+              });
+            }
+            for(var i=0;i<bucketsNum;i++){
               CA_50_profilePic[i] = [];
               for(var j=0;j<foundBuckets[i].comments.length;j++){
                 if(process.env.ENVIRONMENT === 'dev'){

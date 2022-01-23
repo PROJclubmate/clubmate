@@ -135,6 +135,9 @@ module.exports = {
           logger.error('(comments-8)foundBucket err => '+err);
           return res.sendStatus(500);
         } else if(!err && foundBucket != ''){
+          foundBucket.comments.sort(function(a, b){
+            return a.upvotesCount - b.upvotesCount;
+          });
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
             if(process.env.ENVIRONMENT === 'dev'){
@@ -150,9 +153,6 @@ module.exports = {
           } else{
             var upComments = [], currentUser = null;
           }
-          foundBucket.comments.sort(function(a, b){
-            return a.upvotesCount - b.upvotesCount;
-          });
           res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
           CA_50_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();

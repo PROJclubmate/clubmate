@@ -2159,7 +2159,7 @@ function post_subPosts_template(response){
       <% if(index-1 > -1){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
       <% } %>
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btn-sm text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
       <% if(index+1 < post.subpostBuckets.length){ %>
         <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index+1 %>"> <%= index+2 %> </a></span>
       <% } %>
