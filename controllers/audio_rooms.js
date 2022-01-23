@@ -66,87 +66,88 @@ module.exports = {
 
   async audioroomsLobby(req, res, next) {
     // req.user._id
-
     // TODO, also check if this user.find by needed or not
-    User.findById(req.user._id, async function (err, foundUser) {
-      if (err || !foundUser) {
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
+    // Done, user.find is needed coz we only show all the rooms for that particular user.
+    // Tested and bugs fixed
+
+    let foundUser = await User.findById(req.user._id).exec();
+    let audioroomsData = []
+    for(var i = 0; i < foundUser.userClubs.length; i++){
+      let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+      if(foundClub && foundClub.audiorooms.length){
+        let clubData = {};
+        clubData["club_name"] = foundClub.name;
+        clubData["audio_rooms"] = []
+        for(var j = 0; j < foundClub.audiorooms.length; j++){
+          let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
+          clubData["audio_rooms"].push({
+            roomId : String(foundAudioroom._id),
+            roomName : foundAudioroom.roomName
+          });
+        }
+        audioroomsData.push(clubData);
       }
-      else {
-        let audioroomsData = [
-          {
-            club_name: "JPEG",
-            audio_rooms: [
-              {
-                roomName: "Room JPEG 1",
-                roomId: "abcdefghijklmn",   // Take it as the id of the room, unique key mongodb
-              },
-              {
-                roomName: "Room Jpeg 2",
-                roomId: "wowthisisthekey"
-              }
-            ],
-          },
-          {
-            club_name : "Backpack ready",
-            audio_rooms: [
-              {
-                roomName: "Wow",
-                roomId: "priyamroomid1"
-              }
-            ]
-          }
-        ];
-        // for(var i = 0; i < foundUser.userClubs.length; i++){
-        //   let foundClub = await Club.findById(foundUser.userClubs[i]._id).exec();
-        //   if(foundClub && foundClub.audiorooms.length){
-        //     audioroomsData[foundClub.name] = []
-        //     for(var j = 0; j < foundClub.audiorooms.length; j++){
-        //       let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
-        //       audioroomsData[foundClub.name].push(foundAudioroom);
-        //     }
-        //   }
-        // }
-        // TODO Pranshu
-        return res.render('audio_rooms/lobby', { audioroomsData });
-      }
-    });
+    }
+    return res.render('audio_rooms/lobby', { audioroomsData });
   },
 
-  joinAudioRoom(req, res, next) {
+  async joinAudioRoom(req, res, next) {
     // TODO, check if the audio room exists
     // Also, is the user allowed to enter or not
-
-    res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+    // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
+    var success = false;
+    let foundUser = await User.findById(req.user._id).exec();
+    for(let i = 0; i < foundUser.userClubs.length; i++){
+      var club_id = foundUser.userClubs[i].id;
+      let foundClub = await Club.findById(club_id).exec();
+      for(let j = 0; j < foundClub.audiorooms.length; j++){
+        let audioroom_id = foundClub.audiorooms[j];
+        if(audioroom_id == req.params.room_id){
+          success = true;
+        }
+      }
+    }
+    if(success) res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+    else res.json({success : false});
   },
 
-  getClubAudioRooms(req, res, next) {
+  async getClubAudioRooms(req, res, next) {
     //  TODO, get the audio rooms of a specific club provided params.club_id
-    console.log(req.body);
-    return res.json([
-      {
-        roomId: "abcdef",
-        name: "Name 1",
-        desc: "Room description 1"
-      },
-      {
-        roomId: "abafaf",
-        name: "Name 2",
-        desc: "Room description 2"
-      },
-      {
-        roomId: "ghfajj",
-        name: "Name 3",
-        desc: "Room description 3"
-      },
-    ]);
+    //  Done
+    //  Tested, works well.
+    
+    var rooms = [];
+    let foundClub = await Club.findById(req.params.club_id).exec();
+    for(let i = 0; i < foundClub.audiorooms.length; i++){
+      let foundAudioroom = await (await Audioroom.findById(foundClub.audiorooms[i])).execPopulate();
+      rooms.push({
+        roomId : foundAudioroom._id,
+        name: foundAudioroom.roomName,
+        desc: foundAudioroom.roomDesc
+      })
+    }
+    return res.json(rooms);
   },
 
-  deleteAudioRoom(req, res, next) {
+  async deleteAudioRoom(req, res, next) {
     // TODO: delete an audio room
+    // Done, Not tested. Add club_id in params from frontend
+    console.log("Deleting story", req.body.room_id, " from ", req.params.club_id);
 
-    res.json({"hello": "world"});
+    Audioroom.find({ _id: req.body.room_id }).deleteOne().exec();
+    Club.updateOne({ _id: req.params.club_id }, {
+      $pullAll: {
+        audiorooms: [req.params.room_id],
+      }
+    }, function (err, docs) {
+      if (err) {
+        console.log(err);
+        return res.sendStatus(500);
+      }
+      else {
+        return res.json({ success: true });
+      }
+    });
   },
 
   async setUserJamKey(req, res, next) {
