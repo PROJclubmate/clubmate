@@ -5,6 +5,7 @@ const mongoose          = require('mongoose'),
 const userSchema = new Schema({
   firstName: {type: String, required: true},
   lastName: String,
+  jamKey: String,
   fullName: {type: String, required: true},
   email: {type: String, unique: true, required: true},
   googleId: String,

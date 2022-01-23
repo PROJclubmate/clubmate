@@ -123,7 +123,7 @@ module.exports = {
 
   getClubAudioRooms(req, res, next) {
     //  TODO, get the audio rooms of a specific club provided params.club_id
-
+    console.log(req.body);
     return res.json([
       {
         roomId: "abcdef",
@@ -149,11 +149,12 @@ module.exports = {
     res.json({"hello": "world"});
   },
 
-  setUserJamKey(req, res, next) {
-    // req.body.public_key
-
+  async setUserJamKey(req, res, next) {
+    // req.body.public_key. Tested. Works Good.
     console.log(req.body);
-
+    let foundUser = await User.findById(req.user._id).exec();
+    foundUser.jamKey = req.body.public_key;
+    foundUser.save();
     res.json({ success: true });
   }
 };
