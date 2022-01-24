@@ -24,9 +24,11 @@ module.exports = {
         return res.redirect('back');
       }
       else {
+        let clubMatch = false;
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
             let success = true;
+            clubMatch = true;
             let audioroom = new Audioroom({
               roomName: req.body.roomName,
               roomDesc: req.body.roomDesc,
@@ -46,7 +48,7 @@ module.exports = {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({moderators: [], speakers: []})
+              body: JSON.stringify({moderators: [req.user.jamKey], speakers: [req.user.jamKey]})
             }).then(res => {
               if(res.status != 200) success = false;
               console.log(res.status);
@@ -60,6 +62,11 @@ module.exports = {
               return res.json({success: true, roomId: audioroom._id});
           }
         }
+        if(!clubMatch){
+          console.log("User doesn't has right to make a audio room here");
+          return res.json({success: false, msg: "User is not allowed to make rooms here"});
+        }
+        
       }
     });
   },
