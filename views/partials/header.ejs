@@ -369,7 +369,7 @@
           }
 
           (async function setJamKey() {
-            const jamKey = await seedToPublicKey("priyamxyz");
+            const jamKey = await seedToPublicKey("<%= currentUser.id %>");
 
             postData(`/audio/setkey`, { public_key: jamKey , _csrf: csrfToken })
               .then(data => {
