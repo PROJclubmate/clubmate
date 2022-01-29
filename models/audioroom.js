@@ -4,7 +4,6 @@ const mongoose = require('mongoose'),
 const audioroomSchema = new Schema({  
   roomName: String,
   roomDesc: String,
-  roomColor: String,
   timestamp: Number,
   // usersInside: [{
   //   type: Schema.Types.ObjectId,

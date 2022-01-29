@@ -32,7 +32,6 @@ module.exports = {
             let audioroom = new Audioroom({
               roomName: req.body.roomName,
               roomDesc: req.body.roomDesc,
-              roomColor: req.body.roomColor,
               timestamp: Date.now(),
               audioroomClub: foundClub._id,
               audioroomCreator: req.user._id,
