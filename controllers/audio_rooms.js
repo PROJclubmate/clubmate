@@ -16,10 +16,9 @@ module.exports = {
       }
     */
 
-    // console.log(req);
     Club.findById(req.params.club_id, function (err, foundClub) {
       if (err || !foundClub) {
-        logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
+        logger.error(req.user._id + ' : (audiorooms-1)foundClub err => ' + err);
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       }
@@ -50,19 +49,18 @@ module.exports = {
               body: JSON.stringify({moderators: [req.user.jamKey], speakers: [req.user.jamKey]})
             }).then(res => {
               if(res.status != 200) success = false;
-              console.log(res.status);
-              res.text().then(text => console.log(text));
             });
 
 
-            if (!success)
-              return res.json({success: false, msg: "Error message"});
-            else
+            if (!success){
+              logger.error(req.user._id + ' : (audiorooms-2) Room creation failed');
+              return res.json({success: false, msg: "Room creation failed"});
+            } else
               return res.json({success: true, roomId: audioroom._id});
           }
         }
         if(!clubMatch){
-          console.log("User doesn't has right to make a audio room here");
+          logger.error(req.user._id + ' : (audiorooms-3) User doesnt has right to make a audio room here');
           return res.json({success: false, msg: "User is not allowed to make rooms here"});
         }
         
@@ -78,23 +76,30 @@ module.exports = {
 
     let foundUser = await User.findById(req.user._id).exec();
     let audioroomsData = []
-    for(var i = 0; i < foundUser.userClubs.length; i++){
-      let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
-      if(foundClub && foundClub.audiorooms.length){
-        let clubData = {};
-        clubData["club_name"] = foundClub.name;
-        clubData["audio_rooms"] = []
-        for(var j = 0; j < foundClub.audiorooms.length; j++){
-          let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
-          clubData["audio_rooms"].push({
-            roomId : String(foundAudioroom._id),
-            roomName : foundAudioroom.roomName
-          });
+    if(foundUser){
+      for(var i = 0; i < foundUser.userClubs.length; i++){
+        let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+        if(foundClub && foundClub.audiorooms.length){
+          let clubData = {};
+          clubData["club_name"] = foundClub.name;
+          clubData["audio_rooms"] = []
+          for(var j = 0; j < foundClub.audiorooms.length; j++){
+            let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
+            clubData["audio_rooms"].push({
+              roomId : String(foundAudioroom._id),
+              roomName : foundAudioroom.roomName
+            });
+          }
+          audioroomsData.push(clubData);
         }
-        audioroomsData.push(clubData);
       }
+      return res.render('audio_rooms/lobby', { audioroomsData });
     }
-    return res.render('audio_rooms/lobby', { audioroomsData });
+    else{
+      logger.error(req.user._id +' : (audiorooms-4) Invalid request. User not found');
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
   },
 
   async joinAudioRoom(req, res, next) {
@@ -103,18 +108,28 @@ module.exports = {
     // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
     var success = false;
     let foundUser = await User.findById(req.user._id).exec();
-    for(let i = 0; i < foundUser.userClubs.length; i++){
-      var club_id = foundUser.userClubs[i].id;
-      let foundClub = await Club.findById(club_id).exec();
-      for(let j = 0; j < foundClub.audiorooms.length; j++){
-        let audioroom_id = foundClub.audiorooms[j];
-        if(audioroom_id == req.params.room_id){
-          success = true;
+    if(foundUser){
+      for(let i = 0; i < foundUser.userClubs.length; i++){
+        var club_id = foundUser.userClubs[i].id;
+        let foundClub = await Club.findById(club_id).exec();
+        for(let j = 0; j < foundClub.audiorooms.length; j++){
+          let audioroom_id = foundClub.audiorooms[j];
+          if(audioroom_id == req.params.room_id){
+            success = true;
+          }
         }
       }
+      if(success) res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+      else {
+        logger.error(req.user._id +' : (audiorooms-5) No audio room with id : ' + req.params.room_id + ' exists.');
+        res.json({success : false});
+      }
     }
-    if(success) res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
-    else res.json({success : false});
+    else{
+      logger.error(req.user._id +' : (audiorooms-6) Invalid request. User not found');
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
   },
 
   async getClubAudioRooms(req, res, next) {
@@ -124,21 +139,26 @@ module.exports = {
     
     var rooms = [];
     let foundClub = await Club.findById(req.params.club_id).exec();
-    for(let i = 0; i < foundClub.audiorooms.length; i++){
-      let foundAudioroom = await (await Audioroom.findById(foundClub.audiorooms[i])).execPopulate();
-      rooms.push({
-        roomId : foundAudioroom._id,
-        name: foundAudioroom.roomName,
-        desc: foundAudioroom.roomDesc
-      })
+    if(foundClub){
+      for(let i = 0; i < foundClub.audiorooms.length; i++){
+        let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[i]).exec();
+        rooms.push({
+          roomId : foundAudioroom._id,
+          name: foundAudioroom.roomName,
+          desc: foundAudioroom.roomDesc
+        })
+      }
+      return res.json(rooms);
     }
-    return res.json(rooms);
+    else{
+      logger.error(req.user._id +' : (audiorooms-7) Invalid request. No club with id : ' + req.params.club_id + ' found');
+      return res.redirect('back');
+    }
   },
 
   async deleteAudioRoom(req, res, next) {
     // TODO: delete an audio room
     // Done, Not tested. Add club_id in params from frontend
-    console.log("Deleting story", req.body.room_id, " from ", req.params.club_id);
 
     Audioroom.find({ _id: req.body.room_id }).deleteOne().exec();
     Club.updateOne({ _id: req.params.club_id }, {
@@ -147,7 +167,7 @@ module.exports = {
       }
     }, function (err, docs) {
       if (err) {
-        console.log(err);
+        logger.error(req.user._id +' : (audiorooms-8) Room deletion err => ' + err);
         return res.sendStatus(500);
       }
       else {
@@ -158,10 +178,17 @@ module.exports = {
 
   async setUserJamKey(req, res, next) {
     // req.body.public_key. Tested. Works Good.
-    console.log(req.body);
+
     let foundUser = await User.findById(req.user._id).exec();
-    foundUser.jamKey = req.body.public_key;
-    foundUser.save();
-    res.json({ success: true });
+    if(foundUser){
+      foundUser.jamKey = req.body.public_key;
+      foundUser.save();
+      res.json({ success: true });
+    }
+    else{
+      logger.error(req.user._id +' : (audiorooms-9) User not found');
+      return res.redirect('back');
+    }
+    
   }
 };
