@@ -676,7 +676,7 @@
     for (const room of audioRooms) {
       audioRoomsHTML += `<div class="room-container-div">
         <a href="/audio/join/${room.roomId}" class="nounderline">
-          <div class="room-container whitesmokeback">
+          <div class="room-container whiteback">
             <div class="mobiletext2 truncate1"></i>${room.name}</div>
           </div>
         </a>
@@ -696,8 +696,6 @@
     const aroomname = document.getElementById('aroomname').value;
     const aroomdesc = document.getElementById('aroomdesc').value;
     const aroomcolor = document.getElementById('aroomcolor').value;
-
-    console.log(aroomdesc, aroomname, aroomcolor);
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {
@@ -723,7 +721,7 @@
 
     postData(`/clubs/${club._id}/audio/create`, dataObject)
       .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
+        // JSON data parsed by `data.json()` call
         
         if (data.success) {
           window.location = "/audio/join/" + data.roomId;
