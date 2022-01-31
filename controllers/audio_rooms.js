@@ -84,8 +84,7 @@ module.exports = {
       for(var i = 0; i < foundUser.userClubs.length; i++){
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
         if(foundClub && foundClub.audiorooms.length){
-          let clubData = {};
-          clubData["club_name"] = foundClub.name;
+          let clubData = foundClub;
           clubData["audio_rooms"] = []
           for(var j = 0; j < foundClub.audiorooms.length; j++){
             let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
@@ -97,6 +96,7 @@ module.exports = {
           audioroomsData.push(clubData);
         }
       }
+
       return res.render('audio_rooms/lobby', { audioroomsData });
     }
     else{
