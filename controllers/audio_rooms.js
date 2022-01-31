@@ -13,6 +13,7 @@ module.exports = {
         roomName,
         roomDesc,
         roomColor,
+        isClubExclusive, TODO in frontend, default is true
       }
     */
 
@@ -23,6 +24,8 @@ module.exports = {
         return res.redirect('back');
       }
       else {
+        let exclusive = true;
+        if(!(req.body.isClubExclusive)) exclusive = false;
         let clubMatch = false;
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
@@ -34,7 +37,8 @@ module.exports = {
               timestamp: Date.now(),
               audioroomClub: foundClub._id,
               audioroomCreator: req.user._id,
-              capacity: 50
+              capacity: 50,
+              isClubExclusive: exclusive
             });
             audioroom.save();
             foundClub.audiorooms.addToSet(audioroom);
@@ -106,7 +110,12 @@ module.exports = {
     // TODO, check if the audio room exists
     // Also, is the user allowed to enter or not
     // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
+
     var success = false;
+    let requestedRoom = await Audioroom.findById(req.params.room_id).exec();
+    if(requestedRoom && !(requestedRoom.isClubExclusive)){
+      return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+    }
     let foundUser = await User.findById(req.user._id).exec();
     if(foundUser){
       for(let i = 0; i < foundUser.userClubs.length; i++){
@@ -119,14 +128,14 @@ module.exports = {
           }
         }
       }
-      if(success) res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+      if(success) return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
       else {
-        logger.error(req.user._id +' : (audiorooms-5) No audio room with id : ' + req.params.room_id + ' exists.');
-        res.json({success : false});
+        logger.error(req.user._id +' : (audiorooms-6) No audio room with id : ' + req.params.room_id + ' exists.');
+        return res.json({success : false});
       }
     }
     else{
-      logger.error(req.user._id +' : (audiorooms-6) Invalid request. User not found');
+      logger.error(req.user._id +' : (audiorooms-7) Invalid request. User not found');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
