@@ -22,9 +22,8 @@
     const room_id = "<%= room_id %>";
     const user_id  = "<%= user._id %>";
     const user_name = "<%= user.firstName %> <%=user.lastName %>";
-    const user_avatar = "<%= user.profilePic %>"
-    // TODO: Give the seed in the iframe also
-
+    const user_avatar = "<%= user.profilePic %>";
+    let theme = <%= user.darkTheme %> ? "dark" : "light";
 
     function encodeBase64Url(object) {
       let bytes = new TextEncoder().encode(JSON.stringify(object));
@@ -50,6 +49,7 @@
 
     const jam_configs = {
       jamUrl: "https://audio.clubmate.co.in",
+      // jamUrl: "http://localhost:3000",
       room_id: room_id,
       params: {
         room: {
@@ -69,7 +69,8 @@
         },
         keys: {
           seed: user_id
-        }
+        },
+        theme
       }
     }
 
