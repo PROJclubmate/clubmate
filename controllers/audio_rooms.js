@@ -130,7 +130,7 @@ module.exports = {
     var success = false;
     let requestedRoom = await Audioroom.findById(req.params.room_id).exec();
     if(requestedRoom && !(requestedRoom.isClubExclusive)){
-      return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+      return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
     }
     let foundUser = await User.findById(req.user._id).exec();
     if(foundUser){
@@ -144,7 +144,7 @@ module.exports = {
           }
         }
       }
-      if(success) return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user });
+      if(success) return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
       else {
         logger.error(req.user._id +' : (audiorooms-6) No audio room with id : ' + req.params.room_id + ' exists.');
         return res.json({success : false});

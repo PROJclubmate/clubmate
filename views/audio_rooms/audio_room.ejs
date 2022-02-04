@@ -23,6 +23,7 @@
     const user_id  = "<%= user._id %>";
     const user_name = "<%= user.firstName %> <%=user.lastName %>";
     const user_avatar = "<%= user.profilePic_100 %>";
+    const jamUrl = "<%= jamUrl %>";
     let theme = <%= user.darkTheme %> ? "dark" : "light";
 
     function encodeBase64Url(object) {
@@ -48,8 +49,7 @@
     }
 
     const jam_configs = {
-      jamUrl: "https://audio.clubmate.co.in",
-      // jamUrl: "http://localhost:3000",
+      jamUrl: jamUrl,
       room_id: room_id,
       params: {
         room: {

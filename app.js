@@ -33,6 +33,11 @@ if(process.env.MACHINE === 'localhost'){
   var oAuthCallbackUrl = 'https://clubmate.co.in/auth/google/callback';
 }
 
+if(!process.env.JAM_URL) {
+  console.log("No jamUrl env found, using default");
+  process.env.JAM_URL = "https://audio.clubmate.co.in";
+}
+console.log("Using jamUrl:", process.env.JAM_URL);
 
 //Requiring routes
 const indexRoutes    = require('./routes/index'),
