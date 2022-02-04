@@ -120,6 +120,12 @@ module.exports = {
     // Also, is the user allowed to enter or not
     // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
 
+    if(process.env.ENVIRONMENT === 'dev'){
+      req.user.profilePic_100 = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    } else if (process.env.ENVIRONMENT === 'prod'){
+      req.user.profilePic_100 = s3Config.thumb_100_prefix+req.user.profilePicId;
+    }
+
     var success = false;
     let requestedRoom = await Audioroom.findById(req.params.room_id).exec();
     if(requestedRoom && !(requestedRoom.isClubExclusive)){
