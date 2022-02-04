@@ -8,13 +8,12 @@
 
         <div class="mt-2 mx-4">
           <div class="lobby_club_name">
-            <!-- TODO : Show club DP here CSS -->
             <span>
-              <img src="<%= club.avatar_100 %>">
+              <img class="navdp rounded-circle" src="<%= club.avatar_100 %>">
             </span>
-            <a href="/clubs/<%= club._id %>"> <%= club.name %> </a>
+            <a class="h3 px-1 align-middle" href="/clubs/<%= club._id %>"> <%= club.name %> </a>
           </div>
-          <div id="common-room-div" class="row">
+          <div id="common-room-div" class="row py-2">
 
               <% for (const audio_room of club.audio_rooms) { %>
                 <div class="px-1 col-sm-3 my-2">
