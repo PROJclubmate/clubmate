@@ -17,7 +17,7 @@
 
               <% for (const audio_room of club.audio_rooms) { %>
                 <div class="px-1 col-sm-3 my-2">
-                  <a href="/audio/join/<%= audio_room.roomId %>">
+                  <a class="nounderline" href="/audio/join/<%= audio_room.roomId %>">
                   <div class="room-container whiteback">
                     <div class="roomInfo">
                       <div class="text-xl text-dark"> <%= audio_room.roomName %></div>

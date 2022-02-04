@@ -639,10 +639,41 @@
 </div>
 
 <script>
+  var club = <%- JSON.stringify(club) %>;
+  var csrfToken = "<%= csrfToken %>";
+
   <% if(currentUser){ %>
     const guserRank = <%= rank %>;
   <% } else { %>
     const guserRank = 4;
+  <% } %>
+
+  <% if(currentUser && 0 <= rank && rank <= 2){ %>
+  deleteAudioRoom = (e, roomId) => {
+    e.preventDefault();
+
+    async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    postData(`/audio/delete/${roomId}`, { club_id: club._id, _csrf: csrfToken })
+      .then(data => {
+        if (data.success) {
+          document.getElementById(`audio_room_${roomId}`).remove();
+        } else {
+          // TODO: Show some failing error
+        }
+      }).catch(err => {
+        // TODO: Show some failing error
+      });
+  }
   <% } %>
 
 </script>
@@ -650,9 +681,6 @@
 <script src="/zuck.js-master/dist/zuck.js"></script>
 <script src="/js/club-stories.js"></script>
 <script type='text/javascript'>
-  var club = <%- JSON.stringify(club) %>;
-  var csrfToken = "<%= csrfToken %>";
-
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
     createCurrentStories('club_current_stories', storiesData, club, csrfToken = csrfToken, userRank = guserRank);
   }).catch(function(err) {
@@ -671,10 +699,15 @@
     let audioRoomsHTML = ``;
 
     for (const room of audioRooms) {
-      audioRoomsHTML += `<div class="room-container-div">
+      audioRoomsHTML += `<div id="audio_room_${room.roomId}" class="room-container-div">
         <a href="/audio/join/${room.roomId}" class="nounderline">
           <div class="room-container whiteback">
             <div class="mobiletext2 truncate1"></i>${room.name}</div>
+            ${guserRank <= 2 ?
+              `<span class="room-del"> 
+                <img onclick="deleteAudioRoom(event, '${room.roomId}')" class="room-del-img" src="/images/delete.svg" alt="Delete room">  
+              </span>`
+              : ''}
           </div>
         </a>
       </div>`;
