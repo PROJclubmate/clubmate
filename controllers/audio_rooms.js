@@ -99,7 +99,8 @@ module.exports = {
             let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();
             clubData["audio_rooms"].push({
               roomId : String(foundAudioroom._id),
-              roomName : foundAudioroom.roomName
+              roomName : foundAudioroom.roomName,
+              roomDesc : foundAudioroom.roomDesc,
             });
           }
           audioroomsData.push(clubData);
