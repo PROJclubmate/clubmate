@@ -182,11 +182,17 @@ module.exports = {
   },
 
   async deleteAudioRoom(req, res, next) {
-    // TODO: delete an audio room
+    // TODO: delete an audio room - Add security
     // Done, Not tested. Add club_id in params from frontend
+    /*
+    room_id in params
+    body : { club_id }
+    */
 
-    Audioroom.find({ _id: req.body.room_id }).deleteOne().exec();
-    Club.updateOne({ _id: req.params.club_id }, {
+    // console.log("Deleting audio room", req.body.club_id);
+
+    Audioroom.find({ _id: req.params.room_id }).deleteOne().exec();
+    Club.updateOne({ _id: req.body.club_id }, {
       $pullAll: {
         audiorooms: [req.params.room_id],
       }

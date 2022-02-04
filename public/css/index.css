@@ -3820,6 +3820,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   background-color: white;
 }
 .room-container{
+  position: relative;
   color: #7a7b7c;
   padding: 2rem 3rem 2rem 3rem;
   border: 1px solid lightgrey;
@@ -3830,8 +3831,20 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .room-container:hover{
   color: #343a40;
-  transform: scale(1.02);
+  transform: scale(1.01);
   /* transition: transform 0.1s; */
+}
+.room-del {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 4px;
+  z-index: 10;
+}
+.room-del-img {
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
 }
 #create-new-room-container{
   border-color: darkgrey;
