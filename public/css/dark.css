@@ -43,6 +43,9 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   box-shadow: 0 0 0px 1000px var(--color-dark-800) inset !important;
   -webkit-text-fill-color: var(--color-white-100) !important;
 }
+.text-dark{
+  color: var(--color-white-200) !important;
+}
 
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){

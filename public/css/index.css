@@ -3849,6 +3849,8 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .room-container:hover{
   color: #343a40;
+  transform: scale(1.02);
+  /* transition: transform 0.1s; */
 }
 #create-new-room-container{
   border-color: darkgrey;
