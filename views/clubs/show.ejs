@@ -481,6 +481,23 @@
                         <span class="lightgrey text-sm mx-2 my-auto"><%= club.chatRoomsCount %> <%= club.chatRoomsCount == 1 ? 'room': 'rooms' %></span>
                       </div>
                     </div>
+
+                    <div class="mt-2" id="audio_rooms_container">
+                      <h3 class="px-3"> Audio Rooms </h3>
+
+                      <% if(currentUser && 0 <= rank && rank <= 2){ %>
+                      <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
+                        <div class="nounderline">
+                          <div id="create-new-room-container" class="room-container darkgrey">
+                            <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
+
+                      <!-- Audio rooms will be added here by the AJAX call -->
+                    </div>
+
                     <div class="mt-2">
                       <h3 class="px-3"> Chat Rooms </h3>
                       <div id="common-room-div" class="room-container-div">
@@ -538,22 +555,6 @@
                           </div>
                         <% } %>
                       <% } %>
-                    </div>
-                    <div class="mt-2" id="audio_rooms_container">
-                      <h3 class="px-3"> Audio Rooms </h3>
-
-                      <% if(currentUser && 0 <= rank && rank <= 2){ %>
-                      <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
-                        <div class="nounderline">
-                          <div id="create-new-room-container" class="room-container darkgrey">
-                            <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
-                          </div>
-                        </div>
-                      </div>
-                      <% } %>
-
-                      <!-- Audio rooms will be added here by the AJAX call -->
-
                     </div>
 
                         <!-- Modal HTML -->
