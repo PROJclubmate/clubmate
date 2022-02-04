@@ -2,6 +2,8 @@ const Club = require('../models/club'),
   logger = require('../logger'),
   User = require('../models/user'),
   Audioroom = require('../models/audioroom'),
+  clConfig         = require('../config/cloudinary'),
+  s3Config         = require('../config/s3')
   fetch = require('node-fetch');
 
 module.exports = {
@@ -85,6 +87,13 @@ module.exports = {
         let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
         if(foundClub && foundClub.audiorooms.length){
           let clubData = foundClub;
+
+          if(process.env.ENVIRONMENT === 'dev'){
+            clubData.avatar_100 = clConfig.cloudinary.url(foundClub.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            clubData.avatar_100 = s3Config.thumb_100_prefix+foundClub.avatarId;
+          }
+
           clubData["audio_rooms"] = []
           for(var j = 0; j < foundClub.audiorooms.length; j++){
             let foundAudioroom = await Audioroom.findById(foundClub.audiorooms[j]._id).exec();

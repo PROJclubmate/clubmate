@@ -573,15 +573,7 @@
                                     <label for="aroomdesc" class="sr-only">Room desc</label>
                                     <input id="aroomdesc" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="aroomdesc" placeholder="Room description" required>
                                   </div>
-                                  <div class="form-group">
-                                    <label for="aroomdesc" class="sr-only">Room desc</label>
-                                    <select id="aroomcolor" class="form-control form-control-sm shadow commentbox2 text-center" name="aroomcolor">
-                                      <option value="black" selected>Black</option>
-                                      <option value="red">Red</option>
-                                      <option value="green">Green</option>
-                                      <option value="blue">Blue</option>
-                                    </select>
-                                  </div>
+                                  <!-- TODO add room exclusive -->
                                   <br>
                                   <br>
                                   <button class="btn btn-sm btn-success btn-block" title="Create new room" type="submit"><span id="load-createaudioclub"></span>Submit</button>
@@ -695,7 +687,7 @@
 
     const aroomname = document.getElementById('aroomname').value;
     const aroomdesc = document.getElementById('aroomdesc').value;
-    const aroomcolor = document.getElementById('aroomcolor').value;
+    const aroomexclusive = true; // TODO
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {
@@ -713,7 +705,7 @@
       _csrf: csrfToken,
       roomName: aroomname,
       roomDesc: aroomdesc,
-      roomColor: aroomcolor,
+      isClubExclusive: aroomexclusive,
       moderators: ["5dc19df7792d0826e97ba442"]
     }
 
