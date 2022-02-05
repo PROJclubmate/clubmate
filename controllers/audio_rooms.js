@@ -122,9 +122,9 @@ module.exports = {
     // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
 
     if(process.env.ENVIRONMENT === 'dev'){
-      req.user.profilePic_100 = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+      req.user.profilePic_100 = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_200_obj);
     } else if (process.env.ENVIRONMENT === 'prod'){
-      req.user.profilePic_100 = s3Config.thumb_100_prefix+req.user.profilePicId;
+      req.user.profilePic_100 = s3Config.thumb_200_prefix+req.user.profilePicId;
     }
 
     var success = false;
