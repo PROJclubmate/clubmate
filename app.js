@@ -34,10 +34,14 @@ if(process.env.MACHINE === 'localhost'){
 }
 
 if(!process.env.JAM_URL) {
-  console.log("No jamUrl env found, using default");
+  if (process.env.ENVIRONMENT === 'dev') {
+    console.log("No JAM_URL env found, using default");
+  }
   process.env.JAM_URL = "https://audio.clubmate.co.in";
 }
-console.log("Using jamUrl:", process.env.JAM_URL);
+if (process.env.ENVIRONMENT === 'dev') {
+  console.log("Using jamUrl:", process.env.JAM_URL);
+}
 
 //Requiring routes
 const indexRoutes    = require('./routes/index'),
