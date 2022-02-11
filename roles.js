@@ -1,0 +1,4 @@
+// Can we use this as ejs variables?
+
+AUDIO_ROOMS_CREATION_RANK=3
+AUDIO_ROOMS_CREATION_OPEN_TO_ALL_RANK=1
