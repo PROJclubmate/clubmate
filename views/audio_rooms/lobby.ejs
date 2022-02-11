@@ -26,6 +26,13 @@
                   </div>
                   </a>
                 </div>
+
+                <script>
+                  fetch(`<%= jamUrl %>/_/pantry/api/v1/rooms/<%= audio_room.roomId %>/live`).then(data => data.json()).then(data => {
+                    let roomId = "<%= audio_room.roomId %>";
+                    console.log(roomId, data);
+                  });
+                </script>
               <% } %>
 
             </a>
@@ -37,12 +44,5 @@
       </div>
     <% } %>
 </div>
-
-<script>
-  const jamUrl = "<%= jamUrl %>";
-
-  let uri = `${jamUrl}/_/pantry/api/v1/rooms/6206a477ae65874e74a3dc82/live`;
-  fetch(uri).then(data => data.json()).then(data => console.log(data));
-</script>
 
 <% include ../partials/footer %>
