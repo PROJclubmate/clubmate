@@ -666,8 +666,14 @@
   <% } %>
 
   <% if(currentUser && 0 <= rank && rank <= 2){ %>
-  deleteAudioRoom = (e, roomId) => {
+  openDeleteAudioRoomModal = (e, roomId) => {
     e.preventDefault();
+
+    $(`#deleteAudioRoomModal${roomId}`).modal();
+  }
+
+  deleteAudioRoom = (roomId) => {
+    loading_spinner('load-deleteaudioclub','name');
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {
@@ -684,6 +690,7 @@
       .then(data => {
         if (data.success) {
           document.getElementById(`audio_room_${roomId}`).remove();
+          $(`#deleteAudioRoomModal${roomId}`).modal('hide');
         } else {
           // TODO: Show some failing error
         }
@@ -722,12 +729,35 @@
             <div class="mobiletext2 truncate1"></i>${room.name}</div>
             ${guserRank <= 2 ?
               `<span class="room-del"> 
-                <img onclick="deleteAudioRoom(event, '${room.roomId}')" class="room-del-img" src="/images/delete.svg" alt="Delete room">  
+                <i onclick="openDeleteAudioRoomModal(event, '${room.roomId}')" class="fas fa-trash-alt mr-2 room-del-img" alt="Delete room"> </i>
               </span>`
               : ''}
           </div>
         </a>
-      </div>`;
+      </div>
+      
+      <!-- Delete Audio Room modal -->
+      <div id="deleteAudioRoomModal${room.roomId}" class="fixed-padding modal fade">
+        <div class="modal-dialog modal-confirm">
+          <div class="modal-content">
+            <div class="d-flex grey">
+              <span class="icon-box">
+                <i class="fas fa-exclamation text-xxxl"></i>
+              </span>              
+              <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div>
+              <p>Do you really want to delete ${room.name}? This cannot be undone.</p>
+            </div>
+            <div class="my-2">
+              <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
+              <button name="deleteAudioRoom" onclick="deleteAudioRoom('${room.roomId}')" class="btn btn-danger btn-sm ml-1"> <span id="load-deleteaudioclub"></span> Delete </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
     }
 
     document.getElementById("audio_rooms_container").innerHTML += audioRoomsHTML;

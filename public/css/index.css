@@ -3861,8 +3861,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   z-index: 10;
 }
 .room-del-img {
-  height: 32px;
-  width: 32px;
   cursor: pointer;
 }
 #create-new-room-container{
