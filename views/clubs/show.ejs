@@ -692,6 +692,8 @@
         }
       }).catch(err => {
         // TODO: Show some failing error
+      }).finally(() => {
+        remove_loading_spinner('load-deleteaudioclub','name');
       });
   }
   <% } %>

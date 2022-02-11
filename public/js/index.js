@@ -238,6 +238,14 @@ function loading_spinner(targetId, checkId){
   }
 }
 
+// Remove loading spinner
+function remove_loading_spinner(targetId, checkId){
+  var targetIdVar = '#'+targetId; var checkIdVar = '#'+checkId;
+  if(checkId == '' || (checkId != '' && $(checkIdVar).val() != '')){
+    $(targetIdVar).removeClass("spinner-border spinner-border-sm mr-1");
+  }
+}
+
 // Togle requests navlink active state
 function toggle_requests(id){
   var divelement = document.getElementById(id);
