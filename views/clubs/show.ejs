@@ -734,7 +734,8 @@
         </a>
       </div>
       
-      <!-- Delete Audio Room modal -->
+      ${guserRank <= 2 ?
+      `<!-- Delete Audio Room modal -->
       <div id="deleteAudioRoomModal${room.roomId}" class="fixed-padding modal fade">
         <div class="modal-dialog modal-confirm">
           <div class="modal-content">
@@ -754,8 +755,8 @@
             </div>
           </div>
         </div>
-      </div>
-      `;
+      </div>`
+      : ''}`;
     }
 
     document.getElementById("audio_rooms_container").innerHTML += audioRoomsHTML;

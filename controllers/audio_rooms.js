@@ -30,7 +30,7 @@ module.exports = {
         if(!(req.body.isClubExclusive)) exclusive = false;
         let clubMatch = false;
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
-          if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
+          if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 3) {
             let success = true;
             clubMatch = true;
             let audioroom = new Audioroom({
