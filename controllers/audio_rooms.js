@@ -107,7 +107,7 @@ module.exports = {
         }
       }
 
-      return res.render('audio_rooms/lobby', { audioroomsData });
+      return res.render('audio_rooms/lobby', { audioroomsData, jamUrl: process.env.JAM_URL });
     }
     else{
       logger.error(req.user._id +' : (audiorooms-4) Invalid request. User not found');
