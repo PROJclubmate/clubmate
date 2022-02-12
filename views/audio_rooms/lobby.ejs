@@ -22,6 +22,7 @@
                     <div class="roomInfo">
                       <div class="text-xl text-dark"> <%= audio_room.roomName %></div>
                       <light class="text-xxs boldtext text-secondary"><%= audio_room.roomDesc %></light>
+                      <div id="audio_people_<%= audio_room.roomId %>"></div>
                     </div>
                   </div>
                   </a>
@@ -31,6 +32,22 @@
                   fetch(`<%= jamUrl %>/_/pantry/api/v1/rooms/<%= audio_room.roomId %>/live`).then(data => data.json()).then(data => {
                     let roomId = "<%= audio_room.roomId %>";
                     console.log(roomId, data);
+
+                    let audio_people_html = ``;
+                    for (let i = 0; i < 3 && i < data.length; i++) {
+                      let person = data[i];
+                      audio_people_html += `
+                        <span class="smalldppad d-inline-flex" title="${person.name}" style="z-index: 4;">                  
+                          <img class="smalldp rounded-circle" src="${person.avatar}">
+                        </span>
+                        `;
+                    }
+                    
+                    const audio_people_div = document.getElementById(`audio_people_${roomId}`);
+                    audio_people_div.innerHTML = `<span class="pl-2 nowrap d-inline-flex">
+                      ${audio_people_html} </span>
+                      ${(data.length > 3) ? `<span class="text-xs lightgrey" style="vertical-align: text-top;">.. 2 more</span>` : ``}
+                      `;
                   });
                 </script>
               <% } %>
