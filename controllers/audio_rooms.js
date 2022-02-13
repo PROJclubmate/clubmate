@@ -15,7 +15,7 @@ module.exports = {
         roomName,
         roomDesc,
         roomColor,
-        isClubExclusive, TODO in frontend, default is true
+        isClubExclusive, default is true
       }
     */
 
@@ -74,12 +74,7 @@ module.exports = {
     });
   },
 
-  async audioroomsLobby(req, res, next) {
-    // req.user._id
-    // TODO, also check if this user.find by needed or not
-    // Done, user.find is needed coz we only show all the rooms for that particular user.
-    // Tested and bugs fixed
-
+  async audioroomsLobby(req, res, next) {  
     let foundUser = await User.findById(req.user._id).exec();
     let audioroomsData = []
     if(foundUser){
@@ -117,10 +112,6 @@ module.exports = {
   },
 
   async joinAudioRoom(req, res, next) {
-    // TODO, check if the audio room exists
-    // Also, is the user allowed to enter or not
-    // Done and tested. When user is not allowed, or room doesn't exist, success false is sent
-
     if(process.env.ENVIRONMENT === 'dev'){
       req.user.profilePic_100 = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_200_obj);
     } else if (process.env.ENVIRONMENT === 'prod'){
@@ -157,11 +148,7 @@ module.exports = {
     }
   },
 
-  async getClubAudioRooms(req, res, next) {
-    //  TODO, get the audio rooms of a specific club provided params.club_id
-    //  Done
-    //  Tested, works well.
-    
+  async getClubAudioRooms(req, res, next) {    
     var rooms = [];
     let foundClub = await Club.findById(req.params.club_id).exec();
     if(foundClub){
@@ -182,14 +169,10 @@ module.exports = {
   },
 
   async deleteAudioRoom(req, res, next) {
-    // TODO: delete an audio room - Add security
-    // Done, Not tested. Add club_id in params from frontend
     /*
     room_id in params
     body : { club_id }
     */
-
-    // console.log("Deleting audio room", req.body.club_id);
 
     Audioroom.find({ _id: req.params.room_id }).deleteOne().exec();
     Club.updateOne({ _id: req.body.club_id }, {
@@ -220,6 +203,5 @@ module.exports = {
       logger.error(req.user._id +' : (audiorooms-9) User not found');
       return res.redirect('back');
     }
-    
   }
 };

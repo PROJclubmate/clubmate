@@ -31,7 +31,6 @@
                 <script>
                   fetch(`<%= jamUrl %>/_/pantry/api/v1/rooms/<%= audio_room.roomId %>/live`).then(data => data.json()).then(data => {
                     let roomId = "<%= audio_room.roomId %>";
-                    console.log(roomId, data);
 
                     let audio_people_html = ``;
                     for (let i = 0; i < 3 && i < data.length; i++) {

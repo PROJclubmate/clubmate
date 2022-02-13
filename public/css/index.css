@@ -3851,7 +3851,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .room-container:hover{
   color: #343a40;
   transform: scale(1.01);
-  /* transition: transform 0.1s; */
 }
 .room-del {
   position: absolute;

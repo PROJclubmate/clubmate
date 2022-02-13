@@ -693,6 +693,7 @@
           $(`#deleteAudioRoomModal${roomId}`).modal('hide');
         } else {
           // TODO: Show some failing error
+          // Let's say an error comes at backend, so have a try again button
         }
       }).catch(err => {
         // TODO: Show some failing error
@@ -757,6 +758,7 @@
               <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
               <button name="deleteAudioRoom" onclick="deleteAudioRoom('${room.roomId}')" class="btn btn-danger btn-sm ml-1"> <span id="load-deleteaudioclub"></span> Delete </button>
             </div>
+            <!-- TODO: Try again later thing to be implemented if some error comes -->
           </div>
         </div>
       </div>`
