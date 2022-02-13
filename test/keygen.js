@@ -23,4 +23,4 @@ async function createIdentityFromSeed(seedString) {
     console.log(publicKey);
 }
 
-createIdentityFromSeed("priyamxyz")
+// createIdentityFromSeed("priyamxyz")
