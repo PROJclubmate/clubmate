@@ -78,11 +78,10 @@ module.exports = {
     let foundUser = await User.findById(req.user._id).exec();
     let audioroomsData = []
     if(foundUser){
-      for(var i = 0; i < foundUser.userClubs.length; i++){
-        let foundClub = await Club.findById(foundUser.userClubs[i].id).exec();
+      for(var i = 0; i < foundUser.followingClubIds.length; i++){
+        let foundClub = await Club.findById(foundUser.followingClubIds[i]).exec();
         if(foundClub && foundClub.audiorooms.length){
           let clubData = foundClub;
-
           if(process.env.ENVIRONMENT === 'dev'){
             clubData.avatar_100 = clConfig.cloudinary.url(foundClub.avatarId, clConfig.thumb_100_obj);
           } else if (process.env.ENVIRONMENT === 'prod'){
