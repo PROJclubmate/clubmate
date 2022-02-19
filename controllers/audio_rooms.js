@@ -75,11 +75,10 @@ module.exports = {
   },
 
   async audioroomsLobby(req, res, next) {  
-    let foundUser = await User.findById(req.user._id).exec();
     let audioroomsData = []
-    if(foundUser){
-      for(var i = 0; i < foundUser.followingClubIds.length; i++){
-        let foundClub = await Club.findById(foundUser.followingClubIds[i]).exec();
+    if(req.user){
+      for(var i = 0; i < req.user.followingClubIds.length; i++){
+        let foundClub = await Club.findById(req.user.followingClubIds[i]).exec();
         if(foundClub && foundClub.audiorooms.length){
           let clubData = foundClub;
           if(process.env.ENVIRONMENT === 'dev'){
@@ -122,10 +121,9 @@ module.exports = {
     if(requestedRoom && !(requestedRoom.isClubExclusive)){
       return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
     }
-    let foundUser = await User.findById(req.user._id).exec();
-    if(foundUser){
-      for(let i = 0; i < foundUser.userClubs.length; i++){
-        var club_id = foundUser.userClubs[i].id;
+    if(req.user){
+      for(let i = 0; i < req.user.userClubs.length; i++){
+        var club_id = req.user.userClubs[i].id;
         let foundClub = await Club.findById(club_id).exec();
         for(let j = 0; j < foundClub.audiorooms.length; j++){
           let audioroom_id = foundClub.audiorooms[j];
