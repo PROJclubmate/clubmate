@@ -3828,12 +3828,12 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .college-infobtn:hover{
   background-color: rgba(255, 255, 255, 0.75);
 }
-.college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase, .fa-store,
-.college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
+.college-infobtn .fa-blog, .college-infobtn .fa-briefcase, .fa-store,
+.college-infobtn .fa-utensils, .college-infobtn .fa-calendar-check{
   -webkit-text-stroke: 0.25px #e0e0e0;
 }
-.college-infobtn:hover .fa-newspaper, .college-infobtn:hover .fa-briefcase, .college-infobtn:hover .fa-store,
-.college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-external-link-alt{
+.college-infobtn:hover .fa-blog, .college-infobtn:hover .fa-briefcase, .college-infobtn:hover .fa-store,
+.college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-calendar-check{
   -webkit-text-stroke-color: white;
 }
 .room-container-div{
