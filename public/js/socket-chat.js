@@ -266,7 +266,7 @@ if(socket !== undefined){
     $("#isUserInClubRoom").html("<circle cx='6' cy='6' r='4' stroke='#56b0f0' stroke-width='1' fill='#92cbf5'/>");
   })
   socket.on('everyoneLeftClubRoom', function(){
-    $("#isUserInClubRoom").html("<path d='M7.2 1.8A4.5 4.5 90 1010.8 7.2 3.375 3.375 90 117.2 1.8z' stroke='#f9af4a' stroke-width='1' fill='#ffdfaf'/>");
+    $("#isUserInClubRoom").html("<path d='M7.2 1.8A4.5 4.5 90 1010.8 7.2C6.5835 8.9946 4.1679 4.3218 7.2 1.8z' stroke='#f9af4a' stroke-width='1' fill='#ffdfaf'/>");
   })
 
   var pastClubInputLength = 0;
