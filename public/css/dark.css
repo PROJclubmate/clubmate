@@ -784,8 +784,11 @@ div.carousel-img{
 .custom-file-upload.noshadow{
   box-shadow: none !important;
 }
-#discover_nav{
+#discover_nav, #college_infobtns_quick_nav_mobile{
   background-color: var(--color-dark-800);
+}
+.college-infobtn-quick.desktop_sidebar:hover{
+  background-color: var(--color-dark-850);
 }
 
 /* === Chats === */

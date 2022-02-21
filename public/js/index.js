@@ -4,7 +4,6 @@ window.onscroll = function(){
   var currentScrollPos = window.pageYOffset;
   var navbar = document.getElementById("navbar");
   var pop_box_requests = document.getElementById("pop_box_requests");
-  var discover_nav = document.getElementById("discover_nav");
   var scroll = document.documentElement.scrollTop;
 
   if(window.innerWidth > 1199 && prevScrollpos > currentScrollPos){
@@ -23,10 +22,26 @@ window.onscroll = function(){
   prevScrollpos = currentScrollPos;
 
   if(discover_nav){
-    if(scroll > 40){
+    if(scroll > 350){
       discover_nav.classList.add("nav-hidden");
     } else{
       discover_nav.classList.remove("nav-hidden");
+    }
+  }
+
+  if(college_infobtns_quick_nav_mobile){
+    if(scroll > 40){
+      college_infobtns_quick_nav_mobile.classList.add("nav-hidden");
+    } else{
+      college_infobtns_quick_nav_mobile.classList.remove("nav-hidden");
+    }
+  }
+
+  if(college_infobtns_quick_nav_desktop){
+    if(scroll > 40){
+      college_infobtns_quick_nav_desktop.classList.add("nav-hidden");
+    } else{
+      college_infobtns_quick_nav_desktop.classList.remove("nav-hidden");
     }
   }
 }
@@ -42,6 +57,9 @@ for (var i=0;i<dropdown.length;i++){
     } else if(location.pathname == '/discover'){
       var discover = document.getElementById('side-discover');
       discover.classList.toggle('active');
+      if(document.documentElement.scrollTop < 350){
+        college_infobtns_quick_nav_desktop.classList.toggle("nav-hidden");
+      }
     } else if(location.pathname == '/lobby'){
       var lobby = document.getElementById('side-lobby');
       lobby.classList.toggle('active');
@@ -68,6 +86,17 @@ if(location.pathname.split('/')[1] == 'colleges'){
   var home = document.getElementById('side-home');
   home.classList.toggle('active');
 } else if(location.pathname == '/discover'){
+  var discover_nav = document.getElementById("discover_nav");
+  var college_infobtns_quick_nav_desktop = document.getElementById("college_infobtns_quick_nav_desktop");
+  var college_infobtns_quick_nav_mobile = document.getElementById("college_infobtns_quick_nav_mobile");
+  if(window.innerWidth > 768){
+    college_infobtns_quick_nav_desktop.classList.remove("nav-hidden");
+  } else{
+    var nav_height = $('#discover_nav').height();
+    $('#college_infobtns_quick_nav_mobile').height(nav_height - 1);
+    discover_nav.classList.remove("nav-hidden");
+  }
+
   var discover = document.getElementById('side-discover');
   discover.classList.toggle('active');
 } else if(location.pathname == '/lobby'){
