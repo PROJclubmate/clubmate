@@ -1,39 +1,33 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-9 order-md-first order-last">
+	<div class="col-md-9 order-md-first order-last">
 	<div class="ml-2 mt-4 pt-2 mobiletext4">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<div id="server-search-college_pages" class="mo-mx-2">
 		<% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
 			<div class="card searchcard2 border-light">
-				<div class="d-flex flex-row">
-			    <div class="card-body py-1 lineheight1 fullwidth">
+				<div class="d-flex flex-column">
+					<div>
+						<a href="/colleges/<%= college_pages[k].name %>">
+							<img class="cover searchdp m-0 fullwidth" src="<%= college_pages[k].cover %>">
+						</a>
+					</div>
+			    <div class="lineheight1 fullwidth">
 			    	<div class="notification px-2 py-1 college d-flex flex-column">
 							<div class="boldtext text-xxl">
 								<div class="collegename-search d-flex">
 									<span>
 										<% if(matchArr[k]){ %>
-											<sup class="greencolor text-xs pb-auto boldtext">My </sup>
+											<sup class="greencolor text-xs pb-auto boldtext mr-2 text-lato">My </sup>
 										<% } %>
 										<a href="/colleges/<%= college_pages[k].name %>" class="black">
-											<i class="fas fa-university lightgrey"></i>
 											<span id="copyTxt"><%= college_pages[k].name %></span>
 										</a>
 									</span>
-									<div class="tooltip">
-									<button class="copyBtn ml-3" onclick="copyTxtFn()" onmouseout="outCopyTxtFn()">
-									  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-									  <i class="far fa-copy lightgrey"></i>
-									  </button>
-									</div>
 								</div>
 							</div>
-							<span class="badge text-sm"><%= college_pages[k].userCount %></span>
+							<span class="badge text-sm"><%= college_pages[k].clubCount %></span>
 						</div>
-					  <br>
-			      <div class="lightgrey text-sm">
-			      	<span><span class="boldtext text-md"><%= college_pages[k].clubCount %></span> clubs</span>
-			      </div>
 			    </div>
 			  </div>
 		  </div>
@@ -50,7 +44,7 @@
     </button>
   </div>
 	</div>
-	<div class="col-lg-3 px-2">
+	<div class="col-md-3 px-2">
 		<br>
     <div class="mx-2 text-sm boldtext">Search colleges:</div>
 		<form action="/find_colleges/search" method="GET" class="form-signin">
