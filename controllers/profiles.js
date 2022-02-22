@@ -1968,11 +1968,11 @@ module.exports = {
     User.countDocuments({}, function(err, count) {
       return res.render('waiting', {count});
     });
-  }
+  },
   
-  // profilesGoogleAuthCallback(req, res, next){
-  //   return res.redirect('/discover');
-  // }
+  profilesGoogleAuthCallback(req, res, next){
+    return res.redirect('/discover');
+  }
 };
 
 //*******************FUNCTIONS***********************

@@ -154,7 +154,7 @@ userSchema.plugin(passportLocalMongoose,{
   usernameUnique: false,
   errorMessages: {
     IncorrectPasswordError: 'Password incorrect',
-    IncorrectUsernameError: 'If registered already, Please verify your account through the link sent to your email id',
+    IncorrectUsernameError: 'If registered an account already, Please verify your account through the link sent to your email id',
     UserExistsError: 'A user with the given email already exists. Not you? Try resetting your password.'
   },
   findByUsername: function(model, queryParameters){
