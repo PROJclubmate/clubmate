@@ -1,568 +1,766 @@
-if(location.pathname == '/discover'){
-  window.onload=function(){
-    document.getElementById('load-more-btn').click();
-  }
-  $('#load-more-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/discover-morePosts',
-      data: {ids: $('#load-more-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundPostIds;
-        if(arr && arr != '' && response.arrLength && response.posts.length){
-          if($('#load-more-btn').val() != ''){
-            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-            var div = document.getElementById('client-posts-discover');
-            div.innerHTML += discover_posts_template(response);
-          } else{
-            $('#load-more-btn').removeClass('btn-load');
-            $('#load-more-btn').val(arr);
-            var div = document.getElementById('client-posts-discover');
-            div.innerHTML += discover_posts_template(response);
-          }
-          // 2 column masonry
-          var left_column_height = 0;
-          var right_column_height = 0;
-          var items = $('.discovercard');
-          for (var i=0;i<items.length;i++){
-            if (left_column_height > right_column_height) {
-              right_column_height+= items.eq(i).addClass('right').outerHeight(true);
-            } else{
-              left_column_height+= items.eq(i).outerHeight(true);
-            }
-          };
-          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-        } else{
-          $('#load-more-btn').addClass('nodisplay');
-          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-        }
-      }
+if (location.pathname == "/discover") {
+    window.onload = function () {
+        document.getElementById("load-more-btn").click();
+    };
+    $("#load-more-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-span").addClass("spinner-border spinner-border-sm mr-1");
+        $.ajax({
+            type: "GET",
+            url: "/discover-morePosts",
+            data: { ids: $("#load-more-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundPostIds;
+                if (
+                    arr &&
+                    arr != "" &&
+                    response.arrLength &&
+                    response.posts.length
+                ) {
+                    if ($("#load-more-btn").val() != "") {
+                        $("#load-more-btn").val(
+                            arr.concat($("#load-more-btn").val())
+                        );
+                        var div = document.getElementById(
+                            "client-posts-discover"
+                        );
+                        div.innerHTML += discover_posts_template(response);
+                    } else {
+                        $("#load-more-btn").removeClass("btn-load");
+                        $("#load-more-btn").val(arr);
+                        var div = document.getElementById(
+                            "client-posts-discover"
+                        );
+                        div.innerHTML += discover_posts_template(response);
+                    }
+                    // 2 column masonry
+                    var left_column_height = 0;
+                    var right_column_height = 0;
+                    var items = $(".discovercard");
+                    for (var i = 0; i < items.length; i++) {
+                        if (left_column_height > right_column_height) {
+                            right_column_height += items
+                                .eq(i)
+                                .addClass("right")
+                                .outerHeight(true);
+                        } else {
+                            left_column_height += items.eq(i).outerHeight(true);
+                        }
+                    }
+                    $("#load-more-btn")
+                        .html('<span id="load-more-span"></span>Load More')
+                        .blur();
+                } else {
+                    $("#load-more-btn").addClass("nodisplay");
+                    $("#load-more-btn")
+                        .html('<span id="load-more-span"></span>Load More')
+                        .blur();
+                }
+            },
+        });
     });
-  });
-} 
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  window.onload=function(){
-    document.getElementById('load-more-btn').click();
-  }
-  $('#load-more-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-morePosts/'+location.pathname.split('/').pop(),
-      data: {ids: $('#load-more-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundPostIds;
-        if(arr && arr != '' && response.arrLength && response.posts.length){
-          if($('#create-new-post').length){
-            $('#client-posts').removeClass('topnotch-left topnotch-right nodisplay');
-          } else{
-            $('#client-posts').removeClass('nodisplay');
-          }
-          if($('#load-more-btn').val() != ''){
-            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-            var div = document.getElementById('client-posts');
-            div.innerHTML += club_posts_template(response);
-          } else{
-            $('#load-more-btn').removeClass('btn-load');
-            $('#load-more-btn').val(arr);
-            var div = document.getElementById('client-posts');
-            div.innerHTML += club_posts_template(response);
-          }
-          $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-        } else{
-          $('#load-more-btn').addClass('nodisplay');
-        }
-        $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-      }
+    $("#messMenu").on("click", function (e) {
+      e.preventDefault();
+      console.log("click")
+        $.ajax({
+            type: "GET",
+            url: "/discover-morePosts",
+            timeout: 3000,
+            success: function (response) {
+                console.log(response);
+                var modalBody = document.getElementById("quickViewModal");
+                modalBody.innerHTML = quick_mess_template(response);
+            },
+        });
     });
-  });
-
-  $('#load-more-members-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-members-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-moreMembers/'+location.pathname.split('/')[2],
-      data: {endpoints: $('#load-more-members-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.users;
-        if(arr && arr != ''){
-          var newEndpoints = response.newEndpoints;
-          $('#load-more-members-btn').val(newEndpoints);
-          var div = document.getElementById('client-members');
-          div.innerHTML += moreMembers_template(response);
-          if(arr.length < 10){
-            $('#load-more-members-btn').addClass('nodisplay');
-          }
-        } else{
-          $('#load-more-members-btn').addClass('nodisplay');
-        }
-        $('#load-more-members-btn').html('<span id="load-more-members-span"></span>Load More').blur();
-      }
-    });
-  });
-
-  $('#search-members-btn').on('click', function(e){
-    e.preventDefault();
-    $('#search-members-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-searchMembers/'+location.pathname.split('/')[2],
-      data: {name: $('#search-members-input').val()},
-      timeout: 3000,
-      success: function (response, textStatus, xhr){
-        if(xhr.status == 200 && response.users && response.users != ''){
-          var div = document.getElementById('server-members');
-          div.innerHTML = moreMembers_template(response);
-          $('#load-more-members-btn').addClass('nodisplay');
-          $('#server-members').addClass('mt-2');
-          $('#client-members').addClass('nodisplay');
-        } else{
-          var div = document.getElementById('server-members');
-          if(xhr.status == 200){
-            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">No matching names found</div>`
-          } else if(xhr.status == 400){
-            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">Please enter a valid member name</div>`
-          } else if(xhr.status == 204){
-            div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>`
-          }
-          $('#load-more-members-btn').addClass('nodisplay');
-          $('#server-members').addClass('mt-2');
-          $('#client-members').addClass('nodisplay');
-        }
-        $('#search-members-btn').html('<span id="search-members-span"></span>Go').blur();
-      }
-    });
-  });
-
-  $('#load-more-memberRequests-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-memberRequests-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-moreMemberRequests/'+location.pathname.split('/')[2],
-      data: {endpoints: $('#load-more-memberRequests-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.users;
-        if(arr && arr != ''){
-          var newEndpoints = response.newEndpoints;
-          $('#load-more-memberRequests-btn').val(newEndpoints);
-          var div = document.getElementById('client-memberRequests');
-          div.innerHTML += moreMemberRequests_template(response);
-          if(arr.length < 10){
-            $('#load-more-memberRequests-btn').addClass('nodisplay');
-          }
-        } else{
-          $('#load-more-memberRequests-btn').addClass('nodisplay');
-        }
-        $('#load-more-memberRequests-btn').html('<span id="load-more-memberRequests-span"></span>Load More').blur();
-      }
-    });
-  });
 }
 
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
-  location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  window.onload=function(){
-    document.getElementById('load-more-btn').click();
-  }
-  $('#load-more-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/users-morePosts/'+location.pathname.split('/').pop(),
-      data: {ids: $('#load-more-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundPostIds;
-        if(arr && arr != '' && response.arrLength && response.posts.length){
-          $('#client-posts').removeClass('nodisplay');
-          if($('#load-more-btn').val() != ''){
-            $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
-            var div = document.getElementById('client-posts');
-            div.innerHTML += user_posts_template(response);
-          } else{
-            $('#load-more-btn').removeClass('btn-load');
-            $('#load-more-btn').val(arr);
-            var div = document.getElementById('client-posts');
-            div.innerHTML += user_posts_template(response);
-          }
-        } else{
-          $('#load-more-btn').addClass('nodisplay');
-        }
-        $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
-      }
+if (
+    location.pathname.split("/").length == 3 &&
+    location.pathname.split("/")[1] == "clubs" &&
+    location.pathname.split("/")[2].match(/^[a-fA-F0-9]{24}$/)
+) {
+    window.onload = function () {
+        document.getElementById("load-more-btn").click();
+    };
+    $("#load-more-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-span").addClass("spinner-border spinner-border-sm mr-1");
+        $.ajax({
+            type: "GET",
+            url: "/clubs-morePosts/" + location.pathname.split("/").pop(),
+            data: { ids: $("#load-more-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundPostIds;
+                if (
+                    arr &&
+                    arr != "" &&
+                    response.arrLength &&
+                    response.posts.length
+                ) {
+                    if ($("#create-new-post").length) {
+                        $("#client-posts").removeClass(
+                            "topnotch-left topnotch-right nodisplay"
+                        );
+                    } else {
+                        $("#client-posts").removeClass("nodisplay");
+                    }
+                    if ($("#load-more-btn").val() != "") {
+                        $("#load-more-btn").val(
+                            arr.concat($("#load-more-btn").val())
+                        );
+                        var div = document.getElementById("client-posts");
+                        div.innerHTML += club_posts_template(response);
+                    } else {
+                        $("#load-more-btn").removeClass("btn-load");
+                        $("#load-more-btn").val(arr);
+                        var div = document.getElementById("client-posts");
+                        div.innerHTML += club_posts_template(response);
+                    }
+                    $("#load-more-btn")
+                        .html('<span id="load-more-span"></span>Load More')
+                        .blur();
+                } else {
+                    $("#load-more-btn").addClass("nodisplay");
+                }
+                $("#load-more-btn")
+                    .html('<span id="load-more-span"></span>Load More')
+                    .blur();
+            },
+        });
     });
-  });
 
-  $('#load-more-heart-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-heart-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/heart-morePosts/'+location.pathname.split('/').pop(),
-      data: {heartIds: $('#load-more-heart-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundHPostIds;
-        if(arr && arr != '' && response.arrLength && response.posts.length){
-          $('#client-heart-posts').removeClass('nodisplay');
-          if($('#load-more-heart-btn').val() != ''){
-            if(arr){
-              $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));
-              var div = document.getElementById('client-heart-posts');
-              div.innerHTML += heart_posts_template(response);
-            }
-          } else{
-            $('#load-more-heart-btn').val(arr);
-            var div = document.getElementById('client-heart-posts');
-            div.innerHTML += heart_posts_template(response);
-          }
-        } else{
-          $('#load-more-heart-btn').addClass('nodisplay');
-        }
-        $('#load-more-heart-btn').html('<span id="load-more-heart-span"></span>Load More').blur();
-      }
+    $("#load-more-members-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-members-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/clubs-moreMembers/" + location.pathname.split("/")[2],
+            data: { endpoints: $("#load-more-members-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.users;
+                if (arr && arr != "") {
+                    var newEndpoints = response.newEndpoints;
+                    $("#load-more-members-btn").val(newEndpoints);
+                    var div = document.getElementById("client-members");
+                    div.innerHTML += moreMembers_template(response);
+                    if (arr.length < 10) {
+                        $("#load-more-members-btn").addClass("nodisplay");
+                    }
+                } else {
+                    $("#load-more-members-btn").addClass("nodisplay");
+                }
+                $("#load-more-members-btn")
+                    .html('<span id="load-more-members-span"></span>Load More')
+                    .blur();
+            },
+        });
     });
-  });
 
-  $('#load-more-clubs-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/users-moreClubs/'+location.pathname.split('/')[2],
-      data: {endpoints: $('#load-more-clubs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.clubs;
-        if(arr && arr != ''){
-          var newEndpoints = response.newEndpoints;
-          $('#load-more-clubs-btn').val(newEndpoints);
-          var div = document.getElementById('client-clubs');
-          div.innerHTML += moreClubs_template(response);
-          if(arr.length < 10){
-            $('#load-more-clubs-btn').addClass('nodisplay');
-          }
-        } else{
-          $('#load-more-clubs-btn').addClass('nodisplay');
-        }
-        $('#load-more-clubs-btn').html('<span id="load-more-clubs-span"></span>Load More').blur();
-      }
+    $("#search-members-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#search-members-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/clubs-searchMembers/" + location.pathname.split("/")[2],
+            data: { name: $("#search-members-input").val() },
+            timeout: 3000,
+            success: function (response, textStatus, xhr) {
+                if (
+                    xhr.status == 200 &&
+                    response.users &&
+                    response.users != ""
+                ) {
+                    var div = document.getElementById("server-members");
+                    div.innerHTML = moreMembers_template(response);
+                    $("#load-more-members-btn").addClass("nodisplay");
+                    $("#server-members").addClass("mt-2");
+                    $("#client-members").addClass("nodisplay");
+                } else {
+                    var div = document.getElementById("server-members");
+                    if (xhr.status == 200) {
+                        div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">No matching names found</div>`;
+                    } else if (xhr.status == 400) {
+                        div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">Please enter a valid member name</div>`;
+                    } else if (xhr.status == 204) {
+                        div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>`;
+                    }
+                    $("#load-more-members-btn").addClass("nodisplay");
+                    $("#server-members").addClass("mt-2");
+                    $("#client-members").addClass("nodisplay");
+                }
+                $("#search-members-btn")
+                    .html('<span id="search-members-span"></span>Go')
+                    .blur();
+            },
+        });
     });
-  });
 
-  $('#show-following-server').on('click', function(e){
-    e.preventDefault();
-    $.ajax({
-      type: 'GET',
-      url: '/show_following/'+location.pathname.split('/')[2],
-      timeout: 3000,
-      success: function (response){
-        $('#show-following-server').addClass('nodisplay');
-        $('#show-following-client').removeClass('nodisplay');
-        var div = document.getElementById('show-following-client');
-        div.innerHTML = showFollowing_template(response);
-      }
+    $("#load-more-memberRequests-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-memberRequests-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/clubs-moreMemberRequests/" + location.pathname.split("/")[2],
+            data: { endpoints: $("#load-more-memberRequests-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.users;
+                if (arr && arr != "") {
+                    var newEndpoints = response.newEndpoints;
+                    $("#load-more-memberRequests-btn").val(newEndpoints);
+                    var div = document.getElementById("client-memberRequests");
+                    div.innerHTML += moreMemberRequests_template(response);
+                    if (arr.length < 10) {
+                        $("#load-more-memberRequests-btn").addClass(
+                            "nodisplay"
+                        );
+                    }
+                } else {
+                    $("#load-more-memberRequests-btn").addClass("nodisplay");
+                }
+                $("#load-more-memberRequests-btn")
+                    .html(
+                        '<span id="load-more-memberRequests-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
     });
-  });
 }
 
-if((location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' || 
-  location.pathname.split('/')[3] == 'posts' && location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)) || 
-  (location.pathname.split('/').length == 5 && location.pathname.split('/')[5] == 'subPost'))
-{
-  if($('#load-prevMsgs-btn')){
-    $('#load-prevMsgs-btn').addClass('nodisplay');
-  }
+if (
+    location.pathname.split("/").length == 3 &&
+    location.pathname.split("/")[1] == "users" &&
+    location.pathname.split("/")[2].match(/^[a-fA-F0-9]{24}$/)
+) {
+    window.onload = function () {
+        document.getElementById("load-more-btn").click();
+    };
+    $("#load-more-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-span").addClass("spinner-border spinner-border-sm mr-1");
+        $.ajax({
+            type: "GET",
+            url: "/users-morePosts/" + location.pathname.split("/").pop(),
+            data: { ids: $("#load-more-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundPostIds;
+                if (
+                    arr &&
+                    arr != "" &&
+                    response.arrLength &&
+                    response.posts.length
+                ) {
+                    $("#client-posts").removeClass("nodisplay");
+                    if ($("#load-more-btn").val() != "") {
+                        $("#load-more-btn").val(
+                            arr.concat($("#load-more-btn").val())
+                        );
+                        var div = document.getElementById("client-posts");
+                        div.innerHTML += user_posts_template(response);
+                    } else {
+                        $("#load-more-btn").removeClass("btn-load");
+                        $("#load-more-btn").val(arr);
+                        var div = document.getElementById("client-posts");
+                        div.innerHTML += user_posts_template(response);
+                    }
+                } else {
+                    $("#load-more-btn").addClass("nodisplay");
+                }
+                $("#load-more-btn")
+                    .html('<span id="load-more-span"></span>Load More')
+                    .blur();
+            },
+        });
+    });
 
-  $('#alltime-posts-btn').on('click', function(e){
-    if(!$('#alltime-posts-btn').hasClass('done')){
-      $.ajax({
-        type: 'GET',
-        url: '/clubs-allTimeTopTopicPosts/'+$(this).attr('value'),
+    $("#load-more-heart-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-heart-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/heart-morePosts/" + location.pathname.split("/").pop(),
+            data: { heartIds: $("#load-more-heart-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundHPostIds;
+                if (
+                    arr &&
+                    arr != "" &&
+                    response.arrLength &&
+                    response.posts.length
+                ) {
+                    $("#client-heart-posts").removeClass("nodisplay");
+                    if ($("#load-more-heart-btn").val() != "") {
+                        if (arr) {
+                            $("#load-more-heart-btn").val(
+                                arr.concat($("#load-more-heart-btn").val())
+                            );
+                            var div =
+                                document.getElementById("client-heart-posts");
+                            div.innerHTML += heart_posts_template(response);
+                        }
+                    } else {
+                        $("#load-more-heart-btn").val(arr);
+                        var div = document.getElementById("client-heart-posts");
+                        div.innerHTML += heart_posts_template(response);
+                    }
+                } else {
+                    $("#load-more-heart-btn").addClass("nodisplay");
+                }
+                $("#load-more-heart-btn")
+                    .html('<span id="load-more-heart-span"></span>Load More')
+                    .blur();
+            },
+        });
+    });
+
+    $("#load-more-clubs-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-clubs-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/users-moreClubs/" + location.pathname.split("/")[2],
+            data: { endpoints: $("#load-more-clubs-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.clubs;
+                if (arr && arr != "") {
+                    var newEndpoints = response.newEndpoints;
+                    $("#load-more-clubs-btn").val(newEndpoints);
+                    var div = document.getElementById("client-clubs");
+                    div.innerHTML += moreClubs_template(response);
+                    if (arr.length < 10) {
+                        $("#load-more-clubs-btn").addClass("nodisplay");
+                    }
+                } else {
+                    $("#load-more-clubs-btn").addClass("nodisplay");
+                }
+                $("#load-more-clubs-btn")
+                    .html('<span id="load-more-clubs-span"></span>Load More')
+                    .blur();
+            },
+        });
+    });
+
+    $("#show-following-server").on("click", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "/show_following/" + location.pathname.split("/")[2],
+            timeout: 3000,
+            success: function (response) {
+                $("#show-following-server").addClass("nodisplay");
+                $("#show-following-client").removeClass("nodisplay");
+                var div = document.getElementById("show-following-client");
+                div.innerHTML = showFollowing_template(response);
+            },
+        });
+    });
+}
+
+if (
+    (location.pathname.split("/").length == 3 &&
+        location.pathname.split("/")[1] == "clubs") ||
+    (location.pathname.split("/")[3] == "posts" &&
+        location.pathname.split("/")[2].match(/^[a-fA-F0-9]{24}$/)) ||
+    (location.pathname.split("/").length == 5 &&
+        location.pathname.split("/")[5] == "subPost")
+) {
+    if ($("#load-prevMsgs-btn")) {
+        $("#load-prevMsgs-btn").addClass("nodisplay");
+    }
+
+    $("#alltime-posts-btn").on("click", function (e) {
+        if (!$("#alltime-posts-btn").hasClass("done")) {
+            $.ajax({
+                type: "GET",
+                url: "/clubs-allTimeTopTopicPosts/" + $(this).attr("value"),
+                timeout: 3000,
+                success: function (response) {
+                    var arr = response.topTopicPosts.length;
+                    if (arr && arr > 0) {
+                        var div = document.getElementById("alltime");
+                        div.innerHTML = allTimeTopTopicPosts_template(response);
+                        $("#alltime-posts-btn").addClass("done");
+                    }
+                },
+            });
+        }
+    });
+
+    $("#load-more-comments-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-comments-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        $.ajax({
+            type: "GET",
+            url: "/moreComments/" + location.pathname.split("/").pop(),
+            data: { newIndex: $("#load-more-comments-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.buckets;
+                if (arr && arr != "") {
+                    if (response.index >= -1) {
+                        $("#load-more-comments-btn").val(response.index);
+                        var div = document.getElementById("client-comments");
+                        div.innerHTML += post_comments_template(response);
+                    }
+                } else {
+                    $("#load-more-comments-btn").addClass("nodisplay");
+                }
+                $("#load-more-comments-btn")
+                    .html('<span id="load-more-comments-span"></span>Load More')
+                    .blur();
+            },
+        });
+    });
+
+    $("#dynamic-subPosts").on("click", ".load-subPosts-btn", function (e) {
+        e.preventDefault();
+        var value = $(this).attr("value");
+        var url = $(this).attr("href");
+        load_subPost_page(url, value);
+    });
+    // OR
+    $("#dynamic-subPosts").on("click", "#page-index-button", function (e) {
+        e.preventDefault();
+        var value = $("#page-index-input").val() - 1;
+        var url = $("#page-index-input").attr("href");
+        load_subPost_page(url, value);
+    });
+}
+
+function load_subPost_page(url, value) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { newIndex: value },
         timeout: 3000,
-        success: function (response){
-          var arr = response.topTopicPosts.length;
-          if(arr && arr > 0){
-            var div = document.getElementById('alltime');
-            div.innerHTML = allTimeTopTopicPosts_template(response);
-            $('#alltime-posts-btn').addClass('done');
-          }
-        }
-      });
-    }
-  });
-
-  $('#load-more-comments-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-comments-span').addClass("spinner-border spinner-border-sm mr-1");
-    $.ajax({
-      type: 'GET',
-      url: '/moreComments/'+location.pathname.split('/').pop(),
-      data: {newIndex: $('#load-more-comments-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.buckets;
-        if(arr && arr != ''){
-          if(response.index >= -1){
-            $('#load-more-comments-btn').val(response.index);
-            var div = document.getElementById('client-comments');
-            div.innerHTML += post_comments_template(response);
-          }
-        } else{
-          $('#load-more-comments-btn').addClass('nodisplay');
-        }
-        $('#load-more-comments-btn').html('<span id="load-more-comments-span"></span>Load More').blur();
-      }
-    });
-  });
-  
-  $('#dynamic-subPosts').on('click', '.load-subPosts-btn', function(e){
-    e.preventDefault();
-    var value = $(this).attr('value'); 
-    var url = $(this).attr('href'); 
-    load_subPost_page(url,value);
-  });
-  // OR
-  $('#dynamic-subPosts').on('click', '#page-index-button', function(e){
-    e.preventDefault();
-    var value = $('#page-index-input').val()-1;
-    var url = $('#page-index-input').attr('href'); 
-    load_subPost_page(url,value);
-  });
-}
-
-
-function load_subPost_page(url,value){
-  $.ajax({
-    type: 'GET',
-    url: url,
-    data: {newIndex: value},
-    timeout: 3000,
-    success: function (response){
-      if(response.index > -1){
-        var div = document.getElementById('dynamic-subPosts');
-        div.innerHTML = post_subPosts_template(response);
-      }
-    }
-  });
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_people'){
-  $('#load-more-search-people-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-search-people-span').addClass("spinner-border spinner-border-sm mr-1");
-    var query = $('#query').attr('value');
-    $.ajax({
-      type: 'GET',
-      url: '/people-moreResults/search/'+query,
-      data: {ids: $('#load-more-search-people-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundUserIds;
-        if(arr && arr != ''){
-          if($('#load-more-search-people-btn').val() != ''){
-            $('#load-more-search-people-btn').val(arr.concat($('#load-more-search-people-btn').val()));
-            var div = document.getElementById('client-search-people');
-            div.innerHTML += search_people_template(response);
-          } else{
-            $('#load-more-search-people-btn').val(arr);
-          }
-        } else{
-          $('#load-more-search-people-btn').addClass('nodisplay');
-        }
-        $('#load-more-search-people-btn').html('<span id="load-more-search-people-span"></span>Load More').blur();
-      }
-    });
-  });
-
-  $('#load-more-filterSearch-people-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-filterSearch-people-span').addClass("spinner-border spinner-border-sm mr-1");
-    var dbQuery = $('#searchFilter-btn').attr('value');
-    $.ajax({
-      type: 'GET',
-      url: '/people-moreResults/filter_search',
-      data: {ids: $('#load-more-filterSearch-people-btn').val(), url: $('#search-moreFilterPeople-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundUserIds;
-        if(arr && arr != ''){
-          if($('#load-more-filterSearch-people-btn').val() != ''){
-            $('#load-more-filterSearch-people-btn').val(arr.concat($('#load-more-filterSearch-people-btn').val()));
-            var div = document.getElementById('client-search-people');
-            div.innerHTML += search_people_template(response);
-          } else{
-            $('#load-more-filterSearch-people-btn').val(arr);
-          }
-        } else{
-          $('#load-more-filterSearch-people-btn').addClass('nodisplay');
-        }
-        $('#load-more-filterSearch-people-btn').html('<span id="load-more-filterSearch-people-span"></span>Load More').blur();
-      }
-    });
-  });
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_clubs'){
-  $('#load-more-search-clubs-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-search-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
-    var query = $('#query').attr('value');
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-moreResults/search/'+query,
-      data: {ids: $('#load-more-search-clubs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundClubIds;
-        if(arr && arr != ''){
-          if($('#load-more-search-clubs-btn').val() != ''){
-            $('#load-more-search-clubs-btn').val(arr.concat($('#load-more-search-clubs-btn').val()));
-            var div = document.getElementById('client-search-clubs');
-            div.innerHTML += search_clubs_template(response);
-          } else{
-            $('#load-more-search-clubs-btn').val(arr);
-          }
-        } else{
-          $('#load-more-search-clubs-btn').addClass('nodisplay');
-        }
-        $('#load-more-search-clubs-btn').html('<span id="load-more-search-clubs-span"></span>Load More').blur();
-      }
-    });
-  });
-
-  $('#load-more-filterSearch-clubs-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-filterSearch-clubs-span').addClass("spinner-border spinner-border-sm mr-1");
-    var dbQuery = $('#searchFilter-btn').attr('value');
-    $.ajax({
-      type: 'GET',
-      url: '/clubs-moreResults/filter_search',
-      data: {ids: $('#load-more-filterSearch-clubs-btn').val(), url: $('#search-moreFilterClubs-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundUserIds;
-        if(arr && arr != ''){
-          if($('#load-more-filterSearch-clubs-btn').val() != ''){
-            $('#load-more-filterSearch-clubs-btn').val(arr.concat($('#load-more-filterSearch-clubs-btn').val()));
-            var div = document.getElementById('client-search-clubs');
-            div.innerHTML += search_clubs_template(response);
-          } else{
-            $('#load-more-filterSearch-clubs-btn').val(arr);
-          }
-        } else{
-          $('#load-more-filterSearch-clubs-btn').addClass('nodisplay');
-        }
-        $('#load-more-filterSearch-clubs-btn').html('<span id="load-more-filterSearch-clubs-span"></span>Load More').blur();
-      }
-    });
-  });
-}
-
-if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'find_colleges'){
-  $('#load-more-search-college_pages-btn').on('click', function(e){
-    e.preventDefault();
-    $('#load-more-search-college_pages-span').addClass("spinner-border spinner-border-sm mr-1");
-    var query = $('#query').attr('value');
-    $.ajax({
-      type: 'GET',
-      url: '/colleges-moreResults/search/'+query,
-      data: {ids: $('#load-more-search-college_pages-btn').val()},
-      timeout: 3000,
-      success: function (response){
-        var arr = response.foundCollegePageIds;
-        if(arr && arr != ''){
-          if($('#load-more-search-college_pages-btn').val() != ''){
-            $('#load-more-search-college_pages-btn').val(arr.concat($('#load-more-search-college_pages-btn').val()));
-            var div = document.getElementById('client-search-college_pages');
-            div.innerHTML += search_college_pages_template(response);
-          } else{
-            $('#load-more-search-college_pages-btn').val(arr);
-          }
-        } else{
-          $('#load-more-search-college_pages-btn').addClass('nodisplay');
-        }
-        $('#load-more-search-college_pages-btn').html('<span id="load-more-search-college_pages-span"></span>Load More').blur();
-      }
-    });
-  });
-}
-
-$('#load-prevMsgs-btn').on('click', function(e){
-  e.preventDefault();
-  if($("#chatbox-loadingarea").hasClass("chatbox-user")){
-    const conversationId = $("#user-convoId").attr("value").split(',')[0];
-    if(conversationId){
-      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-      $.ajax({
-        type: 'GET',
-        url: '/prev-chatMsgs/'+conversationId,
-        data: {ids: $('#load-prevMsgs-btn').val()},
-        timeout: 3000,
-        success: function (response){
-          if(response.foundMessageId){
-              var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
-              if($('#load-prevMsgs-btn').val() != ''){
-                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-                $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
-              } else{
-                $('#load-prevMsgs-btn').val(arr);
-              }
-            } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
+        success: function (response) {
+            if (response.index > -1) {
+                var div = document.getElementById("dynamic-subPosts");
+                div.innerHTML = post_subPosts_template(response);
             }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
+        },
+    });
+}
+
+if (
+    location.pathname.split("/").length == 3 &&
+    location.pathname.split("/")[1] == "find_people"
+) {
+    $("#load-more-search-people-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-search-people-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        var query = $("#query").attr("value");
+        $.ajax({
+            type: "GET",
+            url: "/people-moreResults/search/" + query,
+            data: { ids: $("#load-more-search-people-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundUserIds;
+                if (arr && arr != "") {
+                    if ($("#load-more-search-people-btn").val() != "") {
+                        $("#load-more-search-people-btn").val(
+                            arr.concat($("#load-more-search-people-btn").val())
+                        );
+                        var div = document.getElementById(
+                            "client-search-people"
+                        );
+                        div.innerHTML += search_people_template(response);
+                    } else {
+                        $("#load-more-search-people-btn").val(arr);
+                    }
+                } else {
+                    $("#load-more-search-people-btn").addClass("nodisplay");
+                }
+                $("#load-more-search-people-btn")
+                    .html(
+                        '<span id="load-more-search-people-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
+    });
+
+    $("#load-more-filterSearch-people-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-filterSearch-people-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        var dbQuery = $("#searchFilter-btn").attr("value");
+        $.ajax({
+            type: "GET",
+            url: "/people-moreResults/filter_search",
+            data: {
+                ids: $("#load-more-filterSearch-people-btn").val(),
+                url: $("#search-moreFilterPeople-btn").val(),
+            },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundUserIds;
+                if (arr && arr != "") {
+                    if ($("#load-more-filterSearch-people-btn").val() != "") {
+                        $("#load-more-filterSearch-people-btn").val(
+                            arr.concat(
+                                $("#load-more-filterSearch-people-btn").val()
+                            )
+                        );
+                        var div = document.getElementById(
+                            "client-search-people"
+                        );
+                        div.innerHTML += search_people_template(response);
+                    } else {
+                        $("#load-more-filterSearch-people-btn").val(arr);
+                    }
+                } else {
+                    $("#load-more-filterSearch-people-btn").addClass(
+                        "nodisplay"
+                    );
+                }
+                $("#load-more-filterSearch-people-btn")
+                    .html(
+                        '<span id="load-more-filterSearch-people-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
+    });
+}
+
+if (
+    location.pathname.split("/").length == 3 &&
+    location.pathname.split("/")[1] == "find_clubs"
+) {
+    $("#load-more-search-clubs-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-search-clubs-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        var query = $("#query").attr("value");
+        $.ajax({
+            type: "GET",
+            url: "/clubs-moreResults/search/" + query,
+            data: { ids: $("#load-more-search-clubs-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundClubIds;
+                if (arr && arr != "") {
+                    if ($("#load-more-search-clubs-btn").val() != "") {
+                        $("#load-more-search-clubs-btn").val(
+                            arr.concat($("#load-more-search-clubs-btn").val())
+                        );
+                        var div = document.getElementById(
+                            "client-search-clubs"
+                        );
+                        div.innerHTML += search_clubs_template(response);
+                    } else {
+                        $("#load-more-search-clubs-btn").val(arr);
+                    }
+                } else {
+                    $("#load-more-search-clubs-btn").addClass("nodisplay");
+                }
+                $("#load-more-search-clubs-btn")
+                    .html(
+                        '<span id="load-more-search-clubs-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
+    });
+
+    $("#load-more-filterSearch-clubs-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-filterSearch-clubs-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        var dbQuery = $("#searchFilter-btn").attr("value");
+        $.ajax({
+            type: "GET",
+            url: "/clubs-moreResults/filter_search",
+            data: {
+                ids: $("#load-more-filterSearch-clubs-btn").val(),
+                url: $("#search-moreFilterClubs-btn").val(),
+            },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundUserIds;
+                if (arr && arr != "") {
+                    if ($("#load-more-filterSearch-clubs-btn").val() != "") {
+                        $("#load-more-filterSearch-clubs-btn").val(
+                            arr.concat(
+                                $("#load-more-filterSearch-clubs-btn").val()
+                            )
+                        );
+                        var div = document.getElementById(
+                            "client-search-clubs"
+                        );
+                        div.innerHTML += search_clubs_template(response);
+                    } else {
+                        $("#load-more-filterSearch-clubs-btn").val(arr);
+                    }
+                } else {
+                    $("#load-more-filterSearch-clubs-btn").addClass(
+                        "nodisplay"
+                    );
+                }
+                $("#load-more-filterSearch-clubs-btn")
+                    .html(
+                        '<span id="load-more-filterSearch-clubs-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
+    });
+}
+
+if (
+    location.pathname.split("/").length == 3 &&
+    location.pathname.split("/")[1] == "find_colleges"
+) {
+    $("#load-more-search-college_pages-btn").on("click", function (e) {
+        e.preventDefault();
+        $("#load-more-search-college_pages-span").addClass(
+            "spinner-border spinner-border-sm mr-1"
+        );
+        var query = $("#query").attr("value");
+        $.ajax({
+            type: "GET",
+            url: "/colleges-moreResults/search/" + query,
+            data: { ids: $("#load-more-search-college_pages-btn").val() },
+            timeout: 3000,
+            success: function (response) {
+                var arr = response.foundCollegePageIds;
+                if (arr && arr != "") {
+                    if ($("#load-more-search-college_pages-btn").val() != "") {
+                        $("#load-more-search-college_pages-btn").val(
+                            arr.concat(
+                                $("#load-more-search-college_pages-btn").val()
+                            )
+                        );
+                        var div = document.getElementById(
+                            "client-search-college_pages"
+                        );
+                        div.innerHTML +=
+                            search_college_pages_template(response);
+                    } else {
+                        $("#load-more-search-college_pages-btn").val(arr);
+                    }
+                } else {
+                    $("#load-more-search-college_pages-btn").addClass(
+                        "nodisplay"
+                    );
+                }
+                $("#load-more-search-college_pages-btn")
+                    .html(
+                        '<span id="load-more-search-college_pages-span"></span>Load More'
+                    )
+                    .blur();
+            },
+        });
+    });
+}
+
+$("#load-prevMsgs-btn").on("click", function (e) {
+    e.preventDefault();
+    if ($("#chatbox-loadingarea").hasClass("chatbox-user")) {
+        const conversationId = $("#user-convoId").attr("value").split(",")[0];
+        if (conversationId) {
+            $("#load-prevMsgs-span").addClass(
+                "spinner-border spinner-border-sm mr-1"
+            );
+            $.ajax({
+                type: "GET",
+                url: "/prev-chatMsgs/" + conversationId,
+                data: { ids: $("#load-prevMsgs-btn").val() },
+                timeout: 3000,
+                success: function (response) {
+                    if (response.foundMessageId) {
+                        var arr = response.foundMessageId;
+                        $("#prevMessage-div").removeClass("nodisplay");
+                        if ($("#load-prevMsgs-btn").val() != "") {
+                            $("#load-prevMsgs-btn").val(
+                                arr.concat($("#load-prevMsgs-btn").val())
+                            );
+                            $("#prevMsgs-div").prepend(
+                                load_prevMsgs_template(response)
+                            );
+                        } else {
+                            $("#load-prevMsgs-btn").val(arr);
+                        }
+                    } else {
+                        $("#load-prevMsgs-btn").addClass("nodisplay");
+                    }
+                    $("#load-prevMsgs-btn")
+                        .html('<span id="load-prevMsgs-span"></span>LOAD PREV')
+                        .blur();
+                },
+            });
+        } else {
+            $("#load-prevMsgs-btn").addClass("nodisplay");
         }
-      });
-    } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
-    }
-  } else if($("#chatbox-loadingarea").hasClass("chatbox-club")){
-    const conversationId = $("#club-convoId").attr("value").split('^')[0];
-    if(conversationId){
-      $('#load-prevMsgs-span').addClass("spinner-border spinner-border-sm mr-1");
-      $.ajax({
-        type: 'GET',
-        url: '/prev-clubChatMsgs/'+conversationId,
-        data: {ids: $('#load-prevMsgs-btn').val()},
-        timeout: 3000,
-        success: function (response){
-          if(response.foundMessageId){
-              var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
-              if($('#load-prevMsgs-btn').val() != ''){
-                $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
-                $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
-              } else{
-                $('#load-prevMsgs-btn').val(arr);
-              }
-            } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
-            }
-          $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
+    } else if ($("#chatbox-loadingarea").hasClass("chatbox-club")) {
+        const conversationId = $("#club-convoId").attr("value").split("^")[0];
+        if (conversationId) {
+            $("#load-prevMsgs-span").addClass(
+                "spinner-border spinner-border-sm mr-1"
+            );
+            $.ajax({
+                type: "GET",
+                url: "/prev-clubChatMsgs/" + conversationId,
+                data: { ids: $("#load-prevMsgs-btn").val() },
+                timeout: 3000,
+                success: function (response) {
+                    if (response.foundMessageId) {
+                        var arr = response.foundMessageId;
+                        $("#prevMessage-div").removeClass("nodisplay");
+                        if ($("#load-prevMsgs-btn").val() != "") {
+                            $("#load-prevMsgs-btn").val(
+                                arr.concat($("#load-prevMsgs-btn").val())
+                            );
+                            $("#prevMsgs-div").prepend(
+                                load_prevClubMsgs_template(response)
+                            );
+                        } else {
+                            $("#load-prevMsgs-btn").val(arr);
+                        }
+                    } else {
+                        $("#load-prevMsgs-btn").addClass("nodisplay");
+                    }
+                    $("#load-prevMsgs-btn")
+                        .html('<span id="load-prevMsgs-span"></span>LOAD PREV')
+                        .blur();
+                },
+            });
+        } else {
+            $("#load-prevMsgs-btn").addClass("nodisplay");
         }
-      });
-    } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
     }
-  }
 });
 
-function load_prevMsgs_template(response){
-  html = ejs.render(`
+function load_prevMsgs_template(response) {
+    html = ejs.render(
+        `
 <% var prevDate, prevDate2, prevAuthorId; %>
 <% messageBucket.messages.forEach(function(message){ %>
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
@@ -609,12 +807,19 @@ function load_prevMsgs_template(response){
   <% prevDate2 = moment(message.createdAt).format("LT"); %>
   <% prevAuthorId = message.authorId; %>
 <% }); %>
-`,{messageBucket: response.messageBucket, currentUser: response.currentUser, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            messageBucket: response.messageBucket,
+            currentUser: response.currentUser,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function load_prevClubMsgs_template(response){
-  html = ejs.render(`
+function load_prevClubMsgs_template(response) {
+    html = ejs.render(
+        `
 <% var prevDate, prevAuthorId; %>
 <% messageBucket.messages.forEach(function(message, i){ %>
   <% if(moment(message.createdAt).format("MMM Do YY") != prevDate){ %>
@@ -643,13 +848,21 @@ function load_prevClubMsgs_template(response){
   <% prevDate = moment(message.createdAt).format("MMM Do YY"); %>
   <% prevAuthorId = message.authorId._id; %>
 <% }); %>
-`,{messageBucket: response.messageBucket, MA_50_profilePic: response.MA_50_profilePic, currentUser: response.currentUser,
-  firstName: response.firstName, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            messageBucket: response.messageBucket,
+            MA_50_profilePic: response.MA_50_profilePic,
+            currentUser: response.currentUser,
+            firstName: response.firstName,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function discover_posts_template(response){
-  html = ejs.render(`
+function discover_posts_template(response) {
+    html = ejs.render(
+        `
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
@@ -841,15 +1054,25 @@ function discover_posts_template(response){
     <% } %>
   </div>
 <% } %>
-`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
-  currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
-  PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            hasVote: response.hasVote,
+            hasModVote: response.hasModVote,
+            posts: response.posts,
+            currentUser: response.currentUser,
+            CU_50_profilePic: response.CU_50_profilePic,
+            PC_50_clubAvatar: response.PC_50_clubAvatar,
+            PA_50_profilePic: response.PA_50_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function club_posts_template(response){
-  html = ejs.render(`
+function club_posts_template(response) {
+    html = ejs.render(
+        `
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
@@ -1305,14 +1528,25 @@ function privacyText(privacy){
   else if(privacy == 4){return 'Room';}
   else if(privacy == 5){return 'Private';}
 } %>
-`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, rank: response.rank,
-  currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, 
-  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            hasVote: response.hasVote,
+            hasModVote: response.hasModVote,
+            posts: response.posts,
+            rank: response.rank,
+            currentUser: response.currentUser,
+            PA_50_profilePic: response.PA_50_profilePic,
+            CU_50_profilePic: response.CU_50_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function user_posts_template(response){
-  html = ejs.render(`
+function user_posts_template(response) {
+    html = ejs.render(
+        `
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
@@ -1662,14 +1896,25 @@ function user_posts_template(response){
     </div>
   <% } %>
 <% } %>
-`,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, 
-  match: response.match, currentUser: response.currentUser, PC_50_clubAvatar: response.PC_50_clubAvatar, 
-  CU_50_profilePic: response.CU_50_profilePic, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            hasVote: response.hasVote,
+            hasModVote: response.hasModVote,
+            posts: response.posts,
+            match: response.match,
+            currentUser: response.currentUser,
+            PC_50_clubAvatar: response.PC_50_clubAvatar,
+            CU_50_profilePic: response.CU_50_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function heart_posts_template(response){
-  html = ejs.render(`
+function heart_posts_template(response) {
+    html = ejs.render(
+        `
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
   <!-- SIMPLE POSTS -->
   <% if(postsH[l].topic == ''){ %>
@@ -2036,14 +2281,25 @@ function heart_posts_template(response){
     </div>
   <% } %>
 <% } %>
-`,{hasVoteH: response.hasVote, hasModVoteH: response.hasModVote, postsH: response.posts, 
-  match: response.match, currentUser: response.currentUser, PC_50_clubAvatarH: response.PC_50_clubAvatarH, 
-  CU_50_profilePicH: response.CU_50_profilePicH, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            hasVoteH: response.hasVote,
+            hasModVoteH: response.hasModVote,
+            postsH: response.posts,
+            match: response.match,
+            currentUser: response.currentUser,
+            PC_50_clubAvatarH: response.PC_50_clubAvatarH,
+            CU_50_profilePicH: response.CU_50_profilePicH,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function post_comments_template(response){
-  html = ejs.render(`
+function post_comments_template(response) {
+    html = ejs.render(
+        `
 <% var comments = buckets[0].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
   <div class="mb-1">
     <div class="valign card-body py-0">
@@ -2141,14 +2397,24 @@ function post_comments_template(response){
     </div>
   </div>
 <% } %>
-`,{post: response.post, upComments: response.upComments, buckets: response.buckets, index: response.index,
-  currentUser: response.currentUser, CA_50_profilePic: response.CA_50_profilePic, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            post: response.post,
+            upComments: response.upComments,
+            buckets: response.buckets,
+            index: response.index,
+            currentUser: response.currentUser,
+            CA_50_profilePic: response.CA_50_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function post_subPosts_template(response){
-  html = ejs.render(` 
+function post_subPosts_template(response) {
+    html = ejs.render(
+        ` 
 <% if(post.subpostBuckets.length >= 1){ %>
   <div class="dropctn mt-2 py-3">
     <div class="pr-2">
@@ -2373,15 +2639,27 @@ function post_subPosts_template(response){
     else if(rank == 4){return 'Jr. member';}
   }
 %>
-`,{post: response.post, subVotes: response.subVotes, bucket: response.bucket, index: Number(response.index),
-  rank: Number(response.rank), currentUser: response.currentUser, clubId: response.clubId,
-  CU_50_profilePic: response.CU_50_profilePic, sPA_50_profilePic: response.sPA_50_profilePic, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            post: response.post,
+            subVotes: response.subVotes,
+            bucket: response.bucket,
+            index: Number(response.index),
+            rank: Number(response.rank),
+            currentUser: response.currentUser,
+            clubId: response.clubId,
+            CU_50_profilePic: response.CU_50_profilePic,
+            sPA_50_profilePic: response.sPA_50_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function moreMembers_template(response){
-  html = ejs.render(`
+function moreMembers_template(response) {
+    html = ejs.render(
+        `
 <div class="row no-gutters lineheight-lesser">
   <% for(var i=0;i<users.length;i++){ %>
     <div class="valign fullwidth">
@@ -2499,14 +2777,23 @@ function moreMembers_template(response){
     else if(rank == 4){return 'Jr';}
   }
 %>
-`,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, 
-  newEndpoints: response.newEndpoints, clubId: response.clubId, rank: response.rank, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            users: response.users,
+            Users_50_profilePic: response.Users_50_profilePic,
+            newEndpoints: response.newEndpoints,
+            clubId: response.clubId,
+            rank: response.rank,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function moreMemberRequests_template(response){
-  html = ejs.render(`
+function moreMemberRequests_template(response) {
+    html = ejs.render(
+        `
 <div class="row no-gutters mt-2 lineheight-lesser">
   <% for(var m=0;m<users.length;m++){ %>
     <div class="valign fullwidth">
@@ -2545,13 +2832,22 @@ function moreMemberRequests_template(response){
     </div>
   <% } %>
 </div>
-`,{users: response.users, MemberRequests_50_profilePic: response.MemberRequests_50_profilePic, 
-  newEndpoints: response.newEndpoints, club: response.club, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            users: response.users,
+            MemberRequests_50_profilePic: response.MemberRequests_50_profilePic,
+            newEndpoints: response.newEndpoints,
+            club: response.club,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function allTimeTopTopicPosts_template(response){
-  html = ejs.render(`
+function allTimeTopTopicPosts_template(response) {
+    html = ejs.render(
+        `
 <% if(topTopicPosts.length != 0){ %>
   <% for(var i=0;i<topTopicPosts.length;i++){ %>
   <div class="valign">
@@ -2579,13 +2875,21 @@ function allTimeTopTopicPosts_template(response){
 <% } else{ %>
   <div class="lightgrey mobiletext1">No discussions created yet :/</div>
 <% } %>
-`,{topTopicPosts: response.topTopicPosts, Posts_50_Image: response.Posts_50_Image, clubId: response.clubId, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            topTopicPosts: response.topTopicPosts,
+            Posts_50_Image: response.Posts_50_Image,
+            clubId: response.clubId,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function moreClubs_template(response){
-  html = ejs.render(`
+function moreClubs_template(response) {
+    html = ejs.render(
+        `
 <div class="row no-gutters lineheight-lesser">
   <% for(var i=0;i<clubs.length;i++){ %>
     <div class="valign fullwidth">
@@ -2687,14 +2991,26 @@ function moreClubs_template(response){
     else if(rank == 4){return 'Jr';}
   }
 %>
-`,{clubs: response.clubs, clubCount: response.clubCount, Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,
-  newEndpoints: response.newEndpoints, userId: response.userId, rank: response.rank,
-  currentUserId: response.currentUserId, match: response.match, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            clubs: response.clubs,
+            clubCount: response.clubCount,
+            Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,
+            newEndpoints: response.newEndpoints,
+            userId: response.userId,
+            rank: response.rank,
+            currentUserId: response.currentUserId,
+            match: response.match,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function search_people_template(response){
-  html = ejs.render(`
+function search_people_template(response) {
+    html = ejs.render(
+        `
 <% var len = users.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
@@ -2743,14 +3059,23 @@ function search_people_template(response){
     </div>
   </div>
 <% } %>
-`,{users: response.users, query: response.query, foundUserIds: response.foundUserIds, 
-  currentUser: response.currentUser, Users_100_profilePic: response.Users_100_profilePic, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            users: response.users,
+            query: response.query,
+            foundUserIds: response.foundUserIds,
+            currentUser: response.currentUser,
+            Users_100_profilePic: response.Users_100_profilePic,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function search_clubs_template(response){
-  html = ejs.render(`
+function search_clubs_template(response) {
+    html = ejs.render(
+        `
 <% var len = clubs.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
@@ -2808,14 +3133,23 @@ function break_arr(arr){
   }
 }
 %>
-`,{clubs: response.clubs, query: response.query, foundClubIds: response.foundClubIds, 
-  currentUser: response.currentUser, Clubs_100_Avatar: response.Clubs_100_Avatar, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            clubs: response.clubs,
+            query: response.query,
+            foundClubIds: response.foundClubIds,
+            currentUser: response.currentUser,
+            Clubs_100_Avatar: response.Clubs_100_Avatar,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function search_college_pages_template(response){
-  html = ejs.render(`
+function search_college_pages_template(response) {
+    html = ejs.render(
+        `
 <% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
@@ -2850,13 +3184,22 @@ function search_college_pages_template(response){
     </div>
   </div>
 <% } %>
-`,{college_pages: response.college_pages, query: response.query, foundCollegePageIds: response.foundCollegePageIds, 
-  matchArr: response.matchArr, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            college_pages: response.college_pages,
+            query: response.query,
+            foundCollegePageIds: response.foundCollegePageIds,
+            matchArr: response.matchArr,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
 }
 
-function showFollowing_template(response){
-  html = ejs.render(`
+function showFollowing_template(response) {
+    html = ejs.render(
+        `
 <% if(followingClubs.length){ %>
   <div class="lightgrey text">
     <span>+ Clubs: </span>
@@ -2880,6 +3223,148 @@ function showFollowing_template(response){
     <br>
   </div>
 <% } %>
-`,{followingClubs: response.followingClubs, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
-  return html;
+`,
+        {
+            followingClubs: response.followingClubs,
+            csrfToken: response.csrfToken,
+            cdn_prefix: response.cdn_prefix,
+        }
+    );
+    return html;
+}
+
+function quick_mess_template(response) {
+    html = ejs.render(`
+    <style>
+        .accordion {
+            max-width: 25rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 5rem lightgrey;
+        }
+
+        .accordion__item:not(:last-child) {
+            border-bottom: 1px solid lightgrey;
+        }
+
+        .accordion__btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            background: white;
+            border: none;
+            outline: none;
+            color: #5f5c70;
+            font-size: 1.2rem;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .accordion__btn:hover {
+            color: #6a5acd;
+            background: #f4f3fb;
+        }
+
+        .accordion__item--active .accordion__btn {
+            color: #6a5acd;
+            border-bottom: 2px solid #6a5acd;
+            background: #f4f3fb;
+        }
+
+        svg {
+            padding-right: 1rem;
+            width: 2em;
+        }
+
+        .accordion__icon {
+            border-radius: 50%;
+            transform: rotate(0deg);
+            transition: 0.3s ease-in-out;
+            opacity: 0.9;
+        }
+
+        .accordion__item--active .accordion__icon {
+            transform: rotate(135deg);
+        }
+
+        .accordion__content {
+            font-weight: 400;
+            font-size: 18px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            color: #5f5c70;
+            transform: translateX(16px);
+            transition: max-height 0.5s ease, opacity 0.5s, transform 0.5s;
+        }
+
+        .accordion__item--active .accordion__content {
+            opacity: 1;
+            transform: translateX(0px);
+            max-height: 100vh;
+        }
+        </style>
+<div class="accordion py-3 bg-white">
+  <h2 class="accordion__heading mb-3 px-4 text-center">
+
+  </h2>
+  <% mess.forEach(function(m){ %>
+      <% if(m.menu.day ) { %>
+          <div class="accordion__item">
+              <button class="accordion__btn">
+                  <span class="accordion__caption">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                          <path
+                              d="M221.6 148.7C224.7 161.3 224.8 174.5 222.1 187.2C219.3 199.1 213.6 211.9 205.6 222.1C191.1 238.6 173 249.1 151.1 254.1V472C151.1 482.6 147.8 492.8 140.3 500.3C132.8 507.8 122.6 512 111.1 512C101.4 512 91.22 507.8 83.71 500.3C76.21 492.8 71.1 482.6 71.1 472V254.1C50.96 250.1 31.96 238.9 18.3 222.4C10.19 212.2 4.529 200.3 1.755 187.5C-1.019 174.7-.8315 161.5 2.303 148.8L32.51 12.45C33.36 8.598 35.61 5.197 38.82 2.9C42.02 .602 45.97-.4297 49.89 .0026C53.82 .4302 57.46 2.303 60.1 5.259C62.74 8.214 64.18 12.04 64.16 16V160H81.53L98.62 11.91C99.02 8.635 100.6 5.621 103.1 3.434C105.5 1.248 108.7 .0401 111.1 .0401C115.3 .0401 118.5 1.248 120.9 3.434C123.4 5.621 124.1 8.635 125.4 11.91L142.5 160H159.1V16C159.1 12.07 161.4 8.268 163.1 5.317C166.6 2.366 170.2 .474 174.1 .0026C178-.4262 181.1 .619 185.2 2.936C188.4 5.253 190.6 8.677 191.5 12.55L221.6 148.7zM448 472C448 482.6 443.8 492.8 436.3 500.3C428.8 507.8 418.6 512 408 512C397.4 512 387.2 507.8 379.7 500.3C372.2 492.8 368 482.6 368 472V352H351.2C342.8 352 334.4 350.3 326.6 347.1C318.9 343.8 311.8 339.1 305.8 333.1C299.9 327.1 295.2 320 291.1 312.2C288.8 304.4 287.2 296 287.2 287.6L287.1 173.8C288 136.9 299.1 100.8 319.8 70.28C340.5 39.71 369.8 16.05 404.1 2.339C408.1 .401 414.2-.3202 419.4 .2391C424.6 .7982 429.6 2.62 433.9 5.546C438.2 8.472 441.8 12.41 444.2 17.03C446.7 21.64 447.1 26.78 448 32V472z" />
+                      </svg>
+                      <%= m.menu.time %>
+                  </span>
+                  <span class="accordion__icon"><i class="fa fa-plus"></i></span>
+              </button>
+              <div class="accordion__content">
+                  <ul class="list-group list-group-flush py-3 px-4">
+                      <% m.menu.dishes.forEach(function(d){ %>
+                          <li class="list-group-item">
+                              <%= d %>
+                          </li>
+                          <% }); %>
+                  </ul>
+              </div>
+          </div>
+          <% } %>
+              <% }); %>
+</div>
+<script>
+        const accItems = document.querySelectorAll(".accordion__item");
+        accItems.forEach((acc) =>
+            acc.addEventListener("click", function (e) {
+                accItems.forEach((item) =>
+                    item != this
+                        ? item.classList.remove("accordion__item--active")
+                        : null
+                );
+                if (this.classList != "accordion__item--active") {
+                    this.classList.toggle("accordion__item--active");
+                }
+            })
+        );
+        let tday = new Date();
+        let time = tday.getHours();
+        if (time >= 5 && time <= 10) {
+            accItems[0].classList.add("accordion__item--active")
+        }
+        if (time >= 11 && time <= 14) {
+            accItems[1].classList.add("accordion__item--active")
+        }
+        if (time >= 15 && time <= 18) {
+            accItems[2].classList.add("accordion__item--active")
+        }
+        if (time >= 19 && time <= 22) {
+            accItems[3].classList.add("accordion__item--active")
+        }
+    </script>
+`);
+    return html;
 }

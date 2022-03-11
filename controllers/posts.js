@@ -4,6 +4,7 @@ const mongoose  = require('mongoose'),
   Club          = require('../models/club'),
   Comment       = require('../models/comment'),
   Discussion    = require('../models/discussion'),
+  Mess          = require('../models/mess')
   clConfig      = require('../config/cloudinary'),
   s3Config      = require('../config/s3'),
   logger        = require('../logger');
@@ -53,611 +54,637 @@ module.exports = {
     }
   },
 
-  postsDiscoverMorePosts(req, res, next){
-    if(req.query.ids != ''){
-      var seenIdsArr = req.query.ids.split(',');
-    } else{
-      var seenIdsArr = [];
-    }
-    var seenIds = [];
-    for(var i=0;i<seenIdsArr.length;i++){
-      seenIds.push(mongoose.Types.ObjectId(seenIdsArr[i]));
-    }
-    if(req.user){
-      // Show (Colleges followed)
-      if(req.user.discoverSwitch === 1){
-        if(req.user.sortByKey === 1){
-          Post.aggregate([
-            {$match: {$and: [
-              {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}
-            ]}},
-            { "$lookup": {
-              "from": "clubs",
-              "foreignField": "_id",
-              "localField": "postClub",
-              "as": "postClub"
-            }},
-            {
-              "$unwind": "$postClub"
-            },
-            {$project: {
-            "_id": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "descEdit": 1,
-            "image": 1,
-            "imageId": 1,
-            "clubCollegeKey": 1,
-            "viewsCount": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "likeCount": 1,
-            "heartCount": 1,
-            "likeUserIds": 1,
-            "heartUserIds": 1,
-            "commentsCount": 1,
-            "bucketNum": 1,
-            "commentBuckets": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1,
-            "postAuthor": 1,
-            "topic": 1,
-            "upVoteCount": 1,
-            "downVoteCount": 1,
-            "upVoteUserIds": 1,
-            "downVoteUserIds": 1,
-            "subpostsCount": 1,
-            "createdAt": 1,
-            "__v": 1,
-            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
-            "ranking": {
-              $divide: [
-                { $add: [
-                  { $multiply: ["$viewsCount", 0.00125] },
-                  { $multiply: ["$likeCount", 0.125] },
-                  { $multiply: ["$heartCount", 0.5] },
-                  { $multiply: ["$commentsCount", 1] },
-                  0.75
-                ] },
-                { $add: [
-                  1,
-                  { $pow: [
-                    { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-                    1.8
-                  ] },
-                ] }
-              ] }
-            }},
-            {$sort: {"ranking": -1}},
-            {$limit: 20}
-          ])
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-3)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        } else if(req.user.sortByKey === 2){
-          Post.find({
-            postClub: {$in: req.user.followingClubIds},
-            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
-            _id: {$nin: seenIds}, 
-            moderation: 0, privacy: {$in: [0,1,2]}})
-          .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .sort({createdAt: -1}).limit(20)
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-5)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-6)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        } else if(req.user.sortByKey === 3){
-          Post.aggregate([
-            {$match: {$and: [
-              {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}
-            ]}},
-            { "$lookup": {
-              "from": "clubs",
-              "foreignField": "_id",
-              "localField": "postClub",
-              "as": "postClub"
-            }},
-            {
-              "$unwind": "$postClub"
-            },
-            {$project: {
-            "_id": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "descEdit": 1,
-            "image": 1,
-            "imageId": 1,
-            "clubCollegeKey": 1,
-            "viewsCount": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "likeCount": 1,
-            "heartCount": 1,
-            "likeUserIds": 1,
-            "heartUserIds": 1,
-            "commentsCount": 1,
-            "bucketNum": 1,
-            "commentBuckets": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1,
-            "postAuthor": 1,
-            "topic": 1,
-            "upVoteCount": 1,
-            "downVoteCount": 1,
-            "upVoteUserIds": 1,
-            "downVoteUserIds": 1,
-            "subpostsCount": 1,
-            "createdAt": 1,
-            "__v": 1,
-            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
-            "ranking": {
-              $add: [
-                { $multiply: ["$viewsCount", 0.00125] },
-                { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
-                0.75
-              ]
-            }}},
-            {$sort: {"ranking": -1}},
-            {$limit: 20}
-          ])
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-7)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-8)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        }
-      // Show (Explore)
-      } else if(req.user.discoverSwitch === 2){
-        if(req.user.sortByKey === 1){
-          Post.aggregate([
-            {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}
-            ]}},
-            { "$lookup": {
-              "from": "clubs",
-              "foreignField": "_id",
-              "localField": "postClub",
-              "as": "postClub"
-            }},
-            {
-              "$unwind": "$postClub"
-            },
-            {$project: {
-            "_id": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "descEdit": 1,
-            "image": 1,
-            "imageId": 1,
-            "clubCollegeKey": 1,
-            "viewsCount": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "likeCount": 1,
-            "heartCount": 1,
-            "likeUserIds": 1,
-            "heartUserIds": 1,
-            "commentsCount": 1,
-            "bucketNum": 1,
-            "commentBuckets": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1,
-            "postAuthor": 1,
-            "topic": 1,
-            "createdAt": 1,
-            "__v": 1,
-            "ranking": {
-              $divide: [
-                { $add: [
-                  { $multiply: ["$viewsCount", 0.00125] },
-                  { $multiply: ["$likeCount", 0.125] },
-                  { $multiply: ["$heartCount", 0.5] },
-                  { $multiply: ["$commentsCount", 1] },
-                  0.75
-                ] },
-                { $add: [
-                  1,
-                  { $pow: [
-                    { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-                    1.8
-                  ] },
-                ] }
-              ] }
-            }},
-            {$sort: {"ranking": -1}},
-            {$limit: 20}
-          ])
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-9)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-10)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        } else if(req.user.sortByKey === 2){
-          Post.find({
-            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}, 
-            _id: {$nin: seenIds}, 
-            moderation: 0, privacy: 0})
-          .populate({path: 'postClub', select: 'name avatar avatarId'})
-          .sort({createdAt: -1}).limit(20)
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-11)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-12)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        } else if(req.user.sortByKey === 3){
-          Post.aggregate([
-            {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: 0}
-            ]}},
-            { "$lookup": {
-              "from": "clubs",
-              "foreignField": "_id",
-              "localField": "postClub",
-              "as": "postClub"
-            }},
-            {
-              "$unwind": "$postClub"
-            },
-            {$project: {
-            "_id": 1,
-            "description": 1,
-            "hyperlink": 1,
-            "descEdit": 1,
-            "image": 1,
-            "imageId": 1,
-            "clubCollegeKey": 1,
-            "viewsCount": 1,
-            "privacy": 1,
-            "moderation": 1,
-            "likeCount": 1,
-            "heartCount": 1,
-            "likeUserIds": 1,
-            "heartUserIds": 1,
-            "commentsCount": 1,
-            "bucketNum": 1,
-            "commentBuckets": 1,
-            "postClub._id": 1,
-            "postClub.name": 1,
-            "postClub.avatar": 1,
-            "postClub.avatarId": 1,
-            "postAuthor": 1,
-            "topic": 1,
-            "createdAt": 1,
-            "__v": 1,
-            "ranking": {
-              $add: [
-                { $multiply: ["$viewsCount", 0.00125] },
-                { $multiply: ["$likeCount", 0.125] },
-                { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
-                0.75
-              ]
-            }}},
-            {$sort: {"ranking": -1}},
-            {$limit: 20}
-          ])
-          .exec(function(err, discoverPosts){
-          if(err || !discoverPosts){
-            logger.error(req.user._id+' : (posts-13)discoverPosts err => '+err);
-            return res.sendStatus(500);
-          } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
-              return post._id;
-            });
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
-            }
-            Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
-                logger.error(req.user._id+' : (posts-14)updatePosts err => '+err);
-                return res.sendStatus(500);
-              }
-            });
-            if(process.env.ENVIRONMENT === 'dev'){
-              var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
-            }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
-            csrfToken: res.locals.csrfToken, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
-        }
-      }
-    // LOGGED OUT
-    } else{
-      Post.aggregate([
-        {$match: {$and: [
-          {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-          {_id: {$nin: seenIds}}, 
-          {moderation: 0}, {privacy: 0}
-        ]}},
-        { "$lookup": {
-          "from": "clubs",
-          "foreignField": "_id",
-          "localField": "postClub",
-          "as": "postClub"
-        }},
-        {
-          "$unwind": "$postClub"
-        },
-        {$project: {
-        "_id": 1,
-        "description": 1,
-        "hyperlink": 1,
-        "descEdit": 1,
-        "image": 1,
-        "imageId": 1,
-        "clubCollegeKey": 1,
-        "viewsCount": 1,
-        "privacy": 1,
-        "moderation": 1,
-        "likeCount": 1,
-        "heartCount": 1,
-        "likeUserIds": 1,
-        "heartUserIds": 1,
-        "commentsCount": 1,
-        "bucketNum": 1,
-        "commentBuckets": 1,
-        "postClub._id": 1,
-        "postClub.name": 1,
-        "postClub.avatar": 1,
-        "postClub.avatarId": 1,
-        "postAuthor": 1,
-        "topic": 1,
-        "createdAt": 1,
-        "__v": 1,
-        "ranking": {
-          $divide: [
-            { $add: [
-              { $multiply: ["$viewsCount", 0.00125] },
-              { $multiply: ["$likeCount", 0.125] },
-              { $multiply: ["$heartCount", 0.5] },
-              { $multiply: ["$commentsCount", 1] },
-              0.75
-            ] },
-            { $add: [
-              1,
-              { $pow: [
-                { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
-                1.8
-              ] },
-            ] }
-          ] }
-        }},
-        {$sort: {"ranking": -1}},
-        {$limit: 20}
-      ])
-      .exec(function(err, discoverPosts){
-      if(err || !discoverPosts){
-        logger.error(req.user._id+' : (posts-15)discoverPosts err => '+err);
-        return res.sendStatus(500);
-      } else{
-        var arrLength = discoverPosts.length;
-        var foundPostIds = discoverPosts.map(function(post){
-          return post._id;
-        });
-        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-        for(var k=0;k<discoverPosts.length;k++){
-          if(process.env.ENVIRONMENT === 'dev'){
-            PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-          } else if (process.env.ENVIRONMENT === 'prod'){
-            PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
-          }
-          hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-          hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-          seenPostIds.push(discoverPosts[k]._id);
-        }
-        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
-            logger.error(req.user._id+' : (posts-16)updatePosts err => '+err);
-            return res.sendStatus(500);
-          }
-        });
-        return res.json({hasVote, hasModVote, posts: discoverPosts, foundPostIds, 
-        PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
-      }
-      });
-    }
+  postsDiscoverMorePosts (req, res, next){
+    let today = new Date();
+    const weekDay = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+    let Day = weekDay[today.getDay()];
+
+    const dateData = {
+        day: Day,
+        todayDate: today,
+    };
+
+    (async () => {
+        const query = await Mess.find({ "menu.day": Day });
+        console.log(query);
+        res.json({query});
+    })()
+    
+
+    // data()
+
+    // if(req.query.ids != ''){
+    //   var seenIdsArr = req.query.ids.split(',');
+    // } else{
+    //   var seenIdsArr = [];
+    // }
+    // var seenIds = [];
+    // for(var i=0;i<seenIdsArr.length;i++){
+    //   seenIds.push(mongoose.Types.ObjectId(seenIdsArr[i]));
+    // }
+    // if(req.user){
+    //   // Show (Colleges followed)
+    //   if(req.user.discoverSwitch === 1){
+    //     if(req.user.sortByKey === 1){
+    //       Post.aggregate([
+    //         {$match: {$and: [
+    //           {postClub: {$in: req.user.followingClubIds}},
+    //           {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+    //           {_id: {$nin: seenIds}}, 
+    //           {moderation: 0}, {privacy: {$in: [0,1,2]}}
+    //         ]}},
+    //         { "$lookup": {
+    //           "from": "clubs",
+    //           "foreignField": "_id",
+    //           "localField": "postClub",
+    //           "as": "postClub"
+    //         }},
+    //         {
+    //           "$unwind": "$postClub"
+    //         },
+    //         {$project: {
+    //         "_id": 1,
+    //         "description": 1,
+    //         "hyperlink": 1,
+    //         "descEdit": 1,
+    //         "image": 1,
+    //         "imageId": 1,
+    //         "clubCollegeKey": 1,
+    //         "viewsCount": 1,
+    //         "privacy": 1,
+    //         "moderation": 1,
+    //         "likeCount": 1,
+    //         "heartCount": 1,
+    //         "likeUserIds": 1,
+    //         "heartUserIds": 1,
+    //         "commentsCount": 1,
+    //         "bucketNum": 1,
+    //         "commentBuckets": 1,
+    //         "postClub._id": 1,
+    //         "postClub.name": 1,
+    //         "postClub.avatar": 1,
+    //         "postClub.avatarId": 1,
+    //         "postAuthor": 1,
+    //         "topic": 1,
+    //         "upVoteCount": 1,
+    //         "downVoteCount": 1,
+    //         "upVoteUserIds": 1,
+    //         "downVoteUserIds": 1,
+    //         "subpostsCount": 1,
+    //         "createdAt": 1,
+    //         "__v": 1,
+    //         // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
+    //         "ranking": {
+    //           $divide: [
+    //             { $add: [
+    //               { $multiply: ["$viewsCount", 0.00125] },
+    //               { $multiply: ["$likeCount", 0.125] },
+    //               { $multiply: ["$heartCount", 0.5] },
+    //               { $multiply: ["$commentsCount", 1] },
+    //               0.75
+    //             ] },
+    //             { $add: [
+    //               1,
+    //               { $pow: [
+    //                 { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+    //                 1.8
+    //               ] },
+    //             ] }
+    //           ] }
+    //         }},
+    //         {$sort: {"ranking": -1}},
+    //         {$limit: 20}
+    //       ])
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-3)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     } else if(req.user.sortByKey === 2){
+    //       Post.find({
+    //         postClub: {$in: req.user.followingClubIds},
+    //         createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
+    //         _id: {$nin: seenIds}, 
+    //         moderation: 0, privacy: {$in: [0,1,2]}})
+    //       .populate({path: 'postClub', select: 'name avatar avatarId'})
+    //       .sort({createdAt: -1}).limit(20)
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-5)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-6)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     } else if(req.user.sortByKey === 3){
+    //       Post.aggregate([
+    //         {$match: {$and: [
+    //           {postClub: {$in: req.user.followingClubIds}},
+    //           {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+    //           {_id: {$nin: seenIds}}, 
+    //           {moderation: 0}, {privacy: {$in: [0,1,2]}}
+    //         ]}},
+    //         { "$lookup": {
+    //           "from": "clubs",
+    //           "foreignField": "_id",
+    //           "localField": "postClub",
+    //           "as": "postClub"
+    //         }},
+    //         {
+    //           "$unwind": "$postClub"
+    //         },
+    //         {$project: {
+    //         "_id": 1,
+    //         "description": 1,
+    //         "hyperlink": 1,
+    //         "descEdit": 1,
+    //         "image": 1,
+    //         "imageId": 1,
+    //         "clubCollegeKey": 1,
+    //         "viewsCount": 1,
+    //         "privacy": 1,
+    //         "moderation": 1,
+    //         "likeCount": 1,
+    //         "heartCount": 1,
+    //         "likeUserIds": 1,
+    //         "heartUserIds": 1,
+    //         "commentsCount": 1,
+    //         "bucketNum": 1,
+    //         "commentBuckets": 1,
+    //         "postClub._id": 1,
+    //         "postClub.name": 1,
+    //         "postClub.avatar": 1,
+    //         "postClub.avatarId": 1,
+    //         "postAuthor": 1,
+    //         "topic": 1,
+    //         "upVoteCount": 1,
+    //         "downVoteCount": 1,
+    //         "upVoteUserIds": 1,
+    //         "downVoteUserIds": 1,
+    //         "subpostsCount": 1,
+    //         "createdAt": 1,
+    //         "__v": 1,
+    //         // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
+    //         "ranking": {
+    //           $add: [
+    //             { $multiply: ["$viewsCount", 0.00125] },
+    //             { $multiply: ["$likeCount", 0.125] },
+    //             { $multiply: ["$heartCount", 0.5] },
+    //             { $multiply: ["$commentsCount", 1] },
+    //             0.75
+    //           ]
+    //         }}},
+    //         {$sort: {"ranking": -1}},
+    //         {$limit: 20}
+    //       ])
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-7)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-8)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     }
+    //   // Show (Explore)
+    //   } else if(req.user.discoverSwitch === 2){
+    //     if(req.user.sortByKey === 1){
+    //       Post.aggregate([
+    //         {$match: {$and: [
+    //           {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+    //           {_id: {$nin: seenIds}}, 
+    //           {moderation: 0}, {privacy: 0}
+    //         ]}},
+    //         { "$lookup": {
+    //           "from": "clubs",
+    //           "foreignField": "_id",
+    //           "localField": "postClub",
+    //           "as": "postClub"
+    //         }},
+    //         {
+    //           "$unwind": "$postClub"
+    //         },
+    //         {$project: {
+    //         "_id": 1,
+    //         "description": 1,
+    //         "hyperlink": 1,
+    //         "descEdit": 1,
+    //         "image": 1,
+    //         "imageId": 1,
+    //         "clubCollegeKey": 1,
+    //         "viewsCount": 1,
+    //         "privacy": 1,
+    //         "moderation": 1,
+    //         "likeCount": 1,
+    //         "heartCount": 1,
+    //         "likeUserIds": 1,
+    //         "heartUserIds": 1,
+    //         "commentsCount": 1,
+    //         "bucketNum": 1,
+    //         "commentBuckets": 1,
+    //         "postClub._id": 1,
+    //         "postClub.name": 1,
+    //         "postClub.avatar": 1,
+    //         "postClub.avatarId": 1,
+    //         "postAuthor": 1,
+    //         "topic": 1,
+    //         "createdAt": 1,
+    //         "__v": 1,
+    //         "ranking": {
+    //           $divide: [
+    //             { $add: [
+    //               { $multiply: ["$viewsCount", 0.00125] },
+    //               { $multiply: ["$likeCount", 0.125] },
+    //               { $multiply: ["$heartCount", 0.5] },
+    //               { $multiply: ["$commentsCount", 1] },
+    //               0.75
+    //             ] },
+    //             { $add: [
+    //               1,
+    //               { $pow: [
+    //                 { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+    //                 1.8
+    //               ] },
+    //             ] }
+    //           ] }
+    //         }},
+    //         {$sort: {"ranking": -1}},
+    //         {$limit: 20}
+    //       ])
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-9)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-10)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     } else if(req.user.sortByKey === 2){
+    //       Post.find({
+    //         createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}, 
+    //         _id: {$nin: seenIds}, 
+    //         moderation: 0, privacy: 0})
+    //       .populate({path: 'postClub', select: 'name avatar avatarId'})
+    //       .sort({createdAt: -1}).limit(20)
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-11)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-12)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     } else if(req.user.sortByKey === 3){
+    //       Post.aggregate([
+    //         {$match: {$and: [
+    //           {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+    //           {_id: {$nin: seenIds}}, 
+    //           {moderation: 0}, {privacy: 0}
+    //         ]}},
+    //         { "$lookup": {
+    //           "from": "clubs",
+    //           "foreignField": "_id",
+    //           "localField": "postClub",
+    //           "as": "postClub"
+    //         }},
+    //         {
+    //           "$unwind": "$postClub"
+    //         },
+    //         {$project: {
+    //         "_id": 1,
+    //         "description": 1,
+    //         "hyperlink": 1,
+    //         "descEdit": 1,
+    //         "image": 1,
+    //         "imageId": 1,
+    //         "clubCollegeKey": 1,
+    //         "viewsCount": 1,
+    //         "privacy": 1,
+    //         "moderation": 1,
+    //         "likeCount": 1,
+    //         "heartCount": 1,
+    //         "likeUserIds": 1,
+    //         "heartUserIds": 1,
+    //         "commentsCount": 1,
+    //         "bucketNum": 1,
+    //         "commentBuckets": 1,
+    //         "postClub._id": 1,
+    //         "postClub.name": 1,
+    //         "postClub.avatar": 1,
+    //         "postClub.avatarId": 1,
+    //         "postAuthor": 1,
+    //         "topic": 1,
+    //         "createdAt": 1,
+    //         "__v": 1,
+    //         "ranking": {
+    //           $add: [
+    //             { $multiply: ["$viewsCount", 0.00125] },
+    //             { $multiply: ["$likeCount", 0.125] },
+    //             { $multiply: ["$heartCount", 0.5] },
+    //             { $multiply: ["$commentsCount", 1] },
+    //             0.75
+    //           ]
+    //         }}},
+    //         {$sort: {"ranking": -1}},
+    //         {$limit: 20}
+    //       ])
+    //       .exec(function(err, discoverPosts){
+    //       if(err || !discoverPosts){
+    //         logger.error(req.user._id+' : (posts-13)discoverPosts err => '+err);
+    //         return res.sendStatus(500);
+    //       } else{
+    //         var arrLength = discoverPosts.length; var currentUser2 = req.user;
+    //         var foundPostIds = discoverPosts.map(function(post){
+    //           return post._id;
+    //         });
+    //         var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //         for(var k=0;k<discoverPosts.length;k++){
+    //           if(process.env.ENVIRONMENT === 'dev'){
+    //             PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //           } else if (process.env.ENVIRONMENT === 'prod'){
+    //             PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //           }
+    //           hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //           hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //           seenPostIds.push(discoverPosts[k]._id);
+    //         }
+    //         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //         function(err, updatePosts){
+    //           if(err || !updatePosts){
+    //             logger.error(req.user._id+' : (posts-14)updatePosts err => '+err);
+    //             return res.sendStatus(500);
+    //           }
+    //         });
+    //         if(process.env.ENVIRONMENT === 'dev'){
+    //           var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
+    //         } else if (process.env.ENVIRONMENT === 'prod'){
+    //           var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
+    //         }
+    //         res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+    //         foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+    //         csrfToken: res.locals.csrfToken, cdn_prefix});
+    //         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+    //       }
+    //       });
+    //     }
+    //   }
+    // // LOGGED OUT
+    // } else{
+    //   Post.aggregate([
+    //     {$match: {$and: [
+    //       {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+    //       {_id: {$nin: seenIds}}, 
+    //       {moderation: 0}, {privacy: 0}
+    //     ]}},
+    //     { "$lookup": {
+    //       "from": "clubs",
+    //       "foreignField": "_id",
+    //       "localField": "postClub",
+    //       "as": "postClub"
+    //     }},
+    //     {
+    //       "$unwind": "$postClub"
+    //     },
+    //     {$project: {
+    //     "_id": 1,
+    //     "description": 1,
+    //     "hyperlink": 1,
+    //     "descEdit": 1,
+    //     "image": 1,
+    //     "imageId": 1,
+    //     "clubCollegeKey": 1,
+    //     "viewsCount": 1,
+    //     "privacy": 1,
+    //     "moderation": 1,
+    //     "likeCount": 1,
+    //     "heartCount": 1,
+    //     "likeUserIds": 1,
+    //     "heartUserIds": 1,
+    //     "commentsCount": 1,
+    //     "bucketNum": 1,
+    //     "commentBuckets": 1,
+    //     "postClub._id": 1,
+    //     "postClub.name": 1,
+    //     "postClub.avatar": 1,
+    //     "postClub.avatarId": 1,
+    //     "postAuthor": 1,
+    //     "topic": 1,
+    //     "createdAt": 1,
+    //     "__v": 1,
+    //     "ranking": {
+    //       $divide: [
+    //         { $add: [
+    //           { $multiply: ["$viewsCount", 0.00125] },
+    //           { $multiply: ["$likeCount", 0.125] },
+    //           { $multiply: ["$heartCount", 0.5] },
+    //           { $multiply: ["$commentsCount", 1] },
+    //           0.75
+    //         ] },
+    //         { $add: [
+    //           1,
+    //           { $pow: [
+    //             { $divide: [{ $subtract: [ new Date(), "$createdAt" ] },14400000]},
+    //             1.8
+    //           ] },
+    //         ] }
+    //       ] }
+    //     }},
+    //     {$sort: {"ranking": -1}},
+    //     {$limit: 20}
+    //   ])
+    //   .exec(function(err, discoverPosts){
+    //   if(err || !discoverPosts){
+    //     logger.error(req.user._id+' : (posts-15)discoverPosts err => '+err);
+    //     return res.sendStatus(500);
+    //   } else{
+    //     var arrLength = discoverPosts.length;
+    //     var foundPostIds = discoverPosts.map(function(post){
+    //       return post._id;
+    //     });
+    //     var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+    //     for(var k=0;k<discoverPosts.length;k++){
+    //       if(process.env.ENVIRONMENT === 'dev'){
+    //         PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+    //       } else if (process.env.ENVIRONMENT === 'prod'){
+    //         PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+    //       }
+    //       hasVote[k] = voteCheck(req.user,discoverPosts[k]);
+    //       hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
+    //       seenPostIds.push(discoverPosts[k]._id);
+    //     }
+    //     Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+    //     function(err, updatePosts){
+    //       if(err || !updatePosts){
+    //         logger.error(req.user._id+' : (posts-16)updatePosts err => '+err);
+    //         return res.sendStatus(500);
+    //       }
+    //     });
+    //     return res.json({hasVote, hasModVote, posts: discoverPosts, foundPostIds, 
+    //     PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
+    //   }
+    //   });
+    // }
   },
 
   postsCreate(req, res, next){

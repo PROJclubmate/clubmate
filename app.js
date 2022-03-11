@@ -1,21 +1,22 @@
-const express    = require('express'),
-  helmet         = require('helmet'),
-  app            = express(),
-  bodyParser     = require('body-parser'),
-  csrf           = require('csurf'),
-  http           = require('http').Server(app),
-  io             = require('socket.io')(http),
-  cookieSession  = require('cookie-session'),
-  mongoose       = require('mongoose'),
-  flash          = require('connect-flash'),
-  passport       = require('passport'),
-  LocalStrategy  = require('passport-local'),
-  GoogleStrategy = require('passport-google-oauth20').Strategy,
-  methodOverride = require('method-override'),
-  dotenv         = require('dotenv').config(),
-  User           = require('./models/user'),
-  Club           = require('./models/club'),
-  Story          = require('./models/story');
+const express = require("express"),
+    helmet = require("helmet"),
+    app = express(),
+    bodyParser = require("body-parser"),
+    csrf = require("csurf"),
+    http = require("http").Server(app),
+    io = require("socket.io")(http),
+    cookieSession = require("cookie-session"),
+    mongoose = require("mongoose"),
+    flash = require("connect-flash"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local"),
+    GoogleStrategy = require("passport-google-oauth20").Strategy,
+    methodOverride = require("method-override"),
+    dotenv = require("dotenv").config(),
+    User = require("./models/user"),
+    Club = require("./models/club"),
+    Mess = require("./models/mess"),
+    Story = require("./models/story");
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
   logger         = require('./logger'),
@@ -44,15 +45,16 @@ if (process.env.ENVIRONMENT === 'dev') {
 }
 
 //Requiring routes
-const indexRoutes    = require('./routes/index'),
-  chatRoutes         = require('./routes/chats'),
-  audioRoomRoutes    = require('./routes/audio_rooms'),
-  storyRoutes        = require('./routes/stories'),
-  profileRoutes      = require('./routes/profiles'),
-  postRoutes         = require('./routes/posts'),
-  commentRoutes      = require('./routes/comments'),
-  discussionRoutes   = require('./routes/discussions'),
-  conversationRoutes = require('./routes/conversations')(io);
+const indexRoutes = require("./routes/index"),
+    chatRoutes = require("./routes/chats"),
+    audioRoomRoutes = require("./routes/audio_rooms"),
+    storyRoutes = require("./routes/stories"),
+    profileRoutes = require("./routes/profiles"),
+    postRoutes = require("./routes/posts"),
+    commentRoutes = require("./routes/comments"),
+    messRoutes = require("./routes/mess");
+    discussionRoutes = require("./routes/discussions"),
+    conversationRoutes = require("./routes/conversations")(io);
 
 
 // Connect to database
@@ -308,3 +310,4 @@ app.use('/', postRoutes);
 app.use('/', commentRoutes);
 app.use('/', discussionRoutes);
 app.use('/', conversationRoutes);
+app.use("/", messRoutes);
