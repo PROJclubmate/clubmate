@@ -10,6 +10,7 @@ const userSchema = new Schema({
   email: {type: String, unique: true, required: true},
   googleId: String,
   provider: String,
+  isCollegeLevelAdmin : {type: Boolean, default: true},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   isVerified: {type: Boolean, default: false},

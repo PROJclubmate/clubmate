@@ -1,0 +1,52 @@
+<% include ./partials/header %>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="col-md-6 mx-2 my-4">
+            <div class="card shadow">
+                <h5 class="card-header">Edit Mess Menu</h5>
+                <div class="card-body">
+                    <form action="/mess/change?_method=PUT" method="POST" method="post">
+                        <div class="form-group mb-3">
+                            <label for="hostel">Select Hostel</label>
+                            <select class="form-control" id="hostel" name="hostel">
+                                <% hostel.forEach(function(h){ %>
+                               <option value=<%=h %> ><%= h %></option> 
+                               <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="day">Select Day</label>
+                            <select class="form-control" id="day" name="day">
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="time">Select Meal</label>
+                            <select class="form-control" id="time" name="time">
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Snacks">Snacks</option>
+                                <option value="Dinner">Dinner</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="dishes">Enter Dishes</label>
+                            <textarea class="form-control" id="dishes" rows="2" name="dishes"
+                                placeholder="Dish_1, Dish_2, Dish_3"></textarea>
+                        </div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <div class="form-group my-3 text-center">
+                            <button type="submit" class="btn btn-success">Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ./partials/footer %>
