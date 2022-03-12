@@ -60,22 +60,24 @@ if (location.pathname == "/discover") {
           },
       });
   });
-  $("#messMenu").on("click", function (e) {
-    console.log("click")
-    e.preventDefault();
-    console.log("click")
-      $.ajax({
-          type: "GET",
-          url: "/discover-mess",
-          timeout: 3000,
-          success: function (response) {
-              console.log(hello);
-              var modalBody = document.getElementById("quickViewModal");
-              modalBody.innerHTML = quick_mess_template(response);
-          },
-      });
-  });
 }
+
+$("#messMenu").on("click", function (e) {
+  console.log("click")
+  // e.preventDefault();
+  console.log("click")
+    $.ajax({
+        type: "GET",
+        url: "/discover-mess",
+        timeout: 3000,
+        success: function (response) {
+            console.log("hello");
+            console.log(response);
+            var modalBody = document.getElementById("sidebar");
+            modalBody.innerHTML = quick_mess_template(response);
+        },
+    });
+  });
 
 if (
   location.pathname.split("/").length == 3 &&
@@ -3311,7 +3313,7 @@ function quick_mess_template(response) {
 <h2 class="accordion__heading mb-3 px-4 text-center">
 
 </h2>
-<% mess.forEach(function(m){ %>
+<% response.forEach(function(m){ %>
     <% if(m.menu.day ) { %>
         <div class="accordion__item">
             <button class="accordion__btn">
@@ -3366,6 +3368,10 @@ function quick_mess_template(response) {
           accItems[3].classList.add("accordion__item--active")
       }
   </script>
-`);
+
+`,
+{response}
+);
+
   return html;
 }
