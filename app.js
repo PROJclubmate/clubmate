@@ -144,7 +144,7 @@ app.use(
     }
   })
 );
-// app.use(csrf());
+app.use(csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -184,7 +184,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.locals.moment = require('moment');
 app.use(async function(req, res, next){
-  res.locals.csrfToken = "";
+  res.locals.csrfToken = req.csrfToken();
   res.locals.currentUser = req.user;
   if(req.user){
     try{

@@ -62,7 +62,7 @@ if (location.pathname == "/discover") {
   });
 }
 
-$("#messMenu").on("click", function (e) {
+$(".messMenuOpen").on("click", function (e) {
     // e.preventDefault();
     $.ajax({
         type: "GET",
