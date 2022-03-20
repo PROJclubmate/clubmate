@@ -104,7 +104,7 @@ $("#messMenu").on("click", function (e) {
         if (time >= 19 && time <= 22) {
           accItems[3].classList.add("accordion__item--active")
         }
-    }, 100);
+    }, 1000);
 });
 
 if (
