@@ -63,21 +63,49 @@ if (location.pathname == "/discover") {
 }
 
 $("#messMenu").on("click", function (e) {
-  console.log("click")
-  // e.preventDefault();
-  console.log("click")
+    // e.preventDefault();
     $.ajax({
         type: "GET",
         url: "/discover-mess",
         timeout: 3000,
         success: function (response) {
-            console.log("hello");
-            console.log(response);
-            var modalBody = document.getElementById("sidebar");
-            modalBody.innerHTML = quick_mess_template(response);
+            var messName = document.getElementById("messName");
+            messName.innerText = `${response[0].hostel}`;
+            var quickMessContent = document.getElementById("quickMessContent");
+            quickMessContent.innerHTML = quick_mess_template(response);
         },
     });
-  });
+    setTimeout(() => {
+        const accItems = document.querySelectorAll(".accordion__item");
+        // console.log(accItems);
+        accItems.forEach((acc) =>
+          acc.addEventListener("click", function (e) {
+            accItems.forEach((item) =>
+              item != this
+                ? item.classList.remove("accordion__item--active")
+                : null
+            );
+            if (this.classList != "accordion__item--active") {
+              this.classList.toggle("accordion__item--active");
+            }
+          })
+        );
+        let tday = new Date();
+        let time = tday.getHours();
+        if (time >= 5 && time <= 10) {
+          accItems[0].classList.add("accordion__item--active")
+        }
+        if (time >= 11 && time <= 14) {
+          accItems[1].classList.add("accordion__item--active")
+        }
+        if (time >= 15 && time <= 18) {
+          accItems[2].classList.add("accordion__item--active")
+        }
+        if (time >= 19 && time <= 22) {
+          accItems[3].classList.add("accordion__item--active")
+        }
+    }, 1000);
+});
 
 if (
   location.pathname.split("/").length == 3 &&
@@ -3309,12 +3337,11 @@ function quick_mess_template(response) {
           max-height: 100vh;
       }
       </style>
-<div class="accordion py-3 bg-white">
+<div class="accordion py-3 bg-white m-auto">
 <h2 class="accordion__heading mb-3 px-4 text-center">
 
 </h2>
 <% response.forEach(function(m){ %>
-    <% if(m.menu.day ) { %>
         <div class="accordion__item">
             <button class="accordion__btn">
                 <span class="accordion__caption">
@@ -3336,38 +3363,8 @@ function quick_mess_template(response) {
                 </ul>
             </div>
         </div>
-        <% } %>
             <% }); %>
 </div>
-<script>
-      const accItems = document.querySelectorAll(".accordion__item");
-      accItems.forEach((acc) =>
-          acc.addEventListener("click", function (e) {
-              accItems.forEach((item) =>
-                  item != this
-                      ? item.classList.remove("accordion__item--active")
-                      : null
-              );
-              if (this.classList != "accordion__item--active") {
-                  this.classList.toggle("accordion__item--active");
-              }
-          })
-      );
-      let tday = new Date();
-      let time = tday.getHours();
-      if (time >= 5 && time <= 10) {
-          accItems[0].classList.add("accordion__item--active")
-      }
-      if (time >= 11 && time <= 14) {
-          accItems[1].classList.add("accordion__item--active")
-      }
-      if (time >= 15 && time <= 18) {
-          accItems[2].classList.add("accordion__item--active")
-      }
-      if (time >= 19 && time <= 22) {
-          accItems[3].classList.add("accordion__item--active")
-      }
-  </script>
 
 `,
 {response}
