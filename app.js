@@ -16,6 +16,7 @@ const express = require("express"),
     User = require("./models/user"),
     Club = require("./models/club"),
     Mess = require("./models/mess"),
+    Merchandise = require("./models/merchandise"),
     Story = require("./models/story");
   clConfig       = require('./config/cloudinary'),
   s3Config       = require('./config/s3'),
@@ -53,6 +54,7 @@ const indexRoutes = require("./routes/index"),
     postRoutes = require("./routes/posts"),
     commentRoutes = require("./routes/comments"),
     messRoutes = require("./routes/mess");
+    merchandiseRoutes = require("./routes/merchandise"),
     discussionRoutes = require("./routes/discussions"),
     conversationRoutes = require("./routes/conversations")(io);
 
@@ -144,7 +146,7 @@ app.use(
     }
   })
 );
-app.use(csrf());
+// app.use(csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -184,7 +186,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.locals.moment = require('moment');
 app.use(async function(req, res, next){
-  res.locals.csrfToken = req.csrfToken();
+  res.locals.csrfToken = "";
   res.locals.currentUser = req.user;
   if(req.user){
     try{
@@ -310,4 +312,5 @@ app.use('/', postRoutes);
 app.use('/', commentRoutes);
 app.use('/', discussionRoutes);
 app.use('/', conversationRoutes);
-app.use("/", messRoutes);
+app.use('/', messRoutes);
+app.use('/',merchandiseRoutes);

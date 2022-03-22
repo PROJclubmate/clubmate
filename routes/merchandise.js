@@ -8,8 +8,8 @@ if (process.env.ENVIRONMENT === "dev") {
 } else if (process.env.ENVIRONMENT === "prod") {
     var { upload } = require("../config/s3.js");
 }
-router.get('/merchandise', middleware.isLoggedIn,displayMerchandise);
-router.post('/merchandise/upload',upload.single("image"),uploadNewMerchandise);
+router.get('/merchandise',middleware.isLoggedIn,displayMerchandise);
+router.post('/merchandise',upload.single('image'),middleware.isLoggedIn,uploadNewMerchandise);
 router.get('/merchandise/:type',middleware.isLoggedIn,displayParticularMerchandise);
 router.delete('/merchandise/:merch_id',middleware.isLoggedIn,deleteMerchandise);
 

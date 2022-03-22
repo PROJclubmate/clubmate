@@ -10,14 +10,14 @@ if(process.env.ENVIRONMENT === 'dev'){
 }
 
 const uploadNewMerchandise = async (req,res)=>{
-    // console.log("HI");
-    // user = req.user.email;
-    // const validate = await User.find({email: user,isCollegeLevelAdmin: true});
-    // if(!validate[0]){
-    //     req.flash('error', 'You are not authorized upload Merchandise');
-    //     res.redirect('/merchandise');
-    // }
-    // else{
+    console.log("HI");
+    user = req.user.email;
+    const validate = await User.find({email: user,isCollegeLevelAdmin: true});
+    if(!validate[0]){
+        req.flash('error', 'You are not authorized upload Merchandise');
+        res.redirect('/merchandise');
+    }
+    else{
     var cat = req.body.category;
     var title = req.body.description;
     console.log(title);
@@ -37,7 +37,8 @@ const uploadNewMerchandise = async (req,res)=>{
             req.body.image = result.Location;
             req.body.imageId = result.Key;
           }
-        }catch(err){
+        }
+        catch(err){
           // logger.error(req.user._id+' : Merchandise error => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
@@ -47,19 +48,21 @@ else{
   console.log("No file");
 }
     const merch = await Merchandise.create({
-      description : title , 
-      category : cat,
+      description : req.body.description,
+      title : req.body.title, 
+      category : req.body.category,
       image : req.body.image,
       imageId:req.body.imageId ,
       contact : req.body.contact,
-
-    })
+      price : req.body.price,
+      club : req.body.club,
+    });
     console.log(merch);
     req.flash('success','Uploaded New Merchandise');
     res.redirect('/merchandise/upload');
   }
 
-
+}
 const deleteMerchandise = async (req,res)=>{
   user = req.user.email;
     const validate = await User.find({email: user,isCollegeLevelAdmin: true});
@@ -102,14 +105,18 @@ const deleteMerchandise = async (req,res)=>{
 const displayMerchandise = async (req,res)=>{
   const merch = await Merchandise.find({});
   const type = await Merchandise.distinct('category');
-  res.render('merchandise',{merch : merch , type : type});
+  console.log(merch);
+  res.json(merch);
+  // res.render('merchandise',{merch : merch , type : type});
 }
 
 const displayParticularMerchandise = async (req,res)=>{
    const category = req.params.type;
    const requiredCategory = await Merchandise.find({category:category});
    const type = await Merchandise.distinct('category');
-   res.render('merchandise',{merch : requiredCategory , type : type});
+   console.log(requiredCategory);
+   res.send(requiredCategory);
+  //  res.render('merchandise',{merch : requiredCategory , type : type});
 
 }
 
