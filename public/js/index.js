@@ -29,19 +29,19 @@ window.onscroll = function(){
     }
   }
 
-  if(college_infobtns_quick_nav_mobile){
+  if(quickview_nav_mobile){
     if(scroll > 40){
-      college_infobtns_quick_nav_mobile.classList.add("nav-hidden");
+      quickview_nav_mobile.classList.add("nav-hidden");
     } else{
-      college_infobtns_quick_nav_mobile.classList.remove("nav-hidden");
+      quickview_nav_mobile.classList.remove("nav-hidden");
     }
   }
 
-  if(college_infobtns_quick_nav_desktop){
+  if(quickview_nav_desktop){
     if(scroll > 40){
-      college_infobtns_quick_nav_desktop.classList.add("nav-hidden");
+      quickview_nav_desktop.classList.add("nav-hidden");
     } else{
-      college_infobtns_quick_nav_desktop.classList.remove("nav-hidden");
+      quickview_nav_desktop.classList.remove("nav-hidden");
     }
   }
 }
@@ -58,7 +58,7 @@ for (var i=0;i<dropdown.length;i++){
       var discover = document.getElementById('side-discover');
       discover.classList.toggle('active');
       if(document.documentElement.scrollTop < 350){
-        college_infobtns_quick_nav_desktop.classList.toggle("nav-hidden");
+        quickview_nav_desktop.classList.toggle("nav-hidden");
       }
     } else if(location.pathname == '/lobby'){
       var lobby = document.getElementById('side-lobby');
@@ -87,14 +87,16 @@ if(location.pathname.split('/')[1] == 'colleges'){
   home.classList.toggle('active');
 } else if(location.pathname == '/discover'){
   var discover_nav = document.getElementById("discover_nav");
-  var college_infobtns_quick_nav_desktop = document.getElementById("college_infobtns_quick_nav_desktop");
-  var college_infobtns_quick_nav_mobile = document.getElementById("college_infobtns_quick_nav_mobile");
-  if(window.innerWidth > 768){
-    college_infobtns_quick_nav_desktop.classList.remove("nav-hidden");
-  } else{
-    var nav_height = $('#discover_nav').height();
-    $('#college_infobtns_quick_nav_mobile').height(nav_height - 1);
-    discover_nav.classList.remove("nav-hidden");
+  var quickview_nav_desktop = document.getElementById("quickview_nav_desktop");
+  var quickview_nav_mobile = document.getElementById("quickview_nav_mobile");
+  if(quickview_nav_desktop && quickview_nav_mobile){
+    if(window.innerWidth > 768){
+      quickview_nav_desktop.classList.remove("nav-hidden");
+    } else{
+      var nav_height = $('#discover_nav').height();
+      $('#quickview_nav_mobile').height(nav_height - 1);
+      discover_nav.classList.remove("nav-hidden");
+    }
   }
 
   var discover = document.getElementById('side-discover');
@@ -170,10 +172,30 @@ function hidesidebar(hideValueNum){
 }
 
 $('#input_topic').on('input', function(e){
-  if($(this).val() != ''){
-    $('#description').attr('placeholder', 'Describe your question / discussion topic');
+  if(!$('#description').hasClass('junior')){
+    if($(this).val() != ''){
+      $('#priv_everyone').removeAttr('selected');
+      $('#priv_everyone').attr('disabled', 'true');
+      $('#priv_college').attr('selected', 'true');
+      $('#description').attr('placeholder', 'Describe your question / discussion topic');
+    } else{
+      $('#priv_college').removeAttr('selected');
+      $('#priv_everyone').removeAttr('disabled');
+      $('#priv_everyone').attr('selected', 'true');
+      $('#description').attr('placeholder', 'Describe your post');
+    }
   } else{
-    $('#description').attr('placeholder', 'Describe your post');
+    if($(this).val() != ''){
+      $('#description').removeClass('description2');
+      $('#description').removeAttr('readonly', 'true');
+      $('#description').attr('required', 'true');
+      $('#description').attr('placeholder', 'Describe your question');
+    } else{
+      $('#description').addClass('description2');
+      $('#description').attr('readonly', 'true');
+      $('#description').removeAttr('required', 'true');
+      $('#description').attr('placeholder', 'Describe your post');
+    }
   }
 });
 
@@ -391,6 +413,7 @@ $('#inputImage').change(function(){
 	var fileName = $('#inputImage')[0].files[0].name;
 	var truncated = fileName.trunc(15);
 	$(this).prev('label').text(truncated);
+  $(this).prev('label').css({'border': 'none', 'boxShadow':'none'});
 
   var file = this.files[0];
   if (file){
@@ -406,6 +429,7 @@ $('#inputImages10').change(function(){
 	var fileNum = $('#inputImages10')[0].files.length;
 	var labelText = fileNum+' files';
 	$(this).prev('label').text(labelText);
+  $(this).prev('label').css({'border': 'none', 'boxShadow':'none'});
 });
 $('#inputprofilePic').change(function(){
 	var fileName = $('#inputprofilePic')[0].files[0].name;
@@ -580,9 +604,10 @@ $(function (){
     var divLocalRelative = $('#timeLocalRelative');
     
     //get text from timeUTC and convert to local timezone  
-    var localTime = moment.utc(divUtc.text()).toDate();
-    localTime = moment(localTime).format('LT');
+    var localTimeOriginal = moment.utc(divUtc.text()).toDate();
+    var localTime = moment(localTimeOriginal).format('LT');
     divLocal.text(localTime);
+    divLocal.attr({'title': moment(localTimeOriginal).format('l')});
 
     var localTime2 = moment.utc(divUtc2.text()).toDate();
     localTime2 = moment(localTime2).format('LT');

@@ -2251,7 +2251,7 @@ function post_subPosts_template(response){
         <% } %>
       </div>
     </div>
-    <div class="d-flex flex-row mr-auto px-2">
+    <div class="d-flex flex-row mr-auto px-2 mt-3">
       <% if(currentUser){ %>
         <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
           <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
@@ -2331,21 +2331,23 @@ function post_subPosts_template(response){
           <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
             <div class="valign mb-1">
               <div class="d-flex flex-column">
-                <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                <div class="darkgrey boldtext subpostbtns"><%= currentUser.fullName %></div>
+                <div class="darkgrey boldtext subpostbtns text-xxs"><%= rankTitle(rank) %></div>
               </div>
-              <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
+              <div class="lightgrey boldtext text-xs subpostbtns py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
             </div>
             <div class="input-group">
-              <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input" name="text" placeholder="Add your answer" rows="4"></textarea>
+              <textarea onclick="block_display('subpostbtns');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input" name="text" placeholder="Add your answer" rows="4"></textarea>
             </div>
-            <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success subpostbtn btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
-              <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                <i class="fas fa-upload"></i> Images<sup>10</sup>
-              </label>
-              <input type="file" id="inputImages10" class="text-sm" name="images" accept="image/*">
+            <div class="subpostbtns">
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+                <button onclick="none_display('subpostbtns');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                  <i class="fas fa-images"></i>
+                </label>
+                <input type="file" id="inputImages10" class="text-sm" name="images" accept="image/*">
+              </div>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
@@ -2558,7 +2560,7 @@ function allTimeTopTopicPosts_template(response){
     <div class="valign">
       <% if(Posts_50_Image && Posts_50_Image[i] == null){ %>
         <span class="truncate2 mobiletext1 lineheight-lesser my-1">
-          <span class="badge">[<%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i>]</span>
+          <span class="badge"><%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i></span>
           <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
         </span>
       <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
@@ -2567,7 +2569,7 @@ function allTimeTopTopicPosts_template(response){
         </div>
         <div>
           <span class="truncate2 mobiletext1 lineheight-lesser my-1">
-            <span class="badge">[<%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i>]</span>
+            <span class="badge"><%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i></span>
             <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
           </span>
         </div>

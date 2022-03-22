@@ -110,7 +110,11 @@ router.post('/reset/:token', profilesResetPass);
 router.get('/waiting', profilesWaitingPage);
 
 // Oauth 2.0
-router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google', passport.authenticate('google', {scope: [
+  'email', 'profile', 
+  // 'https://www.googleapis.com/auth/user.birthday.read', 
+  // 'https://www.googleapis.com/auth/user.gender.read'
+]}));
 
 router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), profilesGoogleAuthCallback);
 

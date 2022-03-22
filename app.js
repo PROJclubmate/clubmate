@@ -157,22 +157,24 @@ passport.use(new GoogleStrategy({
       // user exists
       return done(null, data);
     } else{
-      // var userKeys = {['sex']: profile.gender};
-      User({
-        firstName: profile.name.givenName,
-        lastName: profile.name.familyName,
-        fullName: profile.displayName,
-        email: profile.emails[0].value,
-        isVerified: true,
-        googleId: profile.id,
-        // userKeys: userKeys,
-        profilePic: null,
-        profilePicId: null,
-        password: null,
-        provider: 'google'
-      }).save(function (err, data){
-        return done(null, data);
-      })
+      var isVerifiedOnGoogle = profile.emails[0].verified == true ? true : false;
+      console.log(JSON.stringify(profile, null, 2));
+      // // var userKeys = {['sex']: profile.gender};
+      // User({
+      //   firstName: profile.name.givenName,
+      //   lastName: profile.name.familyName,
+      //   fullName: profile.displayName,
+      //   email: profile.emails[0].value,
+      //   isVerified: isVerifiedOnGoogle,
+      //   googleId: profile.id,
+      //   // userKeys: userKeys,
+      //   profilePic: null,
+      //   profilePicId: null,
+      //   password: null,
+      //   provider: 'google'
+      // }).save(function (err, data){
+      //   return done(null, data);
+      // })
     }
   });
 }
