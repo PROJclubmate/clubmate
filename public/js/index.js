@@ -21,13 +21,6 @@ window.onscroll = function(){
   }
   prevScrollpos = currentScrollPos;
 
-  if(discover_nav){
-    if(scroll > 350){
-      discover_nav.classList.add("nav-hidden");
-    } else{
-      discover_nav.classList.remove("nav-hidden");
-    }
-  }
 
   if(quickview_nav_mobile){
     if(scroll > 40){
@@ -36,7 +29,6 @@ window.onscroll = function(){
       quickview_nav_mobile.classList.remove("nav-hidden");
     }
   }
-
   if(quickview_nav_desktop){
     if(scroll > 40){
       quickview_nav_desktop.classList.add("nav-hidden");
@@ -82,6 +74,34 @@ for (var i=0;i<dropdown.length;i++){
   });
 }
 
+// Quick view buttons
+const links_mobile = document.querySelectorAll('.quicknav_link_mobile');
+links_mobile.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    if (!link.classList.contains('active')){
+      const active = document.querySelector('.quicknav_link_mobile.active');
+      if (active !== null){
+        active.classList.remove('active');
+      }
+      link.classList.add('active');
+    }
+  });
+});
+const quickview_buttons_desktop = document.querySelectorAll('.quickviewbtns-desktop');
+quickview_buttons_desktop.forEach(button => {
+  button.addEventListener('click', e => {
+    e.preventDefault();
+    if (!button.classList.contains('active')){
+      const active = document.querySelector('.quickviewbtns-desktop.active');
+      if (active !== null){
+        active.classList.remove('active');
+      }
+      button.classList.add('active');
+    }
+  });
+});
+
 if(location.pathname.split('/')[1] == 'colleges'){
   var home = document.getElementById('side-home');
   home.classList.toggle('active');
@@ -92,9 +112,8 @@ if(location.pathname.split('/')[1] == 'colleges'){
   if(quickview_nav_desktop && quickview_nav_mobile){
     if(window.innerWidth > 768){
       quickview_nav_desktop.classList.remove("nav-hidden");
+      discover_nav.classList.remove("nav-hidden");
     } else{
-      var nav_height = $('#discover_nav').height();
-      $('#quickview_nav_mobile').height(nav_height - 1);
       discover_nav.classList.remove("nav-hidden");
     }
   }

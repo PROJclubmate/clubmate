@@ -62,6 +62,7 @@ div.content{
   .story-alt-container{width: 45vw;}
   #story-footer, .absolute-center{width: calc(100% - 10rem - 2rem) !important;}
   .btn.story-maker-next.back{left: 11rem !important;}
+  .quickviewbtns-desktop{color: #262626;}
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
@@ -177,8 +178,6 @@ div.content{
   .btnxxs{padding: 0 4px !important;}
   #menu-toggle{display: none !important;}
   #quickview_nav_mobile{border-top: none; transition: ease-out 0.15s;}
-  #quickview_nav_mobile_div{width: 100%;}
-  .quickviewbtns-mobile{width: 20%; text-align: center;}
 }
 /* iPad Pro */
 @media screen and (min-width: 992px) and (max-width: 1200px){
@@ -191,6 +190,7 @@ div.content{
   #chats-list{padding-left: 0.5rem;}
   #chatbox-loadingarea.chatbox-loadingarea2{padding-right: 0.25rem; flex: 0 0 66.666667%; max-width: 66.666667%;}
   .togglePostsView-form {float: right; margin-right: 36px;}
+  .quickviewbtns-desktop{color: #262626;}
 }
 @media screen and (width: 992px){
   #college-infobtn-mobile{visibility: hidden;}
@@ -203,7 +203,7 @@ div.content{
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
   .story-alt-container{width: 65vw;}
   .lb-absolute{position:  absolute; bottom: 0; left: 0; margin: 0.5rem 0.25rem; width: calc(100% - 0.5rem);}
-  #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
+  #discover_nav{position: absolute; bottom: 0; top: unset;}
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
@@ -216,6 +216,8 @@ div.content{
   .posts_view_toggle-pad{padding-left: 0.8125rem !important;}
   #college-cover.mobileblurred{filter: blur(10px);}
   .college-infobtn{width: 56px !important; height: 56px !important;}
+  #discover-load-more-btn{margin-bottom: 4rem;}
+  #view_all_friends{margin-bottom: 3rem;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -325,11 +327,12 @@ div.content{
   #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
   #messages_container{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
-  #discover_nav{position: fixed; bottom: 0; top: unset; background-color: #f8f9fa;}
+  #discover-load-more-btn{margin-bottom: 4rem;}
+  #discover_nav{position: absolute; bottom: 0; top: unset;}
+  #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .chat-msg3{top: 45% !important;}
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem;}
-  #discover_nav-div{width: 100vw; padding: 0.125rem 0;}
   .collegedp{margin: 0 0.25rem !important;}
   .description{height: 7.5rem !important;}
   .description-short-show{font-size: 1.1875rem !important;}
@@ -376,6 +379,7 @@ div.content{
   #story-maker-container{height: calc(100vh - 44px - 56px - 56px) !important;}
   .story-maker-options{padding: 0.25rem 0.5rem !important;}
   #story-draft-preview{margin-left: auto !important;}
+  #quickview_nav_mobile{padding: 12px 10px !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -906,7 +910,7 @@ input{
   background-color: #e0e0e0;
 }
 .discover-navback{
-  border-top: 0.5px solid rgba(0,0,0,0.15);
+  border-top: 0.5px solid rgba(0,0,0,0.05);
 }
 .nav-hidden{
   visibility: hidden;
@@ -1003,7 +1007,7 @@ input{
   border-radius: 0;
 }
 .card.discovercard{
-  min-height: 20rem;
+  min-height: 15rem;
   border-radius: 0.5rem;
   border: 0.5px solid #cccccc;
   margin: 0 0.25rem 0.5rem 0.25rem;
@@ -2000,10 +2004,6 @@ a .nolink{
   color: #262626;
   text-decoration: none !important;
 }
-a .nolink:hover{
-  color: black;
-  text-decoration: none !important;
-}
 .info1{
   padding-left: 0rem;
 }
@@ -2742,8 +2742,6 @@ select.select1{
 }
 .intercom-emoji-picker-emoji:hover{
   transition-delay: 0ms;
-  -webkit-transform: scale(1.5);
-  -ms-transform: scale(1.5);
   transform: scale(1.5);
 }
 /******************************************************************************/
@@ -2781,8 +2779,6 @@ select.select1{
 }
 .intercom-emoji-picker-emoji2:hover{
   transition-delay: 0ms;
-  -webkit-transform: scale(1.5);
-  -ms-transform: scale(1.5);
   transform: scale(1.5);
 }
 .chat-input-tool{
@@ -3852,6 +3848,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   bottom: 0; 
   top: unset; 
   background-color: #f8f9fa;
+  border-top: 0.5px solid rgba(0,0,0,0.05);
 }
 .quickviewbtns-desktop{
   width: 3.25rem;
@@ -3859,7 +3856,13 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   padding: 0.5rem;
 }
 .quickviewbtns-desktop:hover{
-  background-color: #e0e0e0;
+  transform: scale(1.25);
+  color: #262626;
+  background-color: unset !important;
+}
+.quickviewbtns-desktop.active{
+  background-color: #e0e0e0 !important;
+  color: #262626;
 }
 .room-container-div{
   padding: 0.5rem;
@@ -3946,3 +3949,98 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   box-shadow: none !important;
   cursor: default;
 }
+
+/* College level tools - Quick view buttons */
+.quicknav_list_mobile{
+  list-style: none;
+  align-items: center;
+  height: 100%;
+}
+.quicknav_item_mobile{
+  width: 20%;
+}
+.quicknav_link_mobile{
+  color: #262626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  overflow: hidden;
+}
+.quicknav_link_mobile:hover{
+  color: #262626;
+  text-decoration: none;
+}
+.quicknav_icon_mobile{
+  transition: all 0.35s ease;
+  will-change: opacity, transform, background-color;
+}
+.quicknav_text_mobile{
+  position: absolute;
+  transform: translateY(60px) skewY(-20deg);
+  transform-origin: left bottom;
+  color: #262626;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.35s ease;
+  will-change: opacity, transform, background-color;
+}
+.quicknav_link_mobile.active .quicknav_icon_mobile{
+  transform: translateY(-60px) rotateX(90deg) scale(0.4) skewY(-30deg);
+  opacity: 0;
+}
+.quicknav_link_mobile.active .quicknav_text_mobile{
+  opacity: 1;
+  transform: translateY(-3px) skewY(0deg);
+}
+
+@keyframes textAnime{
+  from{
+    transform-origin: right center;
+    transform: skewY(0) translateY(0);
+  }
+  25%{
+    transform: skewY(0) translateY(0);
+  }
+  60%{
+    transform: skewY(-12deg) translateY(-22px);
+  }
+  to{
+    transform: skewY(0) translateY(-3px);
+  }
+}
+
+/* Code for notification dot(?) under quickview buttons */
+/* .quicknav_link_mobile{
+  justify-content: center;
+}
+.quicknav_link_mobile::before {
+  content: "";
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 15px;
+  background-color: #f6c89f;
+  position: absolute;
+  transform: translateY(60px) scale(0.4);
+  transition: all 0.35s cubic-bezier(0, 0.51, 0, 0.99);
+  opacity: 0;
+}
+.quicknav_link_mobile.active::before {
+  transform: translateY(12px) scale(1);
+  transition: all 0.35s cubic-bezier(0, 0.51, 0, 0.99) 0.2s;
+  opacity: 1;
+}
+@keyframes dotAnime {
+  0% {
+    transform: translateY(60px) scale(0.4);
+    opacity: 0;
+  }
+  75% {
+    transform: translateY(-3px) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(12px);
+    opacity: 1;
+  }
+} */

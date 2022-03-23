@@ -71,8 +71,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .post-head, .post-tail, .topic-column, .show-comments{
     border-color: var(--color-dark-800) !important;
   }
-  .college-infobtn .fa-newspaper, .college-infobtn .fa-briefcase,
-  .college-infobtn .fa-utensils, .college-infobtn .fa-external-link-alt{
+  .college-infobtn .fa-blog, .college-infobtn .fa-briefcase, .fa-store,
+  .college-infobtn .fa-utensils, .college-infobtn .fa-calendar-check{
     -webkit-text-stroke-color: var(--color-dark-900) !important;
   }
   .btncollapse-div.border-light{
@@ -200,7 +200,7 @@ button.gb.gb8:focus{
 }
 .btn.btn-light, .btn.btn-secondary{
   background-color: var(--color-dark-700) !important;
-  color: var(--color-white-100) !important;
+  color: var(--color-white-200) !important;
   border-color: var(--color-dark-700) !important;
   box-shadow: inset 0px 3px 1px -2px rgb(255, 255, 255, 0.1);
 }
@@ -343,10 +343,7 @@ a:hover{
   color: cornflowerblue;
 }
 a .nolink{
-  color: var(--color-white-200);
-}
-a .nolink:hover{
-  color: var(--color-white-100);
+  color: var(--color-white-300);
 }
 a.black:hover{
   color: white;
@@ -396,7 +393,7 @@ input.form-control.search:focus{
 }
 .card{
   background-color: var(--color-dark-800);
-  color: var(--color-white-200);
+  color: var(--color-white-300);
 }
 .card-heading{
   color: var(--color-white-100);
@@ -491,6 +488,9 @@ input.form-control.search:focus{
   background-color: 0.5px solid var(--color-dark-900);
   border: none;
 }
+.discoverheader{
+  background-color: rgba(0,0,0,0.25);
+}
 .sortBykey{
   color: var(--color-white-200);
   background-color: var(--color-dark-900);
@@ -563,7 +563,7 @@ input.form-control.search:focus{
   border-bottom: 0.5px solid var(--color-dark-800) !important;
 }
 h5.topic-h5{
-  color: var(--color-white-200) !important;
+  color: var(--color-white-300) !important;
 }
 .topic-column{
   background-color: var(--color-dark-750);
@@ -772,7 +772,6 @@ div.carousel-img{
 }
 .custom-file-upload{
   background-color: var(--color-dark-700);
-  box-shadow: none;
   border: 1px solid var(--color-dark-700);
   color: var(--color-white-200);
 }
@@ -784,11 +783,26 @@ div.carousel-img{
 .custom-file-upload.noshadow{
   box-shadow: none !important;
 }
-#discover_nav, #college_infobtns_quick_nav_mobile{
+.discover-navback, #quickview_nav_mobile{
+  border-top: 0.5px solid rgba(255,255,255,0.05);
+  box-shadow: none !important;
+}
+#quickview_nav_mobile{
   background-color: var(--color-dark-800);
 }
-.college-infobtn-quick.desktop_sidebar:hover{
-  background-color: var(--color-dark-850);
+.quicknav_link_mobile, .quickviewbtns-desktop{
+  color: var(--color-white-200);
+}
+.quicknav_link_mobile:hover, .quicknav_text_mobile{
+  color: var(--color-white-100);
+}
+.quickviewbtns-desktop:hover{
+  color: var(--color-white-100);
+  background-color: unset !important;
+}
+.quickviewbtns-desktop.active{
+  background-color: var(--color-dark-900) !important;
+  color: var(--color-white-100);
 }
 
 /* === Chats === */
@@ -913,8 +927,7 @@ time.calendar{
 .stories.facesnap .story:not(.seen) > .item-link > .item-preview {
   background: #2bc48a !important;
 }
-.stories.facesnap .story > .item-link > .item-preview img{
-  border-color: var(--color-dark-800) !important;
+#club_archives_stories .item-preview, .stories.facesnap .story > .item-link > .item-preview img{
   background-color: var(--color-dark-800) !important;
 }
 #new_story_label{

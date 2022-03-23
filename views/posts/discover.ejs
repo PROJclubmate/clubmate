@@ -57,7 +57,7 @@
       <% //include ../partials/posts_index %>
     </div>
     <div id="client-posts-discover" style="overflow: hidden;"></div>
-    <div class="text-center pt-2">
+    <div id="discover-load-more-btn" class="text-center pt-2">
       <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
         <span id="load-more-span"></span>Load
       </button>
@@ -92,7 +92,7 @@
           <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events">
             <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
           </div>
-          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Mess menu">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Mess Menu">
             <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
           </div>
         </div>
@@ -148,25 +148,41 @@
     </div>
   </nav>
 <% } %>
+
 <% if(currentUser){ %>
   <nav id="quickview_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
-    <div id="quickview_nav_mobile_div" class="d-flex justify-content-around">
-      <div class="text-xxl my-auto mx-2 quickviewbtns-mobile" style="cursor: pointer;" title="Blogs">
-        <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl my-auto mx-2 quickviewbtns-mobile" style="cursor: pointer;" title="Placements & Intern">
-        <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl my-auto mx-2 quickviewbtns-mobile" style="cursor: pointer;" title="Merch & Stickers">
-        <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl my-auto mx-2 quickviewbtns-mobile" style="cursor: pointer;" title="Attendance & Events">
-        <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl my-auto mx-2 quickviewbtns-mobile" style="cursor: pointer;" title="Mess menu">
-        <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-    </div>
+    <ul class="quicknav_list_mobile d-flex justify-content-around fullwidth">
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#blogs">
+          <i class="fas fa-blog quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">BLOGS</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#intern">
+          <i class="fas fa-briefcase quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">INTERN</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#merch">
+          <i class="fas fa-store quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">MERCH</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#attendance">
+          <i class="fas fa-calendar-check quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">ATTENDANCE</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#mess">
+          <i class="fas fa-utensils quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">MESS</span>
+        </a>
+      </li>
+    </ul>
   </nav>
 <% } %>
 

@@ -12,6 +12,8 @@
 .stories.facesnap .story > .item-link > .item-preview img {
   border-radius: 1.9375rem !important;
   background-color: white;
+  border: none;
+  padding: 3px;
 }
 @media screen and (max-width: 481px){
   .stories.facesnap .story > .item-link > .item-preview {
@@ -71,7 +73,7 @@ span.info{
 #club_current_stories .item-preview {
   border-radius: 0.5rem !important;
   padding: 0;
-  background: white !important;
+  background: white;
 }
 
 #club_current_stories .item-preview img {
@@ -87,7 +89,7 @@ span.info{
 #club_archives_stories .item-preview {
   border-radius: 0.5rem !important;
   padding: 0;
-  background: white !important;
+  background: white;
   height: 120px;
   width: 120px;
   max-height: 120px;
