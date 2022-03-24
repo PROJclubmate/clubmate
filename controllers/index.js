@@ -672,8 +672,8 @@ module.exports = {
       var clubIduserId = req.body.cancelClubId.split(',');
       var adminClubId = mongoose.Types.ObjectId(clubIduserId[0]);
       var invitedUserId = mongoose.Types.ObjectId(clubIduserId[1]);
-      User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err, updateUser){
-        if(err || !updateUser){
+      User.updateOne({_id: invitedUserId},{$pull: {clubInvites: adminClubId}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-20)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -681,8 +681,8 @@ module.exports = {
     }
     if(req.body.removeInvite){
       var removeInvite = mongoose.Types.ObjectId(req.body.removeInvite);
-      User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err, updateUser){
-        if(err || !updateUser){
+      User.updateOne({_id: req.user._id},{$pull: {clubInvites: removeInvite}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-21)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -754,8 +754,8 @@ module.exports = {
     // FRIEND REQUESTS
     if(req.body.friendReq){
       var friendReq = mongoose.Types.ObjectId(req.body.friendReq);
-      User.updateOne({_id: friendReq},{$addToSet: {friendRequests: req.user._id}}, function(err, updateUser){
-        if(err || !updateUser){
+      User.updateOne({_id: friendReq},{$addToSet: {friendRequests: req.user._id}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-25)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         } else{
@@ -817,8 +817,8 @@ module.exports = {
     };
     if(req.body.cancelReq){
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
-      User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err, updateUser){
-        if(err || !updateUser){
+      User.updateOne({_id: cancelReq},{$pull: {friendRequests: req.user._id}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-29)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -826,8 +826,8 @@ module.exports = {
     };
     if(req.body.removeReq){
       var removeReq = mongoose.Types.ObjectId(req.body.removeReq);
-      User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err, updateUser){
-        if(err || !updateUser){
+      User.updateOne({_id: req.user._id},{$pull: {friendRequests: removeReq}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-30)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -837,14 +837,14 @@ module.exports = {
       var acceptReq = mongoose.Types.ObjectId(req.body.acceptReq);
       User.updateOne({_id: req.user._id}, 
       {$pull: {friendRequests: acceptReq}, $addToSet: {friends: acceptReq}, $inc: {friendsCount: 1}}, 
-      function(err, updateUser){
-      if(err || !updateUser){
+      function(err){
+      if(err){
         logger.error(req.user._id+' : (index-31)updateUser err => '+err);
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: acceptReq}, 
-        {$addToSet: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err, updateUser){
-          if(err || !updateUser){
+        {$addToSet: {friends: req.user._id}, $inc: {friendsCount: 1}}, function(err){
+          if(err){
             logger.error(req.user._id+' : (index-32)updateUser err => '+err);
             req.flash('error', 'Something went wrong :(');
           }
@@ -855,14 +855,14 @@ module.exports = {
     if(req.body.unFriendReq){
       var unFriendReq = mongoose.Types.ObjectId(req.body.unFriendReq);
       User.updateOne({_id: req.user._id}, 
-      {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err, updateUser){
-      if(err || !updateUser){
+      {$pull: {friends: unFriendReq}, $inc: {friendsCount: -1}}, function(err){
+      if(err){
         logger.error(req.user._id+' : (index-33)updateUser err => '+err);
         req.flash('error', 'Something went wrong :(');
       } else{
         User.updateOne({_id: unFriendReq}, 
-        {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err, updateUser){
-          if(err || !updateUser){
+        {$pull: {friends: req.user._id}, $inc: {friendsCount: -1}}, function(err){
+          if(err){
             logger.error(req.user._id+' : (index-34)updateUser err => '+err);
             req.flash('error', 'Something went wrong :(');
           }
@@ -879,16 +879,16 @@ module.exports = {
       obj['userId'] = req.user._id;
       obj['message'] = req.body.message;
       var memberReq = mongoose.Types.ObjectId(req.body.memberReq);
-      Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err, updateClub){
-        if(err || !updateClub){
+      Club.updateOne({_id: memberReq}, {$addToSet: {memberRequests: obj}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-35)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
       });
     } else if(req.body.cancelReq){
       var cancelReq = mongoose.Types.ObjectId(req.body.cancelReq);
-      Club.updateOne({_id: cancelReq}, {$pull: {memberRequests: {userId: req.user._id}}}, function(err, updateClub){
-        if(err || !updateClub){
+      Club.updateOne({_id: cancelReq}, {$pull: {memberRequests: {userId: req.user._id}}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-36)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -896,13 +896,13 @@ module.exports = {
     } else if(req.body.acceptReq){
       var acceptReq = mongoose.Types.ObjectId(req.body.acceptReq);
       var clubId = mongoose.Types.ObjectId(req.params.id);
-      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: acceptReq}}}, function(err, updateClub){
-        if(err || !updateClub){
+      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: acceptReq}}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-37)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
         } else{
-          User.updateOne({_id: acceptReq}, {$addToSet: {clubInvites: clubId}}, function(err, updateUser){
-            if(err || !updateUser){
+          User.updateOne({_id: acceptReq}, {$addToSet: {clubInvites: clubId}}, function(err){
+            if(err){
               logger.error(req.user._id+' : (index-38)updateUser err => '+err);
               req.flash('error', 'Something went wrong :(');
             }
@@ -912,8 +912,8 @@ module.exports = {
     } else if(req.body.declineReq){
       var declineReq = mongoose.Types.ObjectId(req.body.declineReq);
       var clubId = mongoose.Types.ObjectId(req.params.id);
-      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: declineReq}}}, function(err, updateClub){
-        if(err || !updateClub){
+      Club.updateOne({_id: clubId}, {$pull: {memberRequests: {userId: declineReq}}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-39)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -943,8 +943,8 @@ module.exports = {
                 if(foundClub.clubUsers[i].userRank == 0){
                   foundClub.clubUsers[i].userRank = 1;
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                  {$set: {'userClubs.$.rank': 1}}, function(err, updateUser){
-                  if(err || !updateUser){
+                  {$set: {'userClubs.$.rank': 1}}, function(err){
+                  if(err){
                     logger.error(req.user._id+' : (index-41)updateUser err => '+err);
                     req.flash('error', 'Something went wrong :(');
                   } else{
@@ -956,8 +956,8 @@ module.exports = {
                 } else if(foundClub.clubUsers[i].userRank != 0 && foundClub.clubUsers[i].id.equals(userId)){
                   foundClub.clubUsers[i].userRank = newRank;
                   User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                  {$set: {'userClubs.$.rank': newRank}}, function(err, updateUser){
-                  if(err || !updateUser){
+                  {$set: {'userClubs.$.rank': newRank}}, function(err){
+                  if(err){
                     logger.error(req.user._id+' : (index-42)updateUser err => '+err);
                     req.flash('error', 'Something went wrong :(');
                   } else{
@@ -965,8 +965,8 @@ module.exports = {
                       if(foundClub.clubUsers[j].id.equals(req.user._id)){
                         foundClub.clubUsers[j].userRank = 1;
                         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: clubId}}}, 
-                        {$set: {'userClubs.$.rank': 1}}, function(err, updateUser){
-                        if(err || !updateUser){
+                        {$set: {'userClubs.$.rank': 1}}, function(err){
+                        if(err){
                           logger.error(req.user._id+' : (index-43)updateUser err => '+err);
                           req.flash('error', 'Something went wrong :(');
                         } else{
@@ -992,8 +992,8 @@ module.exports = {
               if(foundClub.clubUsers[i].id.equals(userId)){
                 foundClub.clubUsers[i].userRank = newRank;
                 User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-                {$set: {'userClubs.$.rank': newRank}}, function(err, updateUser){
-                if(err || !updateUser){
+                {$set: {'userClubs.$.rank': newRank}}, function(err){
+                if(err){
                   logger.error(req.user._id+' : (index-44)updateUser err => '+err);
                   req.flash('error', 'Something went wrong :(');
                 } else{
@@ -1021,14 +1021,14 @@ module.exports = {
           var status = req.body.status;
         }
         User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-        {$set: {'userClubs.$.status': status}}, function(err, updateUser){
-        if(err || !updateUser){
+        {$set: {'userClubs.$.status': status}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-45)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         } else{
           Club.updateOne({_id: clubId, clubUsers: {$elemMatch: {id: userId}}}, 
-          {$set: {'clubUsers.$.userStatus': status}}, function(err, updateClub){
-            if(err || !updateClub){
+          {$set: {'clubUsers.$.userStatus': status}}, function(err){
+            if(err){
               logger.error(req.user._id+' : (index-46)updateClub err => '+err);
               req.flash('error', 'Something went wrong :(');
             }
@@ -1055,14 +1055,14 @@ module.exports = {
               foundClub.clubUsers.splice(i,1);
               foundClub.membersCount -= 1;
               User.updateOne({_id: userId, userClubs: {$elemMatch: {id: clubId}}}, 
-              {$pull: {userClubs: {id: clubId}}}, function(err, updateUser){
-              if(err || !updateUser){
+              {$pull: {userClubs: {id: clubId}}}, function(err){
+              if(err){
                 logger.error(req.user._id+' : (index-48)updateUser err => '+err);
                 req.flash('error', 'Something went wrong :(');
               } else{
                 ClubConversation.updateOne({_id: foundClub.conversationId, isActive: true, 
                 seenMsgCursors: {$elemMatch: {id: userId}}}, {$pull: {seenMsgCursors: {id: userId}}}, 
-                function(err, foundClubConversation){
+                function(err){
                 if(err){
                   logger.error(req.user._id+' : (index-49)foundClubConversation err => '+err);
                   req.flash('error', 'Something went wrong :(');
@@ -1393,15 +1393,15 @@ module.exports = {
         if(req.body.followAllClubs == 'true'){
           Club.updateMany({_id: {$in: notFollowingClubIdsArr}, isActive: true}, 
           {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, $inc: {followerCount: 1}}, 
-          function(err, updateClubs){
-            if(err || !updateClubs){
+          function(err){
+            if(err){
               logger.error('(index-56)updateClubs err => '+err);
               return res.sendStatus(500);
             } else{
               User.updateOne({_id: req.params.user_id}, 
               {$addToSet: {followingClubIds: {$each: notFollowingClubIdsArr}}, 
-              $inc: {followingClubCount: notFollowingClubsLength}}, function(err, updateUser){
-              if(err || !updateUser){
+              $inc: {followingClubCount: notFollowingClubsLength}}, function(err){
+              if(err){
               logger.error(req.params.user_id+' : (index-57)updateUser err => '+err);
               req.flash('error', 'Something went wrong :(');
               } else{
@@ -1412,15 +1412,15 @@ module.exports = {
           });
         } else if(req.body.followAllClubs == 'false'){
           Club.updateMany({_id: {$in: thisCollegeFollowingClubIdsArr}, isActive: true}, 
-          {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClubs){
-            if(err || !updateClubs){
+          {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err){
+            if(err){
               logger.error('(index-58)updateClubs err => '+err);
               return res.sendStatus(500);
             } else{
               User.updateOne({_id: req.params.user_id}, 
               {$pull: {followingClubIds: {$in: thisCollegeFollowingClubIdsArr}}, 
-              $inc: {followingClubCount: -thisCollegeFollowingClubsLength}}, function(err, updateUser){
-              if(err || !updateUser){
+              $inc: {followingClubCount: -thisCollegeFollowingClubsLength}}, function(err){
+              if(err){
               logger.error(req.params.user_id+' : (index-59)updateUser err => '+err);
               req.flash('error', 'Something went wrong :(');
               } else{
@@ -1446,8 +1446,8 @@ module.exports = {
           var toggleCollegePageViewKey = 1;
         }
         User.updateOne({_id: req.user._id},
-        {$set: {'collegePagesView': toggleCollegePageViewKey}}, function(err, updateUser){
-        if(err || !updateUser){
+        {$set: {'collegePagesView': toggleCollegePageViewKey}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-60)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         } else{
@@ -1463,16 +1463,16 @@ module.exports = {
       if(req.body.followClub == 'true' && followCheck(req.user,req.params.club_id,1)){
         Club.updateOne({_id: req.params.club_id, isActive: true}, 
         {$addToSet: {allFollowerIds: mongoose.Types.ObjectId(req.params.user_id)}, 
-        $inc: {followerCount: 1}}, function(err, updateClub){
-        if(err || !updateClub){
+        $inc: {followerCount: 1}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-61)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
           User.updateOne({_id: req.params.user_id}, 
           {$addToSet: {followingClubIds: mongoose.Types.ObjectId(req.params.club_id)}, 
-          $inc: {followingClubCount: 1}}, function(err, updateUser){
-          if(err || !updateUser){
+          $inc: {followingClubCount: 1}}, function(err){
+          if(err){
           logger.error(req.params.user_id+' : (index-62)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           } else{
@@ -1483,15 +1483,15 @@ module.exports = {
         });
       } else if(req.body.followClub == 'false' && followCheck(req.user,req.params.club_id,2)){
         Club.updateOne({_id: req.params.club_id, isActive: true}, 
-        {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err, updateClub){
-        if(err || !updateClub){
+        {$pull: {allFollowerIds: req.params.user_id}, $inc: {followerCount: -1}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (index-63)updateClub err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else{
           User.updateOne({_id: req.params.user_id}, 
-          {$pull: {followingClubIds: req.params.club_id}, $inc: {followingClubCount: -1}}, function(err, updateUser){
-          if(err || !updateUser){
+          {$pull: {followingClubIds: req.params.club_id}, $inc: {followingClubCount: -1}}, function(err){
+          if(err){
           logger.error(req.user._id+' : (index-64)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           } else{

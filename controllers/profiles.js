@@ -413,8 +413,8 @@ module.exports = {
         // Your own profile (posts) don't count as view
         if(!req.user._id.equals(req.params.id)){
           Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-          function(err, updatePosts){
-            if(err || !updatePosts){
+          function(err){
+            if(err){
               logger.error(req.user._id+' : (profiles-10)updatePosts err => '+err);
               return res.sendStatus(500);
             }
@@ -460,8 +460,8 @@ module.exports = {
           seenPostIds.push(userPosts[k]._id);
         }
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
+        function(err){
+          if(err){
             logger.error('(profiles-12)updatePosts err => '+err);
             return res.sendStatus(500);
           }
@@ -581,8 +581,8 @@ module.exports = {
           seenPostIds.push(modPosts[k]._id);
         }
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
+        function(err){
+          if(err){
             logger.error(req.user._id+' : (profiles-14)updatePosts err => '+err);
             return res.sendStatus(500);
           }
@@ -1153,8 +1153,8 @@ module.exports = {
           seenPostIds.push(modPosts[k]._id);
         }
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
+        function(err){
+          if(err){
             logger.error(req.user._id+' : (profiles-29)updatePosts err => '+err);
             return res.sendStatus(500);
           }
@@ -1200,8 +1200,8 @@ module.exports = {
           seenPostIds.push(posts[k]._id);
         }
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
+        function(err){
+          if(err){
             logger.error('(profiles-31)updatePosts err => '+err);
             return res.sendStatus(500);
           }
@@ -1245,8 +1245,8 @@ module.exports = {
         //   var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
         //   'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
         //   User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: updatedClub._id}}},
-        //   {$push: {clubUpdates: userUpdate}}, function(err, updateUsers){
-        //     if(err || !updateUsers){
+        //   {$push: {clubUpdates: userUpdate}}, function(err){
+        //     if(err){
         //       logger.error(req.user._id+' : (profiles-33)updateUsers err => '+err);
         //       req.flash('error', 'Something went wrong :(');
         //       return res.redirect('back');
@@ -1289,8 +1289,8 @@ module.exports = {
         //         var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
         //         'clubId': foundClub._id, 'deleterName': req.user.fullName};
         //         User.updateMany({_id: {$in: clubUserIdsArr}, clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
-        //         {$set: {'clubUpdates.$': update}}, function(err, updateUsers){
-        //           if(err || !updateUsers){
+        //         {$set: {'clubUpdates.$': update}}, function(err){
+        //           if(err){
         //             logger.error(req.user._id+' : (profiles-35)updateUsers err => '+err);
         //             req.flash('error', 'Something went wrong :(');
         //             return res.redirect('back');
@@ -1395,8 +1395,8 @@ module.exports = {
           });
           foundClub.name = req.body.name;
           User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: foundClub._id}}},
-          {$set: {'userClubs.$.clubName': req.body.name}}, function(err, updateUsers){
-            if(err || !updateUsers){
+          {$set: {'userClubs.$.clubName': req.body.name}}, function(err){
+            if(err){
               logger.error(req.user._id+' : (profiles-36)updateUsers err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
@@ -1460,8 +1460,8 @@ module.exports = {
           });
         }
         User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
-        {$pull: {userClubs: {id: req.params.club_id}}}, function(err, updatedUser){
-        if(err || !updatedUser){
+        {$pull: {userClubs: {id: req.params.club_id}}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (profiles-39)updatedUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
@@ -1469,8 +1469,8 @@ module.exports = {
         });
         if(foundClub.conversationId){
           ClubConversation.updateMany({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
-          function(err, updatedClubConversation){
-          if(err || !updatedClubConversation){
+          function(err){
+          if(err){
             logger.error(req.user._id+' : (profiles-40)updatedClubConversation err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
@@ -1800,8 +1800,8 @@ module.exports = {
   profilesLogout(req, res, next){
     if(req.user){
       User.updateOne({_id: req.user._id}, {lastLoggedOut: Date.now()}, 
-      function(err, updatedUser){
-        if(err || !updatedUser){
+      function(err){
+        if(err){
           logger.error(req.user._id+' : (profiles-47)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');

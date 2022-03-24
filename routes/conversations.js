@@ -242,14 +242,14 @@ module.exports = function(io){
 	    currentUserObj['userId'] = mongoose.Types.ObjectId(req.body.recipientId);
 	    currentUserObj['conversationId'] = conversation._id;
 	    currentUserUserChats.push(currentUserObj);
-	    User.updateOne({_id: req.user._id},{$push: {userChats: currentUserUserChats}}, function(err, currentUser){
-	      if(err || !currentUser){
+	    User.updateOne({_id: req.user._id},{$push: {userChats: currentUserUserChats}}, function(err){
+	      if(err){
 					logger.error(req.user._id+' : (conversations-14)currentUser err => '+err);
 	        return res.sendStatus(500);
 	      }
 	    });
-	    User.updateOne({_id: req.body.recipientId}, {$push: {userChats: foundUserUserChats}}, function(err, foundUser){
-	      if(err || !foundUser){
+	    User.updateOne({_id: req.body.recipientId}, {$push: {userChats: foundUserUserChats}}, function(err){
+	      if(err){
 					logger.error(req.user._id+' : (conversations-15)foundUser err => '+err);
 	        return res.sendStatus(500);
 	      }
@@ -468,7 +468,7 @@ module.exports = function(io){
 		    clubConversation.lastMessage = req.body.composedMessage;
 		    clubConversation.save();
 		    User.updateMany({_id: {$in: clubMembersArr}, userClubs: {$elemMatch: {id: foundClub._id}}}, 
-		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err, updateUsers){
+		    {$set: {'userClubs.$.conversationId': clubConversation._id}}, function(err){
 		      if(err){
 						logger.error(req.user._id+' : (conversations-26)updateUsers err => '+err);
 		        return res.sendStatus(500);

@@ -73,8 +73,8 @@ module.exports = {
 
   commentsUpdate(req, res, next){
     Comment.updateOne({_id: req.params.bucket_id, 'comments._id': req.params.comment_id}, 
-    {$set: {'comments.$.text': req.body.text}}, function(err, updateBucket){
-    if(err || !updateBucket){
+    {$set: {'comments.$.text': req.body.text}}, function(err){
+    if(err){
       logger.error(req.user._id+' : (comments-4)updateBucket err => '+err);
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
