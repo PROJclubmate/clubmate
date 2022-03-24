@@ -1652,8 +1652,12 @@ module.exports = {
                 privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
               }
             };
-            smtpTransport.sendMail(mailOptions, function(err){
-              done(err, 'done');
+            smtpTransport.sendMail(mailOptions, function(err, info){
+              if(err){
+                return logger.error('(profiles-45)sendMail err => '+err);
+              } else{
+                logger.info('mail sent('+ user.email +' requested a verification token)');
+              }
             });
           });
           req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to "'+req.body.email+'" for verification.');
@@ -1696,7 +1700,7 @@ module.exports = {
         // Verify and save the user
         user.isVerified = true;
         user.save(function(err){
-          if(err){return logger.error('(profiles-45)user err => '+err);}
+          if(err){return logger.error('(profiles-46)user err => '+err);}
           res.status(200);
           logger.info(user._id+' <= VERIFIED '+user.fullName);
           req.logIn(user, function(err){
@@ -1734,7 +1738,7 @@ module.exports = {
 
       // Save the verification token
       token.save(function (err){
-        if(err){return logger.error('(profiles-46)user err => '+err);}
+        if(err){return logger.error('(profiles-47)user err => '+err);}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1758,8 +1762,12 @@ module.exports = {
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
         };
-        smtpTransport.sendMail(mailOptions, function(err){
-          done(err, 'done');
+        smtpTransport.sendMail(mailOptions, function(err, info){
+          if(err){
+            return logger.error('(profiles-48)sendMail err => '+err);
+          } else{
+            logger.info('mail sent('+ user.email +' requested a verification token again)');
+          }
         });
       });
       req.flash('success', 'An email has been sent to your account for verification.');
@@ -1802,7 +1810,7 @@ module.exports = {
       User.updateOne({_id: req.user._id}, {lastLoggedOut: Date.now()}, 
       function(err){
         if(err){
-          logger.error(req.user._id+' : (profiles-47)updateUser err => '+err);
+          logger.error(req.user._id+' : (profiles-49)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1833,7 +1841,7 @@ module.exports = {
       function(token, done){
         User.findOne({email: req.body.email}, function(err, user){
         if(err || !user){
-          logger.error('(profiles-48)forgot err => '+err);
+          logger.error('(profiles-50)forgot err => '+err);
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         } else{
@@ -1870,10 +1878,13 @@ module.exports = {
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
         };
-        smtpTransport.sendMail(mailOptions, function(err){
-          logger.info('mail sent('+ user.email +' requested a password change)');
-          req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-          done(err, 'done');
+        smtpTransport.sendMail(mailOptions, function(err, info){
+          if(err){
+            return logger.error('(profiles-51)sendMail err => '+err);
+          } else{
+            logger.info('mail sent('+ user.email +' requested a password change)');
+            req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+          }
         });
       }
     ], function(err){
@@ -1884,7 +1895,7 @@ module.exports = {
   profilesForgotToken(req, res, next){
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
     if (err || !user){
-      logger.info('(profiles-49)token invalid err => '+err);
+      logger.info('(profiles-52)token invalid err => '+err);
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     } else{
@@ -1900,7 +1911,7 @@ module.exports = {
         function(done){
           User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
           if(err || !user){
-            logger.error('(profiles-50)token invalid err => '+err);
+            logger.error('(profiles-53)token invalid err => '+err);
             req.flash('error', 'Password reset token is invalid or has expired.');
             return res.redirect('back');
           } else{
@@ -1916,7 +1927,7 @@ module.exports = {
                 });
               })
             } else{
-              logger.info('(profiles-51)pass dont match err => '+err);
+              logger.info('(profiles-54)pass dont match err => '+err);
               req.flash("error", "Passwords do not match.");
               return res.redirect('back');
             }
@@ -1945,10 +1956,13 @@ module.exports = {
               privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
             }
           };
-          smtpTransport.sendMail(mailOptions, function(err){
-            logger.info('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
-            req.flash('success', 'Success! Your password has been changed.');
-            done(err, 'done');
+          smtpTransport.sendMail(mailOptions, function(err, info){
+            if(err){
+              return logger.error('(profiles-55)sendMail err => '+err);
+            } else{
+              logger.info('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
+              req.flash('success', 'Success! Your password has been changed.');
+            }
           });
         }
       ], function(err){
