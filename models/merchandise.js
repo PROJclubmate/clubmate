@@ -54,6 +54,7 @@ const accessorySchema = new Schema({
   subCategory: String,
   contact: String,
   price: Number,
+  colors: Array,
   inStock: { type: Boolean, default: true },
   club: {
     clubId: {

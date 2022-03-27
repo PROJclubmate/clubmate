@@ -18,8 +18,7 @@ function capitalCase(str) {
 
 function filterEmptyStrings(arr) {
   return arr.filter(function (elem) {
-    if (elem === "") return false;
-    else return true;
+    return (elem !== "");
   });
 }
 
@@ -266,7 +265,22 @@ module.exports = {
         inStock: true,
         club: club,
       });
-    } else if (category === "accessories" || category === "stickers") {
+    } else if (category === "accessories") {
+      const colors = filterEmptyStrings(req.body.colors.split(","));
+      foundMerch[category].push({
+        images: images,
+        imageIds: imageIds,
+        title: title,
+        description: description,
+        category: category,
+        subCategory: subCategory,
+        contact: contact,
+        colors: colors,
+        price: price,
+        inStock: true,
+        club: club,
+      });
+    } else if (category === "stickers") {
       foundMerch[category].push({
         images: images,
         imageIds: imageIds,
