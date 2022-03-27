@@ -4,7 +4,9 @@
       <div class="valign card-body py-0">
         <div class="mb-auto py-2 commentpad">
           <a href="/users/<%= comments[j].commentAuthor.id._id %>">
-            <% if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
+            <% if(!comments[j].commentAuthor.id.userKeys.sex){ %>
+              <img class="postdp rounded-circle" src="<%= CA_50_profilePic[i][j] || '/images/noUser.png' %>">
+            <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
               <img class="postdp rounded-circle" src="<%= CA_50_profilePic[i][j] || '/images/noUserMale.png' %>">
             <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Female'){ %>
               <img class="postdp rounded-circle" src="<%= CA_50_profilePic[i][j] || '/images/noUserFemale.png' %>">

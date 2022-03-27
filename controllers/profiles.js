@@ -45,7 +45,7 @@ module.exports = {
           ]}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
           {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
           {$limit: 4}
           ])
         .exec(function(err, foundFriends){
@@ -201,7 +201,7 @@ module.exports = {
           {$match: {_id: {$in: friends}}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
           {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
           {$limit: 4}
           ])
         .exec(function(err, foundFriends){
@@ -297,7 +297,7 @@ module.exports = {
           {$match: {_id: {$in: friends}}},
           {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
           {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
           {$limit: 4}
           ])
         .exec(function(err, foundFriends){
@@ -1664,7 +1664,7 @@ module.exports = {
           if(process.env.WAITING_WALL == 'true'){
             return res.redirect('/waiting');
           } else{
-            return res.redirect('/discover');
+            return res.redirect('/waiting');
           }
         }
         });

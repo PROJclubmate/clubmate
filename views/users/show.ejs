@@ -22,16 +22,14 @@
             <% } %>
             <div class="card indexcard ml-1 p-1 coverback2 profilePic-frame lcov">
               <div class="container rounded-circle" style="overflow: hidden;">
-                <% if(user.userKeys.sex == 'Male'){ %>
-                  <% if(user.profilePicId){ %>
-                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                  <% } else{ %>
+                <% if(user.profilePicId){ %>
+                  <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
+                <% } else{ %>
+                  <% if(!user.userKeys.sex){ %>
+                    <img class="profilePic cover image" src="<%= '/images/noUser.png' %>">
+                  <% } else if(user.userKeys.sex == 'Male'){ %>
                     <img class="profilePic cover image" src="<%= '/images/noUserMale.png' %>">
-                  <% } %>
-                <% } else if(user.userKeys.sex == 'Female'){ %>
-                  <% if(user.profilePicId){ %>
-                    <img class="profilePic cover image" src="<%= cdn_prefix+user.profilePicId %>">
-                  <% } else{ %>
+                  <% } else if(user.userKeys.sex == 'Female'){ %>
                     <img class="profilePic cover image" src="<%= '/images/noUserFemale.png' %>">
                   <% } %>
                 <% } %>
@@ -203,9 +201,11 @@
               <% if(foundFriends[i]){ %>
                 <div class="col-3 pl-1 py-1">
                   <a href="/users/<%= foundFriends[i]._id %>">
-                    <% if(user.userKeys.sex == 'Male'){ %>
+                    <% if(!foundFriends[i].userKeys.sex){ %>
+                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUser.png' %>">
+                    <% } else if(foundFriends[i].userKeys.sex == 'Male'){ %>
                       <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserMale.png' %>">
-                    <% } else if(user.userKeys.sex == 'Female'){ %>
+                    <% } else if(foundFriends[i].userKeys.sex == 'Female'){ %>
                       <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserFemale.png' %>">
                     <% } %>
                   </a>

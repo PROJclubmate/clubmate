@@ -38,10 +38,12 @@
 				<div class="d-flex flex-row">
 					<div>
 			      <a href="/users/<%= users[k]._id %>">
-							<% if(users[k].userKeys.sex == 'Male'){ %>
-            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
+							<% if(!users[k].userKeys.sex){ %>
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+							<% } else if(users[k].userKeys.sex == 'Male'){ %>
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
 							<% } else if(users[k].userKeys.sex == 'Female'){ %>
-            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
 							<% } %>
           	</a>
 			    </div>

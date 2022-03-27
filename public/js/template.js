@@ -859,7 +859,9 @@ function club_posts_template(response){
           <div class="valign">
             <div>
               <a href="/users/<%= posts[k].postAuthor.id._id %>">
-                <% if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
+                <% if(!posts[k].postAuthor.id.userKeys.sex){ %>
+                  <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>">
+                <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
                   <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserMale.png' %>">
                 <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Female'){ %>
                   <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserFemale.png' %>">
@@ -1106,7 +1108,9 @@ function club_posts_template(response){
               <div class="valign">
                 <div>
                   <a href="/users/<%= posts[k].postAuthor.id._id %>">
-                    <% if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
+                    <% if(!posts[k].postAuthor.id.userKeys.sex){ %>
+                      <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>">
+                    <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
                       <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserMale.png' %>">
                     <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Female'){ %>
                       <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserFemale.png' %>">
@@ -2049,7 +2053,9 @@ function post_comments_template(response){
     <div class="valign card-body py-0">
       <div class="mb-auto py-2 commentpad">
         <a href="/users/<%= comments[j].commentAuthor.id._id %>">
-          <% if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
+          <% if(!comments[j].commentAuthor.id.userKeys.sex){ %>
+            <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
+          <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
             <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserMale.png' %>">
           <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Female'){ %>
             <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserFemale.png' %>">
@@ -2190,7 +2196,9 @@ function post_subPosts_template(response){
         <div class="mb-auto d-flex flex-column subpost-left">
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-              <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
+              <% if(!subPosts[j].subPostAuthor.id.userKeys.sex){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
               <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
@@ -2390,7 +2398,9 @@ function moreMembers_template(response){
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/users/<%= users[i].id._id %>">
-            <% if(users[i].id.userKeys.sex == 'Male'){ %>
+            <% if(!users[i].id.userKeys.sex){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUser.png' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Male'){ %>
               <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.png' %>">
             <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
               <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.png' %>">
@@ -2515,7 +2525,9 @@ function moreMemberRequests_template(response){
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/users/<%= club.memberRequests[m].userId._id %>">
-            <% if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
+            <% if(!club.memberRequests[m].userId.userKeys.sex){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUser.png' %>">
+            <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
               <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserMale.png' %>">
             <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Female'){ %>
               <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserFemale.png' %>">
@@ -2702,7 +2714,9 @@ function search_people_template(response){
     <div class="d-flex flex-row">
       <div>
         <a href="/users/<%= users[k]._id %>">
-          <% if(users[k].userKeys.sex == 'Male'){ %>
+          <% if(!users[k].userKeys.sex){ %>
+            <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+          <% } else if(users[k].userKeys.sex == 'Male'){ %>
             <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
           <% } else if(users[k].userKeys.sex == 'Female'){ %>
             <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">

@@ -137,7 +137,9 @@
 	<div class="col-md-12 text-center">
     <% if(currentUser){ %>
       <div>
-        <% if(currentUser.userKeys.sex == 'Male'){ %>
+        <% if(!currentUser.userKeys.sex){ %>
+          <img class="profilePic cover m-3" src="<%= '/images/noUser.png' %>">
+        <% } else if(currentUser.userKeys.sex == 'Male'){ %>
           <img class="profilePic cover m-3" src="<%= '/images/noUserMale.png' %>">
         <% } else if(currentUser.userKeys.sex == 'Female'){ %>
           <img class="profilePic cover m-3" src="<%= '/images/noUserFemale.png' %>">

@@ -39,7 +39,9 @@
         <div class="mb-auto d-flex flex-column subpost-left">
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-              <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
+              <% if(!subPosts[j].subPostAuthor.id.userKeys.sex){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
               <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">

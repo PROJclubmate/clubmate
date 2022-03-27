@@ -358,7 +358,17 @@
               <div class="mb-auto d-flex flex-column">
                 <div>
                   <% if(currentUser){ %>
-                    <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+                    <a href="/users/<%= currentUser.id %>">
+                      <span>
+                        <% if(!currentUser.userKeys.sex){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                        <% } else if(currentUser.userKeys.sex == 'Male'){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
+                        <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
+                        <% } %>
+                      </span>
+                    </a>
                   <% } else{ %>
                     <span><img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
                   <% } %>
@@ -420,7 +430,9 @@
             <% if(currentUser){ %>
               <a href="/users/<%= currentUser.id %>">
                 <span>
-                  <% if(currentUser.userKeys.sex == 'Male'){ %>
+                  <% if(!currentUser.userKeys.sex){ %>
+                    <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                  <% } else if(currentUser.userKeys.sex == 'Male'){ %>
                     <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
                   <% } else if(currentUser.userKeys.sex == 'Female'){ %>
                     <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">

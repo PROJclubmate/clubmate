@@ -4,7 +4,9 @@
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/users/<%= users[i].id._id %>">
-            <% if(users[i].id.userKeys.sex == 'Male'){ %>
+            <% if(!users[i].id.userKeys.sex){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUser.jpg' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Male'){ %>
               <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.jpg' %>">
             <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
               <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.jpg' %>">

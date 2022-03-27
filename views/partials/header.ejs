@@ -52,18 +52,12 @@
             <a href="/users/<%= currentUser.id %>" class="navbar-brand navname desktopNoneFlex">
               <span class="valign lineheight">
                 <span>
-                  <% if(currentUser.userKeys.sex == 'Male'){ %>
-                    <% if(CU_50_profilePic){ %>
-                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic %>">
-                    <% } else{ %>
-                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= '/images/noUserMale.png' %>">
-                    <% } %>
+                  <% if(!currentUser.userKeys.sex){ %>
+                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                  <% } else if(currentUser.userKeys.sex == 'Male'){ %>
+                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
                   <% } else if(currentUser.userKeys.sex == 'Female'){ %>
-                    <% if(CU_50_profilePic){ %>
-                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic %>">
-                    <% } else{ %>
-                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= '/images/noUserFemale.png' %>">
-                    <% } %>
+                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
                   <% } %>
                 </span>
                 <span style="text-transform: lowercase;"><%= currentUser.firstName %></span>
@@ -157,18 +151,12 @@
               <div>
                 <a href="/users/<%= currentUser.id %>" class="nav-link burgernav img nowrap">
                   <span>
-                    <% if(currentUser.userKeys.sex == 'Male'){ %>
-                      <% if(CU_50_profilePic){ %>
-                        <img class="navdp rounded-circle" src="<%= CU_50_profilePic %>">
-                      <% } else{ %>
-                        <img class="navdp rounded-circle" src="<%= '/images/noUserMale.png' %>">
-                      <% } %>
+                    <% if(!currentUser.userKeys.sex){ %>
+                      <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                    <% } else if(currentUser.userKeys.sex == 'Male'){ %>
+                      <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
                     <% } else if(currentUser.userKeys.sex == 'Female'){ %>
-                      <% if(CU_50_profilePic){ %>
-                        <img class="navdp rounded-circle" src="<%= CU_50_profilePic %>">
-                      <% } else{ %>
-                        <img class="navdp rounded-circle" src="<%= '/images/noUserFemale.png' %>">
-                      <% } %>
+                      <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
                     <% } %>
                   </span>
                   <span id="navname" value="<%= currentUser._id %>"><%= currentUser.firstName %></span>
@@ -240,9 +228,11 @@
           <div class="d-inline-flex wordwrap">
             <span>
               <a href="/users/<%= friendRequests[j]._id %>">
-                <% if(friendRequests[j].userKeys.sex == 'Male'){ %>
+                <% if(!currentUser.userKeys.sex){ %>
+                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUser.png' %>">
+                <% } else if(currentUser.userKeys.sex == 'Male'){ %>
                   <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserMale.png' %>">
-                <% } else if(friendRequests[j].userKeys.sex == 'Female'){ %>
+                <% } else if(currentUser.userKeys.sex == 'Female'){ %>
                   <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserFemale.png' %>">
                 <% } %>
               </a>
