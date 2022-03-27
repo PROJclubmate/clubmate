@@ -1,21 +1,22 @@
-const mongoose          = require('mongoose'),
+const mongoose = require('mongoose'),
   passportLocalMongoose = require('passport-local-mongoose'),
-  Schema                = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  firstName: {type: String, required: true},
+  firstName: { type: String, required: true },
   lastName: String,
   jamKey: String,
-  fullName: {type: String, required: true},
-  email: {type: String, unique: true, required: true},
+  fullName: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
   googleId: String,
   provider: String,
+  isCollegeLevelAdmin: { type: Boolean, default: false },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  isVerified: {type: Boolean, default: false},
+  isVerified: { type: Boolean, default: false },
   lastLoggedOut: Date,
   lastActive: Date,
-  darkTheme: {type: Boolean, default: false},
+  darkTheme: { type: Boolean, default: false },
   discoverSwitch: {
     type: Number,
     default: 1,
@@ -49,7 +50,7 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  followingClubCount: {type: Number, default: 0},
+  followingClubCount: { type: Number, default: 0 },
   followingClubIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'
@@ -60,11 +61,13 @@ const userSchema = new Schema({
     college: String,
     batch: String,
     house: String,
-    sex: String,
     branch: String,
     school: String,
+    hostel: String,
+    mess: String,
+    sex: String,
     hometown: String,
-    birthdate: {type: Date, default: null}
+    birthdate: { type: Date, default: null }
   },
   geometry: {
     type: {
@@ -78,22 +81,22 @@ const userSchema = new Schema({
   note: String,
   bio: {
     aboutme: String,
-    instagram: {type: String, default: ''},
-    facebook: {type: String, default: ''},
-    linkedin: {type: String, default: ''},
-    twitter: {type: String, default: ''},
-    discord: {type: String, default: ''},
-    github: {type: String, default: ''},
-    spotify: {type: String, default: ''},
-    youtube: {type: String, default: ''},
-    custom1: {type: String, default: ''},
-    custom2: {type: String, default: ''}
+    instagram: { type: String, default: '' },
+    facebook: { type: String, default: '' },
+    linkedin: { type: String, default: '' },
+    twitter: { type: String, default: '' },
+    discord: { type: String, default: '' },
+    github: { type: String, default: '' },
+    spotify: { type: String, default: '' },
+    youtube: { type: String, default: '' },
+    custom1: { type: String, default: '' },
+    custom2: { type: String, default: '' }
   },
   interests: [String],
-  recommends: {music:[String], movies:[String], tvshows:[String], places:[String], books: [String]},
+  recommends: { music: [String], movies: [String], tvshows: [String], places: [String], books: [String] },
   friendRequests: [this],
   friends: [this],
-  friendsCount: {type: Number, default: 0},
+  friendsCount: { type: Number, default: 0 },
   clubInvites: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'
@@ -123,10 +126,10 @@ const userSchema = new Schema({
       }
     },
     status: String,
-    memberSince: {type: Date, default: Date.now},
+    memberSince: { type: Date, default: Date.now },
     _id: false
   }],
-  unreadChatsCount: {type: Number, default: 0},
+  unreadChatsCount: { type: Number, default: 0 },
   userChats: [{
     userId: this,
     conversationId: {
@@ -140,16 +143,16 @@ const userSchema = new Schema({
     ref: 'Club'
   }
 },
-{
-  timestamps: true
-});
+  {
+    timestamps: true
+  });
 
-userSchema.index({fullName: 'text'});
-userSchema.index({geometry: '2dsphere'});
-userSchema.index({email: 1});
+userSchema.index({ fullName: 'text' });
+userSchema.index({ geometry: '2dsphere' });
+userSchema.index({ email: 1 });
 
-userSchema.plugin(passportLocalMongoose,{
-  usernameField : 'email',
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: 'email',
   // Set usernameUnique to false to avoid a mongodb index on the username column!
   usernameUnique: false,
   errorMessages: {
@@ -157,7 +160,7 @@ userSchema.plugin(passportLocalMongoose,{
     IncorrectUsernameError: 'If registered already, Please verify your account through the link sent to your email id',
     UserExistsError: 'A user with the given email already exists. Not you? Try resetting your password.'
   },
-  findByUsername: function(model, queryParameters){
+  findByUsername: function (model, queryParameters) {
     // Add additional query parameter - AND condition - isVerified: true
     queryParameters.isVerified = true;
     return model.findOne(queryParameters);
