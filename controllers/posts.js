@@ -4,6 +4,7 @@ const mongoose  = require('mongoose'),
   Club          = require('../models/club'),
   Comment       = require('../models/comment'),
   Discussion    = require('../models/discussion'),
+  Mess          = require('../models/mess')
   clConfig      = require('../config/cloudinary'),
   s3Config      = require('../config/s3'),
   logger        = require('../logger');
@@ -53,7 +54,33 @@ module.exports = {
     }
   },
 
-  postsDiscoverMorePosts(req, res, next){
+  postsDiscoverMorePosts (req, res, next){
+    // let today = new Date();
+    // const weekDay = [
+    //     "Sunday",
+    //     "Monday",
+    //     "Tuesday",
+    //     "Wednesday",
+    //     "Thursday",
+    //     "Friday",
+    //     "Saturday",
+    // ];
+    // let Day = weekDay[today.getDay()];
+
+    // const dateData = {
+    //     day: Day,
+    //     todayDate: today,
+    // };
+
+    // (async () => {
+    //     const query = await Mess.find({ "menu.day": Day });
+    //     console.log(query);
+    //     res.json({query});
+    // })()
+    
+
+
+
     if(req.query.ids != ''){
       var seenIdsArr = req.query.ids.split(',');
     } else{

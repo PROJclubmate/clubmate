@@ -1,9 +1,9 @@
 const mongoose = require('mongoose'),
-  Schema       = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 const clubSchema = new Schema({
   name: String,
-  isActive: {type: Boolean, default: true},
+  isActive: { type: Boolean, default: true },
   deActivatedOn: Date,
   banner: String,
   avatar: String,
@@ -11,8 +11,8 @@ const clubSchema = new Schema({
   stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
   audiorooms: [{ type: Schema.Types.ObjectId, ref: 'Audioroom' }],
   storyArchives: [{ type: Schema.Types.ObjectId, ref: 'Story' }],
-  albums : [{type: String}],
-  featuredPhotos:[{
+  albums: [{ type: String }],
+  featuredPhotos: [{
     image: String,
     imageId: String,
     heading: String,
@@ -26,7 +26,7 @@ const clubSchema = new Schema({
     college: String,
     category: String
   },
-  followerCount: {type: Number, default: 0},
+  followerCount: { type: Number, default: 0 },
   allFollowerIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -55,14 +55,14 @@ const clubSchema = new Schema({
       }
     },
     userStatus: String,
-    memberSince: {type: Date, default: Date.now},
+    memberSince: { type: Date, default: Date.now },
     storyDraftImage: String,
     storyDraftImageId: String,
     // aspect ratio format - X_Y (Used for how to load the canvas for draftImg in story maker)
     storyDraftAspectRatio: String,
     _id: false
   }],
-  membersCount: {type: Number, default: 1},
+  membersCount: { type: Number, default: 1 },
   conversationId: {
     type: Schema.Types.ObjectId,
     ref: 'ClubConversation'
@@ -76,14 +76,14 @@ const clubSchema = new Schema({
       ref: 'ClubConversation'
     }
   }],
-  chatRoomsCount: {type: Number, default: 1}
+  chatRoomsCount: { type: Number, default: 1 }
 },
-{
-  timestamps: true
-});
+  {
+    timestamps: true
+  });
 
-clubSchema.index({'clubKeys.college': 1});
-clubSchema.index({name: 'text'});
-clubSchema.index({geometry: '2dsphere'});
+clubSchema.index({ 'clubKeys.college': 1 });
+clubSchema.index({ name: 'text' });
+clubSchema.index({ geometry: '2dsphere' });
 
 module.exports = mongoose.model('Club', clubSchema);
