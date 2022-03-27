@@ -154,36 +154,37 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(User.createStrategy());
-// passport.use(new GoogleStrategy({
-//   clientID: process.env.GOOGLE_CLIENT_ID,
-//   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//   callbackURL: oAuthCallbackUrl
-// }, (accessToken, refreshToken, profile, done) => {
-//   User.findOne({email: profile.emails[0].value}).then((data) => {
-//     if(data){
-//       // user exists
-//       return done(null, data);
-//     } else{
-//       // var userKeys = {['sex']: profile.gender};
-//       User({
-//         firstName: profile.name.givenName,
-//         lastName: profile.name.familyName,
-//         fullName: profile.displayName,
-//         email: profile.emails[0].value,
-//         isVerified: true,
-//         googleId: profile.id,
-//         // userKeys: userKeys,
-//         profilePic: null,
-//         profilePicId: null,
-//         password: null,
-//         provider: 'google'
-//       }).save(function (err, data){
-//         return done(null, data);
-//       })
-//     }
-//   });
-// }
-// ));
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: oAuthCallbackUrl
+}, (accessToken, refreshToken, profile, done) => {
+  User.findOne({email: profile.emails[0].value}).then((data) => {
+    if(data){
+      // user exists
+      return done(null, data);
+    } else{
+      var isVerifiedOnGoogle = profile.emails[0].verified == true ? true : false;
+      // var userKeys = {['sex']: profile.gender};
+      User({
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        fullName: profile.displayName,
+        email: profile.emails[0].value,
+        isVerified: isVerifiedOnGoogle,
+        googleId: profile.id,
+        // userKeys: userKeys,
+        profilePic: null,
+        profilePicId: null,
+        password: null,
+        provider: 'google'
+      }).save(function (err, data){
+        return done(null, data);
+      })
+    }
+  });
+}
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

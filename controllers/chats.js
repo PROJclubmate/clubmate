@@ -118,8 +118,8 @@ module.exports = {
         res.render('chats/index', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
         recipientId2: null, notificationCount, lastOpenedChatListClub, cdn_prefix});
         return User.updateOne({_id: req.user._id}, 
-        {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
-        if(err || !updateUser){
+        {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
+        if(err){
           logger.error(req.user._id+' : (chats-3)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
         }
@@ -270,8 +270,8 @@ module.exports = {
               recepient: foundRecepient, recipientId2, convClubId2: null, notificationCount, wasActiveMinuteago,
               wasActiveToday, chatHeadName, lastOpenedChatListClub, cdn_prefix});
               return User.updateOne({_id: req.user._id}, 
-              {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
-              if(err || !updateUser){
+              {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
+              if(err){
                 logger.error(req.user._id+' : (chats-8)updateUser err => '+err);
                 req.flash('error', 'Something went wrong :(');
               }
@@ -297,8 +297,8 @@ module.exports = {
               convClubId: '', recipientId: null, convClubId2, recipientId2: null, notificationCount, chatHeadName, 
               lastOpenedChatListClub, cdn_prefix});
               return User.updateOne({_id: req.user._id}, 
-              {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err, updateUser){
-              if(err || !updateUser){
+              {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
+              if(err){
                 logger.error(req.user._id+' : (chats-10)updateUser err => '+err);
                 req.flash('error', 'Something went wrong :(');
               }
@@ -572,8 +572,8 @@ module.exports = {
           if(isFounded === true){
             ClubConversation.updateOne({_id: roomConversationId, isActive: true}, 
             {$addToSet: {allParticipantIds: newParticipants}, $inc: {participantCount: newParticipants.length}}, 
-            function(err, updateClubConversation){
-            if(err || !updateClubConversation){
+            function(err){
+            if(err){
               logger.error(req.user._id+' : (chats-18)updateClubConversation err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
@@ -588,8 +588,8 @@ module.exports = {
           if(isFounded === true){
             ClubConversation.updateOne({_id: roomConversationId, isActive: true}, 
             {$pull: {allParticipantIds: {$in: oldParticipants}}, $inc: {participantCount: -oldParticipants.length}}, 
-            function(err, updateClubConversation){
-            if(err || !updateClubConversation){
+            function(err){
+            if(err){
               logger.error(req.user._id+' : (chats-19)updateClubConversation err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
@@ -618,8 +618,8 @@ module.exports = {
           }
           foundClub.save();
           Club.updateOne({_id: req.params.club_id, chatRooms: {$elemMatch: {conversationId: roomConversationId}}},
-          {$pull: {chatRooms: {conversationId: roomConversationId}}, $inc: {chatRoomsCount: -1}}, function(err, updatedClub){
-          if(err || !updatedClub){
+          {$pull: {chatRooms: {conversationId: roomConversationId}}, $inc: {chatRoomsCount: -1}}, function(err){
+          if(err){
             logger.error(req.user._id+' : (chats-20)updatedClub err => '+err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');

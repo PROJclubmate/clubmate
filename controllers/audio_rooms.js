@@ -1,10 +1,10 @@
-const Club = require('../models/club'),
-  logger = require('../logger'),
-  User = require('../models/user'),
+const Club  = require('../models/club'),
+  logger    = require('../logger'),
+  User      = require('../models/user'),
   Audioroom = require('../models/audioroom'),
-  clConfig         = require('../config/cloudinary'),
-  s3Config         = require('../config/s3')
-  fetch = require('node-fetch');
+  clConfig  = require('../config/cloudinary'),
+  s3Config  = require('../config/s3')
+  fetch     = require('node-fetch');
 
 module.exports = {
   async postNewAudioroom(req, res, next) {
@@ -176,7 +176,7 @@ module.exports = {
       $pullAll: {
         audiorooms: [req.params.room_id],
       }
-    }, function (err, docs) {
+    }, function (err) {
       if (err) {
         logger.error(req.user._id +' : (audiorooms-8) Room deletion err => ' + err);
         return res.sendStatus(500);

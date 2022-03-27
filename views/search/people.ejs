@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="col-lg-9 order-md-first order-last">
+	<div class="col-md-9 order-md-first order-last">
 	<% if(!filter){ %>
 		<div class="ml-2 mt-4 pt-2 mobiletext4">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<% } else{ %>
@@ -38,10 +38,12 @@
 				<div class="d-flex flex-row">
 					<div>
 			      <a href="/users/<%= users[k]._id %>">
-							<% if(users[k].userKeys.sex == 'Male'){ %>
-            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
+							<% if(!users[k].userKeys.sex){ %>
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+							<% } else if(users[k].userKeys.sex == 'Male'){ %>
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
 							<% } else if(users[k].userKeys.sex == 'Female'){ %>
-            		<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
+								<img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
 							<% } %>
           	</a>
 			    </div>
@@ -105,7 +107,7 @@
 	  </div>
 	<% } %>
 	</div>
-	<div class="col-lg-3 px-2">
+	<div class="col-md-3 px-2">
 		<br class="mobileNone">
 		<div id="user_email" style="display: block;">
 	    <div class="mx-2 mt-3 text-sm boldtext">Search user by email:</div>

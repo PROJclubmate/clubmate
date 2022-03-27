@@ -188,7 +188,7 @@ module.exports = {
         var storyId = mongoose.Types.ObjectId(req.body.story_id);
         Club.updateOne( { _id: req.params.club_id }, 
         { $pull: { stories: storyId, storyArchives: storyId } }, 
-        function (err, docs) {
+        function (err) {
         if (err) {
           logger.error(req.user._id + ' : (stories-7)updateClub err => ' + err);
           return res.sendStatus(500);
@@ -206,7 +206,7 @@ module.exports = {
     Story.updateOne(
       { _id: req.params.story_id },
       { $addToSet: { seenByUserIds: req.user._id } },
-      function (err, docs) {
+      function (err) {
         if (err) console.log(err);
       }
     );

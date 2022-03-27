@@ -1,5 +1,5 @@
 <% include ./partials/header %>
-<!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 <style>
   h6{
     text-align: center; 
@@ -42,12 +42,12 @@
   <div class="col-md-12">
     <form class="form-signin pb-0" action="/register" method="POST">
       <h4 class="my-3">Register new account</h4>
-      <div class="position-relative">
-        <label for="inputEmail" class="sr-only">Email</label>
-        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
-        <i class="fas fa-at"></i>
-      </div>
-      <div id="register-email">
+      <div id="register-email" class="">
+        <div class="position-relative">
+          <label for="inputEmail" class="sr-only">Email</label>
+          <input type="email" id="inputEmail" class="form-control" name="email" placeholder="email address" required>
+          <i class="fas fa-at"></i>
+        </div>
         <div class="position-relative">
           <label for="inputPassword" class="sr-only">Password</label>
           <input type="password" id="inputPassword" class="form-control" name="password" placeholder="password" required>
@@ -86,9 +86,9 @@
           <a href="/discover">Discover</a>
         </div>
       </div>
-      <div id="register-options" class="nodisplay">
-        <div class="position-relative nodisplay">
-          <button class="btn btn-light btn-block noshadow mt-3" type="button"
+      <div id="register-options">
+        <div class="position-relative">
+          <button class="btn btn-light btn-block noshadow mt-3 nodisplay type="button"
           onclick="hideOptions()" style="border-bottom-width: 1px;">
             Continue with email
           </button>
@@ -98,7 +98,7 @@
         </h6>
         <div class="position-relative">
           <a href="/auth/google" class="nounderline">
-            <button class="btn btn-google disabled btn-block mt-4" type="button" style="font-family: 'Roboto', sans-serif;">
+            <button class="btn btn-google btn-block mt-4" type="button" style="font-family: 'Roboto', sans-serif;">
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                   <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
@@ -128,9 +128,9 @@
     }
   }
 
-  // function hideOptions(){
-  //   document.getElementById('register-options').classList.add('nodisplay');
-  //   document.getElementById('register-email').classList.remove('nodisplay');
-  // }
+  function hideOptions(){
+    document.getElementById('register-options').classList.add('nodisplay');
+    document.getElementById('register-email').classList.remove('nodisplay');
+  }
 </script>
 <% include ./partials/footer %>

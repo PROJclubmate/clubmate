@@ -75,7 +75,7 @@
           <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
           <div class="valign">
             <div>
-              <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs"></em></span>
+              <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
               <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
             </div>
             <% if(post.commentsCount > 0){ %>
@@ -207,7 +207,7 @@
                   </div>
                   <div style="line-height: 0;">
                     <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                    <span class="lightgrey2 m-0 p-0"><em id="timeLocal" class="text-xxs"></em></span>
+                    <span class="lightgrey2 m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
                   </div>
                 </div>
               </div>
@@ -304,7 +304,7 @@
         <div class="valign">
           <button onclick="toggle_display('post_edit_form');" class="btn btn-secondary btn-sm text-sm" title="Cancel update" type="button">Cancel</button>
           <div class="righttext d-flex my-auto">
-            <span>
+            <span class="d-flex my-auto">
               <div class="emoji-panel">
                 <button id="emoji-picker<%= post._id %>" class=" emoji-panel chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
                   <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover right">
@@ -358,7 +358,17 @@
               <div class="mb-auto d-flex flex-column">
                 <div>
                   <% if(currentUser){ %>
-                    <a href="/users/<%= currentUser.id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
+                    <a href="/users/<%= currentUser.id %>">
+                      <span>
+                        <% if(!currentUser.userKeys.sex){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                        <% } else if(currentUser.userKeys.sex == 'Male'){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
+                        <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+                          <img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
+                        <% } %>
+                      </span>
+                    </a>
                   <% } else{ %>
                     <span><img class="subpostdp my-1" src="<%= CU_50_profilePic || '/images/noUser.png' %>"></span>
                   <% } %>
@@ -370,34 +380,36 @@
                   <div class="valign mb-1">
                     <div class="d-flex flex-column">
                       <% if(currentUser){ %>
-                        <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                        <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                        <div class="darkgrey boldtext subpostbtns"><%= currentUser.fullName %></div>
+                        <div class="darkgrey boldtext subpostbtns text-xxs"><%= rankTitle(rank) %></div>
                       <% } else{ %>
-                        <div class="darkgrey boldtext subpostbtn text-xxs"><em>Logged out</em></div>
+                        <div class="darkgrey boldtext subpostbtns text-xxs"><em>Logged out</em></div>
                       <% } %>
                     </div>
-                    <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
+                    <div class="lightgrey boldtext text-xs subpostbtns py-1 mb-auto">
                       <span><em id="timeUTC2" class="text-xxs lightgrey nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                      <span class="m-0 p-0"><em id="timeLocal2" class="text-xxs"></em></span>
+                      <span class="m-0 p-0"><em id="timeLocal2" class="text-xxs" style="cursor: default;"></em></span>
                     </div>
                   </div>
                   <div class="input-group">
-                    <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4"></textarea>
+                    <textarea onclick="block_display('subpostbtns');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4"></textarea>
                   </div>
-                  <div class="d-flex flex-row-reverse">
-                    <button class="btn btn-success subpostbtn btn-shadow btnxs text-sm ml-2 mt-2">Submit</button>
-                    <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
-                    <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                      <i class="fas fa-upload"></i> Image(s)
-                    </label>
-                    <input type="file" id="inputImages10" class="text-sm" name="images" accept="image/*">
-                    <div class="emoji-panel subpostbtn pt-2 px-2">
-                      <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-                        <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
-                          <% include ../partials/emoji_picker %>
-                        </div>
-                        <i class="far fa-laugh-beam"></i>
-                      </button>
+                  <div class="subpostbtns">
+                    <div class="d-flex flex-row-reverse">
+                      <button class="btn btn-success btn-shadow btnxs text-sm ml-2 mt-2">Submit</button>
+                      <button onclick="none_display('subpostbtn');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                      <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                        <i class="fas fa-images"></i>
+                      </label>
+                      <input type="file" id="inputImages10" class="text-sm" name="images" accept="images/*" multiple>
+                      <div class="emoji-panel d-flex mt-2 py-auto px-1">
+                        <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                          <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
+                            <% include ../partials/emoji_picker %>
+                          </div>
+                          <i class="far fa-laugh-beam"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -418,7 +430,9 @@
             <% if(currentUser){ %>
               <a href="/users/<%= currentUser.id %>">
                 <span>
-                  <% if(currentUser.userKeys.sex == 'Male'){ %>
+                  <% if(!currentUser.userKeys.sex){ %>
+                    <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                  <% } else if(currentUser.userKeys.sex == 'Male'){ %>
                     <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
                   <% } else if(currentUser.userKeys.sex == 'Female'){ %>
                     <img class="navdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">

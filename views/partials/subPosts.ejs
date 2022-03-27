@@ -39,7 +39,9 @@
         <div class="mb-auto d-flex flex-column subpost-left">
           <div>  
             <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-              <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
+              <% if(!subPosts[j].subPostAuthor.id.userKeys.sex){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
               <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
                 <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
@@ -101,7 +103,7 @@
         <% } %>
       </div>
     </div>
-    <div class="d-flex flex-row mr-auto px-2">
+    <div class="d-flex flex-row mr-auto px-2 mt-3">
       <% //if(0 <= rank && rank <= 4){ %>
       <% if(currentUser){ %>
         <form action="/subposts/<%= bucket._id %>/<%= subPosts[j]._id %>/vote" method="POST">
@@ -187,13 +189,13 @@
             <div class="valign mb-1">
               <div class="d-flex flex-column">
                 <% if(currentUser){ %>
-                  <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-                  <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+                  <div class="darkgrey boldtext subpostbtns"><%= currentUser.fullName %></div>
+                  <div class="darkgrey boldtext subpostbtns text-xxs"><%= rankTitle(rank) %></div>
                 <% } else{ %>
-                  <div class="darkgrey boldtext subpostbtn text-xxs"><em>Logged out</em></div>
+                  <div class="darkgrey boldtext subpostbtns text-xxs"><em>Logged out</em></div>
                 <% } %>
               </div>
-              <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto">
+              <div class="lightgrey boldtext text-xs subpostbtns py-1 mb-auto">
                 <span><em id="timeUTC2" class="text-xxs nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
                 <span class="lightgrey m-0 p-0"><em id="timeLocal2" class="text-xxs"></em></span>
               </div>
@@ -212,25 +214,27 @@
             <% } %>
             <div class="input-group">
               <% if(quote){ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4" autofocus></textarea>
+                <textarea onclick="block_display('subpostbtns');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4" autofocus></textarea>
               <% } else{ %>
-                <textarea onclick="block_display('subpostbtn');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4"></textarea>
+                <textarea onclick="block_display('subpostbtns');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input shadow whitesmokeback" name="text" placeholder="Add your answer" rows="4"></textarea>
               <% } %>
             </div>
-            <div class="d-flex flex-row-reverse">
-              <button class="btn btn-sm btn-success subpostbtn btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-              <button onclick="none_display('subpostbtn');" class="btn btn-secondary subpostbtn btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
-              <label id="images-10" for="inputImages10" class="custom-file-upload subpostbtn mt-2" title="Upload image">
-                <i class="fas fa-upload"></i> Images<sup>10</sup>
-              </label>
-              <input type="file" id="inputImages10" class="text-sm" name="images" accept="images/*" multiple>
-              <div class="emoji-panel subpostbtn pt-2 px-2">
-                <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
-                  <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
-                    <% include ../partials/emoji_picker %>
-                  </div>
-                  <i class="far fa-laugh-beam"></i>
-                </button>
+            <div class="subpostbtns">
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+                <button onclick="none_display('subpostbtns');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                  <i class="fas fa-images"></i>
+                </label>
+                <input type="file" id="inputImages10" class="text-sm" name="images" accept="images/*" multiple>
+                <div class="emoji-panel d-flex mt-2 py-auto px-1">
+                  <button id="emoji-picker" class=" emoji-panel pr-2 chat-input-tool btn btn-sm text-lg" title="Insert emoji" type="button">
+                    <div id="emoji-box" class="intercom-composer-popover intercom-composer-emoji-popover emoji-right">
+                      <% include ../partials/emoji_picker %>
+                    </div>
+                    <i class="far fa-laugh-beam"></i>
+                  </button>
+                </div>
               </div>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">

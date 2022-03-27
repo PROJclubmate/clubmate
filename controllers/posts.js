@@ -22,8 +22,8 @@ module.exports = {
     if(req.user && req.user._id.equals(req.params.id)){
       if(req.body.discoverSwitch){
         User.updateOne({_id: req.params.id}, {$set: {discoverSwitch: req.body.discoverSwitch}}, 
-        function(err, updateUser){
-        if(err || !updateUser){
+        function(err){
+        if(err){
           logger.error(req.user._id+' : (posts-1)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
@@ -32,8 +32,8 @@ module.exports = {
       }
       if(req.body.sortByKey){
         User.updateOne({_id: req.params.id}, {$set: {sortByKey: req.body.sortByKey}}, 
-        function(err, updateUser){
-        if(err || !updateUser){
+        function(err){
+        if(err){
           logger.error(req.user._id+' : (posts-2)updateUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
@@ -184,8 +184,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-4)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -230,8 +230,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-6)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -329,8 +329,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-8)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -433,8 +433,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-10)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -478,8 +478,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-12)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -570,8 +570,8 @@ module.exports = {
               seenPostIds.push(discoverPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-            function(err, updatePosts){
-              if(err || !updatePosts){
+            function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-14)updatePosts err => '+err);
                 return res.sendStatus(500);
               }
@@ -674,8 +674,8 @@ module.exports = {
           seenPostIds.push(discoverPosts[k]._id);
         }
         Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
-        function(err, updatePosts){
-          if(err || !updatePosts){
+        function(err){
+          if(err){
             logger.error(req.user._id+' : (posts-16)updatePosts err => '+err);
             return res.sendStatus(500);
           }
@@ -1253,8 +1253,8 @@ module.exports = {
               }
             }
             if(otherIdFound == true){
-              User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
-                if(err || !updateUser){
+              User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err){
+                if(err){
                   logger.error(req.user._id+' : (posts-42)updateUser err => '+err);
                   return res.sendStatus(500);
                 }
@@ -1280,8 +1280,8 @@ module.exports = {
             }
           }
           if(clickIdFound == true){
-            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err, updateUser){
-              if(err || !updateUser){
+            User.updateOne({_id: req.user._id},{$pull: {postHearts: foundPost._id}}, function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-43)updateUser err => '+err);
                 return res.sendStatus(500);
               }
@@ -1299,8 +1299,8 @@ module.exports = {
           if(clickIdFound == false){
             heartIds.push(req.user._id);
             foundPost.heartCount +=1;
-            User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err, updateUser){
-              if(err || !updateUser){
+            User.updateOne({_id: req.user._id},{$push: {postHearts: foundPost._id}}, function(err){
+              if(err){
                 logger.error(req.user._id+' : (posts-44)updateUser err => '+err);
                 return res.sendStatus(500);
               }

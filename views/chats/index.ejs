@@ -39,15 +39,18 @@
 									<% if(chatList[i].type == 'user'){ %>
 										<% if(chatList[i].id.toString() == recipientId2){ %>
 											<a href="/users/<%= chatList[i].id %>">
-												<% if(chatList[i].userKeys.sex == 'Male'){ %>
+												<% if(!chatList[i].userKeys.sex){ %>
+													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUser.png' %>">
+												<% } else if(chatList[i].userKeys.sex == 'Male'){ %>
 													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
 												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
 													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
 												<% } %>
 											</a>
 										<% } else{ %>
-											<a href="/users/<%= chatList[i].id %>">
-												<% if(chatList[i].userKeys.sex == 'Male'){ %>
+												<% if(!chatList[i].userKeys.sex){ %>
+													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
+												<% } else if(chatList[i].userKeys.sex == 'Male'){ %>
 													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
 												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
 													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">

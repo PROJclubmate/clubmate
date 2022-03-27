@@ -1121,9 +1121,15 @@ function club_posts_template(response) {
           </div>
           <div class="lineheight-lesser">
             <div>
-              <span class="mobiletext1">
-                <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
-              </span>
+              <a href="/users/<%= posts[k].postAuthor.id._id %>">
+                <% if(!posts[k].postAuthor.id.userKeys.sex){ %>
+                  <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>">
+                <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
+                  <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserMale.png' %>">
+                <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Female'){ %>
+                  <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserFemale.png' %>">
+                <% } %>
+              </a>
             </div>
             <div>
             <% if(0 <= rank && rank <= 2){ %>
@@ -1368,10 +1374,15 @@ function club_posts_template(response) {
               </div>
               <div class="lineheight-lesser">
                 <div>
-                  <span class="mobiletext1">
-                    <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
-                  </span>
-                  <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
+                  <a href="/users/<%= posts[k].postAuthor.id._id %>">
+                    <% if(!posts[k].postAuthor.id.userKeys.sex){ %>
+                      <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUser.png' %>">
+                    <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Male'){ %>
+                      <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserMale.png' %>">
+                    <% } else if(posts[k].postAuthor.id.userKeys.sex == 'Female'){ %>
+                      <img class="navdp rounded-circle mr-2" src="<%= PA_50_profilePic[k] || '/images/noUserFemale.png' %>">
+                    <% } %>
+                  </a>
                 </div>
                 <div>
                   <% if(0 <= rank && rank <= 2){ %>
@@ -2331,23 +2342,26 @@ function post_comments_template(response) {
   html = ejs.render(
       `
 <% var comments = buckets[0].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){ %>
-<div class="mb-1">
-  <div class="valign card-body py-0">
-    <div class="mb-auto py-2 commentpad">
-      <a href="/users/<%= comments[j].commentAuthor.id._id %>">
-        <% if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
-          <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserMale.png' %>">
-        <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Female'){ %>
-          <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserFemale.png' %>">
-        <% } %>
-      </a>
-    </div>
-    <div class="commentdiv ml-2 my-1 pb-1 lineheight-less hr2">
-      <div class="commentpad commentpad2">
-        <div>
-          <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
-          </span>
-          <span class="darkgrey text-xxs mobilebold"><%= moment(comments[j].postedAt).fromNow() %></span>
+  <div class="mb-1">
+    <div class="valign card-body py-0">
+      <div class="mb-auto py-2 commentpad">
+        <a href="/users/<%= comments[j].commentAuthor.id._id %>">
+          <% if(!comments[j].commentAuthor.id.userKeys.sex){ %>
+            <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUser.png' %>">
+          <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Male'){ %>
+            <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserMale.png' %>">
+          <% } else if(comments[j].commentAuthor.id.userKeys.sex == 'Female'){ %>
+            <img class="postdp rounded-circle" src="<%= CA_50_profilePic[j] || '/images/noUserFemale.png' %>">
+          <% } %>
+        </a>
+      </div>
+      <div class="commentdiv ml-2 my-1 pb-1 lineheight-less hr2">
+        <div class="commentpad commentpad2">
+          <div>
+            <span><a href="/users/<%= comments[j].commentAuthor.id._id %>" class="text-sm darkgrey"><strong><span><%= comments[j].commentAuthor.id.fullName %></span></strong></a>
+            </span>
+            <span class="darkgrey text-xxs mobilebold"><%= moment(comments[j].postedAt).fromNow() %></span>
+          </div>
         </div>
       </div>
       <div class="valign">
@@ -2480,18 +2494,22 @@ function post_subPosts_template(response) {
 <% } %>
 
 <% var subPosts = bucket[0].subPosts; var len2 = subPosts.length; var j; for(j=0;j<len2;j++){ %>
-<div class="card indexcard2 my-2">
-  <div class="card-body">
-    <div>
-      <div class="mb-auto d-flex flex-column subpost-left">
-        <div>  
-          <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
-            <% if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
-              <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
-            <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
-              <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
-            <% } %>
-          </a>
+  <div class="card indexcard2 my-2">
+    <div class="card-body">
+      <div>
+        <div class="mb-auto d-flex flex-column subpost-left">
+          <div>  
+            <a href="/users/<%= subPosts[j].subPostAuthor.id._id %>">
+              <% if(!subPosts[j].subPostAuthor.id.userKeys.sex){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUser.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Male'){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserMale.png' %>">
+              <% } else if(subPosts[j].subPostAuthor.id.userKeys.sex == 'Female'){ %>
+                <img class="subpostdp mt-2 mb-1 mx-2" src="<%= sPA_50_profilePic[j] || '/images/noUserFemale.png' %>">
+              <% } %>
+            </a>
+          </div>
+          <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
         </div>
         <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket[0].bucket-1) %></span></div>
       </div>
@@ -2544,6 +2562,62 @@ function post_subPosts_template(response) {
             <img class="card-img-top subPostimg" src="<%= cdn_prefix+subPosts[j].images[k].imageId %>">
           </div>
         <% } %>
+        <div class="mobiletext2 linewrap lineheight-less subPost-text"><%= subPosts[j].text %></div>
+        <% if(subPosts[j].images && subPosts[j].images.length){ %>
+          <% for(var k=0;k<subPosts[j].images.length;k++){ %>
+            <div class="subPostimg-div">
+              <img class="card-img-top subPostimg" src="<%= cdn_prefix+subPosts[j].images[k].imageId %>">
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+    <div class="d-flex flex-row mr-auto px-2 mt-3">
+      <% if(currentUser){ %>
+        <form action="/subposts/<%= bucket[0]._id %>/<%= subPosts[j]._id %>/vote" method="POST">
+          <% if(subVotes.subLikes.includes(subPosts[j]._id)){ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 greencolor"></i></button>
+            </span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs greencolor3"><%= subPosts[j].likeCount %></span>
+            <span class="vr2"></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].dislikeCount %></span>
+          <% } else if(subVotes.subDislikes.includes(subPosts[j]._id)){ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
+            </span>
+            <span class="vr2"></span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs"><%= subPosts[j].likeCount %></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 blackcolor"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey m-0 p-0 text-xxs blackcolor"><%= subPosts[j].dislikeCount %></span>
+          <% } else{ %>
+            <span> 
+              <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="subLike" type="submit" value="like" title="Agree"><i class="vote-subpost far fa-thumbs-up vote-subpost2"></i></button>
+            </span>
+            <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].likeCount %></span>
+            <span class="vr2"></span>
+            <span>
+              <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="subDislike" type="submit" value="dislike" title="Disagree"><i class="vote-subpost far fa-thumbs-down vote-subpost2"></i></button>
+            </span>
+            <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey text-xxs nopad"><%= subPosts[j].dislikeCount %></span>
+          <% } %>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </form>
+      <% } else{ %>
+        <span class="mr-1"> 
+          <button id="like-btn<%= subPosts[j]._id %>" class="vote2 likebtn" name="like" type="submit" value="like" title="Agree"><i class="fas fa-thumbs-up vote-subpost2 offline"></i></button>
+        </span>
+        <span id="like-count<%= subPosts[j]._id %>" class="boldtext lightgrey mx-0 mt-auto pb-1 pr-1 text-xxs"><%= subPosts[j].likeCount %></span>
+        <span class="vr2" style="margin-top: 0.5rem !important;"></span>
+        <span class="mr-1">
+          <button id="dislike-btn<%= subPosts[j]._id %>" class="vote2 dislikebtn" name="dislike" type="submit" value="dislike" title="Disagree"><i class="fas fa-thumbs-down vote-subpost2 offline"></i></button>
+        </span>
+        <span id="dislike-count<%= subPosts[j]._id %>" class="boldtext lightgrey mx-0 mt-auto pb-1 pr-1 text-xxs"><%= subPosts[j].dislikeCount %></span>
       <% } %>
     </div>
   </div>
@@ -2621,14 +2695,27 @@ function post_subPosts_template(response) {
         <div>
           <a href="/users/<%= currentUser._id %>"><img class="subpostdp my-1" src="<%= CU_50_profilePic %>"></a>
         </div>
-        <div class="text-center darkgrey">#<%= post.subpostsCount+1 %></div>
-      </div>
-      <div class="commentdiv ml-2 d-flex flex-column">
-        <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
-          <div class="valign mb-1">
-            <div class="d-flex flex-column">
-              <div class="darkgrey boldtext subpostbtn"><%= currentUser.fullName %></div>
-              <div class="darkgrey boldtext subpostbtn text-xxs"><%= rankTitle(rank) %></div>
+        <div class="commentdiv ml-2 d-flex flex-column">
+          <form action="/clubs/<%= clubId %>/posts/<%= post._id %>/discussions" method="POST">
+            <div class="valign mb-1">
+              <div class="d-flex flex-column">
+                <div class="darkgrey boldtext subpostbtns"><%= currentUser.fullName %></div>
+                <div class="darkgrey boldtext subpostbtns text-xxs"><%= rankTitle(rank) %></div>
+              </div>
+              <div class="lightgrey boldtext text-xs subpostbtns py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
+            </div>
+            <div class="input-group">
+              <textarea onclick="block_display('subpostbtns');" type="text" id="subpostbox" class="form-control m-0 mb-1 text-sm emoji-input" name="text" placeholder="Add your answer" rows="4"></textarea>
+            </div>
+            <div class="subpostbtns">
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-sm btn-success btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+                <button onclick="none_display('subpostbtns');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                  <i class="fas fa-images"></i>
+                </label>
+                <input type="file" id="inputImages10" class="text-sm" name="images" accept="image/*">
+              </div>
             </div>
             <div class="lightgrey boldtext text-xs subpostbtn py-1 mb-auto"><em><%= moment().format('LT'); %></em></div>
           </div>
@@ -2691,22 +2778,18 @@ function moreMembers_template(response) {
   html = ejs.render(
       `
 <div class="row no-gutters lineheight-lesser">
-<% for(var i=0;i<users.length;i++){ %>
-  <div class="valign fullwidth">
-    <div class="d-flex flex-row">
-      <div class="py-2 mb-auto">
-        <a href="/users/<%= users[i].id._id %>">
-          <% if(users[i].id.userKeys.sex == 'Male'){ %>
-            <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.png' %>">
-          <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
-            <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.png' %>">
-          <% } %>
-        </a>
-      </div>
-      <div class="my-auto mx-3 py-2">
-        <span>
-          <a href="/users/<%= users[i].id._id %>" class="grey mobiletext2">
-            <strong><%= users[i].id.fullName %></strong>
+  <% for(var i=0;i<users.length;i++){ %>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/users/<%= users[i].id._id %>">
+            <% if(!users[i].id.userKeys.sex){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUser.png' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Male'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserMale.png' %>">
+            <% } else if(users[i].id.userKeys.sex == 'Female'){ %>
+              <img class="navdp rounded-circle" src="<%= Users_50_profilePic[i] || '/images/noUserFemale.png' %>">
+            <% } %>
           </a>
         </span>
         <span class="my-auto lightgrey text-xs mobiletext4">
@@ -2825,22 +2908,18 @@ function moreMemberRequests_template(response) {
   html = ejs.render(
       `
 <div class="row no-gutters mt-2 lineheight-lesser">
-<% for(var m=0;m<users.length;m++){ %>
-  <div class="valign fullwidth">
-    <div class="d-flex flex-row">
-      <div class="py-2 mb-auto">
-        <a href="/users/<%= club.memberRequests[m].userId._id %>">
-          <% if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
-            <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserMale.png' %>">
-          <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Female'){ %>
-            <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserFemale.png' %>">
-          <% } %>
-        </a>
-      </div>
-      <div class="my-auto mx-3">
-        <span>
-          <a href="/users/<%= club.memberRequests[m].userId._id %>" class="mobiletext1 grey">
-            <strong><%= club.memberRequests[m].userId.fullName %></strong>
+  <% for(var m=0;m<users.length;m++){ %>
+    <div class="valign fullwidth">
+      <div class="d-flex flex-row">
+        <div class="py-2 mb-auto">
+          <a href="/users/<%= club.memberRequests[m].userId._id %>">
+            <% if(!club.memberRequests[m].userId.userKeys.sex){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUser.png' %>">
+            <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Male'){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserMale.png' %>">
+            <% } else if(club.memberRequests[m].userId.userKeys.sex == 'Female'){ %>
+              <img class="navdp rounded-circle" src="<%= MemberRequests_50_profilePic[m] || '/images/noUserFemale.png' %>">
+            <% } %>
           </a>
         </span>
         <span class="my-auto lightgrey text-xs">
@@ -2893,11 +2972,22 @@ function allTimeTopTopicPosts_template(response) {
       </div>
       <div>
         <span class="truncate2 mobiletext1 lineheight-lesser my-1">
-          <span class="badge">[<%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i>]</span>
+          <span class="badge"><%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i></span>
           <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
         </span>
-      </div>
-    <% } %>
+      <% } else if(Posts_50_Image && Posts_50_Image[i] != null){ %>
+        <div>
+          <a href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><img class="collegedp rounded my-1 mr-2" src="<%= Posts_50_Image[i] || '/images/noImage.png' %>"></a>
+        </div>
+        <div>
+          <span class="truncate2 mobiletext1 lineheight-lesser my-1">
+            <span class="badge"><%= topTopicPosts[i].subpostsCount %> <i class="far fa-comment-alt"></i></span>
+            <span class="linewrap"><a class="darkgrey" href="/clubs/<%= clubId %>/posts/<%= topTopicPosts[i]._id %>"><%= topTopicPosts[i].topic %></a></span>
+          </span>
+        </div>
+      <% } %>
+    </div>
+    <div class="mb-auto ml-2 mt-1 badge badge-pill badge-round2 badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
   </div>
   <div class="mb-auto ml-2 mt-1 badge badge-pill badge-round2 badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
 </div>
@@ -3042,31 +3132,28 @@ function search_people_template(response) {
   html = ejs.render(
       `
 <% var len = users.length; var k=0; for(k;k<len;k++){ %>
-<div class="card searchcard2 border-light">
-  <div class="d-flex flex-row">
-    <div>
-      <a href="/users/<%= users[k]._id %>">
-        <% if(users[k].userKeys.sex == 'Male'){ %>
-          <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
-        <% } else if(users[k].userKeys.sex == 'Female'){ %>
-          <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
-        <% } %>
-      </a>
-    </div>
-    <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
-      <div class="valign">
-        <div>
-          <a href="/users/<%= users[k]._id %>" class="grey">
-            <span class="m-0 p-0 text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
-          </a>
-        </div>
-        <div>
-          <% if(currentUser && users[k]._id == currentUser._id){ %>
-            <button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
-              <i class="fas fa-ghost" aria-hidden="true"></i></button>
-          <% } else if(currentUser && !(users[k]._id == currentUser._id)){ 
-            currentUser.friends.forEach(function(friend){ 
-              if(users[k]._id == friend){ %>
+  <div class="card searchcard2 border-light">
+    <div class="d-flex flex-row">
+      <div>
+        <a href="/users/<%= users[k]._id %>">
+          <% if(!users[k].userKeys.sex){ %>
+            <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
+          <% } else if(users[k].userKeys.sex == 'Male'){ %>
+            <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
+          <% } else if(users[k].userKeys.sex == 'Female'){ %>
+            <img class="searchdp" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
+          <% } %>
+        </a>
+      </div>
+      <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
+        <div class="valign">
+          <div>
+            <a href="/users/<%= users[k]._id %>" class="grey">
+              <span class="m-0 p-0 text-lg"><strong class="searchname"><% if(!users[k].isVerified){ %><span class="text-xxl redcolor">*</span><% } %><%= users[k].fullName %></strong></span>
+            </a>
+          </div>
+          <div>
+            <% if(currentUser && users[k]._id == currentUser._id){ %>
               <button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
                 <i class="fas fa-check"></i></button>
           <% }})} %>

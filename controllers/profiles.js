@@ -26,25 +26,87 @@ if (process.env.ENVIRONMENT === 'dev') {
 
 
 module.exports = {
-  profilesUserProfile(req, res, next) {
-    if (req.user && !req.user._id.equals(req.params.id)) {
-      User.findById(req.params.id).populate({ path: 'userClubs.id', select: 'name avatar avatarId' })
-        .populate({ path: 'clubInvites', select: 'name clubUsers' })
-        .exec(function (err, foundUser) {
-          if (err || !foundUser) {
-            logger.error(req.user._id + ' : (profiles-1)foundUser err => ' + err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else {
-            var currentUserFriends = req.user.friends;
-            var friends = foundUser.friends.reverse();
-            User.aggregate([
-              {
-                $match: {
-                  $and: [
-                    { _id: { $in: friends } },
-                    { _id: { $in: currentUserFriends } }
-                  ]
+  profilesUserProfile(req, res, next){
+    if(req.user && !req.user._id.equals(req.params.id)){
+      User.findById(req.params.id).populate({path: 'userClubs.id', select: 'name avatar avatarId'})
+      .populate({path: 'clubInvites', select: 'name clubUsers'})
+      .exec(function(err, foundUser){
+      if(err || !foundUser){
+        logger.error(req.user._id+' : (profiles-1)foundUser err => '+err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        var currentUserFriends = req.user.friends;
+        var friends = foundUser.friends.reverse();
+        User.aggregate([
+          {$match: {$and: [
+            {_id: {$in: friends}}, 
+            {_id: {$in: currentUserFriends}}
+          ]}},
+          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
+          {$sort: {"__order": 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
+          {$limit: 4}
+          ])
+        .exec(function(err, foundFriends){
+        if(err || !foundUser){
+          logger.error(req.user._id+' : (profiles-2)foundUser err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          var currentUser = req.user;
+          // Is conversation initiated/NOT..?
+          var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = false;
+          var conversationId = '', recipientId = '';
+          if(foundUser.userChats.length != 0){
+            for(var i=0;i<foundUser.userChats.length;i++){
+              if(foundUser.userChats[i].userId.equals(req.user._id)){
+                var hasConversation = true;
+                var conversationId = foundUser.userChats[i].conversationId;
+                break;
+              }
+            }
+          } else{hasConversation = false};
+          // requests(Friends/Club Invites)
+          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          var fUcIlength = foundUser.clubInvites.length;
+          var fUuClength = foundUser.userClubs.length;
+          var cUuClength = currentUser.userClubs.length;
+          var sentRequest = contains(foundUser.friendRequests,currentUser._id);
+          var haveRequest = contains(currentUser.friendRequests,foundUser._id);
+          var isFriend = contains(currentUser.friends,foundUser._id);
+          var clubCount = foundUser.userClubs.length;
+          if(isFriend){
+            var clubs = foundUser.userClubs.sort(function(a, b) {
+              return parseFloat(a.rank) - parseFloat(b.rank);
+            });
+            var Clubs_50_clubAvatar = [];
+            // If friend, then show 10 server rendered clubs under Clubs Tab
+            var limitedClubs = clubs.slice(0,9);
+            for(var k=0;k<limitedClubs.length;k++){
+              if(process.env.ENVIRONMENT === 'dev'){
+                Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
+              } else if (process.env.ENVIRONMENT === 'prod'){
+                Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
+              }
+            }
+          } else{
+            var clubs = [], Clubs_50_clubAvatar = [];
+          }
+          // cU userClubs loop
+          for(var i=0;i<cUuClength;i++){
+            var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
+            if(fUuClength != 0){
+              // fU userClubs loop
+              for(var j=0;j<fUuClength;j++){
+                if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                  // MUTUAL CLUBS
+                  inClub = true;
+                  var objc = {};
+                  objc['_id'] = currentUser.userClubs[i].id;
+                  objc['name'] = currentUser.userClubs[i].clubName;
+                  mutualClubs.push(objc);
+
                 }
               },
               { $addFields: { "__order": { $indexOfArray: [friends, "$_id"] } } },
@@ -295,10 +357,29 @@ module.exports = {
               });
           }
         });
-    } else if (!req.user) {
-      User.findById(req.params.id, function (err, foundUser) {
-        if (err || !foundUser) {
-          logger.error('(profiles-6)foundUser err => ' + err);
+      }
+      });
+    } else if(req.user && req.user._id.equals(req.params.id)){
+      User.findById(req.params.id).populate({path: 'userClubs.id', select: 'name avatar avatarId'})
+      .populate({path: 'clubInvites', select: 'name clubUsers'})
+      .exec(function(err, foundUser){
+      if(err || !foundUser){
+        logger.error(req.user._id+' : (profiles-4)foundUser err => '+err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        var friends = foundUser.friends.reverse();
+        // Show friends made in order of latest(4)
+        User.aggregate([
+          {$match: {_id: {$in: friends}}},
+          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
+          {$sort: {"__order": 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
+          {$limit: 4}
+          ])
+        .exec(function(err, foundFriends){
+        if(err || !foundUser){
+          logger.error(req.user._id+' : (profiles-5)foundUser err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         } else {
@@ -333,7 +414,60 @@ module.exports = {
                   clubInvites, mutualClubs, foundFriends, clubCount, Friends_100_profilePic, cdn_prefix
                 });
               }
-            });
+            }
+          }
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            if(process.env.ENVIRONMENT === 'dev'){
+              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
+            }
+          }
+          res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
+          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic,
+          cdn_prefix});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+        }
+        });
+      }
+      });
+    } else if(!req.user){
+      User.findById(req.params.id, function(err, foundUser){
+      if(err || !foundUser){
+        logger.error('(profiles-6)foundUser err => '+err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else{
+        var friends = foundUser.friends.reverse();
+        User.aggregate([
+          {$match: {_id: {$in: friends}}},
+          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
+          {$sort: {"__order": 1}},
+          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
+          {$limit: 4}
+          ])
+        .exec(function(err, foundFriends){
+        if(err || !foundUser){
+          logger.error('(profiles-7)foundUser err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          var match = false;
+          var clubCount = foundUser.userClubs.length;
+          var sentRequest = haveRequest = isFriend = false;
+          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+          var Friends_100_profilePic = [];
+          for(var l=0;l<foundFriends.length;l++){
+            if(process.env.ENVIRONMENT === 'dev'){
+              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
+            }
+          }
+          return res.render("users/show", {haveRequest, sentRequest, isFriend, user: foundUser, match, adminClubs,
+          clubInvites, mutualClubs, foundFriends, clubCount, Friends_100_profilePic, cdn_prefix});
         }
       });
     }
@@ -395,34 +529,42 @@ module.exports = {
       } else {
         var seenIds = [];
       }
-      Post.find({ 'postAuthor.id': req.params.id, _id: { $nin: seenIds } })
-        .populate({ path: 'postClub', select: 'name avatar avatarId' })
-        .populate({ path: 'commentBuckets', options: { sort: { bucket: -1 }, limit: 1 } })
-        .sort({ createdAt: -1 }).limit(10)
-        .exec(function (err, foundUserPosts) {
-          if (err || !foundUserPosts) {
-            logger.error(req.user._id + ' : (profiles-9)foundUserPosts err => ' + err);
-            return res.sendStatus(500);
-          } else {
-            var arrLength = foundUserPosts.length;
-            var currentUser = req.user; var match = false;
-            var foundPostIds = foundUserPosts.map(function (post) {
-              return post._id;
-            });
-            var userPosts = foundUserPosts;
-            var posts = postsPrivacyFilter(userPosts, req.user);
-            var modPosts = postsModerationFilter(posts, req.user);
-            sortComments(modPosts);
-            var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for (var k = 0; k < modPosts.length; k++) {
-              if (process.env.ENVIRONMENT === 'dev') {
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod') {
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix + modPosts[k].postClub.avatarId;
-              }
-              hasVote[k] = voteCheck(req.user, modPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user, modPosts[k]);
-              seenPostIds.push(modPosts[k]._id);
+      Post.find({'postAuthor.id': req.params.id, _id: {$nin: seenIds}})
+      .populate({path: 'postClub', select: 'name avatar avatarId'})
+      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+      .sort({createdAt: -1}).limit(10)
+      .exec(function(err, foundUserPosts){
+      if(err || !foundUserPosts){
+        logger.error(req.user._id+' : (profiles-9)foundUserPosts err => '+err);
+        return res.sendStatus(500);
+      } else{
+        var arrLength = foundUserPosts.length;
+        var currentUser = req.user; var match = false;
+        var foundPostIds = foundUserPosts.map(function(post){
+          return post._id;
+        });
+        var userPosts = foundUserPosts;
+        var posts = postsPrivacyFilter(userPosts, req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
+        sortComments(modPosts);
+        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+        for(var k=0;k<modPosts.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
+          }
+          hasVote[k] = voteCheck(req.user,modPosts[k]);
+          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+          seenPostIds.push(modPosts[k]._id);
+        }
+        // Your own profile (posts) don't count as view
+        if(!req.user._id.equals(req.params.id)){
+          Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+          function(err){
+            if(err){
+              logger.error(req.user._id+' : (profiles-10)updatePosts err => '+err);
+              return res.sendStatus(500);
             }
             // Your own profile (posts) don't count as view
             if (!req.user._id.equals(req.params.id)) {
@@ -448,13 +590,38 @@ module.exports = {
       } else {
         var seenIds = [];
       }
-      Post.find({ 'postAuthor.id': req.params.id, moderation: 0, privacy: 0, topic: '', _id: { $nin: seenIds } })
-        .populate({ path: 'postClub', select: 'name avatar avatarId' })
-        .populate({ path: 'commentBuckets', options: { sort: { bucket: -1 }, limit: 1 } })
-        .sort({ createdAt: -1 }).limit(10)
-        .exec(function (err, foundUserPosts) {
-          if (err || !foundUserPosts) {
-            logger.error('(profiles-11)foundUserPosts err => ' + err);
+
+      Post.find({'postAuthor.id': req.params.id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
+      .populate({path: 'postClub', select: 'name avatar avatarId'})
+      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+      .sort({createdAt: -1}).limit(10)
+      .exec(function(err, foundUserPosts){
+      if(err || !foundUserPosts){
+        logger.error('(profiles-11)foundUserPosts err => '+err);
+        return res.sendStatus(500);
+      } else{
+        var arrLength = foundUserPosts.length;
+        var currentUser = req.user; var match = false;
+        var foundPostIds = foundUserPosts.map(function(post){
+          return post._id;
+        });
+        var userPosts = foundUserPosts;
+        sortComments(userPosts);
+        var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
+        for(var k=0;k<userPosts.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            PC_50_clubAvatar[k] = clConfig.cloudinary.url(userPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+userPosts[k].postClub.avatarId;
+          }
+          hasVote[k] = voteCheck(req.user,userPosts[k]);
+          hasModVote[k] = modVoteCheck(req.user,userPosts[k]);
+          seenPostIds.push(userPosts[k]._id);
+        }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err){
+          if(err){
+            logger.error('(profiles-12)updatePosts err => '+err);
             return res.sendStatus(500);
           } else {
             var arrLength = foundUserPosts.length;
@@ -580,12 +747,14 @@ module.exports = {
             "createdAt": 1,
             "__v": 1,
           }
-        },
-        { $limit: 10 }
-      ])
-        .exec(function (err, foundHeartPosts) {
-          if (err || !foundHeartPosts) {
-            logger.error(req.user._id + ' : (profiles-13)foundHeartPosts err => ' + err);
+          hasVote[k] = voteCheck(req.user,modPosts[k]);
+          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+          seenPostIds.push(modPosts[k]._id);
+        }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err){
+          if(err){
+            logger.error(req.user._id+' : (profiles-14)updatePosts err => '+err);
             return res.sendStatus(500);
           } else {
             var arrLength = foundHeartPosts.length;
@@ -1175,13 +1344,37 @@ module.exports = {
       } else {
         var seenIds = [];
       }
-      Post.find({ postClub: req.params.club_id, _id: { $nin: seenIds } })
-        .populate({ path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys' })
-        .populate({ path: 'commentBuckets', options: { sort: { bucket: -1 }, limit: 1 } })
-        .sort({ createdAt: -1 }).limit(10)
-        .exec(function (err, clubPosts) {
-          if (err || !clubPosts) {
-            logger.error(req.user._id + ' : (profiles-28)clubPosts err => ' + err);
+      Post.find({postClub: req.params.club_id, _id: {$nin: seenIds}})
+      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
+      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+      .sort({createdAt: -1}).limit(10)
+      .exec(function(err, clubPosts){
+      if(err || !clubPosts){
+        logger.error(req.user._id+' : (profiles-28)clubPosts err => '+err);
+        return res.sendStatus(500);
+      } else{
+        var arrLength = clubPosts.length;
+        var foundPostIds = clubPosts.map(function(post){
+          return post._id;
+        });
+        var posts = postsPrivacyFilter(clubPosts, req.user);
+        var modPosts = postsModerationFilter(posts, req.user);
+        sortComments(modPosts);
+        var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
+        for(var k=0;k<modPosts.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            PA_50_profilePic[k] = clConfig.cloudinary.url(modPosts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            PA_50_profilePic[k] = s3Config.thumb_100_prefix+modPosts[k].postAuthor.id.profilePicId;
+          }
+          hasVote[k] = voteCheck(req.user,modPosts[k]);
+          hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+          seenPostIds.push(modPosts[k]._id);
+        }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err){
+          if(err){
+            logger.error(req.user._id+' : (profiles-29)updatePosts err => '+err);
             return res.sendStatus(500);
           } else {
             var arrLength = clubPosts.length;
@@ -1225,13 +1418,36 @@ module.exports = {
       } else {
         var seenIds = [];
       }
-      Post.find({ postClub: req.params.club_id, moderation: 0, privacy: 0, topic: '', _id: { $nin: seenIds } })
-        .populate({ path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys' })
-        .populate({ path: 'commentBuckets', options: { sort: { bucket: -1 }, limit: 1 } })
-        .sort({ createdAt: -1 }).limit(10)
-        .exec(function (err, clubPosts) {
-          if (err || !clubPosts) {
-            logger.error('(profiles-30)clubPosts err => ' + err);
+      Post.find({postClub: req.params.club_id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
+      .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
+      .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
+      .sort({createdAt: -1}).limit(10)
+      .exec(function(err, clubPosts){
+      if(err || !clubPosts){
+        logger.error('(profiles-30)clubPosts err => '+err);
+        return res.sendStatus(500);
+      } else{
+        var arrLength = clubPosts.length;
+        var foundPostIds = clubPosts.map(function(post){
+          return post._id;
+        });
+        var posts = clubPosts;
+        sortComments(posts);
+        var hasVote = [], hasModVote = [], PA_50_profilePic = [], seenPostIds = [];
+        for(k=0;k<posts.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            PA_50_profilePic[k] = clConfig.cloudinary.url(posts[k].postAuthor.id.profilePicId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            PA_50_profilePic[k] = s3Config.thumb_100_prefix+posts[k].postAuthor.id.profilePicId;
+          }
+          hasVote[k] = voteCheck(req.user,posts[k]);
+          hasModVote[k] = modVoteCheck(req.user,posts[k]);
+          seenPostIds.push(posts[k]._id);
+        }
+        Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
+        function(err){
+          if(err){
+            logger.error('(profiles-31)updatePosts err => '+err);
             return res.sendStatus(500);
           } else {
             var arrLength = clubPosts.length;
@@ -1268,112 +1484,106 @@ module.exports = {
     }
   },
 
-  profilesUpdateClubProfile(req, res, next) {
-    Club.findById(req.params.club_id, async function (err, foundClub) {
-      if (err || !foundClub) {
-        logger.error(req.user._id + ' : (profiles-32)foundClub err => ' + err);
-        req.flash('error', 'Something went wrong :(');
-        return res.redirect('back');
-      } else {
-        var newCollegePageExists;
-        var rankUsers = foundClub.clubUsers;
-        var admin = checkRank(rankUsers, req.user._id, 1);
-        var moder = checkRank(rankUsers, req.user._id, 2);
-        if (req.body.newsUpdate && moder == true) {
-          // var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
-          //   return clubUser.id;
-          // });
-          // if(req.body.newsDate && req.body.newsDate != ''){
-          //   var strDate = req.body.newsDate;
-          //   var date = moment(strDate, 'MM-DD-YYYY').toDate();
-          // } else{var eventDate = null;}
-          // var news = req.body.newsUpdate;
-          // var clubId = foundClub._id;
-          // var clubName = foundClub.name;
-          // var pusherName = req.user.fullName;
-          // var clubUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName};
-          // foundClub.updates.push(clubUpdate);
-          // // foundClub is locked for modification untill fn updatedClub is finished.?
-          // foundClub.save(function(err, updatedClub){
-          //   var len = updatedClub.updates.length;
-          //   var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
-          //   'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
-          //   User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: updatedClub._id}}},
-          //   {$push: {clubUpdates: userUpdate}}, function(err, updateUsers){
-          //     if(err || !updateUsers){
-          //       logger.error(req.user._id+' : (profiles-33)updateUsers err => '+err);
-          //       req.flash('error', 'Something went wrong :(');
-          //       return res.redirect('back');
-          //     }
-          //   });
-          //   req.flash('success', 'Successfully updated');
-          //   return res.redirect('/clubs/' + req.params.club_id);
-          // });
-        } else if (admin == true) {
-          if (req.file) {
-            try {
-              if (process.env.ENVIRONMENT === 'dev') {
-                clConfig.cloudinary.v2.uploader.destroy(foundClub.avatarId);
-                var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.clubAvatars_1080_obj);
-                foundClub.avatar = result.secure_url;
-                foundClub.avatarId = result.public_id;
-              } else if (process.env.ENVIRONMENT === 'prod') {
-                s3Config.deleteFile(foundClub.avatarId);
-                var result = await s3Config.uploadFile(req.file, 'clubAvatars/', 1080);
-                s3Config.removeTmpUpload(req.file.path);
-                foundClub.avatar = result.Location;
-                foundClub.avatarId = result.Key;
-              }
-            } catch (err) {
-              logger.error(req.user._id + ' : (profiles-34)avatarUpload err => ' + err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+  profilesUpdateClubProfile(req, res, next){
+    Club.findById(req.params.club_id, async function(err, foundClub){
+    if(err || !foundClub){
+      logger.error(req.user._id+' : (profiles-32)foundClub err => '+err);
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    } else{
+      var newCollegePageExists;
+      var rankUsers = foundClub.clubUsers;
+      var admin = checkRank(rankUsers,req.user._id,1); 
+      var moder = checkRank(rankUsers,req.user._id,2);
+      if(req.body.newsUpdate && moder == true){
+        // var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+        //   return clubUser.id;
+        // });
+        // if(req.body.newsDate && req.body.newsDate != ''){
+        //   var strDate = req.body.newsDate;
+        //   var date = moment(strDate, 'MM-DD-YYYY').toDate();
+        // } else{var eventDate = null;}
+        // var news = req.body.newsUpdate;
+        // var clubId = foundClub._id;
+        // var clubName = foundClub.name;
+        // var pusherName = req.user.fullName;
+        // var clubUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName};
+        // foundClub.updates.push(clubUpdate);
+        // // foundClub is locked for modification untill fn updatedClub is finished.?
+        // foundClub.save(function(err, updatedClub){
+        //   var len = updatedClub.updates.length;
+        //   var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
+        //   'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
+        //   User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: updatedClub._id}}},
+        //   {$push: {clubUpdates: userUpdate}}, function(err){
+        //     if(err){
+        //       logger.error(req.user._id+' : (profiles-33)updateUsers err => '+err);
+        //       req.flash('error', 'Something went wrong :(');
+        //       return res.redirect('back');
+        //     }
+        //   });
+        //   req.flash('success', 'Successfully updated');
+        //   return res.redirect('/clubs/' + req.params.club_id);
+        // });
+      } else if(admin == true){
+        if(req.file){
+          try{
+            if(process.env.ENVIRONMENT === 'dev'){
+              clConfig.cloudinary.v2.uploader.destroy(foundClub.avatarId);
+              var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.clubAvatars_1080_obj);
+              foundClub.avatar = result.secure_url;
+              foundClub.avatarId = result.public_id;
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              s3Config.deleteFile(foundClub.avatarId);
+              var result = await s3Config.uploadFile(req.file, 'clubAvatars/', 1080);
+              s3Config.removeTmpUpload(req.file.path);
+              foundClub.avatar = result.Location;
             }
           }
-          // if(req.body.delUpdate){
-          //   var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
-          //     return clubUser.id;
-          //   });
-          //   var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
-          //   for(i=foundClub.updates.length-1;i>=0;i--){
-          //     if(foundClub.updates[i]._id.equals(delUpdateId)){
-          //       var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
-          //       // Notify update deletion which was created in last 24 hrs
-          //       if(timeDiff < 3600000*24){
-          //         var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
-          //         'clubId': foundClub._id, 'deleterName': req.user.fullName};
-          //         User.updateMany({_id: {$in: clubUserIdsArr}, clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
-          //         {$set: {'clubUpdates.$': update}}, function(err, updateUsers){
-          //           if(err || !updateUsers){
-          //             logger.error(req.user._id+' : (profiles-35)updateUsers err => '+err);
-          //             req.flash('error', 'Something went wrong :(');
-          //             return res.redirect('back');
-          //           }
-          //         });
-          //       }
-          //       foundClub.updates.splice(i,1);
-          //       break;
-          //     }
-          //   }
-          // }
-          if (req.body.clubKeys) {
-            var oldCollegeName = foundClub.clubKeys.college;
-            var oldCategory = foundClub.clubKeys.category;
-            var newCollegeName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
-            var newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
-            // COLLEGE PAGE
-            if (oldCollegeName != newCollegeName || oldCategory != newCategory) {
-              if (oldCollegeName != newCollegeName) {
-                // 1) IF a collegePage of OLD College name exists => SPLICE clubId from old category of old college & dec. count
-                var foundOldCollegePage = await CollegePage.findOne({ name: oldCollegeName });
-                if (foundOldCollegePage && foundOldCollegePage.allClubs.length) {
-                  for (var i = foundOldCollegePage.allClubs.length - 1; i >= 0; i--) {
-                    if (foundOldCollegePage.allClubs[i].category == oldCategory) {
-                      foundOldCollegePage.allClubs[i].categoryCount -= 1;
-                      for (var j = foundOldCollegePage.allClubs[i].categoryClubIds.length - 1; j >= 0; j--) {
-                        if (foundOldCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)) {
-                          foundOldCollegePage.allClubs[i].categoryClubIds.splice(j, 1);
-                        }
+        }
+        // if(req.body.delUpdate){
+        //   var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+        //     return clubUser.id;
+        //   });
+        //   var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
+        //   for(i=foundClub.updates.length-1;i>=0;i--){
+        //     if(foundClub.updates[i]._id.equals(delUpdateId)){
+        //       var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
+        //       // Notify update deletion which was created in last 24 hrs
+        //       if(timeDiff < 3600000*24){
+        //         var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
+        //         'clubId': foundClub._id, 'deleterName': req.user.fullName};
+        //         User.updateMany({_id: {$in: clubUserIdsArr}, clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
+        //         {$set: {'clubUpdates.$': update}}, function(err){
+        //           if(err){
+        //             logger.error(req.user._id+' : (profiles-35)updateUsers err => '+err);
+        //             req.flash('error', 'Something went wrong :(');
+        //             return res.redirect('back');
+        //           }
+        //         });
+        //       }
+        //       foundClub.updates.splice(i,1);
+        //       break;
+        //     }
+        //   }
+        // }
+        if(req.body.clubKeys){
+          var oldCollegeName = foundClub.clubKeys.college;
+          var oldCategory = foundClub.clubKeys.category;
+          var newCollegeName = req.body.clubKeys.college.replace(/[^a-zA-Z'()0-9 -]/g, '').trim();
+          var newCategory = req.body.clubKeys.category.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();
+          // COLLEGE PAGE
+          if(oldCollegeName != newCollegeName || oldCategory != newCategory){
+            if(oldCollegeName != newCollegeName){
+              // 1) IF a collegePage of OLD College name exists => SPLICE clubId from old category of old college & dec. count
+              var foundOldCollegePage = await CollegePage.findOne({name: oldCollegeName});
+              if(foundOldCollegePage && foundOldCollegePage.allClubs.length){
+                for(var i=foundOldCollegePage.allClubs.length-1;i>=0;i--){
+                  if(foundOldCollegePage.allClubs[i].category == oldCategory){
+                    foundOldCollegePage.allClubs[i].categoryCount -= 1;
+                    for(var j=foundOldCollegePage.allClubs[i].categoryClubIds.length-1;j>=0;j--){
+                      if(foundOldCollegePage.allClubs[i].categoryClubIds[j].equals(foundClub._id)){
+                        foundOldCollegePage.allClubs[i].categoryClubIds.splice(j,1);
                       }
                       break;
                     }
@@ -1470,6 +1680,32 @@ module.exports = {
           req.flash('error', "You don't have enough admin privileges :(");
           return res.redirect('back');
         }
+        if(req.body.name && foundClub.name != req.body.name){
+          var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
+            return clubUser.id;
+          });
+          foundClub.name = req.body.name;
+          User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: foundClub._id}}},
+          {$set: {'userClubs.$.clubName': req.body.name}}, function(err){
+            if(err){
+              logger.error(req.user._id+' : (profiles-36)updateUsers err => '+err);
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            }
+          });
+        }
+        if(foundClub.banner != req.body.banner){
+          foundClub.banner = req.body.banner;
+        }
+        foundClub.save();
+        if(newCollegePageExists == 'no'){} else{
+          req.flash('success', 'Successfully updated');
+        }
+        return res.redirect('/clubs/' + req.params.club_id);
+      } else{
+        logger.warn(req.user._id+' : (profiles-37)rankCheck fail :Update Club');
+        req.flash('error', "You don't have enough admin privileges :(");
+        return res.redirect('back');
       }
     });
   },
@@ -1511,7 +1747,26 @@ module.exports = {
                 foundCollegePage.clubCount -= 1;
                 foundCollegePage.save();
               }
-            });
+              foundCollegePage.clubCount -= 1;
+              foundCollegePage.save();
+            }
+          });
+        }
+        User.updateOne({_id: req.user._id, userClubs: {$elemMatch: {id: req.params.club_id}}},
+        {$pull: {userClubs: {id: req.params.club_id}}}, function(err){
+        if(err){
+          logger.error(req.user._id+' : (profiles-39)updatedUser err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+        });
+        if(foundClub.conversationId){
+          ClubConversation.updateMany({_id: foundClub.conversationId}, {$set: {isActive: false}}, 
+          function(err){
+          if(err){
+            logger.error(req.user._id+' : (profiles-40)updatedClubConversation err => '+err);
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
           }
           User.updateOne({ _id: req.user._id, userClubs: { $elemMatch: { id: req.params.club_id } } },
             { $pull: { userClubs: { id: req.params.club_id } } }, function (err, updatedUser) {
@@ -1683,39 +1938,42 @@ module.exports = {
             token.save(function (err) {
               if (err) { return logger.error('(profiles-44)user err => ' + err); }
 
-              // Send the email
-              var smtpTransport = nodemailer.createTransport({
-                service: 'Godaddy',
-                auth: {
-                  user: 'team@clubmate.co.in',
-                  pass: process.env.TEAM_EMAIL_PW
-                }
-              });
-              var mailOptions = {
-                to: user.email,
-                from: '"clubmate"team@clubmate.co.in',
-                subject: 'Account Verification Token',
-                text: 'Welcome to clubmate ' + newFirstName + '!  ,\n\n' +
-                  'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host +
-                  '\/confirmation\/' + token.token + '\n\n' +
-                  'Thanks,\n' +
-                  'Team clubmate',
-                dkim: {
-                  domainName: 'clubmate.co.in',
-                  keySelector: 'dkimkey1',
-                  privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
-                }
-              };
-              smtpTransport.sendMail(mailOptions, function (err) {
-                done(err, 'done');
-              });
+            // Send the email
+            var smtpTransport = nodemailer.createTransport({
+              service: 'Godaddy', 
+              auth: {
+                user: 'team@clubmate.co.in',
+                pass: process.env.TEAM_EMAIL_PW
+              }
             });
-            req.flash('success', 'Welcome to clubmate ' + user.firstName + '!  ,  An email has been sent to "' + req.body.email + '" for verification.');
-            if (process.env.WAITING_WALL == 'true') {
-              return res.redirect('/waiting');
-            } else {
-              return res.redirect('/discover');
-            }
+            var mailOptions = {
+              to: user.email,
+              from: '"clubmate"team@clubmate.co.in',
+              subject: 'Account Verification Token',
+              text: 'Welcome to clubmate '+newFirstName+'!  ,\n\n' + 
+              'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
+              '\/confirmation\/' + token.token + '\n\n' +
+              'Thanks,\n' +
+              'Team clubmate',
+              dkim: {
+                domainName: 'clubmate.co.in',
+                keySelector: 'dkimkey1',
+                privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+              }
+            };
+            smtpTransport.sendMail(mailOptions, function(err, info){
+              if(err){
+                return logger.error('(profiles-45)sendMail err => '+err);
+              } else{
+                logger.info('mail sent('+ user.email +' requested a verification token)');
+              }
+            });
+          });
+          req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to "'+req.body.email+'" for verification.');
+          if(process.env.WAITING_WALL == 'true'){
+            return res.redirect('/waiting');
+          } else{
+            return res.redirect('/waiting');
           }
         });
       } else {
@@ -1749,8 +2007,8 @@ module.exports = {
 
         // Verify and save the user
         user.isVerified = true;
-        user.save(function (err) {
-          if (err) { return logger.error('(profiles-45)user err => ' + err); }
+        user.save(function(err){
+          if(err){return logger.error('(profiles-46)user err => '+err);}
           res.status(200);
           logger.info(user._id + ' <= VERIFIED ' + user.fullName);
           req.logIn(user, function (err) {
@@ -1787,8 +2045,8 @@ module.exports = {
       var token = new Token({ userId: user._id, token: crypto.randomBytes(20).toString('hex') });
 
       // Save the verification token
-      token.save(function (err) {
-        if (err) { return logger.error('(profiles-46)user err => ' + err); }
+      token.save(function (err){
+        if(err){return logger.error('(profiles-47)user err => '+err);}
 
         // Send the email
         var smtpTransport = nodemailer.createTransport({
@@ -1812,8 +2070,12 @@ module.exports = {
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
         };
-        smtpTransport.sendMail(mailOptions, function (err) {
-          done(err, 'done');
+        smtpTransport.sendMail(mailOptions, function(err, info){
+          if(err){
+            return logger.error('(profiles-48)sendMail err => '+err);
+          } else{
+            logger.info('mail sent('+ user.email +' requested a verification token again)');
+          }
         });
       });
       req.flash('success', 'An email has been sent to your account for verification.');
@@ -1851,16 +2113,16 @@ module.exports = {
     })(req, res, next);
   },
 
-  profilesLogout(req, res, next) {
-    if (req.user) {
-      User.updateOne({ _id: req.user._id }, { lastLoggedOut: Date.now() },
-        function (err, updatedUser) {
-          if (err || !updatedUser) {
-            logger.error(req.user._id + ' : (profiles-47)updateUser err => ' + err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
-        });
+  profilesLogout(req, res, next){
+    if(req.user){
+      User.updateOne({_id: req.user._id}, {lastLoggedOut: Date.now()}, 
+      function(err){
+        if(err){
+          logger.error(req.user._id+' : (profiles-49)updateUser err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+      });
       req.logout();
       delete req.session.userId;
       req.flash('success', 'Logged out');
@@ -1884,19 +2146,19 @@ module.exports = {
           done(err, token);
         });
       },
-      function (token, done) {
-        User.findOne({ email: req.body.email }, function (err, user) {
-          if (err || !user) {
-            logger.error('(profiles-48)forgot err => ' + err);
-            req.flash('error', 'No account with that email address exists.');
-            return res.redirect('/forgot');
-          } else {
-            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-            user.save(function (err) {
-              done(err, token, user);
-            });
-          }
+      function(token, done){
+        User.findOne({email: req.body.email}, function(err, user){
+        if(err || !user){
+          logger.error('(profiles-50)forgot err => '+err);
+          req.flash('error', 'No account with that email address exists.');
+          return res.redirect('/forgot');
+        } else{
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+          user.save(function(err){
+            done(err, token, user);
+          });
+        }
         });
       },
       function (token, user, done) {
@@ -1924,10 +2186,13 @@ module.exports = {
             privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
           }
         };
-        smtpTransport.sendMail(mailOptions, function (err) {
-          logger.info('mail sent(' + user.email + ' requested a password change)');
-          req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-          done(err, 'done');
+        smtpTransport.sendMail(mailOptions, function(err, info){
+          if(err){
+            return logger.error('(profiles-51)sendMail err => '+err);
+          } else{
+            logger.info('mail sent('+ user.email +' requested a password change)');
+            req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+          }
         });
       }
     ], function (err) {
@@ -1935,15 +2200,15 @@ module.exports = {
     });
   },
 
-  profilesForgotToken(req, res, next) {
-    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
-      if (err || !user) {
-        logger.info('(profiles-49)token invalid err => ' + err);
-        req.flash('error', 'Password reset token is invalid or has expired.');
-        return res.redirect('/forgot');
-      } else {
-        res.render('reset', { token: req.params.token });
-      }
+  profilesForgotToken(req, res, next){
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
+    if (err || !user){
+      logger.info('(profiles-52)token invalid err => '+err);
+      req.flash('error', 'Password reset token is invalid or has expired.');
+      return res.redirect('/forgot');
+    } else{
+      res.render('reset', {token: req.params.token});
+    }
     });
   },
 
@@ -1951,29 +2216,29 @@ module.exports = {
     var pass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*+/.()?& -]{6,18}$/;
     if (req.body.password.match(pass)) {
       async.waterfall([
-        function (done) {
-          User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
-            if (err || !user) {
-              logger.error('(profiles-50)token invalid err => ' + err);
-              req.flash('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('back');
-            } else {
-              if (req.body.password === req.body.confirm) {
-                user.setPassword(req.body.password, function (err) {
-                  user.resetPasswordToken = undefined;
-                  user.resetPasswordExpires = undefined;
+        function(done){
+          User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}}, function(err, user){
+          if(err || !user){
+            logger.error('(profiles-53)token invalid err => '+err);
+            req.flash('error', 'Password reset token is invalid or has expired.');
+            return res.redirect('back');
+          } else{
+            if(req.body.password === req.body.confirm){
+              user.setPassword(req.body.password, function(err){
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpires = undefined;
 
                   user.save(function (err) {
                     req.logIn(user, function (err) {
                       done(err, user);
                     });
                   });
-                })
-              } else {
-                logger.info('(profiles-51)pass dont match err => ' + err);
-                req.flash("error", "Passwords do not match.");
-                return res.redirect('back');
-              }
+                });
+              })
+            } else{
+              logger.info('(profiles-54)pass dont match err => '+err);
+              req.flash("error", "Passwords do not match.");
+              return res.redirect('back');
             }
           });
         },
@@ -1999,10 +2264,13 @@ module.exports = {
               privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
             }
           };
-          smtpTransport.sendMail(mailOptions, function (err) {
-            logger.info('mail sent(Password for ' + user.fullName + ' - ' + user.email + ' has changed)');
-            req.flash('success', 'Success! Your password has been changed.');
-            done(err, 'done');
+          smtpTransport.sendMail(mailOptions, function(err, info){
+            if(err){
+              return logger.error('(profiles-55)sendMail err => '+err);
+            } else{
+              logger.info('mail sent(Password for '+ user.fullName +' - '+ user.email +' has changed)');
+              req.flash('success', 'Success! Your password has been changed.');
+            }
           });
         }
       ], function (err) {
@@ -2022,11 +2290,11 @@ module.exports = {
     User.countDocuments({}, function (err, count) {
       return res.render('waiting', { count });
     });
+  },
+  
+  profilesGoogleAuthCallback(req, res, next){
+    return res.redirect('/discover');
   }
-
-  // profilesGoogleAuthCallback(req, res, next){
-  //   return res.redirect('/discover');
-  // }
 };
 
 //*******************FUNCTIONS***********************

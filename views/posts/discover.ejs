@@ -57,7 +57,7 @@
       <% //include ../partials/posts_index %>
     </div>
     <div id="client-posts-discover" style="overflow: hidden;"></div>
-    <div class="text-center pt-2">
+    <div id="discover-load-more-btn" class="text-center pt-2">
       <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
         <span id="load-more-span"></span>Load
       </button>
@@ -77,22 +77,22 @@
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </form>
       </div>
-      <div id="college_infobtns_quick_nav_desktop" class="nav-hidden">
+      <div id="quickview_nav_desktop" class="nav-hidden">
         <em class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;">Quick view</em>
         <div class="d-flex flex-column">
-          <div class="text-xxl college-infobtn college-infobtn-quick desktop_sidebar" title="Blogs">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs">
             <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
           </div>
-          <div class="text-xxl college-infobtn college-infobtn-quick desktop_sidebar" title="Placements & Intern">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern">
             <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
           </div>
-          <div class="text-xxl college-infobtn college-infobtn-quick desktop_sidebar" title="Merch & Stickers">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers">
             <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
           </div>
-          <div class="text-xxl college-infobtn college-infobtn-quick desktop_sidebar" title="Attendance & Events">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events">
             <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
           </div>
-          <div class="messMenuOpen text-xxl college-infobtn college-infobtn-quick desktop_sidebar" title="Mess menu" data-toggle="modal" data-target="#quickmess">
+          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Mess menu" data-toggle="modal" data-target="#quickmess">
             <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
           </div>
         </div>
@@ -148,25 +148,41 @@
     </div>
   </nav>
 <% } %>
+
 <% if(currentUser){ %>
-  <nav id="college_infobtns_quick_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
-    <div id="college_infobtns_quick_nav_mobile-div" class="d-flex justify-content-around">
-      <div class="text-xxl px-2 my-auto" style="cursor: pointer;" title="Blogs">
-        <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl px-2 my-auto" style="cursor: pointer;" title="Placements & Intern">
-        <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl px-2 my-auto" style="cursor: pointer;" title="Merch & Stickers">
-        <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="text-xxl px-2 my-auto" style="cursor: pointer;" title="Attendance & Events">
-        <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-      <div class="messMenuOpen text-xxl px-2 my-auto" style="cursor: pointer;" title="Mess menu" data-toggle="modal" data-target="#quickmess">
-        <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
-      </div>
-    </div>
+  <nav id="quickview_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
+    <ul class="quicknav_list_mobile d-flex justify-content-around fullwidth">
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#blogs">
+          <i class="fas fa-blog quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">BLOGS</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#intern">
+          <i class="fas fa-briefcase quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">INTERN</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#merch">
+          <i class="fas fa-store quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">MERCH</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#attendance">
+          <i class="fas fa-calendar-check quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">ATTENDANCE</span>
+        </a>
+      </li>
+      <li class="quicknav_item_mobile">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#mess" data-toggle="modal" data-target="#quickmess">
+          <i class="fas fa-utensils quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">MESS</span>
+        </a>
+      </li>
+    </ul>
   </nav>
 <% } %>
 

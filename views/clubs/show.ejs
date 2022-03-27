@@ -313,7 +313,7 @@
               <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
                   <div class="card noborder">
-                    <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
+                    <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem; overflow: hidden;">
                       <label for="topic" class="sr-only">Topic</label>
                       <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
                       <label for="description" class="sr-only">Description</label>
@@ -338,9 +338,9 @@
                             </button>
                           </div>
                         </div>
-                        <div class="mx-1 my-auto">
-                          <label for="inputImage" class="custom-file-upload" title="Upload image">
-                            <i class="fas fa-upload"></i> Image
+                        <div class="mr-3 my-auto">
+                          <label for="inputImage" class="custom-file-upload btn btn-round btn-shadow" title="Upload image">
+                            <i class="fas fa-image"></i>
                           </label>
                           <input type="file" id="inputImage" class="text-sm" name="image" accept="image/*">
                           <img id="preview-postimg" class="rounded invisible" src="/images/noImage.png" alt="preview" />
@@ -501,17 +501,6 @@
 
                     <div class="mt-2">
                       <h3 class="px-3"> Chat Rooms </h3>
-                      <div id="common-room-div" class="room-container-div">
-                        <% if(conversationId != ''){ %>
-                          <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=<%= conversationId %>&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
-                        <% } else{ %>
-                          <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
-                        <% } %>
-                          <div class="room-container whitesmokeback">
-                            <div class="mobiletext2 truncate1">Common</div>
-                          </div>
-                        </a>
-                      </div>
                       <% if(currentUser && 0 <= rank && rank <= 1){ %>
                         <div id="create-new-div" class="room-container-div" href="#createNewRoom" data-toggle="modal">
                           <div class="nounderline">
@@ -545,6 +534,17 @@
                           </div>
                         </div>
                       <% } %>
+                      <div id="common-room-div" class="room-container-div">
+                        <% if(conversationId != ''){ %>
+                          <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=<%= conversationId %>&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
+                        <% } else{ %>
+                          <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
+                        <% } %>
+                          <div class="room-container whitesmokeback">
+                            <div class="mobiletext2 truncate1">Common</div>
+                          </div>
+                        </a>
+                      </div>
                       <% if(club.chatRoomsCount > 1){ %>
                         <% for(var i=1;i<club.chatRoomsCount;i++){ %>
                           <div id="custom_room_div<%= i %>" class="room-container-div">
