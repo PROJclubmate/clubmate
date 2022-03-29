@@ -1,14 +1,23 @@
-const express   = require('express'),
-  router        = express.Router(),
-  middleware    = require('../middleware'),
-  {chatsList, chatsOpen, chatsListClubRooms, chatsListClubRoomOpen, chatsCreateNewRoom, chatsRoom,
-  chatsRoomEdit} = require('../controllers/chats');
+const express = require('express'),
+  router      = express.Router(),
+  middleware  = require('../middleware');
+
+const {
+  chatsList,
+  chatsOpen,
+  chatsListClubRooms,
+  chatsListClubRoomOpen,
+  chatsCreateNewRoom,
+  chatsRoom,
+  chatsRoomEdit
+} = require('../controllers/chats');
 
 if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');
 } else if (process.env.ENVIRONMENT === 'prod'){
   var {upload} = require('../config/s3.js');
 }
+
 
 // Chat list
 router.get('/chats/feed', middleware.isLoggedIn, chatsList);

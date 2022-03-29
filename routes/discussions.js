@@ -1,7 +1,12 @@
-const express   = require('express'),
-  router        = express.Router({mergeParams: true}),
-  middleware    = require('../middleware'),
-  {discussionsNew, discussionsPagination, discussionsVote} = require('../controllers/discussions');
+const express = require('express'),
+  router      = express.Router({mergeParams: true}),
+  middleware  = require('../middleware');
+
+const {
+  discussionsNew,
+  discussionsPagination,
+  discussionsVote
+} = require('../controllers/discussions');
 
 if(process.env.ENVIRONMENT === 'dev'){
   var {upload} = require('../config/cloudinary.js');

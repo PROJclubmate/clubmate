@@ -78,22 +78,37 @@
         </form>
       </div>
       <div id="quickview_nav_desktop" class="nav-hidden">
-        <em class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;">Quick view</em>
+        <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
         <div class="d-flex flex-column">
-          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs">
-            <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
+          <div class="d-flex flex-row quickviewcontainers-desktop">  
+            <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs">
+              <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
+            </div>
+            <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
           </div>
-          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern">
-            <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
+          <div class="d-flex flex-row quickviewcontainers-desktop">
+            <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern">
+              <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
+            </div>
+            <div class="quicknav_text_desktop text-xs my-auto ml-2">INTERN</div>
           </div>
-          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers">
-            <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
+          <div class="d-flex flex-row quickviewcontainers-desktop">
+            <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers">
+              <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
+            </div>
+            <div class="quicknav_text_desktop text-xs my-auto ml-2">MERCH</div>
           </div>
-          <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events">
-            <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
+          <div class="d-flex flex-row quickviewcontainers-desktop">
+            <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events">
+              <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
+            </div>
+            <div class="quicknav_text_desktop text-xs my-auto ml-2">ATTENDANCE</div>
           </div>
-          <div class="text-xxl college-infobtn quickviewbtns-desktop messMenuOpen" title="Mess menu" data-toggle="modal" data-target="#quickmess">
-            <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
+          <div class="d-flex flex-row quickviewcontainers-desktop">
+            <div class="text-xxl college-infobtn quickviewbtns-desktop messMenuOpen" title="Mess menu" data-toggle="modal" data-target="#quickmess">
+              <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
+            </div>
+            <div class="quicknav_text_desktop text-xs my-auto ml-2">MESS</div>
           </div>
         </div>
       </div>
@@ -196,12 +211,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div id="quickViewModal" class="modal-body">
+      <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickMessContent">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
       </div>
     </div>
   </div>

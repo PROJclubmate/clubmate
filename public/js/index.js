@@ -85,22 +85,45 @@ links_mobile.forEach(link => {
         active.classList.remove('active');
       }
       link.classList.add('active');
+    } else{
+      document.querySelector('.quicknav_link_mobile.active').classList.remove('active');
     }
   });
 });
-const quickview_buttons_desktop = document.querySelectorAll('.quickviewbtns-desktop');
-quickview_buttons_desktop.forEach(button => {
+const quickview_containers_desktop = document.querySelectorAll('.quickviewcontainers-desktop');
+quickview_containers_desktop.forEach(button => {
   button.addEventListener('click', e => {
     e.preventDefault();
     if (!button.classList.contains('active')){
-      const active = document.querySelector('.quickviewbtns-desktop.active');
+      const active = document.querySelector('.quickviewcontainers-desktop.active');
       if (active !== null){
         active.classList.remove('active');
       }
       button.classList.add('active');
+    } else{
+      document.querySelector('.quickviewcontainers-desktop.active').classList.remove('active');
     }
   });
 });
+function close_quickview_modal(){
+  links_mobile.forEach(link => {
+    if (!link.classList.contains('active')){
+      let active = document.querySelector('.quicknav_link_mobile.active');
+      if (active !== null){
+        active.classList.remove('active');
+      }
+    }
+  });
+
+  quickview_containers_desktop.forEach(button => {
+    if (!button.classList.contains('active')){
+      const active = document.querySelector('.quickviewcontainers-desktop.active');
+      if (active !== null){
+        active.classList.remove('active');
+      }
+    }
+  });
+}
 
 if(location.pathname.split('/')[1] == 'colleges'){
   var home = document.getElementById('side-home');

@@ -44,47 +44,47 @@ if(location.pathname == '/discover'){
   });
 } 
 
-$(".messMenuOpen").on("click", function (e) {
-  // e.preventDefault();
+$('.messMenuOpen').on('click', function (e) {
+  const collegeName = $('#quickview_collegename').attr('value');
   $.ajax({
-      type: "GET",
-      url: "/quickmess",
-      timeout: 3000,
-      success: function (response) {
-          var messName = document.getElementById("messName");
-          messName.innerText = `${response.messName}`;
-          var quickMessContent = document.getElementById("quickMessContent");
-          quickMessContent.innerHTML = quick_mess_template(response);
-      },
+    type: 'GET',
+    url: '/colleges/'+collegeName+'/quickmess',
+    timeout: 3000,
+    success: function (response) {
+      var messName = document.getElementById('messName');
+      messName.innerText = `${response.messName}`;
+      var quickMessContent = document.getElementById('quickMessContent');
+      quickMessContent.innerHTML = quick_mess_template(response);
+    },
   });
   setTimeout(() => {
-      const accItems = document.querySelectorAll(".accordion__item");
-      accItems.forEach((acc) =>
-        acc.addEventListener("click", function (e) {
-          accItems.forEach((item) =>
-            item != this
-              ? item.classList.remove("accordion__item--active")
-              : null
-          );
-          if (this.classList != "accordion__item--active") {
-            this.classList.toggle("accordion__item--active");
-          }
-        })
-      );
-      let tday = new Date();
-      let time = tday.getHours();
-      if (time >= 5 && time <= 10) {
-        accItems[0].classList.add("accordion__item--active")
-      }
-      if (time >= 11 && time <= 14) {
-        accItems[1].classList.add("accordion__item--active")
-      }
-      if (time >= 15 && time <= 18) {
-        accItems[2].classList.add("accordion__item--active")
-      }
-      if (time >= 19 && time <= 22) {
-        accItems[3].classList.add("accordion__item--active")
-      }
+    const accItems = document.querySelectorAll('.accordion__item');
+    accItems.forEach((acc) =>
+      acc.addEventListener('click', function (e) {
+        accItems.forEach((item) =>
+          item != this
+            ? item.classList.remove('accordion__item--active')
+            : null
+        );
+        if (this.classList != 'accordion__item--active') {
+          this.classList.toggle('accordion__item--active');
+        }
+      })
+    );
+    let tday = new Date();
+    let time = tday.getHours();
+    if (time >= 5 && time <= 10) {
+      accItems[0].classList.add('accordion__item--active')
+    }
+    if (time >= 11 && time <= 14) {
+      accItems[1].classList.add('accordion__item--active')
+    }
+    if (time >= 15 && time <= 18) {
+      accItems[2].classList.add('accordion__item--active')
+    }
+    if (time >= 19 && time <= 22) {
+      accItems[3].classList.add('accordion__item--active')
+    }
   }, 1000);
 });
 
@@ -2945,141 +2945,65 @@ function showFollowing_template(response){
 }
 
 function quick_mess_template(response) {
-  html = ejs.render(
-      `
-  <style>
-        .accordion {
-            max-width: 25rem;
-            border-radius: 1rem;
-            box-shadow: 0 0 5rem lightgrey;
-        }
+  html = ejs.render(`
+<style>
+  .accordion { max-width: 25rem; border-radius: 1rem; box-shadow: 0 0 5rem lightgrey; }
+  .accordion__item:not(:last-child) { border-bottom: 1px solid lightgrey; }
+  .accordion__btn { display: flex; justify-content: space-between; align-items: center; width: 100%;
+    padding: 1.2rem 1.4rem; background: white; border: none; outline: none; color: #5f5c70;
+    font-size: 1.2rem; text-align: left; cursor: pointer; transition: 0.1s; }
+  .accordion__btn:hover { color: #6a5acd; background: #f4f3fb; }
+  .accordion__item--active .accordion__btn { color: #6a5acd; border-bottom: 2px solid #6a5acd; background: #f4f3fb; }
+  svg { padding-right: 1rem; width: 2em; }
+  .accordion__icon { border-radius: 50%; transform: rotate(0deg); transition: 0.3s ease-in-out; opacity: 0.9; }
+  .accordion__item--active .accordion__icon { transform: rotate(135deg); }
+  .accordion__content { font-weight: 400; font-size: 18px; max-height: 0; opacity: 0; overflow: hidden; 
+    color: #5f5c70; transform: translateX(16px); transition: max-height 0.5s ease, opacity 0.5s, transform 0.5s; }
+  .accordion__item--active .accordion__content { opacity: 1; transform: translateX(0px); max-height: 100vh; }
+  .container-fluid { display: flex; justify-content: center; margin-top: 2em; }
+  .menu { width: 25em; }
 
-        .accordion__item:not(:last-child) {
-            border-bottom: 1px solid lightgrey;
-        }
-
-        .accordion__btn {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 1.2rem 1.4rem;
-            background: white;
-            border: none;
-            outline: none;
-            color: #5f5c70;
-            font-size: 1.2rem;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .accordion__btn:hover {
-            color: #6a5acd;
-            background: #f4f3fb;
-        }
-
-        .accordion__item--active .accordion__btn {
-            color: #6a5acd;
-            border-bottom: 2px solid #6a5acd;
-            background: #f4f3fb;
-        }
-
-        svg {
-            padding-right: 1rem;
-            width: 2em;
-        }
-
-        .accordion__icon {
-            border-radius: 50%;
-            transform: rotate(0deg);
-            transition: 0.3s ease-in-out;
-            opacity: 0.9;
-        }
-
-        .accordion__item--active .accordion__icon {
-            transform: rotate(135deg);
-        }
-
-        .accordion__content {
-            font-weight: 400;
-            font-size: 18px;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            color: #5f5c70;
-            transform: translateX(16px);
-            transition: max-height 0.5s ease, opacity 0.5s, transform 0.5s;
-        }
-
-        .accordion__item--active .accordion__content {
-            opacity: 1;
-            transform: translateX(0px);
-            max-height: 100vh;
-        }
-
-        .container-fluid {
-            display: flex;
-            justify-content: center;
-            margin-top: 2em;
-        }
-
-        .menu {
-            width: 25em;
-        }
-
-        /* @media (min-width: 992px) {
-            .menu {
-                margin-left: -15em;
-            }
-        } */
-    </style>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-9">
-                <div class="container-fluid mx-auto">
-                    <div class="menu">
-                        <div class="accordion py-3 bg-white">
-                            <h2 class="accordion__heading mb-3 px-4 text-center">
-                                <%= day %>
-                            </h2>
-                            <% console.log(menu) %>
-                            <% for(let menuItem of menu) { %> 
-                                <div class="accordion__item">
-                                  <button class="accordion__btn">
-                                    <span class="accordion__caption">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                            <path
-                                                d="M221.6 148.7C224.7 161.3 224.8 174.5 222.1 187.2C219.3 199.1 213.6 211.9 205.6 222.1C191.1 238.6 173 249.1 151.1 254.1V472C151.1 482.6 147.8 492.8 140.3 500.3C132.8 507.8 122.6 512 111.1 512C101.4 512 91.22 507.8 83.71 500.3C76.21 492.8 71.1 482.6 71.1 472V254.1C50.96 250.1 31.96 238.9 18.3 222.4C10.19 212.2 4.529 200.3 1.755 187.5C-1.019 174.7-.8315 161.5 2.303 148.8L32.51 12.45C33.36 8.598 35.61 5.197 38.82 2.9C42.02 .602 45.97-.4297 49.89 .0026C53.82 .4302 57.46 2.303 60.1 5.259C62.74 8.214 64.18 12.04 64.16 16V160H81.53L98.62 11.91C99.02 8.635 100.6 5.621 103.1 3.434C105.5 1.248 108.7 .0401 111.1 .0401C115.3 .0401 118.5 1.248 120.9 3.434C123.4 5.621 124.1 8.635 125.4 11.91L142.5 160H159.1V16C159.1 12.07 161.4 8.268 163.1 5.317C166.6 2.366 170.2 .474 174.1 .0026C178-.4262 181.1 .619 185.2 2.936C188.4 5.253 190.6 8.677 191.5 12.55L221.6 148.7zM448 472C448 482.6 443.8 492.8 436.3 500.3C428.8 507.8 418.6 512 408 512C397.4 512 387.2 507.8 379.7 500.3C372.2 492.8 368 482.6 368 472V352H351.2C342.8 352 334.4 350.3 326.6 347.1C318.9 343.8 311.8 339.1 305.8 333.1C299.9 327.1 295.2 320 291.1 312.2C288.8 304.4 287.2 296 287.2 287.6L287.1 173.8C288 136.9 299.1 100.8 319.8 70.28C340.5 39.71 369.8 16.05 404.1 2.339C408.1 .401 414.2-.3202 419.4 .2391C424.6 .7982 429.6 2.62 433.9 5.546C438.2 8.472 441.8 12.41 444.2 17.03C446.7 21.64 447.1 26.78 448 32V472z" />
-                                        </svg>
-                                        <%= menuItem.time %>
-                                    </span>
-                                    <span class="accordion__icon"><i class="fa fa-plus"></i></span>
-                                  </button>
-                                  <div class="accordion__content">
-                                    <ul class="list-group list-group-flush py-3 px-4">
-                                        <% for(let dish of menuItem.dishes) { %>
-                                            <li class="list-group-item">
-                                                <%= dish %>
-                                            </li>
-                                        <% } %>
-                                    </ul>
-                                </div>
-                                </div>
-                            <% } %>                           
-                        </div>
-                    </div>
+  /* @media (min-width: 992px) {
+      .menu { margin-left: -15em; }
+  } */
+</style>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-9">
+      <div class="container-fluid mx-auto">
+        <div class="menu">
+          <div class="accordion py-3 bg-white">
+            <h2 class="accordion__heading mb-3 px-4 text-center">
+                <%= day %>
+            </h2>
+            <% for(let menuItem of menu) { %> 
+              <div class="accordion__item">
+                <button class="accordion__btn">
+                  <span class="accordion__caption">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M221.6 148.7C224.7 161.3 224.8 174.5 222.1 187.2C219.3 199.1 213.6 211.9 205.6 222.1C191.1 238.6 173 249.1 151.1 254.1V472C151.1 482.6 147.8 492.8 140.3 500.3C132.8 507.8 122.6 512 111.1 512C101.4 512 91.22 507.8 83.71 500.3C76.21 492.8 71.1 482.6 71.1 472V254.1C50.96 250.1 31.96 238.9 18.3 222.4C10.19 212.2 4.529 200.3 1.755 187.5C-1.019 174.7-.8315 161.5 2.303 148.8L32.51 12.45C33.36 8.598 35.61 5.197 38.82 2.9C42.02 .602 45.97-.4297 49.89 .0026C53.82 .4302 57.46 2.303 60.1 5.259C62.74 8.214 64.18 12.04 64.16 16V160H81.53L98.62 11.91C99.02 8.635 100.6 5.621 103.1 3.434C105.5 1.248 108.7 .0401 111.1 .0401C115.3 .0401 118.5 1.248 120.9 3.434C123.4 5.621 124.1 8.635 125.4 11.91L142.5 160H159.1V16C159.1 12.07 161.4 8.268 163.1 5.317C166.6 2.366 170.2 .474 174.1 .0026C178-.4262 181.1 .619 185.2 2.936C188.4 5.253 190.6 8.677 191.5 12.55L221.6 148.7zM448 472C448 482.6 443.8 492.8 436.3 500.3C428.8 507.8 418.6 512 408 512C397.4 512 387.2 507.8 379.7 500.3C372.2 492.8 368 482.6 368 472V352H351.2C342.8 352 334.4 350.3 326.6 347.1C318.9 343.8 311.8 339.1 305.8 333.1C299.9 327.1 295.2 320 291.1 312.2C288.8 304.4 287.2 296 287.2 287.6L287.1 173.8C288 136.9 299.1 100.8 319.8 70.28C340.5 39.71 369.8 16.05 404.1 2.339C408.1 .401 414.2-.3202 419.4 .2391C424.6 .7982 429.6 2.62 433.9 5.546C438.2 8.472 441.8 12.41 444.2 17.03C446.7 21.64 447.1 26.78 448 32V472z" />
+                    </svg>
+                      <%= menuItem.time %>
+                  </span>
+                  <span class="accordion__icon"><i class="fa fa-plus"></i></span>
+                </button>
+                <div class="accordion__content">
+                  <ul class="list-group list-group-flush py-3 px-4">
+                    <% for(let dish of menuItem.dishes) { %>
+                      <li class="list-group-item">
+                        <%= dish %>
+                      </li>
+                    <% } %>
+                  </ul>
                 </div>
-            </div>
+              </div>
+            <% } %>                           
+          </div>
         </div>
+      </div>
     </div>
-
-`,
-      {
-          menu: response.menu,
-          day: response.day,
-      }
-  );
-
+  </div>
+</div>
+`, { menu: response.menu, day: response.day });
   return html;
 }

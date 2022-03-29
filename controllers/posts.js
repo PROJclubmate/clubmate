@@ -4,7 +4,6 @@ const mongoose  = require('mongoose'),
   Club          = require('../models/club'),
   Comment       = require('../models/comment'),
   Discussion    = require('../models/discussion'),
-  Mess          = require('../models/mess')
   clConfig      = require('../config/cloudinary'),
   s3Config      = require('../config/s3'),
   logger        = require('../logger');
@@ -46,8 +45,7 @@ module.exports = {
 
   postsDiscover(req, res, next){
     if(req.user){
-      // console.log(res.locals);
-      res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix});
+      res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix, collegeName: req.user.userKeys.college});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     } else{
       return res.render('posts/discover', {cdn_prefix});
@@ -55,32 +53,6 @@ module.exports = {
   },
 
   postsDiscoverMorePosts (req, res, next){
-    // let today = new Date();
-    // const weekDay = [
-    //     "Sunday",
-    //     "Monday",
-    //     "Tuesday",
-    //     "Wednesday",
-    //     "Thursday",
-    //     "Friday",
-    //     "Saturday",
-    // ];
-    // let Day = weekDay[today.getDay()];
-
-    // const dateData = {
-    //     day: Day,
-    //     todayDate: today,
-    // };
-
-    // (async () => {
-    //     const query = await Mess.find({ "menu.day": Day });
-    //     console.log(query);
-    //     res.json({query});
-    // })()
-    
-
-
-
     if(req.query.ids != ''){
       var seenIdsArr = req.query.ids.split(',');
     } else{

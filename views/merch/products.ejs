@@ -1,220 +1,212 @@
 <% include ./partials/header %>
-    <style>
-        .item-img {
-            width: 90%;
-            height: 15rem;
-            max-width: 15rem;
-        }
+<style>
+	.item-img {
+		width: 90%;
+		height: 15rem;
+		max-width: 15rem;
+	}
+	.card {
+		border-radius: 0.5em;
+	}
+	.title-heading {
+		border-bottom: 2.5px black solid;
+	}
+	.card:hover {
+		box-shadow: 0 0 10px rgba(33, 33, 33, .2);
+	}
+	.product-tag {
+		border-radius: 1em;
+		font-size: 0.9em;
+	}
+	.product-tag:hover {
+		cursor: pointer;
+	}
+	.call-link {
+		color: inherit;
+	}
+	.out_of_stock {
+		opacity: 0.6;
+	}
+</style>
 
-        .card {
-            border-radius: 0.5em;
-        }
+<div class="container my-2">
+	<div class="row mt-3 title-heading mx-2">
+		<h3 class="mb-3" id="merch_prod_heading">All Products</h3>
+	</div>
+	<div class="row mt-3 justify-content-center w-100 mx-auto">
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3 justify-content-center w-100 mx-auto">
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3 justify-content-center w-100 mx-auto">
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-lg-3 mx-auto text-center">
+			<div class="card mx-1 px-2 pt-3 my-3">
+				<img src="..." class="card-img-top item-img mx-auto" alt="">
+				<div class="card-body">
+					<h5 class="card-title title">Card title</h5>
+					<p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+					<p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+					
+					<div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
+								Name</mark></a></div>
+					<a href="product.html" class="btn btn-primary mt-3">View Product</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-        .title-heading {
-            border-bottom: 2.5px black solid;
-        }
-
-        .card:hover {
-            box-shadow: 0 0 10px rgba(33, 33, 33, .2);
-        }
-
-        .product-tag {
-            border-radius: 1em;
-            font-size: 0.9em;
-        }
-
-        .product-tag:hover {
-            cursor: pointer;
-        }
-
-        .call-link {
-            color: inherit;
-        }
-
-        .out_of_stock {
-            opacity: 0.6;
-        }
-    </style>
-    <div class="container my-2">
-        <div class="row mt-3 title-heading mx-2">
-            <h3 class="mb-3" id="merch_prod_heading">All Products</h3>
-        </div>
-        <div class="row mt-3 justify-content-center w-100 mx-auto">
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3 justify-content-center w-100 mx-auto">
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3 justify-content-center w-100 mx-auto">
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mx-auto text-center">
-                <div class="card mx-1 px-2 pt-3 my-3">
-                    <img src="..." class="card-img-top item-img mx-auto" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title title">Card title</h5>
-                        <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
-                        <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
-                        
-                        <div><a href="product.html" class="text-decoration-none"><mark class="product-tag px-2 py-1">Tag
-                                    Name</mark></a></div>
-                        <a href="product.html" class="btn btn-primary mt-3">View Product</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-
-    </script>
-    <% include ./partials/footer %>
+<% include ./partials/footer %>

@@ -16,11 +16,13 @@
 					</div>
 					<div class="story-alt-label text-xxxs" style="width: unset !important;">Intern</div>
 				</div>
-				<div class="d-flex flex-column px-1 my-2">
-					<div class="text-xxxl py-2 college-infobtn">
-						<i class="fas fa-store"></i>
-					</div>
-					<div class="story-alt-label text-xxxs" style="width: unset !important;">Merch</div>
+				<div class="px-1 my-2">
+					<a class="d-flex flex-column" href="/colleges/<%= college_page.name %>/merchandise" style="color:inherit; text-decoration:none;">
+						<div class="text-xxxl py-2 college-infobtn">
+							<i class="fas fa-store"></i>
+						</div>
+						<div class="story-alt-label text-xxxs" style="width: unset !important;">Merch</div>
+					</a>
 				</div>
 				<div class="d-flex flex-column px-1 my-2">
 					<div class="text-xxxl py-2 college-infobtn">
@@ -28,8 +30,8 @@
 					</div>
 					<div class="story-alt-label text-xxxs" style="width: unset !important;">Attendance</div>
 				</div>
-				<div class="d-flex flex-column px-1 my-2">
-					<a href="../mess" style="color:inherit; text-decoration:none;">
+				<div class="px-1 my-2">
+					<a class="d-flex flex-column" href="/colleges/<%= college_page.name %>/mess" style="color:inherit; text-decoration:none;">
 						<div class="text-xxxl py-2 college-infobtn">
 							<i class="fas fa-utensils"></i>
 						</div>
@@ -250,11 +252,13 @@
 					</div>
 					<div class="my-auto ml-3 lightgrey">Placements & Intern</div>
 				</div>
-				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
-						<i class="fas fa-store"></i>
-					</div>
-					<div class="my-auto ml-3 lightgrey">Merch & Stickers</div>
+				<div class="px-3 my-2 college-infobtn">
+					<a class="d-flex flex-row" href="/colleges/<%= college_page.name %>/merchandise" style="color:inherit; text-decoration:none;">
+						<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
+							<i class="fas fa-store"></i>
+						</div>
+						<div class="my-auto ml-3 lightgrey">Merch & Stickers</div>
+					</a>
 				</div>
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
 					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
@@ -262,11 +266,13 @@
 					</div>
 					<div class="my-auto ml-3 lightgrey">Attendance & Events</div>
 				</div>
-				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
-						<i class="fas fa-utensils"></i>
-					</div>
-					<div class="my-auto ml-3 lightgrey"><a href="../mess" style="color:inherit; text-decoration:none;">Mess menu</a></div>
+				<div class="px-3 my-2 college-infobtn">
+					<a class="d-flex flex-row" href="/colleges/<%= college_page.name %>/mess" style="color:inherit; text-decoration:none;">
+						<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center;">
+							<i class="fas fa-utensils"></i>
+						</div>
+						<div class="my-auto ml-3 lightgrey">Mess menu</div>
+					</a>
 				</div>
 			</div>
 		</div>
