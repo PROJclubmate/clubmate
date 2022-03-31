@@ -9,10 +9,10 @@
 				<div class="d-flex flex-column">
 					<div>
 						<a href="/colleges/<%= college_pages[k].name %>">
-							<img class="cover searchdp m-0 fullwidth" src="<%= college_pages[k].cover %>">
+							<img class="cover searchdp m-0 w-100" src="<%= college_pages[k].cover %>">
 						</a>
 					</div>
-			    <div class="lineheight1 fullwidth">
+			    <div class="lineheight1 w-100">
 			    	<div class="notification px-2 py-1 college d-flex flex-column">
 							<div class="boldtext text-xxl">
 								<div class="collegename-search d-flex">
@@ -38,7 +38,7 @@
 		<% if(college_pages.length != 0 && !college_pages.length < 10){ %>
       <button id="load-more-search-college_pages-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundCollegePageIds %>">
     <% } else{ %>
-    	<button id="load-more-search-college_pages-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundCollegePageIds %>">
+    	<button id="load-more-search-college_pages-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundCollegePageIds %>">
     <% } %>
     	<span id="load-more-search-college_pages-span"></span>Load More
     </button>

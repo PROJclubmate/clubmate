@@ -1,8 +1,3 @@
-// const width =
-//   window.innerWidth ||
-//   document.documentElement.clientWidth ||
-//   document.body.clientWidth;
-
 const accItems = document.querySelectorAll(".accordion__item");
 accItems.forEach((acc) =>
   acc.addEventListener("click", function (e) {
@@ -56,28 +51,53 @@ switch (tday.getDay()) {
 }
 
 window.onload = function () {
-  slide[nslide].style.opacity = "1";
-  slide[nslide].classList.remove("d-none");
-  for (var j = 0; j < l; j++) {
-    indicator.innerHTML +=
-      "<div class='dots' onclick=change(" + j + ")></div>";
+  if(slide.length){
+    slide[nslide].style.opacity = "1";
+    slide[nslide].classList.remove("d-none");
+    for (var j = 0; j < l; j++) {
+      indicator.innerHTML +=
+        "<div class='dots' onclick=change(" + j + ")></div>";
+    }
+    dots[nslide].style.background = "rgba(0,0,0,0.5)";
   }
 
-  dots[nslide].style.background = "#696969";
+  populateInputFields();
+  $('select.editmess_select').on('change', function() {
+    populateInputFields();
+  });
 };
 
-// if (time >= 5 && time <= 10) {
-//   accItems[nslide * 4 + 0].classList.add("accordion__item--active");
-// }
-// if (time >= 11 && time <= 13) {
-//   accItems[nslide * 4 + 1].classList.add("accordion__item--active");
-// }
-// if (time >= 16 && time <= 18) {
-//   accItems[nslide * 4 + 2].classList.add("accordion__item--active");
-// }
-// if (time >= 19 && time <= 22) {
-//   accItems[nslide * 4 + 3].classList.add("accordion__item--active");
-// }
+function populateInputFields(){
+  let divelement = document.getElementById('dishes_inputs');
+  divelement.innerHTML = '';
+  populateOneField('', divelement);
+  
+  let mess = $('select#mess').val();
+  let day = $('select#day').val();
+  let time = $('select#time').val();
+
+  for(let i=0; i < foundMess.mess.length; i++){
+    if(foundMess.mess[i].name == mess){
+      for(let j=0; j < foundMess.mess[i].menu.length; j++){
+        if(foundMess.mess[i].menu[j].day == day && foundMess.mess[i].menu[j].time == time){
+          for(let k=0; k < foundMess.mess[i].menu[j].dishes.length; k++){
+            populateOneField(foundMess.mess[i].menu[j].dishes[k], divelement);
+          }
+        }
+      }
+    }
+  }
+}
+
+function populateOneField(value, divelement){
+  let input = document.createElement('input');
+  input.setAttribute('type', 'text');
+  input.classList.add('form-control', 'info-form');
+  input.setAttribute('name', 'dishes');
+  input.setAttribute('placeholder', '');
+  input.setAttribute('value', value);
+  divelement.prepend(input);
+}
 
 function change(index) {
   clearInterval(set);
@@ -85,11 +105,11 @@ function change(index) {
   for (var j = 0; j < l; j++) {
     slide[j].style.opacity = "0";
     slide[j].classList.add("d-none");
-    dots[j].style.background = "#bdbdbd";
+    dots[j].style.background = "rgba(0,0,0,0.15)";
   }
   slide[count].style.opacity = "1";
   slide[count].classList.remove("d-none");
-  dots[count].style.background = "#696969";
+  dots[count].style.background = "rgba(0,0,0,0.5)";
 }
 
 var count = nslide;
@@ -99,18 +119,18 @@ function next() {
   slide[count].classList.add("d-none");
   count++;
   for (var j = 0; j < l; j++) {
-    dots[j].style.background = "#bdbdbd";
+    dots[j].style.background = "rgba(0,0,0,0.15)";
   }
 
   if (count == l) {
     count = 0;
     slide[count].style.opacity = "1";
     slide[count].classList.remove("d-none");
-    dots[count].style.background = "#696969";
+    dots[count].style.background = "rgba(0,0,0,0.5)";
   } else {
     slide[count].style.opacity = "1";
     slide[count].classList.remove("d-none");
-    dots[count].style.background = "#696969";
+    dots[count].style.background = "rgba(0,0,0,0.5)";
   }
 }
 
@@ -119,7 +139,7 @@ function prev() {
   slide[count].style.opacity = "0";
   slide[count].classList.add("d-none");
   for (var j = 0; j < l; j++) {
-    dots[j].style.background = "#bdbdbd";
+    dots[j].style.background = "rgba(0,0,0,0.15)";
   }
   count--;
 
@@ -127,10 +147,10 @@ function prev() {
     count = l - 1;
     slide[count].style.opacity = "1";
     slide[count].classList.remove("d-none");
-    dots[count].style.background = "#696969";
+    dots[count].style.background = "rgba(0,0,0,0.5)";
   } else {
     slide[count].style.opacity = "1";
     slide[count].classList.remove("d-none");
-    dots[count].style.background = "#696969";
+    dots[count].style.background = "rgba(0,0,0,0.5)";
   }
 }

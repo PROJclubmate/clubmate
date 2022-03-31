@@ -399,7 +399,11 @@ function recommends_add(id,name,placeholder){
   var divelement = document.getElementById(id);
   var input = document.createElement('input');
   input.setAttribute('type', 'text');
-  input.classList.add('form-control','form-control-sm', 'info-form');
+  if(id == 'dishes_inputs'){
+    input.classList.add('form-control', 'info-form');
+  } else{
+    input.classList.add('form-control','form-control-sm', 'info-form');
+  }
   input.setAttribute('name', name);
   input.setAttribute('placeholder', placeholder);
   divelement.appendChild(input);
@@ -672,7 +676,7 @@ $(function (){
   if(location.pathname.split('/')[1] == 'chats'){
     var timeUTC_Chats = document.getElementsByClassName('timeUTC_Chats');
     for(var i=0;i<timeUTC_Chats.length;i++){
-      timeUTC_Chats[i].classList.add('nodisplay');
+      timeUTC_Chats[i].classList.add('d-none');
     }
   }
   for(var i=0;i<divUtc1.length;i++){
@@ -735,12 +739,12 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
         } else if(window.innerWidth <= 992 && window.innerWidth > 768){
           $('.college-cover-div').height(300);
           $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('nodisplay').removeClass('tabletShow');
+          $('.college-infodiv').addClass('d-none').removeClass('tabletShow');
           $('img#college-cover').removeClass('desktopFit');
         } else if(window.innerWidth <= 768){
           $('.college-cover-div').height(300);
           $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('nodisplay');
+          $('.college-infodiv').addClass('d-none');
         }
       }
     }
@@ -961,10 +965,10 @@ if(location.pathname.split('/')[1] == 'chats'){
 
   function mobileShowChatsList(){
     if(window.innerWidth < 767){
-      if($('#chats-list').hasClass('nodisplay')){
-        $('#chats-list').removeClass('nodisplay');
+      if($('#chats-list').hasClass('d-none')){
+        $('#chats-list').removeClass('d-none');
       } else{
-        $('#chats-list').addClass('nodisplay');
+        $('#chats-list').addClass('d-none');
       }
     }
   }
@@ -974,7 +978,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
   // Ask for club invite
   if(!$('#memberReq-btn').length && $('#cancelReq-btn').length){
-    $('#memberReq-div').addClass("nodisplay");
+    $('#memberReq-div').addClass("d-none");
   }
 
   oldMsgHeightMobile = updateMsgsContainerHeight_profilepage();
@@ -1121,29 +1125,29 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
         if(formData[1].name == 'like'){
           if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
-            $('#like-count'+data.foundPost._id).addClass('nodisplay');
+            $('#like-count'+data.foundPost._id).addClass('d-none');
           }
           else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up discover-vote"></i>'
           || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up discover-vote greencolor"></i>');
-            $('#like-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#like-count'+data.foundPost._id).removeClass('d-none');
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
           }
           $('#like-count'+data.foundPost._id).toggleClass('greencolor2');
-          $('#heart-count'+data.foundPost._id).removeClass('redcolor2').addClass('nodisplay');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor2').addClass('d-none');
         }
         if(formData[1].name == 'heart'){
           if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart discover-vote redcolor2"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart discover-vote"></i>');
-            $('#heart-count'+data.foundPost._id).addClass('nodisplay');
+            $('#heart-count'+data.foundPost._id).addClass('d-none');
           }
           else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart discover-vote"></i>'
           || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up discover-vote greencolor"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart discover-vote redcolor2"></i>');
-            $('#heart-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#heart-count'+data.foundPost._id).removeClass('d-none');
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up discover-vote"></i>');
           }
-          $('#like-count'+data.foundPost._id).removeClass('greencolor2').addClass('nodisplay');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor2').addClass('d-none');
           $('#heart-count'+data.foundPost._id).toggleClass('redcolor2');
         }
 
@@ -1179,29 +1183,29 @@ if((location.pathname.split('/').length == 5 && location.pathname.split('/')[1] 
         if(formData[1].name == 'like'){
           if($('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
-            $('#like-count'+data.foundPost._id).addClass('nodisplay');
+            $('#like-count'+data.foundPost._id).addClass('d-none');
           }
           else if($('#like-btn'+data.foundPost._id).html() == '<i class="far fa-thumbs-up"></i>'
           || $('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
             $('#like-btn'+data.foundPost._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-            $('#like-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#like-count'+data.foundPost._id).removeClass('d-none');
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
           }
           $('#like-count'+data.foundPost._id).toggleClass('greencolor3');
-          $('#heart-count'+data.foundPost._id).removeClass('redcolor3').addClass('nodisplay');
+          $('#heart-count'+data.foundPost._id).removeClass('redcolor3').addClass('d-none');
         }
         if(formData[1].name == 'heart'){
           if($('#heart-btn'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="far fa-heart"></i>');
-            $('#heart-count'+data.foundPost._id).addClass('nodisplay');
+            $('#heart-count'+data.foundPost._id).addClass('d-none');
           }
           else if($('#heart-btn'+data.foundPost._id).html() == '<i class="far fa-heart"></i>'
           || $('#like-btn'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
             $('#heart-btn'+data.foundPost._id).html('<i class="fas fa-heart redcolor2"></i>');
-            $('#heart-count'+data.foundPost._id).removeClass('nodisplay');
+            $('#heart-count'+data.foundPost._id).removeClass('d-none');
             $('#like-btn'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
           }
-          $('#like-count'+data.foundPost._id).removeClass('greencolor3').addClass('nodisplay');
+          $('#like-count'+data.foundPost._id).removeClass('greencolor3').addClass('d-none');
           $('#heart-count'+data.foundPost._id).toggleClass('redcolor3');
         }
       },
@@ -1261,7 +1265,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
               btnVisibility.innerHTML = 'Exclusive';
               mySpan.appendChild(btnVisibility);
             }
-            $('#modVisibility'+data.foundPost._id).removeClass('nodisplay').addClass('nopad').addClass('createdButton');
+            $('#modVisibility'+data.foundPost._id).removeClass('d-none').addClass('nopad').addClass('createdButton');
           }
         }
       }
@@ -1386,12 +1390,12 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
       if(formData[1].name == 'like'){
         if($('#like-btnH'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
           $('#like-btnH'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
-          $('#like-countH'+data.foundPost._id).addClass('nodisplay');
+          $('#like-countH'+data.foundPost._id).addClass('d-none');
         }
         else if($('#like-btnH'+data.foundPost._id).html() == '<i class="far fa-thumbs-up"></i>'
         || $('#heart-btnH'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
           $('#like-btnH'+data.foundPost._id).html('<i class="fas fa-thumbs-up greencolor"></i>');
-          $('#like-countH'+data.foundPost._id).removeClass('nodisplay');
+          $('#like-countH'+data.foundPost._id).removeClass('d-none');
           $('#heart-btnH'+data.foundPost._id).html('<i class="far fa-heart"></i>');
         }
         $('#like-countH'+data.foundPost._id).toggleClass('greencolor3');
@@ -1400,12 +1404,12 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
       if(formData[1].name == 'heart'){
         if($('#heart-btnH'+data.foundPost._id).html() == '<i class="fas fa-heart redcolor2"></i>'){
           $('#heart-btnH'+data.foundPost._id).html('<i class="far fa-heart"></i>');
-          $('#heart-countH'+data.foundPost._id).addClass('nodisplay');
+          $('#heart-countH'+data.foundPost._id).addClass('d-none');
         }
         else if($('#heart-btnH'+data.foundPost._id).html() == '<i class="far fa-heart"></i>'
         || $('#like-btnH'+data.foundPost._id).html() == '<i class="fas fa-thumbs-up greencolor"></i>'){
           $('#heart-btnH'+data.foundPost._id).html('<i class="fas fa-heart redcolor2"></i>');
-          $('#heart-countH'+data.foundPost._id).removeClass('nodisplay');
+          $('#heart-countH'+data.foundPost._id).removeClass('d-none');
           $('#like-btnH'+data.foundPost._id).html('<i class="far fa-thumbs-up"></i>');
         }
         $('#like-countH'+data.foundPost._id).removeClass('greencolor3');

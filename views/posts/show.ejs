@@ -206,7 +206,7 @@
                     <% } %>
                   </div>
                   <div style="line-height: 0;">
-                    <span><em id="timeUTC" class="text-xxs lightgrey2 nodisplay"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                    <span><em id="timeUTC" class="text-xxs lightgrey2 d-none"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
                     <span class="lightgrey2 m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
                   </div>
                 </div>
@@ -387,7 +387,7 @@
                       <% } %>
                     </div>
                     <div class="lightgrey boldtext text-xs subpostbtns py-1 mb-auto">
-                      <span><em id="timeUTC2" class="text-xxs lightgrey nodisplay"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+                      <span><em id="timeUTC2" class="text-xxs lightgrey d-none"><%= moment().format('YYYY-MM-DD HH:mm:ss'); %></em></span>
                       <span class="m-0 p-0"><em id="timeLocal2" class="text-xxs" style="cursor: default;"></em></span>
                     </div>
                   </div>

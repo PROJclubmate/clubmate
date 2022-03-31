@@ -95,7 +95,7 @@ if(socket !== undefined){
     var prevDate, prevDate2, prevAuthorId;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
     if(data.messages.bucketNum > 2){
-      $('#load-prevMsgs-btn').removeClass('nodisplay');
+      $('#load-prevMsgs-btn').removeClass('d-none');
     }
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message){
@@ -181,7 +181,7 @@ if(socket !== undefined){
   }
   function getMessages(conversation){
     if(conversation.conversationId == ''){
-      $('#load-prevMsgs-btn').addClass('nodisplay');
+      $('#load-prevMsgs-btn').addClass('d-none');
       $("#messages_container").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
     } else{
@@ -302,7 +302,7 @@ if(socket !== undefined){
     var prevDate, prevAuthorId;
     $('#load-prevMsgs-btn').val(data.foundMessageIds);
     if(data.messages.bucketNum > 2){
-      $('#load-prevMsgs-btn').removeClass('nodisplay');
+      $('#load-prevMsgs-btn').removeClass('d-none');
     }
     for(i=data.messages.messageBuckets.length-1;i>=0;i--){
       data.messages.messageBuckets[i].messages.forEach(function(message, j){
@@ -377,7 +377,7 @@ if(socket !== undefined){
   }
   function getClubMessages(conversation){
     if(conversation.conversationId == ''){
-      $('#load-prevMsgs-btn').addClass('nodisplay');
+      $('#load-prevMsgs-btn').addClass('d-none');
       $("#messages_container").append(`
         <div class="chat-msg3"><span class="boldtext"> Start a conversation 👋 </span></div> <br>`);
       chatBoxOnLoad();

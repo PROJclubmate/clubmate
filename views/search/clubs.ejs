@@ -29,7 +29,7 @@
             	<img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
           	</a>
 			    </div>
-			    <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
+			    <div class="card-body py-1 lineheight-lesser w-100" style="overflow: hidden;">
 			    	<div class="valign">
 			    		<div>
 					    	<a href="/clubs/<%= clubs[k]._id %>" class="grey">
@@ -68,7 +68,7 @@
 			<% if(clubs.length != 0 && !clubs.length < 10){ %>
 	      <button id="load-more-search-clubs-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundClubIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-search-clubs-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundClubIds %>">
+	    	<button id="load-more-search-clubs-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundClubIds %>">
 	    <% } %>
 	    	<span id="load-more-search-clubs-span"></span>Load More
 	    </button>
@@ -78,7 +78,7 @@
 			<% if(clubs.length != 0 && !clubs.length < 10){ %>
 	      <button id="load-more-filterSearch-clubs-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundClubIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-filterSearch-clubs-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundClubIds %>">
+	    	<button id="load-more-filterSearch-clubs-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundClubIds %>">
 	    <% } %>
 	    	<span id="load-more-filterSearch-clubs-span"></span>Load More
 	    </button>
@@ -140,7 +140,7 @@
 			<div>
 				<a href="/find_clubs/filter_search?clubs=&college=&category=">Reset keys</a>
 			</div>
-			<button id="search-moreFilterClubs-btn" class="btn btn-success btn-sm fullwidth" type="submit" value="<%= moreClubsUrl %>">Search</button>
+			<button id="search-moreFilterClubs-btn" class="btn btn-success btn-sm w-100" type="submit" value="<%= moreClubsUrl %>">Search</button>
 		</form>
   </div>
 </div>

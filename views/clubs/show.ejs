@@ -372,9 +372,9 @@
                 <div id="delegated-posts">
                   <div id="server-posts"></div>
                   <% if(currentUser){ %>
-                    <div id="client-posts" class="topnotch-left topnotch-right nodisplay"></div>
+                    <div id="client-posts" class="topnotch-left topnotch-right d-none"></div>
                   <% } else{ %>
-                    <div id="client-posts" class="topnotch-left topnotch-right offline nodisplay"></div>
+                    <div id="client-posts" class="topnotch-left topnotch-right offline d-none"></div>
                   <% } %>
                   <div class="text-center">
                     <button id="load-more-btn" class="btn btn-light btn-sm btn-load mt-2" type="button" value="<%= //foundPostIds %>">

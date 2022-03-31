@@ -1,4 +1,7 @@
 <% include ../partials/header %>
+<script type='text/javascript'>
+  var foundMess = <%- JSON.stringify(foundMess) %>;
+</script>
 
 <div class="container d-flex justify-content-center align-items-center">
 	<div class="col-md-6 mx-2 my-4">
@@ -8,7 +11,7 @@
 				<form action="/colleges/<%= collegeName %>/mess/edit?_method=PUT" method="POST" method="post">
 					<div class="form-group mb-3">
 						<label for="mess">Select Mess</label>
-						<select class="form-control" id="mess" name="mess">
+						<select class="form-control editmess_select" id="mess" name="mess">
 							<% messNames.forEach(function(h){ %>
 								<option value=<%=h %> ><%= h %>
 								</option>
@@ -17,7 +20,7 @@
 					</div>
 					<div class="form-group mb-3">
 						<label for="day">Select Day</label>
-						<select class="form-control" id="day" name="day">
+						<select class="form-control editmess_select" id="day" name="day">
 							<option value="Monday">Monday</option>
 							<option value="Tuesday">Tuesday</option>
 							<option value="Wednesday">Wednesday</option>
@@ -29,7 +32,7 @@
 					</div>
 					<div class="form-group mb-3">
 						<label for="time">Select Meal</label>
-						<select class="form-control" id="time" name="time">
+						<select class="form-control editmess_select" id="time" name="time">
 							<option value="Breakfast">Breakfast</option>
 							<option value="Lunch">Lunch</option>
 							<option value="Snacks">Snacks</option>
@@ -38,12 +41,14 @@
 					</div>
 					<div class="form-group mb-3">
 						<label for="dishes">Enter Dishes</label>
-						<textarea class="form-control" id="dishes" rows="2" name="dishes"
-							placeholder="Dish_1, Dish_2, Dish_3"></textarea>
+						<div id="dishes_inputs" class="form-inline d-flex justify-content-between w-100">
+							<input type="text" class="form-control info-form" name="dishes" placeholder="">
+						</div>
 					</div>
 					<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-					<div class="form-group my-3 text-center">
-						<button type="submit" class="btn btn-primary">Update</button>
+					<div class="form-group my-3 d-flex flex-row-reverse text-center">
+						<button class="btn btn-primary ml-2" type="submit">Update</button>
+						<button onclick="recommends_add('dishes_inputs','dishes','');" class="btn btn-sm btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
 					</div>
 				</form>
 			</div>
@@ -51,4 +56,5 @@
 	</div>
 </div>
 
-  <% include ../partials/footer %>
+<script src="/js/mess.js"></script>
+<% include ../partials/footer %>

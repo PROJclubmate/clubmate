@@ -3,8 +3,8 @@
 <script>
 	if(window.innerWidth < 768){
 		if(location.pathname.split('/')[1] == 'chats'){
-			document.getElementById('inbox_mobile_div').classList.add('nodisplay');
-			document.getElementById('mobile_toggler_div').classList.remove('nodisplay');
+			document.getElementById('inbox_mobile_div').classList.add('d-none');
+			document.getElementById('mobile_toggler_div').classList.remove('d-none');
 		}
 	}
 </script>
@@ -50,7 +50,7 @@
 					<div class="d-flex mx-auto my-2 text-xs lightgrey">Nothing here</div>
 				<% } %>
 			</div>
-			<div class="fullwidth" style="margin-left: 2.5rem;">
+			<div class="w-100" style="margin-left: 2.5rem;">
 				<div class="my-4 mx-2 py-1 text-sm boldtext grey">
 					<a class="darkgrey" href="/clubs/<%= openedClub.id %>"><%= openedClub.name %></a>
 				</div>

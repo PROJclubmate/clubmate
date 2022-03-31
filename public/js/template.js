@@ -36,7 +36,7 @@ if(location.pathname == '/discover'){
           };
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
-          $('#load-more-btn').addClass('nodisplay');
+          $('#load-more-btn').addClass('d-none');
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         }
       }
@@ -59,7 +59,9 @@ $('.messMenuOpen').on('click', function (e) {
   });
   setTimeout(() => {
     const accItems = document.querySelectorAll('.accordion__item');
-    accItems.forEach((acc) =>
+    accItems.forEach((acc) => {
+      openCurrentMeal();
+
       acc.addEventListener('click', function (e) {
         accItems.forEach((item) =>
           item != this
@@ -70,21 +72,35 @@ $('.messMenuOpen').on('click', function (e) {
           this.classList.toggle('accordion__item--active');
         }
       })
-    );
-    let tday = new Date();
-    let time = tday.getHours();
-    if (time >= 5 && time <= 10) {
-      accItems[0].classList.add('accordion__item--active')
-    }
-    if (time >= 11 && time <= 14) {
-      accItems[1].classList.add('accordion__item--active')
-    }
-    if (time >= 15 && time <= 18) {
-      accItems[2].classList.add('accordion__item--active')
-    }
-    if (time >= 19 && time <= 22) {
-      accItems[3].classList.add('accordion__item--active')
-    }
+    });
+
+    function openCurrentMeal(){
+      let tday = new Date();
+      let time = tday.getHours();
+
+      accItems.forEach((item) => {
+        if (time >= 5 && time <= 10) {
+          if(item.id.split('-')[1] == 'Breakfast'){
+            item.classList.add('accordion__item--active');
+          }
+        }
+        if (time >= 11 && time <= 14) {
+          if(item.id.split('-')[1] == 'Lunch'){
+            item.classList.add('accordion__item--active');
+          }
+        }
+        if (time >= 15 && time <= 18) {
+          if(item.id.split('-')[1] == 'Snacks'){
+            item.classList.add('accordion__item--active');
+          }
+        }
+        if (time >= 19 && time <= 22) {
+          if(item.id.split('-')[1] == 'Dinner'){
+            item.classList.add('accordion__item--active');
+          }
+        }
+      });
+    };
   }, 1000);
 });
 
@@ -105,9 +121,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
         var arr = response.foundPostIds;
         if(arr && arr != '' && response.arrLength && response.posts.length){
           if($('#create-new-post').length){
-            $('#client-posts').removeClass('topnotch-left topnotch-right nodisplay');
+            $('#client-posts').removeClass('topnotch-left topnotch-right d-none');
           } else{
-            $('#client-posts').removeClass('nodisplay');
+            $('#client-posts').removeClass('d-none');
           }
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
@@ -121,7 +137,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
-          $('#load-more-btn').addClass('nodisplay');
+          $('#load-more-btn').addClass('d-none');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
@@ -144,10 +160,10 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           var div = document.getElementById('client-members');
           div.innerHTML += moreMembers_template(response);
           if(arr.length < 10){
-            $('#load-more-members-btn').addClass('nodisplay');
+            $('#load-more-members-btn').addClass('d-none');
           }
         } else{
-          $('#load-more-members-btn').addClass('nodisplay');
+          $('#load-more-members-btn').addClass('d-none');
         }
         $('#load-more-members-btn').html('<span id="load-more-members-span"></span>Load More').blur();
       }
@@ -166,9 +182,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
         if(xhr.status == 200 && response.users && response.users != ''){
           var div = document.getElementById('server-members');
           div.innerHTML = moreMembers_template(response);
-          $('#load-more-members-btn').addClass('nodisplay');
+          $('#load-more-members-btn').addClass('d-none');
           $('#server-members').addClass('mt-2');
-          $('#client-members').addClass('nodisplay');
+          $('#client-members').addClass('d-none');
         } else{
           var div = document.getElementById('server-members');
           if(xhr.status == 200){
@@ -178,9 +194,9 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           } else if(xhr.status == 204){
             div.innerHTML = `<div class="text-center lightgrey text-sm pt-1">You are not a club member :/</div>`
           }
-          $('#load-more-members-btn').addClass('nodisplay');
+          $('#load-more-members-btn').addClass('d-none');
           $('#server-members').addClass('mt-2');
-          $('#client-members').addClass('nodisplay');
+          $('#client-members').addClass('d-none');
         }
         $('#search-members-btn').html('<span id="search-members-span"></span>Go').blur();
       }
@@ -203,10 +219,10 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           var div = document.getElementById('client-memberRequests');
           div.innerHTML += moreMemberRequests_template(response);
           if(arr.length < 10){
-            $('#load-more-memberRequests-btn').addClass('nodisplay');
+            $('#load-more-memberRequests-btn').addClass('d-none');
           }
         } else{
-          $('#load-more-memberRequests-btn').addClass('nodisplay');
+          $('#load-more-memberRequests-btn').addClass('d-none');
         }
         $('#load-more-memberRequests-btn').html('<span id="load-more-memberRequests-span"></span>Load More').blur();
       }
@@ -230,7 +246,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       success: function (response){
         var arr = response.foundPostIds;
         if(arr && arr != '' && response.arrLength && response.posts.length){
-          $('#client-posts').removeClass('nodisplay');
+          $('#client-posts').removeClass('d-none');
           if($('#load-more-btn').val() != ''){
             $('#load-more-btn').val(arr.concat($('#load-more-btn').val()));
             var div = document.getElementById('client-posts');
@@ -242,7 +258,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             div.innerHTML += user_posts_template(response);
           }
         } else{
-          $('#load-more-btn').addClass('nodisplay');
+          $('#load-more-btn').addClass('d-none');
         }
         $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
       }
@@ -260,7 +276,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       success: function (response){
         var arr = response.foundHPostIds;
         if(arr && arr != '' && response.arrLength && response.posts.length){
-          $('#client-heart-posts').removeClass('nodisplay');
+          $('#client-heart-posts').removeClass('d-none');
           if($('#load-more-heart-btn').val() != ''){
             if(arr){
               $('#load-more-heart-btn').val(arr.concat($('#load-more-heart-btn').val()));
@@ -273,7 +289,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             div.innerHTML += heart_posts_template(response);
           }
         } else{
-          $('#load-more-heart-btn').addClass('nodisplay');
+          $('#load-more-heart-btn').addClass('d-none');
         }
         $('#load-more-heart-btn').html('<span id="load-more-heart-span"></span>Load More').blur();
       }
@@ -296,10 +312,10 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
           var div = document.getElementById('client-clubs');
           div.innerHTML += moreClubs_template(response);
           if(arr.length < 10){
-            $('#load-more-clubs-btn').addClass('nodisplay');
+            $('#load-more-clubs-btn').addClass('d-none');
           }
         } else{
-          $('#load-more-clubs-btn').addClass('nodisplay');
+          $('#load-more-clubs-btn').addClass('d-none');
         }
         $('#load-more-clubs-btn').html('<span id="load-more-clubs-span"></span>Load More').blur();
       }
@@ -313,8 +329,8 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
       url: '/show_following/'+location.pathname.split('/')[2],
       timeout: 3000,
       success: function (response){
-        $('#show-following-server').addClass('nodisplay');
-        $('#show-following-client').removeClass('nodisplay');
+        $('#show-following-server').addClass('d-none');
+        $('#show-following-client').removeClass('d-none');
         var div = document.getElementById('show-following-client');
         div.innerHTML = showFollowing_template(response);
       }
@@ -327,7 +343,7 @@ if((location.pathname.split('/').length == 3 && location.pathname.split('/')[1] 
   (location.pathname.split('/').length == 5 && location.pathname.split('/')[5] == 'subPost'))
 {
   if($('#load-prevMsgs-btn')){
-    $('#load-prevMsgs-btn').addClass('nodisplay');
+    $('#load-prevMsgs-btn').addClass('d-none');
   }
 
   $('#alltime-posts-btn').on('click', function(e){
@@ -365,7 +381,7 @@ if((location.pathname.split('/').length == 3 && location.pathname.split('/')[1] 
             div.innerHTML += post_comments_template(response);
           }
         } else{
-          $('#load-more-comments-btn').addClass('nodisplay');
+          $('#load-more-comments-btn').addClass('d-none');
         }
         $('#load-more-comments-btn').html('<span id="load-more-comments-span"></span>Load More').blur();
       }
@@ -424,7 +440,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             $('#load-more-search-people-btn').val(arr);
           }
         } else{
-          $('#load-more-search-people-btn').addClass('nodisplay');
+          $('#load-more-search-people-btn').addClass('d-none');
         }
         $('#load-more-search-people-btn').html('<span id="load-more-search-people-span"></span>Load More').blur();
       }
@@ -451,7 +467,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             $('#load-more-filterSearch-people-btn').val(arr);
           }
         } else{
-          $('#load-more-filterSearch-people-btn').addClass('nodisplay');
+          $('#load-more-filterSearch-people-btn').addClass('d-none');
         }
         $('#load-more-filterSearch-people-btn').html('<span id="load-more-filterSearch-people-span"></span>Load More').blur();
       }
@@ -480,7 +496,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             $('#load-more-search-clubs-btn').val(arr);
           }
         } else{
-          $('#load-more-search-clubs-btn').addClass('nodisplay');
+          $('#load-more-search-clubs-btn').addClass('d-none');
         }
         $('#load-more-search-clubs-btn').html('<span id="load-more-search-clubs-span"></span>Load More').blur();
       }
@@ -507,7 +523,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             $('#load-more-filterSearch-clubs-btn').val(arr);
           }
         } else{
-          $('#load-more-filterSearch-clubs-btn').addClass('nodisplay');
+          $('#load-more-filterSearch-clubs-btn').addClass('d-none');
         }
         $('#load-more-filterSearch-clubs-btn').html('<span id="load-more-filterSearch-clubs-span"></span>Load More').blur();
       }
@@ -536,7 +552,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
             $('#load-more-search-college_pages-btn').val(arr);
           }
         } else{
-          $('#load-more-search-college_pages-btn').addClass('nodisplay');
+          $('#load-more-search-college_pages-btn').addClass('d-none');
         }
         $('#load-more-search-college_pages-btn').html('<span id="load-more-search-college_pages-span"></span>Load More').blur();
       }
@@ -558,7 +574,7 @@ $('#load-prevMsgs-btn').on('click', function(e){
         success: function (response){
           if(response.foundMessageId){
               var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
+              $('#prevMessage-div').removeClass('d-none');
               if($('#load-prevMsgs-btn').val() != ''){
                 $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
                 $('#prevMsgs-div').prepend(load_prevMsgs_template(response));
@@ -566,13 +582,13 @@ $('#load-prevMsgs-btn').on('click', function(e){
                 $('#load-prevMsgs-btn').val(arr);
               }
             } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
+              $('#load-prevMsgs-btn').addClass('d-none');
             }
           $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
         }
       });
     } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
+      $('#load-prevMsgs-btn').addClass('d-none');
     }
   } else if($("#chatbox-loadingarea").hasClass("chatbox-club")){
     const conversationId = $("#club-convoId").attr("value").split('^')[0];
@@ -586,7 +602,7 @@ $('#load-prevMsgs-btn').on('click', function(e){
         success: function (response){
           if(response.foundMessageId){
               var arr = response.foundMessageId;
-              $('#prevMessage-div').removeClass('nodisplay');
+              $('#prevMessage-div').removeClass('d-none');
               if($('#load-prevMsgs-btn').val() != ''){
                 $('#load-prevMsgs-btn').val(arr.concat($('#load-prevMsgs-btn').val()));
                 $('#prevMsgs-div').prepend(load_prevClubMsgs_template(response));
@@ -594,13 +610,13 @@ $('#load-prevMsgs-btn').on('click', function(e){
                 $('#load-prevMsgs-btn').val(arr);
               }
             } else{
-              $('#load-prevMsgs-btn').addClass('nodisplay');
+              $('#load-prevMsgs-btn').addClass('d-none');
             }
           $('#load-prevMsgs-btn').html('<span id="load-prevMsgs-span"></span>LOAD PREV').blur();
         }
       });
     } else{
-      $('#load-prevMsgs-btn').addClass('nodisplay');
+      $('#load-prevMsgs-btn').addClass('d-none');
     }
   }
 });
@@ -745,13 +761,13 @@ function discover_posts_template(response){
                   <span class="d-flex mr-1"> 
                     <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up discover-vote"></i></button>
                   </span>
-                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].likeCount %></span>
+                  <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 d-none"><%= posts[k].likeCount %></span>
                 <% } %>
               <% }else{ %>
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up discover-vote"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 d-none"><%= posts[k].likeCount %></span>
               <% } %>
             </div>
           
@@ -761,11 +777,11 @@ function discover_posts_template(response){
                   <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm mobiletext3 redcolor2"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote redcolor2"></i></button></span>
                 <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].heartCount %></span>
+                  <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 d-none"><%= posts[k].heartCount %></span>
                   <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart discover-vote"></i></button></span>
                   <% } %>
               <% }else{ %>
-                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 nodisplay"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="boldtext whitecolor m-0 p-0 text-sm mobiletext3 d-none"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart discover-vote"></i></button></span>
               <% } %>
             </div>
@@ -1020,7 +1036,7 @@ function club_posts_template(response){
                     </span>
                   <% } %>
                 <% } %>
-                <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
+                <span class="d-none" id="modVisibility<%= posts[k]._id %>"></span>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             </div>
@@ -1060,7 +1076,7 @@ function club_posts_template(response){
                       </span>
                     <% } %>
                   <% } %>
-                  <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
+                  <span class="d-none" id="modVisibility<%= posts[k]._id %>"></span>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </form>
               </div>
@@ -1081,12 +1097,12 @@ function club_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>              <% } %>
+                <span id="like-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>              <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>            <% } %>
+              <span id="like-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>            <% } %>
           </div>
         
           <div class="valign">
@@ -1095,11 +1111,11 @@ function club_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
+              <span id="heart-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
@@ -1249,7 +1265,7 @@ function club_posts_template(response){
                         </span>
                       <% } %>
                     <% } %>
-                    <span class="nodisplay" id="modVisibility<%= posts[k]._id %>"></span>
+                    <span class="d-none" id="modVisibility<%= posts[k]._id %>"></span>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 </div>
@@ -1492,13 +1508,13 @@ function user_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btn<%= posts[k]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
+                <span id="like-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btn<%= posts[k]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
-              <span id="like-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
+              <span id="like-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].likeCount %></span>
             <% } %>
           </div>
         
@@ -1508,11 +1524,11 @@ function user_posts_template(response){
                 <span id="heart-count<%= posts[k]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVote[k] == 0 || hasVote[k] == 1){ %>
-                <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
+                <span id="heart-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
                 <span><button id="heart-btn<%= posts[k]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-count<%= posts[k]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
+              <span id="heart-count<%= posts[k]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= posts[k].heartCount %></span>
               <span><button id="heart-btn<%= posts[k]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
@@ -1849,13 +1865,13 @@ function heart_posts_template(response){
                 <span class="d-flex mr-1"> 
                   <button id="like-btnH<%= postsH[l]._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
                 </span>
-                <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
+                <span id="like-countH<%= postsH[l]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
               <% } %>
             <% } else{ %>
               <span class="d-flex mr-1"> 
                 <button id="like-btnH<%= postsH[l]._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
               </span>
-              <span id="like-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
+              <span id="like-countH<%= postsH[l]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].likeCount %></span>
             <% } %>
           </div>
         
@@ -1865,11 +1881,11 @@ function heart_posts_template(response){
                 <span id="heart-countH<%= postsH[l]._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
               <% } else if(hasVoteH[l] == 0 || hasVoteH[l] == 1){ %>
-                <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
+                <span id="heart-countH<%= postsH[l]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
                 <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
                 <% } %>
             <% } else{ %>
-              <span id="heart-countH<%= postsH[l]._id %>" class="nodisplay boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
+              <span id="heart-countH<%= postsH[l]._id %>" class="d-none boldtext darkgrey m-0 p-0 text-sm"><%= postsH[l].heartCount %></span>
               <span><button id="heart-btnH<%= postsH[l]._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
             <% } %>
           </div>
@@ -2438,7 +2454,7 @@ function moreMembers_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight-lesser">
   <% for(var i=0;i<users.length;i++){ %>
-    <div class="valign fullwidth">
+    <div class="valign w-100">
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/users/<%= users[i].id._id %>">
@@ -2565,7 +2581,7 @@ function moreMemberRequests_template(response){
   html = ejs.render(`
 <div class="row no-gutters mt-2 lineheight-lesser">
   <% for(var m=0;m<users.length;m++){ %>
-    <div class="valign fullwidth">
+    <div class="valign w-100">
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/users/<%= club.memberRequests[m].userId._id %>">
@@ -2646,7 +2662,7 @@ function moreClubs_template(response){
   html = ejs.render(`
 <div class="row no-gutters lineheight-lesser">
   <% for(var i=0;i<clubs.length;i++){ %>
-    <div class="valign fullwidth">
+    <div class="valign w-100">
       <div class="d-flex flex-row">
         <div class="py-2 mb-auto">
           <a href="/clubs/<%= clubs[i].id._id %>">
@@ -2767,7 +2783,7 @@ function search_people_template(response){
           <% } %>
         </a>
       </div>
-      <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
+      <div class="card-body py-1 lineheight-lesser w-100" style="overflow: hidden;">
         <div class="valign">
           <div>
             <a href="/users/<%= users[k]._id %>" class="grey">
@@ -2819,7 +2835,7 @@ function search_clubs_template(response){
           <img class="searchdp" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
         </a>
       </div>
-      <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
+      <div class="card-body py-1 lineheight-lesser w-100" style="overflow: hidden;">
         <div class="valign">
           <div>
             <a href="/clubs/<%= clubs[k]._id %>" class="grey">
@@ -2879,7 +2895,7 @@ function search_college_pages_template(response){
 <% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
   <div class="card searchcard2 border-light">
     <div class="d-flex flex-row">
-      <div class="card-body py-1 lineheight1 fullwidth">
+      <div class="card-body py-1 lineheight1 w-100">
         <div class="notification px-2 py-1 college d-flex flex-column">
           <div class="boldtext text-xxl">
             <div class="collegename-search d-flex">
@@ -2954,7 +2970,6 @@ function quick_mess_template(response) {
     font-size: 1.2rem; text-align: left; cursor: pointer; transition: 0.1s; }
   .accordion__btn:hover { color: #6a5acd; background: #f4f3fb; }
   .accordion__item--active .accordion__btn { color: #6a5acd; border-bottom: 2px solid #6a5acd; background: #f4f3fb; }
-  svg { padding-right: 1rem; width: 2em; }
   .accordion__icon { border-radius: 50%; transform: rotate(0deg); transition: 0.3s ease-in-out; opacity: 0.9; }
   .accordion__item--active .accordion__icon { transform: rotate(135deg); }
   .accordion__content { font-weight: 400; font-size: 18px; max-height: 0; opacity: 0; overflow: hidden; 
@@ -2962,27 +2977,25 @@ function quick_mess_template(response) {
   .accordion__item--active .accordion__content { opacity: 1; transform: translateX(0px); max-height: 100vh; }
   .container-fluid { display: flex; justify-content: center; margin-top: 2em; }
   .menu { width: 25em; }
-
   /* @media (min-width: 992px) {
       .menu { margin-left: -15em; }
   } */
 </style>
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-9">
-      <div class="container-fluid mx-auto">
+      <div class="container-fluid mx-auto my-0">
         <div class="menu">
           <div class="accordion py-3 bg-white">
             <h2 class="accordion__heading mb-3 px-4 text-center">
                 <%= day %>
             </h2>
             <% for(let menuItem of menu) { %> 
-              <div class="accordion__item">
+              <div id="item-<%= menuItem.time %>" class="accordion__item">
                 <button class="accordion__btn">
                   <span class="accordion__caption">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                      <path d="M221.6 148.7C224.7 161.3 224.8 174.5 222.1 187.2C219.3 199.1 213.6 211.9 205.6 222.1C191.1 238.6 173 249.1 151.1 254.1V472C151.1 482.6 147.8 492.8 140.3 500.3C132.8 507.8 122.6 512 111.1 512C101.4 512 91.22 507.8 83.71 500.3C76.21 492.8 71.1 482.6 71.1 472V254.1C50.96 250.1 31.96 238.9 18.3 222.4C10.19 212.2 4.529 200.3 1.755 187.5C-1.019 174.7-.8315 161.5 2.303 148.8L32.51 12.45C33.36 8.598 35.61 5.197 38.82 2.9C42.02 .602 45.97-.4297 49.89 .0026C53.82 .4302 57.46 2.303 60.1 5.259C62.74 8.214 64.18 12.04 64.16 16V160H81.53L98.62 11.91C99.02 8.635 100.6 5.621 103.1 3.434C105.5 1.248 108.7 .0401 111.1 .0401C115.3 .0401 118.5 1.248 120.9 3.434C123.4 5.621 124.1 8.635 125.4 11.91L142.5 160H159.1V16C159.1 12.07 161.4 8.268 163.1 5.317C166.6 2.366 170.2 .474 174.1 .0026C178-.4262 181.1 .619 185.2 2.936C188.4 5.253 190.6 8.677 191.5 12.55L221.6 148.7zM448 472C448 482.6 443.8 492.8 436.3 500.3C428.8 507.8 418.6 512 408 512C397.4 512 387.2 507.8 379.7 500.3C372.2 492.8 368 482.6 368 472V352H351.2C342.8 352 334.4 350.3 326.6 347.1C318.9 343.8 311.8 339.1 305.8 333.1C299.9 327.1 295.2 320 291.1 312.2C288.8 304.4 287.2 296 287.2 287.6L287.1 173.8C288 136.9 299.1 100.8 319.8 70.28C340.5 39.71 369.8 16.05 404.1 2.339C408.1 .401 414.2-.3202 419.4 .2391C424.6 .7982 429.6 2.62 433.9 5.546C438.2 8.472 441.8 12.41 444.2 17.03C446.7 21.64 447.1 26.78 448 32V472z" />
-                    </svg>
+                  <i class="fas fa-utensils mr-3 text-xxl darkgrey"></i>
                       <%= menuItem.time %>
                   </span>
                   <span class="accordion__icon"><i class="fa fa-plus"></i></span>

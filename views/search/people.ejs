@@ -47,7 +47,7 @@
 							<% } %>
           	</a>
 			    </div>
-			    <div class="card-body py-1 lineheight-lesser fullwidth" style="overflow: hidden;">
+			    <div class="card-body py-1 lineheight-lesser w-100" style="overflow: hidden;">
 			    	<div class="valign">
 			    		<div>
 					    	<a href="/users/<%= users[k]._id %>" class="grey">
@@ -90,7 +90,7 @@
 			<% if((users.length != 0 && !users.length < 10) && !emailSearch){ %>
 	    	<button id="load-more-search-people-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-search-people-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-search-people-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
 	    <% } %>
 	    	<span id="load-more-search-people-span"></span>Load More
 	    </button>
@@ -100,7 +100,7 @@
 			<% if(users.length != 0 && !users.length < 10){ %>
 	    	<button id="load-more-filterSearch-people-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-filterSearch-people-btn" class="btn btn-light btnxs text-sm nodisplay" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-filterSearch-people-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
 	    <% } %>
 	    	<span id="load-more-filterSearch-people-span"></span>Load More
 	    </button>
@@ -207,7 +207,7 @@
 			<div>
 				<a href="/find_people/filter_search?users=&college=&school=&hometown=">Reset keys</a>
 			</div>
-			<button id="search-moreFilterPeople-btn" class="btn btn-success btn-sm fullwidth" type="submit" value="<%= morePeopleUrl %>">Search</button>
+			<button id="search-moreFilterPeople-btn" class="btn btn-success btn-sm w-100" type="submit" value="<%= morePeopleUrl %>">Search</button>
 		</form>
   </div>
 </div>

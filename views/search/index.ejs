@@ -33,7 +33,7 @@
 										<% } %>
 			          	</a>
 						    </div>
-						    <div class="card-body py-1 lineheight-less fullwidth">
+						    <div class="card-body py-1 lineheight-less w-100">
 						    	<div>
 							    	<a href="/users/<%= users[k]._id %>" class="grey">
 							      	<span class="nothing text-lg"><strong class="searchname">
@@ -75,7 +75,7 @@
 			            	<img class="searchdp mx-0" src="<%= Clubs_100_Avatar[k] || '/images/noClub.png' %>">
 			          	</a>
 						    </div>
-						    <div class="card-body py-1 lineheight-less fullwidth">
+						    <div class="card-body py-1 lineheight-less w-100">
 						    	<div>
 							    	<a href="/clubs/<%= clubs[k]._id %>" class="grey">
 							      	<span class="nothing text-lg"><strong class="searchname"><%= clubs[k].name %></strong></span>
@@ -112,10 +112,10 @@
 							<div class="d-flex flex-column">
 								<div>
 									<a href="/colleges/<%= college_pages[k].name %>">
-										<img class="cover searchdp m-0 fullwidth" src="<%= college_pages[k].cover %>">
+										<img class="cover searchdp m-0 w-100" src="<%= college_pages[k].cover %>">
 									</a>
 								</div>
-						    <div class="fullwidth">
+						    <div class="w-100">
 						    	<div class="notification px-2 py-1 college d-flex flex-column">
 										<div class="boldtext text-xxl">
 											<div class="collegename-search">

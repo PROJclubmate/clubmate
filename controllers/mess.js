@@ -66,23 +66,28 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
+    
+    const foundMess = await Mess.findOne({college: req.user.userKeys.college});
+    if (foundMess == null) {
+      logger.error(req.user._id+' : (mess-4)foundMess err => '+'No mess document found for given college');
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
 
-    const messNames = foundCollege.messes;
-
-    res.render('mess/edit', { messNames: messNames, collegeName: req.user.userKeys.college });
+    res.render('mess/edit', { messNames: foundCollege.messes, foundMess, collegeName: req.user.userKeys.college });
   },
 
   async messUpdateMenu(req, res, next) {
     const messName = req.body.mess;
     const day = req.body.day;
     const time = req.body.time;
-    const dishes = req.body.dishes.split(',');
+    const dishes = req.body.dishes;
 
     const foundMess = await Mess.findOne({
       college: req.user.userKeys.college,
     });
     if (foundMess == null) {
-      logger.error(req.user._id+' : (mess-4)foundMess err => '+'No mess document found for given college');
+      logger.error(req.user._id+' : (mess-5)foundMess err => '+'No mess document found for given college');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
@@ -97,7 +102,7 @@ module.exports = {
         for (var j = 0; j < mess.menu.length; j++) {
           if (mess.menu[j].day == day && mess.menu[j].time == time) {
             timingFound = true;
-            mess.menu[j].dishes = dishes;
+            mess.menu[j].dishes = dishes.filter(n => n);
             break;
           }
         }
@@ -122,7 +127,7 @@ module.exports = {
     }
 
     foundMess.save(function (err) {
-      if (err) {logger.error(req.user._id+' : (mess-5)updateMess err => '+err);}
+      if (err) {logger.error(req.user._id+' : (mess-6)updateMess err => '+err);}
     });
 
     req.flash('success', 'Mess menu updated');
@@ -134,7 +139,7 @@ module.exports = {
       college: req.user.userKeys.college,
     });
     if (foundMess == null) {
-      logger.error(req.user._id+' : (mess-6)foundMess err => '+'No mess document found for given college');
+      logger.error(req.user._id+' : (mess-7)foundMess err => '+'No mess document found for given college');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
@@ -153,7 +158,7 @@ module.exports = {
     } else if (foundMess.mess.length > 0) {
       mess = foundMess.mess[0];
     } else {
-      logger.error(req.user._id+' : (mess-7)foundMess err => '+'No mess object created for given college');
+      logger.error(req.user._id+' : (mess-8)foundMess err => '+'No mess object created for given college');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
@@ -178,7 +183,7 @@ module.exports = {
 
     const foundCollege = await CollegePage.findOne({ name: req.user.userKeys.college }).select('messes');
     if (foundCollege == null) {
-      logger.error(req.user._id + ' : (mess-8)foundCollege err => ' + 'No college-page document found for given college name');
+      logger.error(req.user._id + ' : (mess-9)foundCollege err => ' + 'No college-page document found for given college name');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }

@@ -81,7 +81,7 @@
             </span>
           </div>
         <% } %>
-        <div id="mobile_toggler_div" class="nodisplay" style="margin-right: -0.5rem;">
+        <div id="mobile_toggler_div" class="d-none" style="margin-right: -0.5rem;">
           <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon notification">
               <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>

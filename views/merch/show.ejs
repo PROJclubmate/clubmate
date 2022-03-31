@@ -73,23 +73,31 @@
 				<div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
 					<div class="carousel-inner merch-carousel">
 						<% let counter=0 %>
+						<% if(merchItem.images.length){ %>
 							<% for(let img of merchItem.images){ %>
 								<div class="carousel-item <% if(counter == 0) { %> active  <% } %> whiteback">
-									<img src="<%- img %>" class="d-block w-100 cover" alt="...">
+									<img src="<%- img %>" class="cover" alt="...">
 								</div>
-								<% counter++ ; %>
-									<% } %>
+							<% counter++ ; %>
+							<% } %>
+						<% } else{ %>
+							<div class="whiteback">
+								<img src="/images/noImage.png" class="cover item-img" alt="...">
+							</div>
+						<% } %>
 					</div>
-					<button class="carousel-control-prev" type="button" data-target="#carouselExampleControls"
-						data-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-target="#carouselExampleControls"
-						data-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-					</button>
+					<% if(merchItem.images.length){ %>
+						<button class="carousel-control-prev" type="button" data-target="#carouselExampleControls"
+							data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-target="#carouselExampleControls"
+							data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</button>
+					<% } %>
 				</div>
 			</div>
 		</div>
@@ -121,7 +129,7 @@
 			<div class="row show-on-edit d-none">
 				<div class="col-md-6 my-2">
 					<form action="/colleges/<%= collegeName %>/merchandise/<%- merchItem.category %>/<%- merchItem._id %>?_method=PUT"
-						method="post" class="edit-merch boldtext">
+						method="post" class="card edit-merch boldtext">
 						<div class="form-group">
 							<label for="price">Price</label>
 							<div class="input-group mb-2">
@@ -147,7 +155,9 @@
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-primary">Update</button>
+						<div class="d-flex flex-row-reverse mt-4">
+							<button type="submit" class="btn btn-primary">Update</button>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -205,10 +215,8 @@
 			</h5>
 		</div>
 	</div>
-	<div class="go_back">
-		<a href="/colleges/<%= collegeName %>/merchandise">
-			<button class="btn btn-light btn-round">Go Back</button>
-		</a>
+	<div>
+		<a href="/colleges/<%= collegeName %>/merchandise">Go Back</a>
 	</div>
 </div>
 

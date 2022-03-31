@@ -3,8 +3,8 @@
 <script>
 	if(window.innerWidth < 768){
 		if(location.pathname.split('/')[1] == 'chats'){
-			document.getElementById('inbox_mobile_div').classList.add('nodisplay');
-			document.getElementById('mobile_toggler_div').classList.remove('nodisplay');
+			document.getElementById('inbox_mobile_div').classList.add('d-none');
+			document.getElementById('mobile_toggler_div').classList.remove('d-none');
 		}
 	}
 </script>
@@ -66,8 +66,8 @@
 									<% } %>
 								</div>
 							</div>
-							<div class="d-flex chatlist-content fullwidth">
-								<div class="my-auto ml-2 mr-1 fullwidth">
+							<div class="d-flex chatlist-content w-100">
+								<div class="my-auto ml-2 mr-1 w-100">
 									<div class="d-flex flex-column lineheight">
 										<div class="valign">
 											<div class="grey boldtext chatname">
@@ -106,7 +106,7 @@
 												<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
 													<span class="badge badge-success badge-round2"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
 												<% } else{ %>
-													<span class="badge badge-success badge-round2 nodisplay">0</span>
+													<span class="badge badge-success badge-round2 d-none">0</span>
 												<% } %>
 											</div>
 										</div>
