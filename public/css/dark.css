@@ -696,7 +696,7 @@ button.redcolor2.commentvote * .fab.fa-gratipay, button.redcolor2.commentvote:ho
 .post-head{
   border-top: 5px solid var(--color-dark-800) !important;
 }
-.post-tail{
+.post-tail, .show-comments{
   border-bottom: 0.5px solid var(--color-dark-800) !important;
 }
 

@@ -383,6 +383,10 @@ div.content{
   #story-draft-preview{margin-left: auto !important;}
   #quickview_nav_mobile{padding: 12px 10px !important;}
   #quickmodal{margin-bottom: 47px;}
+  .topnotch-right:before{right: 0.25rem !important;}
+  .topnotch-left:before{left: 0.25rem !important;}
+  .post-container{margin-left: 0.25rem; margin-right: 0.25rem;}
+  #page_minheight_100{min-height: 100vh;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -808,6 +812,9 @@ option:disabled{
 }
 .py-15{
   padding: 0.15rem 0;
+}
+.width-autofill{
+  width: -webkit-fill-available;
 }
 .absolute-center{
   position: absolute;
@@ -2094,7 +2101,7 @@ a.nolink{
 }
 .commentbox6{
   margin: 0;
-  border-radius: 0 0.75rem 0.75rem 0.75rem !important;
+  border-radius: 0 0.5rem 0.5rem 0.5rem !important;
 }
 .inline{
   display: inline;
@@ -3954,6 +3961,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 #not_in_room{
   opacity: 0.35;
+}
+.d-none{
+  display: none !important;
 }
 .btn-google{
   border: 1px solid white;

@@ -32,6 +32,9 @@
     border-bottom: 2px solid #6a5acd;
     background: #f4f3fb;
   }
+  .accordion__btn:focus{
+    outline: none;
+  }
   .accordion__icon {
     border-radius: 50%;
     transform: rotate(0deg);
@@ -172,7 +175,7 @@
 </style>
 
 <% for(let m of mess) { %>  
-  <div class="container slider-container">
+  <div id="page_minheight_100" class="container slider-container">
     <% const days=["Monday", "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday" ]; %>
     <% for(let weekday of days){ %>
       <div class="container-fluid mx-auto">

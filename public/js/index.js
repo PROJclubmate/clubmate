@@ -43,7 +43,7 @@ var dropdown = document.getElementsByClassName('dropdown-sidebar');
 for (var i=0;i<dropdown.length;i++){
   dropdown[i].addEventListener('click', function(){
     this.classList.toggle('active');
-    if(location.pathname.split('/')[1] == 'colleges'){
+    if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'colleges'){
       var home = document.getElementById('side-home');
       home.classList.toggle('active');
     } else if(location.pathname == '/discover'){
@@ -125,7 +125,7 @@ function close_quickview_modal(){
   });
 }
 
-if(location.pathname.split('/')[1] == 'colleges'){
+if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'colleges'){
   var home = document.getElementById('side-home');
   home.classList.toggle('active');
 } else if(location.pathname == '/discover'){
