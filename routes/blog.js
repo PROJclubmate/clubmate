@@ -4,6 +4,7 @@ const express = require('express'),
 const { 
   blogsPageLoad,
   blogsLoadMore,
+  blogsCreatePage,
   blogsCreate,
   blogsDelete,
   blogsSave,
@@ -23,7 +24,8 @@ if (process.env.ENVIRONMENT === "dev") {
 }
 
 router.get('/blogs', middleware.isLoggedIn, blogsLoadMore);
-router.post('/blogs/create', middleware.isLoggedIn, blogsCreate);
+router.get('/blogs/new', middleware.isLoggedIn, blogsCreatePage);
+router.post('/blogs/new', middleware.isLoggedIn, blogsCreate);
 router.delete('/blogs/:bucket/:blog', middleware.isLoggedIn, blogsDelete);
 router.put('/blogs/:bucket/:blog/save', middleware.isLoggedIn, blogsSave);
 router.put('/blogs/:bucket/:blog/unsave', middleware.isLoggedIn, blogsUnsave);
