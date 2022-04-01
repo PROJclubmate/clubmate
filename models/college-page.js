@@ -25,15 +25,8 @@ const collegePageSchema = new Schema({
   messes: Array,
   houses: Array,
   blogBuckets: [{
-    blogCount: {
-      type: Number,
-      default: 0,
-      max: 100,
-    },
-    bucketId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Blog',
-    },
+    type: Schema.Types.ObjectId,
+    ref: 'Blog',
   }],
   unapprovedBlogBucket: {
     type: Schema.Types.ObjectId,

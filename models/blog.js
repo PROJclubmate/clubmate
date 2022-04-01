@@ -60,18 +60,6 @@ const blogBucketSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  
-  blogCount: {
-    type: Number,
-    default: 0,
-    max: 100,
-  },
-
-  blogApprovedCount: {
-    type: Number,
-    default: 0,
-      max: 100,
-  },
 
   blogs: [blogSchema],
 });

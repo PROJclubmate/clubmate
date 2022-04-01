@@ -163,6 +163,16 @@ const userSchema = new Schema({
       ref: 'Blog.blogs',
     }],
   }],
+  heartedBlogs: [{
+    bucketId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+    blogId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+  }],
 },
   {
     timestamps: true
