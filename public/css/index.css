@@ -422,7 +422,7 @@ div.content{
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label{width: 76px !important;}
   .navdp{height: 40px !important; width: 40px !important;}
-  .collegedp{height: 62px !important; width: 62px !important;}
+  .collegedp{height: 58px !important; width: 58px !important;}
   button.vote{font-size: 1.625rem !important;}
   img.postimg{height: 25.75rem !important;}
   img.postimg.topicimg{height: 20rem !important;}
@@ -496,6 +496,7 @@ div.content{
 @media screen and (max-width: 385px){
   .sidebar a, a.side-drop-elem{padding: 14px 11px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
+  .collegedp{height: 54px !important; width: 54px !important;}
   .friends-dp{height: 5.4065rem !important;}
   .mobiletext1{font-size: 1rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
@@ -576,7 +577,7 @@ div.content{
   .story-alt, .story-alt-loader{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
   .story-alt-label{width: 66px !important;}
   .navdp{height: 36px !important; width: 36px !important;}
-  .collegedp{height: 54px !important; width: 54px !important;}
+  .collegedp{height: 50px !important; width: 50px !important;}
   button.vote{font-size: 1.5rem !important;}
   img.postimg{height: 22.5rem !important;}
   img.postimg.topicimg{height: 18rem !important;}

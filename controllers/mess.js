@@ -163,11 +163,7 @@ module.exports = {
       return res.redirect('back');
     }
 
-    const menu = mess.menu.filter(function (menuItem) {
-      return menuItem.day === dateData.day
-    });
-
-    res.json({ messName: mess.name, menu: menu, day: dateData.day });
+    res.json({ messName: mess.name, mess: mess });
   },
 
   messAddPage(req, res, next) {

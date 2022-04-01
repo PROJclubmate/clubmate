@@ -65,7 +65,7 @@
         </div>
       </div>
       <div id="register-options">
-        <button class="btn btn-light btn-block noshadow mt-3 nodisplay type="button"
+        <button class="btn btn-light btn-block noshadow mt-3 d-none type="button"
         onclick="hideOptions()" style="border-bottom-width: 1px;">
           Login with email
         </button>
@@ -105,8 +105,8 @@
     }
   }
   function hideOptions(){
-    document.getElementById('register-options').classList.add('nodisplay');
-    document.getElementById('register-email').classList.remove('nodisplay');
+    document.getElementById('register-options').classList.add('d-none');
+    document.getElementById('register-email').classList.remove('d-none');
   }
 </script>
 <% include ./partials/footer %>
