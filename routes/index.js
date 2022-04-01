@@ -1,12 +1,38 @@
-const express  = require('express'),
-  router       = express.Router(),
-  middleware   = require('../middleware'),
-  {indexSubscription, indexRoot, indexAbout, indexHelp, indexSearch, indexSearchEmail, indexSearchPeople, 
-  indexSearchMorePeople, indexSearchClubs, indexSearchMoreClubs, indexRequests, indexMemberRequests, indexMemberInfo, 
-  indexFilterSearchPeople, indexFilterSearchMorePeople, indexFilterSearchClubs, indexFilterSearchMoreClubs, 
-  indexViewAllFriends, indexViewAllStudents, indexSearchCollegePages, indexSearchMoreCollegePages, indexViewCollegePage,
-  indexCollegePageSettings, indexFollowAllCollegePage, indexFollowClubs, indexShowFollowingClubs, indexSettingsPage,
-  indexSettingsPagePost, indexFeedbackPage} = require('../controllers/index');
+const express = require('express'),
+  router      = express.Router(),
+  middleware  = require('../middleware');
+
+const {
+  indexSubscription,
+  indexRoot,
+  indexAbout,
+  indexHelp,
+  indexSearch,
+  indexSearchEmail,
+  indexSearchPeople, 
+  indexSearchMorePeople,
+  indexSearchClubs,
+  indexSearchMoreClubs,
+  indexRequests,
+  indexMemberRequests,
+  indexMemberInfo, 
+  indexFilterSearchPeople,
+  indexFilterSearchMorePeople,
+  indexFilterSearchClubs,
+  indexFilterSearchMoreClubs, 
+  indexViewAllFriends,
+  indexViewAllStudents,
+  indexSearchCollegePages,
+  indexSearchMoreCollegePages,
+  indexViewCollegePage,
+  indexCollegePageSettings,
+  indexFollowAllCollegePage,
+  indexFollowClubs,
+  indexShowFollowingClubs,
+  indexSettingsPage,
+  indexSettingsPagePost,
+  indexFeedbackPage
+} = require('../controllers/index');
 
 
 // New notification subscription

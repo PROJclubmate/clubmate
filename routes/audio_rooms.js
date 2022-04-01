@@ -1,8 +1,16 @@
-const express   = require('express'),
-  router        = express.Router(),
-  middleware    = require('../middleware'),
-  {audioroomsLobby , postNewAudioroom, joinAudioRoom, getNewAudioRoom,
-  getClubAudioRooms, deleteAudioRoom, setUserJamKey } = require('../controllers/audio_rooms');
+const express = require('express'),
+  router      = express.Router(),
+  middleware  = require('../middleware');
+
+const {
+  audioroomsLobby,
+  postNewAudioroom,
+  joinAudioRoom,
+  getNewAudioRoom,
+  getClubAudioRooms,
+  deleteAudioRoom,
+  setUserJamKey
+} = require('../controllers/audio_rooms');
 
 
 // Get create story page
@@ -22,6 +30,5 @@ router.post('/audio/delete/:room_id', middleware.isLoggedIn, deleteAudioRoom);
 
 // It sets the public key for the current logged in user
 router.post('/audio/setkey', middleware.isLoggedIn, setUserJamKey);
-
 
 module.exports = router;

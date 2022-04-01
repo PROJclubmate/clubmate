@@ -3,8 +3,8 @@
 <script>
 	if(window.innerWidth < 768){
 		if(location.pathname.split('/')[1] == 'chats'){
-			document.getElementById('inbox_mobile_div').classList.add('nodisplay');
-			document.getElementById('mobile_toggler_div').classList.remove('nodisplay');
+			document.getElementById('inbox_mobile_div').classList.add('d-none');
+			document.getElementById('mobile_toggler_div').classList.remove('d-none');
 		}
 	}
 </script>
@@ -37,8 +37,8 @@
 							<div>
 								<div class="py-2 my-1 px-1">
 									<% if(chatList[i].type == 'user'){ %>
-										<% if(chatList[i].id.toString() == recipientId2){ %>
-											<a href="/users/<%= chatList[i].id %>">
+										<a href="/users/<%= chatList[i].id %>">
+											<% if(chatList[i].id.toString() == recipientId2){ %>
 												<% if(!chatList[i].userKeys.sex){ %>
 													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUser.png' %>">
 												<% } else if(chatList[i].userKeys.sex == 'Male'){ %>
@@ -46,8 +46,7 @@
 												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
 													<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
 												<% } %>
-											</a>
-										<% } else{ %>
+											<% } else{ %>
 												<% if(!chatList[i].userKeys.sex){ %>
 													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
 												<% } else if(chatList[i].userKeys.sex == 'Male'){ %>
@@ -55,19 +54,23 @@
 												<% } else if(chatList[i].userKeys.sex == 'Female'){ %>
 													<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
 												<% } %>
-											</a>
-										<% } %>
+											<% } %>
+										</a>
 									<% } else if(chatList[i].type == 'club'){ %>
 										<% if(chatList[i].id.toString() == convClubId2){ %>
-											<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+											<a href="/clubs/<%= chatList[i].id %>">
+												<img class="collegedp chatsdp active" src="<%= chatList[i].image || '/images/noClub.png' %>">
+											</a>
 										<% } else{ %>
-											<a href="/clubs/<%= chatList[i].id %>"><img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>"></a>
+											<a href="/clubs/<%= chatList[i].id %>">
+												<img class="collegedp chatsdp rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
+											</a>
 										<% } %>
 									<% } %>
 								</div>
 							</div>
-							<div class="d-flex chatlist-content fullwidth">
-								<div class="my-auto ml-2 mr-1 fullwidth">
+							<div class="d-flex chatlist-content w-100">
+								<div class="my-auto ml-2 mr-1 w-100">
 									<div class="d-flex flex-column lineheight">
 										<div class="valign">
 											<div class="grey boldtext chatname">
@@ -106,7 +109,7 @@
 												<% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
 													<span class="badge badge-success badge-round2"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
 												<% } else{ %>
-													<span class="badge badge-success badge-round2 nodisplay">0</span>
+													<span class="badge badge-success badge-round2 d-none">0</span>
 												<% } %>
 											</div>
 										</div>

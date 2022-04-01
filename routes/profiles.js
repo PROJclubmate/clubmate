@@ -1,15 +1,39 @@
-const express   = require('express'),
-  passport      = require('passport'),
-  router        = express.Router(),
-  middleware    = require('../middleware'),
-  {profilesUserProfile, profilesUserMoreClubs, profilesUserMorePosts, profilesUserMoreHeartPosts,
-  profilesUpdateUserProfile, profilesNewClub, profilesClubProfile, profilesCluballTimeTopPosts,
-  profilesClubMoreMembers, profilesClubSearchMembers, profilesClubMoreMemberRequests, profilesClubMorePosts, 
-  profilesUpdateClubProfile, profilesDeleteClubProfile, profilesGetClubsFeaturedPhotos, 
-  profilesUpdateClubsFeaturedPhotos, profilesRegisterUserPage, profilesSignUp, profilesVerifyUser, 
-  profilesReVerify,  profilesVerificationToken, profilesLoginPage, profilesLoginUser, profilesLogout, 
-  profilesForgotPage, profilesForgotPass, profilesForgotToken, profilesResetPass, profilesWaitingPage
-  , profilesGoogleAuthCallback
+const express = require('express'),
+  passport    = require('passport'),
+  router      = express.Router(),
+  middleware  = require('../middleware');
+
+const {
+  profilesUserProfile,
+  profilesUserMoreClubs,
+  profilesUserMorePosts,
+  profilesUserMoreHeartPosts,
+  profilesUpdateUserProfile,
+  profilesNewClub,
+  profilesClubProfile,
+  profilesCluballTimeTopPosts,
+  profilesClubMoreMembers,
+  profilesClubSearchMembers,
+  profilesClubMoreMemberRequests,
+  profilesClubMorePosts, 
+  profilesUpdateClubProfile,
+  profilesDeleteClubProfile,
+  profilesGetClubsFeaturedPhotos,
+  profilesUpdateClubsFeaturedPhotos,
+  profilesRegisterUserPage,
+  profilesSignUp,
+  profilesVerifyUser, 
+  profilesReVerify,
+  profilesVerificationToken,
+  profilesLoginPage,
+  profilesLoginUser,
+  profilesLogout, 
+  profilesForgotPage,
+  profilesForgotPass,
+  profilesForgotToken,
+  profilesResetPass,
+  profilesWaitingPage,
+  profilesGoogleAuthCallback
   } = require('../controllers/profiles');
 
 if(process.env.ENVIRONMENT === 'dev'){
@@ -17,6 +41,7 @@ if(process.env.ENVIRONMENT === 'dev'){
 } else if (process.env.ENVIRONMENT === 'prod'){
   var {upload} = require('../config/s3.js');
 }
+
 
 // Show user profile page
 router.get('/users/:id', middleware.checkWaitingWall, profilesUserProfile);

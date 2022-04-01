@@ -43,26 +43,26 @@ WebFont.load({
     });
     function HandleElement(){
       if(!canvas.getActiveObject()){
-        document.getElementById('story-maker-next').classList.remove('nodisplay');
+        document.getElementById('story-maker-next').classList.remove('d-none');
         return;
       }
       if(canvas.getActiveObject().type == 'textbox' && canvas.getActiveObject().isEditing){
-        document.getElementById('story-maker-next').classList.add('nodisplay');
-        document.getElementById('story-footer').classList.add('nodisplay');
+        document.getElementById('story-maker-next').classList.add('d-none');
+        document.getElementById('story-footer').classList.add('d-none');
       } else{
-        document.getElementById('story-maker-next').classList.remove('nodisplay');
+        document.getElementById('story-maker-next').classList.remove('d-none');
       }
     }
 
     var cropCanvasBtn = document.getElementById('cropcanvas');
     cropCanvasBtn.addEventListener('click', function(e){
       if(cropCanvasBtn.classList.contains('active')){
-        document.getElementById('story-maker-next').classList.remove('nodisplay');
-        document.getElementById('story-footer').classList.add('nodisplay');
+        document.getElementById('story-maker-next').classList.remove('d-none');
+        document.getElementById('story-footer').classList.add('d-none');
         cropCanvasBtn.classList.remove('active');
       } else{
-        document.getElementById('story-maker-next').classList.add('nodisplay');
-        document.getElementById('story-footer').classList.remove('nodisplay');
+        document.getElementById('story-maker-next').classList.add('d-none');
+        document.getElementById('story-footer').classList.remove('d-none');
         cropCanvasBtn.classList.add('active');
 
         // Select option - what Aspect Ratio to crop
@@ -72,8 +72,8 @@ WebFont.load({
           document.getElementById('story-draftimg').setAttribute('is_edited', 'true');
           cropCanvasTemplate(canvas, aspectRatio);
           setTimeout(function(){ 
-            document.getElementById('story-maker-next').classList.remove('nodisplay');
-            document.getElementById('story-footer').classList.add('nodisplay');
+            document.getElementById('story-maker-next').classList.remove('d-none');
+            document.getElementById('story-footer').classList.add('d-none');
           }, 1000);
           cropCanvasBtn.classList.remove('active');
         };

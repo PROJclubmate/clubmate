@@ -17,7 +17,7 @@
           <span class="px-2 py-1 options-btn"><i class="fas fa-link mr-2"></i>Add hyperlink</span>
         </div>
       </div>
-      <div id="event-div" class="d-flex flex-row mx-2 mb-5 nodisplay">
+      <div id="event-div" class="d-flex flex-row mx-2 mb-5 d-none">
         <div class="d-flex flex-column mx-2 my-auto" style="transform: scale(1.25);">
           <div id="calendar-outerdiv" class="text-md mx-2 mb-1" style="opacity: 0.25;">
             <time id="calendar-time" datetime="<%= moment().format('LL') %>" class="calendar">
@@ -40,11 +40,11 @@
             </div>
           </div>
         </div>
-        <div class="fullwidth mx-2">
+        <div class="w-100 mx-2">
 
             <div class="d-flex flex-column">
               <div class="input-group date mt-1" id="datetimepicker-dateonly" data-target-input="nearest">
-                <div class="input-group-prepend nodisplay" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
+                <div class="input-group-prepend d-none" data-target="#datetimepicker-dateonly" data-toggle="datetimepicker">
                   <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                 </div>
                 <input id="event-date" name="eventDate" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-dateonly" placeholder="MM/DD/YYYY (event date)" value="">
@@ -53,7 +53,7 @@
                 </div>
               </div>
               <div class="input-group date mt-1" id="datetimepicker-timeonly" data-target-input="nearest">
-                <div class="input-group-prepend nodisplay" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
+                <div class="input-group-prepend d-none" data-target="#datetimepicker-timeonly" data-toggle="datetimepicker">
                   <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                 </div>
                 <input id="eventTime" name="eventTime" type="text" class="form-control form-control-sm datetimepicker-input commentbox5 text-sm mobiletext3" style="opacity: 0.5;" data-target="#datetimepicker-timeonly" placeholder="h:m:a (event time)" value="">
@@ -69,7 +69,7 @@
 
         </div>
       </div>
-      <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 nodisplay">
+      <div id="hyperlink-div" class="d-flex flex-column mx-2 mb-5 d-none">
         <div class="form-signin">
           <input type="text" class="form-control" name="link" placeholder="Add link for virtual event, etc." value="">
           <input type="text" class="form-control" name="linkText" placeholder="Link Text" value="">
@@ -106,7 +106,7 @@
         </div>
       </div>
     </div>
-    <div class="valign mt-5 fullwidth">
+    <div class="valign mt-5 w-100">
       <div>
         <a href="/clubs/<%= clubId %>/story/create/edit" class="nounderline">
           <button id="story-maker-back" class="story-maker-next btn back" type="button"><i class="fas fa-angle-left mr-2"></i> Back</button>
@@ -122,16 +122,16 @@
 
 <script>
   function eventBtnClick(){
-    $('#event-btn').addClass('nodisplay');
-    $('#event-div').removeClass('nodisplay');
+    $('#event-btn').addClass('d-none');
+    $('#event-div').removeClass('d-none');
     if($('#content').height() >= ($(window).height() - 42 - 36)){
       $('#story-maker-done,#story-maker-back').addClass('relative');
     }
   }
 
   function hyperlinkBtnClick(){
-    $('#hyperlink-btn').addClass('nodisplay');
-    $('#hyperlink-div').removeClass('nodisplay');
+    $('#hyperlink-btn').addClass('d-none');
+    $('#hyperlink-div').removeClass('d-none');
     if($('#content').height() >= ($(window).height() - 42 - 36)){
       $('#story-maker-done,#story-maker-back').addClass('relative');
     }
@@ -139,9 +139,9 @@
 
   document.getElementById('save_checkbox').addEventListener('change', (event) => {
     if(event.currentTarget.checked){
-      $('#save_to_album').removeClass('nodisplay');
+      $('#save_to_album').removeClass('d-none');
     } else{
-      $('#save_to_album').addClass('nodisplay');
+      $('#save_to_album').addClass('d-none');
     }
   })
 

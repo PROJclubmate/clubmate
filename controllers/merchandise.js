@@ -1,8 +1,8 @@
 const mongoose = require("mongoose"),
-  Merchandise = require("../models/merchandise"),
-  Club = require("../models/club"),
-  CollegePage = require("../models/college-page"),
-  clConfig = require("../config/cloudinary");
+  Merchandise  = require("../models/merchandise"),
+  Club         = require("../models/club"),
+  CollegePage  = require("../models/college-page"),
+  clConfig     = require("../config/cloudinary");
 
 if (process.env.ENVIRONMENT === "dev") {
   var cdn_prefix = "https://res.cloudinary.com/dubirhea4/";
@@ -10,34 +10,16 @@ if (process.env.ENVIRONMENT === "dev") {
   var cdn_prefix = "https://d367cfssgkev4p.cloudfront.net/";
 }
 
+
 const newlyArrivedCount = 4;
 
-function capitalCase(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-function filterEmptyStrings(arr) {
-  return arr.filter(function (elem) {
-    return (elem !== "");
-  });
-}
-
-function getCategories() {
-  const categories = ["wearables", "accessories", "stickers"];
-  return categories;
-}
-
 module.exports = {
-  async displayNewlyArrivedMerchandise(req, res, next) {
+	async displayNewlyArrivedMerchandise(req, res, next) {
     const foundMerch = await Merchandise.findOne({
       college: req.user.userKeys.college,
     });
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-1)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-1)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
@@ -47,31 +29,22 @@ module.exports = {
     for (let i = 0; i < categories.length; i++) {
       allMerchItems.push(...foundMerch[categories[i]]);
     }
-
     let merchItems = allMerchItems.sort(function (merch1, merch2) {
       return merch1.createdAt - merch2.createdAt;
     });
-
     if (merchItems.length > newlyArrivedCount) {
       merchItems = merchItems.slice(0, newlyArrivedCount);
     }
 
-    res.render("merch/index.ejs", {
-      merchItems: merchItems,
-      name: "New Arrivals",
-    });
+    res.render("merch/index", { merchItems: merchItems, name: "New Arrivals", collegeName: req.user.userKeys.college });
   },
 
-  async displayAllMerchandise(req, res, next) {
+	async displayAllMerchandise(req, res, next) {
     const foundMerch = await Merchandise.findOne({
       college: req.user.userKeys.college,
     });
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-2)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-2)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
@@ -81,15 +54,11 @@ module.exports = {
     for (let i = 0; i < categories.length; i++) {
       allMerchItems.push(...foundMerch[categories[i]]);
     }
-
     const merchItems = allMerchItems.sort(function (merch1, merch2) {
       return merch1.createdAt - merch2.createdAt;
     });
 
-    res.render("merch/index.ejs", {
-      merchItems: merchItems,
-      name: "All Products",
-    });
+    res.render("merch/index", { merchItems: merchItems, name: "All Products", collegeName: req.user.userKeys.college });
   },
 
   async addNewMerchandise(req, res, next) {
@@ -101,10 +70,10 @@ module.exports = {
     const foundClubs = await Club.find().where('_id').in(allClubIds).select('name').exec();
     if (foundClubs == null) {
       req.flash("error", "No clubs present in college :(");
-      req.redirect("/merchandise");
+      return req.redirect("/merchandise");
     }
 
-    res.render("merch/add_merchandise", { clubs: foundClubs });
+    res.render("merch/add", { clubs: foundClubs, collegeName: req.user.userKeys.college });
   },
 
   async displayParticularMerchandiseType(req, res, next) {
@@ -119,20 +88,13 @@ module.exports = {
       college: req.user.userKeys.college,
     }).select(reqCategory);
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-3)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-3)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
 
     const merchItems = foundMerch[reqCategory];
-    res.render("merch/index.ejs", {
-      merchItems: merchItems,
-      name: capitalCase(reqCategory),
-    });
+    res.render("merch/index", { merchItems: merchItems, name: capitalCase(reqCategory), collegeName: req.user.userKeys.college });
   },
 
   async displayParticularMerchandiseSubtype(req, res, next) {
@@ -144,28 +106,19 @@ module.exports = {
       return res.redirect("back");
     }
 
-    const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
-    }).select(reqCategory);
+    const foundMerch = await Merchandise.findOne({ college: req.user.userKeys.college}).select(reqCategory);
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-4)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-4)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
-
     const merchTypeItems = foundMerch[reqCategory];
     const merchItems = merchTypeItems.filter(function (merch) {
       if (merch.subCategory === reqSubCategory) return true;
     });
+		const name = capitalCase(reqCategory) + "  /" + capitalCase(reqSubCategory);
 
-    res.render("merch/index.ejs", {
-      merchItems: merchItems,
-      name: capitalCase(reqCategory) + "  /" + capitalCase(reqSubCategory),
-    });
+    res.render("merch/index", { merchItems: merchItems, name: name, collegeName: req.user.userKeys.college });
   },
 
   async uploadNewMerchandise(req, res, next) {
@@ -196,11 +149,7 @@ module.exports = {
       college: req.user.userKeys.college,
     });
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-5)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-5)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
@@ -233,11 +182,7 @@ module.exports = {
           }
         }
       } catch (err) {
-        logger.error(
-          req.user._id +
-          " : (merchandise-6)uploadMerchandise err => " +
-          JSON.stringify(err, null, 2)
-        );
+        logger.error(req.user._id+" : (merchandise-6)uploadMerchandise err => "+err);
         req.flash("error", "Something went wrong :(");
         return res.redirect("back");
       }
@@ -314,34 +259,24 @@ module.exports = {
       return res.redirect("back");
     }
 
-    const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
-    }).select(reqCategory);
+    const foundMerch = await Merchandise.findOne({ college: req.user.userKeys.college }).select(reqCategory);
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-7)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-7)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
-
     const merchItem = foundMerch[reqCategory].id(merchId);
     if (!merchItem) {
       req.flash("error", "Merch not found");
       return res.redirect("back");
     }
 
-    res.render("merch/show_product", { merchItem: merchItem });
+    res.render("merch/show", { merchItem: merchItem, collegeName: req.user.userKeys.college });
   },
 
   async updateMerchandise(req, res, next) {
     if (!req.user.isCollegeLevelAdmin) {
-      req.flash(
-        "error",
-        "You are not authorized to update the merchandise"
-      );
+      req.flash("error", "You are not authorized to update the merchandise");
       return res.redirect("back");
     }
 
@@ -360,11 +295,7 @@ module.exports = {
       college: req.user.userKeys.college,
     }).select(reqCategory);
     if (foundMerch == null) {
-      logger.error(
-        req.user._id +
-        " : (merchandise-8)findMerchandise err => " +
-        "No merchandise document found"
-      );
+      logger.error(req.user._id+" : (merchandise-8)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
       return res.redirect("back");
     }
@@ -435,11 +366,25 @@ module.exports = {
         }
       }
     } catch (err) {
-      logger.error(
-        req.user._id + " : (merchandise-10)deleteImage err => " + err);
+      logger.error(req.user._id + " : (merchandise-10)deleteImage err => " + err);
     }
 
     req.flash("success", "Merchandise deleted!");
     return res.redirect("/merchandise");
   },
 };
+
+function capitalCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function filterEmptyStrings(arr) {
+  return arr.filter(function (elem) {
+    return (elem !== "");
+  });
+}
+
+function getCategories() {
+  const categories = ["wearables", "accessories", "stickers"];
+  return categories;
+}

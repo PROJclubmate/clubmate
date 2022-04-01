@@ -74,9 +74,9 @@ div.content{
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
   .mobileNoneFlex{display: flex !important;}
-  .scroll::-webkit-scrollbar{width: 0.25rem; height: 0.25rem;}
+  .scroll::-webkit-scrollbar{width: 0.375rem; height: 0.25rem;}
   .scroll::-webkit-scrollbar-track{background: transparent;}
-  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey; border-radius: 0.25rem;}
+  .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
   #college_scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
@@ -215,9 +215,10 @@ div.content{
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.8125rem !important;}
   #college-cover.mobileblurred{filter: blur(10px);}
-  .college-infobtn{width: 56px !important; height: 56px !important;}
+  .college-infobtn{width: 56px !important; height: 56px !important; text-align: center;}
   #discover-load-more-btn{margin-bottom: 4rem;}
   #view_all_friends{margin-bottom: 3rem;}
+  #quickmodal{margin-bottom: 42px;}
 }
 /* Mobile Phones */
 @media screen and (max-width: 767px){
@@ -368,7 +369,8 @@ div.content{
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
   .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
-  .college-infobtn{width: 56px !important; height: 56px !important; box-shadow: 0px 0px 3px -1px rgb(0, 0, 0, 0.4);}
+  .college-infobtn{width: 56px !important; height: 56px !important; box-shadow: 0px 0px 3px -1px rgb(0, 0, 0, 0.4);
+    text-align: center;}
   #college-cover.mobileblurred{filter: blur(10px);}
   #college-infobtn-mobile{padding: 1rem 0 !important;}
   .mail-wrap{padding-top: 0.375rem !important;}
@@ -380,6 +382,11 @@ div.content{
   .story-maker-options{padding: 0.25rem 0.5rem !important;}
   #story-draft-preview{margin-left: auto !important;}
   #quickview_nav_mobile{padding: 12px 10px !important;}
+  #quickmodal{margin-bottom: 47px;}
+  .topnotch-right:before{right: 0.25rem !important;}
+  .topnotch-left:before{left: 0.25rem !important;}
+  .post-container{margin-left: 0.25rem; margin-right: 0.25rem;}
+  #page_minheight_100{min-height: 100vh;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -415,7 +422,7 @@ div.content{
   .story-alt, .story-alt-loader{height: 76px !important; width: 76px !important;}
   .story-alt-label{width: 76px !important;}
   .navdp{height: 40px !important; width: 40px !important;}
-  .collegedp{height: 62px !important; width: 62px !important;}
+  .collegedp{height: 58px !important; width: 58px !important;}
   button.vote{font-size: 1.625rem !important;}
   img.postimg{height: 25.75rem !important;}
   img.postimg.topicimg{height: 20rem !important;}
@@ -489,6 +496,7 @@ div.content{
 @media screen and (max-width: 385px){
   .sidebar a, a.side-drop-elem{padding: 14px 11px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
+  .collegedp{height: 54px !important; width: 54px !important;}
   .friends-dp{height: 5.4065rem !important;}
   .mobiletext1{font-size: 1rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
@@ -569,7 +577,7 @@ div.content{
   .story-alt, .story-alt-loader{height: 66px !important; width: 66px !important; border-radius: 1.5rem !important;}
   .story-alt-label{width: 66px !important;}
   .navdp{height: 36px !important; width: 36px !important;}
-  .collegedp{height: 54px !important; width: 54px !important;}
+  .collegedp{height: 50px !important; width: 50px !important;}
   button.vote{font-size: 1.5rem !important;}
   img.postimg{height: 22.5rem !important;}
   img.postimg.topicimg{height: 18rem !important;}
@@ -806,8 +814,8 @@ option:disabled{
 .py-15{
   padding: 0.15rem 0;
 }
-.fullwidth{
-  width: 100% !important;
+.width-autofill{
+  width: -webkit-fill-available;
 }
 .absolute-center{
   position: absolute;
@@ -1563,7 +1571,6 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   color: red !important;
 }
 /*None elements*/
-.nodisplay{display: none !important;}
 .commentbtn, .newClub_form, .user_Rank, .status, .pushmsg, .subpostbtns, .clear_update, #toggle_profile_form,
 #account_info_form_div, #personal_info_form_div, #aboutme_form_div, #followon_form_div, #interests_form_div,
 #recommends_form1_div, #recommends_form2_div, #recommends_form3_div, #recommends_form4_div, #recommends_form5_div, 
@@ -1791,6 +1798,18 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border-color: #efefef;
   background-color: white !important;
 }
+.btn-info{
+  border-color: #1491a5;
+  background-color: #17a2b8;
+}
+.btn-info:hover{
+  border-color: #128193;
+  background-color: #1491a5;
+}
+.btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show>.btn-info.dropdown-toggle{
+  border-color: #107180;
+  background-color: #128193;
+}
 .btn.moderation.btn-info{
   border-color: transparent;
   background-color: transparent;
@@ -1833,17 +1852,29 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border-color: #595959 !important;
   background-color: #666666 !important;
 }
+.btn-warning{
+  border-color: #e5ad06;
+  background-color: #ffc107;
+}
+.btn-warning:hover{
+  border-color: #cc9a05;
+  background-color: #e5ad06;
+}
+.btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show>.btn-warning.dropdown-toggle{
+  border-color: #b28704;
+  background-color: #cc9a05;
+}
 .btn-danger{
-  border-color: #d85454 !important;
-  background-color: #f15e5e !important;
+  border-color: #d85454;
+  background-color: #f15e5e;
 }
 .btn-danger:hover, .modal-confirm .btn-danger:focus{
-  border-color: #d85454 !important;
-  background-color: #d85454 !important;
+  border-color: #c04b4b;
+  background-color: #d85454;
 }
 .btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle{
-  border-color: #a84141 !important;
-  background-color: #c04b4b !important;
+  border-color: #a84141;
+  background-color: #c04b4b;
 }
 .btn{
   vertical-align: baseline;
@@ -2000,8 +2031,14 @@ div.alert{
 .nounderline a:hover{
   text-decoration: none !important;
 }
+/* Child has class no link */
 a .nolink{
   color: #262626;
+  text-decoration: none !important;
+}
+/* Link itself has class */
+a.nolink{
+  color: inherit;
   text-decoration: none !important;
 }
 .info1{
@@ -2065,7 +2102,7 @@ a .nolink{
 }
 .commentbox6{
   margin: 0;
-  border-radius: 0 0.75rem 0.75rem 0.75rem !important;
+  border-radius: 0 0.5rem 0.5rem 0.5rem !important;
 }
 .inline{
   display: inline;
@@ -2250,9 +2287,12 @@ ul{
   vertical-align: text-top;
 }
 .badge-warning{
-  background-color: #fffced;
+  background-color: #fcf8e3;
   border: 1px solid #ffc107;
   color: #343a40;
+}
+mark, .mark{
+  border: 1px solid #ffecb4;
 }
 .badge-danger{
   background-color: #dc3545;
@@ -3003,9 +3043,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   right: 0 !important;
 }
 /**************************************************************************************************/
-.modal-backdrop{
-  background-color: white;
-}
 .modal-confirm .modal-content{
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -3820,7 +3857,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   background-color: rgba(255, 255, 255, 0.25);
 }
 .college-infobtn{
-  text-align: center;
   border-radius: 1.5rem;
   cursor: pointer;
   transition: ease-out 0.15s;
@@ -3842,6 +3878,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   bottom: 0;
   left: 0;
   padding: 2rem 0 0 0;
+  z-index: 2000;
 }
 #quickview_nav_mobile{
   position: fixed;
@@ -3849,6 +3886,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   top: unset; 
   background-color: #f8f9fa;
   border-top: 0.5px solid rgba(0,0,0,0.05);
+  z-index: 2000;
 }
 .quickviewbtns-desktop{
   width: 3.25rem;
@@ -3860,9 +3898,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   color: #262626;
   background-color: unset !important;
 }
-.quickviewbtns-desktop.active{
-  background-color: #e0e0e0 !important;
-  color: #262626;
+.quickviewcontainers-desktop.active > .quickviewbtns-desktop{
+  background-color: white !important;
+  color: black;
 }
 .room-container-div{
   padding: 0.5rem;
@@ -3882,8 +3920,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .room-container:hover{
   color: #343a40;
-  border-width: 3px;
-  margin: -2px;
+  border-color: silver;
+  border-width: 2px;
+  margin: -1px;
 }
 .room-del {
   position: absolute;
@@ -3924,6 +3963,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 #not_in_room{
   opacity: 0.35;
 }
+.d-none{
+  display: none !important;
+}
 .btn-google{
   border: 1px solid white;
   border-width: 1px !important;
@@ -3951,6 +3993,13 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 
 /* College level tools - Quick view buttons */
+.quicknav_text_desktop{
+  visibility: hidden;
+}
+.quickviewcontainers-desktop.active .quicknav_text_desktop{
+  visibility: visible;
+  color: black;
+}
 .quicknav_list_mobile{
   list-style: none;
   align-items: center;

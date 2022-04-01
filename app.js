@@ -1,27 +1,27 @@
-const express = require("express"),
-  helmet = require("helmet"),
-  app = express(),
-  bodyParser = require("body-parser"),
-  csrf = require("csurf"),
-  http = require("http").Server(app),
-  io = require("socket.io")(http),
-  cookieSession = require("cookie-session"),
-  mongoose = require("mongoose"),
-  flash = require("connect-flash"),
-  passport = require("passport"),
-  LocalStrategy = require("passport-local"),
+const express    = require("express"),
+  helmet         = require("helmet"),
+  app            = express(),
+  bodyParser     = require("body-parser"),
+  csrf           = require("csurf"),
+  http           = require("http").Server(app),
+  io             = require("socket.io")(http),
+  cookieSession  = require("cookie-session"),
+  mongoose       = require("mongoose"),
+  flash          = require("connect-flash"),
+  passport       = require("passport"),
+  LocalStrategy  = require("passport-local"),
   GoogleStrategy = require("passport-google-oauth20").Strategy,
   methodOverride = require("method-override"),
-  dotenv = require("dotenv").config(),
-  User = require("./models/user"),
-  Club = require("./models/club"),
-  Mess = require("./models/mess"),
-  Merchandise = require("./models/merchandise"),
-  Story = require("./models/story");
-clConfig = require('./config/cloudinary'),
-  s3Config = require('./config/s3'),
-  logger = require('./logger'),
-  port = 8080;
+  dotenv         = require("dotenv").config(),
+  User           = require("./models/user"),
+  Club           = require("./models/club"),
+  Mess           = require("./models/mess"),
+  Merchandise    = require("./models/merchandise"),
+  Story          = require("./models/story");
+  clConfig       = require('./config/cloudinary'),
+  s3Config       = require('./config/s3'),
+  logger         = require('./logger'),
+  port           = 8080;
 
 if (process.env.ENVIRONMENT === 'dev') {
   var url = 'mongodb://localhost/ghost_dev';
@@ -46,17 +46,17 @@ if (process.env.ENVIRONMENT === 'dev') {
 }
 
 //Requiring routes
-const indexRoutes = require("./routes/index"),
-  chatRoutes = require("./routes/chats"),
-  audioRoomRoutes = require("./routes/audio_rooms"),
-  storyRoutes = require("./routes/stories"),
-  profileRoutes = require("./routes/profiles"),
-  postRoutes = require("./routes/posts"),
-  commentRoutes = require("./routes/comments"),
-  messRoutes = require("./routes/mess");
-merchandiseRoutes = require("./routes/merchandise"),
-  blogRoutes = require('./routes/blog'),
-  discussionRoutes = require("./routes/discussions"),
+const indexRoutes    = require("./routes/index"),
+  chatRoutes         = require("./routes/chats"),
+  audioRoomRoutes    = require("./routes/audio_rooms"),
+  storyRoutes        = require("./routes/stories"),
+  profileRoutes      = require("./routes/profiles"),
+  postRoutes         = require("./routes/posts"),
+  commentRoutes      = require("./routes/comments"),
+  messRoutes         = require("./routes/mess");
+  merchandiseRoutes  = require("./routes/merchandise"),
+  blogRoutes         = require('./routes/blog'),
+  discussionRoutes   = require("./routes/discussions"),
   conversationRoutes = require("./routes/conversations")(io);
 
 
@@ -232,7 +232,6 @@ app.use(async function (req, res, next) {
             if (foundStory.seenByUserIds.includes(req.user._id)) curStorySeen = true;
             allSeen = (allSeen && curStorySeen);
             if (curStorySeen) currentItem++;
-            // console.log("here")
             clubStories.push(foundStory);
 
             if (foundStory.timestamp)
@@ -249,7 +248,6 @@ app.use(async function (req, res, next) {
           });
         }
         if (clubStories.length) {
-          // console.log(foundClub.name , lastUpdated);
 
           if (currentItem >= clubStories.length)
             currentItem = 0;      // All stories are seen, so start from 0
@@ -317,6 +315,6 @@ app.use('/', postRoutes);
 app.use('/', commentRoutes);
 app.use('/', discussionRoutes);
 app.use('/', conversationRoutes);
-app.use('/', messRoutes);
-app.use('/', merchandiseRoutes);
-app.use('/colleges/:collegeId', blogRoutes);
+app.use('/colleges/:college_name', messRoutes);
+app.use('/colleges/:college_name', merchandiseRoutes);
+app.use('/colleges/:college_name', blogRoutes);

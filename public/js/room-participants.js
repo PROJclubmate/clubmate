@@ -1,8 +1,8 @@
 // VIEW Participants
 
 $('#viewParticipantsBtn').on('click', function(){
-  $('#leave_delete_btn').addClass('nodisplay');
-  $('#participantsSearchViewOnly').removeClass('nodisplay');
+  $('#leave_delete_btn').addClass('d-none');
+  $('#participantsSearchViewOnly').removeClass('d-none');
   searchRoomParticipantsViewOnly($('#participantsSearchViewOnly').val());
 });
 
@@ -44,7 +44,7 @@ function showParticipantMatchesViewOnly_template(matches, roomParticipantsList, 
                   <img class="navdp rounded-circle" src="<%= matches[i].profilePic || '/images/noUserFemale.png' %>">
                 <% } %>
               </div>
-              <div class="my-auto fullwidth">
+              <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
                     <span class="grey mobiletext">
@@ -69,8 +69,8 @@ function showParticipantMatchesViewOnly_template(matches, roomParticipantsList, 
 // ADD Partipipants
 
 $('#addParticipantsBtn').on('click', function(){
-  $('#leave_delete_btn').addClass('nodisplay');
-  $('#membersSearch').removeClass('nodisplay');
+  $('#leave_delete_btn').addClass('d-none');
+  $('#membersSearch').removeClass('d-none');
   $('#removeParticipantsBtn').addClass('invisible');
   searchClubMembers($('#membersSearch').val());
 });
@@ -102,9 +102,9 @@ $('#matchDisplayAdd').on('click', '.memberElem', function(e){
   if(status.html() == '<i class="fas fa-minus"></i>'){
     let newValue = Number(countDisplay.attr('value')) + 1;
     if(newValue > 0){
-      if($('#addParticipantsSubmitBtn').hasClass('nodisplay')){
-        $('#addParticipantsBtn').addClass('nodisplay');
-        $('#addParticipantsSubmitBtn').removeClass('nodisplay');
+      if($('#addParticipantsSubmitBtn').hasClass('d-none')){
+        $('#addParticipantsBtn').addClass('d-none');
+        $('#addParticipantsSubmitBtn').removeClass('d-none');
         $('#removeParticipantsBtn').addClass('invisible');
       }
     }
@@ -122,12 +122,12 @@ $('#matchDisplayAdd').on('click', '.memberElem', function(e){
   } else if(status.html() == '<i class="fas fa-plus"></i>'){
     let newValue = Number(countDisplay.attr('value')) - 1;
     if(newValue == 0){
-      if($('#addParticipantsBtn').hasClass('nodisplay')){
-        $('#addParticipantsBtn').removeClass('nodisplay');
-        $('#addParticipantsSubmitBtn').addClass('nodisplay');
+      if($('#addParticipantsBtn').hasClass('d-none')){
+        $('#addParticipantsBtn').removeClass('d-none');
+        $('#addParticipantsSubmitBtn').addClass('d-none');
         $('#removeParticipantsBtn').removeClass('invisible');
         $('#matchDisplayAdd').html('');
-        $('#membersSearch').addClass('nodisplay');
+        $('#membersSearch').addClass('d-none');
       }
     }
     countDisplay.attr('value', newValue);
@@ -179,7 +179,7 @@ function showMemberMatches_template(matches, roomParticipantsList, toBeAddedPart
                   <img class="navdp rounded-circle" src="<%= matches[i].profilePic || '/images/noUserFemale.png' %>">
                 <% } %>
               </div>
-              <div class="my-auto fullwidth">
+              <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
                     <span class="grey mobiletext">
@@ -215,8 +215,8 @@ function addedParticipantsDisplay_template(profilePic, sex){
 // REMOVE Participants
 
 $('#removeParticipantsBtn').on('click', function(){
-  $('#leave_delete_btn').addClass('nodisplay');
-  $('#participantsSearch').removeClass('nodisplay');
+  $('#leave_delete_btn').addClass('d-none');
+  $('#participantsSearch').removeClass('d-none');
   $('#addParticipantsBtn').addClass('invisible');
   searchRoomParticipants($('#participantsSearch').val());
 });
@@ -248,9 +248,9 @@ $('#matchDisplayRemove').on('click', '.participantElem', function(e){
   if(status.html() == '<i class="fas fa-plus"></i>'){
     let newValue = Number(countDisplay.attr('value')) + 1;
     if(newValue > 0){
-      if($('#removeParticipantsSubmitBtn').hasClass('nodisplay')){
-        $('#removeParticipantsBtn').addClass('nodisplay');
-        $('#removeParticipantsSubmitBtn').removeClass('nodisplay');
+      if($('#removeParticipantsSubmitBtn').hasClass('d-none')){
+        $('#removeParticipantsBtn').addClass('d-none');
+        $('#removeParticipantsSubmitBtn').removeClass('d-none');
         $('#addParticipantsBtn').addClass('invisible');
       }
     }
@@ -268,12 +268,12 @@ $('#matchDisplayRemove').on('click', '.participantElem', function(e){
   } else if(status.html() == '<i class="fas fa-minus"></i>'){
     let newValue = Number(countDisplay.attr('value')) - 1;
     if(newValue == 0){
-      if($('#removeParticipantsBtn').hasClass('nodisplay')){
-        $('#removeParticipantsBtn').removeClass('nodisplay');
-        $('#removeParticipantsSubmitBtn').addClass('nodisplay');
+      if($('#removeParticipantsBtn').hasClass('d-none')){
+        $('#removeParticipantsBtn').removeClass('d-none');
+        $('#removeParticipantsSubmitBtn').addClass('d-none');
         $('#addParticipantsBtn').removeClass('invisible');
         $('#matchDisplayRemove').html('');
-        $('#participantsSearch').addClass('nodisplay');
+        $('#participantsSearch').addClass('d-none');
       }
     }
     countDisplay.attr('value', newValue);
@@ -324,7 +324,7 @@ function showParticipantMatches_template(matches, roomParticipantsList, toBeRemo
                   <img class="navdp rounded-circle" src="<%= matches[i].profilePic || '/images/noUserFemale.png' %>">
                 <% } %>
               </div>
-              <div class="my-auto fullwidth">
+              <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
                     <span class="grey mobiletext">

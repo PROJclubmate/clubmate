@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+<script type='text/javascript'>
+  var foundMess = <%- JSON.stringify(foundMess) %>;
+</script>
+
+<div id="page_minheight_100" class="container d-flex justify-content-center align-items-center">
+	<div class="col-md-6 mx-2 my-4">
+		<div class="card shadow">
+			<h5 class="card-header">Edit Mess Menu</h5>
+			<div class="card-body">
+				<form action="/colleges/<%= collegeName %>/mess/edit?_method=PUT" method="POST" method="post">
+					<div class="form-group mb-3">
+						<label for="mess">Select Mess</label>
+						<select class="form-control editmess_select" id="mess" name="mess">
+							<% messNames.forEach(function(h){ %>
+								<option value=<%=h %> ><%= h %>
+								</option>
+								<% }); %>
+						</select>
+					</div>
+					<div class="form-group mb-3">
+						<label for="day">Select Day</label>
+						<select class="form-control editmess_select" id="day" name="day">
+							<option value="Monday">Monday</option>
+							<option value="Tuesday">Tuesday</option>
+							<option value="Wednesday">Wednesday</option>
+							<option value="Thursday">Thursday</option>
+							<option value="Friday">Friday</option>
+							<option value="Saturday">Saturday</option>
+							<option value="Sunday">Sunday</option>
+						</select>
+					</div>
+					<div class="form-group mb-3">
+						<label for="time">Select Meal</label>
+						<select class="form-control editmess_select" id="time" name="time">
+							<option value="Breakfast">Breakfast</option>
+							<option value="Lunch">Lunch</option>
+							<option value="Snacks">Snacks</option>
+							<option value="Dinner">Dinner</option>
+						</select>
+					</div>
+					<div class="form-group mb-3">
+						<label for="dishes">Enter Dishes</label>
+						<div id="dishes_inputs" class="form-inline d-flex justify-content-between w-100">
+							<input type="text" class="form-control info-form" name="dishes" placeholder="">
+						</div>
+					</div>
+					<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+					<div class="form-group my-3 d-flex flex-row-reverse text-center">
+						<button class="btn btn-primary ml-2" type="submit">Update</button>
+						<button onclick="recommends_add('dishes_inputs','dishes','');" class="btn btn-sm btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/js/mess.js"></script>
+<% include ../partials/footer %>

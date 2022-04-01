@@ -1,8 +1,15 @@
-const express  = require('express'),
-  router       = express.Router({mergeParams: true}),
-  middleware   = require('../middleware'),
-  {commentsCreate, commentsEditPage, commentsUpdate, commentsDelete, commentsLoadMore,
-  commentsVote} = require('../controllers/comments');
+const express = require('express'),
+  router      = express.Router({mergeParams: true}),
+  middleware  = require('../middleware');
+
+const {
+  commentsCreate,
+  commentsEditPage,
+  commentsUpdate,
+  commentsDelete, 
+  commentsLoadMore,
+  commentsVote
+} = require('../controllers/comments');
 
 
 // Post new comment
