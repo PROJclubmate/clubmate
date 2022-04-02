@@ -22,11 +22,11 @@ if (process.env.ENVIRONMENT === "dev") {
 }
 
 
-// Discover page
-router.get("/discover", middleware.checkWaitingWall, postsDiscover);
-
 // Discover settings
 router.put("/discover/settings/user/:id", middleware.isLoggedIn, postsDiscoverSettings);
+
+// Discover page
+router.get("/discover", middleware.checkWaitingWall, postsDiscover);
 
 // Discover load more posts(AJAX)
 router.get("/discover-morePosts", middleware.checkWaitingWall, postsDiscoverMorePosts);

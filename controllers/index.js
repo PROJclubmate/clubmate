@@ -1214,8 +1214,12 @@ module.exports = {
       req.flash('error', 'College page has no listed clubs');
       return res.redirect('back');
     } else{
+      var isCollegeLevelAdmin = false;
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
       var match = false; var following = false;
+      if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+        isCollegeLevelAdmin = true;
+      }
       var allClubsArr = foundCollegePage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
@@ -1256,7 +1260,7 @@ module.exports = {
             var foundFriendsPicArr = []; var clubUserIdsArr = [];
             res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
             match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-            todayActiveCount, cdn_prefix});
+            todayActiveCount, isCollegeLevelAdmin, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           });
         } else if(keyValue == 2){
@@ -1315,7 +1319,7 @@ module.exports = {
               }
               res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
               match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-              cdn_prefix});
+              isCollegeLevelAdmin, cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
           });
@@ -1343,7 +1347,7 @@ module.exports = {
             }
           }
           res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
-          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
+          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
@@ -1360,7 +1364,8 @@ module.exports = {
         }
         currentUserId = '';
         return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar,
-        allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
+        allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr,
+        isCollegeLevelAdmin, cdn_prefix});
       }
     }
     });
