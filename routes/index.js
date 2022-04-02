@@ -9,15 +9,15 @@ const {
   indexHelp,
   indexSearch,
   indexSearchEmail,
-  indexSearchPeople, 
-  indexSearchMorePeople,
+  indexSearchUsers, 
+  indexSearchMoreUsers,
   indexSearchClubs,
   indexSearchMoreClubs,
   indexRequests,
   indexMemberRequests,
   indexMemberInfo, 
-  indexFilterSearchPeople,
-  indexFilterSearchMorePeople,
+  indexFilterSearchUsers,
+  indexFilterSearchMoreUsers,
   indexFilterSearchClubs,
   indexFilterSearchMoreClubs, 
   indexViewAllFriends,
@@ -53,17 +53,17 @@ router.get('/search', middleware.checkWaitingWall, indexSearch);
 // Search using email
 router.get('/find_email/search', middleware.checkWaitingWall, indexSearchEmail);
 
-// Search people
-router.get('/find_people/search', middleware.checkWaitingWall, indexSearchPeople);
+// Search users
+router.get('/find_users/search', middleware.checkWaitingWall, indexSearchUsers);
 
-// Search people(Load more using AJAX)
-router.get('/people-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMorePeople);
+// Search users(Load more using AJAX)
+router.get('/users-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMoreUsers);
 
-// Filter search people
-router.get('/find_people/filter_search', middleware.checkWaitingWall, middleware.searchAndFilterPeople, indexFilterSearchPeople);
+// Filter search users
+router.get('/find_users/filter_search', middleware.checkWaitingWall, middleware.searchAndFilterUsers, indexFilterSearchUsers);
 
-// Filter search people(Load more using AJAX)
-router.get('/people-moreResults/filter_search', middleware.checkWaitingWall, indexFilterSearchMorePeople);
+// Filter search users(Load more using AJAX)
+router.get('/users-moreResults/filter_search', middleware.checkWaitingWall, indexFilterSearchMoreUsers);
 
 // Search clubs
 router.get('/find_clubs/search', middleware.checkWaitingWall, indexSearchClubs);
@@ -96,7 +96,7 @@ router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
 router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 // View list of all students in college
-router.get('/all_students/colleges/:college_key', middleware.checkWaitingWall, middleware.searchAndFilterPeople, indexViewAllStudents);
+router.get('/all_students/colleges/:college_key', middleware.checkWaitingWall, middleware.searchAndFilterUsers, indexViewAllStudents);
 
 // View college page
 router.get('/colleges/:college_name', middleware.checkWaitingWall, indexViewCollegePage);

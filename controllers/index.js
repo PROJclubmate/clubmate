@@ -1,10 +1,10 @@
 const User         = require('../models/user'),
   Club             = require('../models/club'),
-  CollegePage      = require('../models/college-page'),
-  ClubConversation = require('../models/club-conversation'),
+  CollegePage      = require('../models/college_page'),
+  ClubConversation = require('../models/club_conversation'),
   Subscription     = require('../models/subscription'),
   clConfig         = require('../config/cloudinary'),
-  s3Config         = require('../config/s3')
+  s3Config         = require('../config/s3'),
   logger           = require('../logger'),
   mongoose         = require('mongoose'),
   webpush          = require('web-push'),
@@ -141,7 +141,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: false, moreUsersUrl: '',
       emailSearch: true, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -150,7 +150,7 @@ module.exports = {
     });
   },
 
-  indexSearchPeople(req, res, next){
+  indexSearchUsers(req, res, next){
     const query = req.query.user;
     User.find({$text: {$search: query}, isVerified: true}, 
       {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
@@ -172,7 +172,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: false, moreUsersUrl: '',
       emailSearch: false, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -181,7 +181,7 @@ module.exports = {
     });
   },
 
-  indexSearchMorePeople(req, res, next){
+  indexSearchMoreUsers(req, res, next){
     const query = req.params.query;
     if(req.query.ids.split(',') != ''){
       var seenIds = req.query.ids.split(',');
@@ -217,14 +217,14 @@ module.exports = {
     });
   },
 
-  indexFilterSearchPeople(req, res, next){
+  indexFilterSearchUsers(req, res, next){
     const query = req.query;
     const {dbQuery} = res.locals;
-    const morePeopleUrl = res.locals.morePeopleUrl;
+    const moreUsersUrl = res.locals.moreUsersUrl;
     const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
     delete res.locals.coordinates;
-    delete res.locals.morePeopleUrl;
+    delete res.locals.moreUsersUrl;
     delete res.locals.filterKeys;
     User.find(dbQuery).select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
     .limit(10).exec(function(err, foundUsers){
@@ -247,7 +247,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys,
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: true, moreUsersUrl, filterKeys,
       emailSearch: false, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -256,7 +256,7 @@ module.exports = {
     });
   },
 
-  async indexFilterSearchMorePeople(req, res, next){
+  async indexFilterSearchMoreUsers(req, res, next){
     const query = req.query;
     const dbQueries = [];
     if(req.query.ids.split(',') != ''){
@@ -1149,7 +1149,7 @@ module.exports = {
       const coordinates = JSON.stringify(res.locals.coordinates, null, 2);
       delete res.locals.dbQuery;
       delete res.locals.coordinates;
-      delete res.locals.morePeopleUrl;
+      delete res.locals.moreUsersUrl;
       delete res.locals.filterKeys;
       if(req.query.batch){
         var queryName = 'batch';
@@ -1214,8 +1214,12 @@ module.exports = {
       req.flash('error', 'College page has no listed clubs');
       return res.redirect('back');
     } else{
+      var isCollegeLevelAdmin = false;
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
       var match = false; var following = false;
+      if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+        isCollegeLevelAdmin = true;
+      }
       var allClubsArr = foundCollegePage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
@@ -1256,7 +1260,7 @@ module.exports = {
             var foundFriendsPicArr = []; var clubUserIdsArr = [];
             res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
             match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-            todayActiveCount, cdn_prefix});
+            todayActiveCount, isCollegeLevelAdmin, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           });
         } else if(keyValue == 2){
@@ -1315,7 +1319,7 @@ module.exports = {
               }
               res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
               match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-              cdn_prefix});
+              isCollegeLevelAdmin, cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
           });
@@ -1343,7 +1347,7 @@ module.exports = {
             }
           }
           res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
-          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
+          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
@@ -1360,7 +1364,8 @@ module.exports = {
         }
         currentUserId = '';
         return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar,
-        allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, cdn_prefix});
+        allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr,
+        isCollegeLevelAdmin, cdn_prefix});
       }
     }
     });

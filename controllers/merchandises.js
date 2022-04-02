@@ -1,8 +1,9 @@
 const mongoose = require("mongoose"),
   Merchandise  = require("../models/merchandise"),
   Club         = require("../models/club"),
-  CollegePage  = require("../models/college-page"),
-  clConfig     = require("../config/cloudinary");
+  CollegePage  = require("../models/college_page"),
+  clConfig     = require("../config/cloudinary"),
+  s3Config     = require('../config/s3');
 
 if (process.env.ENVIRONMENT === "dev") {
   var cdn_prefix = "https://res.cloudinary.com/dubirhea4/";

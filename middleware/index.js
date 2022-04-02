@@ -39,6 +39,35 @@ middlewareObj.isLoggedIn = function(req, res, next){
   res.redirect('/login');
 };
 
+middlewareObj.isInCollege = function(req, res, next){
+  if(req.isAuthenticated()){
+    if(process.env.WAITING_WALL == 'true'){
+      return res.redirect('/waiting');
+    } else{
+      if(req.user.userKeys.college == req.params.college_name){
+        return next();
+      }
+    }
+  }
+  req.flash('error', 'Only people of this college can see this page');
+  res.redirect('back');
+};
+
+middlewareObj.isCollegeLevelAdmin = function(req, res, next){
+  if(req.isAuthenticated()){
+    if(process.env.WAITING_WALL == 'true'){
+      return res.redirect('/waiting');
+    } else{
+      if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+        // Also check if college document contains userId
+        return next();
+      }
+    }
+  }
+  req.flash('error', 'Only college level admins can see this page');
+  res.redirect('back');
+};
+
 middlewareObj.checkCommentOwnership = function(req, res, next){
   if(req.isAuthenticated()){
     Comment.findOne({_id: req.params.bucket_id}, {comments: {$elemMatch: {_id: req.params.comment_id}}},
@@ -91,7 +120,7 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
   next();
 };
 
-middlewareObj.searchAndFilterPeople = async function(req, res, next){
+middlewareObj.searchAndFilterUsers = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
@@ -161,7 +190,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   }
   // res.locals.query = req.query;
   res.locals.coordinates = coordinates;
-  res.locals.morePeopleUrl = req.originalUrl;
+  res.locals.moreUsersUrl = req.originalUrl;
   res.locals.filterKeys = filterKeys;
   next();
 };

@@ -53,10 +53,11 @@ const indexRoutes    = require("./routes/index"),
   profileRoutes      = require("./routes/profiles"),
   postRoutes         = require("./routes/posts"),
   commentRoutes      = require("./routes/comments"),
-  messRoutes         = require("./routes/mess");
-  merchandiseRoutes  = require("./routes/merchandise"),
-  blogRoutes         = require('./routes/blog'),
+  messRoutes         = require("./routes/messes");
+  merchandiseRoutes  = require("./routes/merchandises"),
+  blogRoutes         = require('./routes/blogs'),
   discussionRoutes   = require("./routes/discussions"),
+  collegeAdminRoutes = require("./routes/college_admins"),
   conversationRoutes = require("./routes/conversations")(io);
 
 
@@ -315,6 +316,7 @@ app.use('/', postRoutes);
 app.use('/', commentRoutes);
 app.use('/', discussionRoutes);
 app.use('/', conversationRoutes);
-app.use('/colleges/:college_name', messRoutes);
-app.use('/colleges/:college_name', merchandiseRoutes);
-app.use('/colleges/:college_name', blogRoutes);
+app.use('/', messRoutes);
+app.use('/', merchandiseRoutes);
+app.use('/', collegeAdminRoutes);
+app.use('/', blogRoutes);

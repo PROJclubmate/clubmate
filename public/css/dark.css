@@ -218,7 +218,7 @@ button.gb.gb8:focus{
   background: none !important;
 }
 .btn.btn-light{
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3), inset 0px 5px 10px -5px rgba(225, 235, 255, 0.25);
 }
 .btn.btn-light:hover,
 .btn-secondary:hover, .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{

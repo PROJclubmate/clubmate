@@ -8,7 +8,7 @@
 			<div class="ml-2 mt-5 mobiletext4 boldtext">Search for :-</div>
 		<% } %>
 		<br>
-		<form action="/find_people/search" method="GET">
+		<form action="/find_users/search" method="GET">
 			<span class="text-sm boldtext lightgrey ml-2"><i class="far fa-hand-point-right"></i> </span>
 			<button class="btn-search ml-2" type="submit" value="<%= query %>" name="user">People</button>
 		</form>
@@ -24,11 +24,11 @@
 							<div class="d-inline-flex">
 								<div>
 						      <a href="/users/<%= users[k]._id %>">
-										<% if(!users[k].userKeys.sex == 'Male'){ %>
+										<% if(!users[k].userKeys.sex){ %>
 											<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUser.png' %>">
-										<% } else if(users[k].userKeys.sex == 'Male' == 'Male'){ %>
+										<% } else if(users[k].userKeys.sex == 'Male'){ %>
 											<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUserMale.png' %>">
-										<% } else if(users[k].userKeys.sex == 'Male' == 'Female'){ %>
+										<% } else if(users[k].userKeys.sex == 'Female'){ %>
 											<img class="searchdp mx-0" src="<%= Users_100_profilePic[k] || '/images/noUserFemale.png' %>">
 										<% } %>
 			          	</a>

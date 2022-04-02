@@ -1,6 +1,11 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
+	<div class="desktopNone tabletShow w-100 mt-3 mx-2">
+		<a href="/colleges/<%= college_page.name %>/admin/console" class="btn btn-light discoverswitch text-lg w-100">
+			Go to admin console
+		</a>
+	</div>
 	<div id="college_scroll" class="col-lg-9 card scroll_list_container scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
 		<div class="college-infodiv desktopNone tabletShow">
 			<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
@@ -238,7 +243,7 @@
 		</div>
 	</div>
 	<div class="col-md-4 col-lg-3 px-2">
-		<div class="mobileNone">
+		<div class="mobileNone tabletNone">
 			<div class="d-flex flex-column mt-3 py-1 darkgrey">
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
 					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">
@@ -274,6 +279,13 @@
 						<div class="my-auto ml-3 lightgrey">Mess menu</div>
 					</a>
 				</div>
+			</div>
+
+			<div>
+				<a href="/colleges/<%= college_page.name %>/admin/console" 
+				class="btn btn-light discoverswitch text-lg w-100" style="position: absolute; bottom: 0;">
+					Go to admin console
+				</a>
 			</div>
 		</div>
   </div>

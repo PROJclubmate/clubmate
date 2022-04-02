@@ -3963,6 +3963,9 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 #not_in_room{
   opacity: 0.35;
 }
+.w-100{
+  width: 100% !important;
+}
 .d-none{
   display: none !important;
 }
