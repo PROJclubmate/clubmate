@@ -1,0 +1,19 @@
+<% blogs.reverse() %>
+<% blogs.forEach(function (blog) { %>
+
+  <div>
+    <br>
+    <div><%= JSON.stringify(blog, null, 2) %> </div>
+    <br>
+    <div style="display: flex; gap: 20px;">
+      <form action="/colleges/<%= college %>/blogs/publish/approve?_method=PUT" method="POST">
+        <button type="submit" name="blogId" value="<%= blog._id %>">Approve</button>
+      </form>
+      <form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="POST">
+        <button type="submit" name="blogId" value="<%= blog._id %>">Remove</button>
+      </form>
+    </div>
+    <hr>
+  </div>
+  
+<% }) %>  

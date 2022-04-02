@@ -55,6 +55,7 @@ const indexRoutes    = require("./routes/index"),
   commentRoutes      = require("./routes/comments"),
   messRoutes         = require("./routes/messes");
   merchandiseRoutes  = require("./routes/merchandises"),
+  blogRoutes         = require('./routes/blogs'),
   discussionRoutes   = require("./routes/discussions"),
   collegeAdminRoutes = require("./routes/college_admins"),
   conversationRoutes = require("./routes/conversations")(io);
@@ -318,3 +319,4 @@ app.use('/', conversationRoutes);
 app.use('/', messRoutes);
 app.use('/', merchandiseRoutes);
 app.use('/', collegeAdminRoutes);
+app.use('/', blogRoutes);
