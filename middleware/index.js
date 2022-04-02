@@ -120,7 +120,7 @@ middlewareObj.searchAndFilterClubs = async function(req, res, next){
   next();
 };
 
-middlewareObj.searchAndFilterPeople = async function(req, res, next){
+middlewareObj.searchAndFilterUsers = async function(req, res, next){
   const queryKeys = Object.keys(req.query); const filterKeys = {};
   if(queryKeys.length){
     const dbQueries = [];
@@ -190,7 +190,7 @@ middlewareObj.searchAndFilterPeople = async function(req, res, next){
   }
   // res.locals.query = req.query;
   res.locals.coordinates = coordinates;
-  res.locals.morePeopleUrl = req.originalUrl;
+  res.locals.moreUsersUrl = req.originalUrl;
   res.locals.filterKeys = filterKeys;
   next();
 };

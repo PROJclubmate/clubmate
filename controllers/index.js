@@ -141,7 +141,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: false, moreUsersUrl: '',
       emailSearch: true, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -150,7 +150,7 @@ module.exports = {
     });
   },
 
-  indexSearchPeople(req, res, next){
+  indexSearchUsers(req, res, next){
     const query = req.query.user;
     User.find({$text: {$search: query}, isVerified: true}, 
       {score: {$meta: 'textScore'}}).sort({score: {$meta: 'textScore'}})
@@ -172,7 +172,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: false, morePeopleUrl: '',
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: false, moreUsersUrl: '',
       emailSearch: false, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -181,7 +181,7 @@ module.exports = {
     });
   },
 
-  indexSearchMorePeople(req, res, next){
+  indexSearchMoreUsers(req, res, next){
     const query = req.params.query;
     if(req.query.ids.split(',') != ''){
       var seenIds = req.query.ids.split(',');
@@ -217,14 +217,14 @@ module.exports = {
     });
   },
 
-  indexFilterSearchPeople(req, res, next){
+  indexFilterSearchUsers(req, res, next){
     const query = req.query;
     const {dbQuery} = res.locals;
-    const morePeopleUrl = res.locals.morePeopleUrl;
+    const moreUsersUrl = res.locals.moreUsersUrl;
     const filterKeys = res.locals.filterKeys;
     delete res.locals.dbQuery;
     delete res.locals.coordinates;
-    delete res.locals.morePeopleUrl;
+    delete res.locals.moreUsersUrl;
     delete res.locals.filterKeys;
     User.find(dbQuery).select({isVerified: 1, fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1, note: 1, email: 1})
     .limit(10).exec(function(err, foundUsers){
@@ -247,7 +247,7 @@ module.exports = {
           Users_100_profilePic[l] = s3Config.thumb_200_prefix+foundUsers[l].profilePicId;
         }
       }
-      res.render('search/people',{users: foundUsers, query, foundUserIds, filter: true, morePeopleUrl, filterKeys,
+      res.render('search/users',{users: foundUsers, query, foundUserIds, filter: true, moreUsersUrl, filterKeys,
       emailSearch: false, Users_100_profilePic, cdn_prefix});
       if(req.user){
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -256,7 +256,7 @@ module.exports = {
     });
   },
 
-  async indexFilterSearchMorePeople(req, res, next){
+  async indexFilterSearchMoreUsers(req, res, next){
     const query = req.query;
     const dbQueries = [];
     if(req.query.ids.split(',') != ''){
@@ -1149,7 +1149,7 @@ module.exports = {
       const coordinates = JSON.stringify(res.locals.coordinates, null, 2);
       delete res.locals.dbQuery;
       delete res.locals.coordinates;
-      delete res.locals.morePeopleUrl;
+      delete res.locals.moreUsersUrl;
       delete res.locals.filterKeys;
       if(req.query.batch){
         var queryName = 'batch';

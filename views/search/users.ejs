@@ -32,7 +32,7 @@
 			<% } %><strong>)</strong>
 		</div>
 	<% } %>
-	<div id="server-search-people" class="mo-mx-2">
+	<div id="server-search-users" class="mo-mx-2">
 		<% var len = users.length; var k=0; for(k;k<len;k++){ %>
 			<div class="card searchcard2 border-light">
 				<div class="d-flex flex-row">
@@ -84,25 +84,25 @@
 		  </div>
 		<% } %>
 	</div>
-	<div id="client-search-people" class="mo-mx-2"></div>
+	<div id="client-search-users" class="mo-mx-2"></div>
 	<% if(!filter){ %>
 		<div class="text-center mt-2">
 			<% if((users.length != 0 && !users.length < 10) && !emailSearch){ %>
-	    	<button id="load-more-search-people-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-search-users-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-search-people-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-search-users-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
 	    <% } %>
-	    	<span id="load-more-search-people-span"></span>Load More
+	    	<span id="load-more-search-users-span"></span>Load More
 	    </button>
 	  </div>
 	<% } else{ %>
 	  <div class="text-center mt-2">
 			<% if(users.length != 0 && !users.length < 10){ %>
-	    	<button id="load-more-filterSearch-people-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-filterSearch-users-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundUserIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-filterSearch-people-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
+	    	<button id="load-more-filterSearch-users-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundUserIds %>">
 	    <% } %>
-	    	<span id="load-more-filterSearch-people-span"></span>Load More
+	    	<span id="load-more-filterSearch-users-span"></span>Load More
 	    </button>
 	  </div>
 	<% } %>
@@ -127,18 +127,18 @@
 	    <span><button class="btn-search text-lg ml-2" onclick="toggle_display('user_filter'); toggle_display('user_email');">Filter search</button></span>
 	  </div>
     <% if(query){ %>
-    	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
+    	<form id="user_filter" class="form-signin" action="/find_users/filter_search" method="GET">
     <% } else{ %>
-    	<form id="user_filter" class="form-signin" action="/find_people/filter_search" method="GET">
+    	<form id="user_filter" class="form-signin" action="/find_users/filter_search" method="GET">
     <% } %>
 			<label for="search" class="sr-only">Search</label>
 			<input class="form-control text-center commentbox mb-2" type="text" placeholder="Name" name="users" id="search" value="<%= query.users %>">
 			<h6 class="m-0 p-0 mb-1">User keys</h6>
       <div>
       	<label for="college" class="sr-only">College</label>
-				<input list="college" class="form-control form-control-sm select_dark" name="college" pattern="JIIT Noida Sector 62" value="<%= query.college %>" placeholder="Your College">
+				<input list="college" class="form-control form-control-sm select_dark" name="college" pattern="IIT Mandi" value="<%= query.college %>" placeholder="Your College">
 				<datalist id="college">
-					<option value="JIIT Noida Sector 62">
+					<option value="IIT Mandi">
 				</datalist>
 			</div>
 			<div>
@@ -205,9 +205,9 @@
 			  <label for="distance500" class="text-sm darkgrey">500 Km</label>
 	  	</div>
 			<div>
-				<a href="/find_people/filter_search?users=&college=&school=&hometown=">Reset keys</a>
+				<a href="/find_users/filter_search?users=&college=&school=&hometown=">Reset keys</a>
 			</div>
-			<button id="search-moreFilterPeople-btn" class="btn btn-success btn-sm w-100" type="submit" value="<%= morePeopleUrl %>">Search</button>
+			<button id="search-moreFilterUsers-btn" class="btn btn-success btn-sm w-100" type="submit" value="<%= moreUsersUrl %>">Search</button>
 		</form>
   </div>
 </div>
