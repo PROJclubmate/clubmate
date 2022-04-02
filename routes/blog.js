@@ -3,7 +3,6 @@ const express = require('express'),
   router = express.Router();
 const { 
   blogsPageLoad,
-  blogsLoadMore,
   blogsCreatePage,
   blogsCreate,
   blogsDelete,
@@ -12,9 +11,9 @@ const {
   blogsSavedLoadMore,
   blogsHeart,
   blogsUserLoadMore,
-  blogsUnapprovedList,
+  blogsDisplayPublishPage,
   blogsApprove,
-  blogsDisapprove, 
+  blogsRemove,
 } = require('../controllers/blog');
 
 if (process.env.ENVIRONMENT === "dev") {
@@ -23,17 +22,19 @@ if (process.env.ENVIRONMENT === "dev") {
   var { upload } = require("../config/s3.js");
 }
 
-router.get('/blogs', middleware.isLoggedIn, blogsLoadMore);
+router.get('/blogs', middleware.isLoggedIn, blogsPageLoad);
 router.get('/blogs/new', middleware.isLoggedIn, blogsCreatePage);
 router.post('/blogs/new', middleware.isLoggedIn, blogsCreate);
+router.get('/blogs/publish', middleware.isLoggedIn, blogsDisplayPublishPage);
+router.put('/blogs/publish/approve', middleware.isLoggedIn, blogsApprove);
+router.put('/blogs/publish/remove', middleware.isLoggedIn, blogsRemove);
+router.get('/blogs/saved', middleware.isLoggedIn, blogsSavedLoadMore);
+router.get('/blogs/user/:userId', middleware.isLoggedIn, blogsUserLoadMore);
 router.delete('/blogs/:bucket/:blog', middleware.isLoggedIn, blogsDelete);
 router.put('/blogs/:bucket/:blog/save', middleware.isLoggedIn, blogsSave);
 router.put('/blogs/:bucket/:blog/unsave', middleware.isLoggedIn, blogsUnsave);
-router.get('/blogs/saved', middleware.isLoggedIn, blogsSavedLoadMore);
 router.put('/blogs/:bucket/:blog/heart', middleware.isLoggedIn, blogsHeart);
-router.get('/blogs/:userId', middleware.isLoggedIn, blogsUserLoadMore);
-router.put('/blogs/:bucket/:blog/approve', middleware.isLoggedIn, blogsApprove);
-router.put('/blogs/:bucket/:blog/disapprove', middleware.isLoggedIn, blogsDisapprove);
-router.get('/blogs/publish', middleware.isLoggedIn, blogsUnapprovedList);
+
+
 
 module.exports = router;

@@ -64,6 +64,7 @@ const blogBucketSchema = new Schema({
   blogs: [blogSchema],
 });
 
-blogBucketSchema.index({college: 1, createdAt: 1}, {unique: true});
+blogBucketSchema.index({colleg: 1}, {unique: false});
+blogBucketSchema.index({createdAt: 1}, {unique: true});
 
 module.exports = mongoose.model('Blog', blogBucketSchema);

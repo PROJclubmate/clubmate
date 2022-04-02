@@ -1,17 +1,19 @@
-<form action="/colleges/<%= college %>/blogs/new" method="POST">
-  <label for="title">Title: </label><br>
-  <input type="text" id="title" name="title"><br>
-  <label for="description">Description: </label><br>
-  <input type="text" id="description" name="description"><br>
-  <label for="url">URL: </label><br>
-  <input type="text" id="url" name="url"><br>
-  <label for="content">Content: </label><br>
-  <input type="text" id="content" name="content"><br>
-  <input type="radio" id="isNews" name="isNews" value="true">
-  <label for="isNews">News</label><br>
-  <input type="radio" id="isNews" name="isNews" value="false">
-  <label for="isNews">Blog</label><br>
-  <label for="readTime">Read Time: </label><br>
-  <input type="text" id="readTime" name="readTime"><br>
-  <input type="submit" value="submit">
-</form>
+<div>
+  <form action="/colleges/<%= college %>/blogs/new" method="POST">
+    <label for="title">Title: </label>
+    <input type="text" id="title" name="title"><br>
+    <label for="description">Description: </label>
+    <input type="text" id="description" name="description"><br>
+    <label for="url">URL: </label>
+    <input type="text" id="url" name="url"><br>
+    <label for="content">Content: </label>
+    <input type="text" id="content" name="content"><br>
+    <input type="radio" id="isNews" name="isNews" value="true">
+    <label for="isNews">News</label><br>
+    <input type="radio" id="isNews" name="isNews" value="false">
+    <label for="isNews">Blog</label><br>
+    <label for="readTime">Read Time: </label>
+    <input type="text" id="readTime" name="readTime"><br>
+    <input type="submit" value="submit">
+  </form>
+</div>

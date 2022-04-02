@@ -23,99 +23,98 @@ module.exports = {
 
   async blogsPageLoad(req, res, next) {
 
-    // res.render()
-  },
-
-  async blogsLoadMore(req, res, next) {
-
     // index of previously loaded bucket
-    let bucketIndex = req.query.index;
+    let bucketIndex = req.query.bucket;
+
+    if (bucketIndex === undefined) {
+      return res.render('blogs/index');
+    }
 
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
-      select('blogBuckets').
-      exec(function (err, foundCollegePage) {
+    findOne({ name: req.user.userKeys.college }).
+    select('blogBuckets').
+    exec(function (err, foundCollegePage) {
 
-        if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-1)foundCollegePage err => ' + err);
+      if (err || !foundCollegePage) {
+        logger.error(req.user._id + ' : (blog-1)foundCollegePage err => ' + err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      }
+
+      if (bucketIndex === '' || bucketIndex === undefined) {
+        bucketIndex = 0;
+      }
+
+      if (bucketIndex === 0) {
+        return res.json(null);
+      }
+
+      if (bucketIndex < 0) {
+        req.flash('error', 'Invalid bucket');
+        res.redirect('back');
+      }
+
+      if (bucketIndex > foundCollegePage.blogBuckets.length) {
+        req.flash('error', 'Invalid bucket');
+        res.redirect('back');
+      }
+      bucketIndex--;
+
+      Blog.
+      findById(foundCollegePage[bucketIndex]).
+      exec(function (err, foundBlog) {
+
+        if (err || !foundBlog) {
+          logger.error(req.user._id + ' : (blog-2)foundBlog err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
-        if (bucketIndex === '' || bucketIndex === undefined) {
-          bucketIndex = 0;
-        }
+        User.
+        findById(req.user._id).
+        select('savedBlogs heartedBlogs').
+        exec(function (err, foundUser) {
 
-        if (bucketIndex === 0) {
-          return res.json(null);
-        }
-    
-        if (bucketIndex < 0) {
-          req.flash('error', 'Invalid bucket');
-          res.redirect('back');
-        }
+          if (err || !foundUser) {
+            logger.error(req.user._id + ' : (blog-3)foundUser err => ' + err);
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          }
 
-        if (bucketIndex > foundCollegePage.blogBuckets.length) {
-          req.flash('error', 'Invalid bucket');
-          res.redirect('back');
-        }
-        bucketIndex--;
+          let bucketId = foundBlog._id;
+          let blogId, heartedBlogIndex, savedBucketIndex, savedBlogIndex;
+          for (let i = 0; i < foundBlog.blogs.length; i++) {
 
-        Blog.
-          findById(foundCollegePage[bucketIndex]).
-          exec(function (err, foundBlog) {
+            blogId = foundBlog.blogs[i]._id;
 
-            if (err || !foundBlog) {
-              logger.error(req.user._id + ' : (blog-2)foundBlog err => ' + err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+            heartedBlogIndex = foundUser.heartedBlogs.indexOf(elem => { return (elem.bucketId === bucketId && elem.blogId === blogId) });
+            if (heartedBlogIndex === -1) {
+              foundBlog.blogs[i].hearted = false;
+            } else {
+              foundBlog.blogs[i].hearted = true;
             }
 
-            User.
-              findById(req.user._id).
-              select('savedBlogs heartedBlogs').
-              exec(function (err, foundUser) {
+            savedBucketIndex = foundUser.savedBlogs.indexOf(elem => { return (elem.bucketId === bucketId) });
+            if (savedBucketIndex === -1) {
+              foundBlog.blogs[i].saved = false;
+            } else {
+              savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.indexOf(elem => { return (elem === blogId) });
+              if (savedBlogIndex === -1) {
+                foundBlog.blogs[i].saved = false;
+              } else {
+                foundBlog.blogs[i].saved = true;
+              }
+            }
 
-                if (err || !foundUser) {
-                  logger.error(req.user._id + ' : (blog-3)foundUser err => ' + err);
-                  req.flash('error', 'Something went wrong :(');
-                  return res.redirect('back');
-                }
+          }
 
-                let bucketId = foundBlog._id;
-                let blogId, heartedBlogIndex, savedBucketIndex, savedBlogIndex;
-                for (let i = 0; i < foundBlog.blogs.length; i++) {
+          res.json({ blogBucket: foundBlog, bucket: bucketIndex })
 
-                  blogId = foundBlog.blogs[i]._id;
-
-                  heartedBlogIndex = foundUser.heartedBlogs.indexOf(elem => { return (elem.bucketId === bucketId && elem.blogId === blogId) });
-                  if (heartedBlogIndex === -1) {
-                    foundBlog.blogs[i].hearted = false;
-                  } else {
-                    foundBlog.blogs[i].hearted = true;
-                  }
-
-                  savedBucketIndex = foundUser.savedBlogs.indexOf(elem => { return (elem.bucketId === bucketId) });
-                  if (savedBucketIndex === -1) {
-                    foundBlog.blogs[i].saved = false;
-                  } else {
-                    savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.indexOf(elem => { return (elem === blogId) });
-                    if (savedBlogIndex === -1) {
-                      foundBlog.blogs[i].saved = false;
-                    } else {
-                      foundBlog.blogs[i].saved = true;
-                    }
-                  }
-
-                }
-
-                res.json({ blogBucket: foundBlog, bucket: bucketIndex })
-
-              });
-
-          });
+        });
 
       });
+
+    });
 
   },
 
@@ -137,7 +136,7 @@ module.exports = {
     const readTime = isNews ? 0 : parseInt(req.body.readTime);
     const author = isNews ? null : {id: req.user._id, name: req.user.fullName};
 
-    if (!title || !description || !url || isNan(readTime)) {
+    if (!title || !description || !url || isNaN(readTime)) {
       req.flash('success', 'Invalid read time');
       return res.redirect('back');
     }
@@ -680,17 +679,18 @@ module.exports = {
 
   },
 
-  async blogsUnapprovedList(req, res, next) {
+  async blogsDisplayPublishPage(req, res, next) {
 
     if (!req.user.isCollegeLevelAdmin) {
       req.flash("error", "You are not authorized to approve blogs");
       return res.redirect("/");
     }
 
-    College.
+    CollegePage.
       findOne({ name: req.user.userKeys.college }).
       select('unapprovedBlogBucket').
       populate('unapprovedBlogBucket').
+      lean().
       exec(function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
@@ -699,7 +699,11 @@ module.exports = {
           return res.redirect('back');
         }
 
-        res.json(foundCollegePage.unapprovedBlogBucket);
+        if (!foundCollegePage.unapprovedBlogBucket) {
+          foundCollegePage.unapprovedBlogBucket = { blogs: [] };
+        }
+
+        res.render('blogs/publish', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.user.userKeys.college });
 
       });
 
@@ -712,9 +716,9 @@ module.exports = {
       return res.redirect("/");
     }
 
-    const blogId = req.query.blog;
+    const blogId = req.body.blogId;
 
-    College.
+    CollegePage.
       findOne({ name: req.user.userKeys.college }).
       select('blogBuckets unapprovedBlogBucket').
       exec(async function (err, foundCollegePage) {
@@ -735,29 +739,21 @@ module.exports = {
               return res.redirect('back');
             }
 
-            const blogIds = foundBlog.blogs(elem => elem._id);
+            const blogIds = foundBlog.blogs.map(elem => elem._id);
             const blogIndex = blogIds.indexOf(blogId);
             if (blogIndex === -1) {
               req.flash('error', 'Blog does not exist');
-              res.redirect('back');
+              return res.redirect('back');
             }
 
-            const blog = foundBlog.blogs.splice(blogIndex, 1);
-
-            await foundBlog.save(function (err) {
-              if (err || !foundCollegePage) {
-                logger.error(req.user._id + ' : (blog-26)foundCollegePage err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              }
-            });
+            const [blog] = foundBlog.blogs.splice(blogIndex, 1);
 
             if (foundCollegePage.blogBuckets.length === 0) {
 
               Blog.create({
                 college: req.user.userKeys.college,
                 blogs: [blog],
-              }, function (err, createdBlog) {
+              }, async function (err, createdBlog) {
 
                 if (err || !createdBlog) {
                   logger.error(req.user._id + ' : (blog-27)createdBlog err => ' + err);
@@ -767,27 +763,35 @@ module.exports = {
 
                 foundCollegePage.blogBuckets.push(createdBlog._id);
 
+                await foundCollegePage.save(function (err) {
+                  if (err) {
+                    logger.error(req.user._id + ' : (blog-29)saveCollegePage err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
+                });
+
               });
 
             } else {
 
               Blog.
                 findById(last(foundCollegePage.blogBuckets)).
-                exec(function (err, foundBlog) {
+                exec(async function (err, foundLastBlog) {
 
-                  if (err || !foundBlog) {
+                  if (err || !foundLastBlog) {
                     logger.error(req.user._id + ' : (blog-28)foundBlog err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
 
-                  if (foundBlog.blogs.length >= 20) {
+                  if (foundLastBlog.blogs.length >= 20) {
 
                     Blog.
                       create({
                         college: req.user.userKeys.college,
                         blogs: [blog],
-                      }, function (err, createdBlog) {
+                      }, async function (err, createdBlog) {
 
                         if (err || !createdBlog) {
                           logger.error(req.user._id + ' : (blog-29)createdBlog err => ' + err);
@@ -797,16 +801,78 @@ module.exports = {
 
                         foundCollegePage.blogBuckets.push(createdBlog._id);
 
+                        await foundCollegePage.save(function (err) {
+                          if (err) {
+                            logger.error(req.user._id + ' : (blog-29)saveCollegePage err => ' + err);
+                            req.flash('error', 'Something went wrong :(');
+                            return res.redirect('back');
+                          }
+                        });
+
                       });
 
                   } else {
 
-                    foundBlog.blogs.push(blog);
+                    foundLastBlog.blogs.push(blog);
+                    
+                    await foundLastBlog.save(function (err) {
+                      if (err) {
+                        logger.error(req.user._id + ' : (blog-29)saveBlog err => ' + err);
+                        req.flash('error', 'Something went wrong :(');
+                        return res.redirect('back');
+                      }
+                    });
 
                   }
 
                 });
 
+            }
+
+            await foundBlog.save(function (err) {
+              if (err) {
+                logger.error(req.user._id + ' : (blog-29)saveBlog err => ' + err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
+
+            if (blog.author.id) {
+              User.
+                findById(blog.author.id).
+                select('createdBlogs').
+                exec(async function (err, foundUser) {
+
+                  if (err || !foundUser) {
+                    logger.error(req.user._id + ' : (blog-29)foundUser err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
+
+                  if (!foundUser.createdBlogs) {
+
+                    foundUser.createdBlogs = [{ bucketId: foundBlog._id, blogIds: [blog._id] }]
+
+                  } else {
+
+                    bucketIndex = foundUser.createdBlogs.findIndex(elem => (elem.bucketId === foundBlog._id));
+                    if (bucketIndex === -1) {
+                      foundUser.createdBlogs.push({ bucketId: foundBlog._id, blogIds: [blog._id] });
+                    } else {
+                      foundUser.createdBlogs[bucketIndex].blogIds.push(blog._id);
+                    }
+
+                  }
+
+                  await foundUser.save(function (err) {
+                    if (err) {
+                      logger.error(req.user._id + ' : (blog-29)saveUser err => ' + err);
+                      req.flash('error', 'Something went wrong :(');
+                      return res.redirect('back');
+                    }
+                  });
+
+                });
             }
 
             req.flash('success', 'Blog published successfully');
@@ -818,18 +884,18 @@ module.exports = {
 
   },
 
-  async blogsDisapprove(req, res, next) {
+  async blogsRemove(req, res, next) {
 
     if (!req.user.isCollegeLevelAdmin) {
       req.flash("error", "You are not authorized to approve blogs");
       return res.redirect("/");
     }
 
-    const blogId = req.query.blog;
+    const blogId = req.body.blogId;
 
-    College.
+    CollegePage.
       findOne({ name: req.user.userKeys.college }).
-      select('blogBuckets unapprovedBlogBucket').
+      select('unapprovedBlogBucket').
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
@@ -848,18 +914,17 @@ module.exports = {
               return res.redirect('back');
             }
 
-            const blogIds = foundBlog.blogs(elem => elem._id);
-            const blogIndex = blogIds.indexOf(blogId);
+            const blogIndex = foundBlog.blogs.findIndex(elem => (elem._id == blogId));
             if (blogIndex === -1) {
               req.flash('error', 'Blog does not exist');
-              res.redirect('back');
+              return res.redirect('back');
             }
 
             const blog = foundBlog.blogs.splice(blogIndex, 1);
 
             await foundBlog.save(function (err) {
-              if (err || !foundCollegePage) {
-                logger.error(req.user._id + ' : (blog-32)foundCollegePage err => ' + err);
+              if (err) {
+                logger.error(req.user._id + ' : (blog-32)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -877,4 +942,4 @@ module.exports = {
 }
 
 // iterate in reverse in ejs
-// isCollegeLevelAdmin
+// pass req.params.colleg_name instead of req.user.userKeys.college to ejs files
