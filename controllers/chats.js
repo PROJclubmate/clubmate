@@ -1,7 +1,7 @@
 const User         = require('../models/user'),
   Club             = require('../models/club'),
   Conversation     = require('../models/conversation'),
-  ClubConversation = require('../models/club-conversation'),
+  ClubConversation = require('../models/club_conversation'),
   Message          = require('../models/message'),
   mongoose         = require('mongoose'),
   clConfig         = require('../config/cloudinary'),

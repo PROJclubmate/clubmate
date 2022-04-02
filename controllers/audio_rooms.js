@@ -1,7 +1,7 @@
 const Club  = require('../models/club'),
   logger    = require('../logger'),
   User      = require('../models/user'),
-  Audioroom = require('../models/audioroom'),
+  Audioroom = require('../models/audio_room'),
   clConfig  = require('../config/cloudinary'),
   s3Config  = require('../config/s3')
   fetch     = require('node-fetch');
@@ -119,7 +119,7 @@ module.exports = {
     var success = false;
     let requestedRoom = await Audioroom.findById(req.params.room_id).exec();
     if(requestedRoom && !(requestedRoom.isClubExclusive)){
-      return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
+      return res.render('audio_rooms/room', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
     }
     if(req.user){
       for(let i = 0; i < req.user.userClubs.length; i++){
@@ -132,7 +132,7 @@ module.exports = {
           }
         }
       }
-      if(success) return res.render('audio_rooms/audio_room.ejs', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
+      if(success) return res.render('audio_rooms/room', { room_id: req.params.room_id, user: req.user, jamUrl: process.env.JAM_URL });
       else {
         logger.error(req.user._id +' : (audiorooms-6) No audio room with id : ' + req.params.room_id + ' exists.');
         return res.json({success : false});

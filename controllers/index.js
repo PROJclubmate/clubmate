@@ -1,10 +1,10 @@
 const User         = require('../models/user'),
   Club             = require('../models/club'),
-  CollegePage      = require('../models/college-page'),
-  ClubConversation = require('../models/club-conversation'),
+  CollegePage      = require('../models/college_page'),
+  ClubConversation = require('../models/club_conversation'),
   Subscription     = require('../models/subscription'),
   clConfig         = require('../config/cloudinary'),
-  s3Config         = require('../config/s3')
+  s3Config         = require('../config/s3'),
   logger           = require('../logger'),
   mongoose         = require('mongoose'),
   webpush          = require('web-push'),
