@@ -471,7 +471,7 @@ module.exports = {
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
-
+      
         // if user document don't have savedBlogs or heartedBlogs attributes, make them
         let changesMade = false;
         if (!foundUser.heartedBlogs) {
