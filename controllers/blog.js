@@ -502,6 +502,20 @@ module.exports = {
           return res.json(null);
         }
 
+        // perform sanity checks
+        if (oldBucketIndex > foundUser.savedBlogs.length || oldBucketIndex < 0) {
+          req.flash('Invalid bucket');
+          return res.redirect('back');
+        }
+        if (
+          (oldBucketIndex !== foundUser.savedBlogs.length && oldBlogIndex > foundUser.savedBlogs[oldBucketIndex].blogIds.length) ||
+          (oldBucketIndex === foundUser.savedBlogs.length && oldBlogIndex !== 0) ||
+          (oldBlogIndex < 0)
+        ) {
+          req.flash('Invalid index');
+          return res.redirect('back');
+        }
+
         let newBucketIndex = oldBucketIndex;
         let newBlogIndex = oldBlogIndex;
         let count = 0;
@@ -538,38 +552,39 @@ module.exports = {
         // update for any bucket or blog entry which has been deleted but still exists in savedBlogs
         // also retrieve heart count for all blogs
         const blogs = [];
-        const bucketIds = foundUser.savedBlogs.map(elem => elem.bucketId);
 
         changesMade = false;
-        for (let i = 0; i < foundUser.savedBlogs.length; i++) {
+        for (let i = 0; i < foundUserCopy.savedBlogs.length; i++) {
 
-          const foundBlog = await Blog.findById(foundUser.savedBlogs[i].bucketId).lean();
+          let foundBlog = await Blog.findById(foundUser.savedBlogs[i].bucketId).lean();
+          let bucketIndex = foundUser.savedBlogs.findIndex(elem=> elem.bucketId.equals(foundUserCopy.savedBlogs[i].bucketId));
           if (!foundBlog) {
             changesMade = true;
-            foundUser.savedBlogs.splice(i, 1);
+            foundUser.savedBlogs.splice(bucketIndex, 1);
             i--;
             continue;
           }
 
-          for (let j = 0; j < foundUser.savedBlogs[i].blogIds.length; j++) {
+          for (let j = 0; j < foundUserCopy.savedBlogs[i].blogIds.length; j++) {
 
-            let blogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(foundUser.savedBlogs[i].blogIds[j]));
-            if (blogIndex === -1) {
+            let blogIndex = foundUser.savedBlogs[bucketIndex].blogIds.findIndex(elem => elem.equals(foundUser.savedBlogs[i].blogIds[j]));
+            let foundBlogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(foundUser.savedBlogs[i].blogIds[j]));
+            if (foundBlogIndex === -1) {
               changesMade = true
-              foundUser.savedBlogs[i].blogIds.splice(j, 1);
+              foundUser.savedBlogs[bucketIndex].blogIds.splice(blogIndex, 1);
               j--;
               continue;
             }
 
-            heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId === foundBlog._id && elem.blogId === foundBlog.blogs[blogIndex]._id) );
+            heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(foundBlog._id) && elem.blogId.equals(foundBlog.blogs[foundBlogIndex]._id)) );
             if (heartedBlogIndex === -1) {
-              foundBlog.blogs[blogIndex].hearted = false;
+              foundBlog.blogs[foundBlogIndex].hearted = false;
             } else {
-              foundBlog.blogs[blogIndex].hearted = true;
+              foundBlog.blogs[foundBlogIndex].hearted = true;
             }
 
-            foundBlog.blogs[blogIndex].saved = true;
-            blogs.push(foundBlog.blogs[blogIndex]);
+            foundBlog.blogs[foundBlogIndex].saved = true;
+            blogs.push(foundBlog.blogs[foundBlogIndex]);
           }
         }
 
@@ -649,8 +664,8 @@ module.exports = {
 
   async blogsUserPage(req, res, next) {
 
-    const oldBucketIndex = req.query.bucket;
-    const oldBlogIndex = req.query.index;
+    const oldBucketIndex = parseInt(req.query.bucket);
+    const oldBlogIndex = parseInt(req.query.index);
     const userId = req.params.userId;
 
     User.
@@ -664,75 +679,171 @@ module.exports = {
           return res.redirect('back');
         }
 
+        // if user document don't have createdBlog attribute, make it
+        let changesMade = false;
+        if (!foundUser.createdBlogs) {
+          changesMade = true;
+          foundUser.createdBlogs = [];
+        }
+        if (changesMade) {
+          foundUser.save(function (err) {
+            if (err) {
+              logger.error(req.user._id + ' : (blog-16)saveUser err => ' + err);
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            }
+          });
+        }
+
+        // if query is empty, that means only page renedering has to be done and no bucket needs to fetched
+        if (isNaN(oldBucketIndex) || isNaN(oldBlogIndex)) {
+          return res.render('blogs/user', {college: req.user.userKeys.college, bucket: foundUser.createdBlogs.length, index: 0, userId: userId});
+        }
+
+        // if all blogs have been loaded or user has no saved blogs, return null
+        if ((!oldBucketIndex && !oldBlogIndex) || !foundUser.createdBlogs.length ) {
+          return res.json(null);
+        }
+
+        // perform sanity checks
+        if (oldBucketIndex > foundUser.createdBlogs.length || oldBucketIndex < 0) {
+          req.flash('Invalid bucket');
+          return res.redirect('back');
+        }
+        if (
+          (oldBucketIndex !== foundUser.createdBlogs.length && oldBlogIndex > foundUser.createdBlogs[oldBucketIndex].blogIds.length) ||
+          (oldBucketIndex === foundUser.createdBlogs.length && oldBlogIndex !== 0) ||
+          (oldBlogIndex < 0)
+        ) {
+          req.flash('Invalid index');
+          return res.redirect('back');
+        }
+
         let newBucketIndex = oldBucketIndex;
         let newBlogIndex = oldBlogIndex;
         let count = 0;
 
-        while (count !== blogsToLoadCount || newBucketIndex !== -1) {
+        const foundUserCopy = JSON.parse(JSON.stringify(foundUser));
 
-          if (foundUser.createdBlogs[newBucketIndex].blogIds.length >= blogsToLoadCount - count) {
-            newBlogIndex = oldBlogIndex - blogsToLoadCount;
+        // get pointers to bucket and blog such that it is 20 blogs behind the previously loaded bucket and blog
+        while (count !== blogsToLoadCount) {
+
+          if (newBlogIndex >= blogsToLoadCount - count) {
+            newBlogIndex = newBucketIndex - blogsToLoadCount;
             break;
           }
+
+          count += newBlogIndex;
           newBucketIndex--;
-          count += foundUser.createdBlogs[newBucketIndex].blogIds.length;
+          if (newBucketIndex >= 0) {
+            newBlogIndex = foundUser.createdBlogs[newBucketIndex].blogIds.length;
+          } else {
+            newBucketIndex = 0;
+            newBlogIndex = 0;
+            break;
+          }
 
         }
 
-        if (newBucketIndex === -1) {
-          newBucketIndex = 0;
-          newBlogIndex = 0;
+        foundUserCopy.createdBlogs = foundUser.createdBlogs.slice(newBucketIndex, oldBucketIndex + 1);
+        foundUserCopy.createdBlogs[0].blogIds.splice(0, newBlogIndex);
+        if (newBucketIndex === oldBucketIndex) {
+          foundUserCopy.createdBlogs[foundUserCopy.createdBlogs.length - 1].blogIds.splice(oldBlogIndex)
         }
 
-        foundUser.createdBlogs = foundUser.createdBlogs.slice(newBucketIndex, oldBucketIndex + 1);
-        foundUser.createdBlogs[0].splice(0, newBlogIndex);
-        foundUser.createdBlogs[foundUser.createdBlogs.length - 1].splice(oldBlogIndex);
+        // populate those new 20 blogs and store them into array 'blogs'
+        // update for any bucket or blog entry which has been deleted but still exists in savedBlogs
+        // also retrieve heart count for all blogs
+        const blogs = [];
 
-        await foundUser.populate('createdBlogs');
+        const foundCurrUser = await User.findById(req.user._id).select('savedBlogs heartedBlogs');
+        changesMade = false;
+        if (!foundCurrUser.heartedBlogs) {
+          changesMade = true;
+          foundCurrUser.heartedBlogs = [];
+        }
+        if (!foundCurrUser.savedBlogs) {
+          changesMade = true;
+          foundCurrUser.savedBlogs = [];
+        }
+        if (changesMade) {
+          foundCurrUser.save(function (err) {
+            if (err) {
+              logger.error(req.user._id + ' : (blog-16)saveUser err => ' + err);
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            }
+          });
+        }
 
-        User.
-          findById(req.user._id).
-          select('heartedBlogs savedBlogs').
-          exec(function (err, foundCurrUser) {
+        changesMade = false;
+        for (let i = 0; i < foundUserCopy.createdBlogs.length; i++) {
 
-            let blogId, bucketId;
-            for (let i = 0; i < foundUser.createdBlogs.length; i++) {
+          let foundBlog = await Blog.findById(foundUser.createdBlogs[i].bucketId).lean();
+          let bucketIndex = foundUser.createdBlogs.findIndex(elem=> elem.bucketId.equals(foundUserCopy.createdBlogs[i].bucketId));
+          if (!foundBlog) {
+            changesMade = true;
+            foundUser.createdBlogs.splice(bucketIndex, 1);
+            i--;
+            continue;
+          }
 
-              bucketId = foundUser.createdBlogs[i].bucketId._id;
+          for (let j = 0; j < foundUserCopy.createdBlogs[i].blogIds.length; j++) {
 
-              for (let j = 0; j < foundUser.createdBlogs[i].blogIds.length; j++) {
-
-                blogId = foundUser.createdBlogs[i].blogIds[j]._id;
-
-                heartedBlogIndex = foundCurrUser.heartedBlogs.findIndex(elem => { return (elem.bucketId === bucketId && elem.blogId === blogId) });
-                if (heartedBlogIndex === -1) {
-                  foundUser.savedBlogs[i].blogIds[j].hearted = false;
-                } else {
-                  foundUser.savedBlogs[i].blogIds[j].hearted = true;
-                }
-
-                savedBucketIndex = foundUser.savedBlogs.indexOf(elem => { return (elem.bucketId === bucketId) });
-                  if (savedBucketIndex === -1) {
-                    foundUser.savedBlogs[i].blogIds[j].saved = false;
-                  } else {
-                    savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.indexOf(elem => { return (elem === blogId) });
-                    if (savedBlogIndex === -1) {
-                      foundUser.savedBlogs[i].blogIds[j].saved = false;
-                    } else {
-                      foundUser.savedBlogs[i].blogIds[j].saved = true;
-                    }
-                  }
-
-
-
-              }
+            let blogIndex = foundUser.createdBlogs[bucketIndex].blogIds.findIndex(elem => elem.equals(foundUser.createdBlogs[i].blogIds[j]));
+            let foundBlogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(foundUser.createdBlogs[i].blogIds[j]));
+            if (foundBlogIndex === -1) {
+              changesMade = true
+              foundUser.createdBlogs[bucketIndex].blogIds.splice(blogIndex, 1);
+              j--;
+              continue;
             }
 
-          });
+            heartedBlogIndex = foundCurrUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(foundBlog._id) && elem.blogId.equals(foundBlog.blogs[foundBlogIndex]._id)) );
+            if (heartedBlogIndex === -1) {
+              foundBlog.blogs[foundBlogIndex].hearted = false;
+            } else {
+              foundBlog.blogs[foundBlogIndex].hearted = true;
+            }
 
+            savedBlogIndex = foundCurrUser.savedBlogs.findIndex(function (elem) {
 
+              if (elem.bucketId.equals(foundBlog._id)) {
 
-        res.json({ blogs: createdBlogs, index: newBlogIndex, bucket: newBucketIndex });
+                for (let z = 0; z < elem.blogIds.length; z++) {
+                  if (elem.blogIds[z].equals(foundBlog.blogs[foundBlogIndex]._id)) {
+                    return true;
+                  }
+                }
+
+              } else {
+                return false;
+              }
+
+              return false;
+
+            });
+            if (savedBlogIndex === -1) {
+              foundBlog.blogs[foundBlogIndex].saved = false;
+            } else {
+              foundBlog.blogs[foundBlogIndex].saved = true;
+            }
+
+            blogs.push(foundBlog.blogs[foundBlogIndex]);
+          }
+        }
+
+        if (changesMade) {
+          await foundUser.save(function (err) {
+            if (err) {
+              logger.error(req.user._id + ' : (blog-17)saveUser err => ' + err);
+              req.flash('error', 'Something went wrong :(');
+              return res.redirect('back');
+            }
+          })
+        }
+
+        res.json({ blogs: blogs, index: newBlogIndex, bucket: newBucketIndex });
 
       });
 
@@ -806,6 +917,7 @@ module.exports = {
             }
 
             const [blog] = foundBlog.blogs.splice(blogIndex, 1);
+            let insertionBucketId;
 
             if (foundCollegePage.blogBuckets.length === 0) {
 
@@ -820,6 +932,7 @@ module.exports = {
                   return res.redirect('back');
                 }
 
+                insertionBucketId = createdBlog._id;
                 foundCollegePage.blogBuckets.push(createdBlog._id);
 
                 await foundCollegePage.save(function (err) {
@@ -858,6 +971,7 @@ module.exports = {
                           return res.redirect('back');
                         }
 
+                        insertionBucketId = createdBlog._id;
                         foundCollegePage.blogBuckets.push(createdBlog._id);
 
                         await foundCollegePage.save(function (err) {
@@ -872,6 +986,7 @@ module.exports = {
 
                   } else {
 
+                    insertionBucketId = foundLastBlog._id;
                     foundLastBlog.blogs.push(blog);
                     
                     await foundLastBlog.save(function (err) {
@@ -910,13 +1025,13 @@ module.exports = {
 
                   if (!foundUser.createdBlogs) {
 
-                    foundUser.createdBlogs = [{ bucketId: foundBlog._id, blogIds: [blog._id] }]
+                    foundUser.createdBlogs = [{ bucketId: insertionBucketId, blogIds: [blog._id] }]
 
                   } else {
 
-                    bucketIndex = foundUser.createdBlogs.findIndex(elem => (elem.bucketId.equals(foundBlog._id)));
+                    bucketIndex = foundUser.createdBlogs.findIndex(elem => (elem.bucketId.equals(insertionBucketId)));
                     if (bucketIndex === -1) {
-                      foundUser.createdBlogs.push({ bucketId: foundBlog._id, blogIds: [blog._id] });
+                      foundUser.createdBlogs.push({ bucketId: insertionBucketId, blogIds: [blog._id] });
                     } else {
                       foundUser.createdBlogs[bucketIndex].blogIds.push(blog._id);
                     }
@@ -1002,3 +1117,4 @@ module.exports = {
 
 // iterate in reverse in ejs
 // pass req.params.colleg_name instead of req.user.userKeys.college to ejs files
+// sanity checks
