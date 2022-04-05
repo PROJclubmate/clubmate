@@ -24,8 +24,8 @@ if (process.env.ENVIRONMENT === "dev") {
 
 router.get('/colleges/:collegeName/blogs', middleware.isLoggedIn, blogsLoadPage);
 router.get('/colleges/:collegeName/blogs/new', middleware.isLoggedIn, blogsCreatePage);
-router.post('/colleges/:collegeName/blogs/blogs/new', middleware.isLoggedIn, blogsCreate);
-router.get('/colleges/:collegeName/blogs/blogs/publish', middleware.isLoggedIn, blogsPublishPage);
+router.post('/colleges/:collegeName/blogs/new', middleware.isLoggedIn, blogsCreate);
+router.get('/colleges/:collegeName/blogs/publish', middleware.isLoggedIn, blogsPublishPage);
 router.put('/colleges/:collegeName/blogs/publish/approve', middleware.isLoggedIn, blogsApprove);
 router.put('/colleges/:collegeName/blogs/publish/remove', middleware.isLoggedIn, blogsRemove);
 router.get('/colleges/:collegeName/blogs/saved', middleware.isLoggedIn, blogsSavedPage);
