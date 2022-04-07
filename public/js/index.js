@@ -731,21 +731,25 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var coverTall = false;
   $('#college_scroll').scroll(function(){
     if(!coverTall){
-      if($('#college_scroll').scrollTop() > 160){
+      if((window.innerWidth > 1366) && ($('#college_scroll').scrollTop() > 300)){
         coverTall = true;
-        if(window.innerWidth > 992){
-          $('.college-cover-div').height(350);
-          $('img#college-cover').removeClass('desktopFit');
-        } else if(window.innerWidth <= 992 && window.innerWidth > 768){
-          $('.college-cover-div').height(300);
-          $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('d-none').removeClass('tabletShow');
-          $('img#college-cover').removeClass('desktopFit');
-        } else if(window.innerWidth <= 768){
-          $('.college-cover-div').height(300);
-          $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('d-none');
-        }
+        $('.college-cover-div').css('cssText', 'height: 565px !important');
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 1366 && window.innerWidth > 992) && ($('#college_scroll').scrollTop() > 160)){
+        coverTall = true;
+        $('.college-cover-div').height(350);
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 992 && window.innerWidth > 768) && ($('#college_scroll').scrollTop() > 142)){
+        coverTall = true;
+        $('.college-cover-div').height(300);
+        $('img#college-cover').removeClass('mobileblurred');
+        $('.college-infodiv').addClass('d-none').removeClass('tabletShow');
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 768) && ($('#college_scroll').scrollTop() > 142)){
+        coverTall = true;
+        $('.college-cover-div').height(300);
+        $('img#college-cover').removeClass('mobileblurred');
+        $('.college-infodiv').addClass('d-none');
       }
     }
   });

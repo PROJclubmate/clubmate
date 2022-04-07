@@ -34,23 +34,21 @@ WebFont.load({
       }
     });
 
-    // Hiding Next > button on basis of textBox status - isEditing
+    // Disabling Next > button on basis of textBox value || background src
     canvas.on({
-      'selection:created': HandleElement,
-      'selection:updated': HandleElement,
-      'text:editing:entered': HandleElement,
-      'mouse:down': HandleElement
+      'text:changed': nextBtnStatus,
+      'text:editing:entered': nextBtnStatus
     });
-    function HandleElement(){
-      if(!canvas.getActiveObject()){
-        document.getElementById('story-maker-next').classList.remove('d-none');
-        return;
-      }
-      if(canvas.getActiveObject().type == 'textbox' && canvas.getActiveObject().isEditing){
-        document.getElementById('story-maker-next').classList.add('d-none');
-        document.getElementById('story-footer').classList.add('d-none');
+
+    function nextBtnStatus(){
+      if(canvas.item(1).text == ''){
+        if(canvas.item(0)._element.currentSrc == 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='){
+          document.getElementById('story-maker-next').classList.add('inactive');
+        } else{
+          document.getElementById('story-maker-next').classList.remove('inactive');
+        }
       } else{
-        document.getElementById('story-maker-next').classList.remove('d-none');
+        document.getElementById('story-maker-next').classList.remove('inactive');
       }
     }
 
@@ -69,8 +67,9 @@ WebFont.load({
         var cropCanvasOptions = document.getElementsByClassName('crop-canvas-options');
         var selectAspectRatio = function() {
           var aspectRatio = this.id;
+          var manual = true;
           document.getElementById('story-draftimg').setAttribute('is_edited', 'true');
-          cropCanvasTemplate(canvas, aspectRatio);
+          cropCanvasTemplate(canvas, aspectRatio, manual);
           setTimeout(function(){ 
             document.getElementById('story-maker-next').classList.remove('d-none');
             document.getElementById('story-footer').classList.add('d-none');
@@ -99,14 +98,17 @@ WebFont.load({
     nextBtn.addEventListener('click', function(ev) {
       var nextBtn = document.getElementById('story-maker-next');
       if(!nextBtn.classList.contains('inactive')){
+        // If the draft image has not been modified, send straightaway to next step with exising image to set options
         if(document.getElementById('story-draftimg').getAttribute('is_edited') == 'false'){
           return location.replace('/clubs/'+ nextBtn.getAttribute('club-id') +'/story/create/options');
+        // Else replace the draft image with the new image & then send to next step
         } else{
           var imgData = canvas.toDataURL({format:'webp', quality: 1, multiplier: 3});
+          var type = 'image';
           var aspectRatio = document.getElementById('story-draftimg').getAttribute('aspect_ratio');
           var clubId = nextBtn.getAttribute('club-id');
           var csrfToken = nextBtn.getAttribute('csrf-token');
-          sendImageDraftToServer(imgData, aspectRatio, clubId, csrfToken);
+          sendImageDraftToServer(imgData, type, aspectRatio, clubId, csrfToken);
         }
       }
     });
@@ -192,7 +194,8 @@ function setPlaceholderImgTemplate(canvas) {
     canvas.add(backgroundObj);
     // This is like z-index, this keeps the image behind the text
     canvas.moveTo(backgroundObj, 0);
-    cropCanvasTemplate(canvas, document.getElementById('story-draftimg').getAttribute('aspect_ratio'));
+    var manual = false;
+    cropCanvasTemplate(canvas, document.getElementById('story-draftimg').getAttribute('aspect_ratio'), manual);
   };
   backgroundImg.crossOrigin = 'anonymous';
   backgroundImg.src = tempImg;
@@ -204,14 +207,15 @@ function addImageTemplate(canvas, img) {
   // Update image src - timeout added to fix image loading bug
   var backgroundObj = canvas.item(0);
   backgroundObj.setSrc(img, function () {
-    fitImgToCanvas(canvas)
+    var manual = false;
+    fitImgAndTextToCanvas(canvas, manual)
     setTimeout(function(){ 
       canvas.requestRenderAll(); 
     }, 10);
   });
 }
 
-function cropCanvasTemplate(canvas, aspectRatio) {
+function cropCanvasTemplate(canvas, aspectRatio, manual) {
   document.getElementById('story-draftimg').setAttribute('aspect_ratio', aspectRatio);
   
   var x = Number(aspectRatio.split('_')[0]);
@@ -225,7 +229,7 @@ function cropCanvasTemplate(canvas, aspectRatio) {
     if(window.outerWidth > 768){
       canvas.setWidth((x/y)*0.625*window.outerHeight);
       canvas.setHeight(0.625*window.outerHeight);
-      cropCanvasAndCenterImg()
+      cropCanvasAndCenterImgAndText()
     } else if(window.outerWidth <= 768 && window.outerWidth > 480){
       if((x == 3 && y == 4)){
         canvas.setWidth(0.75*0.625*window.outerWidth);
@@ -237,7 +241,7 @@ function cropCanvasTemplate(canvas, aspectRatio) {
         canvas.setWidth(0.625*window.outerWidth);
         canvas.setHeight(0.625*(y/x)*window.outerWidth);
       }
-      cropCanvasAndCenterImg()
+      cropCanvasAndCenterImgAndText()
     } else if(window.outerWidth <= 480){
       if((x == 3 && y == 4)){
         canvas.setWidth(0.75*window.outerWidth);
@@ -249,10 +253,10 @@ function cropCanvasTemplate(canvas, aspectRatio) {
         canvas.setWidth(window.outerWidth);
         canvas.setHeight((y/x)*window.outerWidth);
       }
-      cropCanvasAndCenterImg()
+      cropCanvasAndCenterImgAndText()
     }
 
-    function cropCanvasAndCenterImg() {
+    function cropCanvasAndCenterImgAndText() {
       var storyMakerMarginText = (storyMakerContainerHeight - storyMaker.offsetHeight)/2 + 'px '
       + (storyMakerContainerWidth - storyMaker.clientWidth)/2 + 'px';
       document.getElementsByClassName("upper-canvas")[0].style['margin'] = storyMakerMarginText;
@@ -261,14 +265,20 @@ function cropCanvasTemplate(canvas, aspectRatio) {
       var backgroundObj = canvas.item(0);
       backgroundObj.left = canvCenter.left;
       backgroundObj.top = canvCenter.top;
-      fitImgToCanvas(canvas)
+      if(manual === true && canvas.item(1)){
+        var textboxObj = canvas.item(1);
+        textboxObj.left = canvCenter.left;
+        textboxObj.top = canvCenter.top;
+      }
+      fitImgAndTextToCanvas(canvas, manual)
       canvas.requestRenderAll();
     }
   }
 }
 
-function fitImgToCanvas(canvas) {
+function fitImgAndTextToCanvas(canvas, manual) {
   var backgroundObj = canvas.item(0);
+  var textboxObj = canvas.item(1);
   var imgWidth = backgroundObj.width;
   var imgHeight = backgroundObj.height;
   var canvasWidth = canvas.getWidth();
@@ -280,11 +290,33 @@ function fitImgToCanvas(canvas) {
     if(imgHeight> canvasHeight){
       backgroundObj.scaleToWidth(canvasWidth);
       backgroundObj.scaleToHeight(canvasHeight);
+      if(manual === true && canvas.item(1)){
+        textboxObj.scaleToHeight(canvasHeight);
+        textboxObj.scaleToWidth(canvasWidth);
+      }
+    } else{
+      backgroundObj.scaleToWidth(canvasWidth);
+      backgroundObj.scaleToHeight(canvasHeight);
+      if(manual === true && canvas.item(1)){
+        textboxObj.scaleToWidth(canvasWidth);
+        textboxObj.scaleToHeight(canvasHeight);
+      }
     }
   }else{
     if(imgWidth> canvasWidth){
       backgroundObj.scaleToHeight(canvasHeight);
       backgroundObj.scaleToWidth(canvasWidth);
+      if(manual === true && canvas.item(1)){
+        textboxObj.scaleToHeight(canvasHeight);
+        textboxObj.scaleToWidth(canvasWidth);
+      }
+    } else{
+      backgroundObj.scaleToHeight(canvasHeight);
+      backgroundObj.scaleToWidth(canvasWidth);
+      if(manual === true && canvas.item(1)){
+        textboxObj.scaleToWidth(canvasWidth);
+        textboxObj.scaleToHeight(canvasHeight);
+      }
     }
   }
 }
@@ -335,12 +367,12 @@ function dataURLtoBlob(dataurl) {
 }
 
 //Sending image data to server
-function sendImageDraftToServer(imgData, aspectRatio, clubId, csrfToken){
+function sendImageDraftToServer(imgData, type, aspectRatio, clubId, csrfToken){
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", '/clubs/'+ clubId +'/story/create/edit', true);
+  xhr.open("POST", '/clubs/'+ clubId +'/story/create/draft', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-  xhr.send(JSON.stringify({image: imgData, aspectRatio}));
+  xhr.send(JSON.stringify({image: imgData, type, aspectRatio}));
   xhr.onloadend = function() {
     if(xhr.status == 200) {
       return location.replace('/clubs/'+ clubId +'/story/create/options');

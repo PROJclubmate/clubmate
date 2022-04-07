@@ -3,8 +3,10 @@ const express = require('express'),
   middleware  = require('../middleware');
 
 const {
-  storiesEdit,
-  storiesDraft,
+  storiesFormat,
+  storiesTextEdit,
+  storiesImageEdit,
+  storiesSaveDraft,
   storiesOptions,
   storiesPublish,
   storiesUserGet,
@@ -16,11 +18,17 @@ const {
 } = require('../controllers/stories');
 
 
-// Get create story page
-router.get('/clubs/:club_id/story/create/edit', middleware.isLoggedIn, storiesEdit);
+// Get page to select the format of stories
+router.get('/clubs/:club_id/story/create', middleware.isLoggedIn, storiesFormat);
+
+// Get text editor page
+router.get('/clubs/:club_id/story/create/text', middleware.isLoggedIn, storiesTextEdit);
+
+// Get image editor page
+router.get('/clubs/:club_id/story/create/image', middleware.isLoggedIn, storiesImageEdit);
 
 // Save story image draft(AJAX)
-router.post('/clubs/:club_id/story/create/edit', middleware.isLoggedIn, storiesDraft);
+router.post('/clubs/:club_id/story/create/draft', middleware.isLoggedIn, storiesSaveDraft);
 
 // Set story options
 router.get('/clubs/:club_id/story/create/options', middleware.isLoggedIn, storiesOptions);

@@ -1,12 +1,11 @@
 <% include ../partials/header %>
 
-<div class="mt-4 pt-3">
-  <h3 class="px-3 py-1"> Lobby </h3>
+<div id="page_minheight_100" class="mt-4 pt-3">
+  <h3 id="lobby-heading" class="p-1"> Lobby </h3>
 
     <% for (const club of audioroomsData) { %>
       <div class="py-3">
-
-        <div class="mt-2 mx-4">
+        <div class="mt-2 mx-3">
           <div class="lobby_club_name">
             <span>
               <img class="navdp rounded-circle" src="<%= club.avatar_100 %>">
