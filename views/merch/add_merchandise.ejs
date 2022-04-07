@@ -1,0 +1,135 @@
+<% include ../partials/header %>
+  <style>
+    .price-field {
+      margin: 0.5rem auto 0;
+    }
+  </style>
+
+  <div class="container mx-auto">
+    <div class="row">
+      <div class="col-md-6 mx-auto my-4">
+        <div class="card drop-shadow1 rounded">
+          <h5 class="card-header">Add New Merchandise</h5>
+          <div class="card-body">
+            <form class="new-merch" action="/merchandise" method="POST" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="title">Product Name</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+              </div>
+              <div class="form-group">
+                <label for="description">Product description</label>
+                <textarea class="form-control" id="description" rows="2" name="description" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="category">Select Category</label>
+                <select class="form-control" id="category" name="category" required>
+                  <option selected>Wearables</option>
+                  <option>Accessories</option>
+                  <option>Stickers</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="subCategory">Product Sub Category</label>
+                <input type="text" class="form-control" id="subCategory" name="subCategory" required>
+              </div>
+              <div class="custom-file my-3 form-group">
+                <input type="file" class="custom-file-input" id="image" name="images" multiple>
+                <label class="custom-file-label" for="image">Upload Images</label>
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend price-field">
+                    <div class="input-group-text">Rs. </div>
+                  </div>
+                  <input type="text" class="form-control" id="price" name="price">
+                </div>
+              </div>
+              <div class="form-group" id="colors">
+                <label for="color">Product Colour(s)</label>
+                <textarea class="form-control" id="color" rows="1" name="colors"></textarea>
+              </div>
+              <div class="form-group" id="sizes">
+                <span>Select Sizes</span>
+                <div class="sizes my-2 form-control">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="sizes" id="inlineCheckbox1" value="S">
+                    <label class="form-check-label" for="inlineCheckbox1">S</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="sizes" id="inlineCheckbox2" value="M">
+                    <label class="form-check-label" for="inlineCheckbox2">M</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="sizes" id="inlineCheckbox3" value="L">
+                    <label class="form-check-label" for="inlineCheckbox3">L</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="sizes" id="inlineCheckbox4" value="XL">
+                    <label class="form-check-label" for="inlineCheckbox4">XL</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="sizes" id="inlineCheckbox5" value="XXL">
+                    <label class="form-check-label" for="inlineCheckbox5">XXL</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="posted">Produced By </label>
+                <select class="form-control" id="posted" name="posted" required>
+                  <% let c_club = 0 %>
+                  <% for(let club of clubs) { %>
+                    <% c_club++ %>
+                    <option value="<%- club._id+'#$#'+club.name %>"><%- club.name %></option>
+                    <!-- <% if(c_club == 1){ %> selected <% } %> -->
+                    <% } %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="contact">Contact</label>
+                <input type="text" class="form-control" id="contact" name="contact" required>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-success">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const e = document.getElementById("category");
+    const sizes = document.getElementById("sizes");
+    const color = document.getElementById("colors")
+    e.addEventListener('click', () => {
+      const strUser = e.options[e.selectedIndex].text;
+      
+      console.log(strUser)
+      if(strUser === "Wearables"){
+        {
+          if(sizes.classList.contains('d-none')) {
+            sizes.classList.remove('d-none')
+          }
+        }
+        {
+          if (color.classList.contains('d-none')) {
+            color.classList.remove('d-none')
+          }
+        }
+      }
+      else if(strUser === "Accessories") {
+        sizes.classList.add('d-none')
+        if (color.classList.contains('d-none')) {
+          color.classList.remove('d-none')
+        }
+      }
+      else {
+        sizes.classList.add('d-none')
+        color.classList.add('d-none')
+      }
+
+    })
+  </script>
+  <% include ../partials/footer %>
