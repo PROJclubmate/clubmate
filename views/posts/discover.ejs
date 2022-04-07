@@ -83,19 +83,19 @@
           <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
           <div class="d-flex flex-column">
             <div class="d-flex flex-row quickviewcontainers-desktop">  
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs">
+              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs" data-toggle="modal" data-target="#quickblog">
                 <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
               </div>
               <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
             </div>
             <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern">
+              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern" data-toggle="modal" data-target="#quickintern">
                 <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
               </div>
               <div class="quicknav_text_desktop text-xs my-auto ml-2">INTERN</div>
             </div>
             <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers">
+              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers" data-toggle="modal" data-target="#quickmerch">
                 <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
               </div>
               <div class="quicknav_text_desktop text-xs my-auto ml-2">MERCH</div>
@@ -171,19 +171,19 @@
   <nav id="quickview_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
     <ul class="quicknav_list_mobile d-flex justify-content-around w-100">
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#blogs">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#blogs"  data-toggle="modal" data-target="#quickblog">
           <i class="fas fa-blog quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
           <span class="quicknav_text_mobile text-xs">BLOGS</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#intern">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#intern" data-toggle="modal" data-target="#quickintern">
           <i class="fas fa-briefcase quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
           <span class="quicknav_text_mobile text-xs">INTERN</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#merch">
+        <a class="quicknav_link_mobile my-auto mx-2" href="#merch" data-toggle="modal" data-target="#quickmerch">
           <i class="fas fa-store quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
           <span class="quicknav_text_mobile text-xs">MERCH</span>
         </a>
@@ -216,6 +216,66 @@
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickMessContent">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quickblog" tabindex="-1" aria-labelledby="quickblog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div id="quickmodal" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">News and Blogs</h5>
+        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="quickViewModal" class="modal-body scroll moz-scroll">
+        <div id="quickBlogContent">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quickmerch" tabindex="-1" aria-labelledby="quickmerch" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div id="quickmodal" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Merchandise</h5>
+        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="quickViewModal" class="modal-body scroll moz-scroll">
+        <div id="quickMerchContent">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quickintern" tabindex="-1" aria-labelledby="quickintern" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div id="quickmodal" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Placements and Interns</h5>
+        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="quickViewModal" class="modal-body scroll moz-scroll">
+        <div id="quickInternContent">
         </div>
       </div>
       <div class="modal-footer">
