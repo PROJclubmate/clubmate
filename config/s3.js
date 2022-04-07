@@ -52,12 +52,19 @@ async function uploadFile(file, folder, size){
   }
   return s3.upload(uploadParams).promise();
 }
-async function clubStoriesUpload(file){
+async function clubStoriesUpload(file, type){
   const uri = file.split(';base64,').pop();
   let imgBuffer = Buffer.from(uri, 'base64');
-  const {data, info} = await sharp(imgBuffer)
-  .resize(1080, 1080, {fit: 'inside'})
-  .toBuffer({resolveWithObject: true});
+  if(type == 'text'){
+    const {data, info} = await sharp(imgBuffer)
+    .resize(1080, 1080, {fit: 'inside'})
+    .sharpen()
+    .toBuffer({resolveWithObject: true});
+  } else{
+    const {data, info} = await sharp(imgBuffer)
+    .resize(1080, 1080, {fit: 'inside'})
+    .toBuffer({resolveWithObject: true});
+  }
   let format = info.format;
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,

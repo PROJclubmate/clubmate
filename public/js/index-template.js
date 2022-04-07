@@ -654,8 +654,8 @@ function discover_posts_template(response){
   <!-- SIMPLE POSTS -->
   <% if(posts[k].topic == ''){ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <div class="discoverheader">
-        <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
+      <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
+        <div class="discoverheader">
           <div class="valign">
             <div class="valign">
               <div>
@@ -677,8 +677,8 @@ function discover_posts_template(response){
               <% } %>
             </div>
           </div>
-        </a>
-      </div>
+        </div>
+      </a>
       <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
         <div class="discoverfooter discoverfooter-left lineheight-lesser">
           <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index mobiletext4"></i></a>
@@ -732,8 +732,8 @@ function discover_posts_template(response){
     </div>
   <% } else{ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <div class="discoverheader">
-        <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
+      <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
+        <div class="discoverheader">
           <div class="valign">
             <div class="valign">
               <div>
@@ -755,8 +755,8 @@ function discover_posts_template(response){
               <% } %>
             </div>
           </div>
-        </a>
-      </div>
+        </div>
+      </a>
       <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
         <div class="discoverfooter discoverfooter-left lineheight-lesser">
           <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index mobiletext4"></i></a>

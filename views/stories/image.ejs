@@ -1,0 +1,96 @@
+<% include ../partials/header %>
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
+  h1 {
+    font-family: sans-serif;
+    color: #343a40;
+    font-size: 20px;
+  }
+
+  @media screen and (min-width: 768px){
+    #options-container{
+      margin-right: -0.5rem;
+    }
+  }
+  @media screen and (max-width: 767px){
+    #story-header{
+      height: unset;
+    }
+    h1{
+      position: absolute;
+      bottom: 0.875rem;
+      left: 0.875rem;
+      opacity: 0.5;
+    }
+    #options-container{
+      width: 100%;
+      justify-content: space-around;
+    }
+  }
+</style>
+
+<div id="story-maker-container">
+  <div id="story-header">
+    <div class="p-2 pt-3 valign">
+      <div class="mb-auto pt-1">
+        <h1 class="m-0 darkgrey">Image Editor</h1>
+      </div>
+      <div id="options-container" class="d-flex flex-row">
+        <div class="d-flex flex-column text-center mx-2">
+          <div>
+            <label class="story-maker-options darkgrey text-xxl" title="Upload Image" for="backgroundpick" title="Upload image">
+              <i class="far fa-image"></i>
+            </label>
+            <input type="file" id="backgroundpick" name="" accept="image/*">
+          </div>
+          <div class="mt-auto text-xxs mobiletext4">Upload</div>
+        </div>
+        <div class="d-flex flex-column text-center mx-2">
+          <div id="addtextbox" class="story-maker-options darkgrey" title="Add Text">
+            <i class="fas fa-font"></i>
+          </div>
+          <div class="mt-auto text-xxs mobiletext4">Text</div>
+        </div>
+        <div class="d-flex flex-column text-center mx-2">
+          <div id="cropcanvas" class="story-maker-options darkgrey" title="Crop Canvas">
+            <i class="fas fa-crop-alt"></i>
+          </div>
+          <div class="mt-auto text-xxs mobiletext4">
+            <span class="desktopNone">AR</span>
+            <span class="m-0 mobileNone">Aspect Ratio</span>
+          </div>
+        </div>
+        <div class="d-flex flex-column text-center ml-2">
+          <div class="story-maker-options" title="Download">
+            <a href="" id="saveimage" class="darkgrey">
+              <i class="fas fa-download"></i>
+            </a>
+          </div>
+          <div class="mt-auto text-xxs mobiletext4">Download</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="story-draftimg" class="d-none" value="<%= storyDraftImage %>" aspect_ratio="<%= aspectRatio %>" is_edited="false"></div>
+  <canvas id="story-maker"></canvas>
+  <div id="story-footer" class="d-flex d-none">
+    <div class="mx-auto">
+      <div class="d-flex flex-row">
+        <div id="4_3" class="crop-canvas-options">4:3</div>
+        <div id="1_1" class="crop-canvas-options">1:1</div>
+        <div id="3_4" class="crop-canvas-options">3:4</div>
+        <div id="9_16" class="crop-canvas-options">9:16</div>
+      </div>
+    </div>
+  </div>
+  <button id="story-maker-next" class="story-maker-next btn btn-light inactive" type="button" club-id="<%= clubId %>" 
+  csrf-token="<%= csrfToken %>" onclick="loading_spinner('load-storyDraftNextbutton','');">
+    <span id="load-storyDraftNextbutton"></span>Next <i class="fas fa-angle-right ml-2"></i>
+  </button>
+</div>
+
+
+<% include ../partials/footer %>
+<script src="/js/libs/fabric.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+<script src="/js/story_creator/image-editor.js"></script>

@@ -1,0 +1,31 @@
+<% include ../partials/header %>
+
+<div class="row no-gutters mt-5">
+  <div class="col-md-3 col-12">
+    <h5 class="py-1 mb-5 text-center">Create a story update using</h5>
+  </div>
+  <div class="col-md-9 col-12 mb-3">
+    <a href="/clubs/<%= clubId %>/story/create/text" class="nolink mt-3 mx-auto valign btn btn-light discoverswitch text-lg" style="width: 50%;">
+      <div><i class="fas fa-font"></i></div>
+      <div class="mx-auto">Text</div>
+    </a>
+    <a href="/clubs/<%= clubId %>/story/create/image" class="nolink mt-3 mx-auto valign btn btn-light discoverswitch text-lg" style="width: 50%;">
+      <div><i class="far fa-image"></i></div>
+      <div class="mx-auto">Image</div>
+    </a>
+    <a href="#" class="nolink mt-3 mx-auto valign btn btn-light discoverswitch disabled text-lg" style="width: 50%;">
+      <div><i class="far fa-images"></i></div>
+      <div class="mx-auto">Album</div>
+    </a>
+    <a href="#" class="nolink mt-3 mx-auto valign btn btn-light discoverswitch disabled text-lg" style="width: 50%;">
+      <div><i class="fas fa-video"></i></div>
+      <div class="mx-auto">Video</div>
+    </a>
+    <a href="#" class="nolink mt-3 mx-auto valign btn btn-light discoverswitch disabled text-lg" style="width: 50%;">
+      <div><i class="fas fa-microphone-alt"></i></div>
+      <div class="mx-auto">AR Recording</div>
+    </a>
+  </div>
+</div>
+
+<% include ../partials/footer %>
