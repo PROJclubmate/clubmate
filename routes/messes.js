@@ -4,7 +4,7 @@ const express = require('express'),
 
 const {
   messShowFull,
-  messUserSelect,
+  messUserChange,
   messEditPage,
   messUpdateMenu, 
   quickmessData,
@@ -17,7 +17,7 @@ const {
 router.get('/colleges/:college_name/mess', middleware.isInCollege, messShowFull);
 
 // Change in currentUser userKeys the mess to show menu of
-router.put('/colleges/:college_name/mess', middleware.isInCollege, messUserSelect);
+router.put('/colleges/:college_name/mess', middleware.isInCollege, messUserChange);
 
 // Show edit mess menu page
 router.get('/colleges/:college_name/mess/edit', middleware.isInCollege, messEditPage);
