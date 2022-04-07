@@ -1,0 +1,160 @@
+<% include ../partials/header %>  
+
+<style>
+	.smalldp rounded-circle {
+		height: 16px;
+		width: 16px;
+		border-radius: 50%;
+	}
+
+	.product-tag {
+		border-radius: 1em;
+		font-size: 0.9em;
+	}
+
+	.product-tag:hover {
+		cursor: pointer;
+	}
+
+	.blog-content {
+		margin-left: 1.25rem;
+	}
+
+	.blog-card {
+		border-left: 0;
+		border-right: 0;
+		min-width: 720px
+	}
+
+	@media (max-width: 991px) {
+		.blog-card {
+			min-width: 576px;
+		}
+	}
+
+	@media (max-width: 575px) {
+		.blog-card {
+			min-width: 492px;
+		}
+	}
+
+	@media (max-width: 491px) {
+		.blog-card {
+			min-width: 95%;
+		}
+	}
+
+	.card-image {
+		margin-left: 1rem;
+		margin-bottom: 1.25rem;
+		height: 100px;
+		width: 100px;
+	}
+
+	.icons:hover {
+		cursor: pointer;
+	}
+
+	.p-name:hover {
+		cursor: pointer;
+	}
+
+	.card-link {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.card-link:hover {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.top-content {
+		padding-left: 0.5rem;
+	}
+
+	.far.fa-bookmark {
+		-webkit-text-stroke: 0.25px #fff;
+	}
+</style>
+
+
+<div class="container my-3">
+	<div class="row no-gutters">
+		<div class="card mb-3 mx-1 mx-md-auto blog-card pt-3 pb-2 px-md-3" style="max-width: 720px;">          
+			<div class="valign">
+				<div class="pt-1">
+					<div class="card-body">
+						<div class="">
+							<a href="#" class="card-link" target="_blank">
+								<h5 class="card-title mb-1">Position Name</h5>
+							</a>
+						</div>
+						<div class="">
+							<p class="text-muted">
+								Company Name
+							</p>
+						</div>						
+					</div>
+				</div>
+				<div class="pt-1 mb-3">
+					<img src="https://miro.medium.com/fit/c/140/140/1*lENffNJqMW4fiDhqz7PlNw.png" class="navdp rounded-circle mr-1" alt="...">
+				</div>
+			</div>
+			<div class="valign">
+				<div class="card-body">
+					<i class="fas fa-map-marker-alt"></i>
+					<span class="mx-1">Location</span>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row mobiletext1">
+					<div class="col-3 desc-col">
+						<div class="desc text-muted mb-1">
+							<i class="fas fa-business-time"></i>
+							<span class="ml-1">Start Date</span>
+						</div>
+						<div class="desc-text ml-1">
+							Immediately
+						</div>
+					</div>
+					<div class="col-3 desc-col">
+						<div class="desc text-muted mb-1">
+							<i class="far fa-calendar-alt"></i> 
+							<span class="ml-1">Duration</span>
+						</div>
+						<div class="desc-text ml-1">
+							6 Months
+						</div>
+					</div>
+					<div class="col-3 desc-col">
+						<div class="desc text-muted mb-1">
+							<i class="fas fa-coins"></i>
+							<span class="ml-1">Stipend</span>
+						</div>
+						<div class="desc-text ml-1">
+							Rs. 20000
+						</div>
+					</div>
+					<div class="col-3 desc-col">
+						<div class="desc text-muted mb-1">
+							<i class="fas fa-hourglass-half"></i>
+							<span class="ml-1">Apply By</span>
+						</div>
+						<div class="desc-text ml-1">
+							2nd April
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="valign my-2">
+				<div class=""></div>
+				<div class="">
+					<a href="">View Details</a>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+
+<% include ../partials/footer %>

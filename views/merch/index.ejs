@@ -1,222 +1,256 @@
 <% include ../partials/header %>
-<style>
-  .merch {
-    background-color: #9DCEDD;
-    color: black !important;
-    border-radius: 1em;
-    padding: 1rem;
-    margin: 1rem;
-  }
-  .price-field {
-    margin: 0.5rem auto 0;
-  }
-  a {
-    color: inherit;
-  }
-  a:hover {
-    text-decoration: none;
-  }
-  .tile-image {
-    border-radius: 50%;
-    background-color: #E2F1F6;
-    max-width: 128px;
-    max-height: 128px;
-    width: calc(25vw - 4rem);
-    height: calc(25vw - 4rem);
-    position: relative;
-  }
-  .merch-icons{
-    max-width: calc(128px - 4rem);
-    width: calc(25vw - 4rem);
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto auto;
-  }
-  .title-heading {
-    border-bottom: 2px #262626 solid;
-  }
-  .item-img {
-    width: 90%;
-    height: 15rem;
-    max-width: 15rem;
-  }
-  .card {
-    border-radius: 0.5em;
-  }
-  .card:hover {
-    box-shadow: 0 0 10px rgba(33, 33, 33, .2);
-  }
-  .product-tag {
-    border-radius: 1em;
-    font-size: 0.9em;
-  }
-  .product-tag:hover {
-    cursor: pointer;
-  }
-  .call-link {
-    color: inherit;
-  }
-  .out_of_stock {
-    opacity: 0.5;
-  }
-  @media screen and (max-width: 993px){
+  <style>
     .merch {
-      margin: 0;
+      background-color: #9DCEDD;
+      color: black !important;
+      border-radius: 1em;
+      max-width: 230px;
     }
-    .title-heading{
-      border-width: 1px;
-    }
-    .merch-card{
-      margin: 1rem 0 !important;
-    }
-  }
-  @media screen and (max-width: 769px){
-    #all_products{
-      display: none;
-    }
-    .merch {
-      padding: 0.375rem;
-    }
-    .merch-icons {
-      padding: 0.5rem;
-    }
-    .merch-card{
-      margin: 1rem 0 !important;
-    }
-  }
-  @media (max-width: 481px) {
-    .merch, .col-3.mx-auto.text-center {
-      padding: 0.375rem;
-    }
-    .tile-image {
-      width: calc(25vw - 2rem);
-      height: calc(25vw - 2rem);
-    }
-    .merch-icons {
-      width: calc(25vw - 2rem);
-    }
-    .title-heading{
-      border-width: 0.5px;
-    }
-    .merch-card{
-      margin: 1rem 3rem !important;
-    }
-  }
-  @media (max-width: 360px) {
-    .merch-card{
-      margin: 1rem 2rem !important;
-    }
-  }
-</style>
 
-<div id="page_minheight_100">
-  <div class="container my-2">
-    <div class="row mt-3 mx-auto">
-      <div class="col-3 mx-auto text-center">
-        <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/all">
-            <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1648557411/icons/merch_store.png" alt="All Products">
-            </div>
-            <h4 class="mt-2 mobiletext4"><span>All</span><span id="all_products" class="m-0"> Products</span></h4>
-          </a>
-        </div>
-      </div>
-      <div class="col-3 mx-auto text-center">
-        <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/wearables">
-            <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1648557411/icons/merch_hoodie.png" alt="T-Shirt">
-            </div>
-            <h4 class="mt-2 mobiletext4">Wearables</h4>
-          </a>
-        </div>
-      </div>
-      <div class="col-3 mx-auto text-center">
-        <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/accessories">
-            <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1648557412/icons/merch_mug.png" alt="Hoodie">
-            </div>
-            <h4 class="mt-2 mobiletext4">Accessories</h4>
-          </a>
-        </div>
-      </div>
-      <div class="col-3 mx-auto text-center">
-        <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/stickers">
-            <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1648557411/icons/merch_stickers.png" alt="Stickers">
-            </div>
-            <h4 class="mt-2 mobiletext4">Stickers</h4>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container my-2">
-    <div class="row mt-3 title-heading mx-2">
-      <h4 class="w-100 mobiletext1">
-        <div class="valign">
-          <div class="name_div">
-            <%- name %>
-          </div>
-          <div>
-            <a href="/colleges/<%= collegeName %>/merchandise/add">
-              <button class="btn btn-sm btn-warning">Add New</button>
+    .price-field {
+      margin: 0.5rem auto 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    .tile-image {
+      border-radius: 50%;
+      background-color: #E2F1F6;
+      width: 128px;
+      height: 128px;
+      padding: 32px;
+    }
+
+    .title-heading {
+      border-bottom: 2.5px black solid;
+    }
+
+    .item-img {
+      width: 90%;
+      height: 15rem;
+      max-width: 15rem;
+    }
+
+    .card {
+      border-radius: 0.5em;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 10px rgba(33, 33, 33, .2);
+    }
+
+    .product-tag {
+      border-radius: 1em;
+      font-size: 0.9em;
+    }
+
+    .product-tag:hover {
+      cursor: pointer;
+    }
+
+    .call-link {
+      color: inherit;
+    }
+
+    .out_of_stock {
+      opacity: 0.5;
+    }
+  </style>
+  <div class="products">
+    <div class="container my-2">
+      <div class="row mt-3 mx-auto">
+        <div class="col-md-6 col-lg-3 mx-auto text-center">
+          <div class="merch my-3 mx-auto p-3">
+            <a href="/merchandise/all">
+              <div class="tile-image mx-auto">
+                <img src="/images/merch_store_icon.png" alt="All Products">
+              </div>
+              <h4 class="mt-2">All Products</h4>
             </a>
           </div>
         </div>
-      </h4>
-    </div>
-    
-    <% let count=0 %>
-    <% for(let item of merchItems) { %>
-    <% count++; %>
-      <% if(count%4==1) { %>
-        <div class="row mt-3 w-100 mx-auto">
-      <% } %>
-          <div class="col-sm-6 col-md-4 col-lg-3 text-center">
-            <div class="card merch-card mx-1 px-2 pt-3 my-3">
-              <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/<%- item._id %>" class="nolink">
-                <img src="<%- item.images[0] || '/images/noImage.png' %>"
-                  class="card-img-top item-img mx-auto cover <% if(!item.inStock) { %> out_of_stock <% } %>" alt="">
-                <div class="card-body">
-                  <h5 class="card-title title">
-                    <%- item.title %>
-                  </h5>
-                  <p class="text-muted">Posted By : <span class="posting">
-                      <%= item.club.clubName %>
-                    </span>
-                  </p>
-
-                  <% if(item.inStock) { %>
-                    <p class="card-text">Price : Rs. <span class="price"><%- item.price %></span></p>
-                  <% } %>
-                  <% if(!item.inStock) { %>
-                    <p class="card-text text-danger boldtext">Out Of Stock</p>
-                  <% } %>
-                  <div class="mt-1">
-                    <!-- Working On This -->
-                    <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/subtype/<%- item.subCategory %>"
-                      class="text-decoration-none">
-                      <mark class="product-tag px-2 py-1">
-                        <%- item.subCategory %>
-                      </mark>
-                    </a>
-                  </div>
-                </a>
+        <div class="col-md-6 col-lg-3 mx-auto text-center">
+          <div class="merch my-3 mx-auto p-3">
+            <a href="/merchandise/wearables">
+              <div class="tile-image mx-auto">
+                <img src="/images/merch_tshirt_icon.png" alt="T-Shirt">
               </div>
+              <h4 class="mt-2">Wearables</h4>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mx-auto text-center">
+          <div class="merch my-3 mx-auto p-3">
+            <a href="/merchandise/accessories">
+              <div class="tile-image mx-auto">
+                <img src="/images/merch_hoodie_icon.png" alt="Hoodie">
+              </div>
+              <h4 class="mt-2">Accessories</h4>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mx-auto text-center">
+          <div class="merch my-3 mx-auto p-3">
+            <a href="/merchandise/stickers">
+              <div class="tile-image mx-auto">
+                <img src="/images/merch_stickers_icon.png" alt="Stickers">
+              </div>
+              <h4 class="mt-2">Stickers</h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container my-2">
+      <div class="row mt-3 title-heading mx-2">
+        <h3 class="mb-3">
+          <div class="valign fullwidth">
+            <div class="name_div">
+              <%- name %>
+            </div>
+            <div class="add_new_div">
+              <a href="/merchandise/add">
+                <button class="btn btn-primary">Add New</button>
+              </a>
             </div>
           </div>
-      <% if(count%4==0) { %>
-        </div>
-      <% } %>
-    <% } %>
-  </div>
-</div>
+        </h3>
 
-<% include ../partials/footer %>
+      </div>
+      <% let count=0 %>
+        <% for(let item of merchItems) { %>
+          <% count++; %>
+            <% if(count%4==1) { %>
+              <div class="row mt-3 w-100 mx-auto">
+                <% } %>
+                  <div class="col-md-6 col-lg-3 text-center">
+                    <div class="card mx-1 px-2 pt-3 my-3">
+                      <img src="<%- item.images[0] %>"
+                        class="card-img-top item-img mx-auto <% if(!item.inStock) { %> out_of_stock <% } %>" alt="">
+                      <div class="card-body">
+                        <h5 class="card-title title">
+                          <%- item.title %>
+                        </h5>
+                        <p class="text-muted">Posted By : <span class="posting">
+                            <%= item.club.clubName %>
+                          </span>
+                        </p>
+
+                        <% if(item.inStock) { %>
+                          <p class="card-text">Price : Rs. <span class="price">
+                              <%- item.price %>
+                            </span></p>
+                          <% } %>
+                            <% if(!item.inStock) { %>
+                              <p class="card-text text-danger boldtext">Out Of Stock
+                              </p>
+                              <% } %>
+                                <div class="div">
+                                  <!-- Working On This -->
+                                  <a href="/merchandise/<%- item.category %>/subtype/<%- item.subCategory %>"
+                                    class="text-decoration-none"><mark class="product-tag px-2 py-1">
+                                      <%- item.subCategory %>
+                                    </mark></a>
+                                </div>
+                                <!-- Working On This -->
+                                <a href="/merchandise/<%- item.category %>/<%- item._id %>"
+                                  class="btn btn-primary mt-3">View
+                                  Product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <% if(count%4==0) { %>
+              </div>
+              <% } %>
+                <% } %>
+    </div>
+    <!-- <div class="container my-2">
+            <div class="row mt-3 title-heading mx-2">
+                <h3 class="mb-3">Featured Produts</h3>
+            </div>
+            <div class="row mt-3 justify-content-center w-100 mx-auto">
+                <div class="col-md-6 col-lg-3 mx-auto text-center">
+                    <div class="card mx-1 px-2 pt-3 my-3">
+                        <img src="..." class="card-img-top item-img mx-auto" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title title">Card title</h5>
+                            <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+                            <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+                            
+                            <div class="div">
+                                <a href="product.html" class="text-decoration-none"><mark
+                                        class="product-tag px-2 py-1">Tag
+                                        Name</mark></a>
+                            </div>
+
+                            <a href="product.html" class="btn btn-primary mt-3">View Product</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mx-auto text-center">
+                    <div class="card mx-1 px-2 pt-3 my-3">
+                        <img src="..." class="card-img-top item-img mx-auto" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title title">Card title</h5>
+                            <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+                            <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+                            
+                            <div class="div">
+                                <a href="product.html" class="text-decoration-none"><mark
+                                        class="product-tag px-2 py-1">Tag
+                                        Name</mark></a>
+                            </div>
+
+                            <a href="product.html" class="btn btn-primary mt-3">View Product</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mx-auto text-center">
+                    <div class="card mx-1 px-2 pt-3 my-3">
+                        <img src="..." class="card-img-top item-img mx-auto" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title title">Card title</h5>
+                            <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+                            <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+                            
+                            <div class="div">
+                                <a href="product.html" class="text-decoration-none"><mark
+                                        class="product-tag px-2 py-1">Tag
+                                        Name</mark></a>
+                            </div>
+
+                            <a href="product.html" class="btn btn-primary mt-3">View Product</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mx-auto text-center">
+                    <div class="card mx-1 px-2 pt-3 my-3">
+                        <img src="..." class="card-img-top item-img mx-auto" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title title">Card title</h5>
+                            <p class="text-muted">Posted By : <span class="posting">Lorem</span></p>
+                            <p class="card-text">Price : Rs. <span class="price">xxx</span></p>
+                            
+                            <div class="div">
+                                <a href="product.html" class="text-decoration-none"><mark
+                                        class="product-tag px-2 py-1">Tag
+                                        Name</mark></a>
+                            </div>
+
+                            <a href="product.html" class="btn btn-primary mt-3">View Product</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+  </div>
+  <script>
+
+  </script>
+  <% include ../partials/footer %>

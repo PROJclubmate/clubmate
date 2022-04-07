@@ -41,7 +41,7 @@ module.exports = {
 
 
         if (isNaN(bucketIndex)) {
-          return res.render('blogs/index', {college: req.user.userKeys.college, bucket: foundCollegePage.blogBuckets.length});
+          return res.render('blogs/show', {college: req.user.userKeys.college, bucket: foundCollegePage.blogBuckets.length});
         }
 
         if (!bucketIndex) {
@@ -128,7 +128,7 @@ module.exports = {
 
             }
 
-            return res.json({ blogBucket: foundBlog, bucket: bucketIndex })
+            return res.json({ blogs: foundBlog.blogs, bucket: bucketIndex })
 
           });
 
@@ -140,7 +140,7 @@ module.exports = {
 
   async blogsCreatePage(req, res, next) {
 
-    res.render('blogs/new', {college: req.user.userKeys.college});
+    res.render('blogs/add_blog', {college: req.user.userKeys.college});
 
   },
 
@@ -873,7 +873,7 @@ module.exports = {
           foundCollegePage.unapprovedBlogBucket = { blogs: [] };
         }
 
-        res.render('blogs/publish', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.user.userKeys.college });
+        res.render('blogs/publish_blog', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.user.userKeys.college });
 
       });
 
