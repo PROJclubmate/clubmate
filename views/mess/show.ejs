@@ -173,59 +173,62 @@
     }
   }
 </style>
-
-<div class="card">
-  <div class="card-body">
-    <form class="form-inline">
-      
-    </form>
-  </div>
+<div class="container-fluid mt-3">
+  <form class="form-inline mx-auto" action="/colleges/<%= collegeName %>/mess?_method=PUT" method="post">
+      <label for="messName" class="mx-2 lead font-weight-bold">Select Mess</label>
+      <select class="form-control mx-2" id="messName" name="messName" onchange="this.form.submit()">
+        <% for(let m of mess) { %>
+          <option value="<%= m.name %>" <% if(m.name == messName){ %> selected <% } %> ><%= m.name %></option>
+        <% } %>
+      </select>
+  </form>
 </div>
 
-<% for(let m of mess) { %>  
-  <div id="page_minheight_100" class="container slider-container">
-    <% const days=["Monday", "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday" ]; %>
-    <% for(let weekday of days){ %>
-      <div class="container-fluid mx-auto">
-        <div class="slide">
-          <div class="accordion py-3 bg-white">
-            <h2 class="accordion__heading mb-3 px-4 text-center">
-              <%= weekday %>
-            </h2>
-            <% for(let menu of m.menu) { %>
-              <% if(menu.day == weekday) { %>
-                <div class="accordion__item">
-                  <button class="accordion__btn">
-                    <span class="accordion__caption">
-                      <i class="fas fa-utensils mr-3 text-xxl darkgrey"></i>
-                      <%= menu.time %>
-                    </span>
-                    <span class="accordion__icon"><i class="fa fa-plus"></i></span>
-                  </button>
-                  <div class="accordion__content">
-                    <ul class="list-group list-group-flush py-3 px-4">
-                      <% for(let dish of menu.dishes) { %>
-                        <li class="list-group-item">
-                          <%= dish %>
-                        </li>
-                      <% } %>
-                    </ul>
+<% for(let m of mess) { %>
+  <% if(m.name == messName){ %>  
+    <div id="page_minheight_100" class="container slider-container">
+      <% const days=["Monday", "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday" ]; %>
+      <% for(let weekday of days){ %>
+        <div class="container-fluid mx-auto">
+          <div class="slide">
+            <div class="accordion py-3 bg-white">
+              <h2 class="accordion__heading mb-3 px-4 text-center">
+                <%= weekday %>
+              </h2>
+              <% for(let menu of m.menu) { %>
+                <% if(menu.day == weekday) { %>
+                  <div class="accordion__item">
+                    <button class="accordion__btn">
+                      <span class="accordion__caption">
+                        <i class="fas fa-utensils mr-3 text-xxl darkgrey"></i>
+                        <%= menu.time %>
+                      </span>
+                      <span class="accordion__icon"><i class="fa fa-plus"></i></span>
+                    </button>
+                    <div class="accordion__content">
+                      <ul class="list-group list-group-flush py-3 px-4">
+                        <% for(let dish of menu.dishes) { %>
+                          <li class="list-group-item">
+                            <%= dish %>
+                          </li>
+                        <% } %>
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                <% } %>
               <% } %>
-            <% } %>
+            </div>
           </div>
         </div>
-      </div>
-    <% } %>
-      <button class="prev text-xxxl" onclick="prev()"><i class="fa fa-angle-left"></i></button>
-      <button class="next text-xxxl" onclick="next()"><i class="fa fa-angle-right"></i></button>
+      <% } %>
+        <button class="prev text-xxxl" onclick="prev()"><i class="fa fa-angle-left"></i></button>
+        <button class="next text-xxxl" onclick="next()"><i class="fa fa-angle-right"></i></button>
 
-      <div class="container-fluid change-mess">
-        <a class="btn btn-sm btn-warning" href="/colleges/<%= collegeName %>/mess/edit">Edit Mess Menu</a>
-      </div>
-
-  </div>
+        <div class="container-fluid change-mess">
+          <a class="btn btn-sm btn-warning" href="/colleges/<%= collegeName %>/mess/edit">Edit Mess Menu</a>
+        </div>
+    </div>
+  <% } %>
 <% } %>
 
 <div class="dots_container" id="indicator"></div>
