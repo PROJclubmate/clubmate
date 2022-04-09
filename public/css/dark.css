@@ -75,12 +75,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     background-color: var(--color-dark-800);
   }
-  .post-head, .post-tail, .topic-break, .post-head.heartpost-head{
-    border-color: var(--color-dark-800) !important;
-  }
-  .post-head, .post-tail, .topic-column, .show-comments{
-    border-color: var(--color-dark-800) !important;
-  }
   .college-infobtn .fa-blog, .college-infobtn .fa-briefcase, .fa-store,
   .college-infobtn .fa-utensils, .college-infobtn .fa-calendar-check{
     -webkit-text-stroke-color: var(--color-dark-900) !important;
@@ -91,6 +85,9 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   #btncollapse-club.btncollapse-club.btncollapse-club-dark{
     color: var(--color-white-200) !important;
     border-width: 6px !important;
+  }
+  .gradient-wrap.coverback{
+    background-color: var(--color-dark-800) !important;
   }
 }
 @media screen and (max-width: 1199px){
@@ -145,15 +142,21 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-image: url(/images/chat-dark.svg);
   }
   .border-light.btncollapse-div-shadow{
-    box-shadow: inset 0px 0px 1px 0px rgba(255 ,255, 255, 0.35);
+    box-shadow: inset 0px 2px 3px -1px rgb(255, 255, 255, 0.05), inset 0px -2px 3px -1px rgb(0, 0, 0, 0.15);
+  }
+  #hot_topics_div{
+    margin-top: -1rem;
+    padding-top: 1rem;
+    overflow: hidden;
   }
   .btncollapse-club-grad.collapsed{
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 1rem -0.45rem 0 1rem var(--color-dark-900), -1rem -0.45rem 0 1rem var(--color-dark-900) !important;
+    box-shadow: 0 0 0 1.5rem rgba(0, 0, 0, 0.5) !important;
   }
-  .gradient-wrap.coverback{
-    background-color: var(--color-dark-900) !important;
-  }
+}
+
+.post-head, .heartpost-head, .post-tail, .topic-break, .topic-column,
+.show-comments, .card.discovercard, .searchcard.border-light{
+  border-color: var(--color-dark-800) !important;
 }
 button.gb, .options-btn{
   background-color: var(--color-dark-700) !important;
@@ -241,8 +244,8 @@ button.gb.gb8:focus{
   border-color: var(--color-dark-600);
 }
 .btn.btn-success{
-  background-color: #05a081 !important;
-  border-color: #05a081 !important;
+  background-color: #1eab79 !important;
+  border-color: #1eab79 !important;
   border-bottom-width: 2px;
   color: white;
 }
@@ -290,7 +293,7 @@ button.gb.gb8:focus{
   filter: brightness(0.35);
 }
 select{
-  border-color: #05a081;
+  border-color: #1eab79;
 }
 .btn.moderation.btn-light{
   background-color: transparent !important;
@@ -1052,9 +1055,6 @@ input[type=checkbox]:checked + .slider{
 }
 .subPostimg-div{
   border-color: var(--color-dark-700);
-}
-.gradient-wrap.coverback{
-  background-color: var(--color-dark-800) !important;
 }
 #not_in_room{
   opacity: 0.25;

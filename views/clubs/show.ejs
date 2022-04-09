@@ -46,7 +46,7 @@
               <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
             <% } %>
                 <% if(club.featuredPhotos.length == 0){ %>
-                  <div class="carousel-inner d-flex" style="border-radius: 0 0.5rem 0.5rem 0;">
+                  <div id="fp_carousel_nophoto" class="carousel-inner d-flex">
                     <div class="carousel-item active carousel-div carousel-img">
                       <img class="cover mobile-cover" src="/images/noImage.png" style="opacity: 0;">
                     </div>
@@ -615,7 +615,7 @@
     </div>
   </div>
   <% if(currentUser && 0 <= rank && rank <=4){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2">
+    <div id="hot_topics_div" class="col-md-4 col-lg-3 px-2 pb-2">
       <% include ../partials/hot_topics %>
     </div>
   <% } else if(currentUser && !(0 <= rank && rank <= 4)){ %>

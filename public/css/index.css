@@ -37,7 +37,7 @@
   box-shadow: inset -3px 0px 2px -2px rgba(0,0,0,0.3);
 }
 .sidebar a.active{
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .sidebar a:hover:not(.active){
   transition: ease-out 0.15s;
@@ -69,7 +69,7 @@ div.content{
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
   #inbox_mobile{display: none !important;}
-  .navname{color: white !important; background-color: #313131; margin-left: -0.25rem; padding-left: 0.5rem !important;}
+  .navname{color: white !important; background-color: #333333; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
   .navback{background-color: rgba(40,40,40,0.95);}
   .desktopNone{display: none !important;}
@@ -81,7 +81,7 @@ div.content{
   .scroll:hover::-webkit-scrollbar-thumb{background-color: darkgrey;}
   .scroll::-webkit-scrollbar-thumb:hover{background-color: grey;}
   .moz-scroll{scrollbar-color: darkgrey lightgrey; scrollbar-width: thin; scrollbar-height: thin;}
-  #college_scroll.scroll::-webkit-scrollbar-track{background: #e0e2e4;}
+  #college_scroll.scroll::-webkit-scrollbar-track{background: #e0e0e0;}
   .navbar-light .navbar-nav .nav-link{color: whitesmoke;}
   .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{
     transition: ease-out 0.15s; color: white; background-color: rgba(0,0,0,0.25);}
@@ -109,7 +109,7 @@ div.content{
   .chatlist-background{margin-right: 0.25rem; min-height: 100%;}
   .topnotch-left:before{border-left: 0.5px solid #cccccc;}
   .topnotch-right:before{border-right: 0.5px solid #cccccc;}
-  .postimgcorner{border-radius: 0.2rem; overflow: hidden;}
+  .postimgcorner{border-radius: 0.25rem; overflow: hidden;}
   .postimgpad{padding: 0 0.5rem;}
   .topicimgpad{padding-left: 0.5rem;}
   .story-alt, .story-alt-loader{height: 86px !important; width: 86px !important;}
@@ -142,6 +142,7 @@ div.content{
   #collegeicon{margin-left: -0.9375rem !important; margin-right: 0.8125rem !important;}
   img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
   img.cover.mobile-cover, div.carousel-img{border-radius: 0 0.5rem 0.5rem 0 !important;}
+  #fp_carousel_nophoto{border-radius: 0 0.5rem 0.5rem 0;}
   #btncollapse-club{color: #262626 !important;}
   .carousel-inner{border-radius: 0 0.75rem 0.75rem 0;}
   .input-group-append.searchbtn-div{margin-left: -2px;}
@@ -151,22 +152,24 @@ div.content{
   .gradient-wrap.coverback{background-image: none !important;}
   #college-cover.desktopFit{height: 160px;}
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
+  #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
 }
 /* Big desktops & above */
 @media screen and (min-width: 1367px){
   .sidebar{width: 10vw;}
   .sidebar-icon{font-size: 1.375rem !important; width: 2.5rem;}
   #menu-toggle{left: 8px !important;}
+  div.content{padding: 0 4.25rem;}
   .fa-microphone-alt.sidebar-icon{font-size: 1.625rem !important;}
   div.content{margin-left: 10vw;}
   #before_search_elem_container{width: 0;}
-  #navbarCollapse{margin-left: calc(10vw - 50px);}
+  #navbarCollapse{margin-left: calc(10vw - 45px);}
   .profilePic{width: 250px !important; height: 250px !important;}
   .profilePic-frame.lcov{width: calc(250px + 0.5rem) !important;}
-  .avatar{height: 28vh !important; min-height: 250px !important;}
+  .avatar{height: 26vh !important; min-height: 220px !important;}
   .avatar-frame.lcov{padding-bottom: 0.1875rem !important;}
   .profilename.clubname{font-size: 1.5rem;}
-  .mobile-cover{height: calc(28vh + 2rem) !important; min-height: 278px !important;}
+  .mobile-cover{height: calc(26vh + 2rem) !important; min-height: 248px !important;}
   .card-header.tabcontainer{padding: 0.75rem 2rem 1.25rem 1.5rem;}
   .card-header.tabcontainer > ul > li > a{margin-bottom: -0.5rem; padding: 0.5rem 0.75rem; font-size: 1.125rem;}
   .btn.btncollapse{padding: 0.25rem 0.5rem !important;}
@@ -179,7 +182,6 @@ div.content{
   .commentbox{height: 36px !important;}
   .btn-sm{padding: 0.375rem 0.75rem;}
   .gb{padding: 0.25rem 0.75rem !important;}
-  #delegated-posts-discover, #stories{padding-left: 1rem; padding-right: 1rem;}
   .discoverswitch{padding: 1.375rem 2.25rem !important; font-size: 1.75rem !important;}
   select, .custom-file-upload{height: 36px !important;}
   #preview-postimg{height: 36px !important; width: 36px !important;}
@@ -187,9 +189,9 @@ div.content{
   .smalldp{width: 20px !important; height: 20px !important;}
   .searchdp{height: 125px !important; width: 125px !important;}
   .search-bottompos{width: calc(100% - 120px - 1.5rem) !important;}
-  .collegedp{height: 72px !important; width: 72px !important;}
+  .collegedp{height: 72px !important; width: 72px !important; margin-right: 1rem !important;}
   .college-cover-div{height: 250px !important;}
-  #collegeicon{margin-left: -0.3125rem !important; margin-right: 1.5625rem !important;}
+  #collegeicon{margin-left: -0.25rem !important; margin-right: 2.375rem !important;}
   .collegename{font-size: 2rem !important;}
   #collegeText{padding: 0 1.375rem 0 0 !important;}
   .collegediv-clubcount{padding: 0.375rem 0.675rem;}
@@ -210,16 +212,18 @@ div.content{
   #clubusers_strip, #userclubs_strip{height: 28px !important;}
 }
 @media screen and (min-width: 1601px){
-  div.content{padding: 0 4.25rem;}
-  .friends-dp{height: 5.6845rem !important;}
+  #navbarCollapse{margin-left: calc(10vw + 0.875rem);}
+  input.form-control.search{width: 15.5rem;}
+  div.content{padding: 0 8.25rem;}
+  .friends-dp{height: 5.25rem !important;}
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 2rem !important; padding: 0.75rem 0 !important;}
   #thisweek, #alltime{height: 25vh !important; min-height: 215px;}
   .description-short{padding: 1.5rem 0 !important;}
   h5.topic-h5{font-size: 1.5rem !important;}
   body, p, .truncate16, .info1, .dropctn{font-size: 1.125rem;}
-  .lineheight-less{line-height: 1.375rem !important;}
-  .lineheight-lesser{line-height: 1.125rem !important;}
-  .lineheight-least{line-height: 0.875rem !important;}
+  .lineheight-less{line-height: 1.5rem !important;}
+  .lineheight-lesser{line-height: 1.25rem !important;}
+  .lineheight-least{line-height: 1rem !important;}
   .text-lg{font-size: 1.25rem !important;}
   .text-xl{font-size: 1.375rem !important;}
   .text-xxl{font-size: 1.5rem !important;}
@@ -233,7 +237,7 @@ div.content{
 @media screen and (max-width: 1199px){
   .sidebar-back{background-color: white; position: fixed; width: 100%; top: 0; left: 0; height: 42px;
     z-index: 8; box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);}
-  .fas.fa-microphone-alt{margin-right: 0.25rem; margin-left: 0.25rem;}
+  .fa-microphone-alt.sidebar-icon{margin-right: 0.25rem; margin-left: 0.25rem; font-size: 1.562rem;}
   .navbar{padding: 1px 10px !important;}
   .navback{background-color: #353535 !important;}
   .navname{background-color: unset !important;}
@@ -255,6 +259,7 @@ div.content{
   .btnxxs{padding: 0 4px !important;}
   #menu-toggle{display: none !important;}
   #quickview_nav_mobile{border-top: none; transition: ease-out 0.15s;}
+  .chatdp{height: 32px !important; width: 32px !important;}
 }
 /* iPad Pro */
 @media screen and (min-width: 992px) and (max-width: 1200px){
@@ -314,12 +319,14 @@ div.content{
   .votecard_left{margin: 0 !important;}
   .badge-mobile{background: whitesmoke !important; box-shadow: none !important; border: 1px solid whitesmoke;
     color: #262626 !important; top: -0.25rem !important;right: -0.5rem !important;}
-  input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;}
+  .badge{border-width: 0.5px !important;}
+  .priv-badge, .mod-badge{padding: 0.125rem 0.25rem;}
+  input.form-control.search{box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.5) !important;}
   .clear_update{display: block !important;}
   .clear_update2{visibility: visible;}
   .mobilewidth{width: 100% !important;}
   .mobile-cover{height: 200px !important;}
-  .hr3{border-bottom: 0.5px solid #e0e2e4; margin: 0 !important;}
+  .hr3{border-bottom: 0.5px solid #e0e0e0; margin: 0 !important;}
   .postclubchat{padding: 0 0.25rem 0.5rem 0.25rem !important; margin: 0 !important;}
   .carousel-caption{bottom: 2.5rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
   .carousel-caption-heading{margin: 0; line-height: 1rem !important;}
@@ -350,6 +357,7 @@ div.content{
   .profilePic-frame.lcov{width: 188px !important;}
   .avatar-frame{width: 188px !important;}
   img.avatar.cover{height: 180px !important; width: 180px !important; border-radius: 0.5rem 0.5rem 0 0;}
+  .avatar-frame.coverback{box-shadow: 1px 1px 10px -3px rgb(0, 0, 0, 0.25);}
   div.carousel-frame2{height: 180px !important;}
   div.carousel-div{height: 172px !important;}
   .carousel-caption{text-shadow: 0.25px 0.25px 0 #262626, -0.25px -0.25px 0 #262626, 0.25px -0.25px 0 #262626, 
@@ -419,7 +427,7 @@ div.content{
   .btncollapse-club.collapsed, .btncollapse-user.collapsed{background-color: #efefef !important; border-color: transparent !important; box-shadow: none !important;}
   .btncollapse-user.collapsed{border-radius: 0.5rem;}
   .btncollapse-div-user{border-radius: 1rem !important; background-color: #efefef; margin: 1px 0;}
-  .border-light.btncollapse-div-shadow{background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.05) !important; z-index: 1;}
+  .border-light.btncollapse-div-shadow{background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.05) !important; z-index: 1; border-radius: 0.3125rem; overflow: unset;}
   .btncollapse-club-grad.collapsed{background-color: transparent !important; box-shadow: none !important;}
   .gradient-wrap.rcov{padding: 0 !important; padding-top: 50px !important;}
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
@@ -458,12 +466,15 @@ div.content{
   #story-maker-container{height: calc(100vh - 44px - 56px - 56px) !important;}
   .story-maker-options{padding: 0 0.5rem !important;}
   #story-draft-preview{margin-left: auto !important;}
-  #quickview_nav_mobile{padding: 12px 10px !important;}
+  #quickview_nav_mobile{padding: 0.25rem 0.625rem !important;}
   #quickmodal{margin-bottom: 47px;}
   .topnotch-right:before{right: 0.25rem !important;}
   .topnotch-left:before{left: 0.25rem !important;}
-  #create-new-post{border-left: none !important; border-right: none !important;}
   .post-container{margin-left: 0.25rem; margin-right: 0.25rem;}
+  #create-new-post, #info, #clubs, #members, #stories, #rooms{border-left: none !important; border-right: none !important;}
+  .post-head, .heartpost-head, .post-tail, .topic-break, .topic-column,
+  .show-comments, .card.discovercard, .searchcard.border-light{border-color: #dcdcdc !important;}
+  #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
 }
 /*LG G5, Oneplus 3 => 480px*/
@@ -492,7 +503,8 @@ div.content{
   .btn-lg{padding: 0.625rem 1.125rem !important;}
   .form-signin{max-width: 20rem !important;}
   .form-control{padding: 0.5rem !important;}
-  select, .custom-file-upload{height: 36px !important; padding: 6px 8px !important;}
+  .custom-file-upload{height: 36px !important; width: 36px !important; padding: 0.375rem 0.5rem !important;}
+  select{height: 36px !important; padding: 0.375rem 0.5rem !important;}
   select.select3{width: 82px;}
   .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px !important; font-size: 1.125rem !important;}
@@ -500,6 +512,8 @@ div.content{
   .story-alt, .story-alt-loader{height: 82px !important; width: 82px !important; border-radius: 1.75rem !important;}
   .navdp{height: 40px !important; width: 40px !important;}
   .collegedp{height: 58px !important; width: 58px !important;}
+  #collegeText{padding: 0 0 0 1rem !important;}
+  #collegeicon{margin-left: -0.125rem !important; margin-right: 0.25rem !important;}
   button.vote{font-size: 1.625rem !important;}
   img.postimg{height: 25.75rem !important;}
   img.postimg.topicimg{height: 20rem !important;}
@@ -524,8 +538,6 @@ div.content{
   .lineheight-least{line-height: 0.875rem !important;}
   .chat-discover{font-size: 1.125rem;}
   h3{font-size: 1.875rem;}
-  #collegeText{padding: 0 0 0 1.5rem !important;}
-  #collegeicon{margin-left: 0 !important; margin-right: 0 !important;}
   .commentbox{height: 32px !important;}
   .postdp{height: 32px !important; width: 32px !important;}
   .navdp.discoverdp{height: 34px !important; width: 34px !important;}
@@ -567,13 +579,14 @@ div.content{
   .friends-dp{height: 5.5475rem !important;}
   .commentpad2{padding-left: 0.25rem;}
   .discover-icon{font-size: 1.625rem;}
-  #collegeText{padding: 0 0 0 1.5rem !important;}
 }
 /*LG Optimus L70 => 384px*/
 @media screen and (max-width: 385px){
   .sidebar a, a.side-drop-elem{padding: 14px 11px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .collegedp{height: 54px !important; width: 54px !important;}
+  .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
+  #collegeicon{margin-left: -0.3125rem !important; margin-right: 0.3125rem !important;}
   .friends-dp{height: 5.4065rem !important;}
   .mobiletext1{font-size: 1rem !important;}
   .mobiletext2{font-size: 0.9375rem !important;}
@@ -596,9 +609,8 @@ div.content{
 }
 /*iPhone X and 6/7/8 => 375px*/
 @media screen and (max-width: 376px){
-  .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
   .sidebar a, a.side-drop-elem{padding: 14px 10.5px;}
-  .fas.fa-microphone-alt{margin-left: 0rem !important;}
+  .fa-microphone-alt.sidebar-icon{margin-left: 0rem !important; font-size: 1.4375rem;}
   a.hr2.active{padding-top: 12.5px; padding-bottom: 12.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
@@ -606,8 +618,9 @@ div.content{
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
   .topic-column{padding-left: 0.3125rem !important; padding-right: 0.3125rem !important;}
-  #collegeText{padding: 0 0 0 1.625rem !important;}
   .btn.moderation.btn-topic{right: -2.75rem !important;}
+  .sortBykey{font-weight: 300; font-size: 0.75rem !important;}
+  .quicknav_text_mobile{font-weight: 400 !important;}
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
 @media screen and (max-width: 361px){
@@ -649,7 +662,8 @@ div.content{
   .form-signin{max-width: 18rem !important;}
   .form-control{padding: 0.375rem 0.5rem !important;}
   .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
-  select, .custom-file-upload{height: 32px !important; padding: 0.25rem 0.5rem !important;}
+  .custom-file-upload{height: 32px !important; width: 32px !important; padding: 0.25rem 0.5rem !important;}
+  select{height: 32px !important; padding: 0.25rem 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
   .story-alt, .story-alt-loader{height: 74px !important; width: 74px !important; border-radius: 1.5rem !important;}
   .navdp{height: 36px !important; width: 36px !important;}
@@ -679,8 +693,7 @@ div.content{
   .lineheight-least{line-height: 0.75rem !important;}
   .chat-discover{font-size: 1rem;}
   h3{font-size: 1.75rem;}
-  #collegeText{padding: 0 0 0 1.125rem !important;}
-  #collegeicon{margin-left: -0.25rem !important; margin-right: 0.25rem !important;}
+  #collegeicon{margin-left: -0.375rem !important; margin-right: 0.125rem !important;}
   .commentbox{height: 30px !important;}
   .postdp{height: 30px !important; width: 30px !important;}
   .navdp.discoverdp{height: 30px !important; width: 30px !important;}
@@ -820,7 +833,7 @@ html{
   min-height: 100%;
 }
 body{
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
   color: #262626;
 }
 textarea{
@@ -946,17 +959,17 @@ button.btn.btn-secondary.search{
 }
 .form-control:focus{
   border: none;
-  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.5) !important;
   background-color: whitesmoke;
   z-index: 2;
 }
 .form-control.shadow{
   border: none;
-  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.35) !important;
 }
 .form-control.shadow:focus{
   border: none;
-  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.55) !important;
+  box-shadow: inset 0px 0.25px 2px 0px rgba(0,0,0,0.5) !important;
   background-color: white;
   z-index: 2;
 }
@@ -974,7 +987,7 @@ input{
   color: grey;
   padding: 0.25rem 0.5rem;
   border: none !important;
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .sortBykey:hover{
   color: black;
@@ -991,7 +1004,7 @@ input{
 .sortBykey.logout:hover{
   color: grey;
   cursor: default;
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .discover-navback{
   border-top: 0.5px solid rgba(0,0,0,0.05);
@@ -1050,20 +1063,15 @@ input{
 }
 /* Card styles 
 ------------------------------------------------------*/
-.show-comments{
-  border-radius: 0 0 0.5rem 0.5rem !important;
-  border-bottom: 0.5px solid #cccccc !important;
-}
-.post-head{
-  border-radius: 0.5rem 0.5rem 0 0 !important;
-  border-top: 0.5px solid #cccccc !important;
-}
-.post-tail{
-  border-radius: 0 0 0.5rem 0.5rem !important;
-  border-bottom: 0.5px solid #cccccc !important;
-}
 .card{
   border: none;
+  margin-top: 1rem;
+  padding:0;
+  border-radius: 0.1rem;
+}
+.show-comments{
+  border-radius: 0 0 0.5rem 0.5rem !important;
+  border-bottom: 0.5px solid #cccccc;
 }
 .search-card{
   width: 100%;
@@ -1109,6 +1117,7 @@ input{
 }
 .discovercard:hover{
   filter: brightness(88%);
+  background: transparent;
   transition: ease-out 0.15s;
   border: none;
 }
@@ -1119,11 +1128,6 @@ input{
 .card.indexcard2{
   border-top: none;
   margin-top: 0.25rem;
-}
-.card{
-  margin-top: 1rem;
-  padding:0;
-  border-radius: 0.1rem;
 }
 div.card-title{
   margin-bottom: 0;
@@ -1394,7 +1398,7 @@ time.calendar span{
 }
 .btn-college:hover{
   transition: .15s ease-out;
-  border-color: #c6c6c6 !important;
+  border-color: #cccccc !important;
   background-color: whitesmoke !important;
   box-shadow: inset 0px 1px 1px rgba(255,255,255,1), 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
 }
@@ -1410,14 +1414,14 @@ time.calendar span{
 }
 .btn-college2:hover{
   transition: .15s ease-out;
-  border-color: #c6c6c6;
+  border-color: #cccccc;
   background-color: whitesmoke !important;
   color: red !important;
   box-shadow: inset 0px 1px 1px rgba(255,255,255,1), 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
 }
 .btn-college2.focus, .btn-college2:focus{
   border-color: white !important;
-  box-shadow: 0 0 0 0.2rem rgba(225,83,97,0.5) !important;
+  box-shadow: 0 0 0 0.25rem rgba(225,83,97,0.5) !important;
 }
 .btn-followall:hover{
   border-color: white !important;
@@ -1528,7 +1532,7 @@ span.nopad{
   left: 5px;
   border-radius: 0.25rem;
   cursor: pointer;
-  background-color: #313131;
+  background-color: #333333;
   border: 0;
   margin: 0;
   color: #46da99;
@@ -1610,7 +1614,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
-  border: 1px solid #c6c6c6;
+  border: 1px solid #cccccc;
   border-bottom-width: 2px;
   background-color: #ededed;
   color: #555555;
@@ -1619,13 +1623,13 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .custom-file-upload:hover{
   transition: .15s ease-out;
-  border-color: #c6c6c6;
-  background-color: #e0e2e4;
-  box-shadow: 0 0 0 0.2rem rgba(216,217,219,0.5);
+  border-color: #cccccc;
+  background-color: #e0e0e0;
+  box-shadow: 0 0 0 0.25rem rgba(216,217,219,0.5);
 }
 .custom-file-upload:focus{
   border-bottom-width: 1px;
-  box-shadow: 0 0 0 0.2rem rgba(216,217,219,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(216,217,219,0.5);
 }
 .custom-file-upload.noshadow{
   box-shadow: inset 0px 1px 1px rgba(255,255,255, 0.5) !important;
@@ -1681,7 +1685,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   transition: ease-out 0.15s;
   text-decoration: none;
   color: inherit;
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .dropitems2{
   transition: ease-out 0.15s;
@@ -1694,7 +1698,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .dropitems2:hover{
   text-decoration: none;
   color: inherit;
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .container.drop-shadow1{
   border-radius: 0.25rem;
@@ -1725,7 +1729,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn-search{
   font-weight: 600;
   font-size: 1.375rem;
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
   border: none; 
   padding: 0 0.25rem !important;
   cursor: pointer;
@@ -1759,11 +1763,11 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn-dark.focus, .btn-dark:focus{
   background-color: #252525;
   color: white;
-  box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.2);
+  box-shadow: 0 0 0 0.25rem rgba(0,0,0,0.2);
 }
 .btn.btn-light{
   background-color: whitesmoke;
-  border-color: #c6c6c6;
+  border-color: #cccccc;
   border-radius: 0.25rem !important;
   color: #555555;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
@@ -1778,7 +1782,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .btn-light.btn-college.focus, .btn-light.btn-college:focus{
   border-color: white !important;
-  box-shadow: 0 0 0 0.2rem rgba(216,217,219,0.5) !important;
+  box-shadow: 0 0 0 0.25rem rgba(216,217,219,0.5) !important;
 }
 .btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle{
   border-color: #d3d9df;
@@ -1787,7 +1791,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn-light.discoverswitch{
   background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
   box-shadow: 0px 3px 8px #bbb, inset 0px 2px 3px #fff;
-  border-color: #c6c6c6;
+  border-color: #cccccc;
 }
 .btn-light.discoverswitch.disabled{
   background: unset;
@@ -1812,7 +1816,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   color: #007e4b;
 }
 .btn-white.focus, .btn-white:focus{
-  box-shadow: 0 0 0 0.2rem rgba(0,159,94,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(0,159,94,0.5);
 }
 #clubusers_strip, #userclubs_strip{
   height: 24px;
@@ -1825,7 +1829,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border-color: #407cc4;
 }
 #new-club.btn-white.focus, .btn-white:focus{
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(38,143,255,0.5);
 }
 .btn.btncollapse{
   background-color: white;
@@ -1867,7 +1871,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn-primary.focus, .btn-primary:focus, 
 .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus,
 .btn-participants:focus{
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(38,143,255,0.5);
 }
 .btn-primary.disabled, .btn-primary:disabled{
   border-color: #8db9df;
@@ -1881,7 +1885,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn.moderation.btn-light:hover{
   color: #555555;
   border-color: #efefef;
-  background-color: white !important;
+  background-color: whitesmoke !important;
 }
 .btn-info{
   border-color: #1491a5;
@@ -1902,7 +1906,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   border-color: #d7e6f9;
-  background-color: white;
+  background-color: aliceblue;
   color: #216fdb;
 }
 .btn-success{
@@ -1919,7 +1923,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .btn-success.focus, .btn-success:focus, 
 .btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus{
-  box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(96,183,105,0.5);
 }
 .btn-success.disabled, .btn-success:disabled{
   border-color: #95d5b9 !important;
@@ -1990,12 +1994,12 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   box-shadow: inset 0px 3px 1px -2px rgba(255,255,255,0.15), 0px 2px 5px -2px rgba(0,0,0,0.5);
 }
 .btn.moderation{
-  margin: -0.5rem -0.25rem -0.5rem 0;
-  padding: 0.25rem !important;
+  margin: -0.5rem -0.5rem -0.5rem 0;
+  padding: 0.125rem 0.5rem !important;
   border-width: 1px;
-  border-radius: 0.5rem !important;
+  border-radius: 0.5rem 0 0 0.5rem !important;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 400;
 }
 .btn.moderation:hover{
   border-width: 2px;
@@ -2285,7 +2289,7 @@ img.cover{
   padding: 0.5rem;
 }
 .greyback{
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
 }
 .greyback2{
   background-color: #606060;
@@ -2367,9 +2371,9 @@ ul{
   border-radius: 1rem !important;
 }
 .badge-light{
-  border: 1px solid #e0e2e4;
+  border: 1px solid #e0e0e0;
   color: #454545;
-  vertical-align: text-top;
+  vertical-align: top;
 }
 .badge-warning{
   background-color: #fcf8e3;
@@ -2408,10 +2412,10 @@ mark, .mark{
   opacity: 1 !important;
 }
 div.carousel-img{
-  border-top: 0.5px solid #e0e2e4;
+  border-top: 0.5px solid #e0e0e0;
   border-right: 0.5px solid white;
   border-bottom: 0.5px solid white;
-  border-left: 0.5px solid #e0e2e4;
+  border-left: 0.5px solid #e0e0e0;
   box-shadow: inset 0px 0px 3px -1px rgba(0,0,0,0.5);
 }
 .overlay{
@@ -2665,7 +2669,7 @@ button.heartbtn:hover .far.fa-heart{
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.6), inset 0px 3px 1px -2px rgba(255,255,255,0.15);
 }
 #postbutton:focus{
-  box-shadow: 0 0 0 0.2rem rgba(96,183,105,0.5);
+  box-shadow: 0 0 0 0.25rem rgba(96,183,105,0.5);
 }
 select{
   background-color: white;
@@ -3034,6 +3038,14 @@ select.select1{
   width: 100%;
   background-color: rgba(255,255,255,0.5);
 }
+.post-head{
+  border-radius: 0.5rem 0.5rem 0 0;
+  border-top: 0.5px solid #cccccc;
+}
+.post-tail{
+  border-radius: 0 0 0.5rem 0.5rem;
+  border-bottom: 0.5px solid #cccccc;
+}
 #input_topic:focus{
   border: 1px solid #ffead9 !important;
 }
@@ -3045,18 +3057,18 @@ select.select1{
 }
 .topic-break{
   width: 100%;
-  border-radius: 0.5rem 0 0 0.5rem !important;
-  border-bottom: 0.5px solid #cccccc !important;
-  border-top: 0.5px solid #cccccc !important;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-bottom: 0.5px solid #cccccc;
+  border-top: 0.5px solid #cccccc;
   margin-top: 0;
 }
 .topic-column{
   padding-left: 0.375rem;
   padding-right: 0.375rem;
   background-color: whitesmoke;
-  border-radius: 0 0.5rem 0.5rem 0 !important;
-  border-bottom: 0.5px solid #cccccc !important;
-  border-top: 0.5px solid #cccccc !important;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-bottom: 0.5px solid #cccccc;
+  border-top: 0.5px solid #cccccc;
   border-left: none !important;
 }
 h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight: 400;}
@@ -3175,7 +3187,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   margin: 4px auto;
 }
 #new_story{
-  background-color: #e0e2e4;
+  background-color: #e0e0e0;
   border-width: 1px;
   width: 86px !important;
   height: 86px !important;
@@ -3229,7 +3241,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   color: #343a40;
   padding: 0.25rem 0.5rem;
   margin: 0.5rem 0.5rem;
-  border: 1px solid #e0e2e4;
+  border: 1px solid #e0e0e0;
   border-radius: 0.25rem;
   cursor: pointer;
 }
@@ -3714,7 +3726,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .chatlist-club{
   cursor: pointer;
-  border-bottom: 0.5px solid #e0e2e4;
+  border-bottom: 0.5px solid #e0e0e0;
   transition: ease-out 0.25s;
 }
 .chatlist-club.active{
@@ -3950,7 +3962,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .college-infobtn .fa-blog, .college-infobtn .fa-briefcase, .fa-store,
 .college-infobtn .fa-utensils, .college-infobtn .fa-calendar-check{
-  -webkit-text-stroke: 0.25px #e0e2e4;
+  -webkit-text-stroke: 0.25px #e0e0e0;
 }
 .college-infobtn:hover .fa-blog, .college-infobtn:hover .fa-briefcase, .college-infobtn:hover .fa-store,
 .college-infobtn:hover .fa-utensils, .college-infobtn:hover .fa-calendar-check{
@@ -4069,7 +4081,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .btn-google.focus, .btn-google:focus{
   border-color: white;
   background-color: #eeeeee;
-  box-shadow: 0 0 0 0.2rem #b5c9ea !important;
+  box-shadow: 0 0 0 0.25rem #b5c9ea !important;
 }
 .btn-google.disabled{
   background-color: #d4d4d4 !important;
@@ -4102,6 +4114,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   align-items: center;
   justify-content: end;
   overflow: hidden;
+  padding: 0.5rem 0;
 }
 .quicknav_link_mobile:hover{
   color: #262626;
@@ -4116,7 +4129,8 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   transform: translateY(60px) skewY(-20deg);
   transform-origin: left bottom;
   color: #262626;
-  font-weight: 600;
+  font-weight: 500;
+  font-stretch: condensed;
   opacity: 0;
   transition: all 0.35s ease;
   will-change: opacity, transform, background-color;

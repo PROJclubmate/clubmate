@@ -1,8 +1,9 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="desktopNone tabletShow w-100 mt-3" style="z-index: 3; margin-bottom: -1rem;">
-		<a href="/colleges/<%= college_page.name %>/admin/console" class="btn btn-light discoverswitch text-lg w-100">
+	<div class="desktopNone tabletShow w-100 mt-3" style="z-index: 1; margin-bottom: -1rem;">
+		<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-mobile"
+		class="btn btn-light discoverswitch text-lg w-100">
 			Go to admin console
 		</a>
 	</div>
@@ -285,8 +286,8 @@
 			</div>
 
 			<div>
-				<a href="/colleges/<%= college_page.name %>/admin/console" 
-				class="btn btn-light discoverswitch text-lg w-100" style="position: absolute; bottom: 0;">
+				<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-desktop"
+				class="btn btn-light discoverswitch text-lg w-100">
 					Go to admin console
 				</a>
 			</div>
