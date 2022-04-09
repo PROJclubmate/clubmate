@@ -158,22 +158,16 @@ $('#latestUpdates').on('shown.bs.collapse', function(){
 
 window.addEventListener('load', function(){
   Grade(document.querySelectorAll('.gradient-wrap'), null, function(gradientData){
-    var gradStr = gradientData[0].gradientData;
-    var gradColor = gradStr.slice(gradStr.length - 3);
-    if(gradColor == 'fff'){
-      $('#btncollapse-club').css('color', '#e8e8e8');
-    } else if(gradColor == '000'){
-      $('#btncollapse-club').css('color', '#262626');
-    }
+    var gradColor = $('.gradient-wrap').css('color');
+    var gradNiceColor = $('.gradient-wrap').css('border-color');
+    $('#btncollapse-club').css('color', gradNiceColor);
   });
 });
 
-$('#carouselControls').bind('slide.bs.carousel', function(e){
-  if($('.gradient-wrap.active').css('color') == 'rgb(0, 0, 0)'){
-    $('#btncollapse-club').css('color', '#e8e8e8');
-  } else{
-    $('#btncollapse-club').css('color', '#262626');
-  }
+$('#carouselControls').on('slide.bs.carousel', function(e){
+  // Bootstrap slide event provides 4 properties: direction, relatedTarget, from, to
+  var indexOfComingImg = e.to;
+  $('#btncollapse-club').css('color', $('.gradient-wrap').eq(indexOfComingImg).css('border-color'));
 });
 
 $('.btncollapse-div').on('click', 'button.btncollapse-club', function(){

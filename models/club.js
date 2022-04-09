@@ -63,7 +63,7 @@ const clubSchema = new Schema({
       imageId: String,
       type: {
         type: String,
-        enum: ['text', 'image', 'album', 'video', 'audio']
+        enum: ['text', 'image', 'album', 'video', 'audio', 'document']
       },
       textContent: String,
       backgroundColor: String,
