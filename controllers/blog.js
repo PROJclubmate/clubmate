@@ -116,6 +116,8 @@ module.exports = {
                 }
               }
 
+              foundBlog.blogs[i].bucketId = bucketId;
+
               if (changesMade) {
                 foundUser.save(function (err) {
                   if (err) {
@@ -262,10 +264,11 @@ module.exports = {
 
     const bucketId = req.params.bucket;
     const blogId = req.params.blog;
+    let blogAuthor = null;
 
     Blog.
       findById(bucketId).
-      exec(function (err, foundBlog) {
+      exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
           logger.error(req.user._id + ' : (blog-7)foundBlog err => ' + err);
@@ -273,8 +276,7 @@ module.exports = {
           return res.redirect('back');
         }
 
-        const blogIds = foundBlog.blogs.map(elem => elem._id);
-        const blogIndex = blogIds.indexOf(blogId);
+        const blogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(blogId));
         if (blogIndex === -1) {
 
           req.flash('error', 'Blog does not exist');
@@ -282,9 +284,9 @@ module.exports = {
 
         } else if (foundBlog.blogs.length <= 1) {
 
-          const blogAuthor = foundBlog.blogs[0].author;
+          blogAuthor = foundBlog.blogs[0].author;
 
-          Blog.findByIdAndDelete(bucketId, function (err) {
+          await Blog.findByIdAndDelete(bucketId, async function (err) {
 
             if (err) {
               logger.error(req.user._id + ' : (blog-8)deleteBlog err => ' + err);
@@ -292,13 +294,19 @@ module.exports = {
               return res.redirect('back');
             }
 
-            College.findOneAndUpdate({ name: req.user.userKeys.college }, { $pull: { blogBuckets: bucketId } });
+            await CollegePage.findOneAndUpdate({ name: req.user.userKeys.college }, { $pull: { blogBuckets: bucketId } }).exec(function (err) {
+              if (err) {
+                logger.error(req.user._id + ' : (blog-8)saveCollegePage err => ' + err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
 
           });
 
         } else {
 
-          const blogAuthor = foundBlog.blogs[blogIndex].author;
+          blogAuthor = foundBlog.blogs[blogIndex].author;
 
           foundBlog.blogs.splice(blogIndex, 1);
 
@@ -325,19 +333,17 @@ module.exports = {
                 return res.redirect('back');
               }
 
-              const bucketIds = foundUser.createdBlogs.map(elem => elem.bucketId);
-              const bucketIndex = foundUser.createdBlogs.indexOf(bucketId);
+              const bucketIndex = foundUser.createdBlogs.findIndex(elem => elem.bucketId.equals(bucketId));
 
               if (bucketIndex !== -1) {
 
-                if (foundUser.createdBlogs[bucketIndex].length <= 1) {
+                if (foundUser.createdBlogs[bucketIndex].blogIds.length <= 1) {
 
                   foundUser.createdBlogs.splice(bucketIndex, 1);
 
                 } else {
 
-                  const blogIds = foundUser.createdBlogs[bucketIndex].blogIds;
-                  const blogIndex = blogIds.indexOf(blogId);
+                  const blogIndex = foundUser.createdBlogs[bucketIndex].blogIds.findIndex(elem => elem.equals(blogId));
 
                   if (blogIndex !== -1) {
                     foundUser.createdBlogs[bucketIndex].blogIds.splice(blogIndex, 1);
@@ -372,55 +378,11 @@ module.exports = {
     const blogId = req.params.blog;
     const bucketId = req.params.bucket;
 
+    let saved = true;
     User.
       findById(req.user._id).
       select('savedBlogs').
-      exec(function (err, foundUser) {
-
-        if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-12)foundUser err => ' + err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        }
-
-        const savedBucketIds = foundUser.savedBlogs.map(elem => elem.bucketId);
-        const savedBucketIndex = savedBucketIds.indexOf(bucketIndex);
-
-        if (savedBucketIndex === -1) {
-          foundUser.savedBlogs.push({
-            bucketId: bucketId,
-            blogIds: [blogId],
-          });
-        } else {
-          const savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.indexOf(blogId);
-          if (savedBlogIndex === -1) {
-            foundUser.savedBlogs[savedBucketIndex].blogIds.push(blogId);
-          }
-        }
-
-        foundUser.save(function (err) {
-          if (err) {
-            logger.error(req.user._id + ' : (blog-13)saveUser err => ' + err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
-        });
-
-        req.flash('success', 'Blog saved successfully');
-
-      });
-
-  },
-
-  async blogsUnsave(req, res, next) {
-
-    const blogId = req.params.blog;
-    const bucketId = req.params.bucket;
-
-    User.
-      findById(req.user._id).
-      select('savedBlogs').
-      exec(function (err, foundUser) {
+      exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
           logger.error(req.user._id + ' : (blog-14)foundUser err => ' + err);
@@ -428,20 +390,34 @@ module.exports = {
           return res.redirect('back');
         }
 
-        const savedBucketIds = foundUser.savedBlogs.map(elem => elem.bucketId);
-        const savedBucketIndex = savedBucketIds.indexOf(bucketIndex);
+        const savedBucketIndex = foundUser.savedBlogs.findIndex(elem => elem.bucketId.equals(bucketId));
 
         if (savedBucketIndex !== -1) {
-          const savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.indexOf(blogId);
+          const savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.findIndex(elem => elem.equals(blogId));
           if (savedBlogIndex !== -1) {
-            foundUser.savedBlogs[savedBucketIndex].blodIds.splice(savedBlogIndex, 1);
+            foundUser.savedBlogs[savedBucketIndex].blogIds.splice(savedBlogIndex, 1);
+            saved = false;
           }
           if (foundUser.savedBlogs[savedBucketIndex].blogIds.length === 0) {
             foundUser.savedBlogs.splice(savedBucketIndex, 1);
           }
         }
 
-        foundUser.save(function (err) {
+        if (saved) {
+          if (savedBucketIndex === -1) {
+            foundUser.savedBlogs.push({
+              bucketId: bucketId,
+              blogIds: [blogId],
+            });
+          } else {
+            const savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.findIndex(elem => elem.equals(blogId));
+            if (savedBlogIndex === -1) {
+              foundUser.savedBlogs[savedBucketIndex].blogIds.push(blogId);
+            }
+          }
+        }
+
+        await foundUser.save(function (err) {
           if (err) {
             logger.error(req.user._id + ' : (blog-15)saveUser err => ' + err);
             req.flash('error', 'Something went wrong :(');
@@ -449,7 +425,12 @@ module.exports = {
           }
         });
 
-        req.flash('success', 'Blog unsaved successfully');
+        if (saved) {
+          req.flash('success', 'Blog saved successfully');
+        } else {
+          req.flash('success', 'Blog unsaved successfully');
+        }
+        return res.json({ saved: saved });
 
       });
 
@@ -609,9 +590,10 @@ module.exports = {
     const blogId = req.params.blog;
     const bucketId = req.params.bucket;
 
+    let hearted = false;
     Blog
       .findById(bucketId)
-      .exec(function (err, foundBlog) {
+      .exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
           logger.error(req.user._id + ' : (blog-18)foundBlog err => ' + err);
@@ -622,7 +604,7 @@ module.exports = {
         User.
           findById(req.user._id).
           select('heartedBlogs').
-          exec(function (err, foundUser) {
+          exec(async function (err, foundUser) {
 
             if (err || !foundUser) {
               logger.error(req.user._id + ' : (blog-19)foundUser err => ' + err);
@@ -630,17 +612,18 @@ module.exports = {
               return res.redirect('back');
             }
 
-            const [heartedBlog] = foundUser.heartedBlogs.filter(elem => { return (elem.bucketId === bucketId && elem.blogId === blogId) });
-            if (heartedBlog) {
-              const heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => { return (elem.bucketId === bucketId && elem.blogId === blogId) });
+            const heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => elem.bucketId.equals(bucketId) && elem.blogId.equals(blogId));
+            if (heartedBlogIndex !== -1) {
               foundUser.heartedBlogs.splice(heartedBlogIndex, 1);
               foundBlog.blogs.id(blogId).heartCount--;
+              hearted = false;
             } else {
               foundUser.heartedBlogs.push({ bucketId: bucketId, blogId: blogId });
               foundBlog.blogs.id(blogId).heartCount++;
+              hearted = true;
             }
 
-            foundUser.save(function (err) {
+            await foundUser.save(function (err) {
               if (err) {
                 logger.error(req.user._id + ' : (blog-20)saveUser err => ' + err);
                 req.flash('error', 'Something went wrong :(');
@@ -648,15 +631,17 @@ module.exports = {
               }
             });
 
-          });
+            await foundBlog.save(function (err) {
+              if (err) {
+                logger.error(req.user._id + ' : (blog-21)saveBlog err => ' + err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
 
-        foundBlog.save(function (err) {
-          if (err) {
-            logger.error(req.user._id + ' : (blog-21)saveBlog err => ' + err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          }
-        });
+            return res.json({hearted: hearted});
+
+          });
 
       });
 
