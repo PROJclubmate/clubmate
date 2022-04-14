@@ -236,8 +236,6 @@ module.exports = {
   },
 
   storiesDelete(req, res, next) {
-    // Takes club_id in params and story_id in POST body
-
     var rank = currentRank2(req.params.club_id, req.user.userClubs);
     if(0<=rank && rank<=1){
       Story.findOneAndDelete( { _id: req.body.story_id }, async function(err, foundStory){

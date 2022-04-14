@@ -213,7 +213,7 @@ div.content{
 }
 @media screen and (min-width: 1601px){
   #navbarCollapse{margin-left: calc(10vw + 0.875rem);}
-  input.form-control.search{width: 15.5rem;}
+  input.form-control.search{width: 15.25rem;}
   div.content{padding: 0 8.25rem;}
   .friends-dp{height: 5.25rem !important;}
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 2rem !important; padding: 0.75rem 0 !important;}
@@ -1139,7 +1139,7 @@ div.card-title{
   display: inline-block;
 }
 .delete-form:hover{
-  color: #ea0027;
+  color: #dc3545;
 }
 #delete_profilePic-desktop{
   position: absolute;
@@ -2394,7 +2394,7 @@ mark, .mark{
   position: absolute;
   top: 0;
   right: -0.15rem;
-  background: #ea0027;
+  background: #dc3545;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
   z-index: 9;
@@ -3953,7 +3953,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   background-color: rgba(255, 255, 255, 0.25);
 }
 .college-infobtn{
-  border-radius: 1.5rem;
+  border-radius: 2rem;
   cursor: pointer;
   transition: ease-out 0.15s;
 }
