@@ -9,7 +9,11 @@
 	</div>
 	<div id="college_scroll" class="col-lg-9 card scroll_list_container scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
 		<div class="college-infodiv desktopNone tabletShow">
-			<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
+			<% if(currentUser && keyValue == 2){ %>
+				<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100 invisible">
+			<% } else{ %>
+				<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
+			<% } %>
 				<div class="d-flex flex-column px-1 my-2">
 					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
 						<i class="fas fa-blog"></i>
@@ -215,7 +219,7 @@
 							</div>
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 								<div class="darkgrey text-sm mobiletext1 px-1 nowrap">
-									<em class="mobiletext1">
+									<em class="mobiletext4">
 										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
 											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
 												<span class="lightgrey">MBR</span>

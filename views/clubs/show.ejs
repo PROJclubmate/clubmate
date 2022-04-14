@@ -706,7 +706,7 @@
 </script>
 
 <script src="/zuck.js-master/dist/zuck.js"></script>
-<script src="/js/club-stories.js"></script>
+<script src="/js/story_viewer/club_stories.js"></script>
 <script type='text/javascript'>
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
     createCurrentStories('club_current_stories', storiesData, club, csrfToken = csrfToken, userRank = guserRank);
