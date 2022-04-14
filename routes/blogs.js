@@ -7,7 +7,6 @@ const {
   blogsCreate,
   blogsDelete,
   blogsSave,
-  blogsUnsave,
   blogsSavedPage,
   blogsHeart,
   blogsUserPage,
@@ -31,7 +30,6 @@ router.put('/colleges/:collegeName/blogs/publish/remove', middleware.isLoggedIn,
 router.get('/colleges/:collegeName/blogs/saved', middleware.isLoggedIn, blogsSavedPage);
 router.get('/colleges/:collegeName/blogs/user/:userId', middleware.isLoggedIn, blogsUserPage);
 router.put('/colleges/:collegeName/blogs/:bucket/:blog/save', middleware.isLoggedIn, blogsSave);
-router.put('/colleges/:collegeName/blogs/:bucket/:blog/unsave', middleware.isLoggedIn, blogsUnsave);
 router.put('/colleges/:collegeName/blogs/:bucket/:blog/heart', middleware.isLoggedIn, blogsHeart);
 router.delete('/colleges/:collegeName/blogs/:bucket/:blog', middleware.isLoggedIn, blogsDelete);
 
