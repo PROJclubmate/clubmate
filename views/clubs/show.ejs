@@ -46,7 +46,7 @@
               <div id="carouselControls" class="carousel slide carousel-fade" data-ride="carousel">
             <% } %>
                 <% if(club.featuredPhotos.length == 0){ %>
-                  <div class="carousel-inner d-flex" style="border-radius: 0 0.5rem 0.5rem 0;">
+                  <div id="fp_carousel_nophoto" class="carousel-inner d-flex">
                     <div class="carousel-item active carousel-div carousel-img">
                       <img class="cover mobile-cover" src="/images/noImage.png" style="opacity: 0;">
                     </div>
@@ -170,9 +170,9 @@
             </div>
             <hr>
           </div>
-          <div class="card-body btncollapse-content">
+          <div class="card-body btncollapse-content keys-container">
             <div class="dropctn">
-              <h5>Keys</h5>  
+              <h5 id="keys-h5">Keys</h5>  
               <div class="dropdown">
                 <% if(currentUser){ %>
                   <button class="btn btn-sm dropdown-toggle mb-1" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -406,15 +406,15 @@
                     </div>
                   </div>
                 <% } %>
-                <div id="clubmembers-div">
-                  <div class="greyback rounded valign" style="height: 24px;">
+                <div>
+                  <div id="clubusers_strip" class="greyback rounded valign">
                     <div class="d-flex flex-row">
-                      <span class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> <%= club.membersCount == 1 ? 'member': 'members' %></span>
+                      <div class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> <%= club.membersCount == 1 ? 'member': 'members' %></div>
                       <% if(0 <= rank && rank <= 4){ %>
-                        <span id="membersOnlineCount" class=" my-auto" style="display: block;">
-                          <span class="lightgrey text-sm ml-2" style="vertical-align: text-top;">|</span>
-                          <span class="text-sm boldtext greencolor2 text-shadow-white px-2 mx-0" style="vertical-align: text-top;"><%= onlineClubMembersCount %><em> online</em></span>
-                        </span>
+                        <div id="membersOnlineCount" class="d-flex flex-row my-auto">
+                          <div class="lightgrey text-sm ml-2" style="vertical-align: text-top;">|</div>
+                          <div class="text-sm boldtext greencolor2 text-shadow-white px-2 mx-0" style="vertical-align: text-top;"><%= onlineClubMembersCount %><em> online</em></div>
+                        </div>
                       <% } %>
                     </div>
                     <div class="d-flex">
@@ -455,7 +455,7 @@
                 <div class="d-flex story-alt-container scroll moz-scroll p-3">
                   <% if(currentUser && 0 <= rank && rank <=2){ %>
                   <div class="d-flex flex-column mr-3">
-                    <a id="new_story_wrapper" href="/clubs/<%= club._id %>/story/create/edit" class="nounderline">
+                    <a id="new_story_wrapper" href="/clubs/<%= club._id %>/story/create" class="nounderline">
                       <div id="new_story" class="story-alt text-center">
                         <div class="story-alt-plus">+</div>
                       </div>
@@ -615,7 +615,7 @@
     </div>
   </div>
   <% if(currentUser && 0 <= rank && rank <=4){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2">
+    <div id="hot_topics_div" class="col-md-4 col-lg-3 px-2 pb-2">
       <% include ../partials/hot_topics %>
     </div>
   <% } else if(currentUser && !(0 <= rank && rank <= 4)){ %>
@@ -706,7 +706,7 @@
 </script>
 
 <script src="/zuck.js-master/dist/zuck.js"></script>
-<script src="/js/club-stories.js"></script>
+<script src="/js/story_viewer/club_stories.js"></script>
 <script type='text/javascript'>
   fetch('/clubs/' + club._id + '/stories').then(res => res.json()).then(function(storiesData) {
     createCurrentStories('club_current_stories', storiesData, club, csrfToken = csrfToken, userRank = guserRank);

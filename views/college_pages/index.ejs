@@ -1,14 +1,19 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="desktopNone tabletShow w-100 mt-3 mx-2">
-		<a href="/colleges/<%= college_page.name %>/admin/console" class="btn btn-light discoverswitch text-lg w-100">
+	<div class="desktopNone tabletShow w-100 mt-3" style="z-index: 1; margin-bottom: -1rem;">
+		<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-mobile"
+		class="btn btn-light discoverswitch text-lg w-100">
 			Go to admin console
 		</a>
 	</div>
 	<div id="college_scroll" class="col-lg-9 card scroll_list_container scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
 		<div class="college-infodiv desktopNone tabletShow">
-			<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
+			<% if(currentUser && keyValue == 2){ %>
+				<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100 invisible">
+			<% } else{ %>
+				<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
+			<% } %>
 				<div class="d-flex flex-column px-1 my-2">
 					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
 						<i class="fas fa-blog"></i>
@@ -92,6 +97,9 @@
 								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 							</form>
 						<% } else if(currentUser && keyValue == 2){ %>
+							<div class="mobilebold lightgrey text-md mr-2">
+								<div class="text-xxxxs lightgrey2 font-italic">SWITCH</div><div class="m-0 p-0 text-xxxxs lightgrey2 font-italic">VIEW</div>
+							</div>
 							<form id="toggleCollegePage-form" action="/colleges/<%= college_page._id %>/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
 								<div id="container-collegePage">
 									<div class="toggleCollegePage">
@@ -211,7 +219,7 @@
 							</div>
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 								<div class="darkgrey text-sm mobiletext1 px-1 nowrap">
-									<em class="mobiletext1">
+									<em class="mobiletext4">
 										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
 											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
 												<span class="lightgrey">MBR</span>
@@ -282,8 +290,8 @@
 			</div>
 
 			<div>
-				<a href="/colleges/<%= college_page.name %>/admin/console" 
-				class="btn btn-light discoverswitch text-lg w-100" style="position: absolute; bottom: 0;">
+				<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-desktop"
+				class="btn btn-light discoverswitch text-lg w-100">
 					Go to admin console
 				</a>
 			</div>

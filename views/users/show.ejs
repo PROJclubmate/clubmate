@@ -93,11 +93,11 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 px-1 mobilepad desktop-mt-2 keyspad">
+      <div class="col-md-4 px-1 mobilepad desktop-mt-2 keyspad keys-container">
         <div class="card border-light"> 
           <div class="card-body">
             <div class="dropctn">
-              <h5>Keys</h5>      
+              <h5 id="keys-h5">Keys</h5>      
               <div class="dropdown">
                 <% if(currentUser){ %>
                   <button class="btn btn-sm dropdown-toggle mb-1" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -270,31 +270,31 @@
             </div>
             <!-- Clubs Tab -->
             <div class="tab-pane fade cardpad border-light-lr" id="clubs" role="tabpanel" aria-labelledby="clubs-tab">
-              <div class="greyback rounded valign my-auto" style="height: 24px;">
+              <div id="userclubs_strip" class="greyback rounded valign my-auto">
                 <div class="d-flex flex-row">
                   <span class="lightgrey text-sm mx-2 my-auto"><%= clubCount %> <%= clubCount == 1 ? 'club': 'clubs' %></span>
                 </div>
                 <div class="d-flex flex-row">
                   <% if(currentUser && !match && adminClubs.length!=0){ %>
-                    <span>
+                    <div>
                       <form action="/requests?_method=PUT" method="POST" class="form-inline">
                         <div id="clubInvite-select" class="clubInvite-select"></div>
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
-                    </span>
+                    </div>
                   <% } %>
                   <% if(currentUser && !match && user.clubInvites.length!=0){ %>
-                    <span>
+                    <div>
                       <form action="/requests?_method=PUT" method="POST" class="form-inline">
                         <div id="inviteCancel-select" class="inviteCancel-select"></div>
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       </form>
-                    </span>
+                    </div>
                   <% } %>
                   <% if(currentUser && match){ %>
-                    <span class="d-flex">
+                    <div class="d-flex">
                       <button id="new-club" class="btn btnxs text-xs btn-white my-auto" style="height: 26px;" href="#startNewClub" data-toggle="modal"><i class="fas fa-plus mr-2 lightgrey"></i>New</button>
-                    </span>
+                    </div>
                   <% } %>
                 </div>
               </div>

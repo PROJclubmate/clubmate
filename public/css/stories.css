@@ -15,29 +15,25 @@
   border: none;
   padding: 3px;
 }
+/* Big desktop */
+@media screen and (min-width: 1367px){
+  .stories.carousel .story > .item-link > .item-preview{height: 100px !important; width: 100px !important;}
+  .stories.carousel .story > .item-link > .item-preview{max-height: 100px !important; padding: 3px !important; border-radius: 2.125rem !important;}
+  .stories.carousel .story{width: 100px !important; max-width: 100px !important;}
+  .stories.facesnap .story > .item-link > .item-preview img{padding: 4px !important;}
+}
+/* Mobile phones */
 @media screen and (max-width: 481px){
-  .stories.facesnap .story > .item-link > .item-preview {
-    border-radius: 1.8125rem !important;
-  }
-  .stories.facesnap .story > .item-link > .item-preview img {
-    border-radius: 1.6875rem !important;
-  }
+  .stories.facesnap .story > .item-link > .item-preview {border-radius: 1.8125rem !important;}
+  .stories.facesnap .story > .item-link > .item-preview img {border-radius: 1.6875rem !important;}
 }
 @media screen and (max-width: 385px){
-  .stories.facesnap .story > .item-link > .item-preview {
-    border-radius: 1.75rem !important;
-  }
-  .stories.facesnap .story > .item-link > .item-preview img {
-    border-radius: 1.5625rem !important;
-  }
+  .stories.facesnap .story > .item-link > .item-preview {border-radius: 1.75rem !important;}
+  .stories.facesnap .story > .item-link > .item-preview img {border-radius: 1.5625rem !important;}
 }
 @media screen and (max-width: 361px){
-  .stories.facesnap .story > .item-link > .item-preview {
-    border-radius: 1.625rem !important;
-  }
-  .stories.facesnap .story > .item-link > .item-preview img {
-    border-radius: 1.5rem !important;
-  }
+  .stories.facesnap .story > .item-link > .item-preview {border-radius: 1.625rem !important;}
+  .stories.facesnap .story > .item-link > .item-preview img {border-radius: 1.5rem !important;}
 }
 
 /* src/styles/modal */
@@ -59,7 +55,7 @@
   margin: 0.25rem 0.5rem !important;
   width: 86px;
 }
-span.info{
+span.info, .story-alt-label{
   margin-left: 0;
   font-size: 1rem;
   line-height: 1.25rem !important;
@@ -123,7 +119,7 @@ span.info{
   }
 }
 @media screen and (max-width: 481px){
-  span.info{
+  span.info, .story-alt-label{
     font-size: 0.875rem;
   }
   .stories.carousel .story {
@@ -139,7 +135,7 @@ span.info{
   }
 }
 @media screen and (max-width: 385px){
-  span.info{
+  span.info, .story-alt-label{
     font-size: 0.8125rem;
   }
   .stories.carousel .story {
@@ -155,7 +151,7 @@ span.info{
   }
 }
 @media screen and (max-width: 361px){
-  span.info{
+  span.info, .story-alt-label{
     font-size: 0.75rem;
   }
   .stories.carousel .story {

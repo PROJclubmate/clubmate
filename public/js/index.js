@@ -158,22 +158,16 @@ $('#latestUpdates').on('shown.bs.collapse', function(){
 
 window.addEventListener('load', function(){
   Grade(document.querySelectorAll('.gradient-wrap'), null, function(gradientData){
-    var gradStr = gradientData[0].gradientData;
-    var gradColor = gradStr.slice(gradStr.length - 3);
-    if(gradColor == 'fff'){
-      $('#btncollapse-club').css('color', '#e8e8e8');
-    } else if(gradColor == '000'){
-      $('#btncollapse-club').css('color', '#262626');
-    }
+    var gradColor = $('.gradient-wrap').css('color');
+    var gradNiceColor = $('.gradient-wrap').css('border-color');
+    $('#btncollapse-club').css('color', gradNiceColor);
   });
 });
 
-$('#carouselControls').bind('slide.bs.carousel', function(e){
-  if($('.gradient-wrap.active').css('color') == 'rgb(0, 0, 0)'){
-    $('#btncollapse-club').css('color', '#e8e8e8');
-  } else{
-    $('#btncollapse-club').css('color', '#262626');
-  }
+$('#carouselControls').on('slide.bs.carousel', function(e){
+  // Bootstrap slide event provides 4 properties: direction, relatedTarget, from, to
+  var indexOfComingImg = e.to;
+  $('#btncollapse-club').css('color', $('.gradient-wrap').eq(indexOfComingImg).css('border-color'));
 });
 
 $('.btncollapse-div').on('click', 'button.btncollapse-club', function(){
@@ -731,21 +725,25 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var coverTall = false;
   $('#college_scroll').scroll(function(){
     if(!coverTall){
-      if($('#college_scroll').scrollTop() > 160){
+      if((window.innerWidth > 1366) && ($('#college_scroll').scrollTop() > 300)){
         coverTall = true;
-        if(window.innerWidth > 992){
-          $('.college-cover-div').height(350);
-          $('img#college-cover').removeClass('desktopFit');
-        } else if(window.innerWidth <= 992 && window.innerWidth > 768){
-          $('.college-cover-div').height(300);
-          $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('d-none').removeClass('tabletShow');
-          $('img#college-cover').removeClass('desktopFit');
-        } else if(window.innerWidth <= 768){
-          $('.college-cover-div').height(300);
-          $('img#college-cover').removeClass('mobileblurred');
-          $('.college-infodiv').addClass('d-none');
-        }
+        $('.college-cover-div').css('cssText', 'height: 565px !important');
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 1366 && window.innerWidth > 992) && ($('#college_scroll').scrollTop() > 160)){
+        coverTall = true;
+        $('.college-cover-div').height(350);
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 992 && window.innerWidth > 768) && ($('#college_scroll').scrollTop() > 142)){
+        coverTall = true;
+        $('.college-cover-div').height(300);
+        $('img#college-cover').removeClass('mobileblurred');
+        $('.college-infodiv').addClass('d-none').removeClass('tabletShow');
+        $('img#college-cover').removeClass('desktopFit');
+      } else if((window.innerWidth <= 768) && ($('#college_scroll').scrollTop() > 142)){
+        coverTall = true;
+        $('.college-cover-div').height(300);
+        $('img#college-cover').removeClass('mobileblurred');
+        $('.college-infodiv').addClass('d-none');
       }
     }
   });

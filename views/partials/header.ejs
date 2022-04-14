@@ -42,57 +42,61 @@
       <div class="bar"></div>
     </div>
     <nav id="navbar" class="navbar navbar-expand-md navbar-light fixed-top navback drop-shadow">
-      <button id="menu-toggle" onclick="hidesidebar(0);" class="mobileNoneFlex" type="button"><i class="fas fa-bars"></i></button>
-      <div>
-        <span id="brandname">
-          <a href="#" class="navbar-brand navname mobileNone" style="cursor: default;">
-            <em>clubmate</em>
-          </a>
-          <% if(currentUser && locals.college_page){ %>
-            <a href="/users/<%= currentUser.id %>" class="navbar-brand navname desktopNoneFlex">
-              <span class="valign lineheight">
-                <span>
-                  <% if(!currentUser.userKeys.sex){ %>
-                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
-                  <% } else if(currentUser.userKeys.sex == 'Male'){ %>
-                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
-                  <% } else if(currentUser.userKeys.sex == 'Female'){ %>
-                    <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
-                  <% } %>
-                </span>
-                <span style="text-transform: lowercase;"><%= currentUser.firstName %></span>
-              </span>
-            </a>
-          <% } else{ %>
-            <a href="/" class="navbar-brand navname desktopNone">
+      <div id="before_search_elem_container" class="d-flex flex-row">
+        <div>
+          <button id="menu-toggle" onclick="hidesidebar(0);" class="mobileNoneFlex" type="button"><i class="fas fa-bars"></i></button>
+        </div>
+        <div>
+          <span id="brandname">
+            <a href="#" class="navbar-brand navname mobileNone" style="cursor: default;">
               <em>clubmate</em>
             </a>
-          <% } %>
-        </span>
-      </div>
-      <div>
-        <% if(currentUser){ %>
-          <div id="inbox_mobile_div" class="inbox_mobile" style="margin-right: -0.5rem;">
-            <span class="notification">
-              <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
-              <% if(currentUser.unreadChatsCount > 0){ %>
-                <span class="inbox_mobile inbox_count badge badge-mobile text-xs desktopNone"><%= currentUser.unreadChatsCount %></span>
-              <% } %>
-            </span>
-          </div>
-        <% } %>
-        <div id="mobile_toggler_div" class="d-none" style="margin-right: -0.5rem;">
-          <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon notification">
-              <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
-                <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
-                  <span class="badge badge-mobile text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
-                <% } else{ %>
-                  <span class="badge badge-mobile text-xs">9+</span>
+            <% if(currentUser && locals.college_page){ %>
+              <a href="/users/<%= currentUser.id %>" class="navbar-brand navname desktopNoneFlex">
+                <span class="valign lineheight">
+                  <span>
+                    <% if(!currentUser.userKeys.sex){ %>
+                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUser.png' %>">
+                    <% } else if(currentUser.userKeys.sex == 'Male'){ %>
+                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserMale.png' %>">
+                    <% } else if(currentUser.userKeys.sex == 'Female'){ %>
+                      <img id="myprofileimage_on_collegepage" class="chatdp rounded-circle" src="<%= CU_50_profilePic || '/images/noUserFemale.png' %>">
+                    <% } %>
+                  </span>
+                  <span style="text-transform: lowercase;"><%= currentUser.firstName %></span>
+                </span>
+              </a>
+            <% } else{ %>
+              <a href="/" class="navbar-brand navname desktopNone">
+                <em>clubmate</em>
+              </a>
+            <% } %>
+          </span>
+        </div>
+        <div>
+          <% if(currentUser){ %>
+            <div id="inbox_mobile_div" class="inbox_mobile">
+              <span class="notification">
+                <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
+                <% if(currentUser.unreadChatsCount > 0){ %>
+                  <span class="inbox_mobile inbox_count badge badge-mobile text-xs desktopNone"><%= currentUser.unreadChatsCount %></span>
                 <% } %>
-              <% } %>
-            </span>
-          </button>
+              </span>
+            </div>
+          <% } %>
+          <div id="mobile_toggler_div" class="d-none">
+            <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon notification">
+                <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
+                  <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
+                    <span class="badge badge-mobile text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+                  <% } else{ %>
+                    <span class="badge badge-mobile text-xs">9+</span>
+                  <% } %>
+                <% } %>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -309,7 +313,7 @@
     <% } %>
       <a class="hr2" id="side-lobby" href="/lobby">
         <div class="d-flex justify-content-start">
-          <div><i class="fas fa-microphone-alt sidebar-icon px-1" style="font-size: 1.5rem"></i></div>
+          <div><i class="fas fa-microphone-alt sidebar-icon px-1"></i></div>
           <div class="sidebar-label my-auto">Rooms</div>
         </div>
       </a>

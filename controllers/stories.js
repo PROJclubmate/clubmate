@@ -13,7 +13,19 @@ const Club = require('../models/club'),
 
 
 module.exports = {
-  storiesEdit(req, res, next) {
+  storiesFormat(req, res, next) {
+    Club.findById(req.params.club_id, function (err, foundClub) {
+      if (err || !foundClub) {
+        logger.error(req.user._id + ' : (stories-1)foundClub err => ' + err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else {
+        return res.render('stories/format', { clubId: foundClub._id });
+      }
+    });
+  },
+
+  storiesTextEdit(req, res, next) {
     Club.findById(req.params.club_id, function (err, foundClub) {
       if (err || !foundClub) {
         logger.error(req.user._id + ' : (stories-1)foundClub err => ' + err);
@@ -22,16 +34,21 @@ module.exports = {
       } else {
         for (var i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
-            if (foundClub.clubUsers[i].storyDraftImage) {
-              var storyDraftImage = foundClub.clubUsers[i].storyDraftImage;
-              var aspectRatio = foundClub.clubUsers[i].storyDraftAspectRatio || '1_1';
+            if (foundClub.clubUsers[i].storyDraft.image && foundClub.clubUsers[i].storyDraft.type == 'text') {
+              var storyDraftImage = foundClub.clubUsers[i].storyDraft.image;
+              var textContent = foundClub.clubUsers[i].storyDraft.textContent;
+              var backgroundColor = foundClub.clubUsers[i].storyDraft.backgroundColor;
+              var textColor = foundClub.clubUsers[i].storyDraft.textColor;
+              var aspectRatio = foundClub.clubUsers[i].storyDraft.aspectRatio || '1_1';
               var clubId = req.params.club_id;
-              return res.render('stories/edit', { storyDraftImage, aspectRatio, clubId });
+              return res.render('stories/text', { storyDraftImage, textContent, backgroundColor, textColor,
+                aspectRatio, clubId });
             } else {
-              var storyDraftImage = ''
-              var aspectRatio = foundClub.clubUsers[i].storyDraftAspectRatio || '1_1';
+              var storyDraftImage, textContent, backgroundColor, textColor = ''
+              var aspectRatio = '1_1';
               var clubId = req.params.club_id;
-              return res.render('stories/edit', { storyDraftImage, aspectRatio, clubId });
+              return res.render('stories/text', { storyDraftImage, textContent, backgroundColor, textColor,
+                aspectRatio, clubId });
             }
           }
         }
@@ -39,7 +56,33 @@ module.exports = {
     });
   },
 
-  storiesDraft(req, res, next) {
+  storiesImageEdit(req, res, next) {
+    Club.findById(req.params.club_id, function (err, foundClub) {
+      if (err || !foundClub) {
+        logger.error(req.user._id + ' : (stories-1)foundClub err => ' + err);
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      } else {
+        for (var i = foundClub.clubUsers.length - 1; i >= 0; i--) {
+          if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
+            if (foundClub.clubUsers[i].storyDraft.image && foundClub.clubUsers[i].storyDraft.type == 'image') {
+              var storyDraftImage = foundClub.clubUsers[i].storyDraft.image;
+              var aspectRatio = foundClub.clubUsers[i].storyDraft.aspectRatio || '1_1';
+              var clubId = req.params.club_id;
+              return res.render('stories/image', { storyDraftImage, aspectRatio, clubId });
+            } else {
+              var storyDraftImage = ''
+              var aspectRatio = '1_1';
+              var clubId = req.params.club_id;
+              return res.render('stories/image', { storyDraftImage, aspectRatio, clubId });
+            }
+          }
+        }
+      }
+    });
+  },
+
+  storiesSaveDraft(req, res, next) {
     Club.findById(req.params.club_id, function (err, foundClub) {
       if (err || !foundClub) {
         logger.error(req.user._id + ' : (stories-2)foundClub err => ' + err);
@@ -60,19 +103,44 @@ module.exports = {
             (async () => {
               try {
                 if (process.env.ENVIRONMENT === 'dev') {
-                  clConfig.cloudinary.v2.uploader.destroy(foundClub.clubUsers[i].storyDraftImageId);
-                  var result = await clConfig.cloudinary.v2.uploader.upload(req.body.image, clConfig.clubStories_obj);
-                  foundClub.clubUsers[i].storyDraftImage = result.secure_url;
-                  foundClub.clubUsers[i].storyDraftImageId = result.public_id;
-                  foundClub.clubUsers[i].storyDraftAspectRatio = aspectRatio;
+                  clConfig.cloudinary.v2.uploader.destroy(foundClub.clubUsers[i].storyDraft.imageId);
+                  if(req.body.type == 'text'){
+                    var result = await clConfig.cloudinary.v2.uploader.upload(req.body.image, 
+                      {
+                        folder: 'clubStories/',
+                        use_filename: true, width: 1080, height: 1080, quality: 100, effect: 'sharpen:100', crop: 'limit'
+                      }
+                    );
+                  } else{
+                    var result = await clConfig.cloudinary.v2.uploader.upload(req.body.image, clConfig.clubStories_obj);
+                  }
+                  foundClub.clubUsers[i].storyDraft.image = result.secure_url;
+                  foundClub.clubUsers[i].storyDraft.imageId = result.public_id;
+                  foundClub.clubUsers[i].storyDraft.type = req.body.type;
+                  if(req.body.type == 'text'){
+                    foundClub.clubUsers[i].storyDraft.textContent = req.body.textContent;
+                    foundClub.clubUsers[i].storyDraft.backgroundColor = req.body.backgroundColor;
+                    foundClub.clubUsers[i].storyDraft.textColor = req.body.textColor;
+                  }
+                  foundClub.clubUsers[i].storyDraft.aspectRatio = aspectRatio;
                   foundClub.save();
                   return res.sendStatus(200);
                 } else if (process.env.ENVIRONMENT === 'prod') {
-                  s3Config.deleteFile(foundClub.clubUsers[i].storyDraftImageId);
-                  var result = await s3Config.clubStoriesUpload(req.body.image);
-                  foundClub.clubUsers[i].storyDraftImage = result.Location;
-                  foundClub.clubUsers[i].storyDraftImageId = result.Key;
-                  foundClub.clubUsers[i].storyDraftAspectRatio = aspectRatio;
+                  s3Config.deleteFile(foundClub.clubUsers[i].storyDraft.imageId);
+                  if(req.body.type == 'text'){
+                    var result = await s3Config.clubStoriesUpload(req.body.image, req.body.type);
+                  } else{
+                    var result = await s3Config.clubStoriesUpload(req.body.image, req.body.type);
+                  }
+                  foundClub.clubUsers[i].storyDraft.image = result.Location;
+                  foundClub.clubUsers[i].storyDraft.imageId = result.Key;
+                  foundClub.clubUsers[i].storyDraft.type = req.body.type;
+                  if(req.body.type == 'text'){
+                    foundClub.clubUsers[i].storyDraft.textContent = req.body.textContent;
+                    foundClub.clubUsers[i].storyDraft.backgroundColor = req.body.backgroundColor;
+                    foundClub.clubUsers[i].storyDraft.textColor = req.body.textColor;
+                  }
+                  foundClub.clubUsers[i].storyDraft.aspectRatio = aspectRatio;
                   foundClub.save();
                   return res.sendStatus(200);
                 }
@@ -97,13 +165,13 @@ module.exports = {
       } else {
         for (var i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
-            if (foundClub.clubUsers[i].storyDraftImage) {
-              var storyDraftImage = foundClub.clubUsers[i].storyDraftImage;
+            if (foundClub.clubUsers[i].storyDraft.image) {
+              var storyDraftImage = foundClub.clubUsers[i].storyDraft.image;
               var clubId = req.params.club_id;
-              return res.render('stories/options', { storyDraftImage, clubId });
+              return res.render('stories/options', { storyDraftImage, clubId, type: foundClub.clubUsers[i].storyDraft.type });
             } else {
               req.flash('error', 'Please Create a story first before setting options');
-              return res.redirect('/clubs/' + req.params.club_id + '/story/create/edit');
+              return res.redirect('/clubs/' + req.params.club_id + '/story/create');
             }
           }
         }
@@ -133,8 +201,8 @@ module.exports = {
         for (let i = foundClub.clubUsers.length - 1; i >= 0; i--) {
           if (foundClub.clubUsers[i].id.equals(req.user._id) && foundClub.clubUsers[i].userRank <= 2) {
             story = new Story({
-              image: foundClub.clubUsers[i].storyDraftImage,
-              imageId: foundClub.clubUsers[i].storyDraftImageId,
+              image: foundClub.clubUsers[i].storyDraft.image,
+              imageId: foundClub.clubUsers[i].storyDraft.imageId,
               aspectRatio: foundClub.clubUsers[i].storyDraftAspectRatio,
               storyClub: foundClub._id,
               createdAt: Date.now(),
@@ -154,15 +222,12 @@ module.exports = {
             foundClub.storyArchives.addToSet(story);
             foundClub.albums.addToSet(req.body.album);
 
-            // Story media was already uploaded (after clicking Next)
-            // & its url stored in foundClub.clubUsers[i].storyDraftImage
             // Now that, the currentUser has published the draft of his story
             // i.e. (copied url of storyDraftImage to new document in stories collection)
             // --> Reset the draft of currentUser in this club by setting to empty string
-            foundClub.clubUsers[i].storyDraftImage = '';
-            foundClub.clubUsers[i].storyDraftImageId = '';
-            foundClub.clubUsers[i].storyDraftAspectRatio = '';
+            foundClub.clubUsers[i].set('storyDraft', undefined, {strict: false});
             foundClub.save();
+            break;
           }
         }
         return res.redirect('/clubs/' + req.params.club_id);
@@ -171,8 +236,6 @@ module.exports = {
   },
 
   storiesDelete(req, res, next) {
-    // Takes club_id in params and story_id in POST body
-
     var rank = currentRank2(req.params.club_id, req.user.userClubs);
     if(0<=rank && rank<=1){
       Story.findOneAndDelete( { _id: req.body.story_id }, async function(err, foundStory){

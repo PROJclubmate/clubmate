@@ -39,7 +39,9 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
-    res.render('mess/show', { mess: foundMess.mess, collegeName: req.user.userKeys.college });
+
+    const messName = req.user.userKeys.mess;
+    res.render('mess/show', { mess: foundMess.mess, collegeName: req.user.userKeys.college, messName: messName});
   },
 
   async messUserChange(req, res, next) {
@@ -55,7 +57,7 @@ module.exports = {
     const messNames = foundMess.mess.map(elem => elem.name);
     if (!messNames.includes(messName)) {
       req.flash('Invalid mess');
-      res.redirect('back');
+      return res.redirect('back');
     }
 
     const foundUser = await User.findById(req.user._id).select('userKeys');
@@ -83,6 +85,7 @@ module.exports = {
 
     const day = req.query.day;
     const time = req.query.time;
+    const messName = req.query.messName
 
     if (!req.user.isCollegeLevelAdmin) {
       req.flash('error', 'You are not authorized to change the menu');
@@ -98,7 +101,7 @@ module.exports = {
 
     const messNames = foundMess.mess.map(elem => elem.name);
 
-    res.render('mess/edit', { messNames: messNames, foundMess, collegeName: req.user.userKeys.college, day: day, time: time });
+    res.render('mess/edit', { messNames: messNames, foundMess, collegeName: req.user.userKeys.college, day: day, time: time , messName: messName});
   },
 
   async messUpdateMenu(req, res, next) {
@@ -144,10 +147,8 @@ module.exports = {
     }
 
     if (!messFound) {
-      foundMess.mess.push({
-        name: messName,
-        menu: [{ day: day, time: time, dishes: dishes }],
-      });
+      req.flash('error', 'Mess not found');
+      res.redirect('back');
     }
 
     foundMess.save(function (err) {
@@ -155,7 +156,7 @@ module.exports = {
     });
 
     req.flash('success', 'Mess menu updated');
-    res.redirect('/colleges/'+req.user.userKeys.college+`/mess/edit?day=${day}&time=${time}`);
+    res.redirect('/colleges/'+req.user.userKeys.college+`/mess/edit?messName=${messName}&day=${day}&time=${time}`);
   },
 
   async quickmessData(req, res, next) {
@@ -193,7 +194,7 @@ module.exports = {
   },
 
   messAddPage(req, res, next) {
-    res.render('mess/add');
+    res.render('mess/add', { collegeName: req.user.userKeys.college});
   },
 
   async addNewMess(req, res, next) {
