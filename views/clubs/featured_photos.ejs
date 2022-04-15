@@ -15,7 +15,7 @@
 						    <div class="container gradient-wrap">
 			            <img class="searchdp" src="<%= cdn_prefix+featuredPhotos[i].imageId %>" crossorigin="anonymous">
 			            <label for="featuredImage<%= i %>" class="overlay4">
-		                <i class="fas fa-upload"></i> Upload
+		                <span class="overlay4-text"><i class="fas fa-upload mr-2"></i>Upload</span>
 		              </label>
 		              <input type="file" id="featuredImage<%= i %>" class="text-sm featuredImage" name="image" accept="image/*">
 						    </div>
@@ -78,7 +78,7 @@
 								<div class="container">
 			            <img class="searchdp noImage" src="<%= '/images/noImage.png' %>">
 			            <label for="featuredImage<%= index %>" class="overlay4">
-		                <i class="fas fa-upload"></i> Upload
+		                <span class="overlay4-text"><i class="fas fa-upload mr-2"></i>Upload</span>
 		              </label>
 		              <input type="file" id="featuredImage<%= index %>" class="text-sm featuredImage" name="image" accept="image/*" required>
 						    </div>

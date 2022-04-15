@@ -4,6 +4,7 @@ const mongoose = require('mongoose'),
 const collegePageSchema = new Schema({
   name: { type: String, unique: true, required: true },
   cover: String,
+  coverId: String,
   userCount: { type: Number, default: 0 },
   allUserIds: [{
     type: Schema.Types.ObjectId,
@@ -19,11 +20,10 @@ const collegePageSchema = new Schema({
     }],
     _id: false
   }],
-  batches: Array,
   branches: Array,
+  houses: Array,
   hostels: Array,
-  messes: Array,
-  houses: Array
+  messes: Array
 });
 
 // for find queries(match exact strings)

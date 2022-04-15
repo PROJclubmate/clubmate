@@ -60,12 +60,12 @@ const userSchema = new Schema({
   userKeys: {
     college: String,
     batch: String,
-    house: String,
     branch: String,
-    school: String,
+    house: String,
     hostel: String,
     mess: String,
     sex: String,
+    school: String,
     hometown: String,
     birthdate: { type: Date, default: null }
   },

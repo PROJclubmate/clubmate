@@ -154,20 +154,14 @@
                 </datalist>
                 <label for="branch" class="sr-only">Branch</label>
                 <% if(!user.userKeys.branch){ %>
-                  <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]" 
-                  pattern="Civil Engineering|Computer Science & Engineering|Electrical Engineering|Mechanical Engineering|Engineering Physics|Data Science and Engineering|M.S/Ph.D.|M.Tech/M.Sc.>" value="" placeholder="Branch / Major">
+                  <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]"  title="Select from the branches avaliable in your college"
+                  pattern="<% arrayToStingWithPipe(college.branches); %>" value="" placeholder="Branch">
                 <% } else{ %>
-                  <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]" pattern="Civil Engineering|Computer Science & Engineering|Electrical Engineering|Mechanical Engineering|Engineering Physics|Data Science and Engineering|M.S/Ph.D.|M.Tech/M.Sc.>" value="<%= user.userKeys.branch %>" placeholder="Branch / Major">
+                  <input list="branch" class="form-control form-control-sm select_dark" name="userKeys[branch]" title="Select from the branches avaliable in your college"
+                  pattern="<% arrayToStingWithPipe(college.branches); %>" value="<%= user.userKeys.branch %>" placeholder="Branch">
                 <% } %>
                 <datalist id="branch">
-                  <option value="Civil Engineering">
-                  <option value="Computer Science & Engineering">
-                  <option value="Electrical Engineering">
-                  <option value="Mechanical Engineering">
-                  <option value="Engineering Physics">
-                  <option value="Data Science and Engineering">
-                  <option value="M.S/Ph.D.">
-                  <option value="M.Tech/M.Sc.">
+                  <% arrayToDatalistOptions(college.branches); %>
                 </datalist>
                 <button class="btn btn-sm btn-primary btn-block mt-2" type="submit">Update user profile</button>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -304,7 +298,7 @@
                   <div class="modal-content">
                     <div class="d-flex grey">
                       <span>
-                        <img id="new_club_img" class="icon-box" src="<%= '/images/club.svg' %>" title="Designed by [Freepik] from @flaticon">
+                        <img id="new_club_img" class="icon-box" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650015521/icons/new_club.png" title="Designed by [Freepik] from @flaticon">
                       </span>              
                       <span class="my-auto"><h5 class="modal-title ml-2">Start new club</h5></span>
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -312,11 +306,12 @@
                     <form class="my-2" action="/users/<%= user._id %>/clubs/new?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
                       <div class="form-signin">
                         <label for="name" class="sr-only">Club name</label>
-                        <input id="name" class="form-control form-control-sm shadow commentbox2 text-center" type="text" name="name" placeholder="Club name" required>
-                        <label for="inputclubAvatar" class="custom-file-upload noshadow w-100 text-center mt-2" title="Upload club avatar">
-                          <i class="fas fa-upload"></i> Club avatar
+                        <input id="name" class="form-control form-control-sm shadow commentbox2" type="text" name="name" placeholder="Club name" required>
+                        <label for="inputclubAvatar" class="custom-file-upload btn btn-round noshadow noborder w-100 mt-2" title="Upload club avatar">
+                          <i class="fas fa-upload mr-2"></i>Club avatar
                         </label>
                         <input type="file" id="inputclubAvatar" class="text-sm" name="avatar" accept="image/*" required="">
+                        <br>
                         <br>
                         <br>
                         <button class="btn btn-sm btn-success btn-block" title="Start new club" onclick="loading_spinner('load-createclub','name');"><span id="load-createclub"></span>Submit</button>
@@ -491,16 +486,46 @@
                   <% } %>
                   <div class="info1">
                     <% if(currentUser && (match || user.userKeys.house)){ %>
-                      House: <span class="info30">
-                        <% if(!user.userKeys.college){ %>
-                          <a class="lightgrey2">
-                        <% } else{ %>
-                          <a href="/all_students/colleges/<%= user.userKeys.college %>?house=<%= user.userKeys.house %>">
-                        <% } %>
-                          <%= user.userKeys.house %>
-                        </a>
-                      </span>
-                      <br>
+                      <% if(user.userKeys.house){ %>
+                        House: <span class="info30">
+                          <% if(!user.userKeys.college){ %>
+                            <a class="lightgrey2">
+                          <% } else{ %>
+                            <a href="/all_students/colleges/<%= user.userKeys.college %>?house=<%= user.userKeys.house %>">
+                          <% } %>
+                            <%= user.userKeys.house %>
+                          </a>
+                        </span>
+                        <br>
+                      <% } %>
+                    <% } %>
+                    <% if(currentUser && (match || user.userKeys.hostel)){ %>
+                      <% if(user.userKeys.hostel){ %>
+                        Hostel: <span class="info30">
+                          <% if(!user.userKeys.college){ %>
+                            <a class="lightgrey2">
+                          <% } else{ %>
+                            <a href="/all_students/colleges/<%= user.userKeys.college %>?hostel=<%= user.userKeys.hostel %>">
+                          <% } %>
+                            <%= user.userKeys.hostel %>
+                          </a>
+                        </span>
+                        <br>
+                      <% } %>
+                    <% } %>
+                    <% if(currentUser && (match || user.userKeys.mess)){ %>
+                      <% if(user.userKeys.mess){ %>
+                        Mess: <span class="info30">
+                          <% if(!user.userKeys.college){ %>
+                            <a class="lightgrey2">
+                          <% } else{ %>
+                            <a href="/all_students/colleges/<%= user.userKeys.college %>?mess=<%= user.userKeys.mess %>">
+                          <% } %>
+                            <%= user.userKeys.mess %>
+                          </a>
+                        </span>
+                        <br>
+                      <% } %>
                     <% } %>
                     <% if(currentUser && (match || user.userKeys.school)){ %>
                       High School: <span class="info30">
@@ -544,25 +569,51 @@
                     <div class="info30">
                       <div id="personal_info_form_div" class="greyback mb-2">
                         <form class="pb-1 px-1" action="/users/<%= user._id %>?_method=PUT" method="POST">
-                          <div class="pt-1 px-2">
-                            <label for="house" class="sr-only">House</label>
-                            <% if(!user.userKeys.house){ %>
-                              <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" 
-                              pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="" placeholder="House / Hostel">
+                          <% if(college.houses && college.houses.length){ %>
+                            <div class="pt-1 px-2">
+                              <label for="house" class="sr-only">House</label>
+                              <% if(!user.userKeys.house){ %>
+                                <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" title="Select from the houses avaliable in your college"
+                                pattern="<% arrayToStingWithPipe(college.houses); %>" value="" placeholder="House">
+                              <% } else{ %>
+                                <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" title="Select from the houses avaliable in your college"
+                                pattern="<% arrayToStingWithPipe(college.houses); %>" value="<%= user.userKeys.house %>" placeholder="House">
+                              <% } %>
+                              <datalist id="house">
+                                <% arrayToDatalistOptions(college.houses); %>
+                              </datalist>
+                            </div>
+                          <% } %>
+                          <% if(college.hostels && college.hostels.length){ %>
+                            <div class="px-2">
+                              <label for="hostel" class="sr-only">Hostel</label>
+                              <% if(!user.userKeys.hostel){ %>
+                                <input list="hostel" class="form-control form-control-sm select_dark" name="userKeys[hostel]" title="Select from the hostels avaliable in your college"
+                                pattern="<% arrayToStingWithPipe(college.hostels); %>" value="" placeholder="Hostel">
+                              <% } else{ %>
+                                <input list="hostel" class="form-control form-control-sm select_dark" name="userKeys[hostel]" title="Select from the hostels avaliable in your college"
+                                pattern="<% arrayToStingWithPipe(college.hostels); %>" value="<%= user.userKeys.hostel %>" placeholder="Hostel">
+                              <% } %>
+                              <datalist id="hostel">
+                                <% arrayToDatalistOptions(college.hostels); %>
+                              </datalist>
+                            </div>
+                          <% } %>
+                          <% if(college.messes && college.messes.length){ %>
+                          <div class="px-2">
+                            <label for="mess" class="sr-only">Mess</label>
+                            <% if(!user.userKeys.mess){ %>
+                              <input list="mess" class="form-control form-control-sm select_dark" name="userKeys[mess]" title="Select from the messes avaliable in your college"
+                              pattern="<% arrayToStingWithPipe(college.messes); %>" value="" placeholder="Mess">
                             <% } else{ %>
-                              <input list="house" class="form-control form-control-sm select_dark" name="userKeys[house]" pattern="Beaskund|Gaurikund|Suraj Tal|Dashir|Nako|Prashar|Suvalsar|Chandrataal" value="<%= user.userKeys.house %>" placeholder="House / Hostel">
+                              <input list="mess" class="form-control form-control-sm select_dark" name="userKeys[mess]" title="Select from the messes avaliable in your college"
+                              pattern="<% arrayToStingWithPipe(college.messes); %>" value="<%= user.userKeys.mess %>" placeholder="Mess">
                             <% } %>
-                            <datalist id="house">
-                              <option value="Beaskund">
-                              <option value="Gaurikund">
-                              <option value="Suraj Tal">
-                              <option value="Dashir">
-                              <option value="Nako">
-                              <option value="Prashar">
-                              <option value="Suvalsar">
-                              <option value="Chandrataal">
+                            <datalist id="mess">
+                              <% arrayToDatalistOptions(college.messes); %>
                             </datalist>
                           </div>
+                          <% } %>
                           <div class="px-2">
                             <label for="school" class="sr-only">School</label>
                             <input type="text" id="school" class="form-control form-control-sm" name="userKeys[school]" value="<%= user.userKeys.school %>" placeholder="High School">
@@ -718,7 +769,7 @@
                       <% if(currentUser && match){ %>
                         <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
-                      <% recommends_split(user.interests); %>
+                      <% arrayToStingWithComma(user.interests); %>
                       <% if((currentUser && match) || (user.interests && user.interests.length)){ %>
                         <br>
                       <% } %>
@@ -732,7 +783,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse w-100 mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="recommends_add('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="add_new_inputs('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -752,7 +803,7 @@
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
-                        <% recommends_split(user.recommends.music); %>
+                        <% arrayToStingWithComma(user.recommends.music); %>
                         <br>
                         <div id="recommends_form1_div" class="greyback">
                           <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -764,7 +815,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="recommends_add('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -780,7 +831,7 @@
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
-                        <% recommends_split(user.recommends.movies); %>
+                        <% arrayToStingWithComma(user.recommends.movies); %>
                         <br>
                         <div id="recommends_form2_div" class="greyback">
                           <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -792,7 +843,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="recommends_add('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -808,7 +859,7 @@
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
-                        <% recommends_split(user.recommends.tvshows); %>
+                        <% arrayToStingWithComma(user.recommends.tvshows); %>
                         <br>
                         <div id="recommends_form3_div" class="greyback">
                           <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -820,7 +871,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="recommends_add('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -836,7 +887,7 @@
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
-                        <% recommends_split(user.recommends.places); %>
+                        <% arrayToStingWithComma(user.recommends.places); %>
                         <br>
                         <div id="recommends_form4_div" class="greyback">
                           <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -848,7 +899,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="recommends_add('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -864,7 +915,7 @@
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
-                        <% recommends_split(user.recommends.books); %>
+                        <% arrayToStingWithComma(user.recommends.books); %>
                         <br>
                         <div id="recommends_form5_div" class="greyback">
                           <form class="form-inline d-flex justify-content-between mt-2 px-2" action="/users/<%= user._id %>?_method=PUT" method="POST">
@@ -876,7 +927,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="recommends_add('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -1049,7 +1100,7 @@
 
 <% include ../partials/footer %>
 
-<% function recommends_split(arr){ %>
+<% function arrayToStingWithComma(arr){ %>
   <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
   <% if(i==0 && i==len-1){ %>
     <%= arr[i] %>
@@ -1061,6 +1112,15 @@
     <%= ' '+arr[i] %>
   <% }} %>
 <% } %>
+
+<% function arrayToStingWithPipe(arr){ %><% var len = arr.length; var i=0; for(i;i<len;i++){ %><% if(i==0 && i==len-1){ %><%= arr[i] %><% }else if(i==0){ %><%= arr[i]+'|' %><% }else if(i>0 && i<len-1){ %><%= arr[i]+'|' %><% }else if(i=len-1){ %><%= arr[i] %><% }} %><% } %>
+
+<% function arrayToDatalistOptions(arr){ %>
+  <% var len = arr.length; var i=0; for(i;i<len;i++){ %>
+    <option value="<%=arr[i]%>">
+  <% } %>
+<% } %>
+
 
 <%
   function rankTitle(rank){

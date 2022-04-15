@@ -389,7 +389,7 @@ function none_display(id){
 	}
 }
 
-function recommends_add(id,name,placeholder){
+function add_new_inputs(id,name,placeholder){
   var divelement = document.getElementById(id);
   var input = document.createElement('input');
   input.setAttribute('type', 'text');
@@ -415,38 +415,6 @@ String.prototype.trunc = String.prototype.trunc ||
 function(n){
   return (this.length > n) ? this.substr(0, n-1) + '...' : this;
 }
-
-// FEATURED Images
-$('#featuredImage0').change(function(){
-  var i = $(this).prev('label').clone();
-  var file = $('#featuredImage0')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-});
-$('#featuredImage1').change(function(){
-  var i = $(this).prev('label').clone();
-  var file = $('#featuredImage1')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-});
-$('#featuredImage2').change(function(){
-  var i = $(this).prev('label').clone();
-  var file = $('#featuredImage2')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-});
-$('#featuredImage3').change(function(){
-  var i = $(this).prev('label').clone();
-  var file = $('#featuredImage3')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-});
-$('#featuredImage4').change(function(){
-  var i = $(this).prev('label').clone();
-  var file = $('#featuredImage4')[0].files[0].name;
-  var truncated = file.trunc(15);
-  $(this).prev('label').text(truncated);
-});
 
 // Label path for input image file
 $('#inputImage').change(function(){
@@ -485,9 +453,21 @@ $('#inputclubAvatar').change(function(){
 });
 $('#inputroomAvatar').change(function(){
 	var fileName = $('#inputroomAvatar')[0].files[0].name;
-	var truncated = fileName.trunc(15);
-	$(this).prev('label').text(truncated);
+	var truncated = fileName.trunc(10);
+	$(this).prev('label').find('.overlay4-text').text(truncated);
   $('#inputroomAvatarSubmitBtn').css('display','block');
+});
+$('.featuredImage').change(function(){
+  var i = $(this).prev('label').clone();
+  var file = $(this)[0].files[0].name;
+  var truncated = file.trunc(15);
+  $(this).prev('label').find('.overlay4-text').text(truncated);
+});
+$('#inputcollegeCover').change(function(){
+	var fileName = $('#inputcollegeCover')[0].files[0].name;
+	var truncated = fileName.trunc(15);
+	$(this).prev('label').find('.overlay4-text').text(truncated);
+  $('#inputcollegeCoverSubmitBtn').css('display','block');
 });
 
 var cw = $('.subPostimg').width();

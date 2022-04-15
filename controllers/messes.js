@@ -166,37 +166,5 @@ module.exports = {
     } else{
       return res.sendStatus(403);
     }
-  },
-
-  messAddPage(req, res, next) {
-    res.render('mess/add');
-  },
-
-  async addNewMess(req, res, next) {
-    const messName = req.body.messName.toLowerCase();
-    if (!messName) {
-      req.flash('error', 'Mess name cannot be empty');
-      return res.redirect('back');
-    }
-
-    const foundCollege = await CollegePage.findOne({ name: req.user.userKeys.college }).select('messes');
-    if (foundCollege == null) {
-      logger.error(req.user._id + ' : (mess-9)foundCollege err => ' + 'No college_page document found for given college name');
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
-    }
-
-    const messNames = foundCollege.messes;
-
-    if (messNames.includes(messName)) {
-      req.flash('error', 'Mess with this name already exists');
-      res.redirect('back');
-    }
-
-    messNames.push(messName);
-    await foundCollege.save();
-
-    req.flash('success', 'Mess added successfully');
-    res.redirect('/colleges/'+req.user.userKeys.college+'/mess/add');
   }
 };

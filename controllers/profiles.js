@@ -276,11 +276,21 @@ module.exports = {
               Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
             }
           }
-          res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
-          clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-          foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic,
-          cdn_prefix});
-          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+          CollegePage.findOne({name: req.user.userKeys.college})
+          .select({branches: 1, houses: 1, messes: 1})
+          .exec(function(err, foundCollegePage){
+          if(err || !foundCollegePage){
+            logger.error('(profiles-1)foundCollegePage err => '+err);
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
+            clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
+            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic,
+            college: foundCollegePage, cdn_prefix});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+          }
+          });
         }
         });
       }
@@ -662,9 +672,22 @@ module.exports = {
             if(req.body.userKeys.sex != foundUser.userKeys.sex){
               foundUser.userKeys.sex = req.body.userKeys.sex;
             }
-          } else if(req.body.userKeys.house || req.body.userKeys.school || req.body.userKeys.hometown || req.body.userKeys.birthdate){
+          } else if(
+            req.body.userKeys.house || 
+            req.body.userKeys.hostel || 
+            req.body.userKeys.mess || 
+            req.body.userKeys.school || 
+            req.body.userKeys.hometown || 
+            req.body.userKeys.birthdate
+            ){
             if(req.body.userKeys.house != foundUser.userKeys.house){
               foundUser.userKeys.house = req.body.userKeys.house;
+            }
+            if(req.body.userKeys.hostel != foundUser.userKeys.hostel){
+              foundUser.userKeys.hostel = req.body.userKeys.hostel;
+            }
+            if(req.body.userKeys.mess != foundUser.userKeys.mess){
+              foundUser.userKeys.mess = req.body.userKeys.mess;
             }
             if(req.body.userKeys.school != foundUser.userKeys.school){
               foundUser.userKeys.school = req.body.userKeys.school.replace(/[^a-zA-Z'()0-9 ]/g, '').trim();

@@ -1163,6 +1163,14 @@ module.exports = {
         var queryName = 'house';
         var queryValue = req.query.house;
         var dbQuery2 = dbQuery;
+      } else if(req.query.hostel){
+        var queryName = 'hostel';
+        var queryValue = req.query.hostel;
+        var dbQuery2 = dbQuery;
+      } else if(req.query.mess){
+        var queryName = 'mess';
+        var queryValue = req.query.mess;
+        var dbQuery2 = dbQuery;
       } else if(req.query.school){
         var queryName = 'school';
         var queryValue = req.query.school;
