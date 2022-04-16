@@ -21,6 +21,7 @@ const blogSchema = new Schema({
   },
 
   url: String,
+  urlName: String,
 
   content: String,
 

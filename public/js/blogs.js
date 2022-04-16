@@ -86,7 +86,7 @@ $('#load-more-btn').on('click', function(e){
               <% if(blog.author){ %>
                 <div class="row top-content">
                   <div class="col">
-                    <img src="https://miro.medium.com/fit/c/140/140/1*lENffNJqMW4fiDhqz7PlNw.png" class="smalldp rounded-circle mr-1" alt="...">
+                    <img src="<%= blog.author.profilePic %>" class="smalldp rounded-circle mr-1" alt="...">
                     <span class="card-text"><a href="/add" class="card-link p-name"><%= blog.author.name %></a></span>             
                   </div>
                 </div>
@@ -101,7 +101,7 @@ $('#load-more-btn').on('click', function(e){
                           </div>
                           <div class="">
                             <div class="pt-1">
-                              <img src="https://miro.medium.com/fit/c/140/140/1*lENffNJqMW4fiDhqz7PlNw.png" alt="..." class="card-image mb-auto">
+                              <img src="<%= blog.image %>" alt="..." class="card-image mb-auto">
                             </div>
 										      </div>
                         </div>
