@@ -57,11 +57,7 @@ module.exports = {
     const messNames = foundMess.mess.map(elem => elem.name);
     if (!messNames.includes(messName)) {
       req.flash('Invalid mess');
-<<<<<<< HEAD
-      res.redirect('back');
-=======
       return res.redirect('back');
->>>>>>> blogs
     }
 
     const foundUser = await User.findById(req.user._id).select('userKeys');
@@ -89,10 +85,7 @@ module.exports = {
 
     const day = req.query.day;
     const time = req.query.time;
-<<<<<<< HEAD
-=======
     const messName = req.query.messName
->>>>>>> blogs
 
     if (!req.user.isCollegeLevelAdmin) {
       req.flash('error', 'You are not authorized to change the menu');
@@ -108,11 +101,7 @@ module.exports = {
 
     const messNames = foundMess.mess.map(elem => elem.name);
 
-<<<<<<< HEAD
-    res.render('mess/edit', { messNames: messNames, foundMess, collegeName: req.user.userKeys.college, day: day, time: time });
-=======
     res.render('mess/edit', { messNames: messNames, foundMess, collegeName: req.user.userKeys.college, day: day, time: time , messName: messName});
->>>>>>> blogs
   },
 
   async messUpdateMenu(req, res, next) {
@@ -167,11 +156,7 @@ module.exports = {
     });
 
     req.flash('success', 'Mess menu updated');
-<<<<<<< HEAD
-    res.redirect('/colleges/'+req.user.userKeys.college+`/mess/edit?day=${day}&time=${time}`);
-=======
     res.redirect('/colleges/'+req.user.userKeys.college+`/mess/edit?messName=${messName}&day=${day}&time=${time}`);
->>>>>>> blogs
   },
 
   async quickmessData(req, res, next) {

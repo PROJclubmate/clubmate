@@ -78,14 +78,7 @@
 				<% if(blog.author){ %>
 					<div class="row top-content">
 						<div class="col">
-							<% 
-								if (blog.author) {
-									src = blog.author.profilePic;
-								} else {
-									src = "https://miro.medium.com/fit/c/140/140/1*lENffNJqMW4fiDhqz7PlNw.png";
-								}
-							%>
-							<img src="<%= src %>" class="smalldp rounded-circle mr-1" alt="...">                             
+							<img src="<%= blog.author.profilePic %>" class="smalldp rounded-circle mr-1" alt="...">
 							<span class="card-text"><a href="/add" class="card-link p-name"><%= blog.author.name %></a></span>             
 						</div>
 					</div>
