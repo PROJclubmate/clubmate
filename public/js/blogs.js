@@ -12,12 +12,61 @@ $('#load-more-btn').on('click', function(e){
       timeout: 15000,
       success: function (response){
         if(response && response != ''){
-          console.log("hi")
+
           $('#load-more-btn').removeClass('btn-load');
           $('#load-more-btn').val(response.bucket);
           var div = document.getElementById('client-blogs');
           div.innerHTML += blogs_template(response);
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
+
+          const cards = document.querySelectorAll(".blog-card")
+          for(let card of cards){
+            const blog_id = card.getAttribute('id')
+            const bucketId = card.getAttribute('bucketId')
+            const saveSelector = blog_id + '_save';
+            const saveIcon = document.getElementById(saveSelector);
+            const heartSelector = blog_id + '_heart';
+            const heartIcon = document.getElementById(heartSelector);
+
+            saveIcon.addEventListener('click', e => {
+              $.ajax({
+                type: 'PUT',
+                url: '/colleges/'+ collegeName +'/blogs/'+ bucketId +'/'+ blog_id +'/save',
+                timeout: 15000,
+                success: function (response){
+                  if(response.saved){
+                    saveIcon.classList.add('fas')
+                    saveIcon.classList.remove('far')
+                  }
+                  else{
+                    saveIcon.classList.add('far')
+                    saveIcon.classList.remove('fas')
+                  }
+                }
+              });
+            });
+
+            heartIcon.addEventListener('click', e => {
+              $.ajax({
+                type: 'PUT',
+                url: '/colleges/'+ collegeName +'/blogs/'+ bucketId +'/'+ blog_id +'/heart',
+                timeout: 15000,
+                success: function (response){
+                  if(response.hearted){
+                    heartIcon.classList.add('redcolor3')
+                    heartIcon.classList.add('fas')
+                    heartIcon.classList.remove('far')
+                  }
+                  else {
+                    heartIcon.classList.remove('redcolor3')
+                    heartIcon.classList.add('far')
+                    heartIcon.classList.remove('fas')
+                  }
+                }
+              });
+            });
+          }
+
         }
         else {
           console.log("hello")
@@ -33,7 +82,7 @@ $('#load-more-btn').on('click', function(e){
       <div class="container my-3">
         <% for(let blog of blogs){ %>
           <div class="row no-gutters">
-            <div class="card mb-3 mx-auto blog-card pt-3 pb-2 px-3">
+            <div class="card mb-3 mx-auto blog-card pt-3 pb-2 px-3" id="<%= blog._id %>" bucketId = "<%= blog.bucketId %>">
               <% if(blog.author){ %>
                 <div class="row top-content">
                   <div class="col">
@@ -72,12 +121,12 @@ $('#load-more-btn').on('click', function(e){
                         <div>
                           <span class="icons">
                             <span class="save-icon ml-1">
-                              <i class="far fa-bookmark"></i>
+                              <i class="<% if(blog.saved){ %>fas<% } %> <% if(!blog.saved){ %>far<% } %> fa-bookmark" id="<%= blog._id %>_save"></i>
                             </span>
                             <div class="commentwrap lineheight-0 d-inline-block ml-1">         
                               <button class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                                 <div>
-                                <i class="fab fa-gratipay"></i>
+                                <i class="<% if(blog.hearted){ %>fas redcolor3<% } %> <% if(!blog.hearted){ %>far<% } %> fa-heart" id="<%= blog._id %>_heart"></i>
                                 </div>											
                                 <div class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">0</div>
                               </button>                                         
@@ -113,12 +162,12 @@ $('#load-more-btn').on('click', function(e){
                         <div>
                           <span class="icons">
                             <span class="save-icon ml-1">
-                              <i class="far fa-bookmark"></i>
+                              <i class="<% if(blog.saved){ %>fas<% } %> <% if(!blog.saved){ %>far<% } %> fa-bookmark" id="<%= blog._id %>_save"></i>
                             </span>
                             <div class="commentwrap lineheight-0 d-inline-block ml-1">         
                               <button id="comment-up-btn5f089c8e3059ce0ec90836b4" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                                 <div>
-                                <i class="fab fa-gratipay"></i>
+                                <i class="<% if(blog.hearted){ %>fas redcolor3<% } %> <% if(!blog.hearted){ %>far<% } %> fa-heart" id="<%= blog._id %>_heart"></i>
                                 </div>
                                 
                                 <div id="comment-up-count5f089c8e3059ce0ec90836b4" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">0</div>

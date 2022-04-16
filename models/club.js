@@ -56,10 +56,21 @@ const clubSchema = new Schema({
     },
     userStatus: String,
     memberSince: { type: Date, default: Date.now },
-    storyDraftImage: String,
-    storyDraftImageId: String,
-    // aspect ratio format - X_Y (Used for how to load the canvas for draftImg in story maker)
-    storyDraftAspectRatio: String,
+    // can be extended in units of months
+    memberShipFor: { type: Number, default: 12 },
+    storyDraft: {
+      image: String,
+      imageId: String,
+      type: {
+        type: String,
+        enum: ['text', 'image', 'album', 'video', 'audio', 'document']
+      },
+      textContent: String,
+      backgroundColor: String,
+      textColor: String,
+      // aspect ratio format - X_Y (Used for how to load the canvas for draftImg in story maker)
+      aspectRatio: String
+    },
     _id: false
   }],
   membersCount: { type: Number, default: 1 },
