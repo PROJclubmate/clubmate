@@ -23,7 +23,7 @@ if (process.env.ENVIRONMENT === "dev") {
 
 router.get('/colleges/:collegeName/blogs', middleware.isLoggedIn, blogsLoadPage);
 router.get('/colleges/:collegeName/blogs/new', middleware.isLoggedIn, blogsCreatePage);
-router.post('/colleges/:collegeName/blogs/new', middleware.isLoggedIn, blogsCreate);
+router.post('/colleges/:collegeName/blogs/new', upload.single("image"), middleware.isLoggedIn, blogsCreate);
 router.get('/colleges/:collegeName/blogs/publish', middleware.isLoggedIn, blogsPublishPage);
 router.put('/colleges/:collegeName/blogs/publish/approve', middleware.isLoggedIn, blogsApprove);
 router.put('/colleges/:collegeName/blogs/publish/remove', middleware.isLoggedIn, blogsRemove);

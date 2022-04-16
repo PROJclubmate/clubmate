@@ -97,18 +97,18 @@ module.exports = {
                 foundUser.savedBlogs = [];
               }
 
-              heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId === bucketId && elem.blogId === blogId) );
+              heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(bucketId) && elem.blogId.equals(blogId)) );
               if (heartedBlogIndex === -1) {
                 foundBlog.blogs[i].hearted = false;
               } else {
                 foundBlog.blogs[i].hearted = true;
               }
 
-              savedBucketIndex = foundUser.savedBlogs.findIndex(elem => (elem.bucketId === bucketId));
+              savedBucketIndex = foundUser.savedBlogs.findIndex(elem => (elem.bucketId.equals(bucketId)));
               if (savedBucketIndex === -1) {
                 foundBlog.blogs[i].saved = false;
               } else {
-                savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.findIndex(elem => (elem === blogId));
+                savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.findIndex(elem => (elem.equals(blogId)));
                 if (savedBlogIndex === -1) {
                   foundBlog.blogs[i].saved = false;
                 } else {
@@ -150,26 +150,51 @@ module.exports = {
 
     const title = req.body.title;
     const description = req.body.description;
-    const image = req.body.image ? req.body.image : null;
-    const imageId = req.body.imageId ? req.body.image: null;
     const url = req.body.url;
     const content = req.body.content ? req.body.content : null;
     const isNews = (req.body.isNews === 'false') ? false : true;
     const readTime = isNews ? 0 : parseInt(req.body.readTime);
     const author = isNews ? null : {id: req.user._id, name: req.user.fullName};
 
+    console.log(req.body)
+    console.log(req.file)
+
     if (!title || !description || !url || isNaN(readTime)) {
-      req.flash('success', 'Invalid read time');
+      req.flash('error', 'Invalid read time');
       return res.redirect('back');
     }
+
+    if (!req.file) {
+      req.flash("error", "Please upload atleast one image");
+      return res.redirect("back");
+    }
+
+    let image, imageId;
 
     CollegePage.
       findOne({ name: req.user.userKeys.college }).
       select('unapprovedBlogBucket blogBuckets').
-      exec(function (err, foundCollegePage) {
+      exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
           logger.error(req.user._id + ' : (blog-4)foundCollegePage err => ' + err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+
+        try{
+          if(process.env.ENVIRONMENT === 'dev'){
+            var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.blogImages_1080_obj);
+            image = result.secure_url;
+            imageId = result.public_id;
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            var result = await s3Config.uploadFile(req.file, 'blogImages/', 1080);
+            s3Config.removeTmpUpload(req.file.path);
+            image = result.Location;
+            imageId = result.Key;
+          }
+        } catch(err){
+          logger.error(req.user._id+' : (posts-17)imageUpload err => '+err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -192,13 +217,24 @@ module.exports = {
             }, function (err, createdBlog) {
 
               if (err || !createdBlog) {
+
+                try {
+                  if(process.env.ENVIRONMENT === 'dev'){
+                    clConfig.cloudinary.v2.uploader.destroy(imageId);
+                  } else if (process.env.ENVIRONMENT === 'prod'){
+                    s3Config.deleteFile(imageId);
+                  }
+                } catch (err) {
+                  logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+                }
+
                 logger.error(req.user._id + ' : (blog-5)createdBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
+
               }
 
               foundCollegePage.unapprovedBlogBucket = createdBlog._id;
-
 
               foundCollegePage.save(function (err) {
                 if (err) {
@@ -238,9 +274,21 @@ module.exports = {
 
               foundBlog.save(function (err) {
                 if (err) {
+
+                  try {
+                    if(process.env.ENVIRONMENT === 'dev'){
+                      clConfig.cloudinary.v2.uploader.destroy(imageId);
+                    } else if (process.env.ENVIRONMENT === 'prod'){
+                      s3Config.deleteFile(imageId);
+                    }
+                  } catch (err) {
+                    logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+                  }
+
                   logger.error(req.user._id + ' : (blog-9)saveBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
+                  
                 }
 
                 req.flash('success', 'Blog created successfully');
@@ -286,6 +334,16 @@ module.exports = {
 
           blogAuthor = foundBlog.blogs[0].author;
 
+          try {
+            if(process.env.ENVIRONMENT === 'dev'){
+              clConfig.cloudinary.v2.uploader.destroy(foundBlog.blogs[0].imageId);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              s3Config.deleteFile(foundBlog.blogs[0].imageId);
+            }
+          } catch (err) {
+            logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+          }
+
           await Blog.findByIdAndDelete(bucketId, async function (err) {
 
             if (err) {
@@ -309,6 +367,16 @@ module.exports = {
           blogAuthor = foundBlog.blogs[blogIndex].author;
 
           foundBlog.blogs.splice(blogIndex, 1);
+
+          try {
+            if(process.env.ENVIRONMENT === 'dev'){
+              clConfig.cloudinary.v2.uploader.destroy(foundBlog.blogs[blogIndex].imageId);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              s3Config.deleteFile(foundBlog.blogs[blogIndex].imageId);
+            }
+          } catch (err) {
+            logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+          }
 
           foundBlog.save(function (err) {
             if (err) {
@@ -846,7 +914,7 @@ module.exports = {
       select('unapprovedBlogBucket').
       populate('unapprovedBlogBucket').
       lean().
-      exec(function (err, foundCollegePage) {
+      exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
           logger.error(req.user._id + ' : (blog-23)foundCollegePage err => ' + err);
@@ -857,6 +925,39 @@ module.exports = {
         if (!foundCollegePage.unapprovedBlogBucket) {
           foundCollegePage.unapprovedBlogBucket = { blogs: [] };
         }
+
+        const authorIds = [];
+        for (let i=0; i<foundCollegePage.unapprovedBlogBucket.blogs.length; i++) {
+          blog = foundCollegePage.unapprovedBlogBucket.blogs[i];
+          if (blog.author) {
+            idx = authorIds.findIndex(elem => elem.equals(blog.author.id));
+            if (idx === -1) {
+              authorIds.push(blog.author.id);
+            }
+          }
+        }
+
+        foundUser = await User.find().where('_id').in(authorIds).select('profilePic profilePicId userKeys').lean();
+
+        for (let i=0; i<foundCollegePage.unapprovedBlogBucket.blogs.length; i++) {
+          blog = foundCollegePage.unapprovedBlogBucket.blogs[i];
+          if (blog.author) {
+
+            userIndex = foundUser.findIndex(elem => elem._id.equals(blog.author.id));
+            user = foundUser[userIndex];
+
+            if(process.env.ENVIRONMENT === 'dev'){
+              blog.author.profilePic = clConfig.cloudinary.url(user.profilePicId, clConfig.thumb_100_obj);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              blog.author.profilePic = s3Config.thumb_100_prefix+user.profilePicId;
+            }
+
+            blog.author.sex = user.userKeys.sex;
+
+          }
+        }
+
+        console.log(foundCollegePage.unapprovedBlogBucket.blogs);
 
         res.render('blogs/publish_blog', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.user.userKeys.college });
 
@@ -1079,7 +1180,17 @@ module.exports = {
               return res.redirect('back');
             }
 
-            const blog = foundBlog.blogs.splice(blogIndex, 1);
+            const [blog] = foundBlog.blogs.splice(blogIndex, 1);
+
+            try {
+              if(process.env.ENVIRONMENT === 'dev'){
+                clConfig.cloudinary.v2.uploader.destroy(blog.imageId);
+              } else if (process.env.ENVIRONMENT === 'prod'){
+                s3Config.deleteFile(blog.imageId);
+              }
+            } catch (err) {
+              logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+            }
 
             await foundBlog.save(function (err) {
               if (err) {
