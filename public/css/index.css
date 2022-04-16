@@ -1954,16 +1954,16 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   background-color: #cc9a05;
 }
 .btn-danger{
-  border-color: #d85454;
-  background-color: #f15e5e;
+  border-color: #e93e3d;
+  background-color: #eb5150;
 }
 .btn-danger:hover, .modal-confirm .btn-danger:focus{
-  border-color: #c04b4b;
-  background-color: #d85454;
+  border-color: #d13736;
+  background-color: #e93e3d;
 }
 .btn-danger:not(:disabled):not(.disabled).active, .btn-danger:not(:disabled):not(.disabled):active, .show>.btn-danger.dropdown-toggle{
-  border-color: #a84141;
-  background-color: #c04b4b;
+  border-color: #ba3130;
+  background-color: #d13736;
 }
 .btn{
   vertical-align: baseline;
@@ -2147,7 +2147,8 @@ a.nolink{
     white 5px
   );
   border: 0.5px solid whitesmoke;
-  border-radius: 0.25rem;
+  border-radius: 0.75rem 0.25rem 0.25rem 0.75rem;
+  height: fit-content;
 }
 .fab.fa-gratipay{
   margin-right: 0.125rem;
@@ -2520,6 +2521,18 @@ div.carousel-img{
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+.truncate3.fade_text{
+  position: relative;
+}
+.truncate3.fade_text:after{
+  content: "";
+  position: absolute;
+  top: 3rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: inset 0 -2rem 0.75rem -1.5rem white;
 }
 .truncate5{
   overflow: hidden;

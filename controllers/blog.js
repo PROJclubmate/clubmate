@@ -149,7 +149,7 @@ module.exports = {
               if (changesMade) {
                 foundUser.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-2)saveUser err => ' + err);
+                    logger.error(req.user._id + ' : (blog-4)saveUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -158,7 +158,7 @@ module.exports = {
 
             }
 
-            return res.json({ blogs: foundBlog.blogs, bucket: bucketIndex })
+            return res.json({ blogs: foundBlog.blogs, bucket: bucketIndex, college: req.user.userKeys.college })
 
           });
 
@@ -212,7 +212,7 @@ module.exports = {
       }
     }
 
-    if (!isNews && x!req.file) {
+    if (!isNews && !req.file) {
       req.flash("error", "Please upload atleast one image");
       return res.redirect("back");
     }
@@ -225,18 +225,18 @@ module.exports = {
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-4)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blog-5)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
         try{
           if(process.env.ENVIRONMENT === 'dev'){
-            var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.blogImages_1080_obj);
+            var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.blogImages_400_obj);
             image = result.secure_url;
             imageId = result.public_id;
           } else if (process.env.ENVIRONMENT === 'prod'){
-            var result = await s3Config.uploadFile(req.file, 'blogImages/', 1080);
+            var result = await s3Config.uploadFile(req.file, 'blogImages/', 400);
             s3Config.removeTmpUpload(req.file.path);
             image = result.Location;
             imageId = result.Key;
@@ -274,10 +274,10 @@ module.exports = {
                     s3Config.deleteFile(imageId);
                   }
                 } catch (err) {
-                  logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+                  logger.error(req.user._id + ' : (blog-6)imageDestroy err => ' + err);
                 }
 
-                logger.error(req.user._id + ' : (blog-5)createdBlog err => ' + err);
+                logger.error(req.user._id + ' : (blog-7)createdBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
 
@@ -287,7 +287,7 @@ module.exports = {
 
               foundCollegePage.save(function (err) {
                 if (err) {
-                  logger.error(req.user._id + ' : (blog-9)saveCollegePage err => ' + err);
+                  logger.error(req.user._id + ' : (blog-8)saveCollegePage err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 }
@@ -305,7 +305,7 @@ module.exports = {
             exec(function (err, foundBlog) {
 
               if (err || !foundBlog) {
-                logger.error(req.user._id + ' : (blog-6)foundBlog err => ' + err);
+                logger.error(req.user._id + ' : (blog-9)foundBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -332,10 +332,10 @@ module.exports = {
                       s3Config.deleteFile(imageId);
                     }
                   } catch (err) {
-                    logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+                    logger.error(req.user._id + ' : (blog-10)imageDestroy err => ' + err);
                   }
 
-                  logger.error(req.user._id + ' : (blog-9)saveBlog err => ' + err);
+                  logger.error(req.user._id + ' : (blog-11)saveBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                   
@@ -369,7 +369,7 @@ module.exports = {
       exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
-          logger.error(req.user._id + ' : (blog-7)foundBlog err => ' + err);
+          logger.error(req.user._id + ' : (blog-12)foundBlog err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -391,20 +391,20 @@ module.exports = {
               s3Config.deleteFile(foundBlog.blogs[0].imageId);
             }
           } catch (err) {
-            logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+            logger.error(req.user._id + ' : (blog-13)imageDestroy err => ' + err);
           }
 
           await Blog.findByIdAndDelete(bucketId, async function (err) {
 
             if (err) {
-              logger.error(req.user._id + ' : (blog-8)deleteBlog err => ' + err);
+              logger.error(req.user._id + ' : (blog-14)deleteBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
 
             await CollegePage.findOneAndUpdate({ name: req.user.userKeys.college }, { $pull: { blogBuckets: bucketId } }).exec(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-8)saveCollegePage err => ' + err);
+                logger.error(req.user._id + ' : (blog-15)saveCollegePage err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -425,12 +425,12 @@ module.exports = {
               s3Config.deleteFile(foundBlog.blogs[blogIndex].imageId);
             }
           } catch (err) {
-            logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+            logger.error(req.user._id + ' : (blog-16)imageDestroy err => ' + err);
           }
 
           foundBlog.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-9)saveBlog err => ' + err);
+              logger.error(req.user._id + ' : (blog-17)saveBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -446,7 +446,7 @@ module.exports = {
             exec(function (err, foundUser) {
 
               if (err || !foundUser) {
-                logger.error(req.user._id + ' : (blog-10)foundUser err => ' + err);
+                logger.error(req.user._id + ' : (blog-18)foundUser err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -471,7 +471,7 @@ module.exports = {
 
                 foundUser.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-11)saveUser err => ' + err);
+                    logger.error(req.user._id + ' : (blog-19)saveUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -503,7 +503,7 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-14)foundUser err => ' + err);
+          logger.error(req.user._id + ' : (blog-20)foundUser err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -537,7 +537,7 @@ module.exports = {
 
         await foundUser.save(function (err) {
           if (err) {
-            logger.error(req.user._id + ' : (blog-15)saveUser err => ' + err);
+            logger.error(req.user._id + ' : (blog-21)saveUser err => ' + err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -566,7 +566,7 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-16)foundUser err => ' + err);
+          logger.error(req.user._id + ' : (blog-22)foundUser err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -584,7 +584,7 @@ module.exports = {
         if (changesMade) {
           foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-16)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-23)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -724,7 +724,7 @@ module.exports = {
         if (changesMade) {
           await foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-17)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-24)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -748,7 +748,7 @@ module.exports = {
       .exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
-          logger.error(req.user._id + ' : (blog-18)foundBlog err => ' + err);
+          logger.error(req.user._id + ' : (blog-25)foundBlog err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -759,7 +759,7 @@ module.exports = {
           exec(async function (err, foundUser) {
 
             if (err || !foundUser) {
-              logger.error(req.user._id + ' : (blog-19)foundUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-26)foundUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -777,7 +777,7 @@ module.exports = {
 
             await foundUser.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-20)saveUser err => ' + err);
+                logger.error(req.user._id + ' : (blog-27)saveUser err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -785,7 +785,7 @@ module.exports = {
 
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-21)saveBlog err => ' + err);
+                logger.error(req.user._id + ' : (blog-28)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -811,7 +811,7 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-22)foundUser err => ' + err);
+          logger.error(req.user._id + ' : (blog-29)foundUser err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -825,7 +825,7 @@ module.exports = {
         if (changesMade) {
           foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-16)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-30)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -906,7 +906,7 @@ module.exports = {
         if (changesMade) {
           foundCurrUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-16)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-31)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1008,7 +1008,7 @@ module.exports = {
         if (changesMade) {
           await foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-17)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blog-32)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1036,7 +1036,7 @@ module.exports = {
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-23)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blog-33)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1097,7 +1097,7 @@ module.exports = {
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-24)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blog-34)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1107,7 +1107,7 @@ module.exports = {
           exec(async function (err, foundBlog) {
 
             if (err || !foundBlog) {
-              logger.error(req.user._id + ' : (blog-25)foundBlog err => ' + err);
+              logger.error(req.user._id + ' : (blog-35)foundBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1130,7 +1130,7 @@ module.exports = {
               }, async function (err, createdBlog) {
 
                 if (err || !createdBlog) {
-                  logger.error(req.user._id + ' : (blog-27)createdBlog err => ' + err);
+                  logger.error(req.user._id + ' : (blog-36)createdBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 }
@@ -1140,7 +1140,7 @@ module.exports = {
 
                 await foundCollegePage.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-29)saveCollegePage err => ' + err);
+                    logger.error(req.user._id + ' : (blog-37)saveCollegePage err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1155,7 +1155,7 @@ module.exports = {
                 exec(async function (err, foundLastBlog) {
 
                   if (err || !foundLastBlog) {
-                    logger.error(req.user._id + ' : (blog-28)foundBlog err => ' + err);
+                    logger.error(req.user._id + ' : (blog-38)foundBlog err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1169,7 +1169,7 @@ module.exports = {
                       }, async function (err, createdBlog) {
 
                         if (err || !createdBlog) {
-                          logger.error(req.user._id + ' : (blog-29)createdBlog err => ' + err);
+                          logger.error(req.user._id + ' : (blog-39)createdBlog err => ' + err);
                           req.flash('error', 'Something went wrong :(');
                           return res.redirect('back');
                         }
@@ -1179,7 +1179,7 @@ module.exports = {
 
                         await foundCollegePage.save(function (err) {
                           if (err) {
-                            logger.error(req.user._id + ' : (blog-29)saveCollegePage err => ' + err);
+                            logger.error(req.user._id + ' : (blog-40)saveCollegePage err => ' + err);
                             req.flash('error', 'Something went wrong :(');
                             return res.redirect('back');
                           }
@@ -1194,7 +1194,7 @@ module.exports = {
                     
                     await foundLastBlog.save(function (err) {
                       if (err) {
-                        logger.error(req.user._id + ' : (blog-29)saveBlog err => ' + err);
+                        logger.error(req.user._id + ' : (blog-41)saveBlog err => ' + err);
                         req.flash('error', 'Something went wrong :(');
                         return res.redirect('back');
                       }
@@ -1208,7 +1208,7 @@ module.exports = {
 
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-29)saveBlog err => ' + err);
+                logger.error(req.user._id + ' : (blog-42)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -1221,7 +1221,7 @@ module.exports = {
                 exec(async function (err, foundUser) {
 
                   if (err || !foundUser) {
-                    logger.error(req.user._id + ' : (blog-29)foundUser err => ' + err);
+                    logger.error(req.user._id + ' : (blog-43)foundUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1243,7 +1243,7 @@ module.exports = {
 
                   await foundUser.save(function (err) {
                     if (err) {
-                      logger.error(req.user._id + ' : (blog-29)saveUser err => ' + err);
+                      logger.error(req.user._id + ' : (blog-44)saveUser err => ' + err);
                       req.flash('error', 'Something went wrong :(');
                       return res.redirect('back');
                     }
@@ -1276,7 +1276,7 @@ module.exports = {
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-30)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blog-45)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1286,7 +1286,7 @@ module.exports = {
           exec(async function (err, foundBlog) {
 
             if (err || !foundBlog) {
-              logger.error(req.user._id + ' : (blog-31)foundBlog err => ' + err);
+              logger.error(req.user._id + ' : (blog-46)foundBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -1306,12 +1306,12 @@ module.exports = {
                 s3Config.deleteFile(blog.imageId);
               }
             } catch (err) {
-              logger.error(req.user._id + ' : (blog-5)imageDestroy err => ' + err);
+              logger.error(req.user._id + ' : (blog-47)imageDestroy err => ' + err);
             }
 
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-32)saveBlog err => ' + err);
+                logger.error(req.user._id + ' : (blog-48)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
