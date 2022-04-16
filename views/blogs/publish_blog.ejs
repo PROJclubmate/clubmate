@@ -59,11 +59,19 @@
 		-webkit-text-stroke: 0.25px #fff;
 	}
 
+	.cardpad{
+		padding: 1rem 1rem;
+	}
+
 	@media (max-width: 767px) {
 		.blog-card {
 			width: 100%;
 			margin-left: 0.5rem !important;
 			margin-right: 0.5rem !important;
+		}
+
+		.cardpad{
+			padding: 1rem 0;
 		}
 	}
 </style>
@@ -74,127 +82,129 @@
 <div class="container my-3">
 	<% for(let blog of blogs){ %>
 		<div class="row no-gutters">
-			<div class="card mb-3 mx-auto blog-card pt-3 pb-2 px-3"> 				
-				<% if(blog.author){ %>
-					<div class="row top-content">
-						<div class="col">
-							<% 
-								if (blog.author) {
-									src = blog.author.profilePic;
-								} else {
-									src = "https://miro.medium.com/fit/c/140/140/1*lENffNJqMW4fiDhqz7PlNw.png";
-								}
-							%>
-							<img src="<%= src %>" class="smalldp rounded-circle mr-1" alt="...">                             
-							<span class="card-text"><a href="/add" class="card-link p-name"><%= blog.author.name %></a></span>             
-						</div>
-					</div>
-					<div class="valign">      
-						<div class="pt-1 w-100">
-							<div class="card-body">							
-								<a href="<%= blog.url %>" class="card-link" target="_blank">
-									<div class="valign mb-3">
-										<div class="">								
-											<h5 class="card-title"><%= blog.title %></h5>
-											<p class="card-text truncate5"><%= blog.description %></p>       
-										</div>
-										<div class="">
-											<div class="pt-1">
-												<img src="<%= blog.image %>" alt="..." class="card-image mb-auto">
-											</div>
-										</div>
-									</div>
+			<div class="card mx-auto blog-card rounded">
+				<div class="cardpad">
+					<% if(blog.author){ %>
+						<div class="row top-content w-100">
+							<div class="col">
+								<a href="/colleges/<%= college %>/blogs/user/<%= blog.author.id %>" class="darkgrey p-name boldtext d-flex">
+									<img src="<%= src %>" class="smalldp rounded-circle mr-2 my-auto" alt="...">
+									<span class="card-text"><%= blog.author.name %></span>
 								</a>
-								<div class="card-text valign">   
-									<div>
-										<div class="text-sm mobiletext3 d-inline-block">
-											<span class="text-muted"><%= moment(blog.createdAt).format('ll') %></span>
-										</div>
-										<div class="separator d-inline-block mx-1">
-											·
-										</div>
-										<div class="d-inline-block">                
-											<span class="text-sm mobiletext3"><span class="text-muted mr-2"><%= blog.readTime %> min</span></span>
-										</div>
-									</div>   
-									<div>
-										<span class="icons">
-											<span class="save-icon ml-1">
-												<i class="far fa-bookmark"></i>
-											</span>
-											<div class="commentwrap lineheight-0 d-inline-block ml-1">         
-												<button class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
-													<div>
-													<i class="fab fa-gratipay"></i>
-													</div>											
-													<div class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">0</div>
-												</button>                                         
-											</div>
-										</span>
-									</div>                
-								</div>   
-							</div>
-						</div>                                 
-					</div> 
-				<% } %>
-				<% if(!blog.author) { %>
-					<div class="row top-content">
-						<div class="col">
-							<span class="news smalldp">
-								<i class="far fa-newspaper"></i>
-							</span>
-						</div>
-					</div>			
-					<div class="valign">      
-						<div class="pt-1 w-100">
-							<div class="card-body">							
-								<a href="<%= blog.url %>" class="card-link" target="_blank">
-									<h5 class="card-title"><%= blog.title %></h5>
-									<p class="card-text truncate5"><%= blog.description %></p>
-								</a>
-								<div class="card-text valign mt-3">   
-									<div>
-										<div class="text-sm mobiletext3">
-											<span class="text-muted"><%= moment(blog.createdAt).format('ll') %></span>
-										</div>
-									</div>   
-									<div>
-										<span class="icons">
-											<span class="save-icon ml-1">
-												<i class="far fa-bookmark"></i>
-											</span>
-											<div class="commentwrap lineheight-0 d-inline-block ml-1">         
-												<button id="comment-up-btn5f089c8e3059ce0ec90836b4" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
-													<div>
-													<i class="fab fa-gratipay"></i>
-													</div>
-													
-													<div id="comment-up-count5f089c8e3059ce0ec90836b4" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">0</div>
-												</button>                                         
-											</div>
-										</span>
-									</div>                
-								</div>          
 							</div>
 						</div>
-					</div>
-				<% } %>
-				<div class="requestButton my-2">
-					<div class="accept d-inline-block mr-1">
-						<form action="/colleges/<%= college %>/blogs/publish/approve?_method=PUT" method="post">
-							<input type="hidden" name="blogId" value="<%= blog._id %>">
-							<button type="submit" class="btn btn-primary">Accept</button>
-						</form>
-					</div>
-					<div class="reject d-inline-block mx-1">
-						<form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="post">
-							<input type="hidden" name="blogId" value="<%= blog._id %>">
-							<button type="submit" class="btn btn-danger">Reject</button>
-						</form>
+						<div class="valign">      
+							<div class="pt-1 w-100">
+								<div class="px-2">							
+									<a href="<%= getValidUrl(blog.url) %>" class="card-link" rel="noopener" target="_blank">
+										<div class="valign mb-3">
+											<div class="">								
+												<h5 class="card-title"><%= blog.title %></h5>
+												<p class="card-text truncate5"><%= blog.description %></p>       
+											</div>
+											<div class="">
+												<div class="pt-1">
+													<img src="<%= blog.image %>" alt="..." class="searchdp noshadow cover mb-auto">
+												</div>
+											</div>
+										</div>
+									</a>
+									<div class="card-text valign">   
+										<div>
+											<div class="text-sm mobiletext3 d-inline-block">
+												<span class="text-muted"><%= moment(blog.createdAt).format('ll') %></span>
+											</div>
+											<div class="separator d-inline-block mx-1">
+												·
+											</div>
+											<div class="d-inline-block">                
+												<span class="text-sm mobiletext3 text-muted mr-2"><%= blog.readTime %> min</span>
+											</div>
+										</div>              
+									</div>   
+								</div>
+							</div>                                 
+						</div> 
+					<% } %>
+					<% if(!blog.author) { %>
+						<div class="row top-content w-100">
+							<div class="col">
+								<span class="news smalldp">
+									<i class="far fa-newspaper"></i>
+								</span>
+							</div>
+						</div>			
+						<div class="valign">      
+							<div class="pt-1 w-100">
+								<div class="px-2">							
+									<a href="<%= blog.url %>" class="card-link" target="_blank">
+										<h5 class="card-title"><%= blog.title %></h5>
+										<p class="card-text truncate5"><%= blog.description %></p>
+									</a>
+									<div class="card-text valign mt-3">   
+										<div>
+											<div class="text-sm mobiletext3">
+												<span class="text-muted"><%= moment(blog.createdAt).format('ll') %></span>
+											</div>
+										</div>   
+										<div>
+											<span class="icons">
+												<span class="save-icon ml-1">
+													<i class="far fa-bookmark"></i>
+												</span>
+												<div class="commentwrap lineheight-0 d-inline-block ml-1">         
+													<button id="comment-up-btn5f089c8e3059ce0ec90836b4" class="vote commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
+														<div>
+														<i class="fab fa-gratipay"></i>
+														</div>
+														
+														<div id="comment-up-count5f089c8e3059ce0ec90836b4" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">0</div>
+													</button>                                         
+												</div>
+											</span>
+										</div>                
+									</div>          
+								</div>
+							</div>
+						</div>
+					<% } %>
+				</div>
+				<div class="whitesmokeback">
+					<hr class="hr-light">
+					<div class="requestButton my-2 cardpad py-0 mx-2">
+						<div class="accept d-inline-block mr-1">
+							<form action="/colleges/<%= college %>/blogs/publish/approve?_method=PUT" method="post">
+								<input type="hidden" name="blogId" value="<%= blog._id %>">
+								<button type="submit" class="btn btn-sm btn-success btn-round"><i class="fas fa-check"></i></button>
+							</form>
+						</div>
+						<div class="reject d-inline-block mx-1">
+							<form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="post">
+								<input type="hidden" name="blogId" value="<%= blog._id %>">
+								<button type="submit" class="btn btn-sm btn-danger btn-round"><i class="fas fa-trash-alt mr-2"></i>Reject</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 	<% } %>
 </div>
 
+
+<%
+function getValidUrl(givenUrl){
+	let newUrl = decodeURI(givenUrl);
+	newUrl = newUrl.trim().replace(/\s/g, "");
+
+	if(/^(:\/\/)/.test(newUrl)){
+			return `http${newUrl}`;
+	}
+	if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
+			return `http://${newUrl}`;
+	}
+
+	return newUrl;
+}
+%>
 <% include ../partials/footer %>
