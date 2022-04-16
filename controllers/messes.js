@@ -39,32 +39,57 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     }
-    res.render('mess/show', { mess: foundMess.mess, collegeName: req.user.userKeys.college });
+
+    const messName = req.user.userKeys.mess;
+    res.render('mess/show', { mess: foundMess.mess, collegeName: req.user.userKeys.college, messName: messName});
   },
 
-  messUserSelect(req, res, next) {
-    User.updateOne({ _id: req.user._id }, { 'userKeys.mess': req.body.mess }, function (err){
-    if (err) {
-      logger.error(req.user._id+' : (mess-2)updateMess err => '+err);
+  async messUserChange(req, res, next) {
+    const messName = req.body.messName;
+
+    const foundMess = await Mess.findOne({ college: req.user.userKeys.college });
+    if (!foundMess) {
+      logger.error(req.user._id+' : (mess-1)foundMess err => '+'No mess document found for given college');
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
-    } else{
-      return res.redirect('/colleges/'+req.user.userKeys.college+'/mess');
     }
+
+    const messNames = foundMess.mess.map(elem => elem.name);
+    if (!messNames.includes(messName)) {
+      req.flash('Invalid mess');
+      return res.redirect('back');
+    }
+
+    const foundUser = await User.findById(req.user._id).select('userKeys');
+    if (!foundUser) {
+      logger.error(req.user._id+' : (mess-1)foundUser err => '+'User not found!');
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
+
+    foundUser.userKeys.mess = messName;
+
+    await foundUser.save(function (err) {
+      if (err) {
+        logger.error(req.user._id+' : (mess-1)saveUser err => '+'Error saving user');
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      }
+
+    res.redirect('back');
+
     });
   },
 
   async messEditPage(req, res, next) {
+
+    const day = req.query.day;
+    const time = req.query.time;
+    const messName = req.query.messName
+
     if (!req.user.isCollegeLevelAdmin) {
       req.flash('error', 'You are not authorized to change the menu');
       return res.redirect('/colleges/'+req.user.userKeys.college+'/mess');
-    }
-
-    const foundCollege = await CollegePage.findOne({ name: req.user.userKeys.college }).select('messes');
-    if (foundCollege == null) {
-      logger.error(req.user._id + ' : (mess-3)foundCollege err => ' + 'No college_page document found for given college name');
-      req.flash('error', 'Something went wrong :(');
-      return res.redirect('back');
     }
     
     const foundMess = await Mess.findOne({college: req.user.userKeys.college});
@@ -74,7 +99,9 @@ module.exports = {
       return res.redirect('back');
     }
 
-    res.render('mess/edit', { messNames: foundCollege.messes, foundMess, collegeName: req.user.userKeys.college });
+    const messNames = foundMess.mess.map(elem => elem.name);
+
+    res.render('mess/edit', { messNames: messNames, foundMess, collegeName: req.user.userKeys.college, day: day, time: time , messName: messName});
   },
 
   async messUpdateMenu(req, res, next) {
@@ -120,10 +147,8 @@ module.exports = {
     }
 
     if (!messFound) {
-      foundMess.mess.push({
-        name: messName,
-        menu: [{ day: day, time: time, dishes: dishes }],
-      });
+      req.flash('error', 'Mess not found');
+      res.redirect('back');
     }
 
     foundMess.save(function (err) {
@@ -131,7 +156,7 @@ module.exports = {
     });
 
     req.flash('success', 'Mess menu updated');
-    res.redirect('/colleges/'+req.user.userKeys.college+'/mess/edit');
+    res.redirect('/colleges/'+req.user.userKeys.college+`/mess/edit?messName=${messName}&day=${day}&time=${time}`);
   },
 
   async quickmessData(req, res, next) {
@@ -166,5 +191,57 @@ module.exports = {
     } else{
       return res.sendStatus(403);
     }
+  },
+
+  messAddPage(req, res, next) {
+    res.render('mess/add', { collegeName: req.user.userKeys.college});
+  },
+
+  async addNewMess(req, res, next) {
+    const messName = req.body.messName.toLowerCase();
+    if (!messName) {
+      req.flash('error', 'Mess name cannot be empty');
+      return res.redirect('back');
+    }
+
+    const foundCollege = await CollegePage.findOne({ name: req.user.userKeys.college }).select('messes');
+    if (foundCollege == null) {
+      logger.error(req.user._id + ' : (mess-9)foundCollege err => ' + 'No college_page document found for given college name');
+      req.flash('error', 'Something went wrong :(');
+      return res.redirect('back');
+    }
+
+    const messNames = foundCollege.messes;
+
+    if (messNames.includes(messName)) {
+      req.flash('error', 'Mess with this name already exists');
+      res.redirect('back');
+    }
+
+    messNames.push(messName);
+    await foundCollege.save(function (err) {
+      if (err) {
+        logger.error(req.user._id + ' : (mess-9)saveCollege err => ' + 'Error saving college document');
+        req.flash('error', 'Something went wrong :(');
+        return res.redirect('back');
+      }
+    });
+
+    const foundMess = await Mess.findOne({ college: req.user.userKeys.college });
+    if (!foundMess) {
+      Mess.create({ college: req.user.userKeys.college, mess: [{ name: messName, menu: [] }] });
+    } else {
+      const mess = foundMess.mess.push({ name: messName, menu: [] });
+      await foundMess.save(function (err) {
+        if (err) {
+          logger.error(req.user._id + ' : (mess-9)saveMess err => ' + 'Error saving mess document');
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        }
+      });
+    }
+
+    req.flash('success', 'Mess added successfully');
+    res.redirect('/colleges/'+req.user.userKeys.college+'/mess/add');
   }
 };

@@ -23,7 +23,15 @@ const collegePageSchema = new Schema({
   branches: Array,
   houses: Array,
   hostels: Array,
-  messes: Array
+  messes: Array,
+  blogBuckets: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Blog',
+  }],
+  unapprovedBlogBucket: {
+    type: Schema.Types.ObjectId,
+    ref: 'Blog',
+  },
 });
 
 // for find queries(match exact strings)

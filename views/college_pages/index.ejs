@@ -18,7 +18,7 @@
 					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
 						<i class="fas fa-blog"></i>
 					</div>
-					<div class="story-alt-label text-xxxs" style="width: unset !important;">Blogs</div>
+					<div class="story-alt-label text-xxxs" href="/colleges/<%= college_page.name %>/blogs" style="width: unset !important;">Blogs</div>
 				</div>
 				<div class="d-flex flex-column px-1 my-2">
 					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
@@ -253,10 +253,12 @@
 		<div class="mobileNone tabletNone">
 			<div class="d-flex flex-column mt-3 py-1 darkgrey">
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
-					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">
-						<i class="fas fa-blog"></i>
-					</div>
-					<div class="my-auto ml-3 lightgrey">News & Blogs</div>
+					<a class="d-flex flex-row nolink" href="/colleges/<%= college_page.name %>/blogs">
+						<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">
+							<i class="fas fa-blog"></i>
+						</div>
+						<div class="my-auto ml-3 lightgrey">News & Blogs</div>
+					</a>
 				</div>
 				<div class="d-flex flex-row px-3 my-2 college-infobtn">
 					<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">

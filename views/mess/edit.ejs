@@ -13,7 +13,7 @@
 						<label for="mess">Select Mess</label>
 						<select class="form-control editmess_select" id="mess" name="mess">
 							<% messNames.forEach(function(h){ %>
-								<option value=<%=h %> ><%= h %>
+								<option value=<%=h %> <% if(h == messName){ %> selected <% } %> ><%= h %>
 								</option>
 								<% }); %>
 						</select>
@@ -21,13 +21,13 @@
 					<div class="form-group mb-3">
 						<label for="day">Select Day</label>
 						<select class="form-control editmess_select" id="day" name="day">
-							<option value="Monday">Monday</option>
-							<option value="Tuesday">Tuesday</option>
-							<option value="Wednesday">Wednesday</option>
-							<option value="Thursday">Thursday</option>
-							<option value="Friday">Friday</option>
-							<option value="Saturday">Saturday</option>
-							<option value="Sunday">Sunday</option>
+							<option value="Monday" <% if(day == "Monday"){ %> selected <% } %> >Monday</option>
+							<option value="Tuesday"<% if(day == "Tuesday"){ %> selected <% } %> >Tuesday</option>
+							<option value="Wednesday" <% if(day == "Wednesday"){ %> selected <% } %> >Wednesday</option>
+							<option value="Thursday" <% if(day == "Thursday"){ %> selected <% } %>>Thursday</option>
+							<option value="Friday" <% if(day == "Friday"){ %> selected <% } %>>Friday</option>
+							<option value="Saturday" <% if(day == "Saturday"){ %> selected <% } %>>Saturday</option>
+							<option value="Sunday" <% if(day == "Sunday"){ %> selected <% } %>>Sunday</option>
 						</select>
 					</div>
 					<div class="form-group mb-3">

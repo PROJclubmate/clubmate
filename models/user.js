@@ -141,7 +141,38 @@ const userSchema = new Schema({
   lastOpenedChatListClub: {
     type: Schema.Types.ObjectId,
     ref: 'Club'
-  }
+  },
+
+  createdBlogs: [{
+    bucketId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+    blogIds: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Blog.blogs',
+    }],
+  }],
+  savedBlogs: [{
+    bucketId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+    blogIds: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Blog.blogs',
+    }],
+  }],
+  heartedBlogs: [{
+    bucketId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+    blogId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+  }],
 },
   {
     timestamps: true

@@ -1,0 +1,89 @@
+<% include ../partials/header %>  
+
+<style>
+	
+</style>
+
+<div class="container mx-auto">
+	<div class="row">
+		<div class="col-md-6 mx-auto my-4">
+			<div class="card drop-shadow1 rounded">
+				<h5 class="card-header">Add New <span class="contentType">Blog</span></h5>
+				<div class="card-body">
+					<form class="new-blog" action="/colleges/<%=college%>/blogs/new" method="POST" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="type">Type</label>
+							<div class="form-control isNewsRadio">
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="isNews" id="isNewsFalse"
+										value="false" checked>
+									<label class="form-check-label" for="isNewsFalse">Blog</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="isNews" id="isNewsTrue"
+										value="true">
+									<label class="form-check-label" for="isNewsTrue">News</label>
+								</div>
+							</div>							
+						</div>
+						<div class="form-group">
+							<label for="title"><span class="contentType">Blog</span> Title</label>
+							<input type="text" class="form-control" id="title" name="title" required>
+						</div>
+						<div class="form-group">
+							<label for="description"><span class="contentType">Blog</span> Description</label>
+							<textarea class="form-control" id="description" rows="2" name="description" required></textarea>
+						</div>
+						<div class="custom-file my-3 form-group imageDiv">
+							<input type="file" class="custom-file-input" id="image" name="image">
+							<label class="custom-file-label" for="image">Upload Image</label>
+						</div>
+						<div class="form-group">
+							<label for="url"><span class="contentType">Blog</span> Link</label>
+							<input type="text" class="form-control" id="url" name="url" required>
+						</div>
+						<div class="form-group readTimeDiv">
+							<label for="readTime">Read Time</label>
+							<input type="number" class="form-control" id="readTime" name="readTime">
+						</div>
+						<div class="text-center">
+							<button type="submit" class="btn btn-success">Add</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	let contentTypeValue = 'false';
+	const radioGroup = document.querySelector(".isNewsRadio");
+	const titleSpan = document.querySelectorAll(".contentType");
+	const image = document.querySelector(".imageDiv");
+	const read = document.querySelector(".readTimeDiv")
+	radioGroup.addEventListener('click', (e) => {
+		e.stopPropagation();
+		contentTypeValue = document.querySelector('input[name="isNews"]:checked').value;
+		if(contentTypeValue == 'true'){
+			for(let span of titleSpan){
+				span.innerText = "News"
+			}
+			image.classList.add('d-none');	
+			read.classList.add('d-none');
+		}
+		else {
+			for(let span of titleSpan){
+				span.innerText = "Blog"
+			}
+			if(image.classList.contains('d-none')){
+				image.classList.remove('d-none');
+			}
+			if(read.classList.contains('d-none')){
+				read.classList.remove('d-none');
+			}
+		}
+	})
+</script>
+
+<% include ../partials/footer %>
