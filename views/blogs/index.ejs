@@ -1,3 +1,47 @@
-<h2>View blogs</h2>
+<% include ../partials/header %>  
+<link rel="stylesheet" href="/css/blogs.css">
 
-<a href="/colleges/<%= college %>/blogs?bucket=<%= bucket %>">Load more</a>
+
+<div id="page_minheight_100">
+	<div class="my-2 d-flex justify-content-center">
+		<div>
+			<a href="/colleges/<%= college %>/blogs/add">
+				<button class="btn btn-sm btn-warning">Add New Blog</button>
+			</a>
+		</div>
+	</div>
+
+	<div class="valign p-1 mb-5 noborder blog-card mx-auto">
+		<div class="pt-1">
+			<h4>Freshly in</h4>
+		</div>
+		<div class="pt-1">
+			<a href="/colleges/<%= college %>/blogs/saved">My Bookmarks</a>
+		</div>
+	</div>
+	<div id="client-blogs"></div>
+	<div id="blogs-load-more-btn" class="text-center pt-2">
+		<button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= bucket %>" college_name="<%= college %>" route="index">
+			<span id="load-more-span"></span>Load
+		</button>
+	</div>
+</div>
+
+
+<% include ../partials/footer %>
+<script src="/js/blogs.js"></script>
+<script>
+	function getValidUrl(givenUrl){
+		let newUrl = decodeURI(givenUrl);
+		newUrl = newUrl.trim().replace(/\s/g, "");
+
+		if(/^(:\/\/)/.test(newUrl)){
+			return `http${newUrl}`;
+		}
+		if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
+			return `http://${newUrl}`;
+		}
+
+		return newUrl;
+	}
+</script>

@@ -154,10 +154,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   }
 }
 
-.post-head, .heartpost-head, .post-tail, .topic-break, .topic-column,
-.show-comments, .card.discovercard, .searchcard.border-light{
-  border-color: var(--color-dark-800) !important;
-}
 button.gb, .options-btn{
   background-color: var(--color-dark-700) !important;
   color: var(--color-white-300) !important;

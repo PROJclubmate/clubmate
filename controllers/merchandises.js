@@ -123,10 +123,6 @@ module.exports = {
   },
 
   async uploadNewMerchandise(req, res, next) {
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to add an item");
-      return res.redirect("/merchandise");
-    }
 
     const title = req.body.title;
     const description = req.body.description;
@@ -276,10 +272,6 @@ module.exports = {
   },
 
   async updateMerchandise(req, res, next) {
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to update the merchandise");
-      return res.redirect("back");
-    }
 
     const merchId = req.params.merch_id;
     const inStock = req.body.inStock;
@@ -323,10 +315,6 @@ module.exports = {
   },
 
   async deleteMerchandise(req, res, next) {
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to delete the item");
-      return res.redirect("/merchandise");
-    }
 
     const reqMerchId = req.params.merch_id;
     const reqCategory = req.params.type;

@@ -28,35 +28,36 @@ module.exports = {
     bucketIndex = parseInt(bucketIndex);
 
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
+      findOne({ name: req.params.college_name }).
       select('blogBuckets').
       lean().
       exec(function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-1)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blogs-1)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
+        // if request has no query, then render the page
+        // else if it has a valid bucket and blogIndex attributes: 
+        // then ajax request is sent from load more buttonm, hence send json response
 
         if (isNaN(bucketIndex)) {
-          return res.render('blogs/show', {college: req.user.userKeys.college, bucket: foundCollegePage.blogBuckets.length});
+          return res.render('blogs/index', {college: req.params.college_name, bucket: foundCollegePage.blogBuckets.length});
         }
 
+        // if no more buckets to fetch, return null, indicating frontend to hide the "loadmore" button
         if (!bucketIndex) {
           return res.json(null);
         }
 
-        if (bucketIndex < 0) {
-          req.flash('error', 'Invalid bucket');
+        // sanity checks
+        if (bucketIndex < 0 || bucketIndex > foundCollegePage.blogBuckets.length) {
           return res.redirect('back');
         }
 
-        if (bucketIndex > foundCollegePage.blogBuckets.length) {
-          req.flash('error', 'Invalid bucket');
-          return res.redirect('back');
-        }
+        // decrease bucketIndex value of "loadmore" button
         bucketIndex--;
 
         Blog.
@@ -65,7 +66,7 @@ module.exports = {
         exec(function (err, foundBlog) {
 
           if (err || !foundBlog) {
-            logger.error(req.user._id + ' : (blog-2)foundBlog err => ' + err);
+            logger.error(req.user._id + ' : (blogs-2)foundBlog err => ' + err);
             req.flash('error', 'Something went wrong :(');
             return res.redirect('back');
           }
@@ -76,22 +77,26 @@ module.exports = {
           exec(async function (err, foundUser) {
 
             if (err || !foundUser) {
-              logger.error(req.user._id + ' : (blog-3)foundUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-3)foundUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
 
+            // set of all authorIds for the blogs to be fetched
             const authorIds = [];
             for (let i=0; i<foundBlog.blogs.length; i++) {
               blog = foundBlog.blogs[i];
-              if (blog.author) {
+              if (!blog.isNews) {
+                //  check if authorId already loaded
                 idx = authorIds.findIndex(elem => elem.equals(blog.author.id));
                 if (idx === -1) {
+                  // if not, then load it
                   authorIds.push(blog.author.id);
                 }
               }
             }
 
+            // find all authors with id in authorIds
             foundAuthor = await User.find().where('_id').in(authorIds).select('profilePic profilePicId userKeys').lean();
 
             let bucketId = foundBlog._id;
@@ -100,6 +105,7 @@ module.exports = {
 
               blogId = foundBlog.blogs[i]._id;
 
+              // check if user doesn't have heartedBlogs or savedBlogs attribute (added for backwards compatibility)
               let changesMade = false;
               if (!foundUser.heartedBlogs) {
                 changesMade = true;
@@ -110,6 +116,7 @@ module.exports = {
                 foundUser.savedBlogs = [];
               }
 
+              // check if current blog is hearted by user
               heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(bucketId) && elem.blogId.equals(blogId)) );
               if (heartedBlogIndex === -1) {
                 foundBlog.blogs[i].hearted = false;
@@ -117,6 +124,7 @@ module.exports = {
                 foundBlog.blogs[i].hearted = true;
               }
 
+              // check if current blog is hearted by user
               savedBucketIndex = foundUser.savedBlogs.findIndex(elem => (elem.bucketId.equals(bucketId)));
               if (savedBucketIndex === -1) {
                 foundBlog.blogs[i].saved = false;
@@ -129,8 +137,9 @@ module.exports = {
                 }
               }
 
+              // populate profile pics for blog authors
               author = foundBlog.blogs[i].author;
-              if (author) {
+              if (!foundBlog.blogs[i].isNews) {
                 userIndex = foundAuthor.findIndex(elem => elem._id.equals(author.id));
                 user = foundAuthor[userIndex];
 
@@ -144,12 +153,13 @@ module.exports = {
 
               }
 
+              // add bucketId as attribute to blog (so blog can be uniquely identified by blog)
               foundBlog.blogs[i].bucketId = bucketId;
 
               if (changesMade) {
                 foundUser.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-4)saveUser err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-4)saveUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -158,7 +168,13 @@ module.exports = {
 
             }
 
-            return res.json({ blogs: foundBlog.blogs, bucket: bucketIndex, college: req.user.userKeys.college })
+            // check if user is college admin
+            let isCollegeLevelAdmin = false;
+            if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+              isCollegeLevelAdmin = true;
+            }
+
+            return res.json({ blogs: foundBlog.blogs, bucket: bucketIndex, college: req.params.college_name, isCollegeLevelAdmin })
 
           });
 
@@ -168,9 +184,15 @@ module.exports = {
 
   },
 
-  async blogsCreatePage(req, res, next) {
+  async blogsCreateBlogPage(req, res, next) {
 
-    res.render('blogs/add_blog', {college: req.user.userKeys.college});
+    res.render('blogs/add_blog', {college: req.params.college_name});
+
+  },
+
+  async blogsCreateNewsPage(req, res, next) {
+
+    res.render('blogs/add_news', {college: req.params.college_name});
 
   },
 
@@ -180,11 +202,11 @@ module.exports = {
     const description = req.body.description;
     const url = req.body.url;
     const urlName = req.body.urlName;
-    const content = req.body.content ? req.body.content : null;
     const isNews = (req.body.isNews === 'false') ? false : true;
     const readTime = isNews ? 0 : parseInt(req.body.readTime);
-    const author = isNews ? null : {id: req.user._id, name: req.user.fullName};
+    const author = {id: req.user._id, name: req.user.fullName};
 
+    // sanity checks
     if (isNaN(readTime)) {
       req.flash('error', 'Invalid read time');
       return res.redirect('back');
@@ -213,118 +235,71 @@ module.exports = {
     }
 
     if (!isNews && !req.file) {
-      req.flash("error", "Please upload atleast one image");
+      req.flash("error", "Please upload an image as a visual represantation of the subject");
       return res.redirect("back");
     }
 
     let image, imageId;
 
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
-      select('unapprovedBlogBucket blogBuckets').
+      findOne({ name: req.params.college_name }).
+      select('name unapprovedBlogBucket blogBuckets').
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-5)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blogs-5)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
-        try{
-          if(process.env.ENVIRONMENT === 'dev'){
-            var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.blogImages_400_obj);
-            image = result.secure_url;
-            imageId = result.public_id;
-          } else if (process.env.ENVIRONMENT === 'prod'){
-            var result = await s3Config.uploadFile(req.file, 'blogImages/', 400);
-            s3Config.removeTmpUpload(req.file.path);
-            image = result.Location;
-            imageId = result.Key;
+        blog = {
+          isNews: isNews,
+          title: title,
+          description: description,
+          image: image,
+          imageId: imageId,
+          url: url,
+          urlName: urlName,
+          readTime: readTime,
+          author: author,
+        };
+
+        // upload image if blog
+        if(!isNews){
+          try{
+            if(process.env.ENVIRONMENT === 'dev'){
+              var result = await clConfig.cloudinary.v2.uploader.upload(req.file.path, clConfig.blogImages_400_obj);
+              image = result.secure_url;
+              imageId = result.public_id;
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              var result = await s3Config.uploadFile(req.file, 'blogImages/', 400);
+              s3Config.removeTmpUpload(req.file.path);
+              image = result.Location;
+              imageId = result.Key;
+            }
+          } catch(err){
+            logger.error(req.user._id+' : (blogs-6)imageUpload err => '+err);
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
           }
-        } catch(err){
-          logger.error(req.user._id+' : (posts-17)imageUpload err => '+err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
         }
 
-        if (!foundCollegePage.unapprovedBlogBucket) {
+        // If BLOG put it in unapprovedBlogBucket
+        if(!isNews){
 
-          Blog.
-            create({
-              college: req.user.userKeys.college,
-              blogs: [{
-                title: title,
-                description: description,
-                image: image,
-                imageId: imageId,
-                url: url,
-                urlName: urlName,
-                content: content,
-                readTime: readTime,
-                author: author,
-              }],
-            }, function (err, createdBlog) {
+          // if collegePage doesn't have an unapproved Blog bucket created
+          if (!foundCollegePage.unapprovedBlogBucket) {
 
-              if (err || !createdBlog) {
+            // create a new bucket
+            Blog.
+              create({
+                college: req.params.college_name,
+                blogs: [blog],
+              }, function (err, createdBlog) {
 
-                try {
-                  if(process.env.ENVIRONMENT === 'dev'){
-                    clConfig.cloudinary.v2.uploader.destroy(imageId);
-                  } else if (process.env.ENVIRONMENT === 'prod'){
-                    s3Config.deleteFile(imageId);
-                  }
-                } catch (err) {
-                  logger.error(req.user._id + ' : (blog-6)imageDestroy err => ' + err);
-                }
+                if (err || !createdBlog) {
 
-                logger.error(req.user._id + ' : (blog-7)createdBlog err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-
-              }
-
-              foundCollegePage.unapprovedBlogBucket = createdBlog._id;
-
-              foundCollegePage.save(function (err) {
-                if (err) {
-                  logger.error(req.user._id + ' : (blog-8)saveCollegePage err => ' + err);
-                  req.flash('error', 'Something went wrong :(');
-                  return res.redirect('back');
-                }
-              });
-
-              req.flash('success', 'Blog created successfully');
-              res.redirect('back');
-
-            });
-
-        } else {
-
-          Blog.
-            findById(foundCollegePage.unapprovedBlogBucket).
-            exec(function (err, foundBlog) {
-
-              if (err || !foundBlog) {
-                logger.error(req.user._id + ' : (blog-9)foundBlog err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              }
-
-              foundBlog.blogs.push({
-                title: title,
-                description: description,
-                image: image,
-                imageId: imageId,
-                url: url,
-                urlName: urlName,
-                content: content,
-                readTime: readTime,
-                author: author,
-              });
-
-              foundBlog.save(function (err) {
-                if (err) {
-
+                  // if error, destroy the image uploaded previously
                   try {
                     if(process.env.ENVIRONMENT === 'dev'){
                       clConfig.cloudinary.v2.uploader.destroy(imageId);
@@ -332,21 +307,180 @@ module.exports = {
                       s3Config.deleteFile(imageId);
                     }
                   } catch (err) {
-                    logger.error(req.user._id + ' : (blog-10)imageDestroy err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-7)imageDestroy err => ' + err);
                   }
 
-                  logger.error(req.user._id + ' : (blog-11)saveBlog err => ' + err);
+                  logger.error(req.user._id + ' : (blogs-8)createdBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
-                  
+
                 }
 
+                // mark the newly created bucket as unapproved
+                foundCollegePage.unapprovedBlogBucket = createdBlog._id;
+
+                // save the new changes
+                foundCollegePage.save(function (err) {
+                  if (err) {
+                    logger.error(req.user._id + ' : (blogs-9)saveCollegePage err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
+                });
+
                 req.flash('success', 'Blog created successfully');
+                res.redirect('back');
+
+              });
+
+          } else {
+            // else if unapproved blog bucket already exists
+
+            Blog.
+              findById(foundCollegePage.unapprovedBlogBucket).
+              exec(function (err, foundBlog) {
+
+                if (err || !foundBlog) {
+                  logger.error(req.user._id + ' : (blogs-10)foundBlog err => ' + err);
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                }
+
+                // push the new blog to the unapproved blog bucket
+                foundBlog.blogs.push(blog);
+
+                foundBlog.save(function (err) {
+                  if (err) {
+
+                    // if error, destroy the image uploaded previously
+                    try {
+                      if(process.env.ENVIRONMENT === 'dev'){
+                        clConfig.cloudinary.v2.uploader.destroy(imageId);
+                      } else if (process.env.ENVIRONMENT === 'prod'){
+                        s3Config.deleteFile(imageId);
+                      }
+                    } catch (err) {
+                      logger.error(req.user._id + ' : (blogs-11)imageDestroy err => ' + err);
+                    }
+
+                    logger.error(req.user._id + ' : (blogs-12)saveBlog err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                    
+                  }
+
+                  req.flash('success', 'Blog created successfully');
+                  return res.redirect('back');
+                });
+
+              });
+
+          }
+        
+        } else {
+          // If NEWS directly put in approvedBlogBucket i.e. inside blogBuckets
+
+          // TODO: check if admin
+
+          // if there are zero blog buckets
+          if (foundCollegePage.blogBuckets.length === 0) {
+
+            // create a new blog bucket
+            Blog.create({
+              college: req.params.college_name,
+              blogs: [blog],
+            }, async function (err, createdBlog) {
+
+              if (err || !createdBlog) {
+                logger.error(req.user._id + ' : (blogs-13)createdBlog err => ' + err);
+                req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
+              }
+
+              // add the id of blog bucket to the blogBuckets list in college page
+              insertionBucketId = createdBlog._id;
+              foundCollegePage.blogBuckets.push(createdBlog._id);
+
+              // save the changes
+              await foundCollegePage.save(function (err) {
+                if (err) {
+                  logger.error(req.user._id + ' : (blogs-14)saveCollegePage err => ' + err);
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                }
               });
 
             });
 
+          } else {
+            // else if blog buckets exist on college page
+
+            Blog.
+              findById(last(foundCollegePage.blogBuckets)).
+              exec(async function (err, foundLastBlog) {
+
+                if (err || !foundLastBlog) {
+                  logger.error(req.user._id + ' : (blogs-15)foundBlog err => ' + err);
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                }
+
+                // check if the blog bucket is full
+                if (foundLastBlog.blogs.length >= 20) {
+
+                  // if full, then create a new blog bucket
+                  Blog.
+                    create({
+                      college: req.params.college_name,
+                      blogs: [blog],
+                    }, async function (err, createdBlog) {
+
+                      if (err || !createdBlog) {
+                        logger.error(req.user._id + ' : (blogs-16)createdBlog err => ' + err);
+                        req.flash('error', 'Something went wrong :(');
+                        return res.redirect('back');
+                      }
+
+                      // and add the new bucket to the blogBuckets list in college page
+                      insertionBucketId = createdBlog._id;
+                      foundCollegePage.blogBuckets.push(createdBlog._id);
+
+                      // save the changes
+                      await foundCollegePage.save(function (err) {
+                        if (err) {
+                          logger.error(req.user._id + ' : (blogs-17)saveCollegePage err => ' + err);
+                          req.flash('error', 'Something went wrong :(');
+                          return res.redirect('back');
+                        }
+                      });
+
+                    });
+
+                } else {
+                  // else if bucket exists and is not full
+
+                  // add blog to latest bucket in blogBuckets list in college
+                  insertionBucketId = foundLastBlog._id;
+                  foundLastBlog.blogs.push(blog);
+                  
+                  // save changes
+                  await foundLastBlog.save(function (err) {
+                    if (err) {
+                      logger.error(req.user._id + ' : (blogs-18)saveBlog err => ' + err);
+                      req.flash('error', 'Something went wrong :(');
+                      return res.redirect('back');
+                    }
+                  });
+
+                }
+
+              });
+
+              req.flash('success', 'News created successfully');
+              res.redirect('/colleges/'+ foundCollegePage.name +'/blogs')
+
+          }
+          
         }
 
       });
@@ -355,25 +489,22 @@ module.exports = {
 
   async blogsDelete(req, res, next) {
 
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to delete a blog");
-      return res.redirect("/");
-    }
-
-    const bucketId = req.params.bucket;
-    const blogId = req.params.blog;
+    const bucketId = req.params.bucket_id;
+    const blogId = req.params.blog_id;
     let blogAuthor = null;
+    let isNews = false;
 
     Blog.
       findById(bucketId).
       exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
-          logger.error(req.user._id + ' : (blog-12)foundBlog err => ' + err);
+          logger.error(req.user._id + ' : (blogs-19)foundBlog err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
+        // locate index of blog in found blog bucket
         const blogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(blogId));
         if (blogIndex === -1) {
 
@@ -381,9 +512,11 @@ module.exports = {
           res.redirect('back');
 
         } else if (foundBlog.blogs.length <= 1) {
+          // if bucket has only 1 blog which is about to be deleted, then:
 
           blogAuthor = foundBlog.blogs[0].author;
 
+          // delete the image of blog
           try {
             if(process.env.ENVIRONMENT === 'dev'){
               clConfig.cloudinary.v2.uploader.destroy(foundBlog.blogs[0].imageId);
@@ -391,20 +524,22 @@ module.exports = {
               s3Config.deleteFile(foundBlog.blogs[0].imageId);
             }
           } catch (err) {
-            logger.error(req.user._id + ' : (blog-13)imageDestroy err => ' + err);
+            logger.error(req.user._id + ' : (blogs-20)imageDestroy err => ' + err);
           }
 
+          // delete the blog bucket
           await Blog.findByIdAndDelete(bucketId, async function (err) {
 
             if (err) {
-              logger.error(req.user._id + ' : (blog-14)deleteBlog err => ' + err);
+              logger.error(req.user._id + ' : (blogs-21)deleteBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
 
-            await CollegePage.findOneAndUpdate({ name: req.user.userKeys.college }, { $pull: { blogBuckets: bucketId } }).exec(function (err) {
+            // remove id of deleted blog bucket from blogBuckets list of blogs
+            await CollegePage.findOneAndUpdate({ name: req.params.college_name }, { $pull: { blogBuckets: bucketId } }).exec(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-15)saveCollegePage err => ' + err);
+                logger.error(req.user._id + ' : (blogs-22)saveCollegePage err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -413,11 +548,18 @@ module.exports = {
           });
 
         } else {
+          // else if current blog bucket has other blogs: 
+
 
           blogAuthor = foundBlog.blogs[blogIndex].author;
+          if (foundBlog.blogs[blogIndex].isNews) {
+            isNews = true;
+          }
 
+          // remove the blog to be deleted from the current blog bucket
           foundBlog.blogs.splice(blogIndex, 1);
 
+          // destroy the image
           try {
             if(process.env.ENVIRONMENT === 'dev'){
               clConfig.cloudinary.v2.uploader.destroy(foundBlog.blogs[blogIndex].imageId);
@@ -425,12 +567,13 @@ module.exports = {
               s3Config.deleteFile(foundBlog.blogs[blogIndex].imageId);
             }
           } catch (err) {
-            logger.error(req.user._id + ' : (blog-16)imageDestroy err => ' + err);
+            logger.error(req.user._id + ' : (blogs-23)imageDestroy err => ' + err);
           }
 
+          // save the changes
           foundBlog.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-17)saveBlog err => ' + err);
+              logger.error(req.user._id + ' : (blogs-24)saveBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -438,19 +581,22 @@ module.exports = {
 
         }
 
-        if (blogAuthor) {
+        // if is a Blog
+        if (!isNews) {
 
+          // find blog author
           User.
             findById(blogAuthor.id).
             select('createdBlogs').
             exec(function (err, foundUser) {
 
               if (err || !foundUser) {
-                logger.error(req.user._id + ' : (blog-18)foundUser err => ' + err);
+                logger.error(req.user._id + ' : (blogs-25)foundUser err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
 
+              // remove the blog id from list of created blogs for user
               const bucketIndex = foundUser.createdBlogs.findIndex(elem => elem.bucketId.equals(bucketId));
 
               if (bucketIndex !== -1) {
@@ -469,9 +615,10 @@ module.exports = {
 
                 }
 
+                // save the changes
                 foundUser.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-19)saveUser err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-26)saveUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -493,8 +640,8 @@ module.exports = {
 
   async blogsSave(req, res, next) {
 
-    const blogId = req.params.blog;
-    const bucketId = req.params.bucket;
+    const blogId = req.params.blog_id;
+    const bucketId = req.params.bucket_id;
 
     let saved = true;
     User.
@@ -503,17 +650,18 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-20)foundUser err => ' + err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          logger.error(req.user._id + ' : (blogs-27)foundUser err => ' + err);
+          return res.sendStatus(500);
         }
 
+        // check if blog is saved: if so, unsave it
         const savedBucketIndex = foundUser.savedBlogs.findIndex(elem => elem.bucketId.equals(bucketId));
 
         if (savedBucketIndex !== -1) {
           const savedBlogIndex = foundUser.savedBlogs[savedBucketIndex].blogIds.findIndex(elem => elem.equals(blogId));
           if (savedBlogIndex !== -1) {
             foundUser.savedBlogs[savedBucketIndex].blogIds.splice(savedBlogIndex, 1);
+            // mark blog as unsaved (to be sent to frontend)
             saved = false;
           }
           if (foundUser.savedBlogs[savedBucketIndex].blogIds.length === 0) {
@@ -521,6 +669,7 @@ module.exports = {
           }
         }
 
+        // if blog has not been marked unsaved previously, then it needs to saved
         if (saved) {
           if (savedBucketIndex === -1) {
             foundUser.savedBlogs.push({
@@ -535,19 +684,14 @@ module.exports = {
           }
         }
 
+        // save changes
         await foundUser.save(function (err) {
           if (err) {
-            logger.error(req.user._id + ' : (blog-21)saveUser err => ' + err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
+            logger.error(req.user._id + ' : (blogs-28)saveUser err => ' + err);
+            return res.sendStatus(500);
           }
         });
-
-        if (saved) {
-          req.flash('success', 'Blog saved successfully');
-        } else {
-          req.flash('success', 'Blog unsaved successfully');
-        }
+        
         return res.json({ saved: saved });
 
       });
@@ -556,7 +700,7 @@ module.exports = {
 
   async blogsSavedPage(req, res, next) {
 
-    // pointers to last previously loaded bucket and corresponding blog
+    // pointers to last previously loaded blog and the bucket to which it belongs
     const oldBucketIndex = parseInt(req.query.bucket);
     const oldBlogIndex = parseInt(req.query.index);
 
@@ -566,7 +710,7 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-22)foundUser err => ' + err);
+          logger.error(req.user._id + ' : (blogs-29)foundUser err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -584,7 +728,7 @@ module.exports = {
         if (changesMade) {
           foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-23)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-30)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -593,7 +737,7 @@ module.exports = {
 
         // if query is empty, that means only page renedering has to be done and no bucket needs to fetched
         if (isNaN(oldBucketIndex) || isNaN(oldBlogIndex)) {
-          return res.render('blogs/saved', {college: req.user.userKeys.college, bucket: foundUser.savedBlogs.length, index: 0});
+          return res.render('blogs/saved', {college: req.params.college_name, bucket: foundUser.savedBlogs.length, index: 0});
         }
 
         // if all blogs have been loaded or user has no saved blogs, return null
@@ -619,9 +763,13 @@ module.exports = {
         let newBlogIndex = oldBlogIndex;
         let count = 0;
 
+        // create a copy of foundUser
         const foundUserCopy = JSON.parse(JSON.stringify(foundUser));
 
-        // get pointers to bucket and blog such that it is 20 blogs behind the previously loaded bucket and blog
+        // update pointers to bucket and blog such that 
+        // they are 20 blogs behind (since we are traversing in reverse)
+        // the previous, already loaded blog pointers
+
         while (count !== blogsToLoadCount) {
 
           if (newBlogIndex >= blogsToLoadCount - count) {
@@ -649,7 +797,6 @@ module.exports = {
 
         // populate those new 20 blogs and store them into array 'blogs'
         // update for any bucket or blog entry which has been deleted but still exists in savedBlogs
-        // also retrieve heart count for all blogs
         const blogs = [];
 
         changesMade = false;
@@ -668,6 +815,7 @@ module.exports = {
 
             let blogIndex = foundUser.savedBlogs[bucketIndex].blogIds.findIndex(elem => elem.equals(foundUser.savedBlogs[i].blogIds[j]));
             let foundBlogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(foundUser.savedBlogs[i].blogIds[j]));
+            // if blog has been deleted: remove it from list of saved blogs for user
             if (foundBlogIndex === -1) {
               changesMade = true
               foundUser.savedBlogs[bucketIndex].blogIds.splice(blogIndex, 1);
@@ -675,6 +823,7 @@ module.exports = {
               continue;
             }
 
+            // add hearted? attribute to fetched blogs
             heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(foundBlog._id) && elem.blogId.equals(foundBlog.blogs[foundBlogIndex]._id)) );
             if (heartedBlogIndex === -1) {
               foundBlog.blogs[foundBlogIndex].hearted = false;
@@ -682,16 +831,21 @@ module.exports = {
               foundBlog.blogs[foundBlogIndex].hearted = true;
             }
 
+            // mark all blogs saved? attribute as true
             foundBlog.blogs[foundBlogIndex].saved = true;
+
+            // add bucketId attribute to blogs so they can be uniquely identified
             foundBlog.blogs[foundBlogIndex].bucketId = foundBlog._id;
+
             blogs.push(foundBlog.blogs[foundBlogIndex]);
           }
         }
 
+        // load author ids for all BLOGs
         const authorIds = [];
         for (let i=0; i<blogs.length; i++) {
           blog = blogs[i];
-          if (blog.author) {
+          if (!blog.isNews) {
             idx = authorIds.findIndex(elem => elem.equals(blog.author.id));
             if (idx === -1) {
               authorIds.push(blog.author.id);
@@ -699,13 +853,14 @@ module.exports = {
           }
         }
 
+        // populate profile pics and sex attribute for all BLOGs authors
         foundAuthor = await User.find().where('_id').in(authorIds).select('profilePic profilePicId userKeys').lean();
 
         for (let i=0; i<blogs.length; i++) {
 
           blog = blogs[i];
 
-          if (blog.author) {
+          if (!blog.isNews) {
 
             userIndex = foundAuthor.findIndex(elem => elem._id.equals(blog.author.id));
             user = foundAuthor[userIndex];
@@ -721,17 +876,18 @@ module.exports = {
           }
         }
 
+        // save changes if made
         if (changesMade) {
           await foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-24)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-31)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           })
         }
-
-        res.json({ blogs: blogs, index: newBlogIndex, bucket: newBucketIndex });
+        
+        res.json({ blogs: blogs, index: newBlogIndex, bucket: newBucketIndex, college: req.params.college_name, isCollegeLevelAdmin: false });
 
       });
 
@@ -739,18 +895,18 @@ module.exports = {
 
   async blogsHeart(req, res, next) {
 
-    const blogId = req.params.blog;
-    const bucketId = req.params.bucket;
+    const blogId = req.params.blog_id;
+    const bucketId = req.params.bucket_id;
 
     let hearted = false;
+    let heartCount = 0;
     Blog
       .findById(bucketId)
       .exec(async function (err, foundBlog) {
 
         if (err || !foundBlog) {
-          logger.error(req.user._id + ' : (blog-25)foundBlog err => ' + err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
+          logger.error(req.user._id + ' : (blogs-32)foundBlog err => ' + err);
+          return res.sendStatus(500);
         }
 
         User.
@@ -759,39 +915,43 @@ module.exports = {
           exec(async function (err, foundUser) {
 
             if (err || !foundUser) {
-              logger.error(req.user._id + ' : (blog-26)foundUser err => ' + err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
+              logger.error(req.user._id + ' : (blogs-33)foundUser err => ' + err);
+              return res.sendStatus(500);
             }
+
+            // if blog is hearted, unheart it
+            // if blog is unhearted, heart it
+            // modify the heart count respectively
 
             const heartedBlogIndex = foundUser.heartedBlogs.findIndex(elem => elem.bucketId.equals(bucketId) && elem.blogId.equals(blogId));
             if (heartedBlogIndex !== -1) {
               foundUser.heartedBlogs.splice(heartedBlogIndex, 1);
               foundBlog.blogs.id(blogId).heartCount--;
               hearted = false;
+              heartCount = foundBlog.blogs.id(blogId).heartCount;
             } else {
               foundUser.heartedBlogs.push({ bucketId: bucketId, blogId: blogId });
               foundBlog.blogs.id(blogId).heartCount++;
               hearted = true;
+              heartCount = foundBlog.blogs.id(blogId).heartCount;
             }
 
+            // save changes
             await foundUser.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-27)saveUser err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
+                logger.error(req.user._id + ' : (blogs-34)saveUser err => ' + err);
+                return res.sendStatus(500);
               }
             });
 
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-28)saveBlog err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
+                logger.error(req.user._id + ' : (blogs-35)saveBlog err => ' + err);
+                return res.sendStatus(500);
               }
             });
 
-            return res.json({hearted: hearted});
+            return res.json({hearted, heartCount});
 
           });
 
@@ -803,7 +963,7 @@ module.exports = {
 
     const oldBucketIndex = parseInt(req.query.bucket);
     const oldBlogIndex = parseInt(req.query.index);
-    const userId = req.params.userId;
+    const userId = req.params.user_id;
 
     User.
       findById(userId).
@@ -811,7 +971,7 @@ module.exports = {
       exec(async function (err, foundUser) {
 
         if (err || !foundUser) {
-          logger.error(req.user._id + ' : (blog-29)foundUser err => ' + err);
+          logger.error(req.user._id + ' : (blogs-36)foundUser err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -825,7 +985,7 @@ module.exports = {
         if (changesMade) {
           foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-30)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-37)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -834,7 +994,7 @@ module.exports = {
 
         // if query is empty, that means only page renedering has to be done and no bucket needs to fetched
         if (isNaN(oldBucketIndex) || isNaN(oldBlogIndex)) {
-          return res.render('blogs/user', {college: req.user.userKeys.college, bucket: foundUser.createdBlogs.length, index: 0, userId: userId});
+          return res.render('blogs/user', {college: req.params.college_name, bucket: foundUser.createdBlogs.length, index: 0, userId: userId});
         }
 
         // if all blogs have been loaded or user has no saved blogs, return null
@@ -862,7 +1022,9 @@ module.exports = {
 
         const foundUserCopy = JSON.parse(JSON.stringify(foundUser));
 
-        // get pointers to bucket and blog such that it is 20 blogs behind the previously loaded bucket and blog
+        // update pointers to bucket and blog such that 
+        // they are 20 blogs behind (since we are traversing in reverse)
+        // the previous, already loaded blog pointers
         while (count !== blogsToLoadCount) {
 
           if (newBlogIndex >= blogsToLoadCount - count) {
@@ -890,7 +1052,6 @@ module.exports = {
 
         // populate those new 20 blogs and store them into array 'blogs'
         // update for any bucket or blog entry which has been deleted but still exists in savedBlogs
-        // also retrieve heart count for all blogs
         const blogs = [];
 
         const foundCurrUser = await User.findById(req.user._id).select('savedBlogs heartedBlogs');
@@ -906,7 +1067,7 @@ module.exports = {
         if (changesMade) {
           foundCurrUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-31)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-38)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
@@ -918,6 +1079,7 @@ module.exports = {
 
           let foundBlog = await Blog.findById(foundUser.createdBlogs[i].bucketId).lean();
           let bucketIndex = foundUser.createdBlogs.findIndex(elem=> elem.bucketId.equals(foundUserCopy.createdBlogs[i].bucketId));
+          // if blog has been deleted: remove it from list of saved blogs for user
           if (!foundBlog) {
             changesMade = true;
             foundUser.createdBlogs.splice(bucketIndex, 1);
@@ -936,6 +1098,7 @@ module.exports = {
               continue;
             }
 
+            // add hearted? attribute to fetched blogs
             heartedBlogIndex = foundCurrUser.heartedBlogs.findIndex(elem => (elem.bucketId.equals(foundBlog._id) && elem.blogId.equals(foundBlog.blogs[foundBlogIndex]._id)) );
             if (heartedBlogIndex === -1) {
               foundBlog.blogs[foundBlogIndex].hearted = false;
@@ -943,6 +1106,7 @@ module.exports = {
               foundBlog.blogs[foundBlogIndex].hearted = true;
             }
 
+            // add saved? attribute to fetched blogs
             savedBlogIndex = foundCurrUser.savedBlogs.findIndex(function (elem) {
 
               if (elem.bucketId.equals(foundBlog._id)) {
@@ -966,16 +1130,18 @@ module.exports = {
               foundBlog.blogs[foundBlogIndex].saved = true;
             }
 
+            // add bucketId attribute to blogs so they can be uniquely identified
             foundBlog.blogs[foundBlogIndex].bucketId = foundBlog._id;
 
             blogs.push(foundBlog.blogs[foundBlogIndex]);
           }
         }
 
+        // load author ids of all BLOGs
         const authorIds = [];
         for (let i=0; i<blogs.length; i++) {
           blog = blogs[i];
-          if (blog.author) {
+          if (!blog.isNews) {
             idx = authorIds.findIndex(elem => elem.equals(blog.author.id));
             if (idx === -1) {
               authorIds.push(blog.author.id);
@@ -983,13 +1149,14 @@ module.exports = {
           }
         }
 
+        // populate the profile pics and sex attribute for all such BLOGs author
         foundAuthor = await User.find().where('_id').in(authorIds).select('profilePic profilePicId userKeys').lean();
 
         for (let i=0; i<blogs.length; i++) {
 
           blog = blogs[i];
 
-          if (blog.author) {
+          if (!blog.isNews) {
 
             userIndex = foundAuthor.findIndex(elem => elem._id.equals(blog.author.id));
             user = foundAuthor[userIndex];
@@ -1005,17 +1172,18 @@ module.exports = {
           }
         }
 
+        // save changes
         if (changesMade) {
           await foundUser.save(function (err) {
             if (err) {
-              logger.error(req.user._id + ' : (blog-32)saveUser err => ' + err);
+              logger.error(req.user._id + ' : (blogs-39)saveUser err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
           })
         }
 
-        res.json({ blogs: blogs, index: newBlogIndex, bucket: newBucketIndex });
+        res.json({ blogs: blogs, index: newBlogIndex, bucket: newBucketIndex, college: req.params.college_name, isCollegeLevelAdmin: false });
 
       });
 
@@ -1023,32 +1191,29 @@ module.exports = {
 
   async blogsPublishPage(req, res, next) {
 
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to approve blogs");
-      return res.redirect("/");
-    }
-
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
+      findOne({ name: req.params.college_name }).
       select('unapprovedBlogBucket').
       populate('unapprovedBlogBucket').
       lean().
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-33)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blogs-40)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
 
+        // if college page doesn't have an unapproved blog bucket: create it
         if (!foundCollegePage.unapprovedBlogBucket) {
           foundCollegePage.unapprovedBlogBucket = { blogs: [] };
         }
 
+        // load all ids of BLOG authors
         const authorIds = [];
         for (let i=0; i<foundCollegePage.unapprovedBlogBucket.blogs.length; i++) {
           blog = foundCollegePage.unapprovedBlogBucket.blogs[i];
-          if (blog.author) {
+          if (!blog.isNews) {
             idx = authorIds.findIndex(elem => elem.equals(blog.author.id));
             if (idx === -1) {
               authorIds.push(blog.author.id);
@@ -1056,11 +1221,12 @@ module.exports = {
           }
         }
 
+        // populate profile pics and sex attribute for such BLOG authors
         foundUser = await User.find().where('_id').in(authorIds).select('profilePic profilePicId userKeys').lean();
 
         for (let i=0; i<foundCollegePage.unapprovedBlogBucket.blogs.length; i++) {
           blog = foundCollegePage.unapprovedBlogBucket.blogs[i];
-          if (blog.author) {
+          if (!blog.isNews) {
 
             userIndex = foundUser.findIndex(elem => elem._id.equals(blog.author.id));
             user = foundUser[userIndex];
@@ -1075,8 +1241,7 @@ module.exports = {
 
           }
         }
-
-        res.render('blogs/publish_blog', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.user.userKeys.college });
+        res.render('blogs/publish', { blogs: foundCollegePage.unapprovedBlogBucket.blogs, college: req.params.college_name });
 
       });
 
@@ -1084,20 +1249,15 @@ module.exports = {
 
   async blogsApprove(req, res, next) {
 
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to approve blogs");
-      return res.redirect("/");
-    }
-
     const blogId = req.body.blogId;
 
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
+      findOne({ name: req.params.college_name }).
       select('blogBuckets unapprovedBlogBucket').
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-34)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blogs-41)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1107,40 +1267,45 @@ module.exports = {
           exec(async function (err, foundBlog) {
 
             if (err || !foundBlog) {
-              logger.error(req.user._id + ' : (blog-35)foundBlog err => ' + err);
+              logger.error(req.user._id + ' : (blogs-42)foundBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
 
-            const blogIds = foundBlog.blogs.map(elem => elem._id);
-            const blogIndex = blogIds.indexOf(blogId);
+            // sanity checks
+            const blogIndex = foundBlog.blogs.findIndex(elem => elem._id.equals(blogId));
             if (blogIndex === -1) {
               req.flash('error', 'Blog does not exist');
               return res.redirect('back');
             }
 
+            // remove blog from unapproved blog bucket
             const [blog] = foundBlog.blogs.splice(blogIndex, 1);
             let insertionBucketId;
 
+            // if college doesn't have any blog buckets:
             if (foundCollegePage.blogBuckets.length === 0) {
 
+              // create a new bucket with blog to be added
               Blog.create({
-                college: req.user.userKeys.college,
+                college: req.params.college_name,
                 blogs: [blog],
               }, async function (err, createdBlog) {
 
                 if (err || !createdBlog) {
-                  logger.error(req.user._id + ' : (blog-36)createdBlog err => ' + err);
+                  logger.error(req.user._id + ' : (blogs-43)createdBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 }
 
+                // add id of blog bucket to blogBuckets list of college page
                 insertionBucketId = createdBlog._id;
                 foundCollegePage.blogBuckets.push(createdBlog._id);
 
+                // save changes
                 await foundCollegePage.save(function (err) {
                   if (err) {
-                    logger.error(req.user._id + ' : (blog-37)saveCollegePage err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-44)saveCollegePage err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
@@ -1149,37 +1314,42 @@ module.exports = {
               });
 
             } else {
+              // else if blog buckets exist for college
 
               Blog.
                 findById(last(foundCollegePage.blogBuckets)).
                 exec(async function (err, foundLastBlog) {
 
                   if (err || !foundLastBlog) {
-                    logger.error(req.user._id + ' : (blog-38)foundBlog err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-45)foundBlog err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
 
+                  // check if latest blog bucket is filled, if so then:
                   if (foundLastBlog.blogs.length >= 20) {
 
+                    // create a new bucket with the blog to be added
                     Blog.
                       create({
-                        college: req.user.userKeys.college,
+                        college: req.params.college_name,
                         blogs: [blog],
                       }, async function (err, createdBlog) {
 
                         if (err || !createdBlog) {
-                          logger.error(req.user._id + ' : (blog-39)createdBlog err => ' + err);
+                          logger.error(req.user._id + ' : (blogs-46)createdBlog err => ' + err);
                           req.flash('error', 'Something went wrong :(');
                           return res.redirect('back');
                         }
 
+                        // add bucket id to the blogBuckets list of college page
                         insertionBucketId = createdBlog._id;
                         foundCollegePage.blogBuckets.push(createdBlog._id);
 
+                        // save changes
                         await foundCollegePage.save(function (err) {
                           if (err) {
-                            logger.error(req.user._id + ' : (blog-40)saveCollegePage err => ' + err);
+                            logger.error(req.user._id + ' : (blogs-47)saveCollegePage err => ' + err);
                             req.flash('error', 'Something went wrong :(');
                             return res.redirect('back');
                           }
@@ -1188,13 +1358,16 @@ module.exports = {
                       });
 
                   } else {
+                    // else if latest blog bucket of college page is not filled: 
 
+                    // add blog to it
                     insertionBucketId = foundLastBlog._id;
                     foundLastBlog.blogs.push(blog);
                     
+                    // save changes
                     await foundLastBlog.save(function (err) {
                       if (err) {
-                        logger.error(req.user._id + ' : (blog-41)saveBlog err => ' + err);
+                        logger.error(req.user._id + ' : (blogs-48)saveBlog err => ' + err);
                         req.flash('error', 'Something went wrong :(');
                         return res.redirect('back');
                       }
@@ -1206,31 +1379,36 @@ module.exports = {
 
             }
 
+            // save changes
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-42)saveBlog err => ' + err);
+                logger.error(req.user._id + ' : (blogs-49)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
             });
 
-            if (blog.author.id) {
+            // add the newly created blog id to list of created blogs in author's user document
+
+            if (!blog.isNews) {
               User.
                 findById(blog.author.id).
                 select('createdBlogs').
                 exec(async function (err, foundUser) {
 
                   if (err || !foundUser) {
-                    logger.error(req.user._id + ' : (blog-43)foundUser err => ' + err);
+                    logger.error(req.user._id + ' : (blogs-50)foundUser err => ' + err);
                     req.flash('error', 'Something went wrong :(');
                     return res.redirect('back');
                   }
 
+                  // if createdBlogs attribute doesn't exist: create it
                   if (!foundUser.createdBlogs) {
 
                     foundUser.createdBlogs = [{ bucketId: insertionBucketId, blogIds: [blog._id] }]
 
                   } else {
+                    // else add blog id and bucket id to list of created blogs by user
 
                     bucketIndex = foundUser.createdBlogs.findIndex(elem => (elem.bucketId.equals(insertionBucketId)));
                     if (bucketIndex === -1) {
@@ -1241,9 +1419,10 @@ module.exports = {
 
                   }
 
+                  // save changes
                   await foundUser.save(function (err) {
                     if (err) {
-                      logger.error(req.user._id + ' : (blog-44)saveUser err => ' + err);
+                      logger.error(req.user._id + ' : (blogs-51)saveUser err => ' + err);
                       req.flash('error', 'Something went wrong :(');
                       return res.redirect('back');
                     }
@@ -1263,20 +1442,15 @@ module.exports = {
 
   async blogsRemove(req, res, next) {
 
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash("error", "You are not authorized to approve blogs");
-      return res.redirect("/");
-    }
-
     const blogId = req.body.blogId;
 
     CollegePage.
-      findOne({ name: req.user.userKeys.college }).
+      findOne({ name: req.params.college_name }).
       select('unapprovedBlogBucket').
       exec(async function (err, foundCollegePage) {
 
         if (err || !foundCollegePage) {
-          logger.error(req.user._id + ' : (blog-45)foundCollegePage err => ' + err);
+          logger.error(req.user._id + ' : (blogs-52)foundCollegePage err => ' + err);
           req.flash('error', 'Something went wrong :(');
           return res.redirect('back');
         }
@@ -1286,19 +1460,22 @@ module.exports = {
           exec(async function (err, foundBlog) {
 
             if (err || !foundBlog) {
-              logger.error(req.user._id + ' : (blog-46)foundBlog err => ' + err);
+              logger.error(req.user._id + ' : (blogs-53)foundBlog err => ' + err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             }
 
+            // sanity check
             const blogIndex = foundBlog.blogs.findIndex(elem => (elem._id == blogId));
             if (blogIndex === -1) {
               req.flash('error', 'Blog does not exist');
               return res.redirect('back');
             }
 
+            // remove blog from the unapproved blog bucket
             const [blog] = foundBlog.blogs.splice(blogIndex, 1);
 
+            // destroy the blog image
             try {
               if(process.env.ENVIRONMENT === 'dev'){
                 clConfig.cloudinary.v2.uploader.destroy(blog.imageId);
@@ -1306,12 +1483,13 @@ module.exports = {
                 s3Config.deleteFile(blog.imageId);
               }
             } catch (err) {
-              logger.error(req.user._id + ' : (blog-47)imageDestroy err => ' + err);
+              logger.error(req.user._id + ' : (blogs-54)imageDestroy err => ' + err);
             }
 
+            // save chages
             await foundBlog.save(function (err) {
               if (err) {
-                logger.error(req.user._id + ' : (blog-48)saveBlog err => ' + err);
+                logger.error(req.user._id + ' : (blogs-55)saveBlog err => ' + err);
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               }
@@ -1328,6 +1506,5 @@ module.exports = {
 
 }
 
-// iterate in reverse in ejs
-// pass req.params.colleg_name instead of req.user.userKeys.college to ejs files
-// sanity checks
+// TODO: add check if blog is BLOG and not NEWS, before destroying images when removing/deleting/creating them
+// otherwise an error will be logged, since it won't be able to upload "null"

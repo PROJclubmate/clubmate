@@ -2,6 +2,8 @@ const mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 const blogSchema = new Schema({
+  isNews: Boolean,
+
   title: {
     type: String,
     required: true,
@@ -22,8 +24,6 @@ const blogSchema = new Schema({
 
   url: String,
   urlName: String,
-
-  content: String,
 
   readTime: {
     type: Number,

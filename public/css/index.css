@@ -75,6 +75,7 @@ div.content{
   .desktopNone{display: none !important;}
   .desktopNoneFlex{display: none !important;}
   .mobileNone{display: block !important;}
+  .mobileNone.inline{display: inline-block !important;}
   .mobileNoneFlex{display: flex !important;}
   .scroll::-webkit-scrollbar{width: 0.375rem; height: 0.25rem;}
   .scroll::-webkit-scrollbar-track{background: transparent;}
@@ -95,9 +96,9 @@ div.content{
   .commentpad{padding-left: 0.25rem;}
   .popup-box-notifications{right: 6.5rem !important;}
   .desktop-mt-2{margin-top: 0.5rem;}
-  .post-head, .post-tail, .topic-break{border-left: 0.5px solid #cccccc !important;}
-  .post-head, .post-tail, .topic-column, .show-comments{border-left: 0.5px solid #cccccc !important; border-right: 0.5px solid #cccccc !important;}
-  .noborder.post-head, .noborder.post-tail{border-right: 0.5px solid #cccccc !important;}
+  .post-head, .post-tail, .topic-break{border-left: 0.5px solid #d3d3d3 !important;}
+  .post-head, .post-tail, .topic-column, .show-comments{border-left: 0.5px solid #d3d3d3 !important; border-right: 0.5px solid #d3d3d3 !important;}
+  .noborder.post-head, .noborder.post-tail{border-right: 0.5px solid #d3d3d3 !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
   .centerpad-posts{padding: 0 5rem 0 2rem !important;}
@@ -107,8 +108,8 @@ div.content{
   .chatbox-loadingarea{width: inherit;}
   .chatbox-loadingarea2{margin-left: -0.25rem;}
   .chatlist-background{margin-right: 0.25rem; min-height: 100%;}
-  .topnotch-left:before{border-left: 0.5px solid #cccccc;}
-  .topnotch-right:before{border-right: 0.5px solid #cccccc;}
+  .topnotch-left:before{border-left: 0.5px solid #d3d3d3;}
+  .topnotch-right:before{border-right: 0.5px solid #d3d3d3;}
   .postimgcorner{border-radius: 0.25rem; overflow: hidden;}
   .postimgpad{padding: 0 0.5rem;}
   .topicimgpad{padding-left: 0.5rem;}
@@ -178,10 +179,7 @@ div.content{
   #description, #input_topic{font-size: 1rem !important;}
   #description{min-height: 15vh;}
   .form-control{padding: 0.5rem 1rem; line-height: 1.75rem;}
-<<<<<<< HEAD
   .form-control-sm{padding: 0.375rem 0.75rem; line-height: 1.5rem;}
-=======
->>>>>>> blogs
   #user-send, #club-send{font-size: 1.125rem; height: 40px !important; width: 40px !important;}
   .commentbox{height: 36px !important;}
   .btn-sm{padding: 0.375rem 0.75rem;}
@@ -193,10 +191,7 @@ div.content{
   .smalldp{width: 20px !important; height: 20px !important;}
   .searchdp{height: 125px !important; width: 125px !important;}
   .search-bottompos{width: calc(100% - 120px - 1.5rem) !important;}
-<<<<<<< HEAD
   .search-bottompos.search-bottompos-desktop{width: calc(100% - 120px - 2.25rem) !important;}
-=======
->>>>>>> blogs
   .collegedp{height: 72px !important; width: 72px !important; margin-right: 1rem !important;}
   .college-cover-div{height: 250px !important;}
   #collegeicon{margin-left: -0.25rem !important; margin-right: 2.375rem !important;}
@@ -221,38 +216,20 @@ div.content{
 }
 @media screen and (min-width: 1601px){
   #navbarCollapse{margin-left: calc(10vw + 0.875rem);}
-<<<<<<< HEAD
   #nav_search{width: 15.25rem;}
   div.content{padding: 0 8.25rem;}
   .friends-dp{height: 5.25rem !important;}
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 1.75rem !important; padding: 0.675rem 0 !important;}
-=======
-  input.form-control.search{width: 15.25rem;}
-  div.content{padding: 0 8.25rem;}
-  .friends-dp{height: 5.25rem !important;}
-  .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 2rem !important; padding: 0.75rem 0 !important;}
->>>>>>> blogs
   #thisweek, #alltime{height: 25vh !important; min-height: 215px;}
   .description-short{padding: 1.5rem 0 !important;}
   h5.topic-h5{font-size: 1.5rem !important;}
   body, p, .truncate16, .info1, .dropctn{font-size: 1.125rem;}
-<<<<<<< HEAD
   .friends-text{line-height: 0.875rem;}
   .text-lg{font-size: 1.25rem !important;}
   .text-xl{font-size: 1.375rem !important;}
   .text-xxl{font-size: 1.5rem !important;}
   .text-xxxl{font-size: 1.75rem !important;}
   .text-xxxxl{font-size: 2.25rem !important;}
-=======
-  .lineheight-less{line-height: 1.5rem !important;}
-  .lineheight-lesser{line-height: 1.25rem !important;}
-  .lineheight-least{line-height: 1rem !important;}
-  .text-lg{font-size: 1.25rem !important;}
-  .text-xl{font-size: 1.375rem !important;}
-  .text-xxl{font-size: 1.5rem !important;}
-  .text-xxxl{font-size: 1.8125rem !important;}
-  .text-xxxxl{font-size: 2.5rem !important;}
->>>>>>> blogs
   .topic-column{min-height: 20vh;}
   #chats-notificationCount, #chats-rooms{margin-top: 1.375rem !important; font-size: 2.5rem;}
   #lobby-heading{margin-top: -0.25rem !important; font-size: 2.5rem;}
@@ -495,9 +472,6 @@ div.content{
   .topnotch-right:before{right: 0.25rem !important;}
   .topnotch-left:before{left: 0.25rem !important;}
   .post-container{margin-left: 0.25rem; margin-right: 0.25rem;}
-  #create-new-post, #info, #clubs, #members, #stories, #rooms{border-left: none !important; border-right: none !important;}
-  .post-head, .heartpost-head, .post-tail, .topic-break, .topic-column,
-  .show-comments, .card.discovercard, .searchcard.border-light{border-color: #dcdcdc !important;}
   #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
 }
@@ -822,6 +796,9 @@ div.content{
   border: 2px solid #eaecf0;
   background-color: white;
 }
+#inbox_mobile, #mobile_toggler{
+  margin-right: -0.375rem;
+}
 .inbox_mobile.badge-mobile{
   margin: 0.25rem 0.5rem;
   padding: 0.125rem 0.25rem !important;
@@ -1095,7 +1072,7 @@ input{
 }
 .show-comments{
   border-radius: 0 0 0.5rem 0.5rem !important;
-  border-bottom: 0.5px solid #cccccc;
+  border-bottom: 0.5px solid #d3d3d3;
 }
 .search-card{
   width: 100%;
@@ -1125,7 +1102,7 @@ input{
 .card.discovercard{
   min-height: 15rem;
   border-radius: 0.5rem;
-  border: 0.5px solid #cccccc;
+  border: 0.5px solid #d3d3d3;
   margin: 0 0.25rem 0.5rem 0.25rem;
   width: calc(50% - 0.5rem);
   cursor: pointer;
@@ -1163,7 +1140,7 @@ div.card-title{
   display: inline-block;
 }
 .delete-form:hover{
-  color: #dc3545;
+  color: #ea0027;
 }
 #delete_profilePic-desktop{
   position: absolute;
@@ -1422,7 +1399,7 @@ time.calendar span{
 }
 .btn-college:hover{
   transition: .15s ease-out;
-  border-color: #cccccc !important;
+  border-color: #d3d3d3 !important;
   background-color: whitesmoke !important;
   box-shadow: inset 0px 1px 1px rgba(255,255,255,1), 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
 }
@@ -1438,7 +1415,7 @@ time.calendar span{
 }
 .btn-college2:hover{
   transition: .15s ease-out;
-  border-color: #cccccc;
+  border-color: #d3d3d3;
   background-color: whitesmoke !important;
   color: red !important;
   box-shadow: inset 0px 1px 1px rgba(255,255,255,1), 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
@@ -1638,7 +1615,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
-  border: 1px solid #cccccc;
+  border: 1px solid #d3d3d3;
   border-bottom-width: 2px;
   background-color: #ededed;
   color: #555555;
@@ -1647,7 +1624,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .custom-file-upload:hover{
   transition: .15s ease-out;
-  border-color: #cccccc;
+  border-color: #d3d3d3;
   background-color: #e0e0e0;
   box-shadow: 0 0 0 0.25rem rgba(216,217,219,0.5);
 }
@@ -1792,7 +1769,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 .btn.btn-light{
   background-color: whitesmoke;
-  border-color: #cccccc;
+  border-color: #d3d3d3;
   border-radius: 0.25rem !important;
   color: #555555;
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.3);
@@ -1816,7 +1793,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn-light.discoverswitch{
   background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
   box-shadow: 0px 3px 8px #bbb, inset 0px 2px 3px #fff;
-  border-color: #cccccc;
+  border-color: #d3d3d3;
 }
 .btn-light.discoverswitch.disabled{
   background: unset;
@@ -1825,7 +1802,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border: 1px solid lightgrey !important;
 }
 .btn-light.discoverswitch-mobile{
-  box-shadow: 0px 3px 8px #cccccc, inset 0px 2px 3px #fff;
+  box-shadow: 0px 3px 8px #d3d3d3, inset 0px 2px 3px #fff;
   border-radius: 2rem !important;
 }
 .btn.btn-white{
@@ -2163,21 +2140,6 @@ a.nolink{
   float:right;
   line-height: 1.25rem;
 }
-.commentwrap{
-  background: repeating-linear-gradient(
-    45deg,
-    whitesmoke,
-    whitesmoke 3px,
-    white 3px,
-    white 5px
-  );
-  border: 0.5px solid whitesmoke;
-  border-radius: 0.75rem 0.25rem 0.25rem 0.75rem;
-  height: fit-content;
-}
-.fab.fa-gratipay{
-  margin-right: 0.125rem;
-}
 .chatinput{
   margin: 0;
   border-radius: 1.5rem !important;
@@ -2421,7 +2383,7 @@ mark, .mark{
   position: absolute;
   top: 0;
   right: -0.15rem;
-  background: #dc3545;
+  background: #ea0027;
   color: white;
   box-shadow: 0 0 1px 0 white inset, 0px 2px 5px -1px rgba(0,0,0,0.25);
   z-index: 9;
@@ -2556,18 +2518,6 @@ div.carousel-img{
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-.truncate3.fade_text{
-  position: relative;
-}
-.truncate3.fade_text:after{
-  content: "";
-  position: absolute;
-  top: 3rem;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  box-shadow: inset 0 -2rem 0.75rem -1.5rem white;
-}
 .truncate5{
   overflow: hidden;
   display: -webkit-box;
@@ -2677,6 +2627,20 @@ button.likebtn:hover .far.fa-thumbs-up{
 button.upVotebtn{
   z-index: 2;
 }
+.commentwrap{
+  background: repeating-linear-gradient(
+    45deg,
+    whitesmoke,
+    whitesmoke 3px,
+    white 3px,
+    white 5px
+  );
+  border: 0.5px solid whitesmoke;
+  border-radius: 0.75rem 0.5rem 0.5rem 0.75rem;
+}
+.fab.fa-gratipay{
+  margin-right: 0.125rem;
+}
 button.commentvote{
   color: grey;
   font-size: 1.25rem !important;
@@ -2688,7 +2652,7 @@ button.commentvote:hover * .fab.fa-gratipay{
 }
 button.redcolor2.commentvote * .fab.fa-gratipay, button.redcolor2.commentvote:hover * .fab.fa-gratipay{
   color: #ec5b68;
-  -webkit-text-stroke: 0.5px #e7303d;
+  -webkit-text-stroke: 1px #e93e3d;
 }
 .commentcount{
   min-width: 0.5rem;
@@ -3087,11 +3051,11 @@ select.select1{
 }
 .post-head{
   border-radius: 0.5rem 0.5rem 0 0;
-  border-top: 0.5px solid #cccccc;
+  border-top: 0.5px solid #d3d3d3;
 }
 .post-tail{
   border-radius: 0 0 0.5rem 0.5rem;
-  border-bottom: 0.5px solid #cccccc;
+  border-bottom: 0.5px solid #d3d3d3;
 }
 #input_topic:focus{
   border: 1px solid #ffead9 !important;
@@ -3105,8 +3069,8 @@ select.select1{
 .topic-break{
   width: 100%;
   border-radius: 0.5rem 0 0 0.5rem;
-  border-bottom: 0.5px solid #cccccc;
-  border-top: 0.5px solid #cccccc;
+  border-bottom: 0.5px solid #d3d3d3;
+  border-top: 0.5px solid #d3d3d3;
   margin-top: 0;
 }
 .topic-column{
@@ -3114,8 +3078,8 @@ select.select1{
   padding-right: 0.375rem;
   background-color: whitesmoke;
   border-radius: 0 0.5rem 0.5rem 0;
-  border-bottom: 0.5px solid #cccccc;
-  border-top: 0.5px solid #cccccc;
+  border-bottom: 0.5px solid #d3d3d3;
+  border-top: 0.5px solid #d3d3d3;
   border-left: none !important;
 }
 h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight: 400;}

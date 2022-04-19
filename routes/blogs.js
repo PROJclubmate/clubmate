@@ -1,9 +1,11 @@
-const middleware = require('../middleware');
 const express = require('express'),
-  router = express.Router();
+  router      = express.Router(),
+  middleware  = require('../middleware');
+
 const { 
   blogsLoadPage,
-  blogsCreatePage,
+  blogsCreateBlogPage,
+  blogsCreateNewsPage,
   blogsCreate,
   blogsDelete,
   blogsSave,
@@ -13,7 +15,7 @@ const {
   blogsPublishPage,
   blogsApprove,
   blogsRemove,
-} = require('../controllers/blog');
+} = require('../controllers/blogs');
 
 if (process.env.ENVIRONMENT === "dev") {
   var { upload } = require("../config/cloudinary.js");
@@ -21,17 +23,34 @@ if (process.env.ENVIRONMENT === "dev") {
   var { upload } = require("../config/s3.js");
 }
 
-router.get('/colleges/:collegeName/blogs', middleware.isLoggedIn, blogsLoadPage);
-router.get('/colleges/:collegeName/blogs/new', middleware.isLoggedIn, blogsCreatePage);
-router.post('/colleges/:collegeName/blogs/new', upload.single("image"), middleware.isLoggedIn, blogsCreate);
-router.get('/colleges/:collegeName/blogs/publish', middleware.isLoggedIn, blogsPublishPage);
-router.put('/colleges/:collegeName/blogs/publish/approve', middleware.isLoggedIn, blogsApprove);
-router.put('/colleges/:collegeName/blogs/publish/remove', middleware.isLoggedIn, blogsRemove);
-router.get('/colleges/:collegeName/blogs/saved', middleware.isLoggedIn, blogsSavedPage);
-router.get('/colleges/:collegeName/blogs/user/:userId', middleware.isLoggedIn, blogsUserPage);
-router.put('/colleges/:collegeName/blogs/:bucket/:blog/save', middleware.isLoggedIn, blogsSave);
-router.put('/colleges/:collegeName/blogs/:bucket/:blog/heart', middleware.isLoggedIn, blogsHeart);
-router.delete('/colleges/:collegeName/blogs/:bucket/:blog', middleware.isLoggedIn, blogsDelete);
+// INITIAL PAGE RENDER + AJAX
+router.get('/colleges/:college_name/blogs', middleware.isInCollege, blogsLoadPage);
+
+router.get('/colleges/:college_name/blogs/add', middleware.isInCollege, blogsCreateBlogPage);
+
+router.get('/colleges/:college_name/news/add', middleware.isCollegeLevelAdmin, blogsCreateNewsPage);
+
+router.post('/colleges/:college_name/blogs/new', upload.single("image"), middleware.isInCollege, blogsCreate);
+
+router.get('/colleges/:college_name/blogs/publish', middleware.isCollegeLevelAdmin, blogsPublishPage);
+
+router.put('/colleges/:college_name/blogs/publish/approve', middleware.isCollegeLevelAdmin, blogsApprove);
+
+router.put('/colleges/:college_name/blogs/publish/remove', middleware.isCollegeLevelAdmin, blogsRemove);
+
+// INITIAL PAGE RENDER + AJAX
+router.get('/colleges/:college_name/blogs/saved', middleware.isInCollege, blogsSavedPage);
+
+// INITIAL PAGE RENDER + AJAX
+router.get('/colleges/:college_name/blogs/user/:user_id', middleware.isInCollege, blogsUserPage);
+
+// AJAX
+router.put('/colleges/:college_name/blogs/:bucket_id/:blog_id/save', middleware.isInCollege, blogsSave);
+
+// AJAX
+router.put('/colleges/:college_name/blogs/:bucket_id/:blog_id/heart', middleware.isInCollege, blogsHeart);
+
+router.delete('/colleges/:college_name/blogs/:bucket_id/:blog_id', middleware.isInCollege, blogsDelete);
 
 
 

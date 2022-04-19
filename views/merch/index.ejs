@@ -179,39 +179,39 @@
       <% if(count%4==1) { %>
         <div class="row mt-3 w-100 mx-auto">
       <% } %>
-          <div class="col-sm-6 col-md-4 col-lg-3 text-center">
-            <div class="card merch-card mx-1 px-2 pt-3 my-3">
-              <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/<%- item._id %>" class="nolink">
-                <img src="<%- item.images[0] || '/images/noImage.png' %>"
-                  class="card-img-top item-img mx-auto cover <% if(!item.inStock) { %> out_of_stock <% } %>" alt="">
-                <div class="card-body">
-                  <h5 class="card-title title">
-                    <%- item.title %>
-                  </h5>
-                  <p class="text-muted">Posted By : <span class="posting">
-                      <%= item.club.clubName %>
-                    </span>
-                  </p>
+        <div class="col-sm-6 col-md-4 col-lg-3 text-center">
+          <div class="card merch-card mx-1 px-2 pt-3 my-3">
+            <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/<%- item._id %>" class="nolink">
+              <img src="<%- item.images[0] || '/images/noImage.png' %>"
+                class="card-img-top item-img mx-auto cover <% if(!item.inStock) { %> out_of_stock <% } %>" alt="">
+              <div class="card-body">
+                <h5 class="card-title title">
+                  <%- item.title %>
+                </h5>
+                <p class="text-muted">Posted By : <span class="posting">
+                    <%= item.club.clubName %>
+                  </span>
+                </p>
 
-                  <% if(item.inStock) { %>
-                    <p class="card-text">Price : Rs. <span class="price"><%- item.price %></span></p>
-                  <% } %>
-                  <% if(!item.inStock) { %>
-                    <p class="card-text text-danger boldtext">Out Of Stock</p>
-                  <% } %>
-                  <div class="mt-1">
-                    <!-- Working On This -->
-                    <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/subtype/<%- item.subCategory %>"
-                      class="text-decoration-none">
-                      <mark class="product-tag px-2 py-1">
-                        <%- item.subCategory %>
-                      </mark>
-                    </a>
-                  </div>
-                </a>
-              </div>
+                <% if(item.inStock) { %>
+                  <p class="card-text">Price : Rs. <span class="price"><%- item.price %></span></p>
+                <% } %>
+                <% if(!item.inStock) { %>
+                  <p class="card-text text-danger boldtext">Out Of Stock</p>
+                <% } %>
+                <div class="mt-1">
+                  <!-- Working On This -->
+                  <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/subtype/<%- item.subCategory %>"
+                    class="text-decoration-none">
+                    <mark class="product-tag px-2 py-1">
+                      <%- item.subCategory %>
+                    </mark>
+                  </a>
+                </div>
+              </a>
             </div>
           </div>
+        </div>
       <% if(count%4==0) { %>
         </div>
       <% } %>

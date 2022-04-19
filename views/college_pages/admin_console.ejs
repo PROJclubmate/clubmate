@@ -1,8 +1,16 @@
 <% include ../partials/header %>
+<style>
+	@media (max-width: 767px) {
+		h4{
+			text-align: center;
+		}
+	}
+</style>
+
 
 <div id="page_minheight_100" class="mt-4 pt-4">
   <h4 class="p-1"> Admin console - <%= college_page.name %> </h4>
-  <div class="row no-gutters">
+  <div class="row no-gutters mo-mx-2">
     <div class="col-lg-6 col-12 mobilepad px-1">
       <div class="card">
         <form action="/colleges/<%= college_page.name %>/admin/image?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
@@ -115,13 +123,25 @@
     </div>
     <div class="col-lg-6 col-12 mobilepad px-1 mt-3 d-flex justify-content-center">
       <div class="d-flex flex-column">
-        <div class="mb-3">
+        <div class="mb-2">
           <a class="btn btn-sm btn-warning" href="/colleges/<%= college_page.name %>/mess/edit">Edit Mess Menu</a>
         </div>
-        <div>
+        <div class="my-2">
           <a href="/colleges/<%= college_page.name %>/merchandise/add">
             <button class="btn btn-sm btn-warning">Add New Merchanise</button>
           </a>
+        </div>
+        <div class="my-2 valign">
+          <div>
+            <a href="/colleges/<%= college_page.name %>/blogs/publish">
+              <button class="btn btn-sm btn-warning">Approve blogs</button>
+            </a>
+          </div>
+          <div class="ml-3">
+            <a href="/colleges/<%= college_page.name %>/news/add">
+              <button class="btn btn-sm btn-warning">Add news</button>
+            </a>
+          </div>
         </div>
       </div>
     </div>

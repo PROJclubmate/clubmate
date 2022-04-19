@@ -1,19 +1,133 @@
-<% blogs.reverse() %>
-<% blogs.forEach(function (blog) { %>
+<% include ../partials/header %>  
 
-  <div>
-    <br>
-    <div><%= JSON.stringify(blog, null, 2) %> </div>
-    <br>
-    <div style="display: flex; gap: 20px;">
-      <form action="/colleges/<%= college %>/blogs/publish/approve?_method=PUT" method="POST">
-        <button type="submit" name="blogId" value="<%= blog._id %>">Approve</button>
-      </form>
-      <form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="POST">
-        <button type="submit" name="blogId" value="<%= blog._id %>">Remove</button>
-      </form>
-    </div>
-    <hr>
-  </div>
-  
-<% }) %>  
+<style>
+	.blog-card {
+		border-left: 0;
+		border-right: 0;
+		width: 50vw;
+		border: 0.5px solid #cccccc;
+		overflow: hidden;
+	}
+	.icons:hover, .p-name:hover {
+		cursor: pointer;
+	}
+	.card-pad{
+		padding: 1rem 1rem;
+	}
+	.card-title{
+		line-height: 1.75rem;
+	}
+
+	@media (max-width: 767px) {
+		.blog-card {
+			width: 100%;
+			border-color: #dcdcdc !important;
+			margin-left: 0.25rem !important;
+			margin-right: 0.25rem !important;
+		}
+		.searchdp.blogsdp{
+			height: 50px !important;
+			width: 50px !important;
+		}
+		.card-pad{
+			padding: 1rem 0;
+		}
+	}
+</style>
+
+<% blogs.reverse() %>
+
+<div id="page_minheight_100" class="mt-5">
+	<h4 class="p-1 text-center"> Blogs pending for approval </h4>
+	<div class="container my-3">
+		<% if(blogs.length == 0){ %>
+			<div class="text-center lightgrey boldtext text-sm">Nothing to see here :)</div>
+		<% } %>
+		<% for(let blog of blogs){ %>
+			<div class="row no-gutters">
+				<div class="card mx-auto blog-card rounded">
+					<div class="card-pad">
+						<div class="row no-gutters px-2">
+							<div class="col">
+								<a href="/colleges/<%= college %>/blogs/user/<%= blog.author.id %>" class="darkgrey p-name boldtext d-flex">
+									<img src="<%= blog.author.profilePic %>" class="smalldp rounded-circle mr-2 my-auto" alt="...">
+									<span class="card-text mobiletext3"><%= blog.author.name %></span>
+								</a>
+							</div>
+						</div>
+						<div class="valign">
+							<div class="pt-1 w-100">
+								<div class="px-2">
+									<a href="<%= getValidUrl(blog.url) %>" class="nolink" rel="noopener" target="_blank">
+										<div class="valign mb-3">
+											<div>
+												<h5 class="card-title truncate1"><%= blog.title %></h5>
+												<p class="card-text truncate3 blog-description linewrap"><%= blog.description %></p>
+											</div>
+											<div class="mb-auto">
+												<div class="pt-1">
+													<img src="<%= blog.image %>" alt="..." class="searchdp mx-0 blogsdp noshadow cover mb-auto">
+												</div>
+											</div>
+										</div>
+									</a>
+									<div class="lightgrey d-flex flex-row">
+                    <span class="mobileNone inline">Opens in</span><span class="text-capitalize"><%= blog.urlName %></span>
+                  </div>
+									<div class="card-text valign">
+										<div>
+											<div class="text-sm mobiletext3 d-inline-block">
+												<span class="lightgrey"><%= moment(blog.createdAt).format('ll') %></span>
+											</div>
+											<div class="separator d-inline-block mx-1">
+												·
+											</div>
+											<div class="d-inline-block">
+												<span class="text-sm mobiletext3 lightgrey mr-2"><%= blog.readTime %> min</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="whitesmokeback">
+						<hr class="hr-light">
+						<div class="my-2 card-pad py-0 mx-2">
+							<div class="accept d-inline-block mr-1">
+								<form action="/colleges/<%= college %>/blogs/publish/approve?_method=PUT" method="post">
+									<input type="hidden" name="blogId" value="<%= blog._id %>">
+									<button type="submit" class="btn btn-sm btn-success btn-round"><i class="fas fa-check"></i></button>
+								</form>
+							</div>
+							<div class="reject d-inline-block mx-1">
+								<form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="post">
+									<input type="hidden" name="blogId" value="<%= blog._id %>">
+									<button type="submit" class="btn btn-sm btn-danger btn-round"><i class="fas fa-trash-alt mr-2"></i>Reject</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</div>
+
+
+<%
+function getValidUrl(givenUrl){
+	let newUrl = decodeURI(givenUrl);
+	newUrl = newUrl.trim().replace(/\s/g, "");
+
+	if(/^(:\/\/)/.test(newUrl)){
+		return `http${newUrl}`;
+	}
+	if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
+		return `http://${newUrl}`;
+	}
+
+	return newUrl;
+}
+%>
+<% include ../partials/footer %>

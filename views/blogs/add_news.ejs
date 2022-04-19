@@ -1,0 +1,37 @@
+<% include ../partials/header %>  
+
+<div id="page_minheight_100" class="container mx-auto">
+	<div class="row no-gutters">
+		<div class="col-md-6 mx-auto my-4">
+			<div class="card drop-shadow1 rounded mo-mx-2">
+				<h5 class="card-header">Add News</h5>
+				<div class="card-body">
+					<form class="new-blog" action="/colleges/<%=college%>/blogs/new" method="POST">
+						<div class="form-group">
+							<label for="title">News Title</label>
+							<input type="text" class="form-control" id="title" name="title" placeholder="Catchy Title" required>
+						</div>
+						<div class="form-group">
+							<label for="description">News Description</label>
+							<textarea class="form-control" id="description" rows="2" name="description" placeholder="in 100 words" required></textarea>
+						</div>
+						<div class="form-group">
+							<label for="url">News Link</label>
+							<input type="text" class="form-control" id="url" name="url" placeholder="abc.xyz">
+						</div>
+						<div class="form-group">
+							<label for="url_name">Link Name</label>
+							<input type="text" class="form-control" id="url_name" name="urlName" placeholder="Abc (opens in)">
+						</div>
+            <input type="hidden" name="isNews" value="true">
+						<div class="text-center">
+							<button type="submit" class="btn btn-success">Add</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

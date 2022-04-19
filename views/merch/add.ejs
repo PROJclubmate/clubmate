@@ -3,10 +3,66 @@
   .price-field {
     margin: 0.5rem auto 0;
   }
+  input[type="file"]#inputMerchImages10{
+		display: none;
+	}
+	.custom-file-label{
+		position: relative;
+	}
+  select, .custom-file{
+    height: unset !important;
+  }
+  
+  .upload_inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .upload_btn-box {
+    margin-bottom: 0.675rem;
+  }
+  .upload_img-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.675rem;
+  }
+  .upload__img-box {
+    width: 100px;
+    padding: 0 0.675rem;
+  }
+  .upload__img-close {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0.675rem;
+    right: 0.675rem;
+    text-align: center;
+    line-height: 24px;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .upload__img-close:after {
+    content: "✖";
+    font-size: 14px;
+    color: white;
+  }
+
+  .img-bg {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    padding-bottom: 100%;
+  }
 </style>
 
 <div id="page_minheight_100" class="container mx-auto">
-  <div class="row no-gutters">
+  <div class="row no-gutters mo-mx-2">
     <div class="col-md-6 mx-auto my-4">
       <div class="card drop-shadow1 rounded">
         <h5 class="card-header">Add New Merchandise</h5>
@@ -32,17 +88,22 @@
               <label for="subCategory">Product Sub Category</label>
               <input type="text" class="form-control" id="subCategory" name="subCategory" required>
             </div>
-            <div class="custom-file my-3 form-group">
-              <input type="file" class="custom-file-input" id="image" name="images" multiple>
-              <label class="custom-file-label" for="image">Upload Images</label>
-            </div>
+            <div id="merch_images" class="custom-file my-3 form-group d-flex flex-row">
+              <div class="upload_box w-100">
+                <div class="upload_btn-box">
+                  <input type="file" class="custom-file-input upload_inputfile" id="inputMerchImages10" name="images" data-max_length="10" accept="images/*" multiple>
+                  <label id="merch_label" class="custom-file-label w-100" for="inputMerchImages10">Upload images (max - 10)</label>
+                </div>
+                <div class="upload_img-wrap"></div>
+              </div>
+						</div>
             <div class="form-group">
               <label for="price">Price</label>
               <div class="input-group mb-2">
                 <div class="input-group-prepend price-field">
                   <div class="input-group-text">Rs. </div>
                 </div>
-                <input type="text" class="form-control" id="price" name="price">
+                <input type="number" class="form-control" id="price" name="price">
               </div>
             </div>
             <div class="form-group" id="colors">
@@ -87,7 +148,7 @@
             </div>
             <div class="form-group">
               <label for="contact">Contact</label>
-              <input type="text" class="form-control" id="contact" name="contact" required>
+              <input type="text" class="form-control" id="contact" name="contact" placeholder="e.g. Aman, Hostel B-24, Contact Number - XX" required>
             </div>
 
             <div class="text-center">
@@ -99,10 +160,13 @@
     </div>
   </div>
 </div>
+
+
+<% include ../partials/footer %>
 <script>
   const e = document.getElementById("category");
   const sizes = document.getElementById("sizes");
-  const color = document.getElementById("colors")
+  const color = document.getElementById("colors");
   e.addEventListener('click', () => {
     const strUser = e.options[e.selectedIndex].text;
     
@@ -130,7 +194,74 @@
       color.classList.add('d-none')
     }
 
-  })
-</script>
+  });
 
-<% include ../partials/footer %>
+
+  ImgUpload();
+  function ImgUpload() {
+    var imgWrap = "";
+    var imgArray = [];
+
+    $('.upload_inputfile').each(function () {
+      $(this).on('change', function (e) {
+        imgWrap = $(this).closest('.upload_box').find('.upload_img-wrap');
+        var maxLength = $(this).attr('data-max_length');
+
+        var files = e.target.files;
+        var filesArr = Array.prototype.slice.call(files);
+        var iterator = 0;
+        filesArr.forEach(function (f, index) {
+
+          if (!f.type.match('image.*')) {
+            return;
+          }
+
+          if (imgArray.length > maxLength) {
+            return false
+          } else {
+            var len = 0;
+            for (var i = 0; i < imgArray.length; i++) {
+              if (imgArray[i] !== undefined) {
+                len++;
+              }
+            }
+            if (len > maxLength) {
+              return false;
+            } else {
+              imgArray.push(f);
+
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                var html = "<div class='upload__img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close'></div></div></div>";
+                imgWrap.append(html);
+                iterator++;
+              }
+              reader.readAsDataURL(f);
+            }
+            var labelText = Number(len + 1) +' files';
+            $('#merch_label').text(labelText);
+          }
+        });
+      });
+    });
+
+    $('#merch_images').on('click', ".upload__img-close", function (e) {
+      var file = $(this).parent().data("file");
+      for (var i = 0; i < imgArray.length; i++) {
+        if (imgArray[i].name === file) {
+          imgArray.splice(i, 1);
+          break;
+        }
+      }
+      $(this).parent().parent().remove();
+
+      var oldNumber = Number($('#merch_label').text().slice(0, -6));
+      var labelText = Number(oldNumber - 1) +' files';
+      if(oldNumber == 1){
+        $('#merch_label').text('Upload images (max - 10)');
+      } else {
+        $('#merch_label').text(labelText);
+      }
+    });
+  }
+</script>

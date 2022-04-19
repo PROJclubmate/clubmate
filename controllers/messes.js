@@ -85,12 +85,7 @@ module.exports = {
 
     const day = req.query.day;
     const time = req.query.time;
-    const messName = req.query.messName
-
-    if (!req.user.isCollegeLevelAdmin) {
-      req.flash('error', 'You are not authorized to change the menu');
-      return res.redirect('/colleges/'+req.user.userKeys.college+'/mess');
-    }
+    const messName = req.query.messName;
     
     const foundMess = await Mess.findOne({college: req.user.userKeys.college});
     if (foundMess == null) {

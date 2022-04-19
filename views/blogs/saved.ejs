@@ -1,3 +1,33 @@
-<h2>Saved blogs</h2>
+<% include ../partials/header %>  
+<link rel="stylesheet" href="/css/blogs.css">
 
-<a href="/colleges/<%= college %>/blogs/saved?bucket=<%= bucket %>&index=<%= index %>">Load more</a>
+
+<div id="page_minheight_100">
+
+	<h4 class="p-1 my-5 noborder blog-card mx-auto">Bookmarks</h4>
+	<div id="client-blogs"></div>
+	<div id="blogs-load-more-btn" class="text-center pt-2">
+		<button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= bucket %>" college_name="<%= college %>" route="saved" index="<%= index %>">
+			<span id="load-more-span"></span>Load
+		</button>
+	</div>
+</div>
+
+
+<% include ../partials/footer %>
+<script src="/js/blogs.js"></script>
+<script>
+	function getValidUrl(givenUrl){
+		let newUrl = decodeURI(givenUrl);
+		newUrl = newUrl.trim().replace(/\s/g, "");
+
+		if(/^(:\/\/)/.test(newUrl)){
+			return `http${newUrl}`;
+		}
+		if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
+			return `http://${newUrl}`;
+		}
+
+		return newUrl;
+	}
+</script>

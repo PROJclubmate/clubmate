@@ -433,12 +433,21 @@ $('#inputImage').change(function(){
     $('#preview-postimg').removeClass('invisible').addClass('active');
   }
 });
+
 $('#inputImages10').change(function(){
-	var fileNum = $('#inputImages10')[0].files.length;
-	var labelText = fileNum+' files';
-	$(this).prev('label').text(labelText);
+  var fileNum = $('#inputImages10')[0].files.length;
+  var labelText = fileNum+' files';
+  var fileName = $('#inputImages10')[0].files[0].name;
+  var truncated = fileName.trunc(20);
+
+  if(fileNum > 1){
+    $(this).prev('label').text(labelText);
+  } else {
+    $(this).prev('label').text(truncated);
+  }
   $(this).prev('label').css({'border': 'none', 'boxShadow':'none'});
 });
+
 $('#inputprofilePic').change(function(){
 	var fileName = $('#inputprofilePic')[0].files[0].name;
 	var truncated = fileName.trunc(15);
