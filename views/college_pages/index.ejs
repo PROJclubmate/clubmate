@@ -188,7 +188,7 @@
 										</a>
 									</span>
 									<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-										<span class="ml-2 mr-3 lightgrey text-xs mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+										<span class="ml-2 mr-3 lightgrey text-sm mobiletext4"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
 									<% } else if(currentUser && keyValue == 2){ %>
 										<% if(clubUserIdsArr[i][j].length){ %>
 											<br/>
@@ -252,7 +252,7 @@
 	<div class="col-md-4 col-lg-3 px-2">
 		<div class="mobileNone tabletNone">
 			<div class="d-flex flex-column mt-3 py-1 darkgrey">
-				<div class="d-flex flex-row px-3 my-2 college-infobtn">
+				<div class="px-3 my-2 college-infobtn">
 					<a class="d-flex flex-row nolink" href="/colleges/<%= college_page.name %>/blogs">
 						<div class="text-xxxl my-auto" style="width: 2.5rem; text-align: center; line-height: 2.5rem; font-size: 1.75rem !important;">
 							<i class="fas fa-blog"></i>

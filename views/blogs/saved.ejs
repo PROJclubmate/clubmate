@@ -1,5 +1,5 @@
 <% include ../partials/header %>  
-<link rel="stylesheet" href="/css/blogs.css">
+<link rel="stylesheet" href="/css/full_views/blogs.css">
 
 
 <div id="page_minheight_100">
@@ -16,18 +16,3 @@
 
 <% include ../partials/footer %>
 <script src="/js/blogs.js"></script>
-<script>
-	function getValidUrl(givenUrl){
-		let newUrl = decodeURI(givenUrl);
-		newUrl = newUrl.trim().replace(/\s/g, "");
-
-		if(/^(:\/\/)/.test(newUrl)){
-			return `http${newUrl}`;
-		}
-		if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
-			return `http://${newUrl}`;
-		}
-
-		return newUrl;
-	}
-</script>

@@ -17,7 +17,7 @@ const newlyArrivedCount = 4;
 module.exports = {
 	async displayNewlyArrivedMerchandise(req, res, next) {
     const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
+      college: req.params.college_name,
     });
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-1)findMerchandise err => "+"No merchandise document found");
@@ -37,12 +37,12 @@ module.exports = {
       merchItems = merchItems.slice(0, newlyArrivedCount);
     }
 
-    res.render("merch/index", { merchItems: merchItems, name: "New Arrivals", collegeName: req.user.userKeys.college });
+    res.render("merch/index", { merchItems: merchItems, name: "New Arrivals", collegeName: req.params.college_name });
   },
 
 	async displayAllMerchandise(req, res, next) {
     const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
+      college: req.params.college_name,
     });
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-2)findMerchandise err => "+"No merchandise document found");
@@ -59,11 +59,11 @@ module.exports = {
       return merch1.createdAt - merch2.createdAt;
     });
 
-    res.render("merch/index", { merchItems: merchItems, name: "All Products", collegeName: req.user.userKeys.college });
+    res.render("merch/index", { merchItems: merchItems, name: "All Products", collegeName: req.params.college_name });
   },
 
   async addNewMerchandise(req, res, next) {
-    const foundCollegePages = await CollegePage.findOne({ name: req.user.userKeys.college }).select('allClubs');
+    const foundCollegePages = await CollegePage.findOne({ name: req.params.college_name }).select('allClubs');
     const allClubIds = [];
     for (let i = 0; i < foundCollegePages.allClubs.length; i++) {
       allClubIds.push(...foundCollegePages.allClubs[i].categoryClubIds);
@@ -74,7 +74,7 @@ module.exports = {
       return req.redirect("/merchandise");
     }
 
-    res.render("merch/add", { clubs: foundClubs, collegeName: req.user.userKeys.college });
+    res.render("merch/add", { clubs: foundClubs, collegeName: req.params.college_name });
   },
 
   async displayParticularMerchandiseType(req, res, next) {
@@ -86,7 +86,7 @@ module.exports = {
     }
 
     const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
+      college: req.params.college_name,
     }).select(reqCategory);
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-3)findMerchandise err => "+"No merchandise document found");
@@ -95,7 +95,7 @@ module.exports = {
     }
 
     const merchItems = foundMerch[reqCategory];
-    res.render("merch/index", { merchItems: merchItems, name: capitalCase(reqCategory), collegeName: req.user.userKeys.college });
+    res.render("merch/index", { merchItems: merchItems, name: capitalCase(reqCategory), collegeName: req.params.college_name });
   },
 
   async displayParticularMerchandiseSubtype(req, res, next) {
@@ -107,7 +107,7 @@ module.exports = {
       return res.redirect("back");
     }
 
-    const foundMerch = await Merchandise.findOne({ college: req.user.userKeys.college}).select(reqCategory);
+    const foundMerch = await Merchandise.findOne({ college: req.params.college_name}).select(reqCategory);
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-4)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
@@ -119,7 +119,7 @@ module.exports = {
     });
 		const name = capitalCase(reqCategory) + "  /" + capitalCase(reqSubCategory);
 
-    res.render("merch/index", { merchItems: merchItems, name: name, collegeName: req.user.userKeys.college });
+    res.render("merch/index", { merchItems: merchItems, name: name, collegeName: req.params.college_name });
   },
 
   async uploadNewMerchandise(req, res, next) {
@@ -143,7 +143,7 @@ module.exports = {
     }
 
     const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
+      college: req.params.college_name,
     });
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-5)findMerchandise err => "+"No merchandise document found");
@@ -256,7 +256,7 @@ module.exports = {
       return res.redirect("back");
     }
 
-    const foundMerch = await Merchandise.findOne({ college: req.user.userKeys.college }).select(reqCategory);
+    const foundMerch = await Merchandise.findOne({ college: req.params.college_name }).select(reqCategory);
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-7)findMerchandise err => "+"No merchandise document found");
       req.flash("error", "Something went wrong :(");
@@ -268,7 +268,13 @@ module.exports = {
       return res.redirect("back");
     }
 
-    res.render("merch/show", { merchItem: merchItem, collegeName: req.user.userKeys.college });
+    // check if user is college admin
+    let isCollegeLevelAdmin = false;
+    if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+      isCollegeLevelAdmin = true;
+    }
+
+    res.render("merch/show", { merchItem: merchItem, collegeName: req.params.college_name, isCollegeLevelAdmin });
   },
 
   async updateMerchandise(req, res, next) {
@@ -285,7 +291,7 @@ module.exports = {
     }
 
     const foundMerch = await Merchandise.findOne({
-      college: req.user.userKeys.college,
+      college: req.params.college_name,
     }).select(reqCategory);
     if (foundMerch == null) {
       logger.error(req.user._id+" : (merchandise-8)findMerchandise err => "+"No merchandise document found");
@@ -327,7 +333,7 @@ module.exports = {
     const update = { $pull: {} };
     update.$pull[reqCategory] = { _id: mongoose.Types.ObjectId(reqMerchId) };
 
-    const foundMerch = await Merchandise.findOneAndUpdate({ college: req.user.userKeys.college }, update);
+    const foundMerch = await Merchandise.findOneAndUpdate({ college: req.params.college_name }, update);
     if (foundMerch == null) {
       logger.error(req.user._id + " : (merchandise-9)findMerchandise err => " + "No merchandise document found");
       req.flash("error", "Something went wrong :(");

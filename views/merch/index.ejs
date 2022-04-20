@@ -1,125 +1,14 @@
 <% include ../partials/header %>
-<style>
-  .merch {
-    background-color: #9DCEDD;
-    color: black !important;
-    border-radius: 1em;
-    padding: 1rem;
-    margin: 1rem;
-  }
-  .price-field {
-    margin: 0.5rem auto 0;
-  }
-  a {
-    color: inherit;
-  }
-  a:hover {
-    text-decoration: none;
-  }
-  .tile-image {
-    border-radius: 50%;
-    background-color: #E2F1F6;
-    max-width: 128px;
-    max-height: 128px;
-    width: calc(25vw - 4rem);
-    height: calc(25vw - 4rem);
-    position: relative;
-  }
-  .merch-icons{
-    max-width: calc(128px - 4rem);
-    width: calc(25vw - 4rem);
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto auto;
-  }
-  .title-heading {
-    border-bottom: 2px #262626 solid;
-  }
-  .item-img {
-    width: 90%;
-    height: 15rem;
-    max-width: 15rem;
-  }
-  .card {
-    border-radius: 0.5em;
-  }
-  .card:hover {
-    box-shadow: 0 0 10px rgba(33, 33, 33, .2);
-  }
-  .product-tag {
-    border-radius: 1em;
-    font-size: 0.9em;
-  }
-  .product-tag:hover {
-    cursor: pointer;
-  }
-  .call-link {
-    color: inherit;
-  }
-  .out_of_stock {
-    opacity: 0.5;
-  }
-  @media screen and (max-width: 993px){
-    .merch {
-      margin: 0;
-    }
-    .title-heading{
-      border-width: 1px;
-    }
-    .merch-card{
-      margin: 1rem 0 !important;
-    }
-  }
-  @media screen and (max-width: 769px){
-    #all_products{
-      display: none;
-    }
-    .merch {
-      padding: 0.375rem;
-    }
-    .merch-icons {
-      padding: 0.5rem;
-    }
-    .merch-card{
-      margin: 1rem 0 !important;
-    }
-  }
-  @media (max-width: 481px) {
-    .merch, .col-3.mx-auto.text-center {
-      padding: 0.375rem;
-    }
-    .tile-image {
-      width: calc(25vw - 2rem);
-      height: calc(25vw - 2rem);
-    }
-    .merch-icons {
-      width: calc(25vw - 2rem);
-    }
-    .title-heading{
-      border-width: 0.5px;
-    }
-    .merch-card{
-      margin: 1rem 3rem !important;
-    }
-  }
-  @media (max-width: 360px) {
-    .merch-card{
-      margin: 1rem 2rem !important;
-    }
-  }
-</style>
+<link rel="stylesheet" href="/css/full_views/merchandises.css">
 
 <div id="page_minheight_100">
   <div class="container my-2">
     <div class="row mt-3 mx-auto">
       <div class="col-3 mx-auto text-center">
         <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/all">
+          <a class="index-link" href="/colleges/<%= collegeName %>/merchandise/all">
             <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650013993/icons/merch_store.png" alt="All Products">
+              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650388373/icons/merch_store.png" alt="All Products">
             </div>
             <h4 class="mt-2 mobiletext4"><span>All</span><span id="all_products" class="m-0"> Products</span></h4>
           </a>
@@ -127,9 +16,9 @@
       </div>
       <div class="col-3 mx-auto text-center">
         <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/wearables">
+          <a class="index-link" href="/colleges/<%= collegeName %>/merchandise/wearables">
             <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650013993/icons/merch_hoodie.png" alt="T-Shirt">
+              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650388373/icons/merch_hoodie.png" alt="Wearables">
             </div>
             <h4 class="mt-2 mobiletext4">Wearables</h4>
           </a>
@@ -137,9 +26,9 @@
       </div>
       <div class="col-3 mx-auto text-center">
         <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/accessories">
+          <a class="index-link" href="/colleges/<%= collegeName %>/merchandise/accessories">
             <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650013993/icons/merch_mug.png" alt="Hoodie">
+              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650388373/icons/merch_mug.png" alt="Accessories">
             </div>
             <h4 class="mt-2 mobiletext4">Accessories</h4>
           </a>
@@ -147,9 +36,9 @@
       </div>
       <div class="col-3 mx-auto text-center">
         <div class="merch my-3">
-          <a href="/colleges/<%= collegeName %>/merchandise/stickers">
+          <a class="index-link" href="/colleges/<%= collegeName %>/merchandise/stickers">
             <div class="tile-image mx-auto">
-              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650013993/icons/merch_stickers.png" alt="Stickers">
+              <img class="merch-icons" src="https://res.cloudinary.com/dubirhea4/image/upload/v1650388373/icons/merch_stickers.png" alt="Stickers">
             </div>
             <h4 class="mt-2 mobiletext4">Stickers</h4>
           </a>
@@ -159,15 +48,10 @@
   </div>
   <div class="container my-2">
     <div class="row mt-3 title-heading mx-2">
-      <h4 class="w-100 mobiletext1">
+      <h4 class="w-100 mobiletext0">
         <div class="valign">
           <div class="name_div">
             <%- name %>
-          </div>
-          <div>
-            <a href="/colleges/<%= collegeName %>/merchandise/add">
-              <button class="btn btn-sm btn-warning">Add New</button>
-            </a>
           </div>
         </div>
       </h4>
@@ -180,7 +64,7 @@
         <div class="row mt-3 w-100 mx-auto">
       <% } %>
         <div class="col-sm-6 col-md-4 col-lg-3 text-center">
-          <div class="card merch-card mx-1 px-2 pt-3 my-3">
+          <div class="card merch-card mx-1 my-3 p-2">
             <a href="/colleges/<%= collegeName %>/merchandise/<%- item.category %>/<%- item._id %>" class="nolink">
               <img src="<%- item.images[0] || '/images/noImage.png' %>"
                 class="card-img-top item-img mx-auto cover <% if(!item.inStock) { %> out_of_stock <% } %>" alt="">

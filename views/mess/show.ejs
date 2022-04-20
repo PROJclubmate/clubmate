@@ -1,184 +1,13 @@
 <% include ../partials/header %>
-<style>
-  .accordion {
-    max-width: 25rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 5rem lightgrey;
-  }
-  .accordion__item:not(:last-child) {
-    border-bottom: 1px solid lightgrey;
-  }
-  .accordion__btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 1.2rem 1.4rem;
-    background: white;
-    border: none;
-    outline: none;
-    color: #5f5c70;
-    font-size: 1.2rem;
-    text-align: left;
-    cursor: pointer;
-    transition: 0.15s;
-  }
-  .accordion__btn:hover {
-    color: #6a5acd;
-    background: #f4f3fb;
-  }
-  .accordion__item--active .accordion__btn {
-    color: #6a5acd;
-    border-bottom: 2px solid #6a5acd;
-    background: #f4f3fb;
-  }
-  .accordion__btn:focus{
-    outline: none;
-  }
-  .accordion__icon {
-    border-radius: 50%;
-    transform: rotate(0deg);
-    transition: 0.35s ease-in-out;
-    opacity: 0.9;
-  }
-  .accordion__item--active .accordion__icon {
-    transform: rotate(135deg);
-  }
-  .accordion__content {
-    font-weight: 400;
-    font-size: 18px;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    color: #5f5c70;
-    transform: translateX(16px);
-    transition: max-height 0.35s ease, opacity 0.35s, transform 0.35s;
-  }
-  .accordion__item--active .accordion__content {
-    opacity: 1;
-    transform: translateX(0px);
-    max-height: 100vh;
-  }
-  .slider-container {
-    position: relative;
-    height: 400px;
-    margin: 20px auto;
-  }
-  .container-fluid {
-    display: flex;
-    justify-content: center;
-  }
-  .container {
-    margin-top: 50px;
-  }
-  .slide {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 25em;
-    margin: 0;
-    opacity: 0;
-    transition: 1s ease-in-out;
-    z-index: 3;
-  }
-  .slide img {
-    width: 100%;
-    height: 400px;
-  }
-  .prev,
-  .next {
-    position: fixed;
-    top: 50%;
-    border: none;
-    background: rgba(0, 0, 0, 0.5);
-    color: whitesmoke;
-    padding: 0.625rem 1rem;
-    margin-top: -30px;
-    z-index: 3;
-    font-weight: 900;
-    transition: 0.25s ease-in-out;
-  }
-  .prev {
-    left: 20%;
-  }
-  .next {
-    right: 20%;
-  }
-  .change-mess, .dots_container {
-    position: fixed;
-    bottom: 1rem;
-    display: flex;
-    margin: 5px auto;
-    width: fit-content;
-    left: calc(50% + 5rem);
-    transform: translateX(-50%);
-  }
-  .change-mess {
-    bottom: 4rem;
-  }
-  .dots {
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.15);
-    margin: 4px;
-  }
-  .dots:hover {
-    background: rgba(0,0,0,0.5) !important;
-  }
-  .change-mess {
-    margin-top: 7.5rem;
-    z-index: 2;
-  }
-  @media screen and (min-width: 1200px){
-    .next{
-      right: calc(20% - 10rem);
-    }
-  }
-  @media screen and (max-width: 1199px){
-    .change-mess, .dots_container {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-  @media (max-width: 992px) {
-    .prev {
-      left: 15%;
-    }
-    .next {
-      right: 15%;
-    }
-  }
-  @media screen and (max-width:768px) {
-    .slide {
-      height: fit-content;
-    }
-    .slide img {
-      height: 200px;
-    }
-    .container {
-      height: 100vw;
-    }
-    .prev,
-    .next {
-      top: unset;
-      bottom: 1rem;
-      border-radius: 1rem;
-    }
-    .prev {
-      left: 1rem;
-    }
-    .next {
-      right: 1rem
-    }
-  }
-</style>
+<link rel="stylesheet" href="/css/full_views/messes.css">
+
+
 <div class="container-fluid mt-3">
-  <form class="form-inline mx-auto" action="/colleges/<%= collegeName %>/mess?_method=PUT" method="post">
-      <label for="messName" class="mx-2 lead font-weight-bold">Select Mess</label>
+  <form id="select_mess_form" class="form-inline" action="/colleges/<%= collegeName %>/mess?_method=PUT" method="post">
+      <label for="messName" class="mx-2 my-auto font-weight-bold">Select Mess</label>
       <select class="form-control mx-2" id="messName" name="messName" onchange="this.form.submit()">
-        <% for(let m of mess) { %>
-          <option value="<%= m.name %>" <% if(m.name == messName){ %> selected <% } %> ><%= m.name %></option>
+        <% for(let m of messesInCollege) { %>
+          <option value="<%= m %>" <% if(m == messName){ %> selected <% } %> ><%= m %></option>
         <% } %>
       </select>
   </form>
@@ -187,7 +16,7 @@
 <% for(let m of mess) { %>
   <% if(m.name == messName){ %>  
     <div id="page_minheight_100" class="container slider-container">
-      <% const days=["Monday", "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday" ]; %>
+      <% const days=["Monday", "Tuesday" , "Wednesday" , "Thursday" , "Friday" , "Saturday" , "Sunday"]; %>
       <% for(let weekday of days){ %>
         <div class="container-fluid mx-auto">
           <div class="slide">
@@ -223,15 +52,12 @@
       <% } %>
         <button class="prev text-xxxl" onclick="prev()"><i class="fa fa-angle-left"></i></button>
         <button class="next text-xxxl" onclick="next()"><i class="fa fa-angle-right"></i></button>
-
-        <div class="container-fluid change-mess">
-          <a class="btn btn-sm btn-warning" href="/colleges/<%= collegeName %>/mess/edit">Edit Mess Menu</a>
-        </div>
     </div>
   <% } %>
 <% } %>
 
 <div class="dots_container" id="indicator"></div>
 
-<script src="/js/mess.js"></script>
+
 <% include ../partials/footer %>
+<script src="/js/mess.js"></script>

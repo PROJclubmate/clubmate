@@ -5,6 +5,7 @@ const passport     = require('passport'),
   CollegePage      = require('../models/college_page'),
   Conversation     = require('../models/conversation'),
   ClubConversation = require('../models/club_conversation'),
+  Mess             = require('../models/mess'),
   Token            = require('../models/token'),
   Story            = require('../models/story'),
   clConfig         = require('../config/cloudinary'),
@@ -687,6 +688,17 @@ module.exports = {
               foundUser.userKeys.hostel = req.body.userKeys.hostel;
             }
             if(req.body.userKeys.mess != foundUser.userKeys.mess){
+              const foundMess = await Mess.findOne({ college: req.user.userKeys.college });
+              if (!foundMess) {
+                req.flash('error', 'The menu for '+req.body.userKeys.mess+' does not have any items');
+                return res.redirect('back');
+              }
+              const messNames = foundMess.mess.map(elem => elem.name);
+              if (!messNames.includes(req.body.userKeys.mess)) {
+                req.flash('error', 'The menu for '+req.body.userKeys.mess+' does not have any items');
+                return res.redirect('back');
+              }
+
               foundUser.userKeys.mess = req.body.userKeys.mess;
             }
             if(req.body.userKeys.school != foundUser.userKeys.school){

@@ -1,64 +1,64 @@
 <% include ../partials/header %>
 <style>
   .price-field {
-    margin: 0.5rem auto 0;
-  }
-  input[type="file"]#inputMerchImages10{
-		display: none;
-	}
-	.custom-file-label{
-		position: relative;
-	}
-  select, .custom-file{
-    height: unset !important;
-  }
-  
-  .upload_inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
-  .upload_btn-box {
-    margin-bottom: 0.675rem;
-  }
-  .upload_img-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -0.675rem;
-  }
-  .upload__img-box {
-    width: 100px;
-    padding: 0 0.675rem;
-  }
-  .upload__img-close {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 0.675rem;
-    right: 0.675rem;
-    text-align: center;
-    line-height: 24px;
-    z-index: 1;
-    cursor: pointer;
-  }
-  .upload__img-close:after {
-    content: "✖";
-    font-size: 14px;
-    color: white;
-  }
+  margin: 0.5rem auto 0;
+}
+input[type="file"]#inputMerchImages10{
+  display: none;
+}
+.custom-file-label{
+  position: relative;
+}
+select, .custom-file{
+  height: unset !important;
+}
 
-  .img-bg {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    padding-bottom: 100%;
-  }
+.upload_inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.upload_btn-box {
+  margin-bottom: 0.675rem;
+}
+.upload_img-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.675rem;
+}
+.upload_img-box {
+  width: 100px;
+  padding: 0 0.675rem;
+}
+.upload_img-close {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0.675rem;
+  right: 0.675rem;
+  text-align: center;
+  line-height: 24px;
+  z-index: 1;
+  cursor: pointer;
+}
+.upload_img-close:after {
+  content: "✖";
+  font-size: 14px;
+  color: white;
+}
+
+.img-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  padding-bottom: 100%;
+}
 </style>
 
 <div id="page_minheight_100" class="container mx-auto">
@@ -232,7 +232,7 @@
 
               var reader = new FileReader();
               reader.onload = function (e) {
-                var html = "<div class='upload__img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close'></div></div></div>";
+                var html = "<div class='upload_img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload_img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload_img-close'></div></div></div>";
                 imgWrap.append(html);
                 iterator++;
               }
@@ -245,7 +245,7 @@
       });
     });
 
-    $('#merch_images').on('click', ".upload__img-close", function (e) {
+    $('#merch_images').on('click', ".upload_img-close", function (e) {
       var file = $(this).parent().data("file");
       for (var i = 0; i < imgArray.length; i++) {
         if (imgArray[i].name === file) {

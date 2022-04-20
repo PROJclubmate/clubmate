@@ -80,7 +80,7 @@ function populateInputFields(){
     if(foundMess.mess[i].name == mess){
       for(let j=0; j < foundMess.mess[i].menu.length; j++){
         if(foundMess.mess[i].menu[j].day == day && foundMess.mess[i].menu[j].time == time){
-          for(let k=0; k < foundMess.mess[i].menu[j].dishes.length; k++){
+          for(let k=foundMess.mess[i].menu[j].dishes.length-1; k >= 0; k--){
             populateOneField(foundMess.mess[i].menu[j].dishes[k], divelement);
           }
         }

@@ -1,39 +1,6 @@
 <% include ../partials/header %>  
+<link rel="stylesheet" href="/css/full_views/blogs.css">
 
-<style>
-	.blog-card {
-		border-left: 0;
-		border-right: 0;
-		width: 50vw;
-		border: 0.5px solid #cccccc;
-		overflow: hidden;
-	}
-	.icons:hover, .p-name:hover {
-		cursor: pointer;
-	}
-	.card-pad{
-		padding: 1rem 1rem;
-	}
-	.card-title{
-		line-height: 1.75rem;
-	}
-
-	@media (max-width: 767px) {
-		.blog-card {
-			width: 100%;
-			border-color: #dcdcdc !important;
-			margin-left: 0.25rem !important;
-			margin-right: 0.25rem !important;
-		}
-		.searchdp.blogsdp{
-			height: 50px !important;
-			width: 50px !important;
-		}
-		.card-pad{
-			padding: 1rem 0;
-		}
-	}
-</style>
 
 <% blogs.reverse() %>
 

@@ -1,7 +1,10 @@
 <% include ../partials/header %>
-<script type='text/javascript'>
-  var foundMess = <%- JSON.stringify(foundMess) %>;
-</script>
+<style>
+	select{
+		height: unset !important;
+	}
+</style>
+
 
 <div id="page_minheight_100" class="container d-flex justify-content-center align-items-center">
 	<div class="col-md-6 mx-2 my-4">
@@ -12,7 +15,7 @@
 					<div class="form-group mb-3">
 						<label for="mess">Select Mess</label>
 						<select class="form-control editmess_select" id="mess" name="mess">
-							<% messNames.forEach(function(h){ %>
+							<% messesInCollege.forEach(function(h){ %>
 								<option value=<%=h %> <% if(h == messName){ %> selected <% } %> ><%= h %>
 								</option>
 								<% }); %>
@@ -48,7 +51,7 @@
 					<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 					<div class="form-group my-3 d-flex flex-row-reverse text-center">
 						<button class="btn btn-primary ml-2" type="submit">Update</button>
-						<button onclick="add_new_inputs('dishes_inputs','dishes','');" class="btn btn-sm btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
+						<button onclick="add_new_inputs('dishes_inputs','dishes','');" class="btn btn-primary btn-round ml-auto" type="button"><strong> + </strong></button>
 					</div>
 				</form>
 			</div>
@@ -56,5 +59,9 @@
 	</div>
 </div>
 
-<script src="/js/mess.js"></script>
+
 <% include ../partials/footer %>
+<script src="/js/mess.js"></script>
+<script type='text/javascript'>
+  var foundMess = <%- JSON.stringify(foundMess) %>;
+</script>

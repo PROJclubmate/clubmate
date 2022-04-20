@@ -1,3 +1,18 @@
+function getValidUrl(givenUrl){
+  let newUrl = decodeURI(givenUrl);
+  newUrl = newUrl.trim().replace(/\s/g, "");
+
+  if(/^(:\/\/)/.test(newUrl)){
+    return `http${newUrl}`;
+  }
+  if(!/^(f|ht)tps?:\/\//i.test(newUrl)){
+    return `http://${newUrl}`;
+  }
+
+  return newUrl;
+}
+
+
 window.onload=function(){
   document.getElementById('load-more-btn').click();
 }

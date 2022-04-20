@@ -1,3 +1,11 @@
+#add_new_blog{
+  background: linear-gradient(to bottom, #f7f7f7 0%, #e0e0e0 100%);
+  border: 0.5px solid #d3d3d3 !important;
+}
+#add_new_blog:hover{
+  background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
+  border-bottom-width: 2px !important;
+}
 .blog-card {
   border-left: 0;
   border-right: 0;

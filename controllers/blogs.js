@@ -380,104 +380,110 @@ module.exports = {
         } else {
           // If NEWS directly put in approvedBlogBucket i.e. inside blogBuckets
 
-          // TODO: check if admin
+          let isCollegeLevelAdmin = false;
+          if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+            isCollegeLevelAdmin = true;
+          }
+          if(isCollegeLevelAdmin){
 
-          // if there are zero blog buckets
-          if (foundCollegePage.blogBuckets.length === 0) {
+            // if there are zero blog buckets
+            if (foundCollegePage.blogBuckets.length === 0) {
 
-            // create a new blog bucket
-            Blog.create({
-              college: req.params.college_name,
-              blogs: [blog],
-            }, async function (err, createdBlog) {
+              // create a new blog bucket
+              Blog.create({
+                college: req.params.college_name,
+                blogs: [blog],
+              }, async function (err, createdBlog) {
 
-              if (err || !createdBlog) {
-                logger.error(req.user._id + ' : (blogs-13)createdBlog err => ' + err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              }
-
-              // add the id of blog bucket to the blogBuckets list in college page
-              insertionBucketId = createdBlog._id;
-              foundCollegePage.blogBuckets.push(createdBlog._id);
-
-              // save the changes
-              await foundCollegePage.save(function (err) {
-                if (err) {
-                  logger.error(req.user._id + ' : (blogs-14)saveCollegePage err => ' + err);
+                if (err || !createdBlog) {
+                  logger.error(req.user._id + ' : (blogs-13)createdBlog err => ' + err);
                   req.flash('error', 'Something went wrong :(');
                   return res.redirect('back');
                 }
+
+                // add the id of blog bucket to the blogBuckets list in college page
+                insertionBucketId = createdBlog._id;
+                foundCollegePage.blogBuckets.push(createdBlog._id);
+
+                // save the changes
+                await foundCollegePage.save(function (err) {
+                  if (err) {
+                    logger.error(req.user._id + ' : (blogs-14)saveCollegePage err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
+                });
+
               });
 
-            });
+            } else {
+              // else if blog buckets exist on college page
 
-          } else {
-            // else if blog buckets exist on college page
+              Blog.
+                findById(last(foundCollegePage.blogBuckets)).
+                exec(async function (err, foundLastBlog) {
 
-            Blog.
-              findById(last(foundCollegePage.blogBuckets)).
-              exec(async function (err, foundLastBlog) {
+                  if (err || !foundLastBlog) {
+                    logger.error(req.user._id + ' : (blogs-15)foundBlog err => ' + err);
+                    req.flash('error', 'Something went wrong :(');
+                    return res.redirect('back');
+                  }
 
-                if (err || !foundLastBlog) {
-                  logger.error(req.user._id + ' : (blogs-15)foundBlog err => ' + err);
-                  req.flash('error', 'Something went wrong :(');
-                  return res.redirect('back');
-                }
+                  // check if the blog bucket is full
+                  if (foundLastBlog.blogs.length >= 20) {
 
-                // check if the blog bucket is full
-                if (foundLastBlog.blogs.length >= 20) {
+                    // if full, then create a new blog bucket
+                    Blog.
+                      create({
+                        college: req.params.college_name,
+                        blogs: [blog],
+                      }, async function (err, createdBlog) {
 
-                  // if full, then create a new blog bucket
-                  Blog.
-                    create({
-                      college: req.params.college_name,
-                      blogs: [blog],
-                    }, async function (err, createdBlog) {
-
-                      if (err || !createdBlog) {
-                        logger.error(req.user._id + ' : (blogs-16)createdBlog err => ' + err);
-                        req.flash('error', 'Something went wrong :(');
-                        return res.redirect('back');
-                      }
-
-                      // and add the new bucket to the blogBuckets list in college page
-                      insertionBucketId = createdBlog._id;
-                      foundCollegePage.blogBuckets.push(createdBlog._id);
-
-                      // save the changes
-                      await foundCollegePage.save(function (err) {
-                        if (err) {
-                          logger.error(req.user._id + ' : (blogs-17)saveCollegePage err => ' + err);
+                        if (err || !createdBlog) {
+                          logger.error(req.user._id + ' : (blogs-16)createdBlog err => ' + err);
                           req.flash('error', 'Something went wrong :(');
                           return res.redirect('back');
                         }
+
+                        // and add the new bucket to the blogBuckets list in college page
+                        insertionBucketId = createdBlog._id;
+                        foundCollegePage.blogBuckets.push(createdBlog._id);
+
+                        // save the changes
+                        await foundCollegePage.save(function (err) {
+                          if (err) {
+                            logger.error(req.user._id + ' : (blogs-17)saveCollegePage err => ' + err);
+                            req.flash('error', 'Something went wrong :(');
+                            return res.redirect('back');
+                          }
+                        });
+
                       });
 
+                  } else {
+                    // else if bucket exists and is not full
+
+                    // add blog to latest bucket in blogBuckets list in college
+                    insertionBucketId = foundLastBlog._id;
+                    foundLastBlog.blogs.push(blog);
+                    
+                    // save changes
+                    await foundLastBlog.save(function (err) {
+                      if (err) {
+                        logger.error(req.user._id + ' : (blogs-18)saveBlog err => ' + err);
+                        req.flash('error', 'Something went wrong :(');
+                        return res.redirect('back');
+                      }
                     });
 
-                } else {
-                  // else if bucket exists and is not full
+                  }
 
-                  // add blog to latest bucket in blogBuckets list in college
-                  insertionBucketId = foundLastBlog._id;
-                  foundLastBlog.blogs.push(blog);
-                  
-                  // save changes
-                  await foundLastBlog.save(function (err) {
-                    if (err) {
-                      logger.error(req.user._id + ' : (blogs-18)saveBlog err => ' + err);
-                      req.flash('error', 'Something went wrong :(');
-                      return res.redirect('back');
-                    }
-                  });
+                });
 
-                }
+                req.flash('success', 'News created successfully');
+                res.redirect('/colleges/'+ foundCollegePage.name +'/blogs')
 
-              });
-
-              req.flash('success', 'News created successfully');
-              res.redirect('/colleges/'+ foundCollegePage.name +'/blogs')
+            }
 
           }
           
