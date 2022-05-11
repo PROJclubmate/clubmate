@@ -141,7 +141,7 @@ div.content{
   .chatdp{margin-left: 0.125rem !important; margin-right: 0.125rem !important;}
   #collegeText{padding: 0 0.75rem 0 0.25rem !important;}
   #collegeicon{margin-left: -0.9375rem !important; margin-right: 0.8125rem !important;}
-  img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
+  img.avatar.cover{border-radius: 0.5rem !important;}
   img.cover.mobile-cover, div.carousel-img{border-radius: 0 0.5rem 0.5rem 0 !important;}
   #fp_carousel_nophoto{border-radius: 0 0.5rem 0.5rem 0;}
   #btncollapse-club{color: #262626 !important;}
@@ -219,6 +219,8 @@ div.content{
   #navbarCollapse{margin-left: calc(10vw + 0.875rem);}
   #nav_search{width: 15.25rem;}
   div.content{padding: 0 8.25rem;}
+  #story-footer, .absolute-center{width: calc(100% - 10vw - 2rem - 16.5rem) !important;}
+  .form-signin{max-width: 20rem !important;}
   .friends-dp{height: 5.25rem !important;}
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 1.75rem !important; padding: 0.675rem 0 !important;}
   #thisweek, #alltime{height: 25vh !important; min-height: 215px;}
@@ -333,7 +335,7 @@ div.content{
   .mobile-cover{height: 200px !important;}
   .hr3{border-bottom: 0.5px solid #e0e0e0; margin: 0 !important;}
   .postclubchat{padding: 0 0.25rem 0.5rem 0.25rem !important; margin: 0 !important;}
-  .carousel-caption{bottom: 2.5rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
+  .carousel-caption{top: 4rem !important; font-size: 0.75rem !important; line-height: 1rem !important;}
   .carousel-caption-heading{margin: 0; line-height: 1rem !important;}
   .chat-head3{width: 92vw;}
   h5.topic-h5{font-size: 1.25rem !important;}
@@ -353,15 +355,16 @@ div.content{
   div.lcov{border-radius: 0.75rem; z-index: 3;}
   div.rcov{border-radius: 0; box-shadow: none;}
   .mobile-cover{height: 180px !important;}
-  div.lpcov{width: inherit; top: -2.25rem; margin-bottom: 0.75rem;}
+  div.lpcov{width: inherit; top: -2.25rem; left: -6.5rem; margin-bottom: 0.75rem;}
   .profilename{white-space: pre-wrap !important; width: 180px; padding: 0.375rem 0 !important;
   line-height: 1.35rem !important; margin-left: 1rem !important;}
-  .profilename.clubname{margin-left: 0 !important; text-align: center !important;}
+  .profilename.clubname{margin-left: 0 !important; text-align: center !important; position: absolute;
+    top: 2.5rem; left: 8rem; width: calc(100vw - 12rem);}
   .profilePic-frame{width: 188px !important;}
   img.profilePic.cover{height: 180px !important; width: 180px !important;}
   .profilePic-frame.lcov{width: 188px !important;}
-  .avatar-frame{width: 188px !important;}
-  img.avatar.cover{height: 180px !important; width: 180px !important; border-radius: 0.5rem 0.5rem 0 0;}
+  .avatar-frame{width: 128px !important;}
+  img.avatar.cover{height: 120px !important; width: 120px !important; border-radius: 0.5rem;}
   .avatar-frame.coverback{box-shadow: 1px 1px 10px -3px rgb(0, 0, 0, 0.25);}
   div.carousel-frame2{height: 180px !important;}
   div.carousel-div{height: 172px !important;}
@@ -394,7 +397,7 @@ div.content{
   .gb11:focus:after{top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;}
   #emoji-picker2{padding-top: 0 !important; padding-bottom: 0 !important;}
   .emoji-up{bottom: 2.125rem !important;}
-  .overlay{border-radius: 0 !important;}
+  .overlay{border-radius: 0 0 0.5rem 0.5rem !important;}
   .overlay3{top: 0!important; left: 0 !important; right: 0 !important; border-radius: 0 !important;}
   .overlay3.overlay3-grad{top: 50px !important; left: 0 !important; right: 0 !important;
     width: unset !important; background: rgba(0,0,0,0.5) !important;}
@@ -439,7 +442,8 @@ div.content{
   .gradient-wrap.rcov.nofill{padding-top: 0 !important; margin-top: 50px !important;}
   #carouselControls.hascover{margin-top: -50px !important;}
   .nofill-color{color: #262626 !important;}
-  .carousel-indicators{top: 54px !important;}
+  .carousel-indicators{bottom: -1rem !important; top: unset !important;}
+  .carousel-control{top: 6rem !important;}
   .text-shadow-white{text-shadow: 0.25px 0.25px white, -0.25px 0.25px white, 
     0.25px -0.25px white, -0.25px -0.25px white !important;}
   .text-shadow-black{text-shadow: 0.25px 0.25px #262626, -0.25px 0.25px #262626, 
@@ -465,7 +469,8 @@ div.content{
   #college-cover.mobileblurred{filter: blur(10px);}
   #college-infobtn-mobile{padding: 1rem 0 !important;}
   .mail-wrap{padding-top: 0.375rem !important;}
-  #club-info-mar{margin-top: 2rem !important;}
+  #club-info-mar{margin-top: 7.75rem !important;}
+  #inputclubAvatarSubmitBtn{border-radius: 0.5rem 0.5rem 0 0;}
   #not_a_clubmember_margin{margin-top: 3.125rem;}
   .coverback.rcov.mobilepad{padding: 0 !important;}
   .topicimg_mobileradius{border-radius: 0 0 0 0.5rem !important;}
@@ -476,7 +481,7 @@ div.content{
   #quickmodal{margin-bottom: 47px;}
   .topnotch-right:before{right: 0.25rem !important;}
   .topnotch-left:before{left: 0.25rem !important;}
-  .post-container{margin-left: 0.25rem; margin-right: 0.25rem;}
+  /* .post-container{margin-left: 0.25rem; margin-right: 0.25rem;} */
   #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
 }
@@ -637,15 +642,15 @@ div.content{
   a.hr2.active{padding-top: 8.5px; padding-bottom: 8.5px;}
   .sidebar-label{font-size: 0.6875rem !important; padding-bottom: 0.125rem;}
   .mobile-cover{height: 160px !important;}
-  div.lpcov{width: 168px; padding-bottom: 0 !important;}
+  div.lpcov{width: 108px;}
   .profilename{width: 160px;}
   .carousel-caption{font-size: 0.75rem !important; line-height: 0.875rem !important;}
   .carousel-caption-heading{font-size: 0.875rem !important; line-height: 0.875rem !important;}
   .profilePic-frame{width: 168px !important;}
   img.profilePic.cover{height: 160px !important; width: 160px !important;}
   .profilePic-frame.lcov{width: 168px !important;}
-  .avatar-frame{width: 168px !important;}
-  img.avatar.cover{height: 160px !important; width: 160px !important;}
+  .avatar-frame{width: 108px !important;}
+  img.avatar.cover{height: 100px !important; width: 100px !important;}
   div.carousel-frame2{height: 160px !important;}
   div.carousel-div{height: 152px !important;}
   .friends-dp{height: 5.0315rem !important;}

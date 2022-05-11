@@ -1225,15 +1225,15 @@ module.exports = {
       var isCollegeLevelAdmin = false;
       var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
       var match = false; var following = false;
-      if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
-        isCollegeLevelAdmin = true;
-      }
       var allClubsArr = foundCollegePage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
       });
       if(req.user){
         if(req.user.userKeys.college == foundCollegePage.name){
           match = true;
+        }
+        if(req.user.isCollegeLevelAdmin === true && req.user.userKeys.college == req.params.college_name){
+          isCollegeLevelAdmin = true;
         }
         currentUserId = req.user._id;
         var keyValue = 0;

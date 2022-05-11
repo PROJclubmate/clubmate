@@ -123,7 +123,7 @@ function blogs_template(response, route){
                   </a>
                 </div>
                 <% if(isCollegeLevelAdmin && route == 'index'){ %>
-                  <div class="reject d-inline-block">
+                  <div class="reject d-none d-inline-block">
                     <form action="/colleges/<%= college %>/blogs/<%= blog.bucketId %>/<%= blog._id %>?_method=DELETE" method="post">
                       <input type="hidden" name="blogId" value="<%= blog._id %>">
                       <button type="submit" class="btn btn-sm btnxs btn-danger"><i class="fas fa-trash-alt"></i></button>
@@ -213,7 +213,7 @@ function blogs_template(response, route){
                   <i class="far fa-newspaper"></i>
                 </div>
                 <% if(isCollegeLevelAdmin && route == 'index'){ %>
-                  <div class="reject d-inline-block">
+                  <div class="reject d-none d-inline-block">
                     <form action="/colleges/<%= college %>/blogs/<%= blog.bucketId %>/<%= blog._id %>?_method=DELETE" method="post">
                       <input type="hidden" name="blogId" value="<%= blog._id %>">
                       <button type="submit" class="btn btn-sm btnxs btn-danger"><i class="fas fa-trash-alt"></i></button>

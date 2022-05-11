@@ -1,12 +1,14 @@
 <% include ../partials/header %>
 
 <div class="row no-gutters">
-	<div class="desktopNone tabletShow w-100 mt-3" style="z-index: 1; margin-bottom: -1rem;">
-		<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-mobile"
-		class="btn btn-light discoverswitch text-lg w-100">
-			Go to admin console
-		</a>
-	</div>
+	<% if(isCollegeLevelAdmin === true){ %>
+		<div class="desktopNone tabletShow w-100 mt-3" style="z-index: 1; margin-bottom: -1rem;">
+			<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-mobile"
+			class="btn btn-light discoverswitch text-lg w-100">
+				Go to admin console
+			</a>
+		</div>
+	<% } %>
 	<div id="college_scroll" class="col-lg-9 card scroll_list_container scroll moz-scroll" style="border-bottom: 1px solid #d2d2d2">
 		<div class="college-infodiv desktopNone tabletShow">
 			<% if(currentUser && keyValue == 2){ %>
@@ -14,11 +16,13 @@
 			<% } else{ %>
 				<div id="college-infobtn-mobile" class="d-flex justify-content-around my-2 py-1 pitchblack w-100">
 			<% } %>
-				<div class="d-flex flex-column px-1 my-2">
-					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
-						<i class="fas fa-blog"></i>
-					</div>
-					<div class="story-alt-label text-xxxs" href="/colleges/<%= college_page.name %>/blogs" style="width: unset !important;">Blogs</div>
+				<div class="px-1 my-2">
+					<a class="d-flex flex-column nolink" href="/colleges/<%= college_page.name %>/blogs">
+						<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
+							<i class="fas fa-blog"></i>
+						</div>
+						<div class="story-alt-label text-xxxs" style="width: unset !important;">Blogs</div>
+					</a>
 				</div>
 				<div class="d-flex flex-column px-1 my-2">
 					<div class="text-xxxl py-2 college-infobtn" style="font-size: 1.75rem !important;">
@@ -290,12 +294,14 @@
 				</div>
 			</div>
 
-			<div>
-				<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-desktop"
-				class="btn btn-light discoverswitch text-lg w-100">
-					Go to admin console
-				</a>
-			</div>
+			<% if(isCollegeLevelAdmin === true){ %>
+				<div>
+					<a href="/colleges/<%= college_page.name %>/admin/console" id="adminconsole-btn-desktop"
+					class="btn btn-light discoverswitch text-lg w-100">
+						Go to admin console
+					</a>
+				</div>
+			<% } %>
 		</div>
   </div>
 </div>
