@@ -82,23 +82,26 @@
         <div id="quickview_nav_desktop" class="nav-hidden">
           <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
           <div class="d-flex flex-column">
+            <div class="d-flex flex-row quickviewcontainers-desktop">
+              <div class="text-xxl college-infobtn quickviewbtns-desktop" style="font-size: unset !important; padding: 0.625rem 0.5rem; margin-bottom: -0.125rem;" title="Add new" data-toggle="modal" data-target="#quickaddnew">
+                <span class="fa-stack fa-2x text-sm">
+                  <i class="far fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-plus fa-stack-1x"></i>
+                </span>
+              </div>
+              <div class="quicknav_text_desktop text-xs my-auto ml-2">ADD</div>
+            </div>
+            <div class="d-flex flex-row quickviewcontainers-desktop">
+              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Notifications" data-toggle="modal" data-target="#quickbell">
+                <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-2px);"></i>
+              </div>
+              <div class="quicknav_text_desktop text-xs my-auto ml-2">BELL</div>
+            </div>
             <div class="d-flex flex-row quickviewcontainers-desktop">  
               <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs" data-toggle="modal" data-target="#quickblog">
                 <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
               </div>
               <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern" data-toggle="modal" data-target="#quickintern">
-                <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">INTERN</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers" data-toggle="modal" data-target="#quickmerch">
-                <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">MERCH</div>
             </div>
             <div class="d-flex flex-row quickviewcontainers-desktop">
               <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events" data-toggle="modal" data-target="#quickevents">
@@ -177,15 +180,18 @@
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#intern" data-toggle="modal" data-target="#quickintern">
-          <i class="fas fa-briefcase quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
-          <span class="quicknav_text_mobile text-xs">INTERN</span>
+        <a class="quicknav_link_mobile my-auto mx-2" href="#bell" data-toggle="modal" data-target="#quickbell">
+          <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-1px);"></i>
+          <span class="quicknav_text_mobile text-xs">BELL</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#merch" data-toggle="modal" data-target="#quickmerch">
-          <i class="fas fa-store quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
-          <span class="quicknav_text_mobile text-xs">MERCH</span>
+        <a class="quicknav_link_mobile my-auto mx-2 py-0" href="#addnew" data-toggle="modal" data-target="#quickaddnew">
+          <span class="fa-stack fa-2x text-xs">
+            <i class="far fa-circle fa-stack-2x quicknav_icon_mobile"></i>
+            <i class="fas fa-plus fa-stack-1x quicknav_icon_mobile"></i>
+          </span>
+          <span class="quicknav_text_mobile text-xs">NEW</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
@@ -204,26 +210,6 @@
   </nav>
 <% } %>
 
-
-<div class="modal fade" id="quickmess" tabindex="-1" aria-labelledby="quickmess" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div id="quickmodal" class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Mess : <span id="messName"></span></h5>
-        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div id="quickViewModal" class="modal-body scroll moz-scroll">
-        <div id="quickMessContent" class="d-flex justify-content-center">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" id="quickblog" tabindex="-1" aria-labelledby="quickblog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -246,17 +232,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="quickmerch" tabindex="-1" aria-labelledby="quickmerch" aria-hidden="true">
+<div class="modal fade" id="quickbell" tabindex="-1" aria-labelledby="quickbell" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Merch and Stickers</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Notifications</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
-        <div id="quickMerchContent" class="d-flex justify-content-center">
+        <div id="quickbellContent" class="d-flex justify-content-center">
           <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp noshadow">
         </div>
       </div>
@@ -267,17 +253,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="quickintern" tabindex="-1" aria-labelledby="quickintern" aria-hidden="true">
+<div class="modal fade" id="quickaddnew" tabindex="-1" aria-labelledby="quickaddnew" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Placements and Interns</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add New</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
-        <div id="quickInternContent" class="d-flex justify-content-center">
+        <div id="quickaddnewContent" class="d-flex justify-content-center">
           <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp noshadow">
         </div>
       </div>
@@ -300,6 +286,26 @@
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickEventsContent" class="d-flex justify-content-center">
           <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp noshadow">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_quickview_modal();">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="quickmess" tabindex="-1" aria-labelledby="quickmess" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div id="quickmodal" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mess : <span id="messName"></span></h5>
+        <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="quickViewModal" class="modal-body scroll moz-scroll">
+        <div id="quickMessContent" class="d-flex justify-content-center">
         </div>
       </div>
       <div class="modal-footer">
