@@ -4,15 +4,15 @@
       <button class="btn btn-sm dropdown-toggle pr-0 py-0 invisible" type="button" data-toggle="dropdown"><i class="fas fa-chevron-down"></i></button>
     </div>
     <div class="my-2">
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="0"> << </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-xs boldtext" value="0"> << </a></span>
       <% if(index-1 > 0){ %>
-        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> <%= index-1 %> </a></span>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-sm boldtext mx-1" value="<%= index-2 %>"> <%= index-1 %> </a></span>
       <% } %>
       <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btn-sm text-sm boldtext mx-1" value="<%= index-1 %>"> <%= index %> </a></span>
       <% if(index+1 < post.subpostBuckets.length){ %>
-        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-sm boldtext mx-1" value="<%= index %>"> <%= index+1 %> </a></span>
       <% } %>
-      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-xs boldtext" value="<%= post.subpostBuckets.length-1 %>"> >> </a></span>
+      <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-xs boldtext" value="<%= post.subpostBuckets.length-1 %>"> >> </a></span>
     </div>
     <div>
       <div class="dropdown ml-auto pr-2">
@@ -22,7 +22,7 @@
             <div class="input-group input-group-sm px-2">
               <input href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" type="number" id="page-index-input" class="form-control search text-xs px-1" placeholder="Page ..">
               <div class="input-group-append">
-                <button id="page-index-button" class="btn btn-secondary text-sm btnxs btn-shadow" type="submit"> Go </button>
+                <button id="page-index-button" class="btn btn-secondary text-sm btn-xs btn-shadow" type="submit"> Go </button>
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
           </div>
           <div><span class="text-xs">#</span><span class="boldtext darkgrey nopad"><%= (j+1)+(20)*(bucket.bucket-1) %></span></div>
         </div>
-        <div class="mobiletext2">
+        <div class="text-mob-index">
           <div class="valign lineheight-lesser mb-1">
             <div>
               <div>
@@ -91,7 +91,7 @@
             <span class="linewrap text-xs"><%= subPosts[j].quoteText %></span>
           </div>
         <% } %>
-        <div class="mobiletext2 linewrap lineheight-less subPost-text"><%= subPosts[j].text %></div>
+        <div class="text-mob-index linewrap lineheight-less subPost-text"><%= subPosts[j].text %></div>
         <% if(subPosts[j].images && subPosts[j].images.length){ %>
           <div>
             <% for(var k=0;k<subPosts[j].images.length;k++){ %>
@@ -159,12 +159,12 @@
   <div class="valign mt-2">
     <div>
       <% if(index-1 > 0){ %>
-        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index-2 %>"> Prev </a></span>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-sm boldtext mx-1" value="<%= index-2 %>"> Prev </a></span>
       <% } %>
     </div>
     <div>
       <% if(index+1 < post.subpostBuckets.length){ %>
-        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btnxs text-sm boldtext mx-1" value="<%= index %>"> Next </a></span>
+        <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" class="load-subPosts-btn btn btn-dark mb-1 btn-xs text-sm boldtext mx-1" value="<%= index %>"> Next </a></span>
       <% } %>
     </div>
   </div>
@@ -202,9 +202,9 @@
             </div>
             <% if(quote){ %>
               <div class="quote px-1 pb-1 my-1 lineheight-lesser">
-                <span class="mobiletext2 linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
-                <span class="mobiletext2 linewrap text-xs"><strong># <%= quoteNum %></strong></span>
-                <span class="mobiletext2 linewrap text-xs boldtext"><%= quoteText %></span>
+                <span class="text-mob-index linewrap text-xs boldtext redcolor text-bitter">Quote:</span>
+                <span class="text-mob-index linewrap text-xs"><strong># <%= quoteNum %></strong></span>
+                <span class="text-mob-index linewrap text-xs boldtext"><%= quoteText %></span>
               </div>
               <input type="hidden" name="quoteNum" value="<%= quoteNum %>">
               <input type="hidden" name="quoteText" value="<%= quoteText %>">
@@ -221,9 +221,9 @@
             </div>
             <div class="subpostbtns">
               <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-success btn-shadow btnxs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
-                <button onclick="none_display('subpostbtns');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
-                <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                <button class="btn btn-sm btn-success btn-shadow btn-xs mt-2 ml-2" onclick="loading_spinner('load-subPostbutton','');"><span id="load-subPostbutton"></span>Submit</button>
+                <button onclick="none_display('subpostbtns');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btn-xs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-rounded btn-shadow mr-2" title="Upload images - Max 10">
                   <i class="fas fa-images"></i>
                 </label>
                 <input type="file" id="inputImages10" class="text-sm" name="images" accept="images/*" multiple>

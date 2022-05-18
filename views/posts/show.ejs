@@ -68,11 +68,11 @@
           <div class="card-body py-1">
         <% } %>
         <% if(!post.image && post.description.length < 200){ %>
-          <p class="m-0 mobiletext2 linewrap description-short-show"><%= post.description %></p>
+          <p class="m-0 text-mob-index linewrap description-short-show"><%= post.description %></p>
         <% } else{ %>
-          <p class="m-0 p-0 mobiletext2 linewrap"><%= post.description %></p>
+          <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
         <% } %>
-          <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+          <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
           <div class="valign">
             <div>
               <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
@@ -139,7 +139,7 @@
                       <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
                     </div>
                     <div class="lineheight-lesser">
-                      <div class="mobiletext1 truncate1">
+                      <div class="text-mob-lg truncate1">
                         <span>
                           <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
                         </span>
@@ -177,18 +177,18 @@
             <div>
               <div class="nounderline m-0 p-0">
                 <% if(post.image){ %>
-                  <div class="mobiletext2 linewrap card-body py-1"><%= post.description %></div>
+                  <div class="text-mob-index linewrap card-body py-1"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
                     <div class="card-body py-1">
-                      <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                      <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                   <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
                 <% } else{ %>
-                  <div class="card-body py-1 mobiletext2 linewrap nolink"><%= post.description %></div>
+                  <div class="card-body py-1 text-mob-index linewrap nolink"><%= post.description %></div>
                   <% if(post.hyperlink && post.hyperlink != ''){ %>
                     <div class="card-body py-1">
-                      <p class="m-0 p-0 mobiletext2 linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+                      <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
                     </div>
                   <% } %>
                 <% } %>
@@ -345,7 +345,7 @@
         <% } else if(post.subpostsCount == 0){ %>
           <div class="dropctn mt-2 py-3 invisible">
             <div class="my-2">
-              <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btnxs text-sm boldtext mx-1" value="">0</a></span>
+              <span><a href="/clubs/<%= clubId %>/posts/<%= post._id %>/m-sP" id="subPost-index" class="load-subPosts-btn btn btn-primary mb-1 btn-xs text-sm boldtext mx-1" value="">0</a></span>
             </div>
           </div>
           <div class="card">
@@ -397,9 +397,9 @@
                     </div>
                     <div class="subpostbtns">
                       <div class="d-flex flex-row-reverse">
-                        <button class="btn btn-success btn-shadow btnxs text-sm ml-2 mt-2">Submit</button>
-                        <button onclick="none_display('subpostbtn');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btnxs text-sm ml-2 mt-2" type="reset">Cancel</button>
-                        <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-round btn-shadow mr-2" title="Upload images - Max 10">
+                        <button class="btn btn-success btn-shadow btn-xs text-sm ml-2 mt-2">Submit</button>
+                        <button onclick="none_display('subpostbtn');" class="btn btn-secondary btn-shadow subpostbtn<%= post._id %> btn-xs text-sm ml-2 mt-2" type="reset">Cancel</button>
+                        <label id="images-10" for="inputImages10" class="custom-file-upload mt-2 btn btn-rounded btn-shadow mr-2" title="Upload images - Max 10">
                           <i class="fas fa-images"></i>
                         </label>
                         <input type="file" id="inputImages10" class="text-sm" name="images" accept="images/*" multiple>
@@ -452,8 +452,8 @@
                   <textarea id="commentbox" onclick="block_display('commentbtn');" class="emoji-input form-control text-sm commentbox6 shadow whitesmokeback" type="text" name="text" placeholder="Write a comment" rows="3" required></textarea>
                 </div>
                 <div class="d-flex flex-row-reverse">
-                  <button class="btn btn-sm btn-success commentbtn btnxs ml-2 mt-2">Submit</button>
-                  <button onclick="none_display('commentbtn');" class="btn btn-secondary commentbtn btnxs text-sm mt-2" type="reset">Cancel</button>
+                  <button class="btn btn-sm btn-success commentbtn btn-xs ml-2 mt-2">Submit</button>
+                  <button onclick="none_display('commentbtn');" class="btn btn-secondary commentbtn btn-xs text-sm mt-2" type="reset">Cancel</button>
                 </div>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
@@ -467,7 +467,7 @@
               <div id="client-comments"></div>
               <% if(post.commentBuckets.length > 2){ %>
                 <div class="text-center mb-2">
-                  <button id="load-more-comments-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= index %>">
+                  <button id="load-more-comments-btn" class="btn btn-light btn-xs text-sm" type="button" value="<%= index %>">
                     <span id="load-more-comments-span"></span>Load More
                   </button>
                 </div>

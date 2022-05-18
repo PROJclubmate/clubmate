@@ -47,7 +47,7 @@ function showParticipantMatchesViewOnly_template(matches, roomParticipantsList, 
               <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
-                    <span class="grey mobiletext">
+                    <span class="grey">
                       <strong><%= matches[i].fullName %></strong>
                       <% if(matches[i].userKeys.batch){ %>
                         , <%= matches[i].userKeys.batch %>
@@ -182,7 +182,7 @@ function showMemberMatches_template(matches, roomParticipantsList, toBeAddedPart
               <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
-                    <span class="grey mobiletext">
+                    <span class="grey">
                       <strong><%= matches[i].fullName %></strong>
                       <% if(matches[i].userKeys.batch){ %>
                         , <%= matches[i].userKeys.batch %>
@@ -327,7 +327,7 @@ function showParticipantMatches_template(matches, roomParticipantsList, toBeRemo
               <div class="my-auto w-100">
                 <div class="valign">
                   <div class="grey">
-                    <span class="grey mobiletext">
+                    <span class="grey">
                       <strong><%= matches[i].fullName %></strong>
                       <% if(matches[i].userKeys.batch){ %>
                         , <%= matches[i].userKeys.batch %>

@@ -119,7 +119,7 @@ function blogs_template(response, route){
                 <div>
                   <a href="/colleges/<%= college %>/blogs/user/<%= blog.author.id %>" class="darkgrey p-name boldtext d-flex">
                     <img src="<%= blog.author.profilePic %>" class="smalldp rounded-circle mr-2 my-auto" alt="...">
-                    <span class="card-text mobiletext3"><%= blog.author.name %></span>
+                    <span class="card-text text-mob-3"><%= blog.author.name %></span>
                   </a>
                 </div>
                 <% if(isCollegeLevelAdmin && route == 'index'){ %>
@@ -143,7 +143,7 @@ function blogs_template(response, route){
 											</div>
                       <div class="mb-auto">
 												<div class="pt-1 ml-1">
-													<img src="<%= blog.image || '/images/noImage.png' %>" alt="..." class="searchdp mx-0 blogsdp noshadow cover mb-auto">
+													<img src="<%= blog.image || '/images/noImage.png' %>" alt="..." class="searchdp mx-0 blogsdp shadow-none cover mb-auto">
 												</div>
 											</div>
                     </div>
@@ -153,14 +153,14 @@ function blogs_template(response, route){
                   </div>
                   <div class="card-text valign">
                     <div>
-                      <div class="text-sm mobiletext3 d-inline-block">
+                      <div class="text-sm text-mob-3 d-inline-block">
                         <span class="lightgrey"><%= moment(blog.createdAt).format('ll') %></span>
                       </div>
                       <div class="separator d-inline-block mx-1">
                         ·
                       </div>
                       <div class="d-inline-block">
-                        <span class="text-sm mobiletext3"><span class="lightgrey mr-2"><%= blog.readTime %> min</span></span>
+                        <span class="text-sm text-mob-3"><span class="lightgrey mr-2"><%= blog.readTime %> min</span></span>
                       </div>
                     </div>
                     <div>
@@ -235,7 +235,7 @@ function blogs_template(response, route){
                     </div>
                   <% } %>
                   <div class="card-text valign mt-3">
-                    <div class="text-sm mobiletext3">
+                    <div class="text-sm text-mob-3">
                       <span class="lightgrey"><%= moment(blog.createdAt).format('ll') %></span>
                     </div>
                     <div class="saveblog">

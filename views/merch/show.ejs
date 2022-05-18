@@ -49,14 +49,14 @@
 						</div>
 						<% if(isCollegeLevelAdmin){ %>
 							<div class="remove-on-edit control-btns">
-								<button id="edit-button" class="btn btn-light btn-round noshadow ml-2 mr-1 d-flex flex-row">
+								<button id="edit-button" class="btn btn-light btn-rounded shadow-none ml-2 mr-1 d-flex flex-row">
 									<div><i class="fas fa-pen mr-2"></i></div>
 									<div>Edit</div>
 								</button>
 								<form
 									action="/colleges/<%= collegeName %>/merchandise/<%- merchItem.category %>/<%- merchItem._id %>?_method=DELETE"
 									method="post">
-									<button class="btn btn-danger btn-round ml-1">
+									<button class="btn btn-danger btn-rounded ml-1">
 										Delete
 									</button>
 								</form>
@@ -105,7 +105,7 @@
 				</p>
 
 				<% if(merchItem.sizes) { %>
-				<h5 class="my-3 remove-on-edit mt-5 mobiletext0">
+				<h5 class="my-3 remove-on-edit mt-5 text-mob-xl">
 					<div class="size">
 						Size :
 					</div>
@@ -122,7 +122,7 @@
 				<% } %>
 
 				<% if(merchItem.colors) { %>
-				<h5 class="my-3 mt-5 remove-on-edit mobiletext0">
+				<h5 class="my-3 mt-5 remove-on-edit text-mob-xl">
 					Color : <span class="info30">
 						<span class="my-1">
 							<% recommends_split(merchItem.colors); %>
@@ -131,18 +131,18 @@
 				</h5>
 				<% } %>
 
-				<!-- <h5 class="my-3 mt-4 remove-on-edit mobiletext0">
+				<!-- <h5 class="my-3 mt-4 remove-on-edit text-mob-xl">
 					Posted By : <span class="posting info30">Lorem</span>
 				</h5> -->
 
 				<% if(merchItem.price) { %>
-				<h5 class="my-3 remove-on-edit mobiletext0">
+				<h5 class="my-3 remove-on-edit text-mob-xl">
 					Price : <span class="info30">Rs. <span class="price">
 							<%- merchItem.price %>
 						</span></span>
 				</h5>
 				<% } %>
-				<h5 class="my-3 remove-on-edit mobiletext0">
+				<h5 class="my-3 remove-on-edit text-mob-xl">
 					Contact : <span class="info30">
 						<span class="contact_name my-1">
 							<%- merchItem.contact %>

@@ -18,7 +18,7 @@
 							<div class="col">
 								<a href="/colleges/<%= college %>/blogs/user/<%= blog.author.id %>" class="darkgrey p-name boldtext d-flex">
 									<img src="<%= blog.author.profilePic %>" class="smalldp rounded-circle mr-2 my-auto" alt="...">
-									<span class="card-text mobiletext3"><%= blog.author.name %></span>
+									<span class="card-text text-mob-sm"><%= blog.author.name %></span>
 								</a>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 											</div>
 											<div class="mb-auto">
 												<div class="pt-1">
-													<img src="<%= blog.image %>" alt="..." class="searchdp mx-0 blogsdp noshadow cover mb-auto">
+													<img src="<%= blog.image %>" alt="..." class="searchdp mx-0 blogsdp shadow-none cover mb-auto">
 												</div>
 											</div>
 										</div>
@@ -43,14 +43,14 @@
                   </div>
 									<div class="card-text valign">
 										<div>
-											<div class="text-sm mobiletext3 d-inline-block">
+											<div class="text-sm text-mob-sm d-inline-block">
 												<span class="lightgrey"><%= moment(blog.createdAt).format('ll') %></span>
 											</div>
 											<div class="separator d-inline-block mx-1">
 												·
 											</div>
 											<div class="d-inline-block">
-												<span class="text-sm mobiletext3 lightgrey mr-2"><%= blog.readTime %> min</span>
+												<span class="text-sm text-mob-sm lightgrey mr-2"><%= blog.readTime %> min</span>
 											</div>
 										</div>
 									</div>
@@ -70,7 +70,7 @@
 							<div class="reject d-inline-block mx-1">
 								<form action="/colleges/<%= college %>/blogs/publish/remove?_method=PUT" method="post">
 									<input type="hidden" name="blogId" value="<%= blog._id %>">
-									<button type="submit" class="btn btn-sm btn-danger btn-round"><i class="fas fa-trash-alt mr-2"></i>Reject</button>
+									<button type="submit" class="btn btn-sm btn-danger btn-rounded"><i class="fas fa-trash-alt mr-2"></i>Reject</button>
 								</form>
 							</div>
 						</div>

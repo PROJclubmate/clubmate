@@ -191,7 +191,7 @@ button.gb.gb8:focus{
 .btn.btn-light.noback, .btn.btn-secondary.noback{
   background: none !important;
 }
-.btnxs.btnshadow{
+.btn-xs.btnshadow{
   box-shadow: 0px 2px 5px -2px rgb(0, 0, 0, 0.5);
 }
 #delete_profilePic-desktop{
@@ -745,12 +745,6 @@ img.chats_chevronimg{
 .no-fa-text-stroke-dark{
   -webkit-text-stroke: 0 !important;
 }
-a.grey.mobiletext{
-  color: var(--color-white-200);
-}
-a.grey.mobiletext:hover{
-  color: white;
-}
 div.carousel-img{
   border-color: var(--color-dark-800);
   box-shadow: inset 0px 0px 3px -1px rgba(0,0,0,0.75);
@@ -829,7 +823,7 @@ div.carousel-img{
   background-color: var(--color-dark-600);
   box-shadow: 0 -2px 10px var(--color-dark-800);
 }
-.custom-file-upload.noshadow{
+.custom-file-upload.shadow-none{
   box-shadow: none !important;
 }
 .discover-navback{

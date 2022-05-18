@@ -38,7 +38,7 @@
                       <i class="fas fa-upload mr-2"></i>profile pic
                     </label>
                     <input type="file" id="inputprofilePic" class="text-sm" name="profilePic" accept="image/*" required>
-                    <button id="inputprofilePicSubmitBtn" class="btn btn-success overlay2 noborder" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
+                    <button id="inputprofilePicSubmitBtn" class="btn btn-success overlay2 border-0" onclick="loading_spinner('load-updateprofilePic','');"><span id="load-updateprofilePic"></span>Submit</button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
@@ -307,7 +307,7 @@
                       <div class="form-signin">
                         <label for="name" class="sr-only">Club name</label>
                         <input id="name" class="form-control form-control-sm shadow commentbox2" type="text" name="name" placeholder="Club name" required>
-                        <label for="inputclubAvatar" class="custom-file-upload btn btn-round noshadow noborder w-100 mt-2" title="Upload club avatar">
+                        <label for="inputclubAvatar" class="custom-file-upload btn btn-rounded shadow-none border-0 w-100 mt-2" title="Upload club avatar">
                           <i class="fas fa-upload mr-2"></i>Club avatar
                         </label>
                         <input type="file" id="inputclubAvatar" class="text-sm" name="avatar" accept="image/*" required="">
@@ -765,7 +765,7 @@
                 <div class="d-flex flex-column px-1 mobilepad mt-2">
                   <div class="info1">
                     <strong class="info-size">Interests:</strong> 
-                    <div class="info30">
+                    <div class="info30 lineheight-less">
                       <% if(currentUser && match){ %>
                         <button onclick="toggle_display('interests_form_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                       <% } %>
@@ -783,7 +783,7 @@
                           </div>
                           <div class="d-flex flex-row-reverse w-100 mb-1">
                             <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                            <button onclick="add_new_inputs('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                            <button onclick="add_new_inputs('interests_form','interests','Interests');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                           </div>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -799,7 +799,7 @@
                   <% if(user.recommends.music.length || (currentUser && match)){ %>
                     <div class="info1">
                       Music: 
-                      <div class="info30">
+                      <div class="info30 lineheight-less">
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form1_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
@@ -815,7 +815,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="add_new_inputs('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form1','music','Music');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -827,7 +827,7 @@
                   <% if(user.recommends.movies.length || (currentUser && match)){ %>
                     <div class="info1">
                       Movies: 
-                      <div class="info30">
+                      <div class="info30 lineheight-less">
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form2_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
@@ -843,7 +843,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="add_new_inputs('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form2','movies','Movies');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -855,7 +855,7 @@
                   <% if(user.recommends.tvshows.length || (currentUser && match)){ %>
                     <div class="info1">
                       TV Shows: 
-                      <div class="info30">
+                      <div class="info30 lineheight-less">
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form3_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
@@ -871,7 +871,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="add_new_inputs('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form3','tvshows','TV Shows');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -883,7 +883,7 @@
                   <% if(user.recommends.places.length || (currentUser && match)){ %>
                     <div class="info1">
                       Places: 
-                      <div class="info30">
+                      <div class="info30 lineheight-less">
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form4_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
@@ -899,7 +899,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="add_new_inputs('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form4','places','Places');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -911,7 +911,7 @@
                   <% if(user.recommends.books.length || (currentUser && match)){ %>
                     <div class="info1">
                       Books: 
-                      <div class="info30">
+                      <div class="info30 lineheight-less">
                         <% if(currentUser && match){ %>
                           <button onclick="toggle_display('recommends_form5_div');" class="btn btn-sm dropdown-toggle floatright m-0 p-0 d-flex pt-1 pl-1 mb-auto"><i class="fas fa-edit"></i></button>
                         <% } %>
@@ -927,7 +927,7 @@
                             </div>
                             <div class="d-flex flex-row-reverse w-100 mb-1">
                               <button class="btn btn-sm btnxs btn-primary ml-2" type="submit">Update</button>
-                              <button onclick="add_new_inputs('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-round noshadow ml-auto" type="button"><strong> + </strong></button>
+                              <button onclick="add_new_inputs('recommends_form5','books','Books');" class="btn btn-sm btnxs btn-primary btn-rounded shadow-none ml-auto" type="button"><strong> + </strong></button>
                             </div>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>
@@ -987,14 +987,14 @@
         <div>
           <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="friendReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="friendReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-user-plus"></i> Add Friend
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
             <div class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded noborder px-2" type="button" data-toggle="dropdown">
+              <button class="gb gb11 hover-slide hover-fill gb-rounded border-0 px-2" type="button" data-toggle="dropdown">
                 <i class="fas fa-check"></i> Friends
               </button>
               <ul class="dropdown-menu dropdown-menu-right dropbox">
@@ -1033,14 +1033,14 @@
             </div>
           <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="cancelReq" type="submit" value="<%= user._id %>">
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="cancelReq" type="submit" value="<%= user._id %>">
                 <i class="fas fa-minus"></i> Request Pending
               </button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
             <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded noborder px-2" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
+              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
           <% } %>
@@ -1069,7 +1069,7 @@
       <div class="valign lb-absolute" style="padding: 0.75rem 0.5rem;">
         <div>
           <a href="/users/<%= user._id %>/settings">
-            <button class="gb gb2 gb-bordered hover-fill gb-rounded noborder px-2" title="Account settings">
+            <button class="gb gb2 gb-bordered hover-fill gb-rounded border-0 px-2" title="Account settings">
               <i class="fas fa-cog mr-2"></i>Settings
             </button>
           </a>

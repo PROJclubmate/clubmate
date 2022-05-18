@@ -22,11 +22,11 @@
                 <% } %>
                 <% if(0 <= rank && rank <= 1){ %>
                   <form action="/clubs/<%= club._id %>?_method=PUT&_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
-                    <label for="inputclubAvatar" class="overlay mobiletext3">
+                    <label for="inputclubAvatar" class="overlay text-mob-sm">
                       <i class="fas fa-upload mr-2"></i>avatar
                     </label>
                     <input type="file" id="inputclubAvatar" class="text-sm" name="avatar" accept="image/*" required>
-                    <button id="inputclubAvatarSubmitBtn" class="btn btn-sm btn-success overlay2 noborder" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
+                    <button id="inputclubAvatarSubmitBtn" class="btn btn-sm btn-success overlay2 border-0" onclick="loading_spinner('load-updateavatar','');"><span id="load-updateavatar"></span>Submit</button>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   </form>
                 <% } %>
@@ -101,11 +101,11 @@
                     </a>
                   <% } %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
+                    <a class="btn btn-xs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } else{ %>
                   <% if(0 <= rank && rank <= 2){ %>
-                    <a class="btn btnxs overlay3" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
+                    <a class="btn btn-xs overlay3" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } %>
               </div>
@@ -114,7 +114,7 @@
       </div>
       <div id="club-info-mar" class="col-md-4 px-1 mobilepad mt-2 keys keyspad">
         <div class="card border-light btncollapse-div">
-          <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info noshadow" data-toggle="collapse" data-target="#infobox"><i class="fas fa-angle-up flipped-verticaly mr-2"></i>Info</button>
+          <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info shadow-none" data-toggle="collapse" data-target="#infobox"><i class="fas fa-angle-up flipped-verticaly mr-2"></i>Info</button>
           <div id="infobox" class="collapse btncollapse-content px-2">
             <% if(currentUser){ %>
               <form action="/users/<%= currentUser._id %>/follow/<%= club._id %>?_method=PUT" method="POST">
@@ -312,8 +312,8 @@
               <!-- Activity Tab -->
               <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                 <% if(rank >= 0 && rank <=4){ %>
-                  <div class="card noborder">
-                    <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem; overflow: hidden;">
+                  <div class="card border-0">
+                    <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
                       <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
                       <label for="description" class="sr-only">Description</label>
@@ -339,7 +339,7 @@
                           </div>
                         </div>
                         <div class="mr-3 my-auto">
-                          <label for="inputImage" class="custom-file-upload btn btn-round btn-shadow" title="Upload image">
+                          <label for="inputImage" class="custom-file-upload btn btn-rounded btn-shadow" title="Upload image">
                             <i class="fas fa-image"></i>
                           </label>
                           <input type="file" id="inputImage" class="text-sm" name="image" accept="image/*">
@@ -393,7 +393,7 @@
                         <button onclick="toggle_display('client-memberRequests-div');
                         document.getElementById('show-requestsbtn').style.display = 'none';
                         document.getElementById('clubmembers-div').style.display = 'none';" 
-                        class="btn btnxs text-xs btn-secondary mx-2" style="height: 26px;">Show</button>
+                        class="btn btn-xs text-xs btn-secondary mx-2" style="height: 26px;">Show</button>
                       </div>
                     </div>
                   </div>
@@ -420,9 +420,9 @@
                     <div class="d-flex">
                       <div>
                         <% if(0 <= rank && rank <= 4){ %>
-                          <button class="btn btnxs chat-input-tool my-auto" title="Search members" onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');"><i class="fas fa-search"></i></button>
+                          <button class="btn btn-xs chat-input-tool my-auto" title="Search members" onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');"><i class="fas fa-search"></i></button>
                         <% } else{ %>
-                          <button class="btn btnxs chat-input-tool my-auto lightgrey2" title="Search members"><i class="fas fa-search"></i></button>
+                          <button class="btn btn-xs chat-input-tool my-auto lightgrey2" title="Search members"><i class="fas fa-search"></i></button>
                         <% } %>
                       </div>
                       <div id="searchMember_form">
@@ -459,7 +459,7 @@
                       <div id="new_story" class="story-alt text-center">
                         <div class="story-alt-plus">+</div>
                       </div>
-                      <div id="new_story_label" class="story-alt-label lightgrey text-sm mobiletext3 pb-2">New update</div>
+                      <div id="new_story_label" class="story-alt-label lightgrey text-sm text-mob-sm pb-2">New update</div>
                     </a>
                   </div>
                   <% } %>
@@ -490,7 +490,7 @@
                       <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
                         <div class="nounderline">
                           <div id="create-new-room-container" class="room-container darkgrey">
-                            <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                            <div class="text-mob-index truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
                           </div>
                         </div>
                       </div>
@@ -505,7 +505,7 @@
                         <div id="create-new-div" class="room-container-div" href="#createNewRoom" data-toggle="modal">
                           <div class="nounderline">
                             <div id="create-new-room-container" class="room-container darkgrey">
-                              <div class="mobiletext2 truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
+                              <div class="text-mob-index truncate1"><i class="fas fa-plus mr-2"></i>Create new</div>
                             </div>
                           </div>
                         </div>
@@ -541,7 +541,7 @@
                           <a href="/chats/club_rooms/<%= club._id %>/open?_csrf=<%= csrfToken %>&convId=&profileId=<%= club._id %>&club=<%= club.name %>&roomName=Common" class="nounderline">
                         <% } %>
                           <div class="room-container whitesmokeback">
-                            <div class="mobiletext2 truncate1">Common</div>
+                            <div class="text-mob-index truncate1">Common</div>
                           </div>
                         </a>
                       </div>
@@ -550,7 +550,7 @@
                           <div id="custom_room_div<%= i %>" class="room-container-div">
                             <a href="/clubs/<%= club._id %>/rooms/<%= club.chatRooms[i-1].conversationId %>" class="nounderline">
                               <div class="room-container">
-                                <div class="mobiletext2 truncate1"></i><%= club.chatRooms[i-1].name %></div>
+                                <div class="text-mob-index truncate1"></i><%= club.chatRooms[i-1].name %></div>
                               </div>
                             </a>
                           </div>
@@ -630,7 +630,7 @@
               <button id="memberReq-btn" class="gb gb8 gb-bordered hover-slide gb-rounded btn-shadow text-sm boldtext" onclick="toggle_display('memberReq-div')">Ask</button>
             <% } else{ %>
               <form action="/clubs/<%= club._id %>/member_requests?_method=PUT" method="POST">
-                <button id="cancelReq-btn" class="btn btnxs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
+                <button id="cancelReq-btn" class="btn btn-xs text-sm btn-dark" name="cancelReq" value="<%= club._id %>">Cancel Request</button>
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               </form>
             <% } %>
@@ -729,7 +729,7 @@
       audioRoomsHTML += `<div id="audio_room_${room.roomId}" class="room-container-div">
         <a href="/audio/join/${room.roomId}" class="nounderline">
           <div class="room-container whiteback">
-            <div class="mobiletext2 truncate1"></i>${room.name}</div>
+            <div class="text-mob-index truncate1"></i>${room.name}</div>
             ${guserRank <= 2 ?
               `<span class="room-del"> 
                 <i onclick="openDeleteAudioRoomModal(event, '${room.roomId}')" class="fas fa-trash-alt mr-2 room-del-img" alt="Delete room"> </i>

@@ -98,7 +98,7 @@ div.content{
   .desktop-mt-2{margin-top: 0.5rem;}
   .post-head, .post-tail, .topic-break{border-left: 0.5px solid #d3d3d3 !important;}
   .post-head, .post-tail, .topic-column, .show-comments{border-left: 0.5px solid #d3d3d3 !important; border-right: 0.5px solid #d3d3d3 !important;}
-  .noborder.post-head, .noborder.post-tail{border-right: 0.5px solid #d3d3d3 !important;}
+  .border-0.post-head, .border-0.post-tail{border-right: 0.5px solid #d3d3d3 !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
   .centerpad-posts{padding: 0 5rem 0 2rem !important;}
@@ -141,7 +141,7 @@ div.content{
   .chatdp{margin-left: 0.125rem !important; margin-right: 0.125rem !important;}
   #collegeText{padding: 0 0.75rem 0 0.25rem !important;}
   #collegeicon{margin-left: -0.9375rem !important; margin-right: 0.8125rem !important;}
-  img.avatar.cover{border-radius: 0.5rem !important;}
+  img.avatar.cover{border-radius: 0.5rem 0 0 0.5rem !important;}
   img.cover.mobile-cover, div.carousel-img{border-radius: 0 0.5rem 0.5rem 0 !important;}
   #fp_carousel_nophoto{border-radius: 0 0.5rem 0.5rem 0;}
   #btncollapse-club{color: #262626 !important;}
@@ -185,7 +185,7 @@ div.content{
   .btn-sm{padding: 0.375rem 0.75rem;}
   .gb{padding: 0.25rem 0.75rem !important;}
   .discoverswitch{padding: 1.375rem 2.25rem !important; font-size: 1.75rem !important;}
-  select, .custom-file-upload{height: 36px !important;}
+  select.select1, .custom-file-upload{height: 36px !important;}
   #preview-postimg{height: 36px !important; width: 36px !important;}
   .custom-file-upload{padding: 0.375rem 0.625rem !important;}
   .smalldp{width: 20px !important; height: 20px !important;}
@@ -396,7 +396,7 @@ div.content{
   .chatpad{padding: 0 0.5rem; margin: 0 0.25rem 0.5rem 0.25rem;}
   .gb11:focus:after{top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;}
   #emoji-picker2{padding-top: 0 !important; padding-bottom: 0 !important;}
-  .emoji-up{bottom: 2.125rem !important;}
+  .emoji-up{bottom: 2.25rem !important;}
   .overlay{border-radius: 0 0 0.5rem 0.5rem !important;}
   .overlay3{top: 0!important; left: 0 !important; right: 0 !important; border-radius: 0 !important;}
   .overlay3.overlay3-grad{top: 50px !important; left: 0 !important; right: 0 !important;
@@ -413,11 +413,11 @@ div.content{
   .text-xxl{font-size: 1.375rem !important;}
   .text-xxxl{font-size: 1.625rem !important;}
   .text-xxxxl{font-size: 2rem !important;}
-  .mobiletext0{font-size: 1.25rem !important;}
-  .mobiletext1{font-size: 1.0625rem !important;}
-  .mobiletext2{font-size: 1rem !important;}
-  .mobiletext3{font-size: 0.9375rem !important;}
-  .mobiletext4{font-size: 0.875rem !important;}
+  .text-mob-xl{font-size: 1.25rem !important;}
+  .text-mob-lg{font-size: 1.0625rem !important;}
+  .text-mob-index{font-size: 1rem !important;}
+  .text-mob-sm{font-size: 0.9375rem !important;}
+  .text-mob-xs{font-size: 0.875rem !important;}
   .form-control.chatinput{padding: 0.625rem 0.75rem !important;}
   #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
   #messages_container{margin-bottom: 54px;}
@@ -512,7 +512,7 @@ div.content{
   .form-signin{max-width: 20rem !important;}
   .form-control{padding: 0.5rem !important;}
   .custom-file-upload{height: 36px !important; width: 36px !important; padding: 0.375rem 0.5rem !important;}
-  select{height: 36px !important; padding: 0.375rem 0.5rem !important;}
+  select.select1{height: 36px !important; padding: 0.375rem 0.5rem !important;}
   select.select3{width: 82px;}
   .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px !important; font-size: 1.125rem !important;}
@@ -596,11 +596,11 @@ div.content{
   .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
   #collegeicon{margin-left: -0.3125rem !important; margin-right: 0.3125rem !important;}
   .friends-dp{height: 5.4065rem !important;}
-  .mobiletext0{font-size: 1.125rem !important;}
-  .mobiletext1{font-size: 1rem !important;}
-  .mobiletext2{font-size: 0.9375rem !important;}
-  .mobiletext3{font-size: 0.875rem !important;}
-  .mobiletext4{font-size: 0.75rem !important;}
+  .text-mob-xl{font-size: 1.125rem !important;}
+  .text-mob-lg{font-size: 1rem !important;}
+  .text-mob-index{font-size: 0.9375rem !important;}
+  .text-mob-sm{font-size: 0.875rem !important;}
+  .text-mob-xs{font-size: 0.75rem !important;}
   .info1{font-size: 0.9375rem !important;}
   .profilename{font-size: 1.125rem !important;}
   .fa-thumbs-up.discover-vote, .fa-heart.discover-vote{font-size: 2rem !important;}
@@ -672,7 +672,7 @@ div.content{
   .form-control{padding: 0.375rem 0.5rem !important;}
   .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
   .custom-file-upload{height: 32px !important; width: 32px !important; padding: 0.25rem 0.5rem !important;}
-  select{height: 32px !important; padding: 0.25rem 0.5rem !important;}
+  select.select1{height: 32px !important; padding: 0.25rem 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
   .story-alt, .story-alt-loader{height: 74px !important; width: 74px !important; border-radius: 1.5rem !important;}
   .navdp{height: 36px !important; width: 36px !important;}
@@ -684,11 +684,11 @@ div.content{
   .fa-caret-up.discover-vote, .fa-caret-down.discover-vote{font-size: 3.125rem !important;}
   .on > .fas.fa-caret-up.discover-vote, .on > .fas.fa-caret-down.discover-vote{font-size: 3.625rem !important;}
   .scroll_list_container{height: calc(100vh - 1rem - 42px) !important;}
-  .mobiletext0{font-size: 1rem !important;}
-  .mobiletext1{font-size: 0.875rem !important;}
-  .mobiletext2{font-size: 0.875rem !important;}
-  .mobiletext3{font-size: 0.8125rem !important;}
-  .mobiletext4{font-size: 0.6875rem !important;}
+  .text-mob-xl{font-size: 1rem !important;}
+  .text-mob-lg{font-size: 0.875rem !important;}
+  .text-mob-index{font-size: 0.875rem !important;}
+  .text-mob-sm{font-size: 0.8125rem !important;}
+  .text-mob-xs{font-size: 0.6875rem !important;}
   .chatname{font-size: 0.9375rem !important;}
   .lastmsg{font-size: 0.9375rem !important;}
   .form-control.chatinput{padding: 0.5rem 0.75rem !important;}
@@ -863,9 +863,6 @@ option:disabled{
 }
 .mobileShow{
   display: none;
-}
-.noborder{
-  border: none !important;
 }
 .border-light{
   border: 0.5px solid #d3d3d3 !important;
@@ -1321,7 +1318,7 @@ time.calendar span{
 }
 .screen{
   width:44%;
-  margin:0 4px;
+  margin:0 0.25rem;
   border-radius:3px;
   height:82%;
   background-color:#3c3d3a;
@@ -1644,7 +1641,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
   border-bottom-width: 1px;
   box-shadow: 0 0 0 0.25rem rgba(216,217,219,0.5);
 }
-.custom-file-upload.noshadow{
+.custom-file-upload.shadow-none{
   box-shadow: inset 0px 1px 1px rgba(255,255,255, 0.5) !important;
 }
 #preview-postimg{
@@ -1988,11 +1985,11 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .btn:focus{
   border-bottom-width: 1px;
 }
-.btn.btn-round{
+.btn.btn-rounded{
   border-radius: 5rem !important;
 }
-.noshadow{
-  box-shadow: none !important;
+.btn.btn-round{
+  border-radius: 50% !important;
 }
 .btn-shadow{
   box-shadow: inset 0px 3px 1px -2px rgba(255,255,255,0.15), 0px 2px 5px -2px rgba(0,0,0,0.5);
@@ -2000,11 +1997,11 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 .gb.btn-shadow{
   box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.5);
 }
-.btnxs{
+.btn-xs{
   padding: 1px 4px !important;
   box-shadow: none;
 }
-.btnxs.btn-shadow{
+.btn-xs.btn-shadow{
   box-shadow: inset 0px 3px 1px -2px rgba(255,255,255,0.15), 0px 2px 5px -2px rgba(0,0,0,0.5);
 }
 .btn.moderation{
@@ -2150,7 +2147,6 @@ a.nolink{
 .info30{
   width:68%;
   float:right;
-  line-height: 1.25rem;
 }
 .chatinput{
   margin: 0;
@@ -2700,10 +2696,6 @@ select{
   background-color: white;
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
-  border: 1px solid #279a67;
-  color: #279a67;
-  border-radius: 0 0.25rem 0.25rem 0;
-  height: 32px;
   box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.4);
   cursor: pointer;
 }
@@ -2716,29 +2708,26 @@ select:hover{
 }
 select.select1{
   -webkit-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
+  border: 1px solid #279a67;
+  color: #279a67;
+  border-radius: 0 0.25rem 0.25rem 0;
+  height: 32px;
 }
 .select2{
   width: 96px;
-  font-size: 0.875rem;
-  padding: 0 4px;
+  padding: 0 0.25rem;
   border-radius: 0.25rem;
   height: 28px;
 }
 .select3{
   width: 136px;
-  font-size: 0.875rem;
-  padding: 0 4px;
+  padding: 0 0.25rem;
   border-radius: 0.25rem;
   height: 28px;
 }
 .select4{
   -webkit-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  font-size: 0.875rem;
-  padding: 0 4px;
+  padding: 0 0.25rem;
   border-radius: 0.25rem;
   height: 28px;
 }
@@ -2806,7 +2795,7 @@ select.select1{
 }
 .emoji-up{
   top: auto !important;
-  bottom: 2.25rem !important;
+  bottom: 2.3125rem;
 }
 .emoji-right{
   right: -10rem !important;
@@ -2866,6 +2855,7 @@ select.select1{
   right: 0;
   bottom: 5px;
   padding: 0 10px;
+  overflow-x: hidden;
   overflow-y: scroll;
   overflow-y: overlay;
 }
@@ -2899,42 +2889,6 @@ select.select1{
   transform: scale(1.5);
 }
 /******************************************************************************/
-.intercom-composer-popover-input2{
-  background-color: white;
-}
-.intercom-composer-popover-input2{
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  background-position: 0 12px;
-  font-weight: 400;
-  font-size: 0.875rem;
-  color: #6e7a89;
-  padding-left: 25px;
-  height: 40px;
-  width: 100%;
-  box-sizing: border-box;
-  background-image: url(/images/search2.png);
-  border:none;
-  outline: none;
-}
-.intercom-emoji-picker-emoji2{
-  padding: 5px;
-  width: 30px;
-  line-height: 30px;
-  display: inline-table;
-  text-align: center;
-  cursor: pointer;
-  vertical-align: middle;
-  font-size: 28px;
-  transition: -webkit-transform 60ms ease-out;
-  transition: transform 60ms ease-out;
-  transition: transform 60ms ease-out,-webkit-transform 60ms ease-out;
-  transition-delay: 60ms;
-}
-.intercom-emoji-picker-emoji2:hover{
-  transition-delay: 0ms;
-  transform: scale(1.5);
-}
 .chat-input-tool{
   background-color: transparent;
   color: grey;

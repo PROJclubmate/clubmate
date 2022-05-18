@@ -3,9 +3,9 @@
 <div class="row no-gutters">
 	<div class="col-md-9 order-md-first order-last">
 	<% if(!filter){ %>
-		<div class="ml-2 mt-4 pt-2 mobiletext4">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+		<div class="ml-2 mt-4 pt-2 text-mob-xs">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<% } else{ %>
-		<div class="ml-2 mt-4 pt-2 mobiletext4 lineheight">Search results for <strong>(</strong>
+		<div class="ml-2 mt-4 pt-2 text-mob-xs lineheight">Search results for <strong>(</strong>
 			<% if(filterKeys.clubs){ %>
 				<span class="lightgrey text-xs">Club name=</span><span class="boldtext text-sm m-0 p-0"><%= filterKeys.clubs %></span>
 			<% } %>
@@ -40,7 +40,7 @@
 					    	<% if(currentUser){ 
 					    		currentUser.userClubs.forEach(function(userClub){ 
 					    			if(clubs[k]._id.equals(userClub.id)){ %>
-						    		<button class="btn btn-white btnxxs text-sm noshadow nopoint search-topright" type="button">
+						    		<button class="btn btn-white btnxxs text-sm shadow-none nopoint search-topright" type="button">
 			                <i class="fas fa-check"></i></button>
 					    	<% }})} %>
 					    </div>
@@ -50,11 +50,11 @@
 			      <div class="valign search-bottompos search-bottompos-desktop">
 			      	<div class="mt-auto">
 					      <% if(clubs[k].clubKeys){ %>
-						      <div class="text-xs mobiletext4 boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
+						      <div class="text-xs text-mob-xs boldtext darkgrey"><%= clubs[k].clubKeys.category %></div>
 						    <% } %>
 						  </div>
 				      <% if(clubs[k].clubKeys){ %>
-				      	<div class="darkgrey text-xs mobiletext4 mt-auto text-right lineheight-lesser ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
+				      	<div class="darkgrey text-xs text-mob-xs mt-auto text-right lineheight-lesser ml-1" style="max-width: 30%;"><%= clubs[k].clubKeys.college %></div>
 				      <% } %>
 					  </div>
 			    </div>
@@ -66,9 +66,9 @@
 	<% if(!filter){ %>
 		<div class="text-center mt-2">
 			<% if(clubs.length != 0 && !clubs.length < 10){ %>
-	      <button id="load-more-search-clubs-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundClubIds %>">
+	      <button id="load-more-search-clubs-btn" class="btn btn-light btn-xs text-sm" type="button" value="<%= foundClubIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-search-clubs-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundClubIds %>">
+	    	<button id="load-more-search-clubs-btn" class="btn btn-light btn-xs text-sm d-none" type="button" value="<%= foundClubIds %>">
 	    <% } %>
 	    	<span id="load-more-search-clubs-span"></span>Load More
 	    </button>
@@ -76,9 +76,9 @@
 	<% } else{ %>
 		<div class="text-center mt-2">
 			<% if(clubs.length != 0 && !clubs.length < 10){ %>
-	      <button id="load-more-filterSearch-clubs-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundClubIds %>">
+	      <button id="load-more-filterSearch-clubs-btn" class="btn btn-light btn-xs text-sm" type="button" value="<%= foundClubIds %>">
 	    <% } else{ %>
-	    	<button id="load-more-filterSearch-clubs-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundClubIds %>">
+	    	<button id="load-more-filterSearch-clubs-btn" class="btn btn-light btn-xs text-sm d-none" type="button" value="<%= foundClubIds %>">
 	    <% } %>
 	    	<span id="load-more-filterSearch-clubs-span"></span>Load More
 	    </button>

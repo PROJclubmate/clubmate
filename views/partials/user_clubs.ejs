@@ -8,11 +8,11 @@
         </div>
         <div class="my-auto mx-3 py-2">
           <span>
-            <a href="/clubs/<%= clubs[i].id._id %>" class="grey mobiletext2">
+            <a href="/clubs/<%= clubs[i].id._id %>" class="grey text-mob-index">
               <strong><%= clubs[i].id.name %></strong>
             </a>
           </span>
-          <span class="my-auto lightgrey text-xs mobiletext4">
+          <span class="my-auto lightgrey text-xs text-mob-xs">
             <%= clubs[i].status %>
             <div class="status" id="status<%= clubs[i].id._id %>">
               <form action="/status-rank?_method=PUT" method="POST">

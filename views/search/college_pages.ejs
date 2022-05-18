@@ -2,7 +2,7 @@
 
 <div class="row no-gutters">
 	<div class="col-md-9 order-md-first order-last">
-	<div class="ml-2 mt-4 pt-2 mobiletext4">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
+	<div class="ml-2 mt-4 pt-2 text-mob-xs">Search results for: <span class="boldtext" value="<%= query %>" id="query"><%= query %></span></div>
 	<div id="server-search-college_pages" class="mo-mx-2">
 		<% var len = college_pages.length; var k=0; for(k;k<len;k++){ %>
 			<div class="card searchcard2 border-light">
@@ -36,9 +36,9 @@
 	<div id="client-search-college_pages" class="mo-mx-2"></div>
 	<div class="text-center mt-2">
 		<% if(college_pages.length != 0 && !college_pages.length < 10){ %>
-      <button id="load-more-search-college_pages-btn" class="btn btn-light btnxs text-sm" type="button" value="<%= foundCollegePageIds %>">
+      <button id="load-more-search-college_pages-btn" class="btn btn-light btn-xs text-sm" type="button" value="<%= foundCollegePageIds %>">
     <% } else{ %>
-    	<button id="load-more-search-college_pages-btn" class="btn btn-light btnxs text-sm d-none" type="button" value="<%= foundCollegePageIds %>">
+    	<button id="load-more-search-college_pages-btn" class="btn btn-light btn-xs text-sm d-none" type="button" value="<%= foundCollegePageIds %>">
     <% } %>
     	<span id="load-more-search-college_pages-span"></span>Load More
     </button>

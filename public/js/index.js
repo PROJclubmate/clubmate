@@ -512,17 +512,17 @@ $('#profilePic-frame-div-mobile').mouseenter(function (e){
   $('#delete_profilePic-mobile').css('display', 'none');
 });
 
-// System emoji picker
-$('.emoji-panel').on("click","#emoji-picker",function (e){
+////////////////// System emoji picker //////////////////
+$('.emoji-panel').on("click","#emoji-picker", function(e){
   e.stopPropagation();
   $('.intercom-composer-emoji-popover').addClass("active");
 });
-$(document).click(function (e){
+$(document).click(function (e) {
   if ($(e.target).attr('class') != '.intercom-composer-emoji-popover' && $(e.target).parents(".intercom-composer-emoji-popover").length == 0) {
     $(".intercom-composer-emoji-popover").removeClass("active");
   }
 });
-$('.emoji-panel').on("click",".intercom-emoji-picker-emoji", function(e){
+$('.emoji-panel').on("click",".intercom-emoji-picker-emoji",function(e){
   var target = $('.emoji-input');
   var caretPos = document.getElementsByClassName('emoji-input')[0].selectionStart;
   var caretEnd = document.getElementsByClassName('emoji-input')[0].selectionEnd;
@@ -539,36 +539,6 @@ $('.intercom-composer-popover-input').on('input', function() {
   }
   else{
     $(".intercom-emoji-picker-emoji").show();
-  }
-});
-
-////////////////// System emoji picker2 //////////////////
-$('.emoji-panel2').on("click","#emoji-picker2",function(e){
-  e.stopPropagation();
-  $('.intercom-composer-emoji-popover2').addClass("active");
-});
-$(document).click(function (e) {
-  if ($(e.target).attr('class') != '.intercom-composer-emoji-popover2' && $(e.target).parents(".intercom-composer-emoji-popover2").length == 0) {
-    $(".intercom-composer-emoji-popover2").removeClass("active");
-  }
-});
-$('.emoji-panel2').on("click",".intercom-emoji-picker-emoji2",function(e){
-  var target = $('.emoji-input2');
-  var caretPos = document.getElementsByClassName('emoji-input2')[0].selectionStart;
-  var caretEnd = document.getElementsByClassName('emoji-input2')[0].selectionEnd;
-  var textAreaTxt = target.val();
-  var txtToAdd = $(this).html();
-  target.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring( caretEnd )).focus();
-  document.getElementsByClassName('emoji-input2')[0].selectionStart = caretPos + txtToAdd.length;
-  document.getElementsByClassName('emoji-input2')[0].selectionEnd = caretPos + txtToAdd.length;
-});
-$('.intercom-composer-popover-input2').on('input', function() {
-  var query = this.value;
-  if(query != ""){
-    $(".intercom-emoji-picker-emoji2:not([title*='"+query+"'])").hide();
-  }
-  else{
-    $(".intercom-emoji-picker-emoji2").show();
   }
 });
 
@@ -915,11 +885,11 @@ $('div.btncollapse-div').on("click",".btncollapse", function(e){
     }, 500); 
   }
   if(btn.attr('id') == 'drop-info'){
-    if(btn.hasClass('noshadow')){
-      btn.removeClass('noshadow');
+    if(btn.hasClass('shadow-none')){
+      btn.removeClass('shadow-none');
       $('.fa-angle-up').removeClass('flipped-verticaly');
     } else{
-      btn.addClass('noshadow');
+      btn.addClass('shadow-none');
       $('.fa-angle-up').addClass('flipped-verticaly');
     }
   }
@@ -1244,7 +1214,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
             if(data.foundPost.topic == '' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');
               btnVisibility.setAttribute('id', 'moderation'+data.foundPost._id);
-              btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','noshadow','text-sm','ml-2');
+              btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','shadow-none','text-sm','ml-2');
               btnVisibility.setAttribute('name', 'published');
               btnVisibility.setAttribute('value', '0');
               btnVisibility.setAttribute('title', 'Post moderation');
