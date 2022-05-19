@@ -155,6 +155,8 @@ div.content{
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
   #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
   #discover_chatlist{padding: 0 0.5rem; margin-right: 3.375rem;}
+  .chats_chevronimg.flipped{margin-right: 3.5rem; visibility: hidden;}
+  .emoji-right{right: -10rem !important;}
 }
 /* Big desktops & above */
 @media screen and (min-width: 1367px){
@@ -463,9 +465,8 @@ div.content{
   .chatlist-background{min-height: 100%; background-image: url(/images/chat-light.svg); background-size: 35%;
     background-repeat: no-repeat; background-position: bottom;}
   .room-container{padding: 2rem 1rem 2rem 1rem !important;}
-  .chats_chevronimg.flipped{margin: 0 2.125rem !important;}
   .chats_chevronimg.anitmate-right{transform: translateX(2.125rem) !important;}
-  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(1.5rem) !important;}
   .mo-mx-2{margin-left: 0.5rem !important; margin-right: 0.5rem !important;}
   .college-infobtn{width: 56px !important; height: 56px !important; box-shadow: 0px 0px 3px -1px rgb(0, 0, 0, 0.4);
     text-align: center;}
@@ -487,6 +488,7 @@ div.content{
   /* .post-container{margin-left: 0.25rem; margin-right: 0.25rem;} */
   #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
+  .emoji-right{right: 0 !important;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -547,7 +549,7 @@ div.content{
   .lineheight-less{line-height: 1.375rem !important;}
   .lineheight-lesser{line-height: 1.125rem !important;}
   .lineheight-least{line-height: 0.875rem !important;}
-  .chat-discover{font-size: 1.125rem;}
+  .chat-settings{font-size: 1.125rem;}
   h3{font-size: 1.875rem;}
   .commentbox{height: 32px !important;}
   .postdp{height: 32px !important; width: 32px !important;}
@@ -564,9 +566,8 @@ div.content{
   .posts_view_toggle-pad{padding-left: 1rem !important;}
   .check-label{transform: scale(1.1);}
   .search-bottompos{width: calc(100% - 110px - 1rem) !important;}
-  .chats_chevronimg.flipped{margin: 0 2.5625rem !important;}
   .chats_chevronimg.anitmate-right{transform: translateX(2.5625rem) !important;}
-  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2.5rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2rem) !important;}
   .btn.moderation.btn-topic{right: -2.875rem !important;}
   #story-maker-container{height: calc(100vh - 50px - 56px - 56px) !important;}
 }
@@ -615,7 +616,7 @@ div.content{
   .lineheight-less{line-height: 1.3125rem !important;}
   .lineheight-lesser{line-height: 1.0625rem !important;}
   .lineheight-least{line-height: 0.8125rem !important;}
-  .chat-discover{font-size: 1.0625rem;}
+  .chat-settings{font-size: 1.0625rem;}
   h3{font-size: 1.8125rem;}
   .story-alt, .story-alt-loader{height: 78px !important; width: 78px !important; border-radius: 1.625rem !important;}
 }
@@ -704,7 +705,7 @@ div.content{
   .lineheight-less{line-height: 1.25rem !important;}
   .lineheight-lesser{line-height: 1rem !important;}
   .lineheight-least{line-height: 0.75rem !important;}
-  .chat-discover{font-size: 1rem;}
+  .chat-settings{font-size: 1rem;}
   h3{font-size: 1.75rem;}
   #collegeicon{margin-left: -0.375rem !important; margin-right: 0.125rem !important;}
   .commentbox{height: 30px !important;}
@@ -719,9 +720,8 @@ div.content{
   .check-label{transform: scale(1);}
   .search-bottompos{width: calc(100% - 100px - 1rem) !important;}
   #drop-chat{padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;}
-  .chats_chevronimg.flipped{margin: 0 2.25rem !important;}
   .chats_chevronimg.anitmate-right{transform: translateX(2.25rem) !important;}
-  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(2.125rem) !important;}
+  .chats_chevronimg.flipped.anitmate-left{transform: scaleX(-1) translateX(1.875rem) !important;}
   .btn.moderation.btn-topic{right: -2.6875rem !important;}
   #story-maker-container{height: calc(100vh - 42px - 56px - 56px) !important;}
 }
@@ -2801,9 +2801,6 @@ select.select1{
   top: auto !important;
   bottom: 2.3125rem;
 }
-.emoji-right{
-  right: -10rem !important;
-}
 .intercom-composer-popover{
   z-index: 3;
   position: absolute;
@@ -3915,10 +3912,15 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   width: 40vw;
   object-fit: cover;
 }
-.far.fa-compass:hover{
-  color: goldenrod;
-  -webkit-text-stroke-width: 0.25px;
+.chat-settings .fas.fa-cog{
+  transition: ease-out 0.15s;
+}
+.chat-settings .fas.fa-cog:hover{
+  -webkit-text-stroke-width: 0.5px;
   -webkit-text-stroke-color: black;
+}
+.chat-settings.active .fas.fa-cog{
+  transform: rotate(30deg);
 }
 .settings-img{
   width: 35%;
@@ -4031,7 +4033,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .chats_chevronimg.flipped{
   transform: scaleX(-1);
-  margin: 0 1.75rem;
 }
 .chats_chevronimg.anitmate-right{
   transform: translateX(1.875rem);

@@ -904,37 +904,43 @@ $('div.btncollapse-div').on("click",".btncollapse", function(e){
 if((location.pathname == '/help/') || (location.pathname == '/faq')){
   $(".navhelp").addClass('requests-active');
 }
-if(location.pathname.split('/')[1] == 'chats'){
-  $('.inbox_count').text($('#chats-notificationCount').attr('value'));
-  $("#inbox").addClass('requests-active');
+if(location.pathname.split('/')[1] == 'chats' || location.pathname.split('/')[1] == 'discover'){
+  if(location.pathname.split('/')[1] == 'chats'){
+    $('.inbox_count').text($('#chats-notificationCount').attr('value'));
+    $("#inbox").addClass('requests-active');
 
-  oldMsgHeightMobile = updateMsgsContainerHeight_feedpage();
-  $(window).resize(function(){
-    oldMsgHeightMobile = updateMsgsContainerHeight_feedpage() + 35;
-  });
+    oldMsgHeightMobile = updateMsgsContainerHeight_feedpage();
+    $(window).resize(function(){
+      oldMsgHeightMobile = updateMsgsContainerHeight_feedpage() + 35;
+    });
+
+    function mobileShowChatsList(){
+      if(window.innerWidth < 767){
+        if($('#chats-list').hasClass('d-none')){
+          $('#chats-list').removeClass('d-none');
+        } else{
+          $('#chats-list').addClass('d-none');
+        }
+      }
+    }
+
+    $('.chat-settings').click(function(){
+      $(this).toggleClass('active');
+    });
+  }
 
   var chatList = document.getElementById('chats-list');
   var hammergesture = new Hammer.Manager(chatList);
   hammergesture.add(new Hammer.Pan({direction:Hammer.DIRECTION_HORIZONTAL, threshold:80, pointers: 0}));
   hammergesture.on("panend", function(ev) {
-    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[2] != 'club_rooms'){
+    if(ev.direction == Hammer.DIRECTION_RIGHT && location.pathname.split('/')[1] == 'chats'){
       $('.chats_chevronimg').addClass('anitmate-right');
       window.location.replace($('#chatlist-chevron').attr('href'));
-    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[2] == 'club_rooms'){
+    } else if(ev.direction == Hammer.DIRECTION_LEFT && location.pathname.split('/')[1] == 'discover'){
       $('.chats_chevronimg').addClass('anitmate-left');
       window.location.replace($('#chatlist-chevron').attr('href'));
     }
   });
-
-  function mobileShowChatsList(){
-    if(window.innerWidth < 767){
-      if($('#chats-list').hasClass('d-none')){
-        $('#chats-list').removeClass('d-none');
-      } else{
-        $('#chats-list').addClass('d-none');
-      }
-    }
-  }
 }
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'clubs' && 
