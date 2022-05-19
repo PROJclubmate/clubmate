@@ -239,6 +239,7 @@ div.content{
   .topic-column{min-height: 20vh;}
   #chats-notificationCount, #chats-rooms{margin-top: 1.375rem !important; font-size: 2.5rem;}
   #lobby-heading{margin-top: -0.25rem !important; font-size: 2.5rem;}
+  #discover_content_masonry_pad{padding: 0 3.5rem;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -292,7 +293,7 @@ div.content{
   .discoverswitch-mobile{padding: 0 3.5rem !important;}
   .story-alt-container{width: 65vw;}
   .lb-absolute{position:  absolute; bottom: 0; left: 0; margin: 0.5rem 0.25rem; width: calc(100% - 0.5rem);}
-  #discover_nav{position: absolute; bottom: 0; top: unset;}
+  #discover_nav_mobile{position: absolute; bottom: 0; top: unset;}
   .navbar{height: 42px;}
   .sidebar-back{height: 42px;}
   .info30{width: 64% !important;}
@@ -320,9 +321,10 @@ div.content{
   #navbar.stuck{transform: translateY(0px) !important;}
   #inbox_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
   .discover-icon{font-size: 1.75rem;}
-  .card.discovercard{width: calc(50% - 0.25rem) !important;}
-  .card.discovercard:not(.right){margin-left: 0 !important;}
-  .card.discovercard.right{margin-right: 0 !important;}
+  .card.discovercard{width: calc(80% - 0.25rem) !important; margin-left: 0 !important;}
+  .card.discovercard.masonry{width: calc(50% - 0.25rem) !important;}
+  .card.discovercard.masonry:not(.right){margin-left: 0 !important;}
+  .card.discovercard.masonry.right{margin-right: 0 !important; margin-left: 0.25rem !important;}
   .votecard_left{margin: 0 !important;}
   .badge-mobile{background: whitesmoke !important; box-shadow: none !important; border: 1px solid whitesmoke;
     color: #262626 !important; top: -0.25rem !important;right: -0.5rem !important;}
@@ -423,8 +425,8 @@ div.content{
   #messages_container{margin-bottom: 54px;}
   .searchdp{margin: 0 !important; height: 100px !important; width: 100px!important;}
   #discover-load-more-btn{margin-bottom: 4rem;}
-  #discover_nav{position: absolute; bottom: 0; top: unset;}
-  #discover_nav-div{width: 100%; padding: 0.125rem 0;}
+  #discover_nav_mobile{position: absolute; bottom: 0; top: unset;}
+  #discover_nav_mobile-div{width: 100%; padding: 0.125rem 0;}
   .chat-msg3{top: 45% !important;}
   .cover-help{width: 100vw !important;}
   .keyspad{margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 1rem;}
@@ -1113,15 +1115,16 @@ input{
   border-radius: 0.5rem;
   border: 0.5px solid #d3d3d3;
   margin: 0 0.25rem 0.5rem 0.25rem;
-  width: calc(50% - 0.5rem);
+  width: calc(80% - 0.5rem);
   cursor: pointer;
   overflow: hidden;
 }
-.discovercard{
+.discovercard.masonry{
+  width: calc(50% - 0.5rem);
   float: left;
   clear: left;
 }
-.discovercard.right{
+.discovercard.masonry.right{
   float: right;
   clear: right;
 }

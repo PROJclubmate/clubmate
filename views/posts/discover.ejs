@@ -4,135 +4,141 @@
 <link rel="stylesheet" href="/css/stories.css">
 
 
-<div class="row no-gutters">
-  <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5"></div>
-  <div class="col-lg-7 col-md-10 story-alt-container mt-3 pt-1">
-    <% if(currentUser && currentUser.discoverSwitch == 1){ %>
-      <div id="stories" class="storiesWrapper"></div>
-    <% } else if(!currentUser || currentUser.discoverSwitch == 2){ %>
-      <div class="d-flex flex-row my-1 px-2">
-        <div class="d-flex flex-column my-auto">
-          <div class="lightgrey mb-2">Show category: <em class="lightgrey2 px-2">All</em></div>
-          <div class="d-none" style="line-height: 0;"><i class="fa fa-search lightgrey2" style="-webkit-text-stroke: 0.5px #e0e0e0;"></i></div>
+<% if(currentUser && currentUser.discoverSwitch == 1){ %>
+  <div id="discover_content_masonry_pad">
+<% } else { %>
+  <div>
+<% } %>
+  <div class="row no-gutters">
+    <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5"></div>
+    <div class="col-lg-7 col-md-10 story-alt-container mt-3 pt-1">
+      <% if(currentUser && currentUser.discoverSwitch == 1){ %>
+        <div id="stories" class="storiesWrapper"></div>
+      <% } else if(!currentUser || currentUser.discoverSwitch == 2){ %>
+        <div class="d-flex flex-row my-1 px-2">
+          <div class="d-flex flex-column my-auto">
+            <div class="lightgrey mb-2">Show category: <em class="lightgrey2 px-2">All</em></div>
+            <div class="d-none" style="line-height: 0;"><i class="fa fa-search lightgrey2" style="-webkit-text-stroke: 0.5px #e0e0e0;"></i></div>
+          </div>
+          <div class="d-flex flex-column invisible">
+            <div class="story-alt"></div>
+            <div class="story-alt-label fake lightgrey2 mb-1">Text</div>
+          </div>
         </div>
-        <div class="d-flex flex-column invisible">
-          <div class="story-alt"></div>
-          <div class="story-alt-label fake lightgrey2 mb-1">Text</div>
+      <% } %>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
+    <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
+      <div class="my-4">
+        <div class="d-inline-flex">
+          <% if(currentUser){ %>
+            <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+              <% if(currentUser.sortByKey == 1){ %>
+                <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
+              <% } else{ %>
+                <button class="sortBykey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
+              <% } %>
+              <% if(currentUser.sortByKey == 2){ %>
+                <div class="sortBykey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor2"></i> NEW</div>
+              <% } else{ %>
+                <button class="sortBykey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
+              <% } %>
+              <% if(currentUser.sortByKey == 3){ %>
+                <div class="sortBykey text-sm mx-2 active"><i class="fas fa-award purplecolor"></i> TOP</div>
+              <% } else{ %>
+                <button class="sortBykey text-sm mx-2" name="sortByKey" value="3" type="submit"><i class="fas fa-award"></i> TOP</button>
+              <% } %>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            </form>
+          <% } else{ %>
+            <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
+            <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-stopwatch"></i> NEW</div>
+            <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-award"></i> TOP</div>
+          <% } %>
+        </div>
+      </div>
+      <div id="server-posts-discover">
+        <% //include ../partials/posts_index %>
+      </div>
+      <div id="client-posts-discover" style="overflow: hidden;"></div>
+      <div id="discover-load-more-btn" class="text-center pt-2">
+        <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
+          <span id="load-more-span"></span>Load
+        </button>
+      </div>
+    </div>
+    <% if(currentUser){ %>
+      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.875rem;">
+        <div>
+          <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+            <% if(currentUser.discoverSwitch == 1){ %>
+              <div id="following-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
+              <button class="btn btn-light discoverswitch" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas"></i></button>
+            <% } else if(currentUser.discoverSwitch == 2){ %>
+              <button class="btn btn-light discoverswitch" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university"></i></button>
+              <div id="explore-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
+            <% } %>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </div>
+        <% if(currentUser && collegeName && collegeName != ''){ %>
+          <div id="quickview_nav_desktop" class="nav-hidden">
+            <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
+            <div class="d-flex flex-column">
+              <div class="d-flex flex-row quickviewcontainers-desktop">
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" style="font-size: unset !important; padding: 0.625rem 0.5rem; margin-bottom: -0.125rem;" title="Add new" data-toggle="modal" data-target="#quickaddnew">
+                  <span class="fa-stack fa-2x text-sm">
+                    <i class="far fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-plus fa-stack-1x"></i>
+                  </span>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">ADD</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Notifications" data-toggle="modal" data-target="#quickbell">
+                  <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-2px);"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">BELL</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">  
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs" data-toggle="modal" data-target="#quickblog">
+                  <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events" data-toggle="modal" data-target="#quickevents">
+                  <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">EVENTS</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">
+                <div class="text-xxl college-infobtn quickviewbtns-desktop messMenuOpen" title="Mess menu" data-toggle="modal" data-target="#quickmess">
+                  <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">MESS</div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } else{ %>
+      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 0.65rem;">
+        <div><em class="lightgrey">Logged out</em></div>
+        <div class="mt-3 valign" style="padding-top: 0.65rem;">
+          <a href="/login" class="btn btn-light discoverswitch shadow-none noback"><i class="fas fa-sign-in-alt discover-icon" style="-webkit-text-stroke: 0.25px #e0e0e0;"></i></a>
+          <div id="explore-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
         </div>
       </div>
     <% } %>
   </div>
 </div>
-<div class="row no-gutters">
-  <div class="col-lg-2 col-md-1 px-2 mobileNone mt-5" style="padding-top: 0.8rem;"></div>
-  <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
-    <div class="my-4">
-      <div class="d-inline-flex">
-        <% if(currentUser){ %>
-          <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-            <% if(currentUser.sortByKey == 1){ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
-            <% } else{ %>
-              <button class="sortBykey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
-            <% } %>
-            <% if(currentUser.sortByKey == 2){ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor2"></i> NEW</div>
-            <% } else{ %>
-              <button class="sortBykey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
-            <% } %>
-            <% if(currentUser.sortByKey == 3){ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-award purplecolor"></i> TOP</div>
-            <% } else{ %>
-              <button class="sortBykey text-sm mx-2" name="sortByKey" value="3" type="submit"><i class="fas fa-award"></i> TOP</button>
-            <% } %>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          </form>
-        <% } else{ %>
-          <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
-          <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-stopwatch"></i> NEW</div>
-          <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-award"></i> TOP</div>
-        <% } %>
-      </div>
-    </div>
-    <div id="server-posts-discover">
-      <% //include ../partials/posts_index %>
-    </div>
-    <div id="client-posts-discover" style="overflow: hidden;"></div>
-    <div id="discover-load-more-btn" class="text-center pt-2">
-      <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
-        <span id="load-more-span"></span>Load
-      </button>
-    </div>
-  </div>
-  <% if(currentUser){ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.875rem;">
-      <div>
-        <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-          <% if(currentUser.discoverSwitch == 1){ %>
-            <div id="following-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-university"></i><span class="text-sm pl-2">Following..</span></div>
-            <button class="btn btn-light discoverswitch" name="discoverSwitch" value="2" type="submit"><i class="fas fa-globe-americas"></i></button>
-          <% } else if(currentUser.discoverSwitch == 2){ %>
-            <button class="btn btn-light discoverswitch" name="discoverSwitch" value="1" type="submit"><i class="fas fa-university"></i></button>
-            <div id="explore-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
-          <% } %>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </form>
-      </div>
-      <% if(currentUser && collegeName && collegeName != ''){ %>
-        <div id="quickview_nav_desktop" class="nav-hidden">
-          <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
-          <div class="d-flex flex-column">
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" style="font-size: unset !important; padding: 0.625rem 0.5rem; margin-bottom: -0.125rem;" title="Add new" data-toggle="modal" data-target="#quickaddnew">
-                <span class="fa-stack fa-2x text-sm">
-                  <i class="far fa-circle fa-stack-2x"></i>
-                  <i class="fas fa-plus fa-stack-1x"></i>
-                </span>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">ADD</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Notifications" data-toggle="modal" data-target="#quickbell">
-                <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-2px);"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">BELL</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">  
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs" data-toggle="modal" data-target="#quickblog">
-                <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Attendance & Events" data-toggle="modal" data-target="#quickevents">
-                <i class="fas fa-calendar-check" style="-webkit-text-stroke-width: 0;"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">EVENTS</div>
-            </div>
-            <div class="d-flex flex-row quickviewcontainers-desktop">
-              <div class="text-xxl college-infobtn quickviewbtns-desktop messMenuOpen" title="Mess menu" data-toggle="modal" data-target="#quickmess">
-                <i class="fas fa-utensils" style="-webkit-text-stroke-width: 0;"></i>
-              </div>
-              <div class="quicknav_text_desktop text-xs my-auto ml-2">MESS</div>
-            </div>
-          </div>
-        </div>
-      <% } %>
-    </div>
-  <% } else{ %>
-    <div class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 0.65rem;">
-      <div><em class="lightgrey">Logged out</em></div>
-      <div class="mt-3 valign" style="padding-top: 0.65rem;">
-        <a href="/login" class="btn btn-light discoverswitch shadow-none noback"><i class="fas fa-sign-in-alt discover-icon" style="-webkit-text-stroke: 0.25px #e0e0e0;"></i></a>
-        <div id="explore-switch" class="btn btn-light discoverswitch shadow-none"><i class="fas fa-globe-americas"></i><span class="text-sm pl-2">Explore!</span></div>
-      </div>
-    </div>
-  <% } %>
-</div>
 
 <% if(currentUser){ %>
-  <nav id="discover_nav" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback nav-hidden">
-    <div id="discover_nav-div">
+  <nav id="discover_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback nav-hidden">
+    <div id="discover_nav_mobile-div">
       <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
         <% if(currentUser.discoverSwitch == 1){ %>
           <div class="btn btn-light discoverswitch-mobile shadow-none valign noback">
@@ -152,8 +158,8 @@
     </div>
   </nav>
 <% } else{ %>
-  <nav id="discover_nav" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
-    <div id="discover_nav-div">
+  <nav id="discover_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
+    <div id="discover_nav_mobile-div">
       <div class="valign">
         <a href="/login" class="btn btn-light discoverswitch-mobile darkgrey">
           <div class="d-flex flex-row">

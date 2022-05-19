@@ -23,17 +23,19 @@ if(location.pathname == '/discover'){
             var div = document.getElementById('client-posts-discover');
             div.innerHTML += discover_posts_template(response);
           }
-          // 2 column masonry
-          var left_column_height = 0;
-          var right_column_height = 0;
-          var items = $('.discovercard');
-          for (var i=0;i<items.length;i++){
-            if (left_column_height > right_column_height) {
-              right_column_height+= items.eq(i).addClass('right').outerHeight(true);
-            } else{
-              left_column_height+= items.eq(i).outerHeight(true);
+          if(response.discoverSwitch === 2){
+            // 2 column masonry
+            var left_column_height = 0;
+            var right_column_height = 0;
+            var items = $('.discovercard');
+            for (var i=0;i<items.length;i++){
+              if (left_column_height > right_column_height) {
+                right_column_height+= items.eq(i).addClass('right').outerHeight(true);
+              } else{
+                left_column_height+= items.eq(i).outerHeight(true);
+              }
             }
-          };
+          }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{
           $('#load-more-btn').addClass('d-none');
@@ -793,7 +795,11 @@ function discover_posts_template(response){
       </div>
     </div>
   <% } %>
-  <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
+  <% if(discoverSwitch === 1){ %>
+    <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
+  <% } else if(discoverSwitch === 2){ %>
+    <div id="discovercard<%= posts[k]._id %>" class="card discovercard masonry">
+  <% } %>
     <% if(posts[k].topic == ''){ %>
       <% if(posts[k].image){ %>
         <span>
@@ -844,7 +850,7 @@ function discover_posts_template(response){
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
   PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
-  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
+  discoverSwitch: response.discoverSwitch, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 

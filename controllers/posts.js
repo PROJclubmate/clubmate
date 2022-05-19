@@ -168,7 +168,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -214,7 +214,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -313,7 +313,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -417,7 +417,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -462,7 +462,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -554,7 +554,7 @@ module.exports = {
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
             res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
-            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, 
+            foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           }
@@ -653,7 +653,7 @@ module.exports = {
           }
         });
         return res.json({hasVote, hasModVote, posts: discoverPosts, foundPostIds, 
-        PC_50_clubAvatar, arrLength, csrfToken: res.locals.csrfToken, cdn_prefix});
+        PC_50_clubAvatar, arrLength, discoverSwitch: 2, csrfToken: res.locals.csrfToken, cdn_prefix});
       }
       });
     }
