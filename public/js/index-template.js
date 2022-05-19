@@ -35,6 +35,8 @@ if(location.pathname == '/discover'){
                 left_column_height+= items.eq(i).outerHeight(true);
               }
             }
+          } else{
+            $('#discover_chatlist').removeClass('d-none');
           }
           $('#load-more-btn').html('<span id="load-more-span"></span>Load More').blur();
         } else{

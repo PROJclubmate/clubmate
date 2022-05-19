@@ -62,7 +62,63 @@
       <div id="server-posts-discover">
         <% //include ../partials/posts_index %>
       </div>
-      <div id="client-posts-discover" style="overflow: hidden;"></div>
+      <div style="display: inline-flex;">
+        <div id="client-posts-discover" style="overflow: hidden; display: table;"></div>
+        <% if(currentUser && currentUser.discoverSwitch === 1){ %>
+          <% if(chatList.length){ %>
+            <div id="discover_chatlist" class="d-none" style="display: table;">
+              <% for(var i=0;i<chatList.length;i++){ %>
+                <form class="chat-form" action="/chats/feed/open" method="GET">
+                  <% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
+                    <div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>^" class="active" value="<%= chatList[i].type %>">
+                  <% } else{ %>
+                    <div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>^" class="" value="<%= chatList[i].type %>">
+                  <% } %>
+                    <div>
+                      <div class="py-2 my-1 px-1">
+                        <% if(chatList[i].type == 'user'){ %>
+                          <a href="/users/<%= chatList[i].id %>">
+                            <% if(chatList[i].id.toString() == recipientId2){ %>
+                              <% if(!chatList[i].userKeys.sex){ %>
+                                <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUser.png' %>">
+                              <% } else if(chatList[i].userKeys.sex == 'Male'){ %>
+                                <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
+                              <% } else if(chatList[i].userKeys.sex == 'Female'){ %>
+                                <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
+                              <% } %>
+                            <% } else{ %>
+                              <% if(!chatList[i].userKeys.sex){ %>
+                                <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
+                              <% } else if(chatList[i].userKeys.sex == 'Male'){ %>
+                                <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
+                              <% } else if(chatList[i].userKeys.sex == 'Female'){ %>
+                                <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
+                              <% } %>
+                            <% } %>
+                          </a>
+                        <% } else if(chatList[i].type == 'club'){ %>
+                          <% if(chatList[i].id.toString() == convClubId2){ %>
+                            <a href="/clubs/<%= chatList[i].id %>">
+                              <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noClub.png' %>">
+                            </a>
+                          <% } else{ %>
+                            <a href="/clubs/<%= chatList[i].id %>">
+                              <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
+                            </a>
+                          <% } %>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              <% } %>
+            </div>
+          <% } else{ %>
+            <div id="discover_chatlist" class="d-flex mx-auto py-2 text-xs lightgrey" style="display: table;">Nothing here</div>
+          <% } %>
+        <% } %>
+      </div>
       <div id="discover-load-more-btn" class="text-center pt-2">
         <button id="load-more-btn" class="btn btn-light btn-sm btn-load" type="button" value="<%= //foundPostIds %>">
           <span id="load-more-span"></span>Load

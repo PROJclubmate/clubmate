@@ -154,6 +154,7 @@ div.content{
   #college-cover.desktopFit{height: 160px;}
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
   #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
+  #discover_chatlist{padding: 0 0.5rem; margin-right: 3.375rem;}
 }
 /* Big desktops & above */
 @media screen and (min-width: 1367px){
@@ -321,7 +322,7 @@ div.content{
   #navbar.stuck{transform: translateY(0px) !important;}
   #inbox_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
   .discover-icon{font-size: 1.75rem;}
-  .card.discovercard{width: calc(80% - 0.25rem) !important; margin-left: 0 !important;}
+  .card.discovercard{width: calc(100% - 0.25rem) !important; margin-left: 0 !important;}
   .card.discovercard.masonry{width: calc(50% - 0.25rem) !important;}
   .card.discovercard.masonry:not(.right){margin-left: 0 !important;}
   .card.discovercard.masonry.right{margin-right: 0 !important; margin-left: 0.25rem !important;}
@@ -1115,7 +1116,7 @@ input{
   border-radius: 0.5rem;
   border: 0.5px solid #d3d3d3;
   margin: 0 0.25rem 0.5rem 0.25rem;
-  width: calc(80% - 0.5rem);
+  width: calc(100% - 0.5rem);
   cursor: pointer;
   overflow: hidden;
 }
@@ -3597,6 +3598,12 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .radio input[type=radio] + .radio-label:empty:before {
   margin-right: 0;
+}
+#discover_chatlist{
+  background-color: white;
+  border: 0.5px solid #d3d3d3;
+  border-radius: 0.5rem;
+  margin-left: 0.25rem;
 }
 .discover-overlay{
   height: 100%;

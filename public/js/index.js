@@ -33,9 +33,11 @@ window.onscroll = function(){
     if(scroll > 40){
       quickview_nav_desktop.classList.add("nav-hidden");
       discover_nav_desktop.classList.add("nav-hidden");
+      discover_chatlist.classList.add("nav-hidden");
     } else{
       quickview_nav_desktop.classList.remove("nav-hidden");
       discover_nav_desktop.classList.remove("nav-hidden");
+      discover_chatlist.classList.remove("nav-hidden");
     }
   }
 }
@@ -131,6 +133,7 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var home = document.getElementById('side-home');
   home.classList.toggle('active');
 } else if(location.pathname == '/discover'){
+  var discover_chatlist = document.getElementById("discover_chatlist");
   var discover_nav_mobile = document.getElementById("discover_nav_mobile");
   var discover_nav_desktop = document.getElementById("discover_nav_desktop");
   var quickview_nav_desktop = document.getElementById("quickview_nav_desktop");
