@@ -1,7 +1,9 @@
 <% include ../partials/header %>
-<link rel="stylesheet" href="/zuck.js-master/dist/zuck.min.css">
-<link rel="stylesheet" href="/zuck.js-master/dist/skins/facesnap.min.css">
-<link rel="stylesheet" href="/css/stories.css">
+<% if(currentUser && currentUser.discoverSwitch == 1){ %>
+  <link rel="stylesheet" href="/zuck.js-master/dist/zuck.min.css">
+  <link rel="stylesheet" href="/zuck.js-master/dist/skins/facesnap.min.css">
+  <link rel="stylesheet" href="/css/stories.css">
+<% } %>
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 <script src="/js/libs/hammer.min.js"></script>
 
@@ -83,7 +85,7 @@
                       <div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>^" class="" value="<%= chatList[i].type %>">
                     <% } %>
                       <div>
-                        <div class="py-2 my-1 px-1">
+                        <div class="py-2 my-1 px-1 position-relative">
                           <% if(chatList[i].type == 'user'){ %>
                             <a href="/users/<%= chatList[i].id %>">
                               <% if(chatList[i].id.toString() == recipientId2){ %>
@@ -115,6 +117,13 @@
                               </a>
                             <% } %>
                           <% } %>
+                          <div>
+                            <% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
+                              <span class="badge badge-success badge-round2 discover-msgscounter"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
+                            <% } else{ %>
+                              <span class="badge badge-success badge-round2 discover-msgscounter d-none">0</span>
+                            <% } %>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -135,7 +144,7 @@
       </div>
     </div>
     <% if(currentUser){ %>
-      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 3.875rem;">
+      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 4.25rem;">
         <div>
           <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
             <% if(currentUser.discoverSwitch == 1){ %>
@@ -148,7 +157,7 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
-        <% if(currentUser && collegeName && collegeName != ''){ %>
+        <% if(currentUser && collegeName && collegeName != '' && currentUser.discoverSwitch == 1){ %>
           <div id="quickview_nav_desktop" class="nav-hidden">
             <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
             <div class="d-flex flex-column">
@@ -241,7 +250,7 @@
   </nav>
 <% } %>
 
-<% if(currentUser && collegeName && collegeName != ''){ %>
+<% if(currentUser && collegeName && collegeName != '' && currentUser.discoverSwitch == 1){ %>
   <nav id="quickview_nav_mobile" class="navbar fixed-bottom navbar-light desktopNone tabletShow discover-navback">
     <ul class="quicknav_list_mobile d-flex justify-content-around w-100">
       <li class="quicknav_item_mobile">
@@ -387,11 +396,13 @@
 </div>
 
 <% include ../partials/footer %>
-<script src="/zuck.js-master/dist/zuck.js"></script>
-<script src="/js/story_viewer/discover_stories.js"></script>
+<% if(currentUser && currentUser.discoverSwitch == 1){ %>
+  <script src="/zuck.js-master/dist/zuck.js"></script>
+  <script src="/js/story_viewer/discover_stories.js"></script>
+<% } %>
 <script src="/js/quick-template.js"></script>
 
-<% if(currentUser){ %>
+<% if(currentUser && currentUser.discoverSwitch == 1){ %>
   <script>
     const storiesData = <%- JSON.stringify(stories) %>;
     const csrfToken = "<%= csrfToken %>";

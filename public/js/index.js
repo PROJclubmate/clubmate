@@ -33,10 +33,15 @@ window.onscroll = function(){
     if(scroll > 40){
       quickview_nav_desktop.classList.add("nav-hidden");
       discover_nav_desktop.classList.add("nav-hidden");
-      discover_chatlist.classList.add("nav-hidden");
     } else{
       quickview_nav_desktop.classList.remove("nav-hidden");
       discover_nav_desktop.classList.remove("nav-hidden");
+    }
+  }
+  if(discover_chatlist){
+    if(scroll > 40){
+      discover_chatlist.classList.add("nav-hidden");
+    } else{
       discover_chatlist.classList.remove("nav-hidden");
     }
   }
@@ -138,13 +143,12 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
   var discover_nav_desktop = document.getElementById("discover_nav_desktop");
   var quickview_nav_desktop = document.getElementById("quickview_nav_desktop");
   var quickview_nav_mobile = document.getElementById("quickview_nav_mobile");
-  if(quickview_nav_desktop && quickview_nav_mobile){
-    if(window.innerWidth > 768){
+  if(window.innerWidth > 768){
+    if(quickview_nav_desktop){
       quickview_nav_desktop.classList.remove("nav-hidden");
-      discover_nav_mobile.classList.remove("nav-hidden");
-    } else{
-      discover_nav_mobile.classList.remove("nav-hidden");
     }
+  } else{
+    discover_nav_mobile.classList.remove("nav-hidden");
   }
 
   var discover = document.getElementById('side-discover');

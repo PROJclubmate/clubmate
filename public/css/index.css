@@ -65,6 +65,8 @@ div.content{
   .btn.story-maker-next.back{left: 11rem !important;}
   .quickviewbtns-desktop{color: #262626;}
   .gb{padding: 0.25rem 0.675rem !important;}
+  .fa-stack{transform: scale(1.5);}
+  .fa-stack .fa-circle{-webkit-text-stroke: 1px white;}
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
@@ -154,8 +156,9 @@ div.content{
   #college-cover.desktopFit{height: 160px;}
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
   #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
-  #discover_chatlist{padding: 0 0.5rem; margin-right: 3.375rem;}
-  .chats_chevronimg.flipped{margin-right: 3.5rem; visibility: hidden;}
+  #discover_chatlist{padding: 0 0.5rem; margin-right: 3.5rem; margin-left: 0.25rem;}
+  .chats_chevronimg{visibility: hidden;}
+  .chats_chevronimg.flipped{margin-right: 3.5rem;}
   .emoji-right{right: -10rem !important;}
 }
 /* Big desktops & above */
@@ -242,7 +245,7 @@ div.content{
   .topic-column{min-height: 20vh;}
   #chats-notificationCount, #chats-rooms{margin-top: 1.375rem !important; font-size: 2.5rem;}
   #lobby-heading{margin-top: -0.25rem !important; font-size: 2.5rem;}
-  #discover_content_masonry_pad{padding: 0 3.5rem;}
+  #discover_content_masonry_pad{padding-left: 3rem;}
 }
 /* On screens that are less than 1200px wide, make the sidebar into a topbar */
 @media screen and (max-width: 1199px){
@@ -324,7 +327,8 @@ div.content{
   #navbar.stuck{transform: translateY(0px) !important;}
   #inbox_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
   .discover-icon{font-size: 1.75rem;}
-  .card.discovercard{width: calc(100% - 0.25rem) !important; margin-left: 0 !important;}
+  #discover_chatlist{margin-left: 0.5rem !important;}
+  .card.discovercard{width: 100% !important; margin-left: 0 !important; margin-right: 0 !important;}
   .card.discovercard.masonry{width: calc(50% - 0.25rem) !important;}
   .card.discovercard.masonry:not(.right){margin-left: 0 !important;}
   .card.discovercard.masonry.right{margin-right: 0 !important; margin-left: 0.25rem !important;}
@@ -1119,6 +1123,7 @@ input{
   width: calc(100% - 0.5rem);
   cursor: pointer;
   overflow: hidden;
+  transition: 0.15s ease-out;
 }
 .discovercard.masonry{
   width: calc(50% - 0.5rem);
@@ -1133,7 +1138,7 @@ input{
   filter: brightness(88%);
   background: transparent;
   transition: ease-out 0.15s;
-  border: none;
+  border: transparent;
 }
 .card.indexcard{
   border: none;
@@ -3600,7 +3605,12 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   background-color: white;
   border: 0.5px solid #d3d3d3;
   border-radius: 0.5rem;
-  margin-left: 0.25rem;
+}
+.discover-msgscounter{
+  position: absolute;
+  right: 0.25rem;
+  bottom: 0.5rem;
+  box-shadow: 0 0 0 2px white;
 }
 .discover-overlay{
   height: 100%;
