@@ -20,7 +20,6 @@ const {
   indexFilterSearchMoreUsers,
   indexFilterSearchClubs,
   indexFilterSearchMoreClubs, 
-  indexViewAllFriends,
   indexViewAllStudents,
   indexSearchCollegePages,
   indexSearchMoreCollegePages,
@@ -83,7 +82,7 @@ router.get('/find_colleges/search', middleware.checkWaitingWall, indexSearchColl
 // Search college pages(Load more using AJAX)
 router.get('/colleges-moreResults/search/:query', middleware.checkWaitingWall, indexSearchMoreCollegePages);
 
-// Friend requests / Club invites
+// Club invites
 router.put('/requests', middleware.isLoggedIn, indexRequests);
 
 // Member requests
@@ -91,9 +90,6 @@ router.put('/clubs/:id/member_requests', middleware.isLoggedIn, indexMemberReque
 
 // Edit member-info(status/rank)
 router.put('/status-rank', middleware.isLoggedIn, indexMemberInfo);
-
-// View all friends
-router.get('/users/:id/all_friends', middleware.isLoggedIn, indexViewAllFriends);
 
 // View list of all students in college
 router.get('/all_students/colleges/:college_key', middleware.checkWaitingWall, middleware.searchAndFilterUsers, indexViewAllStudents);

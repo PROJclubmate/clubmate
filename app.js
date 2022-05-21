@@ -212,7 +212,6 @@ app.use(async function (req, res, next) {
       //REQUESTS
       let foundUser = await User.findById(req.user._id)
         .populate({ path: 'clubInvites', select: 'name avatar avatarId banner' })
-        .populate({ path: 'friendRequests', select: 'fullName profilePic profilePicId userKeys note' })
         .exec();
 
       // Give stories array group by clubs
@@ -276,7 +275,6 @@ app.use(async function (req, res, next) {
       });
       res.locals.clubUpdates = foundUser.clubUpdates;
       res.locals.clubInviteRequests = foundUser.clubInvites.reverse();
-      res.locals.friendRequests = foundUser.friendRequests.reverse();
 
       var fUCI_50_clubAvatar = []; var fUFR_50_profilePic = [];
       for (var i = 0; i < foundUser.clubInvites.length; i++) {
@@ -286,15 +284,7 @@ app.use(async function (req, res, next) {
           fUCI_50_clubAvatar[i] = s3Config.thumb_100_prefix + foundUser.clubInvites[i].avatarId;
         }
       }
-      for (var j = 0; j < foundUser.friendRequests.length; j++) {
-        if (process.env.ENVIRONMENT === 'dev') {
-          fUFR_50_profilePic[j] = clConfig.cloudinary.url(foundUser.friendRequests[j].profilePicId, clConfig.thumb_100_obj);
-        } else if (process.env.ENVIRONMENT === 'prod') {
-          fUFR_50_profilePic[j] = s3Config.thumb_100_prefix + foundUser.friendRequests[j].profilePicId;
-        }
-      }
       res.locals.CI_50_clubAvatar = fUCI_50_clubAvatar;
-      res.locals.FR_50_profilePic = fUFR_50_profilePic;
     } catch (err) {
       logger.error(req.user._id + ' : (app-2) => ' + err);
       req.flash('error', 'Something went wrong :(');

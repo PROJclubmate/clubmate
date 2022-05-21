@@ -2754,12 +2754,7 @@ function search_people_template(response){
             <% if(currentUser && users[k]._id == currentUser._id){ %>
               <button class="btn btn-white btnxxs text-sm shadow-none nopoint search-topright" type="button">
                 <i class="fas fa-ghost" aria-hidden="true"></i></button>
-            <% } else if(currentUser && !(users[k]._id == currentUser._id)){ 
-              currentUser.friends.forEach(function(friend){ 
-                if(users[k]._id == friend){ %>
-                <button class="btn btn-white btnxxs text-sm shadow-none nopoint search-topright" type="button">
-                  <i class="fas fa-check"></i></button>
-            <% }})} %>
+            <% } %>
           </div>
         </div>
         <div class="lightgrey text-xs pr-3"><%= users[k].note %></div>

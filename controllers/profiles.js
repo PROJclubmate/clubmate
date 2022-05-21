@@ -37,154 +37,117 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        var currentUserFriends = req.user.friends;
-        var friends = foundUser.friends.reverse();
-        User.aggregate([
-          {$match: {$and: [
-            {_id: {$in: friends}}, 
-            {_id: {$in: currentUserFriends}}
-          ]}},
-          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
-          {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
-          {$limit: 4}
-          ])
-        .exec(function(err, foundFriends){
-        if(err || !foundUser){
-          logger.error(req.user._id+' : (profiles-2)foundUser err => '+err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var currentUser = req.user;
-          // Is conversation initiated/NOT..?
-          var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = false;
-          var conversationId = '', recipientId = '';
-          if(foundUser.userChats.length != 0){
-            for(var i=0;i<foundUser.userChats.length;i++){
-              if(foundUser.userChats[i].userId.equals(req.user._id)){
-                var hasConversation = true;
-                var conversationId = foundUser.userChats[i].conversationId;
-                break;
-              }
-            }
-          } else{hasConversation = false};
-          // requests(Friends/Club Invites)
-          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
-          var fUcIlength = foundUser.clubInvites.length;
-          var fUuClength = foundUser.userClubs.length;
-          var cUuClength = currentUser.userClubs.length;
-          var sentRequest = contains(foundUser.friendRequests,currentUser._id);
-          var haveRequest = contains(currentUser.friendRequests,foundUser._id);
-          var isFriend = contains(currentUser.friends,foundUser._id);
-          var clubCount = foundUser.userClubs.length;
-          if(isFriend){
-            var clubs = foundUser.userClubs.sort(function(a, b) {
-              return parseFloat(a.rank) - parseFloat(b.rank);
-            });
-            var Clubs_50_clubAvatar = [];
-            // If friend, then show 10 server rendered clubs under Clubs Tab
-            var limitedClubs = clubs.slice(0,9);
-            for(var k=0;k<limitedClubs.length;k++){
-              if(process.env.ENVIRONMENT === 'dev'){
-                Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-              } else if (process.env.ENVIRONMENT === 'prod'){
-                Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
-              }
-            }
-          } else{
-            var clubs = [], Clubs_50_clubAvatar = [];
-          }
-          // cU userClubs loop
-          for(var i=0;i<cUuClength;i++){
-            var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
-            if(fUuClength != 0){
-              // fU userClubs loop
-              for(var j=0;j<fUuClength;j++){
-                if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
-                  // MUTUAL CLUBS
-                  inClub = true;
-                  var objc = {};
-                  objc['_id'] = currentUser.userClubs[i].id;
-                  objc['name'] = currentUser.userClubs[i].clubName;
-                  mutualClubs.push(objc);
-                }
-              }
-            } else if(fUuClength == 0){inClub = false};
-            for(var j=0;j<fUcIlength;j++){
-              if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
-                isInvited = true;
-                break;
-              }
-            }
-            // adminClubs ~ Clubs in which currUser has Admin priv. to INVITE foundUser
-            if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
-              var obja = {};
-              obja['_id'] = currentUser.userClubs[i].id;
-              obja['name'] = currentUser.userClubs[i].clubName;
-              adminClubs.push(obja);
-            }
-            // clubInvites ~ Clubs which foundUser has been invited to 'CANCEL INV'
-            if(fUcIlength != 0){
-              for(var j=0;j<fUcIlength;j++){
-                var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
-                for(var k=0;k<fUcIcUlength;k++){
-                  if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
-                  foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
-                  foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
-                    var objb = {};
-                    objb['_id'] = currentUser.userClubs[i].id;
-                    objb['name'] = currentUser.userClubs[i].clubName;
-                    clubInvites.push(objb);
-                  }
-                }
-              }
+        var currentUser = req.user;
+        // Is conversation initiated/NOT..?
+        var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = false;
+        var conversationId = '', recipientId = '';
+        if(foundUser.userChats.length != 0){
+          for(var i=0;i<foundUser.userChats.length;i++){
+            if(foundUser.userChats[i].userId.equals(req.user._id)){
+              var hasConversation = true;
+              var conversationId = foundUser.userChats[i].conversationId;
+              break;
             }
           }
-          var Friends_100_profilePic = [];
-          for(var l=0;l<foundFriends.length;l++){
-            if(process.env.ENVIRONMENT === 'dev'){
-              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
-            }
-          }
-          var wasActiveMinuteago = foundUser.lastActive >= (new Date() - 120*1000);
-          var wasActiveToday = foundUser.lastActive >= (new Date() - 24*3600*1000);
-          if(hasConversation == true){
-            Conversation.findOne({_id: conversationId}, function(err, foundConversation){
-            if(err || !foundConversation){
-              logger.error(req.user._id+' : (profiles-3)foundConversation err => '+err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
-            } else{
-              if(foundConversation.isBlocked){
-                var isBlocked = true;
-                if(foundConversation.blockedBy.equals(foundUser._id)){
-                  var isBlockedByFoundUser = true;
-                } else{
-                  var isBlockedByFoundUser = false;
-                }
-              } else{
-                var isBlocked = false;
-                var isBlockedByFoundUser = false;
-              }
-              res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
-              clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-              foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic, 
-              wasActiveMinuteago, wasActiveToday, cdn_prefix});
-              return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-            }
-            });
-          } else{
-            var recipientId = foundUser._id;
-            res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
-            clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic, 
-            wasActiveMinuteago, wasActiveToday, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+        } else{hasConversation = false};
+        // requests(Club Invites)
+        var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+        var fUcIlength = foundUser.clubInvites.length;
+        var fUuClength = foundUser.userClubs.length;
+        var cUuClength = currentUser.userClubs.length;
+        var clubCount = foundUser.userClubs.length;
+        var clubs = foundUser.userClubs.sort(function(a, b) {
+          return parseFloat(a.rank) - parseFloat(b.rank);
+        });
+        var Clubs_50_clubAvatar = [];
+        // Show 10 server rendered clubs under Clubs Tab
+        var limitedClubs = clubs.slice(0,9);
+        for(var k=0;k<limitedClubs.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
           }
         }
-        });
+        // currentUser userClubs loop
+        for(var i=0;i<cUuClength;i++){
+          var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
+          if(fUuClength != 0){
+            // foundUser userClubs loop
+            for(var j=0;j<fUuClength;j++){
+              if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                // MUTUAL CLUBS
+                inClub = true;
+                var objc = {};
+                objc['_id'] = currentUser.userClubs[i].id;
+                objc['name'] = currentUser.userClubs[i].clubName;
+                mutualClubs.push(objc);
+              }
+            }
+          } else if(fUuClength == 0){inClub = false};
+          for(var j=0;j<fUcIlength;j++){
+            if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
+              isInvited = true;
+              break;
+            }
+          }
+          // adminClubs ~ Clubs in which currUser has Admin priv. to INVITE foundUser
+          if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
+            var obja = {};
+            obja['_id'] = currentUser.userClubs[i].id;
+            obja['name'] = currentUser.userClubs[i].clubName;
+            adminClubs.push(obja);
+          }
+          // clubInvites ~ Clubs which foundUser has been invited to 'CANCEL INV'
+          if(fUcIlength != 0){
+            for(var j=0;j<fUcIlength;j++){
+              var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
+              for(var k=0;k<fUcIcUlength;k++){
+                if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
+                foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
+                foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
+                  var objb = {};
+                  objb['_id'] = currentUser.userClubs[i].id;
+                  objb['name'] = currentUser.userClubs[i].clubName;
+                  clubInvites.push(objb);
+                }
+              }
+            }
+          }
+        }
+        var wasActiveMinuteago = foundUser.lastActive >= (new Date() - 120*1000);
+        var wasActiveToday = foundUser.lastActive >= (new Date() - 24*3600*1000);
+        if(hasConversation == true){
+          Conversation.findOne({_id: conversationId}, function(err, foundConversation){
+          if(err || !foundConversation){
+            logger.error(req.user._id+' : (profiles-3)foundConversation err => '+err);
+            req.flash('error', 'Something went wrong :(');
+            return res.redirect('back');
+          } else{
+            if(foundConversation.isBlocked){
+              var isBlocked = true;
+              if(foundConversation.blockedBy.equals(foundUser._id)){
+                var isBlockedByFoundUser = true;
+              } else{
+                var isBlockedByFoundUser = false;
+              }
+            } else{
+              var isBlocked = false;
+              var isBlockedByFoundUser = false;
+            }
+            res.render('users/show', {user: foundUser, clubs: limitedClubs,
+            match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId, Clubs_50_clubAvatar,
+            clubCount, isBlocked, isBlockedByFoundUser, wasActiveMinuteago, wasActiveToday, cdn_prefix});
+            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+          }
+          });
+        } else{
+          var recipientId = foundUser._id;
+          res.render('users/show', {user: foundUser, clubs: limitedClubs,
+          match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId, Clubs_50_clubAvatar,
+          clubCount, isBlocked, isBlockedByFoundUser, wasActiveMinuteago, wasActiveToday, cdn_prefix});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
+        }
       }
       });
     } else if(req.user && req.user._id.equals(req.params.id)){
@@ -196,102 +159,73 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        var friends = foundUser.friends.reverse();
-        // Show friends made in order of latest(4)
-        User.aggregate([
-          {$match: {_id: {$in: friends}}},
-          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
-          {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
-          {$limit: 4}
-          ])
-        .exec(function(err, foundFriends){
-        if(err || !foundUser){
-          logger.error(req.user._id+' : (profiles-5)foundUser err => '+err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var currentUser = req.user;
-          var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = true;
-          var conversationId = '', recipientId = '';
-          var clubs = foundUser.userClubs.sort(function(a, b) {
-            return parseFloat(a.rank) - parseFloat(b.rank);
-          });
-          var Clubs_50_clubAvatar = [];
-          var limitedClubs = clubs.slice(0,9);
-          for(var k=0;k<limitedClubs.length;k++){
-            if(process.env.ENVIRONMENT === 'dev'){
-              Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
-            }
+        var currentUser = req.user;
+        var hasConversation = false, isBlocked = false, isBlockedByFoundUser = false, match = true;
+        var conversationId = '', recipientId = '';
+        var clubs = foundUser.userClubs.sort(function(a, b) {
+          return parseFloat(a.rank) - parseFloat(b.rank);
+        });
+        var Clubs_50_clubAvatar = [];
+        var limitedClubs = clubs.slice(0,9);
+        for(var k=0;k<limitedClubs.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
           }
-          // requests
-          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
-          var fUcIlength = foundUser.clubInvites.length;
-          var fUuClength = foundUser.userClubs.length;
-          var cUuClength = currentUser.userClubs.length;
-          var sentRequest = contains(foundUser.friendRequests,currentUser._id);
-          var haveRequest = contains(currentUser.friendRequests,foundUser._id);
-          var isFriend = contains(currentUser.friends,foundUser._id);
-          var clubCount = foundUser.userClubs.length;
-          for(var i=0;i<cUuClength;i++){
-            // adminClubs
-            var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
-            if(fUuClength != 0){
-              for(var j=0;j<fUuClength;j++){
-                if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
-                  inClub = true;
-                  break;
-                }
-              }
-            } else if(fUuClength == 0){inClub = false};
-            for(var j=0;j<fUcIlength;j++){
-              if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
-                isInvited = true;
+        }
+        // requests
+        var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+        var fUcIlength = foundUser.clubInvites.length;
+        var fUuClength = foundUser.userClubs.length;
+        var cUuClength = currentUser.userClubs.length;
+        var clubCount = foundUser.userClubs.length;
+        for(var i=0;i<cUuClength;i++){
+          // adminClubs
+          var rank = currentUser.userClubs[i].rank; var inClub = false; var isInvited = false;
+          if(fUuClength != 0){
+            for(var j=0;j<fUuClength;j++){
+              if(foundUser.userClubs[j].id._id.equals(currentUser.userClubs[i].id._id)){
+                inClub = true;
                 break;
               }
             }
-            if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
-              adminClubs.push(currentUser.userClubs[i].id);
+          } else if(fUuClength == 0){inClub = false};
+          for(var j=0;j<fUcIlength;j++){
+            if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id)){
+              isInvited = true;
+              break;
             }
-            // clubInvites
-            if(fUcIlength != 0){
-              for(var j=0;j<fUcIlength;j++){
-                var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
-                for(var k=0;k<fUcIcUlength;k++){
-                  if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
-                  foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
-                  foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
-                    clubInvites.push(currentUser.userClubs[i].id);
-                  }
+          }
+          if(0 <= rank && rank <= 1 && isInvited == false && inClub == false){
+            adminClubs.push(currentUser.userClubs[i].id);
+          }
+          // clubInvites
+          if(fUcIlength != 0){
+            for(var j=0;j<fUcIlength;j++){
+              var fUcIcUlength = foundUser.clubInvites[j].clubUsers.length;
+              for(var k=0;k<fUcIcUlength;k++){
+                if(foundUser.clubInvites[j]._id.equals(currentUser.userClubs[i].id._id) && 
+                foundUser.clubInvites[j].clubUsers[k].id.equals(currentUser._id) && 
+                foundUser.clubInvites[j].clubUsers[k].userRank <= 1){
+                  clubInvites.push(currentUser.userClubs[i].id);
                 }
               }
             }
           }
-          var Friends_100_profilePic = [];
-          for(var l=0;l<foundFriends.length;l++){
-            if(process.env.ENVIRONMENT === 'dev'){
-              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
-            }
-          }
-          CollegePage.findOne({name: req.user.userKeys.college})
-          .select({branches: 1, houses: 1, messes: 1})
-          .exec(function(err, foundCollegePage){
-          if(err || !foundCollegePage){
-            logger.error('(profiles-1)foundCollegePage err => '+err);
-            req.flash('error', 'Something went wrong :(');
-            return res.redirect('back');
-          } else{
-            res.render('users/show', {haveRequest, sentRequest, isFriend, user: foundUser,
-            clubs: limitedClubs, match, adminClubs, clubInvites, mutualClubs, conversationId, recipientId,
-            foundFriends, Clubs_50_clubAvatar, clubCount, isBlocked, isBlockedByFoundUser, Friends_100_profilePic,
-            college: foundCollegePage, cdn_prefix});
-            return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
-          }
-          });
+        }
+        CollegePage.findOne({name: req.user.userKeys.college})
+        .select({branches: 1, houses: 1, messes: 1})
+        .exec(function(err, foundCollegePage){
+        if(err || !foundCollegePage){
+          logger.error('(profiles-1)foundCollegePage err => '+err);
+          req.flash('error', 'Something went wrong :(');
+          return res.redirect('back');
+        } else{
+          res.render('users/show', {user: foundUser, clubs: limitedClubs, match, adminClubs,
+          clubInvites, mutualClubs, conversationId, recipientId, Clubs_50_clubAvatar, clubCount,
+          isBlocked, isBlockedByFoundUser, college: foundCollegePage, cdn_prefix});
+          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
         });
       }
@@ -303,36 +237,11 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        var friends = foundUser.friends.reverse();
-        User.aggregate([
-          {$match: {_id: {$in: friends}}},
-          {$addFields: {"__order": {$indexOfArray: [friends, "$_id" ]}}},
-          {$sort: {"__order": 1}},
-          {$project :{fullName: 1, profilePic: 1, profilePicId: 1, userKeys: 1}},
-          {$limit: 4}
-          ])
-        .exec(function(err, foundFriends){
-        if(err || !foundUser){
-          logger.error('(profiles-7)foundUser err => '+err);
-          req.flash('error', 'Something went wrong :(');
-          return res.redirect('back');
-        } else{
-          var match = false;
-          var clubCount = foundUser.userClubs.length;
-          var sentRequest = haveRequest = isFriend = false;
-          var adminClubs = []; var clubInvites = []; var mutualClubs = [];
-          var Friends_100_profilePic = [];
-          for(var l=0;l<foundFriends.length;l++){
-            if(process.env.ENVIRONMENT === 'dev'){
-              Friends_100_profilePic[l] = clConfig.cloudinary.url(foundFriends[l].profilePicId, clConfig.thumb_200_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              Friends_100_profilePic[l] = s3Config.thumb_200_prefix+foundFriends[l].profilePicId;
-            }
-          }
-          return res.render("users/show", {haveRequest, sentRequest, isFriend, user: foundUser, match, adminClubs,
-          clubInvites, mutualClubs, foundFriends, clubCount, Friends_100_profilePic, cdn_prefix});
-        }
-        });
+        var match = false;
+        var clubCount = foundUser.userClubs.length;
+        var adminClubs = []; var clubInvites = []; var mutualClubs = [];
+        return res.render("users/show", {user: foundUser, match, adminClubs, clubInvites,
+        mutualClubs, clubCount, cdn_prefix});
       }
       });
     }
@@ -353,28 +262,25 @@ module.exports = {
           var rank = currentUser.userClubs[i].rank;
         }
         var match = currentUser._id.equals(req.params.user_id);
-        var isFriend = contains(currentUser.friends,foundUser._id);
         var endpoints = req.query.endpoints.split(',');
         var start = Number(endpoints[0]), end = Number(endpoints[1]);
         var clubCount = foundUser.userClubs.length, Clubs_50_clubAvatar = []; 
-        if(isFriend || match){
-          var clubs = foundUser.userClubs.sort(function(a, b) {
-            return parseFloat(a.rank) - parseFloat(b.rank);
-          });
-          var limitedClubs = clubs.slice(start,end);
-          for(var k=0;k<limitedClubs.length;k++){
-            if(process.env.ENVIRONMENT === 'dev'){
-              Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
-            } else if (process.env.ENVIRONMENT === 'prod'){
-              Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
-            }
+        var clubs = foundUser.userClubs.sort(function(a, b) {
+          return parseFloat(a.rank) - parseFloat(b.rank);
+        });
+        var limitedClubs = clubs.slice(start,end);
+        for(var k=0;k<limitedClubs.length;k++){
+          if(process.env.ENVIRONMENT === 'dev'){
+            Clubs_50_clubAvatar[k] = clConfig.cloudinary.url(limitedClubs[k].id.avatarId, clConfig.thumb_100_obj);
+          } else if (process.env.ENVIRONMENT === 'prod'){
+            Clubs_50_clubAvatar[k] = s3Config.thumb_100_prefix+limitedClubs[k].id.avatarId;
           }
-          var newStart = (start+10).toString(), newEnd = (end+10).toString();
-          var newEndpoints = newStart+','+newEnd;
-          res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, 
-          userId: foundUser._id, rank, currentUserId, match, csrfToken: res.locals.csrfToken, cdn_prefix});
-          return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
+        var newStart = (start+10).toString(), newEnd = (end+10).toString();
+        var newEndpoints = newStart+','+newEnd;
+        res.json({clubs: limitedClubs, clubCount, Clubs_50_clubAvatar, newEndpoints, 
+        userId: foundUser._id, rank, currentUserId, match, csrfToken: res.locals.csrfToken, cdn_prefix});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
     }
     });
@@ -2103,7 +2009,6 @@ function sortComments(posts){
 function postsPrivacyFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var friendsLen = currentUser.friends.length;
   var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var privacy = foundPosts[i].privacy;
@@ -2119,29 +2024,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
     }
     //Friends
     if(privacy == 2){
-      var pushed = false;
-      if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
-        pushed = true;
-        posts.push(foundPosts[i]);
-      }
-      if(friendsLen && pushed == false){
-        for(j=0;j<friendsLen;j++){
-          if(foundPosts[i].postAuthor.id.equals(currentUser.friends[j])){
-            pushed = true;
-            posts.push(foundPosts[i]);
-            break;
-          }
-        }
-      }
-      if(clubLen && pushed == false){
-        for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
-            pushed = true;
-            posts.push(foundPosts[i]);
-            break;
-          }
-        }
-      }
+      
     }
     //Club(members)
     if(privacy == 3){
@@ -2158,22 +2041,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
     }
     //Club(friends)
     if(privacy == 4){
-      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
-        posts.push(foundPosts[i]);
-      } else if(friendsLen && clubLen){
-        outerLoop:
-        for(j=0;j<clubLen;j++){
-          for(k=0;k<friendsLen;k++){
-            if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
-                foundPosts[i].postAuthor.id.equals(currentUser.friends[k])) || 
-              (foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
-               0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
-              posts.push(foundPosts[i]);
-              break outerLoop;
-            }
-          }
-        }
-      }
+      
     }
     //Private
     if(privacy == 5){

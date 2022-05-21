@@ -9,7 +9,7 @@ if('serviceWorker' in navigator){
 function displayConfirmNotification(){
   if('serviceWorker' in navigator){
     var options = {
-      body: 'You will be notified for any new Friend Requests or Club Invites',
+      body: 'You will be notified for any Club Invites',
       icon: '/images/icons/app-icon-96x96.png',
       // image: '',
       dir: 'ltr',

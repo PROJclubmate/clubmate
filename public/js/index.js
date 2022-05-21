@@ -962,11 +962,6 @@ if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] =
 
 if(location.pathname.split('/').length == 3 && location.pathname.split('/')[1] == 'users' && 
   location.pathname.split('/')[2].match(/^[a-fA-F0-9]{24}$/)){
-  if(window.innerWidth > 768){
-    if($('#my_profile_page').length){
-      $('#friends').addClass('show');
-    }
-  }
   
   oldMsgHeightMobile = updateMsgsContainerHeight_profilepage();
   $(window).resize(function(){

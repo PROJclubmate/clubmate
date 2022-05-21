@@ -92,9 +92,6 @@ const userSchema = new Schema({
     custom1: { type: String, default: '' },
     custom2: { type: String, default: '' }
   },
-  friendRequests: [this],
-  friends: [this],
-  friendsCount: { type: Number, default: 0 },
   clubInvites: [{
     type: Schema.Types.ObjectId,
     ref: 'Club'

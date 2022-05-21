@@ -1602,7 +1602,6 @@ function sortComments(posts){
 function postsPrivacyFilter(foundPosts, currentUser){
   var posts = [];
   var postsLen = foundPosts.length;
-  var friendsLen = currentUser.friends.length;
   var clubLen = currentUser.userClubs.length;
   for(i=0;i<postsLen;i++){
     var privacy = foundPosts[i].privacy;
@@ -1618,29 +1617,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
     }
     //Friends
     if(privacy == 2){
-      var pushed = false;
-      if(foundPosts[i].postAuthor.id.equals(currentUser._id) && pushed == false){
-        pushed = true;
-        posts.push(foundPosts[i]);
-      }
-      if(friendsLen && pushed == false){
-        for(j=0;j<friendsLen;j++){
-          if(foundPosts[i].postAuthor.id.equals(currentUser.friends[j])){
-            pushed = true;
-            posts.push(foundPosts[i]);
-            break;
-          }
-        }
-      }
-      if(clubLen && pushed == false){
-        for(j=0;j<clubLen;j++){
-          if(foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id)){
-            pushed = true;
-            posts.push(foundPosts[i]);
-            break;
-          }
-        }
-      }
+      
     }
     //Club(members)
     if(privacy == 3){
@@ -1657,22 +1634,7 @@ function postsPrivacyFilter(foundPosts, currentUser){
     }
     //Club(friends)
     if(privacy == 4){
-      if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
-        posts.push(foundPosts[i]);
-      } else if(friendsLen && clubLen){
-        outerLoop:
-        for(j=0;j<clubLen;j++){
-          for(k=0;k<friendsLen;k++){
-            if((foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
-                foundPosts[i].postAuthor.id.equals(currentUser.friends[k])) || 
-              (foundPosts[i].postClub._id.equals(currentUser.userClubs[j].id) && 
-               0 <= currentUser.userClubs[j].rank && currentUser.userClubs[j].rank <= 1)){
-              posts.push(foundPosts[i]);
-              break outerLoop;
-            }
-          }
-        }
-      }
+      
     }
     //Private
     if(privacy == 5){

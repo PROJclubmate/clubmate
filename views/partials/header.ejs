@@ -87,9 +87,9 @@
           <div id="mobile_toggler_div" class="d-none">
             <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon notification">
-                <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
-                  <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
-                    <span class="badge badge-mobile text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+                <% if (currentUser && currentUser.clubInvites.length != 0){ %>
+                  <% if(currentUser.clubInvites.length < 10){ %>
+                    <span class="badge badge-mobile text-xs"><%= currentUser.clubInvites.length %></span>
                   <% } else{ %>
                     <span class="badge badge-mobile text-xs">9+</span>
                   <% } %>
@@ -140,9 +140,9 @@
               <span id="requestslink" class="text-xxl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
                 <i class="fas fa-bell"></i>
               </span>
-              <% if (currentUser && (currentUser.friendRequests.length + currentUser.clubInvites.length) != 0){ %>
-                <% if((currentUser.friendRequests.length + currentUser.clubInvites.length) < 10){ %>
-                  <span class="badge text-xs"><%= currentUser.friendRequests.length + currentUser.clubInvites.length %></span>
+              <% if (currentUser && currentUser.clubInvites.length != 0){ %>
+                <% if(currentUser.clubInvites.length < 10){ %>
+                  <span class="badge text-xs"><%= currentUser.clubInvites.length %></span>
                 <% } else{ %>
                   <span class="badge text-xs">9+</span>
                 <% } %>
@@ -218,52 +218,7 @@
       </div>
     <% } %>
   <% } %>
-  <% if(currentUser && currentUser.friendRequests.length != 0){ %>
-    <div class="pop-header valign">
-      <h6 class="m-0 p-0 lightgrey text-xs"><i class="fas fa-user-friends mr-2"></i>Friend Requests</h6>
-      <% if (currentUser.clubInvites.length == 0){ %>
-        <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>
-      <% } %>
-    </div>
-    <hr>
-    <% for(var j=0;j<friendRequests.length;j++){ %>
-      <div class="pop-container">
-        <div class="valign py-1">
-          <div class="d-inline-flex wordwrap">
-            <span>
-              <a href="/users/<%= friendRequests[j]._id %>">
-                <% if(!currentUser.userKeys.sex){ %>
-                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUser.png' %>">
-                <% } else if(currentUser.userKeys.sex == 'Male'){ %>
-                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserMale.png' %>">
-                <% } else if(currentUser.userKeys.sex == 'Female'){ %>
-                  <img class="navdp" src="<%= FR_50_profilePic[j] || '/images/noUserFemale.png' %>">
-                <% } %>
-              </a>
-            </span>
-            <span>
-              <div class="d-flex flex-column lineheight-lesser mx-2">
-                <a href="/users/<%= friendRequests[j]._id %>" class="grey">
-                  <strong class="text-sm"><%= friendRequests[j].fullName %></strong></a>
-                <span class="lightgrey text-xs"><%= friendRequests[j].note %></span>
-              </div>
-            </span>
-          </div>
-          <div class="mb-auto">
-            <form action="/requests?_method=PUT" method="POST" class="form-inline" style="width: max-content;">
-              <span>
-                <button class="btn btn-xs btn-primary text-sm" name="acceptReq" type="submit" value="<%= friendRequests[j]._id %>">Accept</button>
-              </span>
-              <span>
-                <button class="btn btn-xs btn-secondary text-sm" name="removeReq" type="submit" value="<%= friendRequests[j]._id %>">Decline</button>
-              </span>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          </div>
-        </div>
-      </div>
-    <% } %>
-  <% } else if(currentUser && (currentUser.friendRequests.length == 0 && currentUser.clubInvites.length == 0)){ %>
+  <% if(currentUser && currentUser.clubInvites.length == 0){ %>
     <div class="pop-header valign">
       <span class="m-0 p-0 lightgrey boldtext text-xs">No pending requests</span>
       <button class="btn btn-danger btnxxs text-xs" onclick="closeForm('pop_box_requests'); toggle_requests('requestslink');"><i class="fas fa-times"></i></button>

@@ -1,4 +1,11 @@
 <% include ../partials/header %>
+<style>
+  @media screen and (max-width: 767px){
+    #mob_profilePic_toppad{
+      margin-top: 1.5rem;
+    }
+  }
+</style>
 <script type='text/javascript'>
   var adminClubs = <%- JSON.stringify(adminClubs) %>;
   var invitedUser = <%- JSON.stringify(user._id) %>;
@@ -9,7 +16,11 @@
   <div class="col-lg-9 order-md-first order-last">
     <div class="row no-gutters">
       <div class="col-md-12">
-        <div class="d-flex flex-row">
+        <% if(currentUser && match){ %>
+          <div class="d-flex flex-row">
+        <% } else{ %>
+          <div id="mob_profilePic_toppad" class="d-flex flex-row">
+        <% } %>
           <div id="profilePic-frame-div-desktop">
             <% if(currentUser && match && user.profilePicId){ %>
               <div>
@@ -45,27 +56,100 @@
               </div>
             </div>
           </div>
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column w-100 mobileNoneFlex">
             <div class="my-auto">
               <div id="username_profile_div">
-                <div>
-                  <% if(user.isVerified){ %>
-                    <h5 class="profilename text-left"><%= user.fullName %></h5>
-                  <% } else{ %>
-                    <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                <div class="valign">
+                  <div>
+                    <% if(user.isVerified){ %>
+                      <h5 class="profilename text-left"><%= user.fullName %></h5>
+                    <% } else{ %>
+                      <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                    <% } %>
+                  </div>
+                  <% if(currentUser && !match){ %>
+                    <div class="px-2 pb-1">
+                      <% if(currentUser && !match){ %>
+                        <% if(wasActiveToday && wasActiveMinuteago){ %>
+                          <svg id="isUserInRoom" height="12" width="12">
+                            <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                          </svg>
+                        <% } else if(wasActiveToday && !wasActiveMinuteago){ %>
+                          <svg id="isUserInRoom" height="12" width="12">
+                            <path d="M7.2 1.8A4.5 4.5 90 1010.8 7.2C6.5835 8.9946 4.1679 4.3218 7.2 1.8z" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+                          </svg>
+                        <% } else{ %>
+                          <svg id="isUserInRoom" height="12" width="12">
+                            <circle cx="6" cy="6" r="4" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"/>
+                          </svg>
+                        <% } %>
+                      <% } %>
+                    </div>
                   <% } %>
                 </div>
-                <div class="profilename text-sm text-mob-xs boldtext lineheight"><%= user.note %></div>
+                <div class="profilename text-sm text-mob-xs boldtext lineheight w-80"><%= user.note %></div>
               </div>
+            </div>
+            <div class="profilename text-md d-flex flex-row mobileNoneFlex">
+              <div><span class="boldtext">5</span><span>posts</span></div>
+              <div class="ml-4"><span class="boldtext">2</span><span>questions</span></div>
+              <div class="ml-4"><span class="boldtext">9</span><span>blogs</span></div>
+            </div>
+          </div>
+          <div class="profilename text-md d-flex flex-row my-auto desktopNoneFlex">
+            <div class="d-flex flex-column">
+              <div class="boldtext text-center">5</div>
+              <div class="text-mob-sm">Posts</div>
+            </div>
+            <div class="d-flex flex-column ml-4">
+              <div class="boldtext text-center">2</div>
+              <div class="text-mob-sm">Questions</div>
+            </div>
+            <div class="d-flex flex-column ml-4">
+              <div class="boldtext text-center">9</div>
+              <div class="text-mob-sm">Blogs</div>
             </div>
           </div>
         </div>
-        <div class="desktopNoneFlex story-alt-container" style="margin-bottom: 4.375rem;">
-          <div class="d-flex px-3 invisible scroll moz-scroll scroll-hide" style="overflow-x: scroll;">
-            <div class="d-flex flex-column mr-3">
-              <div class="story-alt mt-3 story-alt-dark" style="border-style: dashed;"></div>
-              <div class="story-alt-label story-alt-label2 lightgrey2 text-xxxs boldtext pb-2">something</div>
+        <% if(currentUser && match){ %>
+          <div class="desktopNoneFlex mt-3" style="margin-bottom: 11.125rem;">
+        <% } else{ %>
+          <div class="desktopNoneFlex mt-3" style="margin-bottom: 13.375rem;">
+        <% } %>
+          <div id="username_profile_div" class="w-100">
+            <div class="valign">
+              <div>
+                <% if(user.isVerified){ %>
+                  <h5 class="profilename text-left"><%= user.fullName %></h5>
+                <% } else{ %>
+                  <h5 class="profilename text-left"><sub class="redcolor" title="Not Verified" style="font-size: 2rem; cursor: default;">*</sub><%= user.fullName %></h5>
+                <% } %>
+              </div>
+              <% if(currentUser && !match){ %>
+                <div class="px-2 pb-1">
+                  <% if(currentUser && !match){ %>
+                    <% if(wasActiveToday && wasActiveMinuteago){ %>
+                      <svg id="isUserInRoom" height="12" width="12">
+                        <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
+                      </svg>
+                    <% } else if(wasActiveToday && !wasActiveMinuteago){ %>
+                      <svg id="isUserInRoom" height="12" width="12">
+                        <path d="M7.2 1.8A4.5 4.5 90 1010.8 7.2C6.5835 8.9946 4.1679 4.3218 7.2 1.8z" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
+                      </svg>
+                    <% } else{ %>
+                      <svg id="isUserInRoom" height="12" width="12">
+                        <circle cx="6" cy="6" r="4" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"/>
+                      </svg>
+                    <% } %>
+                  <% } %>
+                </div>
+              <% } %>
             </div>
+            <% if(user.note){ %>
+              <div class="profilename text-sm text-mob-xs boldtext lineheight w-80" style="padding-top: 0 !important;"><%= user.note %></div>
+            <% } else{ %>
+              <div class="profilename text-sm text-mob-xs boldtext lineheight w-80 invisible" style="padding-top: 0 !important;">short note</div>
+            <% } %>
           </div>
         </div>
         <!-- Modal HTML -->
@@ -169,49 +253,6 @@
             </div>
           <% } %>
         </div>
-        <div class="mt-2">
-          <div class="card mt-0 border-light btncollapse-div">
-            <% if(currentUser && match){ %>
-              <button type="button" class="btn btn-sm boldtext btncollapse text-left text-mob-sm" data-toggle="collapse" data-target="#friends">
-                <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
-                <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
-              </button>
-              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
-            <% } else if(currentUser && !match){ %>
-              <button type="button" class="btn btn-sm boldtext btncollapse text-left text-mob-sm" data-toggle="collapse" data-target="#friends">
-                <span><i class="fas fa-users"></i></span><span class="boldtext">Mutual</span>
-                <span class="lightgrey text-sm nopad"> . <%= foundFriends.length %></span>
-              </button>
-              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
-            <% } else{ %>
-              <button type="button" class="btn btn-sm boldtext btncollapse text-left text-mob-sm" data-toggle="collapse" data-target="#friends">
-                <span><i class="fas fa-users"></i></span><span class="boldtext">Friends</span>
-                <span class="lightgrey text-sm nopad"> . <%= user.friendsCount %></span>
-              </button>
-              <div id="friends" class="collapse btncollapse-content row no-gutters" style="padding-right: 0.25rem;">
-            <% } %>
-            <% for(i=0;i<foundFriends.length;i++){ %>
-              <% if(foundFriends[i]){ %>
-                <div class="col-3 pl-1 py-1">
-                  <a href="/users/<%= foundFriends[i]._id %>">
-                    <% if(!foundFriends[i].userKeys.sex){ %>
-                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUser.png' %>">
-                    <% } else if(foundFriends[i].userKeys.sex == 'Male'){ %>
-                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserMale.png' %>">
-                    <% } else if(foundFriends[i].userKeys.sex == 'Female'){ %>
-                      <img class="friends-dp" src="<%= Friends_100_profilePic[i] || '/images/noUserFemale.png' %>">
-                    <% } %>
-                  </a>
-                  <div class="lineheight-least">
-                    <span><a class="text-xs boldtext nopad friends-text" href="/users/<%= foundFriends[i]._id %>"><%= foundFriends[i].fullName %></a></span>
-                  </div>
-                </div>
-              <% } %>
-            <% } %>
-            </div>
-          </div>
-        </div>
-        <div id="view_all_friends" class="text-center"><a href="/users/<%= user._id %>/all_friends" class="black text-sm text-mob-lg">View all friends</a></div>
       </div>
       <div class="col-md-8 px-1 mobilepad desktop-mt-2">
         <div class="card tabcard">
@@ -236,7 +277,7 @@
               </li>
               <% if(currentUser && match){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="hearts-tab" data-toggle="tab" href="#hearts" role="tab" aria-controls="hearts" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Hearts</a>
+                 <a class="nav-link boldtext black" id="saved-tab" data-toggle="tab" href="#saved" role="tab" aria-controls="saved" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Saved</a>
                 </li>
               <% } else if(currentUser && !match){ %>
                 <li class="nav-item">
@@ -320,7 +361,7 @@
                   </div>
                 </div>
               </div>
-              <% if((isFriend || match) && clubs.length!=0){ %>
+              <% if(currentUser && clubs.length!=0){ %>
                 <div id="server-clubs">
                   <% include ../partials/user_clubs %>
                 </div>
@@ -762,8 +803,8 @@
               </div>
             </div>
             <% if(currentUser && match){ %>
-              <!-- Hearts Tab -->
-              <div class="tab-pane fade greyback" id="hearts" role="tabpanel" aria-labelledby="hearts-tab">
+              <!-- Saved Tab -->
+              <div class="tab-pane fade greyback" id="saved" role="tabpanel" aria-labelledby="saved-tab">
                 <div id="delegated-heart-posts">
                   <div id="client-heart-posts" class="topnotch-left topnotch-right d-none"></div>
                   <div class="text-center">
@@ -790,90 +831,7 @@
       </div>
     </div>
   </div>
-  <% if(currentUser && !match){ %>
-    <div class="col-md-4 col-lg-3 px-2 pb-2">
-      <div class="valign lb-absolute" style="padding: 0.75rem 0.5rem;">
-        <div>
-          <% if(currentUser && !match && !isFriend && !sentRequest && !haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="friendReq" type="submit" value="<%= user._id %>">
-                <i class="fas fa-user-plus"></i> Add Friend
-              </button>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          <% } else if(currentUser && !match && isFriend && !sentRequest && !haveRequest){ %>
-            <div class="dropdown">
-              <button class="gb gb11 hover-slide hover-fill gb-rounded border-0 px-2" type="button" data-toggle="dropdown">
-                <i class="fas fa-check"></i> Friends
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right dropbox">
-                <div class="container drop-shadow1 drop-items text-sm">
-                  <li>
-                    <button class="dropitems2 py-1 link-button text-sm red" href="#unfriendModal<%= user._id %>" data-toggle="modal">Unfriend</button> 
-                  </li>
-                  <hr>
-                  <li><a class="dropitems2 py-1 text-sm">Help ?</a></li>
-                </div>
-              </ul>
-            </div>
-            <!-- Modal HTML -->
-            <div id="unfriendModal<%= user._id %>" class="fixed-padding modal fade">
-              <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                  <div class="d-flex grey">
-                    <span class="icon-box">
-                      <i class="fas fa-exclamation text-xxxl"></i>
-                    </span>              
-                    <span class="my-auto"><h5 class="modal-title">Are you sure?</h5></span>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  </div>
-                  <div>
-                    <p>Do you really want to unfriend <%= user.fullName %>?</p>
-                  </div>
-                  <div class="my-2">
-                    <button type="button" class="btn btn-secondary btn-sm mr-1" data-dismiss="modal">Cancel</button>
-                    <form action="/requests?_method=PUT" method="POST" class="delete-form inline">
-                      <button name="unFriendReq" type="submit" value="<%= user._id %>" class="btn btn-danger btn-sm ml-1">Unfriend</button>
-                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% } else if(currentUser && !match && !isFriend && sentRequest && !haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="cancelReq" type="submit" value="<%= user._id %>">
-                <i class="fas fa-minus"></i> Request Pending
-              </button>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          <% } else if(currentUser && !match && !isFriend && !sentRequest && haveRequest){ %>
-            <form action="/requests?_method=PUT" method="POST" class="dropdown">
-              <button class="gb gb5 gb-bordered hover-fill gb-rounded border-0 px-2" name="acceptReq" type="submit" value="<%= user._id %>"><i class="fas fa-user"></i> Accept Request</button>
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            </form>
-          <% } %>
-        </div>
-        <div class="ml-2">
-          <% if(currentUser && !match){ %>
-            <% if(wasActiveToday && wasActiveMinuteago){ %>
-              <svg id="isUserInRoom" height="12" width="12">
-                <circle cx="6" cy="6" r="4" stroke="#60b769" stroke-width="1" fill="#9feca6"/>
-              </svg>
-            <% } else if(wasActiveToday && !wasActiveMinuteago){ %>
-              <svg id="isUserInRoom" height="12" width="12">
-                <path d="M7.2 1.8A4.5 4.5 90 1010.8 7.2C6.5835 8.9946 4.1679 4.3218 7.2 1.8z" stroke="#f9af4a" stroke-width="1" fill="#ffdfaf"/>
-              </svg>
-            <% } else{ %>
-              <svg id="isUserInRoom" height="12" width="12">
-                <circle cx="6" cy="6" r="4" stroke="rgba(150,150,150,0.5)" stroke-width="1" fill="transparent"/>
-              </svg>
-            <% } %>
-          <% } %>
-        </div>
-      </div>
-    </div>
-  <% } else if(currentUser && match){ %>
+  <% if(currentUser && match){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="valign lb-absolute" style="padding: 0.75rem 0.5rem;">
         <div>
