@@ -487,8 +487,8 @@ div.content{
   #story-draft-preview{margin-left: auto !important;}
   #quickview_nav_mobile{padding: 0.25rem 0.625rem !important;}
   #quickmodal{margin-bottom: 47px;}
-  .topnotch-right:before{right: 0.25rem !important;}
-  .topnotch-left:before{left: 0.25rem !important;}
+  .topnotch-right:before{right: 0 !important;}
+  .topnotch-left:before{left: 0 !important;}
   /* .post-container{margin-left: 0.25rem; margin-right: 0.25rem;} */
   #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
@@ -1434,7 +1434,6 @@ time.calendar span{
 .btn-college2:hover{
   transition: .15s ease-out;
   border-color: #d3d3d3;
-  background-color: whitesmoke !important;
   color: red !important;
   box-shadow: inset 0px 1px 1px rgba(255,255,255,1), 0px 1px 4px -1px rgba(0,0,0,0.5) !important;
 }
@@ -1442,7 +1441,7 @@ time.calendar span{
   border-color: white !important;
   box-shadow: 0 0 0 0.25rem rgba(225,83,97,0.5) !important;
 }
-.btn-followall:hover{
+.btn-followall, .btn-followall:hover{
   border-color: white !important;
   box-shadow: none !important;
 }
@@ -1671,7 +1670,7 @@ input[type="file"]#inputroomAvatar, input[type="file"]#backgroundpick{
 }
 /*None elements*/
 .commentbtn, .newClub_form, .user_Rank, .status, .pushmsg, .subpostbtns, .clear_update, #toggle_profile_form,
-#account_info_form_div, #personal_info_form_div, #aboutme_form_div, #followon_form_div, #interests_form_div,
+#account_info_form_div, #personal_info_form_div, #aboutme_form_div, #findmeon_form_div, #interests_form_div,
 #recommends_form1_div, #recommends_form2_div, #recommends_form3_div, #recommends_form4_div, #recommends_form5_div, 
 #toggle_club_form, #post_edit_form, #post_edit_history, #club_desc, #club_rules, #club_filter, #user_filter, 
 #location_status, #searchMember_form, #hyperlink, #memberReq-div, #enable-notifications, #client-memberRequests-div,
@@ -2601,14 +2600,6 @@ div.carousel-img{
 .centertext{
   text-align: center;
 }
-.redcolor-border{
-  border-color: #cc0000;
-  color: #cc0000;
-}
-.redcolor-border:hover{
-  border-color: red;
-  color: red;
-}
 button.vote{
   font-size: 1.625rem;
   padding: 0;
@@ -2723,16 +2714,21 @@ select.select1{
   height: 32px;
 }
 .select2{
+  border: 1px solid #279a67;
+  color: #279a67;
   width: 96px;
   padding: 0 0.25rem;
   border-radius: 0.25rem;
   height: 28px;
 }
 .select3{
+  border-color: #cc0000;
+  color: #cc0000;
   width: 136px;
   padding: 0 0.25rem;
   border-radius: 0.25rem;
   height: 28px;
+  margin-left: 1rem;
 }
 .select4{
   -webkit-appearance: none;

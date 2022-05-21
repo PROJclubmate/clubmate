@@ -92,8 +92,6 @@ const userSchema = new Schema({
     custom1: { type: String, default: '' },
     custom2: { type: String, default: '' }
   },
-  interests: [String],
-  recommends: { music: [String], movies: [String], tvshows: [String], places: [String], books: [String] },
   friendRequests: [this],
   friends: [this],
   friendsCount: { type: Number, default: 0 },

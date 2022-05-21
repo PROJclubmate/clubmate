@@ -764,7 +764,7 @@ module.exports = {
         if(req.body.aboutme){
           foundUser.bio.aboutme = req.body.aboutmetext.replace(/[^a-zA-Z'()&0-9?\n .-]/g, '');
         }
-        if(req.body.followon){
+        if(req.body.findmeon){
           foundUser.bio.instagram = encodeURI(req.body.instagram);
           foundUser.bio.facebook = encodeURI(req.body.facebook);
           foundUser.bio.linkedin = encodeURI(req.body.linkedin);
@@ -775,34 +775,7 @@ module.exports = {
           foundUser.bio.youtube = encodeURI(req.body.youtube);
           foundUser.bio.custom1 = encodeURI(req.body.custom1);
           foundUser.bio.custom2 = encodeURI(req.body.custom2);
-         }
-        editinfo(0,req.body.interests,foundUser.interests);
-        editinfo(1,req.body.music,foundUser.recommends.music);
-        editinfo(2,req.body.movies,foundUser.recommends.movies);
-        editinfo(3,req.body.tvshows,foundUser.recommends.tvshows);
-        editinfo(4,req.body.places,foundUser.recommends.places);
-        editinfo(5,req.body.books,foundUser.recommends.books);
-
-        function editinfo(count,newData,oldData){
-          if(newData){
-            oldData=[];
-            if(Array.isArray(newData)){
-              var oldData = newData.filter(Boolean);
-            } else{
-              var oldData = [newData].filter(Boolean);;
-            }
-            var len = oldData.length; for(var i=len-1;i>=0;i--){
-              var inputstring = oldData[i].replace(/[^a-zA-Z'()&0-9 .-]/g, '');
-              oldData.splice(i,1,inputstring);
-            }
-            if(count==0){foundUser.interests=oldData;}
-            else if(count==1){foundUser.recommends.music=oldData;}
-            else if(count==2){foundUser.recommends.movies=oldData;}
-            else if(count==3){foundUser.recommends.tvshows=oldData;}
-            else if(count==4){foundUser.recommends.places=oldData;}
-            else if(count==5){foundUser.recommends.books=oldData;}
-          }
-        };
+        }
         foundUser.save();
         if(newCollegePageExists == 'no'){} else{
           req.flash('success', 'Successfully updated');

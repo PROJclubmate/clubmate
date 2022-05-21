@@ -302,7 +302,7 @@ $(function(){
     var invites = clubInvites;
     var selectList = document.createElement('select');
     selectList.setAttribute('name', 'cancelClubId');
-    selectList.classList.add('select3','redcolor-border');
+    selectList.classList.add('select3');
     selectList.setAttribute('onchange', 'this.form.submit()');
     myDiv.appendChild(selectList);
     var option = document.createElement('option');

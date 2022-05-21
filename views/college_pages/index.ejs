@@ -194,16 +194,16 @@
 									<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 										<span class="ml-2 mr-3 lightgrey text-sm text-mob-xs"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
 									<% } else if(currentUser && keyValue == 2){ %>
-										<% if(clubUserIdsArr[i][j].length){ %>
-											<br/>
+										<br/>
+										<% if(clubUserIdsArr[i][j].length != 0){ %>
 											<span class="pl-2 nowrap d-inline-flex">
 												<% var count = 0; %>
 												<% for(var k=0;k<clubUserIdsArr[i][j].length;k++){ %>
-													<% for(var l=0;l<foundFriendsPicArr.length;l++){ %>
-														<% if(count<3 && foundFriendsPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
-															<span class="smalldppad d-inline-flex" title="<%= foundFriendsPicArr[l].name %>" style="z-index: <%= 4-count %>;">
-																<% if(foundFriendsPicArr[l].url){ %>
-																	<img class="smalldp rounded-circle" src="<%= foundFriendsPicArr[l].url %>">
+													<% for(var l=0;l<foundMembersPicArr.length;l++){ %>
+														<% if(count<3 && foundMembersPicArr[l].id == clubUserIdsArr[i][j][k].toString()){ %>
+															<span class="smalldppad d-inline-flex" title="<%= foundMembersPicArr[l].name %>" style="z-index: <%= 4-count %>;">
+																<% if(foundMembersPicArr[l].url){ %>
+																	<img class="smalldp rounded-circle" src="<%= foundMembersPicArr[l].url %>">
 																<% } else{ %>
 																	<img class="smalldp rounded-circle" src="/images/noUser.png">
 																<% } %>
@@ -213,9 +213,19 @@
 													<% } %>
 												<% } %>
 											</span>
-											<% if(clubUserIdsArr[i][j].length > 3){ %>
-												<span class="text-xs lightgrey" style="vertical-align: text-top;">.. <%= clubUserIdsArr[i][j].length-3 %> more</span>
+										<% } %>
+										<% if(clubUserIdsArr[i][j].length == 0){ %>
+											<% for(var k=0;k<currentUserClubIdsArr.length;k++){ %>
+												<% if(currentUserClubIdsArr[k].equals(college_page.allClubs[i].categoryClubIds[j]._id)){ %>
+													<span class="text-xs lightgrey" style="vertical-align: text-top;">You</span>
+												<% } %>
 											<% } %>
+										<% } else if(clubUserIdsArr[i][j].length > 0 && clubUserIdsArr[i][j].length <= 3){ %>
+											<span class="text-xs lightgrey" style="vertical-align: text-top;">and you</span>
+										<% } else if(clubUserIdsArr[i][j].length == 4){ %>
+											<span class="text-xs lightgrey" style="vertical-align: text-top;">you and <%= clubUserIdsArr[i][j].length-3 %> other</span>
+										<% } else if(clubUserIdsArr[i][j].length > 4){ %>
+											<span class="text-xs lightgrey" style="vertical-align: text-top;">you and <%= clubUserIdsArr[i][j].length-3 %> others</span>
 										<% } %>
 									<% } %>
 								</div>
@@ -223,8 +233,8 @@
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 								<div class="darkgrey text-sm text-mob-lg px-1 nowrap">
 									<em class="text-mob-xs">
-										<%= college_page.allClubs[i].categoryClubIds[j].chatRoomsCount %> <span class="text-xxxs">
-											<% if(college_page.allClubs[i].categoryClubIds[j].chatRoomsCount == 1){ %>
+										<%= college_page.allClubs[i].categoryClubIds[j].clubUsers.length %> <span class="text-xxxs">
+											<% if(college_page.allClubs[i].categoryClubIds[j].clubUsers.length == 1){ %>
 												<span class="lightgrey">MBR</span>
 											<% } else{ %>
 												<span class="lightgrey">MBRS</span>

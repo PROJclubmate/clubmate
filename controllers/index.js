@@ -1223,7 +1223,7 @@ module.exports = {
       return res.redirect('back');
     } else{
       var isCollegeLevelAdmin = false;
-      var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var friendsInClubArr = []; 
+      var Clubs_50_clubAvatar = []; var clubUserIdsArr = []; var clubMembersArr = []; 
       var match = false; var following = false;
       var allClubsArr = foundCollegePage.allClubs.sort(function(a, b) {
         return parseFloat(a.categoryCount) - parseFloat(b.categoryCount);
@@ -1265,13 +1265,18 @@ module.exports = {
                 }
               }
             }
-            var foundFriendsPicArr = []; var clubUserIdsArr = [];
+            var foundMembersPicArr = []; var clubUserIdsArr = []; var currentUserClubIdsArr = [];
             res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
-            match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-            todayActiveCount, isCollegeLevelAdmin, cdn_prefix});
+            match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundMembersPicArr, clubUserIdsArr,
+            currentUserClubIdsArr, todayActiveCount, isCollegeLevelAdmin, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
           });
         } else if(keyValue == 2){
+          var currentUserClubIdsArr = req.user.userClubs.map(function(club){
+            return club.id;
+          });
+          // Returning Ids of all the club members where currentUser is also a member, so that 3 of their photos may be used
+          // Such as: O O O you and 123 others
           for(var i=0;i<allClubsArr.length;i++){
             var arr12D = []; var arr22D = [];
             for(var j=0;j<allClubsArr[i].categoryClubIds.length;j++){
@@ -1281,12 +1286,13 @@ module.exports = {
               } else if (process.env.ENVIRONMENT === 'prod'){
                 arr12D[j] = s3Config.thumb_100_prefix+allClubsArr[i].categoryClubIds[j].avatarId;
               }
-              // Very heavy (4 nested loops O_o)
               for(var k=0;k<allClubsArr[i].categoryClubIds[j].clubUsers.length;k++){
-                for(var l=0;l<req.user.friends.length;l++){
-                  if(req.user.friends[l].equals(allClubsArr[i].categoryClubIds[j].clubUsers[k].id)){
-                    arr23D.push(allClubsArr[i].categoryClubIds[j].clubUsers[k].id);
-                    friendsInClubArr.push(req.user.friends[l]);
+                for(var l=0;l<currentUserClubIdsArr.length;l++){
+                  if(currentUserClubIdsArr[l].equals(allClubsArr[i].categoryClubIds[j]._id)){
+                    if(!req.user._id.equals(allClubsArr[i].categoryClubIds[j].clubUsers[k].id)){
+                      arr23D.push(allClubsArr[i].categoryClubIds[j].clubUsers[k].id);
+                      clubMembersArr.push(allClubsArr[i].categoryClubIds[j].clubUsers[k].id);
+                    }
                   }
                 }
               }
@@ -1295,9 +1301,9 @@ module.exports = {
             clubUserIdsArr[i] = arr22D;
             Clubs_50_clubAvatar[i] = arr12D;
           }
-          User.find({_id: {$in: friendsInClubArr}})
-          .select({_id: 1, fullName: 1, profilePic: 1, profilePicId: 1}).exec(function(err, foundFriends){
-            if(err || !foundFriends){
+          User.find({_id: {$in: clubMembersArr}})
+          .select({_id: 1, fullName: 1, profilePic: 1, profilePicId: 1}).exec(function(err, foundMembers){
+            if(err || !foundMembers){
               logger.error('(index-54)foundUser err => '+err);
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
@@ -1313,21 +1319,21 @@ module.exports = {
                   }
                 }
               }
-              var foundFriendsPicArr = [];
-              for(var i=0;i<foundFriends.length;i++){
+              var foundMembersPicArr = [];
+              for(var i=0;i<foundMembers.length;i++){
                 var obj = {};
-                obj['id'] = foundFriends[i]._id;
-                obj['name'] = foundFriends[i].fullName;
+                obj['id'] = foundMembers[i]._id;
+                obj['name'] = foundMembers[i].fullName;
                 if(process.env.ENVIRONMENT === 'dev'){
-                  obj['url'] = clConfig.cloudinary.url(foundFriends[i].profilePicId, clConfig.thumb_100_obj);
+                  obj['url'] = clConfig.cloudinary.url(foundMembers[i].profilePicId, clConfig.thumb_100_obj);
                 } else if (process.env.ENVIRONMENT === 'prod'){
-                  obj['url'] = s3Config.thumb_100_prefix+foundFriends[i].profilePicId;
+                  obj['url'] = s3Config.thumb_100_prefix+foundMembers[i].profilePicId;
                 }
-                foundFriendsPicArr.push(obj);
+                foundMembersPicArr.push(obj);
               }
               res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
-              match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundFriendsPicArr, clubUserIdsArr,
-              isCollegeLevelAdmin, cdn_prefix});
+              match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, foundMembersPicArr, clubUserIdsArr,
+              currentUserClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
               return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
             }
           });
@@ -1355,7 +1361,7 @@ module.exports = {
             }
           }
           res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar, allClubs: allClubsArr,
-          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
+          match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr, currentUserClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         }
       } else{
@@ -1370,10 +1376,10 @@ module.exports = {
           }
           Clubs_50_clubAvatar[i] = arr2D;
         }
-        currentUserId = '';
+        currentUserId = ''; var thisCollegePageFollowingClubIdsArr = []; var currentUserClubIdsArr = [];
         return res.render('college_pages/index',{college_page: foundCollegePage, Clubs_50_clubAvatar,
         allClubs: allClubsArr, match, currentUserId, keyValue, thisCollegePageFollowingClubIdsArr,
-        isCollegeLevelAdmin, cdn_prefix});
+        currentUserClubIdsArr, isCollegeLevelAdmin, cdn_prefix});
       }
     }
     });

@@ -194,9 +194,6 @@ button.gb.gb8:focus{
 .btn-xs.btnshadow{
   box-shadow: 0px 2px 5px -2px rgb(0, 0, 0, 0.5);
 }
-#delete_profilePic-desktop{
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.75);
-}
 .btn-primary, .input-group-append > .btn.btn-secondary{
   border-color: var(--color-dark-500) !important;
   background-color: var(--color-dark-500) !important;
@@ -244,8 +241,8 @@ button.gb.gb8:focus{
   border-color: var(--color-dark-600);
 }
 .btn.btn-success{
-  background-color: #1eab79 !important;
-  border-color: #1eab79 !important;
+  background-color: #0ca177 !important;
+  border-color: #0ca177 !important;
   border-bottom-width: 2px;
   color: white;
 }
@@ -293,7 +290,7 @@ button.gb.gb8:focus{
   filter: brightness(0.35);
 }
 select{
-  border-color: #1eab79;
+  border-color: #0ca177;
 }
 .btn.moderation.btn-light{
   background-color: transparent !important;
@@ -320,7 +317,6 @@ select{
   color: #ed4245 !important;
 }
 .btn-college2:hover{
-  background-color: var(--color-dark-750) !important;
   color: #ed4245 !important;
 }
 .btn-college2.collegediv-follow:hover{
@@ -664,7 +660,7 @@ button.redcolor2.commentvote * .fab.fa-gratipay, button.redcolor2.commentvote:ho
   -webkit-text-stroke: 0.75px transparent;
 }
 .greencolor{
-  color: #1eab79 !important;
+  color: #0ca177 !important;
 }
 .greencolor3{
   color: var(--color-white-200) !important;
