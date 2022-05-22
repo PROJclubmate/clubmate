@@ -48,121 +48,129 @@ module.exports = {
 
   postsDiscover(req, res, next){
     if(req.user && req.user.discoverSwitch === 1){
-      // Server render chats and notifications only, posts and stories will load on AJAX
-      var clubConversationIds = req.user.userClubs.map(function(userClub){
-        return userClub.conversationId;
-      });
-      var userConversationIds = req.user.userChats.map(function(userChat){
-        return userChat.conversationId;
-      });
-      clubConversationIds = clubConversationIds.filter(function (el){
-        return el != null;
-      });
-      userConversationIds = userConversationIds.filter(function (el){
-        return el != null;
-      });
-      var notificationCount = 0;
-      ClubConversation.find({_id: {$in: clubConversationIds}, isActive: true})
-      .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
-      if(err){
-        logger.error(req.user._id+' : (chats-1)foundClubConversations err => '+err);
-        req.flash('error', 'Something went wrong :(');
-      } else{
-        var lastOpenedChatListClub; var chatList = [];
-        for(var i=0;i<foundClubConversations.length;i++){
-          var obja = {};
-          obja['type'] = 'club';
-          obja['_id'] = foundClubConversations[i]._id;
-          for(var j=0;j<foundClubConversations[i].seenMsgCursors.length;j++){
-            if(foundClubConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
-              obja['seenMsgCursor'] = foundClubConversations[i].seenMsgCursors[j].cursor;
-              if(foundClubConversations[i].messageCount > foundClubConversations[i].seenMsgCursors[j].cursor){
-                notificationCount++;
-              }
-              break;
-            }
-          }
-          obja['id'] = foundClubConversations[i].clubId._id;
-          obja['name'] = foundClubConversations[i].clubId.name;
-          if(process.env.ENVIRONMENT === 'dev'){
-            obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
-          } else if (process.env.ENVIRONMENT === 'prod'){
-            obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
-          }
-          obja['lastMessage'] = foundClubConversations[i].lastMessage;
-          obja['lastMsgOn'] = foundClubConversations[i].lastMsgOn;
-          obja['lastMsgBy'] = foundClubConversations[i].lastMsgBy;
-          obja['messageCount'] = foundClubConversations[i].messageCount;
-          obja['bucketNum'] = foundClubConversations[i].bucketNum;
-          obja['messageBuckets'] = foundClubConversations[i].messageBuckets.pop();
-          chatList.push(obja);
-          if(i==0){
-            lastOpenedChatListClub = foundClubConversations[i].clubId._id;
-          }
-        }
-        Conversation.find({_id: {$in: userConversationIds}})
-        .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
-        .exec(function(err, foundUserConversations){
+      var showDiscoverChatlist = req.user.settings.showDiscoverChatlist;
+      if(showDiscoverChatlist === true){
+        // Server render chats and notifications only, posts and stories will load on AJAX
+        var clubConversationIds = req.user.userClubs.map(function(userClub){
+          return userClub.conversationId;
+        });
+        var userConversationIds = req.user.userChats.map(function(userChat){
+          return userChat.conversationId;
+        });
+        clubConversationIds = clubConversationIds.filter(function (el){
+          return el != null;
+        });
+        userConversationIds = userConversationIds.filter(function (el){
+          return el != null;
+        });
+        var notificationCount = 0;
+        ClubConversation.find({_id: {$in: clubConversationIds}, isActive: true})
+        .populate({path: 'clubId', select: 'name avatar avatarId'}).exec(function(err, foundClubConversations){
         if(err){
-          logger.error(req.user._id+' : (chats-2)foundUserConversations err => '+err);
+          logger.error(req.user._id+' : (chats-1)foundClubConversations err => '+err);
           req.flash('error', 'Something went wrong :(');
         } else{
-          for(var i=0;i<foundUserConversations.length;i++){
-            var objb = {};
-            objb['type'] = 'user';
-            objb['_id'] = foundUserConversations[i]._id;
-            for(var j=0;j<foundUserConversations[i].seenMsgCursors.length;j++){
-              if(foundUserConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
-                objb['seenMsgCursor'] = foundUserConversations[i].seenMsgCursors[j].cursor;
-                if(foundUserConversations[i].messageCount > foundUserConversations[i].seenMsgCursors[j].cursor){
+          var lastOpenedChatListClub; var chatList = [];
+          for(var i=0;i<foundClubConversations.length;i++){
+            var obja = {};
+            obja['type'] = 'club';
+            obja['_id'] = foundClubConversations[i]._id;
+            for(var j=0;j<foundClubConversations[i].seenMsgCursors.length;j++){
+              if(foundClubConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+                obja['seenMsgCursor'] = foundClubConversations[i].seenMsgCursors[j].cursor;
+                if(foundClubConversations[i].messageCount > foundClubConversations[i].seenMsgCursors[j].cursor){
                   notificationCount++;
-                }
-              }
-            }
-            for(var k=0;k<foundUserConversations[i].participants.length;k++){
-              if(!foundUserConversations[i].participants[k]._id.equals(req.user._id)){
-                objb['id'] = foundUserConversations[i].participants[k].id;
-                objb['name'] = foundUserConversations[i].participants[k].fullName;
-                objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
-                if(process.env.ENVIRONMENT === 'dev'){
-                  objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
-                } else if (process.env.ENVIRONMENT === 'prod'){
-                  objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
                 }
                 break;
               }
             }
-            objb['lastMessage'] = foundUserConversations[i].lastMessage;
-            objb['lastMsgOn'] = foundUserConversations[i].lastMsgOn;
-            objb['lastMsgBy'] = foundUserConversations[i].lastMsgBy;
-            objb['messageCount'] = foundUserConversations[i].messageCount;
-            objb['bucketNum'] = foundUserConversations[i].bucketNum;
-            objb['messageBuckets'] = foundUserConversations[i].messageBuckets.pop();
-            chatList.push(objb);
+            obja['id'] = foundClubConversations[i].clubId._id;
+            obja['name'] = foundClubConversations[i].clubId.name;
+            if(process.env.ENVIRONMENT === 'dev'){
+              obja['image'] = clConfig.cloudinary.url(foundClubConversations[i].clubId.avatarId, clConfig.thumb_100_obj);
+            } else if (process.env.ENVIRONMENT === 'prod'){
+              obja['image'] = s3Config.thumb_100_prefix+foundClubConversations[i].clubId.avatarId;
+            }
+            obja['lastMessage'] = foundClubConversations[i].lastMessage;
+            obja['lastMsgOn'] = foundClubConversations[i].lastMsgOn;
+            obja['lastMsgBy'] = foundClubConversations[i].lastMsgBy;
+            obja['messageCount'] = foundClubConversations[i].messageCount;
+            obja['bucketNum'] = foundClubConversations[i].bucketNum;
+            obja['messageBuckets'] = foundClubConversations[i].messageBuckets.pop();
+            chatList.push(obja);
+            if(i==0){
+              lastOpenedChatListClub = foundClubConversations[i].clubId._id;
+            }
           }
-          chatList.sort(function(a, b){
-            return b.lastMsgOn - a.lastMsgOn;
-          });
-          if(req.user.lastOpenedChatListClub){
-            lastOpenedChatListClub = req.user.lastOpenedChatListClub;
-          }
-          var chatType = null;
-          res.render('posts/discover', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
-          recipientId2: null, notificationCount, lastOpenedChatListClub, currentUserId: req.user._id, cdn_prefix,
-          collegeName: req.user.userKeys.college});
-          return User.updateOne({_id: req.user._id}, 
-          {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
+          Conversation.find({_id: {$in: userConversationIds}})
+          .populate({path: 'participants', select: 'fullName profilePic profilePicId userKeys'})
+          .exec(function(err, foundUserConversations){
           if(err){
-            logger.error(req.user._id+' : (chats-3)updateUser err => '+err);
+            logger.error(req.user._id+' : (chats-2)foundUserConversations err => '+err);
             req.flash('error', 'Something went wrong :(');
+          } else{
+            for(var i=0;i<foundUserConversations.length;i++){
+              var objb = {};
+              objb['type'] = 'user';
+              objb['_id'] = foundUserConversations[i]._id;
+              for(var j=0;j<foundUserConversations[i].seenMsgCursors.length;j++){
+                if(foundUserConversations[i].seenMsgCursors[j].id.equals(req.user._id)){
+                  objb['seenMsgCursor'] = foundUserConversations[i].seenMsgCursors[j].cursor;
+                  if(foundUserConversations[i].messageCount > foundUserConversations[i].seenMsgCursors[j].cursor){
+                    notificationCount++;
+                  }
+                }
+              }
+              for(var k=0;k<foundUserConversations[i].participants.length;k++){
+                if(!foundUserConversations[i].participants[k]._id.equals(req.user._id)){
+                  objb['id'] = foundUserConversations[i].participants[k].id;
+                  objb['name'] = foundUserConversations[i].participants[k].fullName;
+                  objb['userKeys'] = foundUserConversations[i].participants[k].userKeys;
+                  if(process.env.ENVIRONMENT === 'dev'){
+                    objb['image'] = clConfig.cloudinary.url(foundUserConversations[i].participants[k].profilePicId, clConfig.thumb_100_obj);
+                  } else if (process.env.ENVIRONMENT === 'prod'){
+                    objb['image'] = s3Config.thumb_100_prefix+foundUserConversations[i].participants[k].profilePicId;
+                  }
+                  break;
+                }
+              }
+              objb['lastMessage'] = foundUserConversations[i].lastMessage;
+              objb['lastMsgOn'] = foundUserConversations[i].lastMsgOn;
+              objb['lastMsgBy'] = foundUserConversations[i].lastMsgBy;
+              objb['messageCount'] = foundUserConversations[i].messageCount;
+              objb['bucketNum'] = foundUserConversations[i].bucketNum;
+              objb['messageBuckets'] = foundUserConversations[i].messageBuckets.pop();
+              chatList.push(objb);
+            }
+            chatList.sort(function(a, b){
+              return b.lastMsgOn - a.lastMsgOn;
+            });
+            if(req.user.lastOpenedChatListClub){
+              lastOpenedChatListClub = req.user.lastOpenedChatListClub;
+            }
+            var chatType = null;
+            res.render('posts/discover', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
+            recipientId2: null, notificationCount, lastOpenedChatListClub, currentUserId: req.user._id, cdn_prefix,
+            showDiscoverChatlist, collegeName: req.user.userKeys.college});
+            return User.updateOne({_id: req.user._id}, 
+            {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
+            if(err){
+              logger.error(req.user._id+' : (chats-3)updateUser err => '+err);
+              req.flash('error', 'Something went wrong :(');
+            }
+            });
           }
           });
         }
         });
+      } else{
+        res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix, collegeName: req.user.userKeys.college,
+        showDiscoverChatlist});
+        return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
-      });
     } else if(req.user && req.user.discoverSwitch === 2){
-      res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix, collegeName: req.user.userKeys.college});
+      res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix, collegeName: req.user.userKeys.college,
+      showDiscoverChatlist: false});
       return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
     } else{
       return res.render('posts/discover', {cdn_prefix});

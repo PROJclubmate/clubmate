@@ -1,4 +1,16 @@
 <% include ../partials/header %>
+<style>
+  @media screen and (min-width: 1200px){
+    .discover_chatlist-none{
+      margin-right: 3rem;
+    }
+  }
+  @media screen and (min-width: 1601px){
+    .discover_chatlist-none{
+      margin-right: 5rem;
+    }
+  }
+</style>
 <% if(currentUser && currentUser.discoverSwitch == 1){ %>
   <link rel="stylesheet" href="/zuck.js-master/dist/zuck.min.css">
   <link rel="stylesheet" href="/zuck.js-master/dist/skins/facesnap.min.css">
@@ -73,8 +85,12 @@
           <% //include ../partials/posts_index %>
         </div>
         <div style="display: inline-flex;">
-          <div id="client-posts-discover" style="overflow: hidden; display: table;"></div>
-          <% if(currentUser && currentUser.discoverSwitch === 1){ %>
+          <% if(currentUser && currentUser.discoverSwitch === 1 && !showDiscoverChatlist){ %>
+            <div id="client-posts-discover" class="discover_chatlist-none" style="overflow: hidden; display: table;"></div>
+          <% } else{ %>
+            <div id="client-posts-discover" style="overflow: hidden; display: table;"></div>
+          <% } %>
+          <% if(currentUser && currentUser.discoverSwitch === 1 && showDiscoverChatlist){ %>
             <% if(chatList.length){ %>
               <div id="discover_chatlist" class="d-none" style="display: table;">
                 <% for(var i=0;i<chatList.length;i++){ %>

@@ -1010,8 +1010,8 @@ input#color{
 .slider{
   background-color: var(--color-dark-700) !important;
 }
-input[type=checkbox]:checked + .slider{
-  background-color: #2196f3 !important;
+input[type=checkbox]:checked + .slider:not(.inactive){
+  background-color: #37a0f4 !important;
 }
 .intercom-composer-popover, .intercom-composer-popover-input, .intercom-composer-popover-input2{
   background-color: var(--color-dark-800);

@@ -875,17 +875,6 @@ $("#myTab").on('click', '.nav-link', function(e){
   }
 });
 
-$('#dn').on('change', function(e){
-  e.stopPropagation();
-  const darkTheme = this.checked ? 'dark' : 'light';
-  const csrfToken = $(this).attr('csrf-token');
-  const currentUserId = $(this).attr('value');
-  $(`<form action="/users/${currentUserId}/settings" method="POST">
-    <input type="hidden" name="theme" value="${darkTheme}">
-    <input type="hidden" name="_csrf" value="${csrfToken}">
-  </form>`).appendTo('body').submit();
-});
-
 $('div.btncollapse-div').on("click",".btncollapse", function(e){
   var btn = $(this);
   if(window.innerWidth < 768){

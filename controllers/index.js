@@ -1364,8 +1364,18 @@ module.exports = {
   indexSettingsPagePost(req, res, next){
     // 1. Dark theme toggler
     if(req.body.theme){
-      const toSet = (req.body.theme === "dark") ? true : false;
+      const toSet = (req.body.theme === 'dark') ? true : false;
       User.updateOne({_id: req.user._id}, { darkTheme: toSet }, function(err){
+        if(err){
+          return res.redirect('back');
+        } else{
+          return res.redirect('/users/'+req.user._id+'/settings');
+        }
+      });
+    }
+    if(req.body.showDiscoverChatlist){
+      const value = (req.body.showDiscoverChatlist === 'true') ? true : false;
+      User.updateOne({_id: req.user._id}, { 'settings.showDiscoverChatlist': value }, function(err){
         if(err){
           return res.redirect('back');
         } else{

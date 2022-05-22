@@ -34,9 +34,9 @@
   -webkit-transition: .4s;
   transition: .4s;
 }
-/* input[type=checkbox]:checked + .slider{
-  background-color: #2196F3;
-} */
+input[type=checkbox]:checked + .slider:not(.inactive){
+  background-color: #37a0f4;
+}
 input[type=checkbox]:checked + .slider:before{
   -webkit-transform: translateX(1.25rem);
   -ms-transform: translateX(1.25rem);
@@ -237,7 +237,7 @@ input[type=checkbox]:checked + .toggle .star--6{
         <div>
           <label class="switch">
             <input type="checkbox">
-            <span class="slider round"></span>
+            <span class="slider round inactive"></span>
           </label>
         </div>
       </div>
@@ -246,7 +246,7 @@ input[type=checkbox]:checked + .toggle .star--6{
         <div>
           <label class="switch">
             <input type="checkbox">
-            <span class="slider round"></span>
+            <span class="slider round inactive"></span>
           </label>
         </div>
       </div>
@@ -287,10 +287,52 @@ input[type=checkbox]:checked + .toggle .star--6{
     </div>
     <br>
     <br>
+    <div>
+      <div class="category-head text-xs boldtext">Discover Page</div>
+      <div class="valign my-2">
+        <div>Show minified chat-list</div>
+        <div>
+          <label class="switch">
+            <% if(currentUser && currentUser.settings.showDiscoverChatlist) { %>
+              <input type="checkbox" id="discover_chatlist" csrf-token="<%= csrfToken %>" value="currentUser._id" checked>
+            <% } else { %>
+              <input type="checkbox" id="discover_chatlist" csrf-token="<%= csrfToken %>" value="currentUser._id">
+            <% } %>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
     <a href="/feedback">
       Give Feedback
     </a>
   </div>
 </div>
 
+
 <% include ./partials/footer %>
+<script>
+  $('input[type=checkbox]').on('change', function(e){
+    e.stopPropagation();
+    if(this.id == 'dn'){
+      const darkTheme = this.checked ? 'dark' : 'light';
+      const csrfToken = $(this).attr('csrf-token');
+      const currentUserId = $(this).attr('value');
+      return $(`<form action="/users/${currentUserId}/settings" method="POST">
+        <input type="hidden" name="theme" value="${darkTheme}">
+        <input type="hidden" name="_csrf" value="${csrfToken}">
+      </form>`).appendTo('body').submit();
+    }
+    if(this.id == 'discover_chatlist'){
+      const value = this.checked ? true : false;
+      const csrfToken = $(this).attr('csrf-token');
+      const currentUserId = $(this).attr('value');
+      return $(`<form action="/users/${currentUserId}/settings" method="POST">
+        <input type="hidden" name="showDiscoverChatlist" value="${value}">
+        <input type="hidden" name="_csrf" value="${csrfToken}">
+      </form>`).appendTo('body').submit();
+    }
+  });
+</script>

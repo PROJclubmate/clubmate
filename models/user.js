@@ -17,6 +17,9 @@ const userSchema = new Schema({
   lastLoggedOut: Date,
   lastActive: Date,
   darkTheme: { type: Boolean, default: false },
+  settings: {
+    showDiscoverChatlist: { type: Boolean, default: true }
+  },
   discoverSwitch: {
     type: Number,
     default: 1,
