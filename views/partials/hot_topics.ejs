@@ -32,7 +32,7 @@
           <div class="mb-auto ml-2 mt-1 badge badge-pill badge-round2 badge-secondary text-md"><%= Number(topTopicPosts[i].upVoteCount)-Number(topTopicPosts[i].downVoteCount) %></div>
         </div>
         <% } %>
-      <% } else if(currentUser && (rank >= 0 && rank <=4)){ %>
+      <% } else if(currentUser && (rank >= 0 && rank <=2)){ %>
         <div class="lightgrey text-mob-lg">No discussions created this week :/</div>
       <% } else if(currentUser && rank == undefined){ %>
         <div class="lightgrey text-mob-lg">You are not a club member :/</div>

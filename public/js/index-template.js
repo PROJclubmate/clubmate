@@ -884,16 +884,16 @@ function club_posts_template(response){
                   </span>
                 </div>
                 <div class="d-flex flex-row">
-                <% if(0 <= rank && rank <= 2){ %>
-                  <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+                <% if(rank <= 1){ %>
+                  <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs mr-1"><%= privacyText(posts[k].privacy) %></div>
                 <% } %>
-                <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
+                <% if(rank <= 1 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
+                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= posts[k].moderation %></div>
                 <% } else if(posts[k].moderation == -1){ %>
-                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
+                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= posts[k].moderation %></div>
                 <% } %>
                 <% if(posts[k].descEdit.length != 0){ %>
-                  <div class="badge badge-light text-xxs ml-1">Edited</div>
+                  <div class="badge badge-light text-xxs">Edited</div>
                 <% } %>
                 </div>
               </div>
@@ -903,7 +903,7 @@ function club_posts_template(response){
                 <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu dropdown-menu-right dropbox">
                   <div class="container drop-shadow1">
-                    <% if(0 <= rank && rank <= 1){ %>
+                    <% if(rank <= 1){ %>
                       <li>
                         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                           <% if(posts[k].moderation != -1){ %>
@@ -975,11 +975,11 @@ function club_posts_template(response){
                 <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                   <!-- Moderation -->
                   <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
-                    <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
+                    <% if(rank <= 1 && posts[k].moderation == 1){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                       </span>
-                    <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
+                    <% } else if(rank <= 1 && posts[k].moderation == 0){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info shadow-none text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                       </span>
@@ -1015,11 +1015,11 @@ function club_posts_template(response){
                   <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                     <!-- Moderation -->
                     <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
-                      <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
+                      <% if(rank <= 1 && posts[k].moderation == 1){ %>
                         <span>
                           <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                         </span>
-                      <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
+                      <% } else if(rank <= 1 && posts[k].moderation == 0){ %>
                         <span>
                           <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-info shadow-none text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                         </span>
@@ -1136,16 +1136,16 @@ function club_posts_template(response){
                       <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
                     </div>
                     <div class="d-flex flex-row">
-                      <% if(0 <= rank && rank <= 2){ %>
-                        <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+                      <% if(rank <= 1){ %>
+                        <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs mr-1"><%= privacyText(posts[k].privacy) %></div>
                       <% } %>
-                      <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
+                      <% if(rank <= 1 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= posts[k].moderation %></div>
                       <% } else if(posts[k].moderation == -1){ %>
-                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= posts[k].moderation %></div>
                       <% } %>
                       <% if(posts[k].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs ml-1">Edited</div>
+                        <div class="badge badge-light text-xxs">Edited</div>
                       <% } %>
                     </div>
                   </div>
@@ -1173,7 +1173,7 @@ function club_posts_template(response){
                       <% if(posts[k].subpostsCount > 0){ %>
                         <img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>">
                       <% } else{ %>
-                        <% if(rank == 0 || rank == 2){ %>
+                        <% if(rank <= 1){ %>
                           <img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>">
                         <% } else{ %>
                           <img class="card-img-top postimg topicimg topicimg_mobileradius" src="<%= cdn_prefix+posts[k].imageId %>">
@@ -1191,12 +1191,12 @@ function club_posts_template(response){
                 </a>
               <% } %>
             </div>
-            <% if((0 == rank || rank == 2) || posts[k].subpostsCount > 0){ %>
+            <% if(rank <= 1 || posts[k].subpostsCount > 0){ %>
               <div class="px-2">
                 <% if(!posts[k].image){ %>
                   <hr class="hr-light">
                 <% } %>
-                <% if(rank == 0 || rank == 2){ %>
+                <% if(rank <= 1){ %>
                   <div class="lightgrey2 valign my-2">
                 <% } else{ %>
                   <div class="lightgrey2 valign my-1">
@@ -1206,11 +1206,11 @@ function club_posts_template(response){
                     <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                       <!-- Moderation -->
                       <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
-                        <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
+                        <% if(rank <= 1 && posts[k].moderation == 1){ %>
                           <span>
                             <button id="moderation<%= posts[k]._id %>" class="moderation btn-topic btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
                           </span>
-                        <% } else if((rank == 0 || rank == 2) && posts[k].moderation == 0){ %>
+                        <% } else if(rank <= 1 && posts[k].moderation == 0){ %>
                           <span>
                             <button id="moderation<%= posts[k]._id %>" class="moderation btn-topic btn btnxxs btn-info shadow-none text-sm ml-2" name="exclusive" value="1" title="Post moderation" type="submit">Published</button>
                           </span>
@@ -1236,7 +1236,7 @@ function club_posts_template(response){
                   <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                   <ul class="dropdown-menu dropdown-menu-right dropbox">
                     <div class="container drop-shadow1">
-                      <% if(0 <= rank && rank <= 1){ %>
+                      <% if(rank <= 1){ %>
                         <li>
                           <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                             <% if(posts[k].moderation != -1){ %>
@@ -1350,15 +1350,15 @@ function user_posts_template(response){
                 </div>
                 <div class="d-flex flex-row">
                   <% if(currentUser && match){ %>
-                    <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+                    <div class="badge badge-light text-xxs mr-1"><%= privacyText(posts[k].privacy) %></div>
                     <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
+                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= posts[k].moderation %></div>
                     <% } else if(posts[k].moderation == -1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
+                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= posts[k].moderation %></div>
                     <% } %>
                   <% } %>
                   <% if(posts[k].descEdit.length != 0){ %>
-                    <div class="badge badge-light text-xxs ml-1">Edited</div>
+                    <div class="badge badge-light text-xxs">Edited</div>
                   <% } %>
                 </div>
               </div>
@@ -1544,15 +1544,15 @@ function user_posts_template(response){
                     </div>
                     <div class="d-flex flex-row">
                       <% if(currentUser && match){ %>
-                        <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
+                        <div class="badge badge-light text-xxs mr-1"><%= privacyText(posts[k].privacy) %></div>
                         <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
+                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= posts[k].moderation %></div>
                         <% } else if(posts[k].moderation == -1){ %>
-                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
+                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= posts[k].moderation %></div>
                         <% } %>
                       <% } %>
                       <% if(posts[k].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs ml-1">Edited</div>
+                        <div class="badge badge-light text-xxs">Edited</div>
                       <% } %>
                     </div>
                   </div>
@@ -1711,15 +1711,15 @@ function heart_posts_template(response){
                 </div>
                 <div class="d-flex flex-row">
                   <% if(currentUser && match){ %>
-                    <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
+                    <div class="badge badge-light text-xxs mr-1"><%= privacyText(postsH[l].privacy) %></div>
                     <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= postsH[l].moderation %></div>
+                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= postsH[l].moderation %></div>
                     <% } else if(postsH[l].moderation == -1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= postsH[l].moderation %></div>
+                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= postsH[l].moderation %></div>
                     <% } %>
                   <% } %>
                   <% if(postsH[l].descEdit.length != 0){ %>
-                    <div class="badge badge-light text-xxs ml-1">Edited</div>
+                    <div class="badge badge-light text-xxs">Edited</div>
                   <% } %>
                 </div>
               </div>
@@ -1905,15 +1905,15 @@ function heart_posts_template(response){
                     </div>
                     <div class="d-flex flex-row">
                       <% if(currentUser && match){ %>
-                        <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
+                        <div class="badge badge-light text-xxs mr-1"><%= privacyText(postsH[l].privacy) %></div>
                         <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
-                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= postsH[l].moderation %></div>
+                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs mr-1"><%= postsH[l].moderation %></div>
                         <% } else if(postsH[l].moderation == -1){ %>
-                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= postsH[l].moderation %></div>
+                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><%= postsH[l].moderation %></div>
                         <% } %>
                       <% } %>
                       <% if(postsH[l].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs ml-1">Edited</div>
+                        <div class="badge badge-light text-xxs">Edited</div>
                       <% } %>
                     </div>
                   </div>
@@ -2396,9 +2396,7 @@ function post_subPosts_template(response){
   function rankTitle(rank){
     if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin';}
-    else if(rank == 2){return 'Moderator';}
-    else if(rank == 3){return 'Sr. member';}
-    else if(rank == 4){return 'Jr. member';}
+    else if(rank == 2){return 'Member';}
   }
 %>
 `,{post: response.post, subVotes: response.subVotes, bucket: response.bucket, index: Number(response.index),
@@ -2446,9 +2444,7 @@ function moreMembers_template(response){
                 <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
               <% } %>
               <option value="1,<%= users[i].id._id %>,<%= clubId %>" data-descr="Administrator">Admin</option>
-              <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Moderator">Mod.</option>
-              <option value="3,<%= users[i].id._id %>,<%= clubId %>" data-descr="Sr. Member">Sr. M</option>
-              <option value="4,<%= users[i].id._id %>,<%= clubId %>" data-descr="Jr. Member">Jr. M</option>
+              <option value="2,<%= users[i].id._id %>,<%= clubId %>" data-descr="Member">Member</option>
             </select>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
@@ -2461,13 +2457,13 @@ function moreMembers_template(response){
             <em class="darkgrey text-xs"><%= rankTitle2(users[i].userRank) %></em>
           </span>
         </div>
-        <% if(users[i].userRank == 0 && 0 <= rank && rank <= 1){ %>
+        <% if(users[i].userRank == 0 && rank <= 1){ %>
           <div class="dropdown my-auto">
             <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm nopoint" type="button"><i></i></button>
           </div>
         <% } else{ %>
           <div class="dropdown my-auto">
-            <% if(0 <= rank && rank <= 1){ %>
+            <% if(rank <= 1){ %>
               <button class="btn btn-sm dropdown-toggle text-xxs ellipsis-sm" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
             <% } %>
             <% if(users[i].userRank != 0){ %>
@@ -2516,17 +2512,13 @@ function moreMembers_template(response){
   function rankTitle(rank){
     if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin';}
-    else if(rank == 2){return 'Moderator';}
-    else if(rank == 3){return 'Sr. member';}
-    else if(rank == 4){return 'Jr. member';}
+    else if(rank == 2){return 'Member';}
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Pr';}
-    else if(rank == 1){return 'Ad';}
-    else if(rank == 2){return 'Mo';}
-    else if(rank == 3){return 'Sr';}
-    else if(rank == 4){return 'Jr';}
+    if(rank == 0){return 'Pres';}
+    else if(rank == 1){return 'Admn';}
+    else if(rank == 2){return 'Mbr';}
   }
 %>
 `,{users: response.users, Users_50_profilePic: response.Users_50_profilePic, 
@@ -2706,17 +2698,13 @@ function moreClubs_template(response){
   function rankTitle(rank){
     if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin';}
-    else if(rank == 2){return 'Moderator';}
-    else if(rank == 3){return 'Sr. member';}
-    else if(rank == 4){return 'Jr. member';}
+    else if(rank == 2){return 'Member';}
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Pr';}
-    else if(rank == 1){return 'Ad';}
-    else if(rank == 2){return 'Mo';}
-    else if(rank == 3){return 'Sr';}
-    else if(rank == 4){return 'Jr';}
+    if(rank == 0){return 'Pres';}
+    else if(rank == 1){return 'Admn';}
+    else if(rank == 2){return 'Mbr';}
   }
 %>
 `,{clubs: response.clubs, clubCount: response.clubCount, Clubs_50_clubAvatar: response.Clubs_50_clubAvatar,

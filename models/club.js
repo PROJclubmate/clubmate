@@ -47,8 +47,8 @@ const clubSchema = new Schema({
     userRank: {
       type: Number,
       min: 0,
-      max: 4,
-      required: 'Please provide a (clubRank:0-President, 1-Admin, 2-Moderator, 3-SrMember, 4-JrMember)',
+      max: 2,
+      required: 'Please provide a (clubRank: 0-President, 1-Admin, 2-Member)',
       validate: {
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value.'

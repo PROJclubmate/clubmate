@@ -439,8 +439,8 @@ module.exports = {
       logger.error(req.user._id+' : (chats-13)foundClub err => '+err);
       req.flash('error', 'Something went wrong :(');
     } else{
-      admin = checkRank(foundClub.clubUsers,req.user._id,1);
-      if(admin){
+      isAdmin = checkRank(foundClub.clubUsers,req.user._id,1);
+      if(isAdmin){
         const clubConversation = new ClubConversation({
           clubId: mongoose.Types.ObjectId(req.params.club_id),
           isRoom: true,

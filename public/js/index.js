@@ -1202,28 +1202,9 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
         if(formData[1].value == '-1'){
           $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
           $('#visibility'+data.foundPost._id).text('Visibility(Show)').val('1');
-          if(data.isPresident == true){
-            $('#moderation'+data.foundPost._id).remove();
-            $('#modVisibility'+data.foundPost._id).removeClass('createdButton');
-          }
         } else if(formData[1].value == '1'){
           $('#visibility'+data.foundPost._id).text('Visibility(Hide)').val('-1');
           $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
-          if(data.isPresident == true){
-            var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
-            if(data.foundPost.type == 'simple' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
-              var btnVisibility = document.createElement('button');
-              btnVisibility.setAttribute('id', 'moderation'+data.foundPost._id);
-              btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','shadow-none','text-sm','ml-2');
-              btnVisibility.setAttribute('name', 'published');
-              btnVisibility.setAttribute('value', '0');
-              btnVisibility.setAttribute('title', 'Post moderation');
-              btnVisibility.setAttribute('type', 'submit');
-              btnVisibility.innerHTML = 'Exclusive';
-              mySpan.appendChild(btnVisibility);
-            }
-            $('#modVisibility'+data.foundPost._id).removeClass('d-none').addClass('nopad').addClass('createdButton');
-          }
         }
       }
     },

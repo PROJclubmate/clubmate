@@ -335,7 +335,7 @@
     </div>
 
     <!-- SUB POSTS -->
-    <% if(post.type == 'topic' && 0 <= rank && rank <= 4){ %>
+    <% if(post.type == 'topic' && 0 <= rank && rank <= 2){ %>
       <div class="post-container">
         <% if(post.subpostsCount != 0){ %>
           <div id="dynamic-subPosts">
@@ -506,9 +506,7 @@
   function rankTitle(rank){
     if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin';}
-    else if(rank == 2){return 'Moderator';}
-    else if(rank == 3){return 'Sr. member';}
-    else if(rank == 4){return 'Jr. member';}
+    else if(rank == 2){return 'Member';}
   }
 
   function privacyText(privacy){

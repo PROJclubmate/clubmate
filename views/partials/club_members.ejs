@@ -34,9 +34,7 @@
                 <option value="0,<%= users[i].id._id %>,<%= club._id %>" data-descr="President">President</option>
               <% } %>
               <option value="1,<%= users[i].id._id %>,<%= club._id %>" data-descr="Administrator">Admin</option>
-              <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Moderator">Mod.</option>
-              <option value="3,<%= users[i].id._id %>,<%= club._id %>" data-descr="Sr. Member">Sr. M</option>
-              <option value="4,<%= users[i].id._id %>,<%= club._id %>" data-descr="Jr. Member">Jr. M</option>
+              <option value="2,<%= users[i].id._id %>,<%= club._id %>" data-descr="Member">Member</option>
             </select>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>

@@ -21,7 +21,7 @@ const postSchema = new Schema({
     type: Number,
     min: 0,
     max: 3,
-    required: 'Please provide a (privacySetting:0-Outside College, 1-This College, 2-This Club, 3-Only Me)',
+    required: 'Please provide a (privacySetting: 0-Outside College, 1-This College, 2-This Club, 3-Only Me)',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'
@@ -31,7 +31,7 @@ const postSchema = new Schema({
     type: Number,
     min: -1,
     max: 1,
-    required: 'Please provide a (moderationSetting:(-1)-Hidden, 0-Published, 1-Exclusive)',
+    required: 'Please provide a (moderationSetting: (-1)-Hidden, 0-Published, 1-Exclusive)',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'

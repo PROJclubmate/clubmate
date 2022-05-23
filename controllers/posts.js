@@ -792,7 +792,7 @@ module.exports = {
   postsCreate(req, res, next){
     var rank = currentRank2(req.params.club_id,req.user.userClubs);
     // Every club member can create a post (with & without topic)
-    if(0<=rank && rank<=4){
+    if(0<=rank && rank<=2){
       if(req.file){
         if(req.body.privacy && (((req.body.topic != '') && (1<=req.body.privacy && req.body.privacy<=5)) || 
         ((req.body.topic == '') && (0<=req.body.privacy && req.body.privacy<=5)))){
@@ -915,14 +915,16 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        // Post.find({ }, function(err, item){
+        // Club.find({ }, function(err, item){
         //   for(i = 0; i != item.length; i++){
-        //     Post.find({_id: item[i]._id}, function(err, foundONEPost){
-        //       if(foundONEPost[0].privacy == 3){
-        //         foundONEPost[0].privacy = 2;
+        //     Club.find({_id: item[i]._id}, function(err, foundONEClub){
+        //       for(j = 0; j != foundONEClub[0].clubUsers.length; j++){
+        //         if(foundONEClub[0].clubUsers[j].userRank > 2){
+        //           foundONEClub[0].clubUsers[j].userRank = 2;
+        //           console.log(JSON.stringify(foundONEClub[0].clubUsers[j].userRank, null, 2))
+        //         }
         //       }
-        //       // console.log(JSON.stringify(foundONEPost[0], null, 2))
-        //       foundONEPost[0].save();
+        //       // foundONEClub[0].save();
         //     });
         //   }
         // });
@@ -1323,26 +1325,22 @@ module.exports = {
         logger.error(req.user._id+' : (posts-40)foundPost err => '+err);
         return res.sendStatus(500);
       } else{
-        var isModerator = checkRank2(foundPost.postClub.clubUsers,req.user._id,2);
-        if(isModerator){
+        var isAdmin = checkRank(foundPost.postClub.clubUsers,req.user._id,1);
+        if(isAdmin){
           if(req.body.exclusive){
             foundPost.moderation = parseInt(req.body.exclusive);
             foundPost.save();
-            res.json({foundPost, isPresident: false, csrfToken: res.locals.csrfToken, cdn_prefix});
+            res.json({foundPost, csrfToken: res.locals.csrfToken, cdn_prefix});
           }
           if(req.body.published){
             foundPost.moderation = parseInt(req.body.published);
             foundPost.save();
-            res.json({foundPost, isPresident: false, csrfToken: res.locals.csrfToken, cdn_prefix});
+            res.json({foundPost, csrfToken: res.locals.csrfToken, cdn_prefix});
           }
-        }
-        var isAdmin = checkRank2(foundPost.postClub.clubUsers,req.user._id,1);
-        if(isAdmin){
-          var isPresident = checkRank2(foundPost.postClub.clubUsers,req.user._id,0);
           if(req.body.visibility){
             foundPost.moderation = parseInt(req.body.visibility);
             foundPost.save();
-            res.json({foundPost, isPresident, csrfToken: res.locals.csrfToken, cdn_prefix});
+            res.json({foundPost, csrfToken: res.locals.csrfToken, cdn_prefix});
           }
         }
       }
@@ -1509,10 +1507,10 @@ module.exports = {
 }
 
 //*************FUNCTIONS**************
-function checkRank2(clubUsers,userId,rank){
+function checkRank(clubUsers,userId,rank){
   var ok = false;
   clubUsers.forEach(function(user){
-    if(user.id.equals(userId) && (user.userRank == 0 || user.userRank == rank)){
+    if(user.id.equals(userId) && user.userRank <= rank){
       ok = true;
     }
   });

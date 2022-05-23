@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/css/options.css">
 
 <div class="row no-gutters content-toppad">
-  <% if(currentUser && !(0 <= rank && rank <= 4)){ %>
+  <% if(currentUser && !(0 <= rank && rank <= 2)){ %>
     <div id="not_a_clubmember_margin" class="col-lg-9 order-md-first order-last">
   <% } else{ %>
     <div class="col-lg-9 order-md-first order-last">
@@ -62,7 +62,7 @@
                   <% } %>
                   <div class="carousel-inner d-flex">
                     <% if(club.featuredPhotos.length >= 1){ %>
-                      <% if(currentUser && !(0 <= rank && rank <= 4)){ %>
+                      <% if(currentUser && !(0 <= rank && rank <= 2)){ %>
                         <div class="carousel-item active p-1 coverback indexcard rcov mobilepad">
                       <% } else{ %>
                         <div class="carousel-item active p-1 gradient-wrap coverback indexcard rcov">
@@ -76,7 +76,7 @@
                     <% } %>
                     <% if(club.featuredPhotos.length >= 2){ %>
                       <% for(var i=1;i<club.featuredPhotos.length;i++){ %>
-                        <% if(currentUser && !(0 <= rank && rank <= 4)){ %>
+                        <% if(currentUser && !(0 <= rank && rank <= 2)){ %>
                           <div class="carousel-item p-1 coverback indexcard rcov mobilepad">
                         <% } else{ %>
                           <div class="carousel-item p-1 gradient-wrap coverback indexcard rcov">
@@ -100,11 +100,11 @@
                       <span class="sr-only">Next</span>
                     </a>
                   <% } %>
-                  <% if(0 <= rank && rank <= 2){ %>
+                  <% if(0 <= rank && rank <= 1){ %>
                     <a class="btn btn-xs overlay3 overlay3-grad" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } else{ %>
-                  <% if(0 <= rank && rank <= 2){ %>
+                  <% if(0 <= rank && rank <= 1){ %>
                     <a class="btn btn-xs overlay3" href="/clubs/<%= club._id %>/featured_photos">Featured photos</a>
                   <% } %>
                 <% } %>
@@ -301,7 +301,7 @@
               <li class="nav-item">
                 <a class="nav-link boldtext black" id="stories-tab" data-toggle="tab" href="#stories" role="tab" aria-controls="stories" aria-selected="true">Stories</a>
               </li>
-              <% if(currentUser && 0 <= rank && rank <= 4){ %>
+              <% if(currentUser && 0 <= rank && rank <= 2){ %>
                 <li class="nav-item">
                   <a class="nav-link boldtext black" id="rooms-tab" data-toggle="tab" href="#rooms" role="tab" aria-controls="rooms" aria-selected="false">Rooms</a>
                 </li>
@@ -311,7 +311,7 @@
             <div class="tab-content" id="myTabContent">
               <!-- Activity Tab -->
               <div class="tab-pane fade greyback show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
-                <% if(rank >= 0 && rank <=4){ %>
+                <% if(rank >= 0 && rank <=2){ %>
                   <div class="card border-0">
                     <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
@@ -409,7 +409,7 @@
                   <div id="clubusers_strip" class="greyback rounded valign">
                     <div class="d-flex flex-row">
                       <div class="lightgrey text-sm my-auto ml-2"><%= club.membersCount %> <%= club.membersCount == 1 ? 'member': 'members' %></div>
-                      <% if(0 <= rank && rank <= 4){ %>
+                      <% if(0 <= rank && rank <= 2){ %>
                         <div id="membersOnlineCount" class="d-flex flex-row my-auto">
                           <div class="lightgrey text-sm ml-2" style="vertical-align: text-top;">|</div>
                           <div class="text-sm boldtext greencolor2 text-shadow-white px-2 mx-0" style="vertical-align: text-top;"><%= onlineClubMembersCount %><em> online</em></div>
@@ -418,7 +418,7 @@
                     </div>
                     <div class="d-flex">
                       <div>
-                        <% if(0 <= rank && rank <= 4){ %>
+                        <% if(0 <= rank && rank <= 2){ %>
                           <button class="btn btn-xs chat-input-tool my-auto" title="Search members" onclick="toggle_display('membersOnlineCount'); toggle_display('searchMember_form'); toggle_display('inv_requests');"><i class="fas fa-search"></i></button>
                         <% } else{ %>
                           <button class="btn btn-xs chat-input-tool my-auto lightgrey2" title="Search members"><i class="fas fa-search"></i></button>
@@ -440,7 +440,7 @@
                     <% include ../partials/club_members %>
                   </div>
                   <div id="client-members"></div>
-                  <% if(0 <= rank && rank <= 4){ %>
+                  <% if(0 <= rank && rank <= 2){ %>
                     <div class="text-center">
                       <button id="load-more-members-btn" class="btn btn-light btnxxs text-sm mt-2" type="button" value="1,11">
                         <span id="load-more-members-span"></span>Load More
@@ -452,7 +452,7 @@
               <!-- Stories Tab -->
               <div class="tab-pane fade border-light-lr" id="stories" role="tabpanel" aria-labelledby="stories-tab">
                 <div class="d-flex story-alt-container scroll moz-scroll p-3">
-                  <% if(currentUser && 0 <= rank && rank <=2){ %>
+                  <% if(currentUser && 0 <= rank && rank <= 1){ %>
                   <div class="d-flex flex-column mr-3">
                     <a id="new_story_wrapper" href="/clubs/<%= club._id %>/story/create" class="nounderline">
                       <div id="new_story" class="story-alt text-center">
@@ -464,7 +464,7 @@
                   <% } %>
                   <div id="club_current_stories" class="storiesWrapper"></div>
                 </div>
-                <% //if(currentUser && 0 <= rank && rank <=4){ %>
+                <% //if(currentUser && 0 <= rank && rank <= 2){ %>
                   <div class="p-3 mt-2">
                     <em class="darkgrey"><i class="fas fa-history mr-2"></i>ARCHIVE</em>
                     <!-- Will be added by javascript API -->
@@ -472,7 +472,7 @@
                   </div>
                 <% //} %>
               </div>
-              <% if(currentUser && 0 <= rank && rank <=4){ %>
+              <% if(currentUser && 0 <= rank && rank <= 2){ %>
                 <!-- Rooms Tab -->
                 <div class="tab-pane fade cardpad border-light-lr p-0 pt-2" id="rooms" role="tabpanel" aria-labelledby="rooms-tab">
                   <div class="card indexcard cardbody">
@@ -485,7 +485,7 @@
                     <div class="mt-2" id="audio_rooms_container">
                       <h3 class="px-3"> Audio Rooms </h3>
 
-                      <% if(currentUser && 0 <= rank && rank <= 3){ %>
+                      <% if(currentUser && 0 <= rank && rank <= 2){ %>
                       <div id="create-new-div" class="room-container-div" href="#createNewAudioRoom" data-toggle="modal">
                         <div class="nounderline">
                           <div id="create-new-room-container" class="room-container darkgrey">
@@ -613,11 +613,11 @@
       </div>
     </div>
   </div>
-  <% if(currentUser && 0 <= rank && rank <=4){ %>
+  <% if(currentUser && 0 <= rank && rank <= 2){ %>
     <div id="hot_topics_div" class="col-md-4 col-lg-3 px-2 pb-2">
       <% include ../partials/hot_topics %>
     </div>
-  <% } else if(currentUser && !(0 <= rank && rank <= 4)){ %>
+  <% } else if(currentUser && !(0 <= rank && rank <= 2)){ %>
     <div class="col-md-4 col-lg-3 px-2 pb-2">
       <div class="m-0">
         <div class="lightgrey lineheight-less text-sm text-center">
@@ -664,7 +664,7 @@
     const guserRank = 4;
   <% } %>
 
-  <% if(currentUser && 0 <= rank && rank <= 2){ %>
+  <% if(currentUser && 0 <= rank && rank <= 1){ %>
   openDeleteAudioRoomModal = (e, roomId) => {
     e.preventDefault();
 
@@ -823,16 +823,12 @@
   function rankTitle(rank){
     if(rank == 0){return 'President';}
     else if(rank == 1){return 'Admin.';}
-    else if(rank == 2){return 'Moderator';}
-    else if(rank == 3){return 'Sr. member';}
-    else if(rank == 4){return 'Jr. member';}
+    else if(rank == 2){return 'Member';}
   }
 
   function rankTitle2(rank){
-    if(rank == 0){return 'Pr';}
-    else if(rank == 1){return 'Ad';}
-    else if(rank == 2){return 'Mo';}
-    else if(rank == 3){return 'Sr';}
-    else if(rank == 4){return 'Jr';}
+    if(rank == 0){return 'Pres';}
+    else if(rank == 1){return 'Admn';}
+    else if(rank == 2){return 'Mbr';}
   }
 %>

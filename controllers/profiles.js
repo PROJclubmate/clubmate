@@ -802,7 +802,7 @@ module.exports = {
           }
         }
         var rank = currentRank(users,req.user._id);
-        if(0 <= rank && rank <= 4){
+        if(0 <= rank && rank <= 2){
           var conversationId = '', convClubId = '';
           if(foundClub.conversationId){
             var conversationId = foundClub.conversationId;
@@ -817,7 +817,7 @@ module.exports = {
             sentMemberReq = true;
           }
         }
-        if(0 <= rank && rank <= 4){
+        if(0 <= rank && rank <= 2){
           // for HOT TOPIC posts made in past week
           Post.find({postClub: req.params.club_id, type: 'topic', createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
           .select({type: 1, topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
@@ -883,7 +883,7 @@ module.exports = {
   profilesCluballTimeTopPosts(req, res, next){
     if(req.user){
       var rank = currentRank2(req.params.club_id,req.user.userClubs);
-      if(0<=rank && rank<=4){
+      if(0<=rank && rank<=2){
         var Posts_50_Image = [];
         Post.find({postClub: req.params.club_id, type: 'topic'})
         .select({type:1, topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
@@ -1139,38 +1139,7 @@ module.exports = {
       var newCollegePageExists;
       var rankUsers = foundClub.clubUsers;
       var admin = checkRank(rankUsers,req.user._id,1); 
-      var moder = checkRank(rankUsers,req.user._id,2);
-      if(req.body.newsUpdate && moder == true){
-        // var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
-        //   return clubUser.id;
-        // });
-        // if(req.body.newsDate && req.body.newsDate != ''){
-        //   var strDate = req.body.newsDate;
-        //   var date = moment(strDate, 'MM-DD-YYYY').toDate();
-        // } else{var eventDate = null;}
-        // var news = req.body.newsUpdate;
-        // var clubId = foundClub._id;
-        // var clubName = foundClub.name;
-        // var pusherName = req.user.fullName;
-        // var clubUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName};
-        // foundClub.updates.push(clubUpdate);
-        // // foundClub is locked for modification untill fn updatedClub is finished.?
-        // foundClub.save(function(err, updatedClub){
-        //   var len = updatedClub.updates.length;
-        //   var userUpdate = {'news': news, 'eventDate': date, 'pusherName': pusherName, 'clubId': clubId,
-        //   'clubName': clubName, updateId: updatedClub.updates[len-1]._id};
-        //   User.updateMany({_id: {$in: clubUserIdsArr}, userClubs: {$elemMatch: {id: updatedClub._id}}},
-        //   {$push: {clubUpdates: userUpdate}}, function(err){
-        //     if(err){
-        //       logger.error(req.user._id+' : (profiles-33)updateUsers err => '+err);
-        //       req.flash('error', 'Something went wrong :(');
-        //       return res.redirect('back');
-        //     }
-        //   });
-        //   req.flash('success', 'Successfully updated');
-        //   return res.redirect('/clubs/' + req.params.club_id);
-        // });
-      } else if(admin == true){
+      if(admin == true){
         if(req.file){
           try{
             if(process.env.ENVIRONMENT === 'dev'){
@@ -1191,32 +1160,6 @@ module.exports = {
             return res.redirect('back');
           }
         }
-        // if(req.body.delUpdate){
-        //   var clubUserIdsArr = foundClub.clubUsers.map(function(clubUser){
-        //     return clubUser.id;
-        //   });
-        //   var delUpdateId = mongoose.Types.ObjectId(req.body.delUpdate);
-        //   for(i=foundClub.updates.length-1;i>=0;i--){
-        //     if(foundClub.updates[i]._id.equals(delUpdateId)){
-        //       var timeDiff = (Date.now() - foundClub.updates[i].pushedAt);
-        //       // Notify update deletion which was created in last 24 hrs
-        //       if(timeDiff < 3600000*24){
-        //         var update = {'news': 'This update has been deleted', 'eventDate': '', 'clubName': foundClub.name,
-        //         'clubId': foundClub._id, 'deleterName': req.user.fullName};
-        //         User.updateMany({_id: {$in: clubUserIdsArr}, clubUpdates: {$elemMatch: {updateId: foundClub.updates[i]._id}}},
-        //         {$set: {'clubUpdates.$': update}}, function(err){
-        //           if(err){
-        //             logger.error(req.user._id+' : (profiles-35)updateUsers err => '+err);
-        //             req.flash('error', 'Something went wrong :(');
-        //             return res.redirect('back');
-        //           }
-        //         });
-        //       }
-        //       foundClub.updates.splice(i,1);
-        //       break;
-        //     }
-        //   }
-        // }
         if(req.body.clubKeys){
           var oldCollegeName = foundClub.clubKeys.college;
           var oldCategory = foundClub.clubKeys.category;
@@ -1413,8 +1356,8 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var moder = checkRank(foundClub.clubUsers,req.user._id,2);
-      if(moder){
+      var isAdmin = checkRank(foundClub.clubUsers,req.user._id,1);
+      if(isAdmin){
         featuredPhotos = foundClub.featuredPhotos;
         clubName = foundClub.name;
         clubId = foundClub._id;
@@ -1434,8 +1377,8 @@ module.exports = {
       req.flash('error', 'Something went wrong :(');
       return res.redirect('back');
     } else{
-      var moder = checkRank(foundClub.clubUsers,req.user._id,2);
-      if(moder){
+      var isAdmin = checkRank(foundClub.clubUsers,req.user._id,1);
+      if(isAdmin){
         if(req.body.button == 'submit' && req.file && foundClub.featuredPhotos.length < 5){
           var obj = {};
           if(process.env.ENVIRONMENT === 'dev'){

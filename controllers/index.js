@@ -718,7 +718,7 @@ module.exports = {
           //pushing club details into users
           var objb = {}; var okb = true;
           objb['id'] = foundClub._id;
-          objb['rank'] = 4;
+          objb['rank'] = 2;
           objb['clubName'] = foundClub.name;
           if(foundClub.conversationId){
             objb['conversationId'] = foundClub.conversationId;
