@@ -209,6 +209,7 @@ module.exports = {
             },
             {$project: {
             "_id": 1,
+            "type": 1,
             "description": 1,
             "hyperlink": 1,
             "descEdit": 1,
@@ -363,6 +364,7 @@ module.exports = {
             },
             {$project: {
             "_id": 1,
+            "type": 1,
             "description": 1,
             "hyperlink": 1,
             "descEdit": 1,
@@ -464,6 +466,7 @@ module.exports = {
             },
             {$project: {
             "_id": 1,
+            "type": 1,
             "description": 1,
             "hyperlink": 1,
             "descEdit": 1,
@@ -610,6 +613,7 @@ module.exports = {
             },
             {$project: {
             "_id": 1,
+            "type": 1,
             "description": 1,
             "hyperlink": 1,
             "descEdit": 1,
@@ -705,6 +709,7 @@ module.exports = {
         },
         {$project: {
         "_id": 1,
+        "type": 1,
         "description": 1,
         "hyperlink": 1,
         "descEdit": 1,
@@ -821,6 +826,11 @@ module.exports = {
                 req.flash('error', 'Something went wrong :(');
                 return res.redirect('back');
               } else{
+                if(req.body.topic == ''){
+                  newPost.type = 'simple';
+                } else{
+                  newPost.type = 'topic';
+                }
                 newPost.clubCollegeKey = foundClub.clubKeys.college;
                 newPost.clubCategory = foundClub.clubKeys.category;
                 newPost.postClub = foundClub._id;
@@ -861,6 +871,11 @@ module.exports = {
               req.flash('error', 'Something went wrong :(');
               return res.redirect('back');
             } else{
+              if(req.body.topic == ''){
+                newPost.type = 'simple';
+              } else{
+                newPost.type = 'topic';
+              }
               newPost.clubCollegeKey = foundClub.clubKeys.college;
               newPost.clubCategory = foundClub.clubKeys.category;
               newPost.postClub = foundClub._id;
@@ -900,6 +915,20 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
+        // Post.find({ }, function(err, item){
+        //   for(i = 0; i != item.length; i++){
+        //     Post.find({_id: item[i]._id}, function(err, foundONEPost){
+        //       if(foundONEPost[0].topic != ''){
+        //         foundONEPost[0].type = 'topic';
+        //       } else{
+        //         foundONEPost[0].type = 'simple';
+        //       }
+        //       // console.log(JSON.stringify(foundONEPost[0], null, 2))
+        //       foundONEPost[0].save();
+        //     });
+        //   }
+        // });
+
         var unfilteredPost = [];
         unfilteredPost.push(foundPost);
         var post = postsPrivacyFilter(unfilteredPost, req.user);
@@ -919,8 +948,8 @@ module.exports = {
               break;
             }
           }
-          Post.find({postClub: foundPost.postClub._id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
-          .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+          Post.find({postClub: foundPost.postClub._id, type: 'topic', createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
+          .select({type: 1, topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
           postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           logger.error(req.user._id+' : (posts-25)topTopicPosts err => '+err);
@@ -939,7 +968,7 @@ module.exports = {
                 Posts_50_Image[l] = null;
               }
             }
-            if(modPost.topic == ''){
+            if(modPost.type == 'simple'){
               var lastTwoBuckets = [], len = modPost.commentBuckets.length;
               lastTwoBuckets.push(modPost.commentBuckets[len-1]);
               lastTwoBuckets.push(modPost.commentBuckets[len-2]);
@@ -985,7 +1014,7 @@ module.exports = {
                 return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
               }
               });
-            } else if(modPost.topic != ''){
+            } else if(modPost.type == 'topic'){
               if(process.env.ENVIRONMENT === 'dev'){
                 var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
               } else if (process.env.ENVIRONMENT === 'prod'){
@@ -1046,7 +1075,7 @@ module.exports = {
         var hasVote = null;
         var hasModVote = null;
         var rank = null;
-        if(foundPost.topic == ''){
+        if(foundPost.type == 'simple'){
           var lastTwoBuckets = [], len = foundPost.commentBuckets.length;
           lastTwoBuckets.push(foundPost.commentBuckets[len-1]);
           lastTwoBuckets.push(foundPost.commentBuckets[len-2]);
@@ -1081,7 +1110,7 @@ module.exports = {
             index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, clubId: foundPost.postClub._id, cdn_prefix});
           }
           });
-        } else if(foundPost.topic != ''){
+        } else if(foundPost.type == 'topic'){
           var CU_50_profilePic = null;
           var rank = null;
           if(foundPost.subpostBuckets != ''){
@@ -1145,7 +1174,7 @@ module.exports = {
             }
           }
         }
-        if(foundPost.topic != '' && req.user){
+        if(foundPost.type == 'topic' && req.user){
           if(process.env.ENVIRONMENT === 'dev'){
             var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
           } else if (process.env.ENVIRONMENT === 'prod'){

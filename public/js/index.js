@@ -1211,7 +1211,7 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
           $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
           if(data.isPresident == true){
             var mySpan = document.getElementById('modVisibility'+data.foundPost._id);
-            if(data.foundPost.topic == '' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
+            if(data.foundPost.type == 'simple' && !$('#modVisibility'+data.foundPost._id).hasClass('createdButton')){
               var btnVisibility = document.createElement('button');
               btnVisibility.setAttribute('id', 'moderation'+data.foundPost._id);
               btnVisibility.classList.add('moderation','btn','btnxxs','btn-light','shadow-none','text-sm','ml-2');

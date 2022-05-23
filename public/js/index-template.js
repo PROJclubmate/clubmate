@@ -656,7 +656,7 @@ function discover_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
-  <% if(posts[k].topic == ''){ %>
+  <% if(posts[k].type == 'simple'){ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
       <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
         <div class="discoverheader">
@@ -734,7 +734,7 @@ function discover_posts_template(response){
         </div>
       </div>
     </div>
-  <% } else{ %>
+  <% } else if(posts[k].type == 'topic'){ %>
     <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
       <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
         <div class="discoverheader">
@@ -802,7 +802,7 @@ function discover_posts_template(response){
   <% } else if(discoverSwitch === 2){ %>
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard masonry">
   <% } %>
-    <% if(posts[k].topic == ''){ %>
+    <% if(posts[k].type == 'simple'){ %>
       <% if(posts[k].image){ %>
         <span>
           <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0.4375rem 0.4375rem 0 0;"></div>
@@ -819,7 +819,7 @@ function discover_posts_template(response){
           </span>
         </div>
       <% } %>
-    <% } else{ %>
+    <% } else if(posts[k].type == 'topic'){ %>
       <% if(posts[k].image){ %>
         <div class="p-2">
           <h5 class="m-0 p-0 topic-h5 truncate3"><%= posts[k].topic %></h5>
@@ -860,7 +860,7 @@ function club_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
-  <% if(posts[k].topic == ''){ %>
+  <% if(posts[k].type == 'simple'){ %>
     <div class="post-container">
       <div class="card post-head">
         <div class="card-body">
@@ -1108,7 +1108,7 @@ function club_posts_template(response){
         </div>
       </div>
     </div>
-  <% } else{ %>
+  <% } else if(posts[k].type == 'topic'){ %>
     <!-- TOPIC POSTS -->
     <div class="post-container">
       <div class="border-0 d-flex flex-row justify-content-between">
@@ -1331,7 +1331,7 @@ function user_posts_template(response){
   html = ejs.render(`
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
-  <% if(posts[k].topic == ''){ %>
+  <% if(posts[k].type == 'simple'){ %>
     <div class="post-container">
       <% if(k == 0){ %>
         <div class="card mt-0 pt-3 post-head">
@@ -1525,7 +1525,7 @@ function user_posts_template(response){
         </div>
       </div>
     </div>
-  <% } else{ %>
+  <% } else if(posts[k].type == 'topic'){ %>
     <!-- TOPIC POSTS -->
     <div class="post-container">
       <div class="border-0 d-flex flex-row justify-content-between">
@@ -1692,7 +1692,7 @@ function heart_posts_template(response){
   html = ejs.render(`
 <% var len = postsH.length; var l=0; for(l;l<len;l++){ %>
   <!-- SIMPLE POSTS -->
-  <% if(postsH[l].topic == ''){ %>
+  <% if(postsH[l].type == 'simple'){ %>
     <div class="post-container">
       <% if(l == 0){ %>
         <div class="card mt-0 pt-3 post-head">
@@ -1886,7 +1886,7 @@ function heart_posts_template(response){
         </div>
       </div>
     </div>
-  <% } else{ %>
+  <% } else if(postsH[l].type == 'topic'){ %>
     <!-- TOPIC POSTS -->
     <div class="post-container">
       <div class="border-0 d-flex flex-row justify-content-between">

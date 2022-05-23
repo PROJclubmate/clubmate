@@ -2,6 +2,9 @@ const mongoose = require('mongoose'),
   Schema       = mongoose.Schema;
 
 const postSchema = new Schema({
+  type: {type: String, enum: ['simple', 'topic']},
+  clubCollegeKey: String,
+  clubCategory: String,
   description: {type: String, required: true},
   hyperlink: String,
   descEdit: [{
@@ -11,8 +14,6 @@ const postSchema = new Schema({
   }],
   image: String,
   imageId: String,
-  clubCollegeKey: String,
-  clubCategory: String,
   // +1 for minified view (Load more), +5 for view;
   // Unwanted --> Someone might refresh page indefinately (F5) to boost score
   viewsCount: {type: Number, default: 0},
@@ -36,25 +37,6 @@ const postSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
-  likeCount: {type: Number, default: 0},
-  heartCount: {type: Number, default: 0},
-  likeUserIds: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  heartUserIds: [{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }],
-  commentsCount: {type: Number, default: 0},
-  //bucketNum is the cursor for current comment bucket(NOT THE TOTAL NUMBER OF COMM BUCKETS)
-  bucketNum: {type: Number, default: 1},
-  commentBuckets: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment'
-    }
-  ],
   postClub: {
     type: Schema.Types.ObjectId,
     ref: 'Club'
@@ -66,7 +48,28 @@ const postSchema = new Schema({
     },
     authorName: String
   },
-  // =============================== DISCUSSION (TOPIC POSTS) i.e. if topic != '' ================================
+  createdAt: {type: Date, default: Date.now},
+  // =============================== SIMPLE Posts i.e. if topic == '' ================================
+  commentsCount: {type: Number, default: 0},
+  //bucketNum is the cursor for current comment bucket(NOT THE TOTAL NUMBER OF COMM BUCKETS)
+  bucketNum: {type: Number, default: 1},
+  commentBuckets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
+    }
+  ],
+  likeCount: {type: Number, default: 0},
+  heartCount: {type: Number, default: 0},
+  likeUserIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  heartUserIds: [{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }],
+  // =============================== DISCUSSION (TOPIC Posts) i.e. if topic != '' ================================
   topic: String,
   subpostsCount: {type: Number, default: 0},
   subpostbucketNum: {type: Number, default: 1},
@@ -85,13 +88,13 @@ const postSchema = new Schema({
   downVoteUserIds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  createdAt: {type: Date, default: Date.now}
+  }]
 });
 
-postSchema.index({clubCollegeKey: 1});
+postSchema.index({createdAt: 1});
 postSchema.index({postClub: 1});
 postSchema.index({'postAuthor.id': 1});
-postSchema.index({createdAt: 1});
+postSchema.index({clubCollegeKey: 1});
+postSchema.index({type: 1});
 
 module.exports = mongoose.model('Post', postSchema);

@@ -91,13 +91,13 @@ module.exports = {
       var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
     }
     Post.findById(req.params.post_id).populate({path: 'postClub', select: 'name avatar avatarId clubUsers'})
-    .select({topic: 1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
+    .select({type:1, subpostBuckets: 1, postClub: 1, subpostsCount: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
       logger.error('(discussions-4)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
-      if(foundPost.topic != '' && foundPost.subpostBuckets != ''){
+      if(foundPost.type == 'topic' && foundPost.subpostBuckets != ''){
         if(0 <= req.query.newIndex && req.query.newIndex < foundPost.subpostBuckets.length-1){
           var page = req.query.newIndex;
         } else{

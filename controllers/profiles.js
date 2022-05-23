@@ -349,7 +349,7 @@ module.exports = {
       } else{
         var seenIds = [];
       }
-      Post.find({'postAuthor.id': req.params.id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
+      Post.find({'postAuthor.id': req.params.id, moderation: 0, privacy: 0, type: 'simple', _id: {$nin: seenIds}})
       .populate({path: 'postClub', select: 'name avatar avatarId'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)
@@ -435,6 +435,7 @@ module.exports = {
           {
           "$project": {
               "_id": 1,
+              "type": 1,
               "description": 1,
               "hyperlink": 1,
               "descEdit": 1,
@@ -818,8 +819,8 @@ module.exports = {
         }
         if(0 <= rank && rank <= 4){
           // for HOT TOPIC posts made in past week
-          Post.find({postClub: req.params.club_id, topic: {$ne: ''}, createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
-          .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+          Post.find({postClub: req.params.club_id, type: 'topic', createdAt: {$gt:new Date(Date.now() - 7*24*60*60 * 1000)}})
+          .select({type: 1, topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
           postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
           if(err || !topTopicPosts){
           logger.error(req.user._id+' : (profiles-23)topTopicPosts err => '+err);
@@ -884,8 +885,8 @@ module.exports = {
       var rank = currentRank2(req.params.club_id,req.user.userClubs);
       if(0<=rank && rank<=4){
         var Posts_50_Image = [];
-        Post.find({postClub: req.params.club_id, topic: {$ne: ''}})
-        .select({topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
+        Post.find({postClub: req.params.club_id, type: 'topic'})
+        .select({type:1, topic: 1, image: 1, imageId: 1, subpostsCount: 1, upVoteCount: 1, downVoteCount: 1, moderation: 1,
         postAuthor: 1, postClub: 1}).sort({upVoteCount: -1}).limit(10).exec(function(err, topTopicPosts){
         if(err || !topTopicPosts){
         logger.error(req.user._id+' : (profiles-24)topTopicPosts err => '+err);
@@ -1087,7 +1088,7 @@ module.exports = {
       } else{
         var seenIds = [];
       }
-      Post.find({postClub: req.params.club_id, moderation: 0, privacy: 0, topic: '', _id: {$nin: seenIds}})
+      Post.find({postClub: req.params.club_id, moderation: 0, privacy: 0, type: 'simple', _id: {$nin: seenIds}})
       .populate({path: 'postAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
       .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
       .sort({createdAt: -1}).limit(10)

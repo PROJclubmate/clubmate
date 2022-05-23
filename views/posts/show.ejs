@@ -5,7 +5,7 @@
   </div>
   <div id="delegated-posts" class="col-lg-7 col-md-10 centerpad-posts">
     <!-- SIMPLE POSTS -->
-    <% if(post.topic == ''){ %>
+    <% if(post.type == 'simple'){ %>
       <div class="card post-head" style="border-radius: 0.5rem !important;">
         <div class="card-body">
           <div class="dropctn">
@@ -336,7 +336,7 @@
     </div>
 
     <!-- SUB POSTS -->
-    <% if(post.topic != '' && 0 <= rank && rank <= 4){ %>
+    <% if(post.type == 'topic' && 0 <= rank && rank <= 4){ %>
       <div class="post-container">
         <% if(post.subpostsCount != 0){ %>
           <div id="dynamic-subPosts">
@@ -425,7 +425,7 @@
     <% } %>
 
     <!-- COMMENTS -->
-    <% if(post.topic == ''){ %>
+    <% if(post.type == 'simple'){ %>
       <div class="post-container">
         <div class="card show-comments mb-3" style="border-radius: 0.5rem !important;">
           <div class="valign p-2 mb-2">

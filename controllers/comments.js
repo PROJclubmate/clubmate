@@ -121,13 +121,13 @@ module.exports = {
   },
 
   commentsLoadMore(req, res, next){
-    Post.findById(req.params.post_id).select({topic: 1, commentBuckets: 1})
+    Post.findById(req.params.post_id).select({type: 1, commentBuckets: 1})
     .exec(function (err, foundPost){
     if(err || !foundPost){
       logger.error('(comments-7)foundPost err => '+err);
       return res.sendStatus(500);
     } else{
-      if(foundPost.topic == '' && foundPost.commentBuckets != ''){
+      if(foundPost.type == 'simple' && foundPost.commentBuckets != ''){
         Comment.find({_id: foundPost.commentBuckets[req.query.newIndex]})
         .populate({path: 'comments.commentAuthor.id', select: 'fullName profilePic profilePicId userKeys'})
         .exec(function(err, foundBucket){
