@@ -2023,12 +2023,8 @@ function postsPrivacyFilter(foundPosts, currentUser){
         posts.push(foundPosts[i]);
       }
     }
-    //Friends
+    //Club Exclusive
     if(privacy == 2){
-      
-    }
-    //Club(members)
-    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
@@ -2040,12 +2036,8 @@ function postsPrivacyFilter(foundPosts, currentUser){
         }
       }
     }
-    //Club(friends)
-    if(privacy == 4){
-      
-    }
     //Private
-    if(privacy == 5){
+    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }

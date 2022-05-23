@@ -320,12 +320,11 @@
             <span>
               <label for="privacy" class="sr-only" title="Privacy setting">Privacy setting</label>
               <select id="privacy" name="privacy" class="shortened-select select1 blackcolor">
+                <option value="#" data-descr="Privacy Level" disabled></option>
                 <option value="0" data-descr="Outside College"></option>
                 <option value="1" data-descr="This College"></option>
-                <option value="2" data-descr="My Friends"></option>
-                <option value="3" data-descr="This Club"></option>
-                <option value="4" data-descr="#Room" disabled></option>
-                <option value="5" data-descr="Only Me"></option>
+                <option value="2" data-descr="This Club"></option>
+                <option value="3" data-descr="Only Me"></option>
               </select>
             </span>
           </div>
@@ -513,11 +512,9 @@
   }
 
   function privacyText(privacy){
-    if(privacy == 0){return 'Public';}
-    else if(privacy == 1){return 'College';}
-    else if(privacy == 2){return 'Friends';}
-    else if(privacy == 3){return 'Club';}
-    else if(privacy == 4){return 'Club(friends)';}
-    else if(privacy == 5){return 'Private';}
+    if(privacy == 0){return 'Everyone';}
+    else if(privacy == 1){return 'College Exclusive';}
+    else if(privacy == 2){return 'Club Exclusive';}
+    else if(privacy == 3){return 'Private';}
   }
 %>

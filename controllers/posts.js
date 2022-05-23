@@ -918,10 +918,8 @@ module.exports = {
         // Post.find({ }, function(err, item){
         //   for(i = 0; i != item.length; i++){
         //     Post.find({_id: item[i]._id}, function(err, foundONEPost){
-        //       if(foundONEPost[0].topic != ''){
-        //         foundONEPost[0].type = 'topic';
-        //       } else{
-        //         foundONEPost[0].type = 'simple';
+        //       if(foundONEPost[0].privacy == 3){
+        //         foundONEPost[0].privacy = 2;
         //       }
         //       // console.log(JSON.stringify(foundONEPost[0], null, 2))
         //       foundONEPost[0].save();
@@ -1652,12 +1650,8 @@ function postsPrivacyFilter(foundPosts, currentUser){
         posts.push(foundPosts[i]);
       }
     }
-    //Friends
+    //Club Exclusive
     if(privacy == 2){
-      
-    }
-    //Club(members)
-    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       } else{
@@ -1669,12 +1663,8 @@ function postsPrivacyFilter(foundPosts, currentUser){
         }
       }
     }
-    //Club(friends)
-    if(privacy == 4){
-      
-    }
     //Private
-    if(privacy == 5){
+    if(privacy == 3){
       if(foundPosts[i].postAuthor.id.equals(currentUser._id)){
         posts.push(foundPosts[i]);
       }

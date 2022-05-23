@@ -20,8 +20,8 @@ const postSchema = new Schema({
   privacy: {
     type: Number,
     min: 0,
-    max: 5,
-    required: 'Please provide a (privacySetting:0-Outside College, 1-This College, 2-My Friends, 3-This Club, 4-Room, 5-Only Me)',
+    max: 3,
+    required: 'Please provide a (privacySetting:0-Outside College, 1-This College, 2-This Club, 3-Only Me)',
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value.'

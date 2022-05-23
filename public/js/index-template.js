@@ -883,17 +883,17 @@ function club_posts_template(response){
                     <a href="/users/<%= posts[k].postAuthor.id._id %>" class="darkgrey"><strong><%= posts[k].postAuthor.id.fullName %></strong></a>
                   </span>
                 </div>
-                <div>
+                <div class="d-flex flex-row">
                 <% if(0 <= rank && rank <= 2){ %>
                   <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
                 <% } %>
                 <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
                 <% } else if(posts[k].moderation == -1){ %>
-                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                  <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
                 <% } %>
                 <% if(posts[k].descEdit.length != 0){ %>
-                  <div class="badge badge-light text-xxs">Edited</div>
+                  <div class="badge badge-light text-xxs ml-1">Edited</div>
                 <% } %>
                 </div>
               </div>
@@ -974,7 +974,7 @@ function club_posts_template(response){
               <div>
                 <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                   <!-- Moderation -->
-                  <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
+                  <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
                     <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                       <span>
                         <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
@@ -1014,7 +1014,7 @@ function club_posts_template(response){
                 <div>
                   <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                     <!-- Moderation -->
-                    <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
+                    <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
                       <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                         <span>
                           <button id="moderation<%= posts[k]._id %>" class="moderation btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
@@ -1135,17 +1135,17 @@ function club_posts_template(response){
                       </span>
                       <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
                     </div>
-                    <div>
+                    <div class="d-flex flex-row">
                       <% if(0 <= rank && rank <= 2){ %>
                         <div id="priv-badge<%= posts[k]._id %>" class="priv-badge badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
                       <% } %>
                       <% if(0 <= rank && rank <= 2 && 0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
                       <% } else if(posts[k].moderation == -1){ %>
-                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                        <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
                       <% } %>
                       <% if(posts[k].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs">Edited</div>
+                        <div class="badge badge-light text-xxs ml-1">Edited</div>
                       <% } %>
                     </div>
                   </div>
@@ -1205,7 +1205,7 @@ function club_posts_template(response){
                   <div>
                     <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                       <!-- Moderation -->
-                      <% if(0 <= posts[k].privacy && posts[k].privacy <= 2){ %>
+                      <% if(0 <= posts[k].privacy && posts[k].privacy < 2){ %>
                         <% if((rank == 0 || rank == 2) && posts[k].moderation == 1){ %>
                           <span>
                             <button id="moderation<%= posts[k]._id %>" class="moderation btn-topic btn btnxxs btn-light shadow-none text-sm ml-2" name="published" value="0" title="Post moderation" type="submit">Exclusive</button>
@@ -1315,11 +1315,9 @@ function club_posts_template(response){
 <%
 function privacyText(privacy){
   if(privacy == 0){return 'Everyone';}
-  else if(privacy == 1){return 'College';}
-  else if(privacy == 2){return 'Friends';}
-  else if(privacy == 3){return 'Club';}
-  else if(privacy == 4){return 'Room';}
-  else if(privacy == 5){return 'Private';}
+  else if(privacy == 1){return 'College Exclusive';}
+  else if(privacy == 2){return 'Club Exclusive';}
+  else if(privacy == 3){return 'Private';}
 } %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts, rank: response.rank,
   currentUser: response.currentUser, PA_50_profilePic: response.PA_50_profilePic, 
@@ -1350,17 +1348,17 @@ function user_posts_template(response){
                     <a href="/clubs/<%= posts[k].postClub._id %>" class="darkgrey"><strong><%= posts[k].postClub.name %></strong></a>
                   </span>
                 </div>
-                <div>
+                <div class="d-flex flex-row">
                   <% if(currentUser && match){ %>
                     <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
                     <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
                     <% } else if(posts[k].moderation == -1){ %>
-                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                      <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
                     <% } %>
                   <% } %>
                   <% if(posts[k].descEdit.length != 0){ %>
-                    <div class="badge badge-light text-xxs">Edited</div>
+                    <div class="badge badge-light text-xxs ml-1">Edited</div>
                   <% } %>
                 </div>
               </div>
@@ -1544,17 +1542,17 @@ function user_posts_template(response){
                       </span>
                       <em class="text-xxs lightgrey2">. <%= moment(posts[k].createdAt).calendar() %></em>
                     </div>
-                    <div>
+                    <div class="d-flex flex-row">
                       <% if(currentUser && match){ %>
                         <div class="badge badge-light text-xxs"><%= privacyText(posts[k].privacy) %></div>
                         <% if(0 <= posts[k].moderation && posts[k].moderation <= 1){ %>
-                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs"><%= posts[k].moderation %></div>
+                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= posts[k].moderation %></div>
                         <% } else if(posts[k].moderation == -1){ %>
-                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs"><%= posts[k].moderation %></div>
+                          <div id="mod-badge<%= posts[k]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= posts[k].moderation %></div>
                         <% } %>
                       <% } %>
                       <% if(posts[k].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs">Edited</div>
+                        <div class="badge badge-light text-xxs ml-1">Edited</div>
                       <% } %>
                     </div>
                   </div>
@@ -1711,17 +1709,17 @@ function heart_posts_template(response){
                     <a href="/clubs/<%= postsH[l].postClub._id %>" class="darkgrey"><strong><%= postsH[l].postClub.name %></strong></a>
                   </span>
                 </div>
-                <div>
+                <div class="d-flex flex-row">
                   <% if(currentUser && match){ %>
                     <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
                     <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs"><%= postsH[l].moderation %></div>
+                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= postsH[l].moderation %></div>
                     <% } else if(postsH[l].moderation == -1){ %>
-                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs"><%= postsH[l].moderation %></div>
+                      <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= postsH[l].moderation %></div>
                     <% } %>
                   <% } %>
                   <% if(postsH[l].descEdit.length != 0){ %>
-                    <div class="badge badge-light text-xxs">Edited</div>
+                    <div class="badge badge-light text-xxs ml-1">Edited</div>
                   <% } %>
                 </div>
               </div>
@@ -1905,17 +1903,17 @@ function heart_posts_template(response){
                       </span>
                       <em class="text-xxs lightgrey2">. <%= moment(postsH[l].createdAt).calendar() %></em>
                     </div>
-                    <div>
+                    <div class="d-flex flex-row">
                       <% if(currentUser && match){ %>
                         <div class="badge badge-light text-xxs"><%= privacyText(postsH[l].privacy) %></div>
                         <% if(0 <= postsH[l].moderation && postsH[l].moderation <= 1){ %>
-                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs"><%= postsH[l].moderation %></div>
+                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-light text-xxs ml-1"><%= postsH[l].moderation %></div>
                         <% } else if(postsH[l].moderation == -1){ %>
-                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs"><%= postsH[l].moderation %></div>
+                          <div id="mod-badge<%= postsH[l]._id %>" class="mod-badge badge badge-danger text-xxs ml-1"><%= postsH[l].moderation %></div>
                         <% } %>
                       <% } %>
                       <% if(postsH[l].descEdit.length != 0){ %>
-                        <div class="badge badge-light text-xxs">Edited</div>
+                        <div class="badge badge-light text-xxs ml-1">Edited</div>
                       <% } %>
                     </div>
                   </div>

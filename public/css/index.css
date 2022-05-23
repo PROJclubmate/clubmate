@@ -229,13 +229,11 @@ div.content{
   div.content{padding: 0 8.25rem;}
   #story-footer, .absolute-center{width: calc(100% - 10vw - 2rem - 16.5rem) !important;}
   .form-signin{max-width: 20rem !important;}
-  .friends-dp{height: 5.25rem !important;}
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 1.75rem !important; padding: 0.675rem 0 !important;}
   #thisweek, #alltime{height: 25vh !important; min-height: 215px;}
   .description-short{padding: 1.5rem 0 !important;}
   h5.topic-h5{font-size: 1.5rem !important;}
   body, p, .truncate16, .info1, .dropctn{font-size: 1.125rem;}
-  .friends-text{line-height: 0.875rem;}
   .text-lg{font-size: 1.25rem !important;}
   .text-xl{font-size: 1.375rem !important;}
   .text-xxl{font-size: 1.5rem !important;}
@@ -315,7 +313,6 @@ div.content{
   #college-cover.mobileblurred{filter: blur(10px);}
   .college-infobtn{width: 56px !important; height: 56px !important; text-align: center;}
   #discover-load-more-btn{margin-bottom: 4rem;}
-  #view_all_friends{margin-bottom: 3rem;}
   #quickmodal{margin-bottom: 42px;}
 }
 /* Mobile Phones */
@@ -352,7 +349,6 @@ div.content{
   h5.topic-h5{font-size: 1.25rem !important;}
   .searchcard2{width: 100% !important;}
   div.mt-2.mobilepad.keys{margin-top: 0.25rem !important;}
-  .friends-dp{height: 8rem !important;}
   .mobileNone{display: none !important;}
   .mobileNoneFlex{display: none !important;}
   .desktopNone{display: block !important;}
@@ -366,7 +362,7 @@ div.content{
   div.lcov{border-radius: 0.75rem; z-index: 3;}
   div.rcov{border-radius: 0; box-shadow: none;}
   .mobile-cover{height: 180px !important;}
-  div.lpcov{width: inherit; top: -2.25rem; left: -6.5rem; margin-bottom: 0.75rem;}
+  div.lpcov{width: inherit; top: -2.25rem; left: -28.5%; margin-bottom: 0.75rem;}
   .profilename{white-space: pre-wrap !important; width: 180px; padding: 0.375rem 0 !important;
   line-height: 1.35rem !important; margin-left: 1rem !important;}
   .profilename.clubname{margin-left: 0 !important; text-align: center !important; position: absolute;
@@ -510,7 +506,6 @@ div.content{
   #side-clubs{padding-left: 0.25rem; padding-right: 0.25rem;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .sidebar-label{font-size: 0.75rem !important; padding-bottom: 0.25rem; font-weight: 300;}
-  .friends-dp{height: 6.9065rem !important;}
   button.modvote{font-size: 2.625rem !important;}
   .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{font-size: 3rem !important; margin: 0 -0.25rem !important;}
   .content-toppad{padding-top: 0.6875rem !important;}
@@ -579,14 +574,13 @@ div.content{
 }
 /* iphone 8 => 414*/
 @media screen and (max-width: 415px){
+  div.lpcov{left: -6.5rem;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
-  .friends-dp{height: 5.875rem !important;}
   .navbar-toggler{font-size: 1.375rem !important;}
   #inbox_mobile{font-size: 1.8125rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
-  .friends-dp{height: 5.8445rem !important;}
   .commentpad{padding-left: 0rem;}
 }
 /*Redmi Note 7 => 393px*/
@@ -594,7 +588,6 @@ div.content{
   .sidebar a, a.side-drop-elem{padding: 14px 12.25px;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .sidebar-icon{font-size: 1.375rem;}
-  .friends-dp{height: 5.5475rem !important;}
   .commentpad2{padding-left: 0.25rem;}
   .discover-icon{font-size: 1.625rem;}
 }
@@ -605,7 +598,6 @@ div.content{
   .collegedp{height: 54px !important; width: 54px !important;}
   .collegename{font-size: 1.375rem !important; line-height: 1.375rem !important;}
   #collegeicon{margin-left: -0.3125rem !important; margin-right: 0.3125rem !important;}
-  .friends-dp{height: 5.4065rem !important;}
   .text-mob-xl{font-size: 1.125rem !important;}
   .text-mob-lg{font-size: 1rem !important;}
   .text-mob-index{font-size: 0.9375rem !important;}
@@ -633,7 +625,6 @@ div.content{
   a.hr2.active{padding-top: 12.5px; padding-bottom: 12.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
-  .friends-dp{height: 5.2665rem !important;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
   .topic-column{padding-left: 0.3125rem !important; padding-right: 0.3125rem !important;}
@@ -663,7 +654,6 @@ div.content{
   img.avatar.cover{height: 100px !important; width: 100px !important;}
   div.carousel-frame2{height: 160px !important;}
   div.carousel-div{height: 152px !important;}
-  .friends-dp{height: 5.0315rem !important;}
   .info1{font-size: 0.875rem !important;}
   h5.topic-h5{font-size: 1.125rem !important;}
   .topic-head{min-height: 3.375rem !important;}
@@ -736,7 +726,6 @@ div.content{
   #sidebar-dropbox{top: 38px;}
   .sidebar a, a.side-drop-elem{padding: 8.5px 4px;}
   .discover-icon{font-size: 1.5rem;}
-  .friends-dp{height: 4.4065rem !important;}
 }
 /*----------------------------------------------------------------*/
 .fas.fa-thumbs-up, .fas.fa-heart{color: grey;}
@@ -1463,23 +1452,6 @@ time.calendar span{
   font-size: 0.75rem;
   color: grey;
   background-color: #ededed;
-}
-.friends-dp{
-  width: 100% !important;
-  height: 4.05rem;
-  position: relative;
-  object-fit: cover;
-}
-.friends-text{
-  bottom: 10%; 
-  position: absolute; 
-  color: white; 
-  text-shadow: 0 0 3px rgba(0,0,0,0.5);
-  padding: 0.15rem;
-}
-.friends-text:hover{
-  color: white; 
-  text-decoration: none;
 }
 .text-shadow-white{
   text-shadow: 0.5px 0.5px white, -0.5px 0.5px white, 0.5px -0.5px white, -0.5px -0.5px white;
