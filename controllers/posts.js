@@ -954,7 +954,7 @@ module.exports = {
                 var CA_50_profilePic = [], bucketsNum = foundBuckets.length;
                 for(var i=0;i<bucketsNum;i++){
                   foundBuckets[i].comments.sort(function(a, b){
-                    return a.upvotesCount - b.upvotesCount;
+                    return a.likeCount - b.likeCount;
                   });
                 }
                 for(var i=0;i<bucketsNum;i++){
@@ -969,17 +969,17 @@ module.exports = {
                 }
                 var index = len-3;
                 if(req.user){
-                  var upComments = commentCheck(req.user._id,foundBuckets);
+                  var likedComments = commentCheck(req.user._id,foundBuckets);
                   if(process.env.ENVIRONMENT === 'dev'){
                     var CU_50_profilePic = clConfig.cloudinary.url(req.user.profilePicId, clConfig.thumb_100_obj);
                   } else if (process.env.ENVIRONMENT === 'prod'){
                     var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
                   }
                 } else{
-                  var upComments = [];
+                  var likedComments = [];
                   var CU_50_profilePic = null;
                 }
-                res.render("posts/show", {hasVote, hasModVote, post: modPost, upComments, rank, buckets: foundBuckets,
+                res.render("posts/show", {hasVote, hasModVote, post: modPost, likedComments, rank, buckets: foundBuckets,
                 index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, Posts_50_Image, 
                 clubId: foundPost.postClub._id, topTopicPosts: modTopTopicPosts, clubPage: false, cdn_prefix});
                 return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -1061,7 +1061,7 @@ module.exports = {
             var CA_50_profilePic = [], bucketsNum = foundBuckets.length;
             for(var i=0;i<bucketsNum;i++){
               foundBuckets[i].comments.sort(function(a, b){
-                return a.upvotesCount - b.upvotesCount;
+                return a.likeCount - b.likeCount;
               });
             }
             for(var i=0;i<bucketsNum;i++){
@@ -1075,9 +1075,9 @@ module.exports = {
               }
             }
             var index = len-3;
-            var upComments = [];
+            var likedComments = [];
             var CU_50_profilePic = null;
-            return res.render("posts/show", {hasVote, hasModVote, post: foundPost, upComments, rank, buckets: foundBuckets,
+            return res.render("posts/show", {hasVote, hasModVote, post: foundPost, likedComments, rank, buckets: foundBuckets,
             index, CU_50_profilePic, PC_50_clubAvatar, CA_50_profilePic, clubId: foundPost.postClub._id, cdn_prefix});
           }
           });
@@ -1550,18 +1550,18 @@ function modVoteCheck(user,post){
 
 function commentCheck(userId,bucket){
   if(userId){
-    var upComments = [];
+    var likedComments = [];
     for(var k=0;k<bucket.length;k++){
       for(var i=0;i<bucket[k].count;i++){
-        for(var j=0;j<bucket[k].comments[i].upvotesCount;j++){
-          if(bucket[k].comments[i].upvoteUserIds[j].equals(userId)){
-            upComments.push(bucket[k].comments[i]._id);
+        for(var j=0;j<bucket[k].comments[i].likeCount;j++){
+          if(bucket[k].comments[i].likeUserIds[j].equals(userId)){
+            likedComments.push(bucket[k].comments[i]._id);
           }
         }
       }
     }
-    return upComments;
-  } else{var upComments = []; return upComments;}
+    return likedComments;
+  } else{var likedComments = []; return likedComments;}
 };
 
 function subVoteCheck(userId,bucket){
@@ -1595,7 +1595,7 @@ function sortComments(posts){
     if(post.commentBuckets != '' && post.commentBuckets.comments != ''){
       var trueCommentBuckets = post.commentBuckets;
       var sortCommentBucket = trueCommentBuckets[0].comments.sort(function(a, b){
-        return (a.upvotesCount) - (b.upvotesCount);
+        return (a.likeCount) - (b.likeCount);
       });
       post.commentBuckets.comments = sortCommentBucket;
       var sortPost = post;

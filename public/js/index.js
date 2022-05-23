@@ -1437,7 +1437,7 @@ $('div#delegated-comments').on('click', '.commentvote', function(e){
     data: formData,
     type: 'PUT',
     success: function(data){
-      $('#comment-up-count'+data.foundComment.comments[0]._id).text(data.foundComment.comments[0].upvotesCount);
+      $('#comment-up-count'+data.foundComment.comments[0]._id).text(data.foundComment.comments[0].likeCount);
       if($('#comment-up-count'+data.foundComment.comments[0]._id).text() == 0){
         $('#comment-up-count'+data.foundComment.comments[0]._id).addClass('invisible');
       } else{

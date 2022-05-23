@@ -2135,13 +2135,13 @@ function post_comments_template(response){
             <% } %>
             <form action="/comments/<%= buckets[0]._id %>/<%= comments[j]._id %>/vote" method="POST">
               <div class="commentwrap lineheight-0 mb-2">
-                <% if(upComments.includes(comments[j]._id)){ %>
+                <% if(likedComments.includes(comments[j]._id)){ %>
                   <button id="comment-up-btn<%= comments[j]._id %>" class="vote redcolor2 commentvote valign" name="commentUp" type="button" value="up" title="Upvote comment">
                     <div>
                       <i class="fab fa-gratipay"></i>
                     </div>
                     <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs bluecolor3 ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
-                      <%= comments[j].upvotesCount %>
+                      <%= comments[j].likeCount %>
                   </div>
                   </button>
                 <% } else{ %>
@@ -2149,12 +2149,12 @@ function post_comments_template(response){
                     <div>
                       <i class="fab fa-gratipay"></i>
                     </div>
-                    <% if(comments[j].upvotesCount > 0){ %>
+                    <% if(comments[j].likeCount > 0){ %>
                       <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount" name="commentUp" type="button" value="up" title="Upvote comment">
                     <% } else{ %>
                       <div id="comment-up-count<%= comments[j]._id %>" class="vote boldtext text-xs lightgrey ml-1 commentcount invisible" name="commentUp" type="button" value="up" title="Upvote comment">
                     <% } %>
-                      <%= comments[j].upvotesCount %>
+                      <%= comments[j].likeCount %>
                     </div>
                   </button>
                 <% } %>
@@ -2167,7 +2167,7 @@ function post_comments_template(response){
     </div>
   </div>
 <% } %>
-`,{post: response.post, upComments: response.upComments, buckets: response.buckets, index: response.index,
+`,{post: response.post, likedComments: response.likedComments, buckets: response.buckets, index: response.index,
   currentUser: response.currentUser, CA_50_profilePic: response.CA_50_profilePic, 
   csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;

@@ -3843,32 +3843,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   transition: unset;
   color: white;
 }
-.gb5{
-  background-color: #efefef;
-}
-.gb5:after{
-  position: unset;
-  background: linear-gradient(0, rgba(151, 49, 241, 0.5) 0%, rgba(151, 49, 241, 0.5) 6%, rgba(163, 71, 217, 0.5) 6%, rgba(163, 71, 217, 0.5) 33%, rgba(175, 94, 193, 0.5) 33%, rgba(175, 94, 193, 0.5) 47%, rgba(187, 116, 169, 0.5) 47%, rgba(187, 116, 169, 0.5) 65%, rgba(200, 139, 146, 0.5) 65%, rgba(200, 139, 146, 0.5) 77%, rgba(212, 161, 122, 0.5) 77%, rgba(212, 161, 122, 0.5) 87%, rgba(224, 184, 98, 0.5) 87%, rgba(224, 184, 98, 0.5) 97%, rgba(236, 206, 74, 0.5) 97%, rgba(236, 206, 74, 0.5) 100%), linear-gradient(90deg, #e90e1b 0%, #e90e1b 15%, #eb291b 15%, #eb291b 39%, #ee431a 39%, #ee431a 42%, #f05e1a 42%, #f05e1a 52%, #f37819 52%, #f37819 61%, #f59319 61%, #f59319 76%, #f8ad18 76%, #f8ad18 88%, #fac818 88%, #fac818 100%);
-}
-.gb5:hover{
-  background-color: white;
-  color: #262626;
-}
-.gb5:hover:after{
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  content: '';
-  z-index: -1;
-}
-.gb5:focus{
-  position: sticky;
-  outline: none;
-  transition: unset;
-  color: white;
-}
 .gb8{
   background-color: whitesmoke;
   padding: 0.25rem 0.75rem !important;
@@ -3883,37 +3857,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .gb8:focus:after{
   background-size: 200% 100%;
-  background-position: 100% 0;
-}
-.gb11{
-  background-color: #efefef;
-}
-.gb11:after{
-  background-image: linear-gradient(135deg, #8ae553 0%, #8ae553 22%, #6ecb47 22%, #6ecb47 28%, #53b03b 28%, #53b03b 72%, #37962f 72%, #37962f 100%);
-}
-.gb11:hover{
-  background-color: white;
-  color: #262626;
-}
-.gb11:hover:after{
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  content: '';
-  z-index: -1;
-  border-radius: 2rem;
-  background-position: 0% 0;
-}
-.gb11:focus{
-  outline: none;
-  background-image: linear-gradient(135deg, #8ae553 0%, #8ae553 22%, #6ecb47 22%, #6ecb47 28%, #53b03b 28%, #53b03b 72%, #37962f 72%, #37962f 100%);
-  color: white;
-  background-size: 200% 100%;
-  background-position: 99% 0;
-}
-.gb11:focus:after{
   background-position: 100% 0;
 }
 .cover-help{

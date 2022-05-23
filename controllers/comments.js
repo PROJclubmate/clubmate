@@ -136,7 +136,7 @@ module.exports = {
           return res.sendStatus(500);
         } else if(!err && foundBucket != ''){
           foundBucket.comments.sort(function(a, b){
-            return a.upvotesCount - b.upvotesCount;
+            return a.likeCount - b.likeCount;
           });
           var CA_50_profilePic = [];
           for(var j=0;j<foundBucket[0].comments.length;j++){
@@ -148,12 +148,12 @@ module.exports = {
           }
           var index = req.query.newIndex-1;
           if(req.user && foundBucket != ''){
-            var upComments = commentCheck(req.user._id,foundBucket);
+            var likedComments = commentCheck(req.user._id,foundBucket);
             var currentUser = req.user._id
           } else{
-            var upComments = [], currentUser = null;
+            var likedComments = [], currentUser = null;
           }
-          res.json({post: foundPost, upComments, buckets: foundBucket, index, currentUser, 
+          res.json({post: foundPost, likedComments, buckets: foundBucket, index, currentUser, 
           CA_50_profilePic, csrfToken: res.locals.csrfToken, cdn_prefix});
           return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
         // Close else block if problem
@@ -170,9 +170,9 @@ module.exports = {
 
   commentsVote(req, res, next){
     Comment.findOneAndUpdate({_id: req.params.bucket_id, 
-    comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}},
-    {$push: {'comments.$.upvoteUserIds': req.user._id}, $inc: {'comments.$.upvotesCount': 1}},
-    {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}}, new: true},
+    comments: {$elemMatch: {_id: req.params.comment_id, likeUserIds: {$ne: req.user._id}}}},
+    {$push: {'comments.$.likeUserIds': req.user._id}, $inc: {'comments.$.likeCount': 1}},
+    {fields: {comments: {$elemMatch: {_id: req.params.comment_id, likeUserIds: req.user._id}}}, new: true},
     function(err, notFoundComment){
     if(err){
       logger.error(req.user._id+' : (comments-9)notFoundComment err => '+err);
@@ -183,9 +183,9 @@ module.exports = {
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }else if(!notFoundComment){
         Comment.findOneAndUpdate({_id: req.params.bucket_id, 
-          comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: req.user._id}}},
-        {$pull: {'comments.$.upvoteUserIds': req.user._id}, $inc: {'comments.$.upvotesCount': -1}},
-        {fields: {comments: {$elemMatch: {_id: req.params.comment_id, upvoteUserIds: {$ne: req.user._id}}}}, new: true},
+          comments: {$elemMatch: {_id: req.params.comment_id, likeUserIds: req.user._id}}},
+        {$pull: {'comments.$.likeUserIds': req.user._id}, $inc: {'comments.$.likeCount': -1}},
+        {fields: {comments: {$elemMatch: {_id: req.params.comment_id, likeUserIds: {$ne: req.user._id}}}}, new: true},
         function(err, foundComment){
         if(err){
           logger.error(req.user._id+' : (comments-10)foundComment err => '+err);
@@ -203,16 +203,16 @@ module.exports = {
 
 function commentCheck(userId,bucket){
   if(userId){
-    var upComments = [];
+    var likedComments = [];
     for(var k=0;k<bucket.length;k++){
       for(var i=0;i<bucket[k].count;i++){
-        for(var j=0;j<bucket[k].comments[i].upvotesCount;j++){
-          if(bucket[k].comments[i].upvoteUserIds[j].equals(userId)){
-            upComments.push(bucket[k].comments[i]._id);
+        for(var j=0;j<bucket[k].comments[i].likeCount;j++){
+          if(bucket[k].comments[i].likeUserIds[j].equals(userId)){
+            likedComments.push(bucket[k].comments[i]._id);
           }
         }
       }
     }
-    return upComments;
-  } else{var upComments = []; return upComments;}
+    return likedComments;
+  } else{var likedComments = []; return likedComments;}
 };

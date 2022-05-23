@@ -22,8 +22,8 @@ const commentSchema = new Schema({
 	    authorName: String
 		},
 		text: String,
-		upvotesCount: {type: Number, default: 0},
-		upvoteUserIds: [{
+		likeCount: {type: Number, default: 0},
+		likeUserIds: [{
 		  type: Schema.Types.ObjectId,
 		  ref: 'User'
 		}]

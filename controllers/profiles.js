@@ -1994,7 +1994,7 @@ function sortComments(posts){
     if(post.commentBuckets != '' && post.commentBuckets.comments != ''){
       var trueCommentBuckets = post.commentBuckets;
       var sortCommentBucket = trueCommentBuckets[0].comments.sort(function(a, b){
-        return (a.upvotesCount) - (b.upvotesCount);
+        return (a.likeCount) - (b.likeCount);
       });
       post.commentBuckets.comments = sortCommentBucket;
       var sortPost = post;
