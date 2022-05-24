@@ -1201,9 +1201,9 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
       if(formData[1].name == 'visibility'){
         if(formData[1].value == '-1'){
           $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
-          $('#visibility'+data.foundPost._id).text('Visibility(Show)').val('1');
+          $('#visibility'+data.foundPost._id).text('Visibility (Show)').val('1');
         } else if(formData[1].value == '1'){
-          $('#visibility'+data.foundPost._id).text('Visibility(Hide)').val('-1');
+          $('#visibility'+data.foundPost._id).text('Visibility (Hide)').val('-1');
           $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
         }
       }

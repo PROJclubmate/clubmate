@@ -665,12 +665,13 @@ function discover_posts_template(response){
               <div>
                 <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
               </div>
-              <div>
-                <div>
-                  <span class="text-mob-sm">
-                    <span class="truncate1 discover-overlay-text"><strong><%= posts[k].postClub.name %></strong></span>
-                  </span>
+              <div class="d-flex flex-column text-mob-sm lineheight-lesser">
+                <div class="truncate1 discover-overlay-text">
+                  <strong><%= posts[k].postClub.name %></strong>
                 </div>
+                <% if(posts[k].privacy > 0){ %>
+                  <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
+                <% } %>
               </div>
             </div>
             <div class="lineheight-lesser">
@@ -743,12 +744,13 @@ function discover_posts_template(response){
               <div>
                 <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
               </div>
-              <div>
-                <div>
-                  <span class="text-mob-sm">
-                    <span class="truncate1 discover-overlay-text"><strong><%= posts[k].postClub.name %></strong></span>
-                  </span>
+              <div class="d-flex flex-column text-mob-sm lineheight-lesser">
+                <div class="truncate1 discover-overlay-text">
+                  <strong><%= posts[k].postClub.name %></strong>
                 </div>
+                <% if(posts[k].privacy > 0){ %>
+                  <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
+                <% } %>
               </div>
             </div>
             <div class="lineheight-lesser">
@@ -805,7 +807,7 @@ function discover_posts_template(response){
     <% if(posts[k].type == 'simple'){ %>
       <% if(posts[k].image){ %>
         <span>
-          <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0.4375rem 0.4375rem 0 0;"></div>
+          <div><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0.4375rem 0.4375rem 0 0;"></div>
         </span>
         <div class="card-body">
           <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
@@ -822,8 +824,8 @@ function discover_posts_template(response){
     <% } else if(posts[k].type == 'topic'){ %>
       <% if(posts[k].image){ %>
         <div class="p-2">
-          <h5 class="m-0 p-0 topic-h5 truncate3"><%= posts[k].topic %></h5>
-          <p class="truncate1 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
+          <h5 class="p-0 topic-h5 truncate3"><%= posts[k].topic %></h5>
+          <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
         </div>
         <span>
           <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0 0 0.4375rem 0.4375rem;"></div>
@@ -836,7 +838,7 @@ function discover_posts_template(response){
       <% } else{ %>
         <div class="card-body nounderline d-flex align-items-center" style="min-height: 6rem;">
           <div>
-            <div><h5 class="m-0 p-0 pb-2 topic-h5 truncate3"><%= posts[k].topic %></h5></div>
+            <div><h5 class="p-0 topic-h5 truncate3"><%= posts[k].topic %></h5></div>
             <div>
               <p class="truncate5 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
               <% if(posts[k].hyperlink){ %>
@@ -849,6 +851,13 @@ function discover_posts_template(response){
     <% } %>
   </div>
 <% } %>
+
+<%
+function privacyText(privacy){
+  if(privacy == 1){return 'College exclusive';}
+  else if(privacy == 2){return 'Club exclusive';}
+  else if(privacy == 3){return 'Private';}
+} %>
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
   PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
@@ -907,9 +916,9 @@ function club_posts_template(response){
                       <li>
                         <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                           <% if(posts[k].moderation != -1){ %>
-                            <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="-1" title="Post moderation" type="submit">Visibility(Hide)</button>
+                            <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="-1" title="Post moderation" type="submit">Visibility (Hide)</button>
                           <% } else if(posts[k].moderation == -1){ %>
-                            <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility(Show)</button>
+                            <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility (Show)</button>
                           <% } %>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -1240,9 +1249,9 @@ function club_posts_template(response){
                         <li>
                           <form class="valign" action="/posts/<%= posts[k]._id %>/vote" method="POST">
                             <% if(posts[k].moderation != -1){ %>
-                              <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="-1" title="Post moderation" type="submit">Visibility(Hide)</button>
+                              <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="-1" title="Post moderation" type="submit">Visibility (Hide)</button>
                             <% } else if(posts[k].moderation == -1){ %>
-                              <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility(Show)</button>
+                              <button id="visibility<%= posts[k]._id %>" class="dropitems link-button moderation text-sm" name="visibility" value="1" title="Post moderation" type="submit">Visibility (Show)</button>
                             <% } %>
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                           </form>

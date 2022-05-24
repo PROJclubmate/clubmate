@@ -48,8 +48,7 @@ module.exports = {
 
   postsDiscover(req, res, next){
     if(req.user && req.user.discoverSwitch === 1){
-      var showDiscoverChatlist = req.user.settings.showDiscoverChatlist;
-      if(showDiscoverChatlist === true){
+      if(req.user.settings.showDiscoverChatlist === true){
         // Server render chats and notifications only, posts and stories will load on AJAX
         var clubConversationIds = req.user.userClubs.map(function(userClub){
           return userClub.conversationId;
@@ -151,7 +150,7 @@ module.exports = {
             var chatType = null;
             res.render('posts/discover', {chatList, chatType, convClubId: null, recipientId: null, convClubId2: null, 
             recipientId2: null, notificationCount, lastOpenedChatListClub, currentUserId: req.user._id, cdn_prefix,
-            showDiscoverChatlist, collegeName: req.user.userKeys.college});
+            showDiscoverChatlist: true, collegeName: req.user.userKeys.college});
             return User.updateOne({_id: req.user._id}, 
             {$set: {unreadChatsCount: notificationCount}, $currentDate: {lastActive: true}}, function(err){
             if(err){
@@ -165,7 +164,7 @@ module.exports = {
         });
       } else{
         res.render('posts/discover', {currentUserId: req.user._id, cdn_prefix, collegeName: req.user.userKeys.college,
-        showDiscoverChatlist});
+        showDiscoverChatlist: false});
         return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
       }
     } else if(req.user && req.user.discoverSwitch === 2){
@@ -195,8 +194,7 @@ module.exports = {
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}
+              {_id: {$nin: seenIds}}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -239,14 +237,14 @@ module.exports = {
             "subpostsCount": 1,
             "createdAt": 1,
             "__v": 1,
-            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
+            // Based on (4000 views == 20 likes == 10 hearts == 1 comments & T = 4hr units)
             "ranking": {
               $divide: [
                 { $add: [
                   { $multiply: ["$viewsCount", 0.00125] },
-                  { $multiply: ["$likeCount", 0.125] },
+                  { $multiply: ["$likeCount", 0.25] },
                   { $multiply: ["$heartCount", 0.5] },
-                  { $multiply: ["$commentsCount", 1] },
+                  { $multiply: ["$commentsCount", 5] },
                   0.75
                 ] },
                 { $add: [
@@ -266,20 +264,22 @@ module.exports = {
             logger.error(req.user._id+' : (posts-3)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
+            var posts = postsPrivacyFilter(discoverPosts, req.user);
+            var modPosts = postsModerationFilter(posts, req.user);
+            var arrLength = modPosts.length; var currentUser2 = req.user;
+            var foundPostIds = modPosts.map(function(post){
               return post._id;
             });
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
+            for(var k=0;k<modPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+                PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
               } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
               }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
+              hasVote[k] = voteCheck(req.user,modPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+              seenPostIds.push(modPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err){
@@ -293,7 +293,7 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            res.json({hasVote, hasModVote, posts: modPosts, currentUser: currentUser2, 
             foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -303,8 +303,7 @@ module.exports = {
           Post.find({
             postClub: {$in: req.user.followingClubIds},
             createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
-            _id: {$nin: seenIds}, 
-            moderation: 0, privacy: {$in: [0,1,2]}})
+            _id: {$nin: seenIds}})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .sort({createdAt: -1}).limit(20)
           .exec(function(err, discoverPosts){
@@ -312,20 +311,22 @@ module.exports = {
             logger.error(req.user._id+' : (posts-5)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
+            var posts = postsPrivacyFilter(discoverPosts, req.user);
+            var modPosts = postsModerationFilter(posts, req.user);
+            var arrLength = modPosts.length; var currentUser2 = req.user;
+            var foundPostIds = modPosts.map(function(post){
               return post._id;
             });
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
+            for(var k=0;k<modPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+                PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
               } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
               }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
+              hasVote[k] = voteCheck(req.user,modPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+              seenPostIds.push(modPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err){
@@ -339,7 +340,7 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            res.json({hasVote, hasModVote, posts: modPosts, currentUser: currentUser2, 
             foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -350,8 +351,7 @@ module.exports = {
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
               {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
-              {_id: {$nin: seenIds}}, 
-              {moderation: 0}, {privacy: {$in: [0,1,2]}}
+              {_id: {$nin: seenIds}}
             ]}},
             { "$lookup": {
               "from": "clubs",
@@ -394,13 +394,12 @@ module.exports = {
             "subpostsCount": 1,
             "createdAt": 1,
             "__v": 1,
-            // Based on (4000 views == 40 likes == 10 hearts == 5 comments & T = 4hr units)
             "ranking": {
               $add: [
                 { $multiply: ["$viewsCount", 0.00125] },
-                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$likeCount", 0.25] },
                 { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
+                { $multiply: ["$commentsCount", 5] },
                 0.75
               ]
             }}},
@@ -412,20 +411,22 @@ module.exports = {
             logger.error(req.user._id+' : (posts-7)discoverPosts err => '+err);
             return res.sendStatus(500);
           } else{
-            var arrLength = discoverPosts.length; var currentUser2 = req.user;
-            var foundPostIds = discoverPosts.map(function(post){
+            var posts = postsPrivacyFilter(discoverPosts, req.user);
+            var modPosts = postsModerationFilter(posts, req.user);
+            var arrLength = modPosts.length; var currentUser2 = req.user;
+            var foundPostIds = modPosts.map(function(post){
               return post._id;
             });
             var hasVote = [], hasModVote = [], PC_50_clubAvatar = [], seenPostIds = [];
-            for(var k=0;k<discoverPosts.length;k++){
+            for(var k=0;k<modPosts.length;k++){
               if(process.env.ENVIRONMENT === 'dev'){
-                PC_50_clubAvatar[k] = clConfig.cloudinary.url(discoverPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
+                PC_50_clubAvatar[k] = clConfig.cloudinary.url(modPosts[k].postClub.avatarId, clConfig.thumb_100_obj);
               } else if (process.env.ENVIRONMENT === 'prod'){
-                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+discoverPosts[k].postClub.avatarId;
+                PC_50_clubAvatar[k] = s3Config.thumb_100_prefix+modPosts[k].postClub.avatarId;
               }
-              hasVote[k] = voteCheck(req.user,discoverPosts[k]);
-              hasModVote[k] = modVoteCheck(req.user,discoverPosts[k]);
-              seenPostIds.push(discoverPosts[k]._id);
+              hasVote[k] = voteCheck(req.user,modPosts[k]);
+              hasModVote[k] = modVoteCheck(req.user,modPosts[k]);
+              seenPostIds.push(modPosts[k]._id);
             }
             Post.updateMany({_id: {$in: seenPostIds}}, {$inc: {viewsCount: 1}},
             function(err){
@@ -439,7 +440,7 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               var CU_50_profilePic = s3Config.thumb_100_prefix+req.user.profilePicId;
             }
-            res.json({hasVote, hasModVote, posts: discoverPosts, currentUser: currentUser2, 
+            res.json({hasVote, hasModVote, posts: modPosts, currentUser: currentUser2, 
             foundPostIds, CU_50_profilePic, PC_50_clubAvatar, arrLength, discoverSwitch: req.user.discoverSwitch, 
             csrfToken: res.locals.csrfToken, cdn_prefix});
             return User.updateOne({_id: req.user._id}, {$currentDate: {lastActive: true}}).exec();
@@ -495,9 +496,9 @@ module.exports = {
               $divide: [
                 { $add: [
                   { $multiply: ["$viewsCount", 0.00125] },
-                  { $multiply: ["$likeCount", 0.125] },
+                  { $multiply: ["$likeCount", 0.25] },
                   { $multiply: ["$heartCount", 0.5] },
-                  { $multiply: ["$commentsCount", 1] },
+                  { $multiply: ["$commentsCount", 5] },
                   0.75
                 ] },
                 { $add: [
@@ -641,9 +642,9 @@ module.exports = {
             "ranking": {
               $add: [
                 { $multiply: ["$viewsCount", 0.00125] },
-                { $multiply: ["$likeCount", 0.125] },
+                { $multiply: ["$likeCount", 0.25] },
                 { $multiply: ["$heartCount", 0.5] },
-                { $multiply: ["$commentsCount", 1] },
+                { $multiply: ["$commentsCount", 5] },
                 0.75
               ]
             }}},
@@ -738,9 +739,9 @@ module.exports = {
           $divide: [
             { $add: [
               { $multiply: ["$viewsCount", 0.00125] },
-              { $multiply: ["$likeCount", 0.125] },
+              { $multiply: ["$likeCount", 0.25] },
               { $multiply: ["$heartCount", 0.5] },
-              { $multiply: ["$commentsCount", 1] },
+              { $multiply: ["$commentsCount", 5] },
               0.75
             ] },
             { $add: [
@@ -915,20 +916,17 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        // Club.find({ }, function(err, item){
+        // Post.find({postClub: mongoose.Types.ObjectId('5e1b005b24c9073d37df4b02')}, function(err, item){
         //   for(i = 0; i != item.length; i++){
-        //     Club.find({_id: item[i]._id}, function(err, foundONEClub){
-        //       for(j = 0; j != foundONEClub[0].clubUsers.length; j++){
-        //         if(foundONEClub[0].clubUsers[j].userRank > 2){
-        //           foundONEClub[0].clubUsers[j].userRank = 2;
-        //           console.log(JSON.stringify(foundONEClub[0].clubUsers[j].userRank, null, 2))
-        //         }
+        //     Post.find({_id: item[i]._id}, function(err, foundONEPost){
+        //       if(!foundONEPost[0].clubCollegeKey || foundONEPost[0].clubCollegeKey == ''){
+        //         foundONEPost[0].clubCollegeKey = req.user.userKeys.college;
+        //         console.log(JSON.stringify(foundONEPost[0], null, 2))
+        //         foundONEPost[0].save();
         //       }
-        //       // foundONEClub[0].save();
         //     });
         //   }
         // });
-
         var unfilteredPost = [];
         unfilteredPost.push(foundPost);
         var post = postsPrivacyFilter(unfilteredPost, req.user);
