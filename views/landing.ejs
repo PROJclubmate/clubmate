@@ -174,6 +174,7 @@
         .screenshots-mobileview-container{height: 0 !important; margin-left: -0.25rem;}
         .half_height{max-width: unset !important;}
         #audio_room_desktop{display: none;}
+        #strong_how{text-align: left !important;}
       }
       @media screen and (max-width: 481px){
         h1{font-size: 2.5rem;}
@@ -183,7 +184,7 @@
         .mobile123{margin-top: 5rem !important;}
       }
       @media screen and (max-width: 415px){
-        #welcome_to_clubmate{margin-left: 0.375rem !important;}
+        #welcome_to_clubmate{margin-left: 0.675rem !important;}
         .screenshots-mobileview{top: -11.5rem;}
         .screen-description2{margin: 1rem 0.75rem 2rem 0.75rem !important;}
       }
@@ -251,20 +252,23 @@
     <div id="landing-bottom">
       <div class="how_back">
         <div class="text-center mb-3" style="height: 10vh; line-height: 10vh;">How it works</div>
-        <div class="text-center px-3 darkgrey"><strong>clubmate is one-stop place to find all your college communities</strong></div>
+        <div id="strong_how" class="text-center px-3 darkgrey">
+          <strong>clubmate is an ERP solution built from the perspective of students</strong>
+          <br>
+          <strong>(a one-stop place to find and host all your college communities)</strong>
+        </div>
         <div class="pb-4 mb-5 clubmate_uses">
           <h6>You can use clubmate to:</h6>
           <ul class="darkgrey" style="list-style-type: disc; list-style-position: inside;">
             <li>See the list of 100s of clubs in your college</li>
-            <li>Get all of their updates</li>
             <li>Become a member of some, loosely follow others</li>
-            <li>Discover all the cool stuff happening in your college RN</li>
-            <li>Find what your friends are upto :)</li>
             <li>Ask questions, Discuss topics, Seek advice</li>
+            <li>Discover all the cool stuff happening in your college RN</li>
             <li>Talk in its many #ROOMS in Voice / Chats</li>
             <li>If club member, participate in exclusive content</li>
-            <li>Push story updates. Maintain an archive to record history.</li>
+            <li>Push events and story updates</li>
             <li>Enable your blogs to reach to a wider audience</li>
+            <li>Curate organic posts into the Club Archive to maintain history</li>
           </ul>
           <br>
           <br>
@@ -324,9 +328,9 @@
               <div class="screenshots-mobileview-container"><img class="cover screenshots-mobileview" src="https://res.cloudinary.com/dubirhea4/image/upload/v1649763109/illustrations/discover_mobile_framed.png"></div>
             </div>
             <div class="screen-description2 darkgrey">
-              <span>Get story updates from clubs the clubs you've followed. Find more in club archives.</span>
+              <span>See what folks from every community are upto.</span>
               <br>
-              <span>Ask questions (through posts) / See what folks from every community are upto.</span>
+              <span>Get daily blog, event and story updates from the clubs you've followed.</span>
             </div>
           </div>
           <div class="d-flex flex-column mt-5 pt-5 mobile123">
@@ -382,6 +386,24 @@
       <br>
       <br>
       <br>
+      <div class="d-flex flex-column mb-2">
+        <div class="clubmate_uses pb-4 mb-5 mt-3">
+          <div class="card border-light btncollapse-div">
+            <button id="drop-info" type="button" class="btn btn-sm boldtext btncollapse btncollapse-info valign" data-toggle="collapse" data-target="#comingsoon">
+              <div class="pl-2">The Future:</div>
+              <div class="pr-2"><i class="fas fa-angle-up flipped-verticaly mr-2"></i></div>
+            </button>
+            <div id="comingsoon" class="collapse btncollapse-content px-2">
+              <ul class="darkgrey py-2" style="list-style-type: disc; list-style-position: inside;">
+                <li>There are 23 IITs in total</li>
+                <li>To Establish parallel inter-connections among similar clubs</li>
+                <li>Through a knowledge library of shared blogs, etc.</li>
+                <li>Ultimately, A bigger pool of like-minded students for when students in your own college aren't enough.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="d-flex flex-column mb-2">
         <div class="text-sm lightgrey mx-auto pl-4">
           <span>pre ALPHA release | <a class="boldtext" href="/help">FAQs</a> | <a class="boldtext" href="/about">About</a></span>

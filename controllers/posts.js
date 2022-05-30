@@ -829,8 +829,10 @@ module.exports = {
               } else{
                 if(req.body.topic == ''){
                   newPost.type = 'simple';
+                  User.updateOne({_id: req.user._id}, {$inc: {'creationCount.posts': 1}}).exec();
                 } else{
                   newPost.type = 'topic';
+                  User.updateOne({_id: req.user._id}, {$inc: {'creationCount.questions': 1}}).exec();
                 }
                 newPost.clubCollegeKey = foundClub.clubKeys.college;
                 newPost.clubCategory = foundClub.clubKeys.category;
@@ -874,8 +876,10 @@ module.exports = {
             } else{
               if(req.body.topic == ''){
                 newPost.type = 'simple';
+                User.updateOne({_id: req.user._id}, {$inc: {'creationCount.posts': 1}}).exec();
               } else{
                 newPost.type = 'topic';
+                User.updateOne({_id: req.user._id}, {$inc: {'creationCount.questions': 1}}).exec();
               }
               newPost.clubCollegeKey = foundClub.clubKeys.college;
               newPost.clubCategory = foundClub.clubKeys.category;
@@ -916,17 +920,20 @@ module.exports = {
         req.flash('error', 'Something went wrong :(');
         return res.redirect('back');
       } else{
-        // Post.find({postClub: mongoose.Types.ObjectId('5e1b005b24c9073d37df4b02')}, function(err, item){
+        // User.find({ }, function(err, item){
         //   for(i = 0; i != item.length; i++){
-        //     Post.find({_id: item[i]._id}, function(err, foundONEPost){
-        //       if(!foundONEPost[0].clubCollegeKey || foundONEPost[0].clubCollegeKey == ''){
-        //         foundONEPost[0].clubCollegeKey = req.user.userKeys.college;
-        //         console.log(JSON.stringify(foundONEPost[0], null, 2))
-        //         foundONEPost[0].save();
-        //       }
+        //     var userId = item[i]._id;
+        //     var userName = item[i].fullName;
+        //     User.find({_id: userId}, function(err, foundUser){
+        //       Post.countDocuments({'postAuthor.id': foundUser[0]._id, type: 'topic'}, function(err, foundONEPost){
+        //         foundUser[0].creationCount.questions = foundONEPost;
+        //         // console.log(JSON.stringify('USERID- '+foundUser[0]._id+' COUNT- '+foundONEPost+' CREATION- '+foundUser[0].creationCount, null, 2));
+        //         foundUser[0].save();
+        //       });
         //     });
         //   }
         // });
+        // User.update({}, {$set: {'creationCount.posts': 0}}, {upsert: true}).exec();
         var unfilteredPost = [];
         unfilteredPost.push(foundPost);
         var post = postsPrivacyFilter(unfilteredPost, req.user);
@@ -1266,22 +1273,27 @@ module.exports = {
             } else if (process.env.ENVIRONMENT === 'prod'){
               s3Config.deleteFile(foundPost.imageId);
             }
+            if(foundPost.type == 'simple'){
+              Comment.deleteMany({postId: foundPost._id}, function(err){
+                if(err){
+                  logger.error(req.user._id+' : (posts-35)foundComment err => '+err);
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                }
+              });
+              User.updateOne({_id: req.user._id}, {$inc: {'creationCount.posts': -1}}).exec();
+            }
+            if(foundPost.type == 'topic'){
+              Discussion.deleteMany({postId: foundPost._id}, function(err){
+                if(err){
+                  logger.error(req.user._id+' : (posts-36)foundDiscussion err => '+err);
+                  req.flash('error', 'Something went wrong :(');
+                  return res.redirect('back');
+                }
+              });
+              User.updateOne({_id: req.user._id}, {$inc: {'creationCount.questions': -1}}).exec();
+            }
             foundPost.remove();
-            //deletes all comments associated with the post
-            Comment.deleteMany({postId: foundPost._id}, function(err){
-              if(err){
-                logger.error(req.user._id+' : (posts-35)foundComment err => '+err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              }
-            });
-            Discussion.deleteMany({postId: foundPost._id}, function(err){
-              if(err){
-                logger.error(req.user._id+' : (posts-36)foundDiscussion err => '+err);
-                req.flash('error', 'Something went wrong :(');
-                return res.redirect('back');
-              }
-            });
             req.flash('success', 'Post deleted successfully!');
             res.redirect('back');
           }catch(err){
@@ -1290,21 +1302,27 @@ module.exports = {
             return res.redirect('back');
           }
         } else{
+          if(foundPost.type == 'simple'){
+            Comment.deleteMany({postId: foundPost._id}, function(err){
+              if(err){
+                logger.error(req.user._id+' : (posts-38)foundComment err => '+err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
+            User.updateOne({_id: req.user._id}, {$inc: {'creationCount.posts': -1}}).exec();
+          }
+          if(foundPost.type == 'topic'){
+            Discussion.deleteMany({postId: foundPost._id}, function(err){
+              if(err){
+                logger.error(req.user._id+' : (posts-39)foundDiscussion err => '+err);
+                req.flash('error', 'Something went wrong :(');
+                return res.redirect('back');
+              }
+            });
+            User.updateOne({_id: req.user._id}, {$inc: {'creationCount.questions': -1}}).exec();
+          }
           foundPost.remove();
-          Comment.deleteMany({postId: foundPost._id}, function(err){
-            if(err){
-              logger.error(req.user._id+' : (posts-38)foundComment err => '+err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
-            }
-          });
-          Discussion.deleteMany({postId: foundPost._id}, function(err){
-            if(err){
-              logger.error(req.user._id+' : (posts-39)foundDiscussion err => '+err);
-              req.flash('error', 'Something went wrong :(');
-              return res.redirect('back');
-            }
-          });
           req.flash('success', 'Post deleted successfully!');
           res.redirect('back');
         }

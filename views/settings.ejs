@@ -259,7 +259,7 @@ input[type=checkbox]:checked + .toggle .star--6{
         <% if(currentUser.darkTheme == false){ %>
           <div>Sunshade</div>
         <% } else{ %>
-          <div>Moonlight <sup class="text-xxxs ml-2 lightgrey2"><span style="color: crimson;">*</span>Work in progress</sup></div>
+          <div>Moonlight</div>
         <% } %>
         <div>
           <div class="toggleWrapper">
@@ -290,7 +290,10 @@ input[type=checkbox]:checked + .toggle .star--6{
     <div>
       <div class="category-head text-xs boldtext">Discover Page</div>
       <div class="valign my-2">
-        <div>Show minified chat-list</div>
+        <div class="d-flex flex-column">
+          <div><sup class="text-xxs ml-2 lightgrey2"><span style="color: crimson;">*</span></sup>Show minified chat-list</div>
+          <div class="text-xxs ml-2 lightgrey2">Non functional - for Concept purpose only</div>
+        </div>
         <div>
           <label class="switch">
             <% if(currentUser && currentUser.settings.showDiscoverChatlist) { %>

@@ -53,6 +53,11 @@ const userSchema = new Schema({
       message: '{VALUE} is not an integer value.'
     }
   },
+  creationCount: {
+    posts: { type: Number, default: 0},
+    questions: { type: Number, default: 0},
+    blogs: { type: Number, default: 0}
+  },
   followingClubCount: { type: Number, default: 0 },
   followingClubIds: [{
     type: Schema.Types.ObjectId,

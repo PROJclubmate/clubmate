@@ -91,23 +91,56 @@
               </div>
             </div>
             <div class="profilename text-md d-flex flex-row mobileNoneFlex">
-              <div><span class="boldtext">5</span><span>posts</span></div>
-              <div class="ml-4"><span class="boldtext">2</span><span>questions</span></div>
-              <div class="ml-4"><span class="boldtext">9</span><span>blogs</span></div>
+              <div>
+                <span class="boldtext"><%= user.creationCount.posts %></span>
+                <% if(user.creationCount.posts == 1){ %>
+                  <span>post</span>
+                <% } else{ %>
+                  <span>posts</span>
+                <% } %>
+              </div>
+              <div class="ml-4">
+                <span class="boldtext"><%= user.creationCount.questions %></span>
+                <% if(user.creationCount.questions == 1){ %>
+                  <span>question</span>
+                <% } else{ %>
+                  <span>questions</span>
+                <% } %>
+              </div>
+              <div class="ml-4">
+                <span class="boldtext"><%= user.creationCount.blogs %></span>
+                <% if(user.creationCount.blogs == 1){ %>
+                  <span>blog</span>
+                <% } else{ %>
+                  <span>blogs</span>
+                <% } %>
+              </div>
             </div>
           </div>
           <div class="profilename text-md d-flex flex-row my-auto desktopNoneFlex">
             <div class="d-flex flex-column">
-              <div class="boldtext text-center">5</div>
-              <div class="text-mob-sm">Posts</div>
+              <div class="boldtext text-center"><%= user.creationCount.posts %></div>
+              <% if(user.creationCount.posts == 1){ %>
+                <div class="text-mob-sm">Post</div>
+              <% } else{ %>
+                <div class="text-mob-sm">Posts</div>
+              <% } %>
             </div>
             <div class="d-flex flex-column ml-4">
-              <div class="boldtext text-center">2</div>
-              <div class="text-mob-sm">Questions</div>
+              <div class="boldtext text-center"><%= user.creationCount.questions %></div>
+              <% if(user.creationCount.questions == 1){ %>
+                <div class="text-mob-sm">Question</div>
+              <% } else{ %>
+                <div class="text-mob-sm">Questions</div>
+              <% } %>
             </div>
             <div class="d-flex flex-column ml-4">
-              <div class="boldtext text-center">9</div>
-              <div class="text-mob-sm">Blogs</div>
+              <div class="boldtext text-center"><%= user.creationCount.blogs %></div>
+              <% if(user.creationCount.blogs == 1){ %>
+                <div class="text-mob-sm">Blog</div>
+              <% } else{ %>
+                <div class="text-mob-sm">Blogs</div>
+              <% } %>
             </div>
           </div>
         </div>

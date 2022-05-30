@@ -672,6 +672,9 @@ function discover_posts_template(response){
                 <% if(posts[k].privacy > 0){ %>
                   <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
                 <% } %>
+                <% if(posts[k].privacy == 0 && posts[k].clubCollegeKey != currentUser.userKeys.college){ %>
+                  <div class="discover-overlay-text"><em><%= posts[k].clubCollegeKey %></em></div>
+                <% } %>
               </div>
             </div>
             <div class="lineheight-lesser">
@@ -750,6 +753,9 @@ function discover_posts_template(response){
                 </div>
                 <% if(posts[k].privacy > 0){ %>
                   <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
+                <% } %>
+                <% if(posts[k].privacy == 0 && posts[k].clubCollegeKey != currentUser.userKeys.college){ %>
+                  <div class="discover-overlay-text"><em><%= posts[k].clubCollegeKey %></em></div>
                 <% } %>
               </div>
             </div>

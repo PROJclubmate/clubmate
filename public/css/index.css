@@ -194,9 +194,9 @@ div.content{
   .btn-sm{padding: 0.375rem 0.75rem;}
   .gb{padding: 0.25rem 0.75rem !important;}
   .discoverswitch{padding: 1.375rem 2.25rem !important; font-size: 1.25rem !important;}
-  select.select1, .custom-file-upload{height: 36px !important;}
-  #preview-postimg{height: 36px !important; width: 36px !important;}
-  .custom-file-upload{padding: 0.375rem 0.625rem !important;}
+  select.select1, .custom-file-upload{height: 39px !important;}
+  #preview-postimg{height: 36px !important; width: 39px !important;}
+  .custom-file-upload{padding: 0.5rem 0.6875rem !important;}
   .smalldp{width: 20px !important; height: 20px !important;}
   .searchdp{height: 125px !important; width: 125px !important;}
   .search-bottompos{width: calc(100% - 120px - 1.5rem) !important;}
@@ -522,7 +522,7 @@ div.content{
   .form-signin{max-width: 20rem !important;}
   .form-control{padding: 0.5rem !important;}
   .custom-file-upload{height: 36px !important; width: 36px !important; padding: 0.375rem 0.5rem !important;}
-  select.select1{height: 36px !important; padding: 0.375rem 0.5rem !important;}
+  select.select1{height: 39px !important; padding: 0.375rem 0.5rem !important;}
   select.select3{width: 82px;}
   .chat-input-tool{padding: 0 0.375rem !important;}
   .nav-link{padding: 6px !important; font-size: 1.125rem !important;}
@@ -676,7 +676,8 @@ div.content{
   .form-control{padding: 0.375rem 0.5rem !important;}
   .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
   .custom-file-upload{height: 32px !important; width: 32px !important; padding: 0.25rem 0.5rem !important;}
-  select.select1{height: 32px !important; padding: 0.25rem 0.5rem !important;}
+  #postbutton{padding: 0.375rem 0.675rem !important; font-size: 0.875rem !important;}
+  select.select1{height: 36px !important; padding: 0.25rem 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
   .story-alt, .story-alt-loader{height: 74px !important; width: 74px !important; border-radius: 1.5rem !important;}
   .navdp{height: 36px !important; width: 36px !important;}
@@ -2692,7 +2693,7 @@ select.select1{
   border: 1px solid #279a67;
   color: #279a67;
   border-radius: 0 0.25rem 0.25rem 0;
-  height: 32px;
+  height: 39px;
 }
 .select2{
   border: 1px solid #279a67;

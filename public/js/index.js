@@ -884,12 +884,11 @@ $('div.btncollapse-div').on("click",".btncollapse", function(e){
     }, 500); 
   }
   if(btn.attr('id') == 'drop-info'){
+    $('.fa-angle-up').toggleClass('flipped-verticaly');
     if(btn.hasClass('shadow-none')){
       btn.removeClass('shadow-none');
-      $('.fa-angle-up').removeClass('flipped-verticaly');
     } else{
       btn.addClass('shadow-none');
-      $('.fa-angle-up').addClass('flipped-verticaly');
     }
   }
 });
