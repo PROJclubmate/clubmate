@@ -77,10 +77,15 @@
           <% if(currentUser){ %>
             <div id="inbox_mobile_div" class="inbox_mobile">
               <span class="notification">
-                <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Chats" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
+                <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Discover Feed" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
                 <% if(currentUser.unreadChatsCount > 0){ %>
                   <span class="inbox_mobile inbox_count badge badge-mobile text-xs desktopNone"><%= currentUser.unreadChatsCount %></span>
                 <% } %>
+              </span>
+            </div>
+            <div id="discover_mobile_div" class="inbox_mobile d-none" style="margin-top: 0.125rem;">
+              <span class="notification">
+                <a href="/discover" id="inbox_mobile" class="inbox_mobile py-1" title="Chats"><i class="far fa-compass"></i></a>
               </span>
             </div>
           <% } %>

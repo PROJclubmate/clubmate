@@ -89,6 +89,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   .gradient-wrap.coverback{
     background-color: var(--color-dark-800) !important;
   }
+  .fa-stack .fa-circle{-webkit-text-stroke-color: var(--color-dark-800);}
+  .quickviewcontainers-desktop.active .fa-stack .fa-circle{-webkit-text-stroke-color: var(--color-white-200);}
 }
 @media screen and (max-width: 1199px){
   .sidebar a.active{
@@ -151,6 +153,19 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   }
   .btncollapse-club-grad.collapsed{
     box-shadow: 0 0 0 1.5rem rgba(0, 0, 0, 0.5) !important;
+  }
+  .sortByKey{
+    border-color: var(--color-dark-900) !important;
+  }
+  .sortByKey:hover{
+    border-color: var(--color-dark-800) !important;
+  }
+  .sortByKey-caret{
+    -webkit-text-stroke-color: var(--color-dark-900);
+  }
+  .dropdown-menu.dropbox-mobile, .dropdown-menu.dropbox-mobile .pitchblack, .dropdown-menu.dropbox-mobile button.whiteback{
+    background-color: var(--color-dark-700) !important;
+    color: var(--color-white-200);
   }
 }
 
@@ -532,23 +547,23 @@ input.form-control.search:focus{
   background-color: 0.5px solid var(--color-dark-900);
   border: none;
 }
-.sortBykey{
+.sortByKey{
   color: var(--color-white-200);
   background-color: var(--color-dark-900);
 }
-.sortBykey:hover{
+.sortByKey:hover{
   background-color: var(--color-dark-800);
   color: var(--color-white-100);
 }
-.sortBykey:focus{
+.sortByKey:focus{
   outline: none;
   color: var(--color-white-100);
 }
-.sortBykey.active{
+.sortByKey.active{
   background-color: var(--color-dark-800);
   color: var(--color-white-100);
 }
-.sortBykey.logout:hover{
+.sortByKey.logout:hover{
   background-color: var(--color-dark-900);
   color: var(--color-white-100);
 }

@@ -103,6 +103,7 @@ div.content{
   .post-head, .post-tail, .topic-column, .show-comments{border-left: 0.5px solid #d3d3d3 !important; border-right: 0.5px solid #d3d3d3 !important;}
   .border-0.post-head, .border-0.post-tail{border-right: 0.5px solid #d3d3d3 !important;}
   .discovercard .card-body{padding: 0.5rem 0.75rem !important;}
+  .discovercardheader.card-body{padding: 0.75rem !important;}
   .btnxxs{padding: 0 4px !important;}
   .modvote-count{margin-top: 0.125rem !important;}
   .centerpad-posts{padding: 0 5rem 0 2rem !important;}
@@ -160,7 +161,7 @@ div.content{
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
   #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
   #discover_chatlist{padding: 0 0.5rem; margin-right: 3.5rem; margin-left: 0.25rem;}
-  .chats_chevronimg{visibility: hidden;}
+  .chats_chevronimg{display: none;}
   .chats_chevronimg.flipped{margin-right: 3.5rem;}
   .emoji-right{right: -10rem !important;}
 }
@@ -224,6 +225,7 @@ div.content{
   #lobby-heading{margin-top: 0.375rem !important;}
   #clubusers_strip, #userclubs_strip{height: 28px !important;}
   .discovercard .card-body{padding: 0.5rem 1rem !important;}
+  .discovercardheader.card-body{padding: 1rem !important;}
 }
 @media screen and (min-width: 1601px){
   #navbarCollapse{margin-left: calc(10vw + 0.875rem);}
@@ -328,13 +330,14 @@ div.content{
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .navname{color: #262223 !important; background-color: unset !important;}
   #navbar.stuck{transform: translateY(0px) !important;}
-  #inbox_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
+  #inbox_mobile_div, #discover_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
   .discover-icon{font-size: 1.75rem;}
   #discover_chatlist{margin-left: 0.5rem !important;}
   .card.discovercard{width: 100% !important; margin-left: 0 !important; margin-right: 0 !important;}
   .card.discovercard.masonry{width: calc(50% - 0.25rem) !important;}
   .card.discovercard.masonry:not(.right){margin-left: 0 !important;}
   .card.discovercard.masonry.right{margin-right: 0 !important; margin-left: 0.25rem !important;}
+  .discoverheader{padding: 0.5rem !important;}
   .votecard_left{margin: 0 !important;}
   .badge-mobile{background: whitesmoke !important; box-shadow: none !important; border: 1px solid whitesmoke;
     color: #262626 !important; top: -0.25rem !important;right: -0.5rem !important;}
@@ -495,6 +498,11 @@ div.content{
   #adminconsole-btn-mobile{border-radius: 0 !important; font-size: 1rem !important;}
   #page_minheight_100{min-height: 100vh;}
   .emoji-right{right: 0 !important;}
+  .sortByKey{color: grey !important;}
+  .sortByKey:hover{color: grey !important; background-color: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;}
+  .dropdown-menu.dropbox-mobile{bottom: 0.25rem; float: unset; width: calc(100vw - 0.5rem); position: fixed;
+    z-index: 10000 !important; top: unset; left: 0.25rem;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -521,7 +529,7 @@ div.content{
   .btn-lg{padding: 0.625rem 1.125rem !important;}
   .form-signin{max-width: 20rem !important;}
   .form-control{padding: 0.5rem !important;}
-  .custom-file-upload{height: 36px !important; width: 36px !important; padding: 0.375rem 0.5rem !important;}
+  .custom-file-upload{height: 36px !important; padding: 0.375rem 0.5rem !important;}
   select.select1{height: 39px !important; padding: 0.375rem 0.5rem !important;}
   select.select3{width: 82px;}
   .chat-input-tool{padding: 0 0.375rem !important;}
@@ -633,7 +641,8 @@ div.content{
   .searchdp{height: 100px !important; width: 100px!important;}
   .topic-column{padding-left: 0.3125rem !important; padding-right: 0.3125rem !important;}
   .btn.moderation.btn-topic{right: -2.75rem !important;}
-  .sortBykey{font-weight: 300; font-size: 0.75rem !important;}
+  .sortByKey{font-weight: 300; font-size: 0.75rem !important;}
+  .sortByKey-caret{-webkit-text-stroke: 0.25px #e0e0e0;}
   .quicknav_text_mobile{font-weight: 400 !important;}
 }
 /*Asus Max Pro M-1/ Galaxy S9 => 360px*/
@@ -675,7 +684,7 @@ div.content{
   .form-signin{max-width: 18rem !important;}
   .form-control{padding: 0.375rem 0.5rem !important;}
   .form-control.form-control-sm{padding: 0.25rem 0.5rem !important;}
-  .custom-file-upload{height: 32px !important; width: 32px !important; padding: 0.25rem 0.5rem !important;}
+  .custom-file-upload{height: 32px !important; padding: 0.25rem 0.5rem !important;}
   #postbutton{padding: 0.375rem 0.675rem !important; font-size: 0.875rem !important;}
   select.select1{height: 36px !important; padding: 0.25rem 0.5rem !important;}
   .chat-input-tool{padding: 0 0.25rem !important;}
@@ -996,25 +1005,25 @@ input{
 .underline{
   text-decoration: underline;
 }
-.sortBykey{
+.sortByKey{
   color: grey;
   padding: 0.25rem 0.5rem;
-  border: none !important;
+  border: 1px solid transparent;
+  border-width: 1px !important;
+  border-radius: 1rem !important;
   background-color: #e0e0e0;
 }
-.sortBykey:hover{
+.sortByKey:hover{
   color: black;
   cursor: pointer;
   background-color: white;
-  border-radius: 1rem;
 }
-.sortBykey.active{
+.sortByKey.active{
   color: black;
   cursor: default;
   background-color: white;
-  border-radius: 1rem;
 }
-.sortBykey.logout:hover{
+.sortByKey.logout:hover{
   color: grey;
   cursor: default;
   background-color: #e0e0e0;
@@ -3644,8 +3653,8 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   left: 0;
 }
 .overlay-content-modvote{
-  margin: 0 35%;
-  width: 30%;
+  margin: 0 40%;
+  width: 20%;
 }
 .fa-thumbs-up.discover-vote, .fa-heart.discover-vote{
   font-size: 2.375rem;

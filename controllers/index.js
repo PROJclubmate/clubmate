@@ -1383,6 +1383,16 @@ module.exports = {
         }
       });
     }
+    if(req.body.twoColumnView){
+      const value = (req.body.twoColumnView === 'true') ? true : false;
+      User.updateOne({_id: req.user._id}, { 'settings.twoColumnView': value }, function(err){
+        if(err){
+          return res.redirect('back');
+        } else{
+          return res.redirect('/users/'+req.user._id+'/settings');
+        }
+      });
+    }
   },
 
   indexFeedbackPage(req, res, next){

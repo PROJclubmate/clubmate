@@ -23,7 +23,7 @@ if(location.pathname == '/discover'){
             var div = document.getElementById('client-posts-discover');
             div.innerHTML += discover_posts_template(response);
           }
-          if(response.discoverSwitch === 2){
+          if(response.currentUser.settings.twoColumnView && (!response.currentUser.settings.showDiscoverChatlist || response.currentUser.discoverSwitch == 2)){
             // 2 column masonry
             var left_column_height = 0;
             var right_column_height = 0;
@@ -677,7 +677,7 @@ function discover_posts_template(response){
                 <% } %>
               </div>
             </div>
-            <div class="lineheight-lesser">
+            <div class="lineheight-lesser ml-1">
               <% if(posts[k].commentsCount > 0){ %>
                 <span class="boldtext text-mob-sm discover-overlay-text nowrap">
                   <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
@@ -759,7 +759,7 @@ function discover_posts_template(response){
                 <% } %>
               </div>
             </div>
-            <div class="lineheight-lesser">
+            <div class="lineheight-lesser ml-1">
               <% if(posts[k].subpostsCount > 0){ %>
                 <span class="boldtext text-mob-sm discover-overlay-text nowrap">
                   <%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i>
@@ -805,22 +805,48 @@ function discover_posts_template(response){
       </div>
     </div>
   <% } %>
-  <% if(discoverSwitch === 1){ %>
-    <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
-  <% } else if(discoverSwitch === 2){ %>
+  <% if(currentUser.settings.twoColumnView && (!currentUser.settings.showDiscoverChatlist || currentUser.discoverSwitch == 2)){ %>
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard masonry">
+  <% } else{ %>
+    <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
   <% } %>
+    <% if(!currentUser.settings.twoColumnView){ %>
+      <% if((posts[k].type == 'simple' || posts[k].type == 'topic') && (!posts[k].image)){ %>
+        <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader" style="max-height: 0;">
+      <% } else{ %>
+        <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader">
+      <% } %>
+        <div class="d-flex flex-row">
+          <div>
+            <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
+          </div>
+          <div class="d-flex flex-column text-mob-sm my-auto">
+            <div class="truncate1 darkgrey">
+              <strong><%= posts[k].postClub.name %></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
     <% if(posts[k].type == 'simple'){ %>
       <% if(posts[k].image){ %>
+        <% if(!currentUser.settings.twoColumnView){ %>
+          <div class="card-body" style="padding-top: 0 !important;">
+            <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
+            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+          </div>
+        <% } %>
         <span>
-          <div><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0.4375rem 0.4375rem 0 0;"></div>
+          <div><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
-        <div class="card-body">
-          <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
-        </div>
+        <% if(currentUser.settings.twoColumnView && (!currentUser.settings.showDiscoverChatlist || currentUser.discoverSwitch == 2)){ %>
+          <div class="card-body">
+            <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
+            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+          </div>
+        <% } %>
       <% } else{ %>
-        <div class="card-body nounderline d-flex align-items-center" style="min-height: 6rem;">
+        <div class="card-body nounderline d-flex align-items-center" style="min-height: 16rem;">
           <span>
             <p class="truncate16 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
             <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
@@ -829,12 +855,16 @@ function discover_posts_template(response){
       <% } %>
     <% } else if(posts[k].type == 'topic'){ %>
       <% if(posts[k].image){ %>
-        <div class="p-2">
+        <% if(currentUser.settings.twoColumnView){ %>
+          <div class="card-body">
+        <% } else{ %>
+          <div class="card-body" style="padding-top: 0 !important;">
+        <% } %>
           <h5 class="p-0 topic-h5 truncate3"><%= posts[k].topic %></h5>
           <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
         </div>
         <span>
-          <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>" style="border-radius: 0 0 0.4375rem 0.4375rem;"></div>
+          <div><img class="card-img-top postimg topicimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
           <% if(posts[k].hyperlink){ %>
           <div class="card-body">
@@ -842,7 +872,7 @@ function discover_posts_template(response){
           </div>
         <% } %>
       <% } else{ %>
-        <div class="card-body nounderline d-flex align-items-center" style="min-height: 6rem;">
+        <div class="card-body nounderline d-flex align-items-center" style="min-height: 16rem;">
           <div>
             <div><h5 class="p-0 topic-h5 truncate3"><%= posts[k].topic %></h5></div>
             <div>
@@ -867,7 +897,7 @@ function privacyText(privacy){
 `,{hasVote: response.hasVote, hasModVote: response.hasModVote, posts: response.posts,
   currentUser: response.currentUser, CU_50_profilePic: response.CU_50_profilePic,
   PC_50_clubAvatar: response.PC_50_clubAvatar, PA_50_profilePic: response.PA_50_profilePic, 
-  discoverSwitch: response.discoverSwitch, csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
+  csrfToken: response.csrfToken, cdn_prefix: response.cdn_prefix});
   return html;
 }
 
@@ -1425,7 +1455,7 @@ function user_posts_template(response){
           <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>">
             <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div></div>
           </a>
-          <div class="card-body">
+          <div class="card-body pt-0">
             <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
             <em class="m-0 p-0 text-mob-index linewrap"><a href="<%= decodeURI(posts[k].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(posts[k].hyperlink) %></a></em>
             <div class="lightgrey2">
@@ -1783,12 +1813,14 @@ function heart_posts_template(response){
           </div>
         </div>
         <% if(postsH[l].image){ %>
-          <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
-            <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
-          </a>
           <div class="card-body">
             <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= postsH[l].description %></p>
             <em class="m-0 p-0 text-mob-index linewrap"><a href="<%= decodeURI(postsH[l].hyperlink) %>" target="_blank" rel="noopener" class="truncate1"><%= decodeURI(postsH[l].hyperlink) %></a></em>
+          </div>
+          <a href="/clubs/<%= postsH[l].postClub._id %>/posts/<%= postsH[l]._id %>">
+            <div class="postimgpad"><div class="postimgcorner"><img class="card-img-top postimg" src="<%= postsH[l].image %>"></div></div>
+          </a>
+          <div class="card-body pt-0">
             <div class="lightgrey2">
               <span>
                 <em class="text-xxs"><%= moment(postsH[l].createdAt).calendar() %></em>

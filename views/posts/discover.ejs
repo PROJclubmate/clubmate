@@ -20,7 +20,7 @@
 <script src="/js/libs/hammer.min.js"></script>
 
 
-<% if(currentUser && currentUser.discoverSwitch == 1){ %>
+<% if(currentUser && !currentUser.settings.twoColumnView){ %>
   <div id="discover_content_masonry_pad">
 <% } else { %>
   <div>
@@ -49,30 +49,118 @@
     <div id="delegated-posts-discover" class="col-lg-7 col-md-10">
       <div id="chats-list">
         <div class="my-4 valign">
-          <div class="d-inline-flex">
+          <div class="desktopNoneFlex flex-row">
             <% if(currentUser){ %>
-              <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+              <div class="dropdown">
                 <% if(currentUser.sortByKey == 1){ %>
-                  <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
-                <% } else{ %>
-                  <button class="sortBykey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
+                  <div class="sortByKey text-sm mx-2 btn shadow-none dropdown-toggle" type="button" data-toggle="dropdown" data-display="static"><i class="fas fa-fire"></i> HOT<i class="fas fa-angle-down ml-2 sortByKey-caret"></i></div>
                 <% } %>
                 <% if(currentUser.sortByKey == 2){ %>
-                  <div class="sortBykey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor2"></i> NEW</div>
-                <% } else{ %>
-                  <button class="sortBykey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
+                  <div class="sortByKey text-sm mx-2 btn shadow-none dropdown-toggle" type="button" data-toggle="dropdown" data-display="static"><i class="fas fa-stopwatch"></i> NEW<i class="fas fa-angle-down ml-2 sortByKey-caret"></i></div>
                 <% } %>
                 <% if(currentUser.sortByKey == 3){ %>
-                  <div class="sortBykey text-sm mx-2 active"><i class="fas fa-award purplecolor"></i> TOP</div>
-                <% } else{ %>
-                  <button class="sortBykey text-sm mx-2" name="sortByKey" value="3" type="submit"><i class="fas fa-award"></i> TOP</button>
+                  <div class="sortByKey text-sm mx-2 btn shadow-none dropdown-toggle" type="button" data-toggle="dropdown" data-display="static"><i class="fas fa-award"></i> TOP<i class="fas fa-angle-down ml-2 sortByKey-caret"></i></div>
                 <% } %>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              </form>
+                <ul class="dropdown-menu dropbox dropbox-mobile">
+                  <div class="container drop-shadow1">
+                    <div class="px-2">
+                      <div class="px-2 pb-2 text-xxxs boldtext lightgrey2">
+                        SORT POSTS BY
+                      </div>
+                      <hr class="mx-2 hr-light">
+                      <div class="px-2 pitchblack">
+                        <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST">
+                          <% if(currentUser.sortByKey == 1){ %>
+                            <li class="valign">
+                              <div class="my-1 py-2 active"><i class="fas fa-fire redcolor mr-3" style="width: 0.5rem;"></i>Hot</div>
+                              <div><a href="#">✓</a></div>
+                            </li>
+                          <% } else{ %>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="1" type="submit"><i class="fas fa-fire mr-3" style="width: 0.5rem;"></i>Hot</button></li>
+                          <% } %>
+                          <% if(currentUser.sortByKey == 2){ %>
+                            <li class="valign">
+                              <div class="my-1 py-2 active"><i class="fas fa-stopwatch greencolor2 mr-3" style="width: 0.5rem;"></i>New</div>
+                              <div><a href="#">✓</a></div>
+                            </li>
+                          <% } else{ %>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch mr-3" style="width: 0.5rem;"></i>New</button></li>
+                          <% } %>
+                          <% if(currentUser.sortByKey == 3){ %>
+                            <li class="valign">
+                              <div class="my-1 py-2 active"><i class="fas fa-award purplecolor mr-3" style="width: 0.5rem;"></i>Top (this month)</div>
+                              <div><a href="#">✓</a></div>
+                            </li>
+                          <% } else{ %>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="3" type="submit"><i class="fas fa-award mr-3" style="width: 0.5rem;"></i>Top (this month)</button></li>
+                          <% } %>
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </ul>
+              </div>
+              <div class="dropdown my-auto d-none">
+                <% if(currentUser && currentUser.settings.twoColumnView == true){ %>
+                  <div class="pr-1 pt-1 lightgrey">
+                    <table>
+                      <tr><i class="far fa-square text-xl" style="transform: scaleX(0.5) translateX(1.25rem);"></i></tr>
+                      <tr><i class="far fa-square text-xl" style="transform: scaleX(0.5);"></i></tr>
+                    </table>
+                  </div>
+                <% } else{ %>
+                  <div class="pr-1 pt-1 lightgrey discover_chatlist-none">
+                    <table>
+                      <tr><i class="far fa-square text-xl" style="transform: scaleX(0.75);"></i></tr>
+                    </table>
+                  </div>
+                <% } %>
+              </div>
             <% } else{ %>
-              <div class="sortBykey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
-              <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-stopwatch"></i> NEW</div>
-              <div class="sortBykey text-sm mx-2 logout"><i class="fas fa-award"></i> TOP</div>
+              <div class="sortByKey text-sm mx-2"><i class="fas fa-fire"></i> HOT<i class="fas fa-angle-down ml-2 sortByKey-caret"></i></div>
+            <% } %>
+          </div>
+          <div class="mobileNoneFlex valign w-100">
+            <div>
+              <% if(currentUser){ %>
+                <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
+                  <% if(currentUser.sortByKey == 1){ %>
+                    <div class="sortByKey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
+                  <% } else{ %>
+                    <button class="sortByKey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
+                  <% } %>
+                  <% if(currentUser.sortByKey == 2){ %>
+                    <div class="sortByKey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor2"></i> NEW</div>
+                  <% } else{ %>
+                    <button class="sortByKey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
+                  <% } %>
+                  <% if(currentUser.sortByKey == 3){ %>
+                    <div class="sortByKey text-sm mx-2 active"><i class="fas fa-award purplecolor"></i> TOP</div>
+                  <% } else{ %>
+                    <button class="sortByKey text-sm mx-2" name="sortByKey" value="3" type="submit"><i class="fas fa-award"></i> TOP</button>
+                  <% } %>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                </form>
+              <% } else{ %>
+                <div class="sortByKey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
+                <div class="sortByKey text-sm mx-2 logout"><i class="fas fa-stopwatch"></i> NEW</div>
+                <div class="sortByKey text-sm mx-2 logout"><i class="fas fa-award"></i> TOP</div>
+              <% } %>
+            </div>
+            <% if(currentUser && currentUser.settings.twoColumnView == true){ %>
+              <div class="mr-1 d-none">
+                <table>
+                  <tr><i class="far fa-square text-xl" style="transform: scaleX(0.5) translateX(1.25rem);"></i></tr>
+                  <tr><i class="far fa-square text-xl" style="transform: scaleX(0.5);"></i></tr>
+                </table>
+              </div>
+            <% } else{ %>
+              <div class="pr-1 discover_chatlist-none d-none">
+                <table>
+                  <tr><i class="far fa-square text-xl" style="transform: scaleX(0.75);"></i></tr>
+                </table>
+              </div>
             <% } %>
           </div>
           <div class="mb-2">
@@ -85,7 +173,7 @@
           <% //include ../partials/posts_index %>
         </div>
         <div style="display: inline-flex;">
-          <% if(currentUser && currentUser.discoverSwitch === 1 && !showDiscoverChatlist){ %>
+          <% if(currentUser && !currentUser.settings.twoColumnView && !showDiscoverChatlist){ %>
             <div id="client-posts-discover" class="discover_chatlist-none" style="overflow: hidden; display: table;"></div>
           <% } else{ %>
             <div id="client-posts-discover" style="overflow: hidden; display: table;"></div>
