@@ -310,7 +310,7 @@
               </li>
               <% if(currentUser && match){ %>
                 <li class="nav-item">
-                 <a class="nav-link boldtext black" id="saved-tab" data-toggle="tab" href="#saved" role="tab" aria-controls="saved" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Saved</a>
+                 <a class="nav-link boldtext black" id="hearts-tab" data-toggle="tab" href="#hearts" role="tab" aria-controls="hearts" aria-selected="true" onclick="document.getElementById('load-more-heart-btn').click();">Hearts</a>
                 </li>
               <% } else if(currentUser && !match){ %>
                 <li class="nav-item">
@@ -836,8 +836,8 @@
               </div>
             </div>
             <% if(currentUser && match){ %>
-              <!-- Saved Tab -->
-              <div class="tab-pane fade greyback" id="saved" role="tabpanel" aria-labelledby="saved-tab">
+              <!-- Hearts Tab -->
+              <div class="tab-pane fade greyback" id="hearts" role="tabpanel" aria-labelledby="hearts-tab">
                 <div id="delegated-heart-posts">
                   <div id="client-heart-posts" class="topnotch-left topnotch-right d-none"></div>
                   <div class="text-center">

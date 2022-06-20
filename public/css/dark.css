@@ -166,8 +166,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   }
 }
 
-.post-head, .heartpost-head, .post-tail, .topic-break, .topic-column,
-.show-comments, .card.discovercard, .searchcard.border-light, .merch-card, .blog-card{
+.post-head, .heartpost-head, .post-tail, .show-comments,
+.card.discovercard, .searchcard.border-light, .merch-card, .blog-card{
   border-color: var(--color-dark-800) !important;
 }
 button.gb, .options-btn{
@@ -304,17 +304,12 @@ button.gb.gb8:focus{
 select{
   border-color: #0ca177;
 }
-.btn.moderation.btn-light{
-  background-color: transparent !important;
-  border-color: transparent !important;
+.btn.moderation.btn-light, .btn.moderation.btn-info{
   color: #646667 !important;
 }
 .btn.moderation.btn-light:hover{
   background-color: var(--color-dark-800) !important;
   border-color: var(--color-dark-600);
-}
-.btn.moderation.btn-info{
-  color: #646667 !important;
 }
 .btn.moderation.btn-info:hover{
   color: var(--color-light-blue) !important;
@@ -322,6 +317,10 @@ select{
 .btn.moderation.btn-info:hover, .btn.moderation.btn-info:not(:disabled):not(.disabled).active, .btn.moderation.btn-info:not(:disabled):not(.disabled):active, .show>.btn.moderation.btn-info.dropdown-toggle{
   background-color: var(--color-dark-800) !important;
   border: 2px solid var(--color-dark-500) !important;
+}
+.btn.moderation.btn-light, .btn.moderation.btn-info{
+  background-color: var(--color-dark-700) !important;
+  border-color: var(--color-dark-700) !important;
 }
 .btn-college2{
   background-color: var(--color-dark-800) !important;
@@ -615,17 +614,8 @@ input.form-control.search:focus{
 }
 
 /* Home page */
-.topic-break{
-  border-top: 0.5px solid var(--color-dark-800) !important;
-  border-bottom: 0.5px solid var(--color-dark-800) !important;
-}
 h5.topic-h5{
   color: var(--color-white-300) !important;
-}
-.topic-column{
-  background-color: var(--color-dark-750);
-  border-bottom: 0.5px solid var(--color-dark-750) !important;
-  border-top: 0.5px solid var(--color-dark-750) !important;
 }
 #hot_topics_hr, .quote{
   border-color: var(--color-dark-600) !important;
@@ -638,12 +628,6 @@ h5.topic-h5{
 }
 button.vote{
   color: var(--color-white-200);
-}
-button.upVotebtn:hover, button.downVotebtn:hover{
-  color: var(--color-dark-750);
-}
-.fas.fa-caret-up, .fas.fa-caret-down{
-  -webkit-text-stroke: 1.3125px var(--color-white-200);
 }
 .far.fa-thumbs-up, .far.fa-heart{
   -webkit-text-stroke-width: 0.75px !important;
@@ -677,7 +661,7 @@ button.redcolor2.commentvote * .fab.fa-gratipay, button.redcolor2.commentvote:ho
 .greencolor3{
   color: var(--color-white-200) !important;
 }
-.fas.fa-thumbs-up.greencolor, .fas.fa-heart.redcolor2, .on > .fas.fa-caret-up, .on > .fas.fa-caret-down{
+.fas.fa-thumbs-up.greencolor, .fas.fa-heart.redcolor2{
   -webkit-text-stroke-color: transparent;
 }
 .orangecolor2{

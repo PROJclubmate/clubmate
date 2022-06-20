@@ -1178,20 +1178,20 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
       if(formData[1].name == 'published'){
         $('#moderation'+data.foundPost._id).removeClass('btn-light').addClass('btn-info').text('Published')
         .attr('name','exclusive').attr('value',1).blur();
-        $('#mod-badge'+data.foundPost._id).text('0');
+        $('#mod-badge'+data.foundPost._id).html('<i class="fas fa-lock-open"></i>');
       }
       if(formData[1].name == 'exclusive'){
         $('#moderation'+data.foundPost._id).removeClass('btn-info').addClass('btn-light').text('Exclusive')
         .attr('name','published').attr('value',0).blur();
-        $('#mod-badge'+data.foundPost._id).text('1');
+        $('#mod-badge'+data.foundPost._id).html('<i class="fas fa-lock"></i>');
       }
       if(formData[1].name == 'visibility'){
         if(formData[1].value == '-1'){
-          $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').text('-1');
+          $('#mod-badge'+data.foundPost._id).removeClass('badge-light').addClass('badge-danger').html('<i class="fas fa-lock"></i>');
           $('#visibility'+data.foundPost._id).text('Visibility (Show)').val('1');
         } else if(formData[1].value == '1'){
           $('#visibility'+data.foundPost._id).text('Visibility (Hide)').val('-1');
-          $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').text('1');
+          $('#mod-badge'+data.foundPost._id).removeClass('badge-danger').addClass('badge-light').html('<i class="fas fa-eye-slash"></i>');
         }
       }
     },
@@ -1204,96 +1204,6 @@ $("div#delegated-posts").on('click', '.moderation', function(e){
   })
 });
 
-if(location.pathname.split('/').length == 2 && location.pathname.split('/')[1] == 'discover'){
-  $("div#delegated-posts-discover").on('click', '.modvote', function(e){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    var formData = $(this).closest('form').serializeArray();
-    formData.push({ name: this.name, value: this.value });
-    var formAction = $(this).closest('form').attr('action');
-    $.ajax({
-      url: formAction,
-      timeout: 3000,
-      data: formData,
-      type: 'PUT',
-      success: function(data){
-        $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
-  
-        if(formData[1].name == 'upVote'){
-          $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
-          if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor')){
-            $('#modVote-count'+data.foundPost._id).removeClass('bluecolor');
-          } else{
-            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor');
-          }
-          $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
-        }
-        if(formData[1].name == 'downVote'){
-          $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
-          if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
-            $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
-          } else{
-            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor').addClass('orangecolor');
-          }
-          $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
-        }
-        
-        setTimeout(function(){
-          var votecard = '#votecard'+data.foundPost._id;
-          $(votecard).css('display', 'none');
-        }, 1000);
-      },
-      error: function(xhr) {
-        if(xhr.status == 404){
-          alert("Please Login first");
-          location = "/login";
-        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
-      }
-    })
-  });
-} else{
-  $("div#delegated-posts").on('click', '.modvote', function(e){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    var formData = $(this).closest('form').serializeArray();
-    formData.push({ name: this.name, value: this.value });
-    var formAction = $(this).closest('form').attr('action');
-    $.ajax({
-      url: formAction,
-      timeout: 3000,
-      data: formData,
-      type: 'PUT',
-      success: function(data){
-        $('#modVote-count'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
-  
-        if(formData[1].name == 'upVote'){
-          $('#upVote-btn'+data.foundPost._id).toggleClass('bluecolor on');
-          if($('#modVote-count'+data.foundPost._id).hasClass('bluecolor3')){
-            $('#modVote-count'+data.foundPost._id).removeClass('bluecolor3');
-          } else{
-            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
-          }
-          $('#downVote-btn'+data.foundPost._id).removeClass('orangecolor on');
-        }
-        if(formData[1].name == 'downVote'){
-          $('#downVote-btn'+data.foundPost._id).toggleClass('orangecolor on');
-          if($('#modVote-count'+data.foundPost._id).hasClass('orangecolor')){
-            $('#modVote-count'+data.foundPost._id).removeClass('orangecolor');
-          } else{
-            $('#modVote-count'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
-          }
-          $('#upVote-btn'+data.foundPost._id).removeClass('bluecolor on');
-        }
-      },
-      error: function(xhr) {
-        if(xhr.status == 404){
-          alert("Please Login first");
-          location = "/login";
-        } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
-      }
-    })
-  });
-}
 
 ////////////////// HEART POSTS ////////////////////
 $('div#delegated-heart-posts').on('click', '.vote', function(e){
@@ -1339,48 +1249,6 @@ $('div#delegated-heart-posts').on('click', '.vote', function(e){
         }
         $('#like-countH'+data.foundPost._id).removeClass('greencolor3');
         $('#heart-countH'+data.foundPost._id).toggleClass('redcolor3');
-      }
-    },
-    error: function(xhr) {
-      if(xhr.status == 404){
-        alert("Please Login first");
-        location = "/login";
-      } else{alert("Error "+xhr.status+": "+ xhr.statusText);}
-    }
-  })
-});
-
-$('div#delegated-heart-posts').on('click', '.modvote', function(e){
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  var formData = $(this).closest('form').serializeArray();
-  formData.push({ name: this.name, value: this.value });
-  var formAction = $(this).closest('form').attr('action');
-  $.ajax({
-    url: formAction,
-    timeout: 3000,
-    data: formData,
-    type: 'PUT',
-    success: function(data){
-      $('#modVote-countH'+data.foundPost._id).text(data.foundPost.upVoteCount - data.foundPost.downVoteCount);
-
-      if(formData[1].name == 'upVote'){
-        $('#upVote-btnH'+data.foundPost._id).toggleClass('bluecolor on');
-        if($('#modVote-countH'+data.foundPost._id).hasClass('bluecolor3')){
-          $('#modVote-countH'+data.foundPost._id).removeClass('bluecolor3');
-        } else{
-          $('#modVote-countH'+data.foundPost._id).removeClass('darkgrey').removeClass('orangecolor').addClass('bluecolor3');
-        }
-        $('#downVote-btnH'+data.foundPost._id).removeClass('orangecolor on');
-      }
-      if(formData[1].name == 'downVote'){
-        $('#downVote-btnH'+data.foundPost._id).toggleClass('orangecolor on');
-        if($('#modVote-countH'+data.foundPost._id).hasClass('orangecolor')){
-          $('#modVote-countH'+data.foundPost._id).removeClass('orangecolor');
-        } else{
-          $('#modVote-countH'+data.foundPost._id).removeClass('darkgrey').removeClass('bluecolor3').addClass('orangecolor');
-        }
-        $('#upVote-btnH'+data.foundPost._id).removeClass('bluecolor on');
       }
     },
     error: function(xhr) {

@@ -25,15 +25,12 @@
                 </div>
                 <div>
                   <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
-                  <% if(0 <= post.moderation && post.moderation <= 1){ %>
-                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
-                      <% if(post.isAdminLock){ %>
-                        <i class="fas fa-lock"></i> 
-                      <% } %>
-                      <%= post.moderation %>
-                    </div>
+                  <% if(post.moderation == 1){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs mr-1"><i class="fas fa-lock"></i></div>
+                  <% } else if(post.moderation == 0){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs mr-1"><i class="fas fa-lock-open"></i></div>
                   <% } else if(post.moderation == -1){ %>
-                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><i class="fas fa-eye-slash"></i></div>
                   <% } %>
                   <% if(post.descEdit.length != 0){ %>
                     <div class="badge badge-light text-xxs">Edited</div>
@@ -62,30 +59,44 @@
           </div>
         </div>
         <% if(post.image){ %>
-          <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
           <div class="card-body">
+            <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
+            <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            <div class="valign">
+              <div>
+                <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
+                <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+              </div>
+              <% if(post.commentsCount > 0){ %>
+                <div class="lightgrey text-xxs">
+                  <em><%= post.commentsCount %><% if(post.commentsCount == 1){ %> comment <% } else{ %> comments <% } %></em>
+                </div>
+              <% } %>
+            </div>
+          </div>
+          <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
         <% } else{ %>
           <div class="card-body py-1">
-        <% } %>
-        <% if(!post.image && post.description.length < 200){ %>
-          <p class="m-0 text-mob-index linewrap description-short-show"><%= post.description %></p>
-        <% } else{ %>
-          <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
-        <% } %>
-          <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
-          <div class="valign">
-            <div>
-              <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
-              <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-            </div>
-            <% if(post.commentsCount > 0){ %>
-              <div class="lightgrey text-xxs">
-                <em><%= post.commentsCount %><% if(post.commentsCount == 1){ %> comment <% } else{ %> comments <% } %></em>
-              </div>
+            <% if(!post.image && post.description.length < 200){ %>
+              <p class="m-0 text-mob-index linewrap description-short-show"><%= post.description %></p>
+            <% } else{ %>
+              <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
             <% } %>
+            <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            <div class="valign">
+              <div>
+                <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
+                <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+              </div>
+              <% if(post.commentsCount > 0){ %>
+                <div class="lightgrey text-xxs">
+                  <em><%= post.commentsCount %><% if(post.commentsCount == 1){ %> comment <% } else{ %> comments <% } %></em>
+                </div>
+              <% } %>
+            </div>
           </div>
-        </div>
-        <hr class="hr-light mx-2">
+          <hr class="hr-light mx-2">
+        <% } %>
         <div class="card-body py-1">
           <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
             <div class="valign">
@@ -126,164 +137,144 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </div>
+      </div>
     <% } else{ %>
       <!-- TOPIC POSTS -->
-      <div>
-        <div class="d-flex flex-row justify-content-between mt-3">
-          <div class="card topic-break flex-column justify-content-between">
-            <div>
-              <div class="card-body">
-                <div class="dropctn">
-                  <div class="valign">
-                    <div>
-                      <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
-                    </div>
-                    <div class="lineheight-lesser">
-                      <div class="text-mob-lg truncate1">
-                        <span>
-                          <a href="/clubs/<%= post.postClub._id %>" class="darkgrey"><strong><%= post.postClub.name %></strong></a>
-                        </span>
-                        <i class="fas fa-caret-left lightgrey" style="vertical-align: text-bottom;"></i>
-                        <span>
-                          <a class="darkgrey" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
-                        </span>
-                      </div>
-                      <div>
-                        <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
-                        <% if(0 <= post.moderation && post.moderation <= 1){ %>
-                          <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
-                            <% if(post.isAdminLock){ %>
-                              <i class="fas fa-lock"></i> 
-                            <% } %>
-                            <%= post.moderation %>
-                          </div>
-                        <% } else if(post.moderation == -1){ %>
-                          <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
-                        <% } %>
-                        <% if(post.descEdit.length != 0){ %>
-                          <div class="badge badge-light text-xxs">Edited</div>
-                        <% } %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="card post-head" style="border-radius: 0.5rem !important;">
+        <div class="card-body">
+          <div class="dropctn">
+            <div class="valign">
+              <div>
+                <a href="/clubs/<%= post.postClub._id %>"><img class="navdp rounded-circle d-flex mr-2" src="<%= PC_50_clubAvatar || '/images/noClub.png' %>"></a>
               </div>
-              <div class="topic-head">
-                <div class="px-2 mb-auto">
-                  <h5 class="m-0 p-0 topic-h5"><%= post.topic %></h5>
+              <div class="lineheight-lesser">
+                <div class="info-size">
+                  <span>
+                    <a href="/clubs/<%= post.postClub._id %>" class="darkgrey text-sm"><strong><%= post.postClub.name %></strong></a>
+                  </span>
+                  <i class="fas fa-caret-left lightgrey" style="vertical-align: text-bottom;"></i>
+                  <span>
+                    <a class="darkgrey text-sm" href="/users/<%= post.postAuthor.id._id %>"><strong><%= post.postAuthor.authorName %></strong></a>
+                  </span>
+                </div>
+                <div>
+                  <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
+                  <% if(0 <= post.moderation && post.moderation <= 1){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
+                      <%= post.moderation %>
+                    </div>
+                  <% } else if(post.moderation == -1){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
+                  <% } %>
+                  <% if(post.descEdit.length != 0){ %>
+                    <div class="badge badge-light text-xxs">Edited</div>
+                  <% } %>
                 </div>
               </div>
             </div>
-            <div>
-              <div class="nounderline m-0 p-0">
-                <% if(post.image){ %>
-                  <div class="text-mob-index linewrap card-body py-1"><%= post.description %></div>
-                  <% if(post.hyperlink && post.hyperlink != ''){ %>
-                    <div class="card-body py-1">
-                      <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
-                    </div>
+            <div class="dropdown">
+              <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+              <ul class="dropdown-menu dropdown-menu-right dropbox">
+                <div class="container drop-shadow1">
+                  <% if(post.descEdit.length != 0){ %>
+                    <li onclick="toggle_display('post_edit_history');"><a class="dropitems text-sm" href="#">View edit history</a></li>
                   <% } %>
-                  <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
-                <% } else{ %>
-                  <div class="card-body py-1 text-mob-index linewrap nolink"><%= post.description %></div>
-                  <% if(post.hyperlink && post.hyperlink != ''){ %>
-                    <div class="card-body py-1">
-                      <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
-                    </div>
-                  <% } %>
-                <% } %>
-              </div>
-              <!-- Vote bar -->
-              <div class="px-2">
-              <% if(!post.image){ %>
-                <hr class="hr-light">
-              <% } %>
-                <div class="valign">
-                  <div class="d-flex flex-row">
-                    <div class="lightgrey2 text-xs" style="padding-top: 0.125rem;"><span class="boldtext"><%= post.subpostsCount %></span> answers</div>
-                    <% if(!(post.upVoteCount == 0 && post.downVoteCount == 0)){ %>
-                      <strong class="text-sm lightgrey2 nopad ml-2"><%= Math.trunc((post.upVoteCount/(post.downVoteCount+post.upVoteCount))*100) %>%</strong>
-                    <% } %>
-                  </div>
-                  <div style="line-height: 0;">
-                    <span><em id="timeUTC" class="text-xxs lightgrey2 d-none"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
-                    <span class="lightgrey2 m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- UP/DOWN VOTE -->
-          <div class="d-flex flex-column topic-column">
-            <div class="d-flex flex-column mb-auto">
-              <div class="mx-auto my-2 py-1">
-                <div class="dropdown">
-                  <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                  <ul class="dropdown-menu dropdown-menu-right dropbox">
-                    <div class="container drop-shadow1">
-                      <% if(post.descEdit.length != 0){ %>
-                        <li onclick="toggle_display('post_edit_history');"><a class="dropitems text-sm" href="#">View edit history</a></li>
-                      <% } %>
-                      <li><a class="dropitems text-sm">Help ?</a></li>
-                      <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
-                        <li onclick="toggle_display('post_edit_form');"><a class="dropitems text-sm" href="#">Edit post</a></li>
-                        <hr>
-                        <li>
-                          <button class="dropitems link-button text-sm red lightgrey2">Delete post</button>
-                        </li>
-                      <% } %>
-                    </div>
-                  </ul>
-                </div>
-              </div>
-              <div style="margin-top: -1rem; margin-bottom: -0.5rem;">
-                <div class="mx-2 mb-auto d-flex flex-column">
-                  <form class="d-flex flex-column post-modvote-form" action="/posts/<%= post._id %>/modvote" method="POST">
-                    <% if(currentUser){ %>
-                      <% if(hasModVote == 1){ %>
-                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn bluecolor on" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center bluecolor3"><%= post.upVoteCount - post.downVoteCount %></span>
-                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
-                      <% } else if(hasModVote == -1){ %>
-                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext m-0 p-0 text-xs text-center orangecolor"><%= post.upVoteCount - post.downVoteCount %></span>
-                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn orangecolor on" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
-                      <% } else if(hasModVote == 0){ %>
-                        <button id="upVote-btn<%= post._id %>" class="modvote upVotebtn" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up"></i></button>
-                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext darkgrey m-0 p-0 text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
-                        <button id="downVote-btn<%= post._id %>" class="modvote downVotebtn" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down"></i></button>
-                      <% } %>
-                    <% } else{ %>
-                      <button id="upVote-btn<%= post._id %>" class="modvote" name="upVote" type="submit" value="up" title="Upvote"><i class="fas fa-caret-up offline"></i></button>
-                        <span id="modVote-count<%= post._id %>" class="modvote-count boldtext lightgrey m-0 p-0 text-xs text-center"><%= post.upVoteCount - post.downVoteCount %></span>
-                        <button id="downVote-btn<%= post._id %>" class="modvote" name="downVote" type="submit" value="down" title="Downvote"><i class="fas fa-caret-down offline"></i></button>
-                    <% } %>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div>
-              <form action="/posts/<%= post._id %>/vote" method="POST">
-                <div class="d-flex flex-column">
-                  <% if(currentUser){ %>
-                    <% if(hasVote == 3){ %>
-                      <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></div>
-                    <% } else if(hasVote == 0){ %>
-                      <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></div>
-                    <% } %>
-                      <div class="invisible" id="modVisibility<%= post._id %>"></div>
-                  <% } else{ %>
-                    <div class="mx-auto pb-1"><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></div>
+                  <li><a class="dropitems text-sm">Help ?</a></li>
+                  <% if(currentUser && currentUser._id.equals(post.postAuthor.id._id)){ %>
+                    <li onclick="toggle_display('post_edit_form');"><a class="dropitems text-sm" href="#">Edit post</a></li>
+                    <hr>
+                    <li>
+                      <button class="dropitems link-button text-sm red lightgrey2">Delete post</button>
+                    </li>
                   <% } %>
                 </div>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              </form>
+              </ul>
             </div>
           </div>
         </div>
+        <% if(post.image){ %>
+          <div class="card-body">
+            <div class="mb-3">
+              <h5 class="m-0 p-0 topic-h5"><%= post.topic %></h5>
+            </div>
+            <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
+            <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            <div class="valign">
+              <div>
+                <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
+                <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+              </div>
+              <% if(post.subpostsCount > 0){ %>
+                <div class="lightgrey text-xxs">
+                  <em><%= post.subpostsCount %><% if(post.subpostsCount == 1){ %> answer <% } else{ %> answers <% } %></em>
+                </div>
+              <% } %>
+            </div>
+          </div>
+          <img class="card-img-top" src="<%= cdn_prefix+post.imageId %>">
+        <% } else{ %>
+          <div class="card-body py-1">
+            <div class="mb-3">
+              <h5 class="m-0 p-0 topic-h5"><%= post.topic %></h5>
+            </div>
+            <p class="m-0 p-0 text-mob-index linewrap"><%= post.description %></p>
+            <p class="m-0 p-0 text-mob-index linewrap"><a href="<%= post.hyperlink %>" target="_blank" class="truncate1"><%= post.hyperlink %></a></p>
+            <div class="valign">
+              <div>
+                <span class="lightgrey m-0 p-0"><em id="timeLocal" class="text-xxs" style="cursor: default;"></em></span>
+                <span><em id="timeUTC" class="text-xxs lightgrey invisible"><%= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss'); %></em></span>
+              </div>
+              <% if(post.subpostsCount > 0){ %>
+                <div class="lightgrey text-xxs">
+                  <em><%= post.subpostsCount %><% if(post.subpostsCount == 1){ %> answer <% } else{ %> answers <% } %></em>
+                </div>
+              <% } %>
+            </div>
+          </div>
+          <hr class="hr-light mx-2">
+        <% } %>
+        <div class="card-body py-1">
+          <form class="post-vote-form valign" action="/posts/<%= post._id %>/vote" method="POST">
+            <div class="valign">
+              <% if(currentUser){ %>
+                <% if(hasVote == 1){ %>
+                  <span class="d-flex mr-1"> 
+                    <button id="like-btn<%= post._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up greencolor"></i></button>
+                  </span>
+                  <span id="like-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm bluecolor3"><%= post.likeCount %></span>
+                <% } else if(hasVote == 0 || hasVote == 3){ %>
+                  <span class="d-flex mr-1"> 
+                    <button id="like-btn<%= post._id %>" class="vote likebtn" name="like" type="submit" value="like" title="Like"><i class="far fa-thumbs-up"></i></button>
+                  </span>
+                  <span id="like-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.likeCount %></span>
+                <% } %>
+              <% } else{ %>
+                <span class="d-flex mr-1"> 
+                  <button id="like-btn<%= post._id %>" class="vote" name="like" type="submit" value="like" title="Like"><i class="fas fa-thumbs-up offline"></i></button>
+                </span>
+                <span id="like-count<%= post._id %>" class="boldtext lightgrey m-0 p-0 text-sm"><%= post.likeCount %></span>
+              <% }%>
+            </div>
+
+            <div class="valign" title="Comments">
+              <% if(currentUser){ %>
+                <% if(hasVote == 3){ %>
+                  <span id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm redcolor3"><%= post.heartCount %></span>
+                  <span><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart redcolor2"></i></button></span>
+                <% } else if(hasVote == 0 || hasVote == 1){ %>
+                  <span id="heart-count<%= post._id %>" class="boldtext darkgrey m-0 p-0 text-sm"><%= post.heartCount %></span>
+                  <span><button id="heart-btn<%= post._id %>" class="vote heartbtn" name="heart" type="submit" value="heart" title="Heart"><i class="far fa-heart"></i></button></span>
+                  <% } %>
+              <% } else{ %>
+                <span id="heart-count<%= post._id %>" class="boldtext lightgrey m-0 p-0 text-sm"><%= post.heartCount %></span>
+                <span><button id="heart-btn<%= post._id %>" class="vote" name="heart" type="submit" value="heart" title="Heart"><i class="fas fa-heart offline"></i></button></span>
+              <% } %>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </div>
+      </div>
     <% } %>
-    </div>
     <div id="post_edit_history">
       <% var edits = post.descEdit; var len = edits.length; var i; for(i=len-1;i>=0;i--){%>
       <div class="px-2 py-1 mt-2 rounded greyback2">
