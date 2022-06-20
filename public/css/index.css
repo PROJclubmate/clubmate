@@ -71,7 +71,6 @@ div.content{
 }
 /* Anything bigger than phones */
 @media screen and (min-width: 768px){
-  #inbox_mobile{display: none !important;}
   .navname{color: white !important; background-color: #333333; margin-left: -0.25rem; padding-left: 0.5rem !important;}
   .navbar{box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);}
   .navback{background-color: rgba(40,40,40,0.95);}
@@ -160,7 +159,6 @@ div.content{
   #college-cover.desktopFit{height: 160px;}
   #story-maker-container{height: calc(100vh - 40px - 56px - 56px) !important;}
   #adminconsole-btn-desktop.discoverswitch{font-size: 1rem !important; position: absolute; bottom: 0;}
-  #discover_chatlist{padding: 0 0.5rem; margin-right: 3.5rem; margin-left: 0.25rem;}
   .chats_chevronimg{display: none;}
   .chats_chevronimg.flipped{margin-right: 3.5rem;}
   .emoji-right{right: -10rem !important;}
@@ -215,7 +213,7 @@ div.content{
   .fa-thumbs-up.discover-vote, .fa-heart.discover-vote{font-size: 3rem !important;}
   .fa-caret-up.discover-vote, .fa-caret-down.discover-vote{font-size: 5rem !important; -webkit-text-stroke-width: 4px !important;}
   .on > .fas.fa-caret-up.discover-vote, .on > .fas.fa-caret-down.discover-vote{font-size: 5.5rem !important;}
-  .discoverheader{padding: 1rem !important;}
+  .discover-overlay-pad{padding: 1rem !important;}
   .story-alt, .story-alt-loader, #new_story.story-alt{height: 100px !important; width: 100px !important;}
   #club_archives_stories .item-preview{height: 136px !important; width: 136px !important; max-height: 136px !important;}
   #club_archives_stories .story{max-width: 136px !important; width: 136px !important;}
@@ -330,14 +328,13 @@ div.content{
   .navback{background-image: linear-gradient(white, #eaecf0);}
   .navname{color: #262223 !important; background-color: unset !important;}
   #navbar.stuck{transform: translateY(0px) !important;}
-  #inbox_mobile_div, #discover_mobile_div, #mobile_toggler_div{position: absolute; right: 0.5rem;}
+  #mobile_toggler_div{position: absolute; right: 0.5rem;}
   .discover-icon{font-size: 1.75rem;}
-  #discover_chatlist{margin-left: 0.5rem !important;}
   .card.discovercard{width: 100% !important; margin-left: 0 !important; margin-right: 0 !important;}
   .card.discovercard.masonry{width: calc(50% - 0.25rem) !important;}
   .card.discovercard.masonry:not(.right){margin-left: 0 !important;}
   .card.discovercard.masonry.right{margin-right: 0 !important; margin-left: 0.25rem !important;}
-  .discoverheader{padding: 0.5rem !important;}
+  .discover-overlay-pad{padding: 0.5rem !important;}
   .votecard_left{margin: 0 !important;}
   .badge-mobile{background: whitesmoke !important; box-shadow: none !important; border: 1px solid whitesmoke;
     color: #262626 !important; top: -0.25rem !important;right: -0.5rem !important;}
@@ -431,7 +428,7 @@ div.content{
   .text-mob-lg{font-size: 1.0625rem !important;}
   .text-mob-index{font-size: 1rem !important;}
   .text-mob-sm{font-size: 0.9375rem !important;}
-  .text-mob-xs{font-size: 0.875rem !important;}
+  .text-mob-xs{font-size: 0.8125rem !important;}
   .form-control.chatinput{padding: 0.625rem 0.75rem !important;}
   #user-send, #club-send{font-size: 1.125rem; height: 42px; width: 42px;}
   #messages_container{margin-bottom: 54px;}
@@ -464,7 +461,7 @@ div.content{
     0.25px -0.25px #262626, -0.25px -0.25px #262626 !important;}
   a > .collegedp.chatsdp.active{margin-left: 0.05625rem !important; margin-right: 0.125rem !important;}
   a > .collegedp.chatsdp.mr-0.active{margin-left: 0.25rem !important;}
-  .truncate2{-webkit-line-clamp: 15 !important;}
+  /* .truncate2{-webkit-line-clamp: 15 !important;} */
   .circle-plus .circle{margin-left: 0.125rem !important;}
   .posts_view_toggle-pad{padding-left: 0.75rem !important;}
   .settings-img{top: 0 !important;}
@@ -500,9 +497,12 @@ div.content{
   .emoji-right{right: 0 !important;}
   .sortByKey{color: grey !important;}
   .sortByKey:hover{color: grey !important; background-color: transparent !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;}
-  .dropdown-menu.dropbox-mobile{bottom: 0.25rem; float: unset; width: calc(100vw - 0.5rem); position: fixed;
-    z-index: 10000 !important; top: unset; left: 0.25rem;}
+    border: 1px solid rgba(0, 0, 0, 0.1) !important; border-radius: 0.5rem !important;}
+  .dropdown-menu.dropbox-mobile{bottom: 0; float: unset; width: 100vw; position: fixed;
+    z-index: 10000 !important; top: unset; left: 0; border-radius: 1rem 1rem 0 0;
+    box-shadow: 0px -500px 0px 500px rgba(0, 0, 0, 0.5);}
+  .dropbox-mobile-li{transition: 0.15s ease-out; outline: none !important;}
+  .dropbox-mobile-li:hover{background-color: whitesmoke;}
 }
 /*LG G5, Oneplus 3 => 480px*/
 @media screen and (max-width: 481px){
@@ -545,8 +545,7 @@ div.content{
   img.postimg.topicimg{height: 16rem !important;}
   .check-label .face{top: 0.125rem !important;}
   #edit-account-info{padding: 0 0.5rem !important;}
-  .discover-overlay a{padding: 0.875rem 0.75rem !important; font-size: 1rem !important;}
-  .discoverfooter{font-size: 1rem !important;}
+  .discover-overlay a{padding: 0.875rem 0.25rem !important; font-size: 1rem !important;}
   .fa-thumbs-up.discover-vote, .fa-heart.discover-vote{font-size: 2.125rem !important;}
   .fa-caret-up.discover-vote, .fa-caret-down.discover-vote{font-size: 3.375rem !important; -webkit-text-stroke: 2.5px white !important;}
   .on > .fas.fa-caret-up.discover-vote, .on > .fas.fa-caret-down.discover-vote{font-size: 3.875rem !important;}
@@ -572,8 +571,6 @@ div.content{
   .overlay3{transition: none !important;}
   .overlay3.overlay3-grad{top: 58px !important;}
   #carouselControls.hascover{margin-top: -58px !important;}
-  .arrowshowpost{font-size: 0.875rem !important;}
-  .discoverfooter:hover{color: whitesmoke !important;}
   .topic-head{min-height: 3.5rem !important;}
   .circle-plus .circle{margin-left: 0.1875rem !important;}
   .posts_view_toggle-pad{padding-left: 1rem !important;}
@@ -589,7 +586,6 @@ div.content{
   div.lpcov{left: -6.5rem;}
   a.hr2.active{padding-top: 12px; padding-bottom: 12px;}
   .navbar-toggler{font-size: 1.375rem !important;}
-  #inbox_mobile{font-size: 1.8125rem !important;}
 }
 /*Google Pixel => 411px*/
 @media screen and (max-width: 412px){
@@ -637,6 +633,8 @@ div.content{
   a.hr2.active{padding-top: 12.5px; padding-bottom: 12.5px;}
   .sidebar-label{font-size: 0.75rem !important;}
   .sidebar-icon{font-size: 1.325rem;}
+  .discover-overlay.masonry{border-radius: 1.375rem !important;}
+  .card.discovercard.masonry{border-radius: 1.4375rem !important;}
   button.vote{font-size: 1.375rem !important;}
   .searchdp{height: 100px !important; width: 100px!important;}
   .topic-column{padding-left: 0.3125rem !important; padding-right: 0.3125rem !important;}
@@ -710,7 +708,6 @@ div.content{
   #messages_container{margin-bottom: 46px;}
   .chat-msg3{top: 42.5% !important;}
   .navbar-toggler{font-size: 1.25rem !important;}
-  #inbox_mobile{font-size: 1.6875rem !important;}
   .description-short-show{font-size: 1.125rem !important;}
   .lineheight-less{line-height: 1.25rem !important;}
   .lineheight-lesser{line-height: 1rem !important;}
@@ -807,26 +804,6 @@ div.content{
 }
 .width-inherit{
   width: inherit;
-}
-#inbox_mobile{
-  font-size: 1.75rem;
-  color: #7a7b7c;
-  -webkit-text-stroke: 0.5px #fafafa;
-  padding: 0.125rem 0.5625rem;
-  border-radius: 0.5rem;
-  border: 2px solid transparent;
-}
-#inbox_mobile:hover{
-  border: 2px solid #eaecf0;
-  background-color: white;
-}
-#inbox_mobile, #mobile_toggler{
-  margin-right: -0.375rem;
-}
-.inbox_mobile.badge-mobile{
-  margin: 0.25rem 0.5rem;
-  padding: 0.125rem 0.25rem !important;
-  box-shadow: none !important;
 }
 #side-clubs{
   cursor: pointer;
@@ -1131,6 +1108,7 @@ input{
   transition: 0.15s ease-out;
 }
 .discovercard.masonry{
+  border-radius: 1.5rem;
   width: calc(50% - 0.5rem);
   float: left;
   clear: left;
@@ -2559,7 +2537,7 @@ div.carousel-img{
   width      : 25%;
   display    : block;
   position   : absolute;
-  height     : calc(1em * 1.2);
+  height     : calc(1rem * 1.25);
   background : linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 75%);
 }
 @supports (-webkit-line-clamp: 1){
@@ -2568,7 +2546,7 @@ div.carousel-img{
 }}
 .line-clamp-4{
   -webkit-line-clamp : 4;
-  height             : calc(1em * 1.2 * 4);
+  height             : calc(1rem * 1.25 * 4);
 }
 .righttext{
   display: flex;
@@ -3588,17 +3566,6 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 .radio input[type=radio] + .radio-label:empty:before {
   margin-right: 0;
 }
-#discover_chatlist{
-  background-color: white;
-  border: 0.5px solid #d3d3d3;
-  border-radius: 0.5rem;
-}
-.discover-msgscounter{
-  position: absolute;
-  right: 0.25rem;
-  bottom: 0.5rem;
-  box-shadow: 0 0 0 2px white;
-}
 .discover-overlay{
   height: 100%;
   width: 100%;
@@ -3614,15 +3581,17 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
   cursor: pointer;
   border-radius: 0.4375rem;
 }
+.discover-overlay.masonry{
+  border-radius: 1.4375rem;
+}
 .overlay-content{
-  position: relative;
-  top: 50%;
-  transform: translate(0, -50%);
+  position: absolute;
+  bottom: 1.5rem;
   width: 100%;
   text-align: center;
 }
 .discover-overlay a{
-  padding: 0.9375rem 0.75rem;
+  padding: 1rem 0.25rem;
   text-decoration: none;
   font-size: 1.5rem;
   color: #818181;
@@ -3631,26 +3600,13 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 .discover-overlay-text{
   color: #818181;
+  line-height: 1.5;
 }
 .discover-overlay a:hover, .discover-overlay a:focus{
   color: whitesmoke;
 }
-.discoverheader{
-  position: absolute;
-  width: 100%;
+.discover-overlay-pad{
   padding: 0.75rem;
-  background-color: rgba(255,255,255,0.05);
-}
-.discoverfooter{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: 1rem;
-  z-index: 3;
-}
-.discoverfooter.discoverfooter-left{
-  right: unset;
-  left: 0;
 }
 .overlay-content-modvote{
   margin: 0 40%;
@@ -3989,7 +3945,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 #not_in_room{
   opacity: 0.35;
 }
-.w-100{
+.w-100, .navdp.discoverdp.w-100{
   width: 100% !important;
 }
 .w-90{

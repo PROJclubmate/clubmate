@@ -1,12 +1,12 @@
 <% include ../partials/header %>
 <style>
   @media screen and (min-width: 1200px){
-    .discover_chatlist-none{
+    .onecolumn{
       margin-right: 3rem;
     }
   }
   @media screen and (min-width: 1601px){
-    .discover_chatlist-none{
+    .onecolumn{
       margin-right: 5rem;
     }
   }
@@ -64,7 +64,7 @@
                 <ul class="dropdown-menu dropbox dropbox-mobile">
                   <div class="container drop-shadow1">
                     <div class="px-2">
-                      <div class="px-2 pb-2 text-xxxs boldtext lightgrey2">
+                      <div class="p-2 text-xxxs boldtext lightgrey">
                         SORT POSTS BY
                       </div>
                       <hr class="mx-2 hr-light">
@@ -76,7 +76,7 @@
                               <div><a href="#">✓</a></div>
                             </li>
                           <% } else{ %>
-                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="1" type="submit"><i class="fas fa-fire mr-3" style="width: 0.5rem;"></i>Hot</button></li>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2 dropbox-mobile-li" name="sortByKey" value="1" type="submit"><i class="fas fa-fire mr-3" style="width: 0.5rem;"></i>Hot</button></li>
                           <% } %>
                           <% if(currentUser.sortByKey == 2){ %>
                             <li class="valign">
@@ -84,7 +84,7 @@
                               <div><a href="#">✓</a></div>
                             </li>
                           <% } else{ %>
-                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch mr-3" style="width: 0.5rem;"></i>New</button></li>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2 dropbox-mobile-li" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch mr-3" style="width: 0.5rem;"></i>New</button></li>
                           <% } %>
                           <% if(currentUser.sortByKey == 3){ %>
                             <li class="valign">
@@ -92,7 +92,7 @@
                               <div><a href="#">✓</a></div>
                             </li>
                           <% } else{ %>
-                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2" style="outline: none;" name="sortByKey" value="3" type="submit"><i class="fas fa-award mr-3" style="width: 0.5rem;"></i>Top (this month)</button></li>
+                            <li><button class="whiteback border-0 w-100 text-left p-0 my-1 py-2 dropbox-mobile-li" name="sortByKey" value="3" type="submit"><i class="fas fa-award mr-3" style="width: 0.5rem;"></i>Top (this month)</button></li>
                           <% } %>
                           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         </form>
@@ -110,7 +110,7 @@
                     </table>
                   </div>
                 <% } else{ %>
-                  <div class="pr-1 pt-1 lightgrey discover_chatlist-none">
+                  <div class="pr-1 pt-1 lightgrey onecolumn">
                     <table>
                       <tr><i class="far fa-square text-xl" style="transform: scaleX(0.75);"></i></tr>
                     </table>
@@ -122,7 +122,7 @@
             <% } %>
           </div>
           <div class="mobileNoneFlex valign w-100">
-            <div>
+            <div class="valign">
               <% if(currentUser){ %>
                 <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
                   <% if(currentUser.sortByKey == 1){ %>
@@ -156,9 +156,14 @@
                 </table>
               </div>
             <% } else{ %>
-              <div class="pr-1 discover_chatlist-none d-none">
-                <table>
-                  <tr><i class="far fa-square text-xl" style="transform: scaleX(0.75);"></i></tr>
+              <div class="pr-1 onecolumn d-none">
+                <table style="transform: translateY(1rem);">
+                  <tr>
+                    <th><i class="far fa-square text-xl" style="transform: scaleX(0.75);"></i></th>
+                  </tr>
+                  <tr>
+                    <th><i class="far fa-square text-xl" style="transform: scaleX(0.75) scaleY(0.15) translateY(-8rem);"></i></th>
+                  </tr>
                 </table>
               </div>
             <% } %>
@@ -173,71 +178,10 @@
           <% //include ../partials/posts_index %>
         </div>
         <div style="display: inline-flex;">
-          <% if(currentUser && !currentUser.settings.twoColumnView && !showDiscoverChatlist){ %>
-            <div id="client-posts-discover" class="discover_chatlist-none" style="overflow: hidden; display: table;"></div>
+          <% if(currentUser && !currentUser.settings.twoColumnView){ %>
+            <div id="client-posts-discover" class="onecolumn"></div>
           <% } else{ %>
-            <div id="client-posts-discover" style="overflow: hidden; display: table;"></div>
-          <% } %>
-          <% if(currentUser && currentUser.discoverSwitch === 1 && showDiscoverChatlist){ %>
-            <% if(chatList.length){ %>
-              <div id="discover_chatlist" class="d-none" style="display: table;">
-                <% for(var i=0;i<chatList.length;i++){ %>
-                  <form class="chat-form" action="/chats/feed/open" method="GET">
-                    <% if((chatList[i].type == 'user' && chatList[i].id.toString() == recipientId2) || (chatList[i].type == 'club' && chatList[i].id.toString() == convClubId2)){ %>
-                      <div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>^" class="active" value="<%= chatList[i].type %>">
-                    <% } else{ %>
-                      <div id="<%= chatList[i]._id %>^<%= chatList[i].name %>^<%= chatList[i].id %>^" class="" value="<%= chatList[i].type %>">
-                    <% } %>
-                      <div>
-                        <div class="py-2 my-1 px-1 position-relative">
-                          <% if(chatList[i].type == 'user'){ %>
-                            <a href="/users/<%= chatList[i].id %>">
-                              <% if(chatList[i].id.toString() == recipientId2){ %>
-                                <% if(!chatList[i].userKeys.sex){ %>
-                                  <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUser.png' %>">
-                                <% } else if(chatList[i].userKeys.sex == 'Male'){ %>
-                                  <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
-                                <% } else if(chatList[i].userKeys.sex == 'Female'){ %>
-                                  <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
-                                <% } %>
-                              <% } else{ %>
-                                <% if(!chatList[i].userKeys.sex){ %>
-                                  <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUser.png' %>">
-                                <% } else if(chatList[i].userKeys.sex == 'Male'){ %>
-                                  <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUserMale.png' %>">
-                                <% } else if(chatList[i].userKeys.sex == 'Female'){ %>
-                                  <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noUserFemale.png' %>">
-                                <% } %>
-                              <% } %>
-                            </a>
-                          <% } else if(chatList[i].type == 'club'){ %>
-                            <% if(chatList[i].id.toString() == convClubId2){ %>
-                              <a href="/clubs/<%= chatList[i].id %>">
-                                <img class="collegedp chatsdp mr-0 active" src="<%= chatList[i].image || '/images/noClub.png' %>">
-                              </a>
-                            <% } else{ %>
-                              <a href="/clubs/<%= chatList[i].id %>">
-                                <img class="collegedp chatsdp mr-0 rounded-circle" src="<%= chatList[i].image || '/images/noClub.png' %>">
-                              </a>
-                            <% } %>
-                          <% } %>
-                          <div>
-                            <% if(chatList[i].messageCount-chatList[i].seenMsgCursor > 0){ %>
-                              <span class="badge badge-success badge-round2 discover-msgscounter"><%= chatList[i].messageCount-chatList[i].seenMsgCursor %></span>
-                            <% } else{ %>
-                              <span class="badge badge-success badge-round2 discover-msgscounter d-none">0</span>
-                            <% } %>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  </form>
-                <% } %>
-              </div>
-            <% } else{ %>
-              <div id="discover_chatlist" class="d-flex mx-auto py-2 text-xs lightgrey" style="display: table;">Nothing here</div>
-            <% } %>
+            <div id="client-posts-discover"></div>
           <% } %>
         </div>
         <div id="discover-load-more-btn" class="text-center pt-2">
@@ -248,7 +192,7 @@
       </div>
     </div>
     <% if(currentUser){ %>
-      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 4.25rem;">
+      <div id="discover_nav_desktop" class="col-lg-3 px-2 pb-2 mt-3 mobileNone tabletNone" style="padding-top: 4rem;">
         <div>
           <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
             <% if(currentUser.discoverSwitch == 1){ %>
@@ -265,26 +209,23 @@
           <div id="quickview_nav_desktop" class="nav-hidden">
             <em id="quickview_collegename" class="lightgrey2 hr-light" style="font-weight: 300; margin-left: 0.75rem;" value="<%= collegeName %>">Quick view</em>
             <div class="d-flex flex-column">
-              <div class="d-flex flex-row quickviewcontainers-desktop">
-                <div class="text-xxl college-infobtn quickviewbtns-desktop" style="font-size: unset !important; padding: 0.625rem 0.5rem; margin-bottom: -0.125rem;" title="Add new" data-toggle="modal" data-target="#quickaddnew">
-                  <span class="fa-stack fa-2x text-sm">
-                    <i class="far fa-circle fa-stack-2x"></i>
-                    <i class="fas fa-plus fa-stack-1x"></i>
-                  </span>
-                </div>
-                <div class="quicknav_text_desktop text-xs my-auto ml-2">ADD</div>
-              </div>
-              <div class="d-flex flex-row quickviewcontainers-desktop">
-                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Notifications" data-toggle="modal" data-target="#quickbell">
-                  <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-2px);"></i>
-                </div>
-                <div class="quicknav_text_desktop text-xs my-auto ml-2">BELL</div>
-              </div>
               <div class="d-flex flex-row quickviewcontainers-desktop">  
                 <div class="text-xxl college-infobtn quickviewbtns-desktop" title="News & Blogs" data-toggle="modal" data-target="#quickblog">
                   <i class="fas fa-blog" style="-webkit-text-stroke-width: 0;"></i>
                 </div>
                 <div class="quicknav_text_desktop text-xs my-auto ml-2">BLOGS</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">  
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Placements & Intern" data-toggle="modal" data-target="#quickintern">
+                  <i class="fas fa-briefcase" style="-webkit-text-stroke-width: 0;"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">INTERN</div>
+              </div>
+              <div class="d-flex flex-row quickviewcontainers-desktop">  
+                <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Merch & Stickers" data-toggle="modal" data-target="#quickmerch">
+                  <i class="fas fa-store" style="-webkit-text-stroke-width: 0;"></i>
+                </div>
+                <div class="quicknav_text_desktop text-xs my-auto ml-2">STORE</div>
               </div>
               <div class="d-flex flex-row quickviewcontainers-desktop">
                 <div class="text-xxl college-infobtn quickviewbtns-desktop" title="Events" data-toggle="modal" data-target="#quickevents">
@@ -364,18 +305,15 @@
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2" href="#bell" data-toggle="modal" data-target="#quickbell">
-          <i class="fas fa-bell quicknav_icon_mobile text-xxl" style="transform: rotate(-15deg) translateX(-1px);"></i>
-          <span class="quicknav_text_mobile text-xs">BELL</span>
+        <a class="quicknav_link_mobile my-auto mx-2" href="#intern"  data-toggle="modal" data-target="#quickintern">
+          <i class="fas fa-briefcase quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">INTERN</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
-        <a class="quicknav_link_mobile my-auto mx-2 py-0" href="#addnew" data-toggle="modal" data-target="#quickaddnew">
-          <span class="fa-stack fa-2x text-xs">
-            <i class="far fa-circle fa-stack-2x quicknav_icon_mobile"></i>
-            <i class="fas fa-plus fa-stack-1x quicknav_icon_mobile"></i>
-          </span>
-          <span class="quicknav_text_mobile text-xs">ADD</span>
+        <a class="quicknav_link_mobile my-auto mx-2" href="#merch"  data-toggle="modal" data-target="#quickmerch">
+          <i class="fas fa-store quicknav_icon_mobile text-xxl" style="-webkit-text-stroke-width: 0;"></i>
+          <span class="quicknav_text_mobile text-xs">STORE</span>
         </a>
       </li>
       <li class="quicknav_item_mobile">
@@ -416,17 +354,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="quickbell" tabindex="-1" aria-labelledby="quickbell" aria-hidden="true">
+<div class="modal fade" id="quickintern" tabindex="-1" aria-labelledby="quickintern" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Notifications</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Placements & Intern</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
-        <div id="quickbellContent" class="d-flex justify-content-center">
+        <div id="quickinternContent" class="d-flex justify-content-center">
           <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
         </div>
       </div>
@@ -437,17 +375,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="quickaddnew" tabindex="-1" aria-labelledby="quickaddnew" aria-hidden="true">
+<div class="modal fade" id="quickmerch" tabindex="-1" aria-labelledby="quickmerch" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Merch & Stickers</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
-        <div id="quickaddnewContent" class="d-flex justify-content-center">
+        <div id="quickmerchContent" class="d-flex justify-content-center">
           <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
         </div>
       </div>
@@ -462,7 +400,7 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Events</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Events & Attendance</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -510,6 +448,6 @@
   <script>
     const storiesData = <%- JSON.stringify(stories) %>;
     const csrfToken = "<%= csrfToken %>";
-    var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from stories-viewer.js
+    var zuckObject = createDiscoverStory('stories', storiesData, csrfToken);   // from js/story-viewer/discover_stories.js
   </script>
 <% } %>

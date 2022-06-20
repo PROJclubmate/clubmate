@@ -95,6 +95,5 @@ postSchema.index({createdAt: 1});
 postSchema.index({postClub: 1});
 postSchema.index({'postAuthor.id': 1});
 postSchema.index({clubCollegeKey: 1});
-postSchema.index({type: 1});
 
 module.exports = mongoose.model('Post', postSchema);

@@ -1,13 +1,4 @@
 <% include ../partials/header %>
-<script>
-	if(window.innerWidth < 768){
-		if(location.pathname.split('/')[1] == 'colleges'){
-      console.log('YEPO')
-			document.getElementById('inbox_mobile_div').classList.add('d-none');
-			document.getElementById('discover_mobile_div').classList.remove('d-none');
-		}
-	}
-</script>
 
 <div class="row no-gutters">
 	<% if(isCollegeLevelAdmin === true){ %>

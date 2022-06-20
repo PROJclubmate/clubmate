@@ -105,9 +105,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
   a.hr2.active{
     box-shadow: none;
   }
-  #inbox_mobile .fa-comment-dots{color: #8c8f94;}
-  #inbox_mobile{-webkit-text-stroke-color: var(--color-dark-700); color: var(--color-white-100);}
-  #inbox_mobile:hover{background-color: var(--color-dark-900);  border-color: var(--color-dark-750);}
   .navbar-light .navbar-toggler{filter: invert(1);}
   .navbar-toggler:hover, .navbar-toggler:focus{background-color: #e7e6e3;  border-color: #d0cec9 !important;}
   .navbar-light .navbar-nav .nav-link{color: var(--color-white-100);}

@@ -74,22 +74,7 @@
           </span>
         </div>
         <div>
-          <% if(currentUser){ %>
-            <div id="inbox_mobile_div" class="inbox_mobile">
-              <span class="notification">
-                <a href="/chats/feed" id="inbox_mobile" class="inbox_mobile" title="Discover Feed" onclick="toggle_requests('inbox_mobile');"><i class="far fa-comment-dots"></i></a>
-                <% if(currentUser.unreadChatsCount > 0){ %>
-                  <span class="inbox_mobile inbox_count badge badge-mobile text-xs desktopNone"><%= currentUser.unreadChatsCount %></span>
-                <% } %>
-              </span>
-            </div>
-            <div id="discover_mobile_div" class="inbox_mobile d-none" style="margin-top: 0.125rem;">
-              <span class="notification">
-                <a href="/discover" id="inbox_mobile" class="inbox_mobile py-1" title="Chats"><i class="far fa-compass"></i></a>
-              </span>
-            </div>
-          <% } %>
-          <div id="mobile_toggler_div" class="d-none">
+          <div id="mobile_toggler_div">
             <button id="mobile_toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon notification">
                 <% if (currentUser && currentUser.clubInvites.length != 0){ %>
@@ -106,8 +91,11 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto" style="margin-left: -0.25rem;">
-          <li class="nav-item <%= typeof page !== 'undefined' && page === 'home' ? 'active' : '' %>">
+          <li class="nav-item mobileNone">
             <a href="/" class="nav-link burgernav">Home</a>
+          </li>
+          <li class="nav-item desktopNone">
+            <a href="/discover" class="nav-link burgernav">Discover</a>
           </li>
           <!--Search bar-->
           <li class="nav-item">
@@ -141,7 +129,7 @@
                 <span class="inbox_count badge text-xs"><%= currentUser.unreadChatsCount %></span>
               <% } %>
             </li>
-            <li class="nav-item notification d-none" data-toggle="collapse" data-target=".navbar-collapse.show">
+            <li class="nav-item notification" data-toggle="collapse" data-target=".navbar-collapse.show">
               <span id="requestslink" class="text-xxl nav-link burgernav requests" title="Requests" onclick="toggle_requests('requestslink'); toggle_display('pop_box_requests');">
                 <i class="fas fa-bell"></i>
               </span>

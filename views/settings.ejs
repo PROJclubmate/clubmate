@@ -305,22 +305,6 @@ input[type=checkbox]:checked + .toggle .star--6{
           </label>
         </div>
       </div>
-      <div class="valign my-2">
-        <div class="d-flex flex-column">
-          <div><sup class="text-xxs ml-2 lightgrey2"><span style="color: crimson;">*</span></sup>Show minified chat-list</div>
-          <div class="text-xxs ml-2 lightgrey2">Non functional - for Concept purpose only</div>
-        </div>
-        <div>
-          <label class="switch">
-            <% if(currentUser && currentUser.settings.showDiscoverChatlist) { %>
-              <input type="checkbox" id="discover_chatlist" csrf-token="<%= csrfToken %>" value="currentUser._id" checked>
-            <% } else { %>
-              <input type="checkbox" id="discover_chatlist" csrf-token="<%= csrfToken %>" value="currentUser._id">
-            <% } %>
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
     </div>
     <br>
     <br>
@@ -341,15 +325,6 @@ input[type=checkbox]:checked + .toggle .star--6{
       const currentUserId = $(this).attr('value');
       return $(`<form action="/users/${currentUserId}/settings" method="POST">
         <input type="hidden" name="theme" value="${darkTheme}">
-        <input type="hidden" name="_csrf" value="${csrfToken}">
-      </form>`).appendTo('body').submit();
-    }
-    if(this.id == 'discover_chatlist'){
-      const value = this.checked ? true : false;
-      const csrfToken = $(this).attr('csrf-token');
-      const currentUserId = $(this).attr('value');
-      return $(`<form action="/users/${currentUserId}/settings" method="POST">
-        <input type="hidden" name="showDiscoverChatlist" value="${value}">
         <input type="hidden" name="_csrf" value="${csrfToken}">
       </form>`).appendTo('body').submit();
     }

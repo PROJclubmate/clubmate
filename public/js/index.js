@@ -756,10 +756,12 @@ if(location.pathname.split('/').length == 2 && location.pathname.split('/')[1] =
   $('#client-posts-discover').on('click', '.discover-overlay', function(e){
     var id = $(this).attr('id');
     var votecard = '#votecard'+id.substring(8);
-    if(e.target.parentElement.id != 'client-posts-discover'){
-      return;
-    } else{
+    if(e.target.parentElement.id == 'client-posts-discover'
+    || e.target.parentElement.id.substring(0, 16) == 'overlay-comments'
+    || e.target.parentElement.id.substring(0, 8) == 'votecard'){
       $(votecard).css('display', 'none');
+    } else{
+      return;
     }
   });
 }

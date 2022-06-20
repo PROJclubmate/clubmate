@@ -23,7 +23,7 @@ if(location.pathname == '/discover'){
             var div = document.getElementById('client-posts-discover');
             div.innerHTML += discover_posts_template(response);
           }
-          if(response.currentUser.settings.twoColumnView && (!response.currentUser.settings.showDiscoverChatlist || response.currentUser.discoverSwitch == 2)){
+          if(response.currentUser && response.currentUser.settings.twoColumnView){
             // 2 column masonry
             var left_column_height = 0;
             var right_column_height = 0;
@@ -657,44 +657,47 @@ function discover_posts_template(response){
 <% var len = posts.length; var k=0; for(k;k<len;k++){ %>
   <!-- SIMPLE POSTS -->
   <% if(posts[k].type == 'simple'){ %>
-    <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
-        <div class="discoverheader">
-          <div class="valign">
-            <div class="valign">
-              <div>
-                <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
-              </div>
-              <div class="d-flex flex-column text-mob-sm lineheight-lesser">
-                <div class="truncate1 discover-overlay-text">
-                  <strong><%= posts[k].postClub.name %></strong>
-                </div>
-                <% if(posts[k].privacy > 0){ %>
-                  <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
-                <% } %>
-                <% if(posts[k].privacy == 0 && posts[k].clubCollegeKey != currentUser.userKeys.college){ %>
-                  <div class="discover-overlay-text"><em><%= posts[k].clubCollegeKey %></em></div>
-                <% } %>
-              </div>
+    <% if(currentUser && currentUser.settings.twoColumnView){ %>
+      <div id="votecard<%= posts[k]._id %>" class="discover-overlay masonry">
+    <% } else{ %>
+      <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
+    <% } %>
+      <div class="discover-overlay-pad">
+        <div class="d-flex justify-content-between align-items-center navdp discoverdp w-100">
+          <div class="lineheight-lesser mx-1 py-auto">
+            <% if(posts[k].commentsCount > 0){ %>
+              <span class="boldtext text-mob-sm discover-overlay-text nowrap">
+                <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
+              </span>
+            <% } %>
+          </div>
+          <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+            <div class="lineheight-lesser">
+              <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index text-mob-xs"></i></a>
             </div>
-            <div class="lineheight-lesser ml-1">
-              <% if(posts[k].commentsCount > 0){ %>
-                <span class="boldtext text-mob-sm discover-overlay-text nowrap">
-                  <%= posts[k].commentsCount %> <i class="fas fa-comment"></i>
-                </span>
-              <% } %>
-            </div>
+          <% } %>
+          <div class="py-auto lineheight-lesser boldtext">
+            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg">view</span></a>
           </div>
         </div>
-      </a>
-      <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-        <div class="discoverfooter discoverfooter-left lineheight-lesser">
-          <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index text-mob-xs"></i></a>
+      </div>
+      <% if(posts[k].commentsCount != 0){ %>
+        <div id="overlay-comments-1-<%= posts[k]._id %>" class="discover-overlay-pad mx-1">
+          <% var z=1; var buckets = posts[k].commentBuckets; var len1 = buckets.length; var i; for(i=len1-1;i>=0;i--){%>
+            <% var comments = buckets[i].comments; var len2 = comments.length; var j; for(j=len2-1;j>=0;j--){%>
+            <% if((posts[k].image && z<=2) || (!posts[k].image && z<=1)){ %>
+              <div id="overlay-comments-2-<%= posts[k]._id %>" class="valign">
+                <div id="overlay-comments-3-<%= posts[k]._id %>" class="wordwrap lineheight-less mb-3">
+                  <span id="overlay-comments-4-<%= posts[k]._id %>" class="m-0 p-0 text-mob-sm text-index boldtext discover-overlay-text"><%= comments[j].commentAuthor.authorName %></span>
+                  <br id="overlay-comments-5-<%= posts[k]._id %>" >
+                  <span id="overlay-comments-6-<%= posts[k]._id %>" class="text-mob-lg text-xl discover-overlay-text truncate2"><%= comments[j].text %></span>
+                </div>
+              </div>
+            <% z++;} %>
+            <% } %>
+          <% } %>
         </div>
       <% } %>
-      <div class="discoverfooter lineheight-lesser boldtext">
-        <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg arrowshowpost">view</span></a>
-      </div>
       <div class="overlay-content">
         <div>
           <form class="d-flex justify-content-around" action="/posts/<%= posts[k]._id %>/vote" method="POST">
@@ -739,45 +742,31 @@ function discover_posts_template(response){
       </div>
     </div>
   <% } else if(posts[k].type == 'topic'){ %>
-    <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
-      <a href="/clubs/<%= posts[k].postClub._id %>" style="font-size: unset !important; padding: 0 !important;">
-        <div class="discoverheader">
-          <div class="valign">
-            <div class="valign">
-              <div>
-                <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
-              </div>
-              <div class="d-flex flex-column text-mob-sm lineheight-lesser">
-                <div class="truncate1 discover-overlay-text">
-                  <strong><%= posts[k].postClub.name %></strong>
-                </div>
-                <% if(posts[k].privacy > 0){ %>
-                  <div class="discover-overlay-text"><em><%= privacyText(posts[k].privacy) %></em></div>
-                <% } %>
-                <% if(posts[k].privacy == 0 && posts[k].clubCollegeKey != currentUser.userKeys.college){ %>
-                  <div class="discover-overlay-text"><em><%= posts[k].clubCollegeKey %></em></div>
-                <% } %>
-              </div>
+    <% if(currentUser && currentUser.settings.twoColumnView){ %>
+      <div id="votecard<%= posts[k]._id %>" class="discover-overlay masonry">
+    <% } else{ %>
+      <div id="votecard<%= posts[k]._id %>" class="discover-overlay">
+    <% } %>
+      <div class="discover-overlay-pad">
+        <div class="d-flex justify-content-between align-items-center navdp discoverdp w-100">
+          <div class="lineheight-lesser ml-1">
+            <% if(posts[k].subpostsCount > 0){ %>
+              <span class="boldtext text-mob-sm discover-overlay-text nowrap">
+                <%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i>
+              </span>
+            <% } %>
+          </div>
+          <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
+            <div class="lineheight-lesser">
+              <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index text-mob-xs"></i></a>
             </div>
-            <div class="lineheight-lesser ml-1">
-              <% if(posts[k].subpostsCount > 0){ %>
-                <span class="boldtext text-mob-sm discover-overlay-text nowrap">
-                  <%= posts[k].subpostsCount %> <i class="fas fa-comment-alt"></i>
-                </span>
-              <% } %>
-            </div>
+          <% } %>
+          <div class="py-auto lineheight-lesser boldtext">
+            <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg">view</span></a>
           </div>
         </div>
-      </a>
-      <% if(posts[k].hyperlink && posts[k].hyperlink != ''){ %>
-        <div class="discoverfooter discoverfooter-left lineheight-lesser">
-          <a target="_blank" rel="noopener" href="<%= decodeURI(posts[k].hyperlink) %>"><i class="fas fa-link text-index text-mob-xs"></i></a>
-        </div>
-      <% } %>
-      <div class="discoverfooter lineheight-lesser boldtext">
-        <a href="/clubs/<%= posts[k].postClub._id %>/posts/<%= posts[k]._id %>" id="viewbtn<%= posts[k]._id %>"><span class="text-lg arrowshowpost">view</span></a>
       </div>
-      <div class="overlay-content overlay-content-modvote">
+      <div class="overlay-content overlay-content-modvote d-none">
         <div>
         <form class="d-flex flex-column" action="/posts/<%= posts[k]._id %>/modvote" method="POST">
           <% if(currentUser){ %>
@@ -805,46 +794,40 @@ function discover_posts_template(response){
       </div>
     </div>
   <% } %>
-  <% if(currentUser.settings.twoColumnView && (!currentUser.settings.showDiscoverChatlist || currentUser.discoverSwitch == 2)){ %>
+  <% if(currentUser && currentUser.settings.twoColumnView){ %>
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard masonry">
   <% } else{ %>
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
   <% } %>
-    <% if(!currentUser.settings.twoColumnView){ %>
-      <% if((posts[k].type == 'simple' || posts[k].type == 'topic') && (!posts[k].image)){ %>
-        <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader" style="max-height: 0;">
-      <% } else{ %>
-        <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader">
-      <% } %>
-        <div class="d-flex flex-row">
-          <div>
-            <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
-          </div>
+    <% if((posts[k].type == 'simple' || posts[k].type == 'topic') && (!posts[k].image)){ %>
+      <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader" style="max-height: 0;">
+    <% } else{ %>
+      <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader">
+    <% } %>
+      <div class="d-flex flex-row">
+        <div>
+          <span><img class="navdp discoverdp rounded-circle mr-2" src="<%= PC_50_clubAvatar[k] || '/images/noClub.png' %>"></span>
+        </div>
+        <% if(currentUser && currentUser.settings.twoColumnView){ %>
+          <div class="d-flex flex-column text-md text-mob-xs my-auto">
+        <% } else{ %>
           <div class="d-flex flex-column text-mob-sm my-auto">
-            <div class="truncate1 darkgrey">
-              <strong><%= posts[k].postClub.name %></strong>
-            </div>
+        <% } %>
+          <div class="truncate1 darkgrey">
+            <strong><%= posts[k].postClub.name %></strong>
           </div>
         </div>
       </div>
-    <% } %>
+    </div>
     <% if(posts[k].type == 'simple'){ %>
       <% if(posts[k].image){ %>
-        <% if(!currentUser.settings.twoColumnView){ %>
-          <div class="card-body" style="padding-top: 0 !important;">
-            <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
-            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
-          </div>
-        <% } %>
+        <div class="card-body" style="padding-top: 0 !important;">
+          <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
+          <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+        </div>
         <span>
           <div><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
         </span>
-        <% if(currentUser.settings.twoColumnView && (!currentUser.settings.showDiscoverChatlist || currentUser.discoverSwitch == 2)){ %>
-          <div class="card-body">
-            <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
-            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
-          </div>
-        <% } %>
       <% } else{ %>
         <div class="card-body nounderline d-flex align-items-center" style="min-height: 16rem;">
           <span>
@@ -855,7 +838,7 @@ function discover_posts_template(response){
       <% } %>
     <% } else if(posts[k].type == 'topic'){ %>
       <% if(posts[k].image){ %>
-        <% if(currentUser.settings.twoColumnView){ %>
+        <% if(currentUser && currentUser.settings.twoColumnView){ %>
           <div class="card-body">
         <% } else{ %>
           <div class="card-body" style="padding-top: 0 !important;">

@@ -1373,16 +1373,6 @@ module.exports = {
         }
       });
     }
-    if(req.body.showDiscoverChatlist){
-      const value = (req.body.showDiscoverChatlist === 'true') ? true : false;
-      User.updateOne({_id: req.user._id}, { 'settings.showDiscoverChatlist': value }, function(err){
-        if(err){
-          return res.redirect('back');
-        } else{
-          return res.redirect('/users/'+req.user._id+'/settings');
-        }
-      });
-    }
     if(req.body.twoColumnView){
       const value = (req.body.twoColumnView === 'true') ? true : false;
       User.updateOne({_id: req.user._id}, { 'settings.twoColumnView': value }, function(err){
