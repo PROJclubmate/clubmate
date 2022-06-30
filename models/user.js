@@ -18,7 +18,7 @@ const userSchema = new Schema({
   lastActive: Date,
   darkTheme: { type: Boolean, default: false },
   settings: {
-    twoColumnView: { type: Boolean, default: true }
+    twoColumnView: { type: Boolean, default: false }
   },
   discoverSwitch: {
     type: Number,

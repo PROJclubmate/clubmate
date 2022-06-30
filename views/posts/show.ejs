@@ -159,12 +159,12 @@
                 </div>
                 <div>
                   <div class="badge badge-light text-xxs"><%= privacyText(post.privacy) %></div>
-                  <% if(0 <= post.moderation && post.moderation <= 1){ %>
-                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs">
-                      <%= post.moderation %>
-                    </div>
+                  <% if(post.moderation == 1){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs mr-1"><i class="fas fa-lock"></i></div>
+                  <% } else if(post.moderation == 0){ %>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-light text-xxs mr-1"><i class="fas fa-lock-open"></i></div>
                   <% } else if(post.moderation == -1){ %>
-                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs"><%= post.moderation %></div>
+                    <div id="mod-badge<%= post._id %>" class="mod-badge badge badge-danger text-xxs mr-1"><i class="fas fa-eye-slash"></i></div>
                   <% } %>
                   <% if(post.descEdit.length != 0){ %>
                     <div class="badge badge-light text-xxs">Edited</div>

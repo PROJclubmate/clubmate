@@ -7,6 +7,8 @@ const {
   indexRoot,
   indexAbout,
   indexHelp,
+  indexPrivacyPolicy,
+  indexTermsOfService,
   indexSearch,
   indexSearchEmail,
   indexSearchUsers, 
@@ -45,6 +47,12 @@ router.get('/about', indexAbout);
 
 // Help page
 router.get('/help', indexHelp);
+
+// Privacy policy page
+router.get('/privacy-policy', indexPrivacyPolicy);
+
+// Terms of service page
+router.get('/terms-of-service', indexTermsOfService);
 
 // Search
 router.get('/search', middleware.checkWaitingWall, indexSearch);

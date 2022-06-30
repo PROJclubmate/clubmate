@@ -65,6 +65,14 @@ module.exports = {
     return res.render('help');
   },
 
+  indexPrivacyPolicy(req, res, next){
+    return res.render('privacy_policy');
+  },
+
+  indexTermsOfService(req, res, next){
+    return res.render('terms_of_service');
+  },
+
   indexSearch(req, res, next){
     const query = req.query.search;
     User.find({$text: {$search: query}, isVerified: true}, 

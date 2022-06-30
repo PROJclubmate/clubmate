@@ -1,0 +1,13 @@
+[
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target" : {
+			"namespace": "android_app",
+			"package_name": "in.co.clubmate.twa",
+			"sha256_cert_fingerprints": [
+				"18:2C:4C:B0:92:1C:08:05:91:5B:58:47:8F:E7:0B:03:63:F7:6F:79:41:B0:ED:19:33:F9:59:A0:29:4D:3A:2C",
+				"40:19:AB:EA:ED:83:2F:F3:68:7A:BE:9C:A7:B5:9B:9E:03:E4:26:3E:3F:D1:C3:CF:E2:37:3C:6F:0F:54:6B:9A"
+			]
+		}
+  }
+]
