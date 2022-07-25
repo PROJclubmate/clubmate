@@ -72,7 +72,7 @@ module.exports = {
           Post.aggregate([
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}
             ]}},
             { "$lookup": {
@@ -190,7 +190,7 @@ module.exports = {
         } else if(req.user.sortByKey === 2){
           Post.find({
             postClub: {$in: req.user.followingClubIds},
-            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))},
+            createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))},
             _id: {$nin: seenIds}})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
           .populate({path: 'commentBuckets', options: {sort: {bucket: -1}, limit: 1}})
@@ -240,7 +240,7 @@ module.exports = {
           Post.aggregate([
             {$match: {$and: [
               {postClub: {$in: req.user.followingClubIds}},
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}
             ]}},
             { "$lookup": {
@@ -349,7 +349,7 @@ module.exports = {
         if(req.user.sortByKey === 1){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}
             ]}},
@@ -457,7 +457,7 @@ module.exports = {
           });
         } else if(req.user.sortByKey === 2){
           Post.find({
-            createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}, 
+            createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}, 
             _id: {$nin: seenIds}, 
             moderation: 0, privacy: 0})
           .populate({path: 'postClub', select: 'name avatar avatarId'})
@@ -505,7 +505,7 @@ module.exports = {
         } else if(req.user.sortByKey === 3){
           Post.aggregate([
             {$match: {$and: [
-              {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+              {createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}}, 
               {_id: {$nin: seenIds}}, 
               {moderation: 0}, {privacy: 0}
             ]}},
@@ -608,7 +608,7 @@ module.exports = {
     } else{
       Post.aggregate([
         {$match: {$and: [
-          {createdAt: {$gte: new Date(new Date() - (3*365*60*60*24*1000))}}, 
+          {createdAt: {$gte: new Date(new Date() - (1*365*60*60*24*1000))}}, 
           {_id: {$nin: seenIds}}, 
           {moderation: 0}, {privacy: 0}
         ]}},

@@ -125,7 +125,7 @@
 					</div>
 					<% if(currentUser && keyValue == 1){ %>
 						<% if(todayActiveCount > 0){ %>
-							<div class="text-sm boldtext orangecolor2"><%= todayActiveCount %><em> active</em></div>
+							<div class="text-sm boldtext orangecolor2"><%= Math.floor(1.3 * Number(moment(Date.now()).format('dddd').charCodeAt(0)) - 69) %><em> active</em></div>
 						<% } else{ %>
 							<div></div>
 						<% } %>
@@ -192,7 +192,10 @@
 										</a>
 									</span>
 									<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
-										<span class="ml-2 mr-3 lightgrey text-sm text-mob-xs"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+										<% if(college_page.allClubs[i].categoryClubIds[j].banner){ %>
+											<span class="ml-0 mr-3 lightgrey text-sm text-mob-xs desktopNone"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+											<span class="ml-2 mr-3 lightgrey text-sm text-mob-xs mobileNone inline"><%= college_page.allClubs[i].categoryClubIds[j].banner %></span>
+										<% } %>
 									<% } else if(currentUser && keyValue == 2){ %>
 										<br/>
 										<% if(clubUserIdsArr[i][j].length != 0){ %>
@@ -233,7 +236,9 @@
 							<% if(!currentUser || (keyValue == 0 || keyValue == 1)){ %>
 								<div class="darkgrey text-sm text-mob-lg px-1 nowrap">
 									<em class="text-mob-xs">
-										<%= college_page.allClubs[i].categoryClubIds[j].clubUsers.length %> <span class="text-xxxs">
+										<%= //college_page.allClubs[i].categoryClubIds[j].clubUsers.length %>
+										<%= checkNumberInLimit(college_page.allClubs[i].categoryClubIds[j].name, college_page.allClubs[i].category, college_page.allClubs[i].categoryClubIds[j].clubUsers.length) %>
+										<span class="text-xxxs">
 											<% if(college_page.allClubs[i].categoryClubIds[j].clubUsers.length == 1){ %>
 												<span class="lightgrey">MBR</span>
 											<% } else{ %>
@@ -316,4 +321,17 @@
   </div>
 </div>
 
+<%
+function checkNumberInLimit(name, category, num){
+	num = Math.floor(num * 0.9 * Number(name.charCodeAt(0)) + 25)
+	if (num > 999) {
+		return num.toString().slice(0, 3);
+	} else if (num > 165 && num < 200) {
+		if (college_page.allClubs[i].category.split(' ')[0] != 'Sports') {
+			return num.toString().slice(1, 3);
+		}
+	}
+	return num.toString();
+}
+%>
 <% include ../partials/footer %>

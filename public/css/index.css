@@ -230,7 +230,7 @@ div.content{
   .college-infobtn:not(.quickviewbtns-desktop) .fas, .college-infobtn:not(.quickviewbtns-desktop) .far{font-size: 1.75rem !important; padding: 0.675rem 0 !important;}
   #thisweek, #alltime{height: 25vh !important; min-height: 215px;}
   .description-short{padding: 1.5rem 0 !important;}
-  img.postimg{height: 32rem !important;}
+  img.postimg{height: 38rem !important;}
   img.postimg.topicimg{height: 28rem !important;}
   h5.topic-h5{font-size: 1.5rem !important;}
   body, p, .truncate16, .info1, .dropctn{font-size: 1.125rem;}
@@ -3953,7 +3953,7 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
 }
 
 /* Code for notification dot(?) under quickview buttons */
-/* .quicknav_link_mobile{
+.quicknav_link_mobile{
   justify-content: center;
 }
 .quicknav_link_mobile::before {
@@ -3985,4 +3985,4 @@ h5.topic-h5{font-family: 'Bitter', serif; color: #343a40 !important; font-weight
     transform: translateY(12px);
     opacity: 1;
   }
-} */
+}

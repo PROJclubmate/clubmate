@@ -214,7 +214,8 @@ module.exports = {
             }
           }
         }
-        CollegePage.findOne({name: req.user.userKeys.college})
+        // CollegePage.findOne({name: req.user.userKeys.college})
+        CollegePage.findOne({name: 'IIT Mandi'})
         .select({branches: 1, houses: 1, messes: 1})
         .exec(function(err, foundCollegePage){
         if(err || !foundCollegePage){
@@ -626,9 +627,11 @@ module.exports = {
                 foundUser.geometry = undefined;
               }
             }
-            var newDate = moment(req.body.userKeys.birthdate, 'MM-DD-YYYY').toDate();
-            if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
-              foundUser.userKeys.birthdate = newDate;
+            if(foundUser.userKeys.birthdate){
+              var newDate = moment(req.body.userKeys.birthdate, 'MM-DD-YYYY').toDate();
+              if(newDate.toString() != foundUser.userKeys.birthdate.toString()){
+                foundUser.userKeys.birthdate = newDate;
+              }
             }
           } else if(req.body.userKeys.college || req.body.userKeys.batch || req.body.userKeys.branch){
             // COLLEGE PAGE
@@ -1480,44 +1483,44 @@ module.exports = {
           }
           return res.redirect('back');
         } else{
-          // Create a verification token for this user
-          var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
+          // // Create a verification token for this user
+          // var token = new Token({userId: user._id, token: crypto.randomBytes(20).toString('hex')});
 
-          // Save the verification token
-          token.save(function(err){
-            if(err){return logger.error('(profiles-44)user err => '+err);}
+          // // Save the verification token
+          // token.save(function(err){
+          //   if(err){return logger.error('(profiles-44)user err => '+err);}
 
-            // Send the email
-            var smtpTransport = nodemailer.createTransport({
-              service: 'Godaddy', 
-              auth: {
-                user: 'team@clubmate.co.in',
-                pass: process.env.TEAM_EMAIL_PW
-              }
-            });
-            var mailOptions = {
-              to: user.email,
-              from: '"clubmate"team@clubmate.co.in',
-              subject: 'Account Verification Token',
-              text: 'Welcome to clubmate '+newFirstName+'!  ,\n\n' + 
-              'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
-              '\/confirmation\/' + token.token + '\n\n' +
-              'Thanks,\n' +
-              'Team clubmate',
-              dkim: {
-                domainName: 'clubmate.co.in',
-                keySelector: 'dkimkey1',
-                privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
-              }
-            };
-            smtpTransport.sendMail(mailOptions, function(err, info){
-              if(err){
-                return logger.error('(profiles-45)sendMail err => '+err);
-              } else{
-                logger.info('mail sent('+ user.email +' requested a verification token)');
-              }
-            });
-          });
+          //   // Send the email
+          //   var smtpTransport = nodemailer.createTransport({
+          //     service: 'Godaddy', 
+          //     auth: {
+          //       user: 'team@clubmate.co.in',
+          //       pass: process.env.TEAM_EMAIL_PW
+          //     }
+          //   });
+          //   var mailOptions = {
+          //     to: user.email,
+          //     from: '"clubmate"team@clubmate.co.in',
+          //     subject: 'Account Verification Token',
+          //     text: 'Welcome to clubmate '+newFirstName+'!  ,\n\n' + 
+          //     'Please verify your account by clicking the link: \nhttps:\/\/' + req.headers.host + 
+          //     '\/confirmation\/' + token.token + '\n\n' +
+          //     'Thanks,\n' +
+          //     'Team clubmate',
+          //     dkim: {
+          //       domainName: 'clubmate.co.in',
+          //       keySelector: 'dkimkey1',
+          //       privateKey: process.env.DKIM_PRIVATE_KEY.replace(/\\n/g, '\n')
+          //     }
+          //   };
+          //   smtpTransport.sendMail(mailOptions, function(err, info){
+          //     if(err){
+          //       return logger.error('(profiles-45)sendMail err => '+err);
+          //     } else{
+          //       logger.info('mail sent('+ user.email +' requested a verification token)');
+          //     }
+          //   });
+          // });
           req.flash('success', 'Welcome to clubmate '+user.firstName+'!  ,  An email has been sent to "'+req.body.email+'" for verification.');
           if(process.env.WAITING_WALL == 'true'){
             return res.redirect('/waiting');

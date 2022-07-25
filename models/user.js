@@ -13,7 +13,8 @@ const userSchema = new Schema({
   isCollegeLevelAdmin: { type: Boolean, default: false },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  isVerified: { type: Boolean, default: false },
+  // false by default
+  isVerified: { type: Boolean, default: true },
   lastLoggedOut: Date,
   lastActive: Date,
   darkTheme: { type: Boolean, default: false },

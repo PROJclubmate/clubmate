@@ -815,7 +815,7 @@ function discover_posts_template(response){
     <div id="discovercard<%= posts[k]._id %>" class="card discovercard">
   <% } %>
     <% if((posts[k].type == 'simple' || posts[k].type == 'topic') && (!posts[k].image)){ %>
-      <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader" style="max-height: 0;">
+      <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader" style="max-height: 0; padding-bottom: 3rem !important;">
     <% } else{ %>
       <div id="discovercardheader<%= posts[k]._id %>" class="card-body discovercardheader">
     <% } %>
@@ -838,7 +838,7 @@ function discover_posts_template(response){
       <% if(posts[k].image){ %>
         <div class="card-body" style="padding-top: 0 !important;">
           <p class="truncate3 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
-          <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+          <em class="m-0 p-0 text-mob-index linewrap wordwrap bluecolor"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
         </div>
         <span>
           <div><img class="card-img-top postimg" src="<%= cdn_prefix+posts[k].imageId %>"></div>
@@ -847,7 +847,7 @@ function discover_posts_template(response){
         <div class="card-body nounderline d-flex align-items-center" style="min-height: 16rem;">
           <span>
             <p class="truncate16 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
-            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+            <em class="m-0 p-0 text-mob-index linewrap wordwrap bluecolor"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
           </span>
         </div>
       <% } %>
@@ -866,7 +866,7 @@ function discover_posts_template(response){
         </span>
           <% if(posts[k].hyperlink){ %>
           <div class="card-body">
-            <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+            <em class="m-0 p-0 text-mob-index linewrap wordwrap bluecolor"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
           </div>
         <% } %>
       <% } else{ %>
@@ -876,7 +876,7 @@ function discover_posts_template(response){
             <div>
               <p class="truncate5 m-0 p-0 text-mob-index linewrap"><%= posts[k].description %></p>
               <% if(posts[k].hyperlink){ %>
-                <em class="m-0 p-0 text-mob-index linewrap"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
+                <em class="m-0 p-0 text-mob-index linewrap wordwrap bluecolor"><span class="truncate1"><%= decodeURI(posts[k].hyperlink) %></span></em>
               <% } %>
             </div>
           </div>

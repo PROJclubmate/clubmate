@@ -315,7 +315,7 @@
                   <div class="card border-0">
                     <form id="create-new-post" class="card-body pt-0 border-light-lr" action="/clubs/<%= club._id %>/posts?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" style="padding-top: 1rem !important; margin-top: -1rem;">
                       <label for="topic" class="sr-only">Topic</label>
-                      <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="ask a Question">
+                      <input id="input_topic" type="text" name="topic" class="form-control topic" autocomplete="off" placeholder="write a Blog [topic]">
                       <label for="description" class="sr-only">Description</label>
                       <textarea id="description" class="emoji-input form-control text-sm description" type="text" name="description" placeholder="Write a post" rows="4" required></textarea>
                       <label for="hyperlink" class="sr-only">Hyperlink</label>

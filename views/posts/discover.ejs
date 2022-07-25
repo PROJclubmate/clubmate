@@ -4,6 +4,9 @@
     .onecolumn{
       margin-right: 3rem;
     }
+    .modal-dialog{
+      max-width: 750px !important;
+    }
   }
   @media screen and (min-width: 1601px){
     .onecolumn{
@@ -125,12 +128,12 @@
             <div class="valign">
               <% if(currentUser){ %>
                 <form action="/discover/settings/user/<%= currentUserId %>?_method=PUT" method="POST" class="valign">
-                  <% if(currentUser.sortByKey == 1){ %>
+                  <% if(currentUser.sortByKey == 1 || currentUser.sortByKey == 2){ %>
                     <div class="sortByKey text-sm mx-2 active"><i class="fas fa-fire redcolor"></i> HOT</div>
                   <% } else{ %>
                     <button class="sortByKey text-sm mx-2" name="sortByKey" value="1" type="submit"><i class="fas fa-fire"></i> HOT</button>
                   <% } %>
-                  <% if(currentUser.sortByKey == 2){ %>
+                  <% if(currentUser.sortByKey == 4){ %>
                     <div class="sortByKey text-sm mx-2 active"><i class="fas fa-stopwatch greencolor2"></i> NEW</div>
                   <% } else{ %>
                     <button class="sortByKey text-sm mx-2" name="sortByKey" value="2" type="submit"><i class="fas fa-stopwatch"></i> NEW</button>
@@ -344,7 +347,7 @@
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickBlogContent" class="d-flex justify-content-center">
-          <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
+          <% include ../partials/news %>
         </div>
       </div>
       <div class="modal-footer">
@@ -358,14 +361,14 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Placements & Intern</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Projects & Intern</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickinternContent" class="d-flex justify-content-center">
-          <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
+          <% include ../partials/intern %>
         </div>
       </div>
       <div class="modal-footer">
@@ -379,14 +382,14 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Merch & Stickers</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Merch & Marketplace</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickmerchContent" class="d-flex justify-content-center">
-          <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
+          Nothing here :)
         </div>
       </div>
       <div class="modal-footer">
@@ -400,14 +403,14 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div id="quickmodal" class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Events & Attendance</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Events</h5>
         <button type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div id="quickViewModal" class="modal-body scroll moz-scroll">
         <div id="quickEventsContent" class="d-flex justify-content-center">
-          <img src="https://res.cloudinary.com/dubirhea4/image/upload/v1651041126/icons/work-in-progress.png" class="searchdp shadow-none">
+          Nothing here :)
         </div>
       </div>
       <div class="modal-footer">

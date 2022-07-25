@@ -1,0 +1,334 @@
+<style>
+  #add_new_blog{
+  background: linear-gradient(to bottom, #f7f7f7 0%, #e0e0e0 100%);
+  border: 0.5px solid #d3d3d3 !important;
+}
+#add_new_blog:hover{
+  background: linear-gradient(to bottom, #f7f7f7 0%, #e7e7e7 100%);
+  border-bottom-width: 2px !important;
+}
+.blog-card {
+  border-left: 0;
+  border-right: 0;
+  width: 50vw;
+  border: 0.5px solid #d3d3d3;
+  transition: ease-out 0.15s;
+}
+.icons:hover, .p-name:hover {
+  cursor: pointer;
+}
+.saveblog{
+  font-size: 1.25rem !important;
+}
+.saveblog .far.fa-bookmark{
+  -webkit-text-stroke: 0.75px white;
+}
+.saveblog .fa-bookmark{
+  transition: transform 0.3s;
+}
+.card-pad{
+  padding: 1rem 1rem;
+}
+.card-title{
+  line-height: 1.75rem;
+}
+button.blogvote{
+  color: #262626;
+  font-size: 1.25rem !important;
+  outline: none;
+}
+button.blogvote:hover * .fab.fa-gratipay{
+  color: white;
+  -webkit-text-stroke: 1px #d12727;
+}
+button.redcolor2.blogvote * .fab.fa-gratipay, button.redcolor2.blogvote:hover * .fab.fa-gratipay{
+  color: #ec5b68;
+  -webkit-text-stroke: 1px #e93e3d;
+}
+.blogcount{
+  min-width: 0.5rem;
+}
+.bookmarked{
+  -webkit-text-stroke: 0 #262626;
+  color: #c73b3c;
+  text-shadow: 0.5px 0.5px 1px rgb(0 0 0 / 15%);
+  transform: scaleY(2.5) translateY(0.375rem);
+  background: -webkit-linear-gradient(top, #c73b3c 0%,#b8201f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.truncate3.blog-description{
+  position: relative;
+}
+.truncate3.blog-description:after{
+  content: "";
+  position: absolute;
+  top: 3rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: inset 0 -2.5rem 1rem -1.5rem white;
+}
+
+@media (max-width: 767px) {
+  .blog-card {
+    width: 100%;
+    margin-left: 0.25rem !important;
+    margin-right: 0.25rem !important;
+  }
+  .blog-card.noborder {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .searchdp.blogsdp{
+    height: 50px !important;
+    width: 50px !important;
+  }
+  .card-pad{
+    padding: 1rem 0;
+  }
+  .truncate5.news-description{
+    -webkit-line-clamp: 8 !important;
+  }
+}
+</style>
+
+
+<div class="container my-3">
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fmeet.google.com%2Ftfv-pufg-sac%3Ffbclid%3DIwAR2T6ZcztiDlQBeVtxnYJDhlpEPVNhyM7ZBinPgl9qBVyYAHkDnWaCx7mBA&h=AT3la3joXBF7AslvvqO2xpaMv1TDe1pzDr886q8hY3FClL0RmkKae7W1fFAqd1MAB0sFXLKoU5F67b2kkLakdOwSkAIjJ9FQOaKj6hzP8tJnZsZYaBvPuCEnr8PnYsm1FGg1&__tn__=-UK-R&c[0]=AT2tjM-a_5CGBoxQcPa4O_5sKzR9K98hf0DkrbqRxz7YC5ITfqIcpyaNrAr4F_4juxIgQTHb0FFqd8hjzlfI2L-VRjul5G4pm_fW_INzVXG0-kCYT9lKx8omlSCkHbUrJH0wWiLRGpbi9HcviS9MVgpC1QIf0QXbfrU1nlCp0nvLOvF5-CEGDSG3YcHNXZRin1imRx44HmbW0b3ee-Q" class="nolink" target="_blank">
+                <h5 class="card-title darkgrey truncate1">Opportunity</h5>
+                <p class="card-text truncate5 news-description linewrap">Hey all, my PhD supervisor is looking for a suitable candidate for a PhD position  in the department of Automatic Control and System Engineering of the University of Sheffield. Candidates with interests in Mathematics, in particular partial differential equations and or Control/electrical engineering can apply. You can DM me for queries.  PS: This Phd is not funded. You can apply for the fully-funded departmental scholarship of the ACSE or the scholarship from the University of Sheffield.</p>
+              </a>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">23 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fmeet.google.com%2Ftfv-pufg-sac%3Ffbclid%3DIwAR2T6ZcztiDlQBeVtxnYJDhlpEPVNhyM7ZBinPgl9qBVyYAHkDnWaCx7mBA&h=AT3la3joXBF7AslvvqO2xpaMv1TDe1pzDr886q8hY3FClL0RmkKae7W1fFAqd1MAB0sFXLKoU5F67b2kkLakdOwSkAIjJ9FQOaKj6hzP8tJnZsZYaBvPuCEnr8PnYsm1FGg1&__tn__=-UK-R&c[0]=AT2tjM-a_5CGBoxQcPa4O_5sKzR9K98hf0DkrbqRxz7YC5ITfqIcpyaNrAr4F_4juxIgQTHb0FFqd8hjzlfI2L-VRjul5G4pm_fW_INzVXG0-kCYT9lKx8omlSCkHbUrJH0wWiLRGpbi9HcviS9MVgpC1QIf0QXbfrU1nlCp0nvLOvF5-CEGDSG3YcHNXZRin1imRx44HmbW0b3ee-Q" class="nolink" target="_blank">
+                <h5 class="card-title darkgrey truncate1">*Regarding Google Shortlisting*</h5>
+                <p class="card-text truncate5 news-description linewrap">Google has shortlisted 20 people directly for interview round. *Rest please don't worry*.
+All those who have registered for Google test will have to give Google test and on that basis they will be again shortlisted.
+These selected 20 people may or may not opt for giving test tommorow but they already are eligible for interview round. 
+So if you are not shortlisted as of now, giving test tommorow and performing well in that may make you eligible for interview rounds ahead.</p>
+              </a>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">23 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <div class="valign">
+                <div>
+                  <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fmeet.google.com%2Ftfv-pufg-sac%3Ffbclid%3DIwAR2T6ZcztiDlQBeVtxnYJDhlpEPVNhyM7ZBinPgl9qBVyYAHkDnWaCx7mBA&h=AT3la3joXBF7AslvvqO2xpaMv1TDe1pzDr886q8hY3FClL0RmkKae7W1fFAqd1MAB0sFXLKoU5F67b2kkLakdOwSkAIjJ9FQOaKj6hzP8tJnZsZYaBvPuCEnr8PnYsm1FGg1&__tn__=-UK-R&c[0]=AT2tjM-a_5CGBoxQcPa4O_5sKzR9K98hf0DkrbqRxz7YC5ITfqIcpyaNrAr4F_4juxIgQTHb0FFqd8hjzlfI2L-VRjul5G4pm_fW_INzVXG0-kCYT9lKx8omlSCkHbUrJH0wWiLRGpbi9HcviS9MVgpC1QIf0QXbfrU1nlCp0nvLOvF5-CEGDSG3YcHNXZRin1imRx44HmbW0b3ee-Q" class="nolink" target="_blank">
+                    <h5 class="card-title darkgrey truncate1">Yogsun Cafe</h5>
+                    <p class="card-text truncate5 news-description linewrap">Now open
+    Free picking and droping( north campus- south campus)
+    Contact for Birthday party, kitty party
+    Contact number-8219082102, 6230009001</p>
+                  </a>
+                </div>
+                <div class="mb-auto">
+                  <div class="pt-1 ml-1">
+                    <img src="<%= 'https://res.cloudinary.com/dubirhea4/image/upload/v1658737771/286342476_4999394256824458_4341335250182664931_n.jpg' || '/images/noImage.png' %>" alt="..." class="searchdp mx-0 blogsdp shadow-none cover mb-auto">
+                  </div>
+                </div>
+              </div>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">22 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fmeet.google.com%2Ftfv-pufg-sac%3Ffbclid%3DIwAR2T6ZcztiDlQBeVtxnYJDhlpEPVNhyM7ZBinPgl9qBVyYAHkDnWaCx7mBA&h=AT3la3joXBF7AslvvqO2xpaMv1TDe1pzDr886q8hY3FClL0RmkKae7W1fFAqd1MAB0sFXLKoU5F67b2kkLakdOwSkAIjJ9FQOaKj6hzP8tJnZsZYaBvPuCEnr8PnYsm1FGg1&__tn__=-UK-R&c[0]=AT2tjM-a_5CGBoxQcPa4O_5sKzR9K98hf0DkrbqRxz7YC5ITfqIcpyaNrAr4F_4juxIgQTHb0FFqd8hjzlfI2L-VRjul5G4pm_fW_INzVXG0-kCYT9lKx8omlSCkHbUrJH0wWiLRGpbi9HcviS9MVgpC1QIf0QXbfrU1nlCp0nvLOvF5-CEGDSG3YcHNXZRin1imRx44HmbW0b3ee-Q" class="nolink" target="_blank">
+                <h5 class="card-title darkgrey truncate1">New Course : Entrepreneurship Practicum</h5>
+                <p class="card-text truncate5 news-description linewrap">Agenda: Introduction - Entrepreneurship Practicum
+Date & Time: Tuesday, June 14 · 5:00 – 6:00 pm
+Google Meet: https://meet.google.com/tfv-pufg-sac
+With great delight I inform you that the Senate of IIT Mandi in its 35th meeting (2 June, 2022) accepted the proposal for Entrepreneurship Practicum at IIT Mandi. This means that now the students can take up and pursue their entrepreneurial aspirations as a part of their academic journey and earn 11 P/F credits for their entrepreneurial work.</p>
+              </a>
+              <div class="lightgrey">
+                <span class="mobileNone inline">Opens in</span><span class="text-capitalize">Google Meet</span>
+              </div>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">21 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.strava.com%2Fclubs%2Fruniitmandi%3Futm_source%3Dcom.facebook.katana%26utm_medium%3Dreferral%26fbclid%3DIwAR0bgXfqqL_9blxdEJyWue62zKhQFuqRe3xpvp1vMm95-Yl4430WYf78qtQ&h=AT0Q2i11jXZLZp7yHf_sNoiILZ5sRKlVqw_dSjnCTHY5Sl4RQrkq82u1UsOXJGNsniqW5vz7uMEEIgMBe4bsVGs1gKMBc3P2VVwAQnIHPwNSg5Ta4BDtHB24q2uBQvZwICl5H8XTu6ofd7b-gFDVJY2w&__tn__=H-R&c[0]=AT17Ec77qLz0Spxva-WlaydMm5YH2PoID3I0ccrIDqNHIQDTP1EkojQIam9gbn0Ly5qgsVVXyZGioJ2z5C-nPs3K1qOfefPRpqgQuon2I1tiiJFvimj6JhRJGMWpCwVjcd6my4Qe0gaYAxia0hux4YrlilQ7B2KtY2YG5-8liPpVgNJouHX106BD30h4VXtewXmnS6yB3bgh52PtdeY" class="nolink" target="_blank">
+                <h5 class="card-title darkgrey truncate1">FB group</h5>
+                <p class="card-text truncate5 news-description linewrap">Hello Everyone,
+I have created this group for everyone associated with IIT Mandi. If you like to run please join it.
+Joining a group helps with motivation and we can organize club events(online mostly). 
+This is open to all.</p>
+              </a>
+              <div class="lightgrey">
+                <span class="mobileNone inline">Opens in</span><span class="text-capitalize">Facebook</span>
+              </div>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">18 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="card blog-card mx-auto rounded">
+      <div class="card-pad">
+        <div class="row no-gutters px-2">
+          <div class="col valign">
+            <div class="news smalldp lightgrey">
+              <i class="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
+        <div class="valign"> 
+          <div class="pt-1 w-100">
+            <div class="px-2">
+              <a href="https://milaap.org/fundraisers/support-tilak-raj-2?deeplink_type=paytm" class="nolink" target="_blank">
+                <h5 class="card-title darkgrey truncate1">fundraiser</h5>
+                <p class="card-text truncate5 news-description linewrap">Hello everyone,
+                  We have started a fundraiser on Milaap. The campaign is aimed at collecting funds to support the family of the late Tilak Raj, who unfortunately passed away in January 2022. Tilak Raj was a truck driver in Himachal Pradesh. He hailed from Bijni (near Mandi), where his family still resides. Tilak was the sole breadwinner in the family. Their financial condition has taken a big hit ever since he passed away.
+                  He is survived by his wife and two children. The daughter, Sunidhi Raj (20), is a student at a nursing college affiliated with Himachal Pradesh University. She just has 15 more months to graduate. We need to collect Rs 1.5 lakh to help Sunidhi complete her education. In addition, we want to collect supplementary funds to extend support to the family.
+                  The campaign is genuine and verified and the case is legitimate, so I request everyone to donate generously and spread the word.</p>
+              </a>
+              <div class="lightgrey">
+                <span class="mobileNone inline">Opens in</span><span class="text-capitalize">Milaap.org</span>
+              </div>
+              <div class="card-text valign mt-3">
+                <div class="text-sm text-mob-3">
+                  <span class="lightgrey">14 July</span>
+                </div>
+                <div class="saveblog">
+                  <button id="_save" class="vote blogvote vote-save valign" type="button" title="Save blog" blogId="" bucketId="">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>   
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

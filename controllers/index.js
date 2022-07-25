@@ -711,7 +711,7 @@ module.exports = {
           //pushing user details into club
           var obja = {}; var oka = true;
           obja['id'] = foundUser._id;
-          obja['userRank'] = 4;
+          obja['userRank'] = 2;
           for(var i=0;i<foundClub.clubUsers.length;i++){
             if(foundClub.clubUsers[i].id.equals(foundUser._id)){
               oka = false;
